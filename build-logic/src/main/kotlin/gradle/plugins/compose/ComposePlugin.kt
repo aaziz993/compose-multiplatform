@@ -154,7 +154,7 @@ public class ComposePlugin : Plugin<Project> {
         adjustIconSet(composeResourcesDir, rootProject.file(WATCHOS_APPICONSET_DIR))
     }
 
-    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, transform: (Map<String, Any>) -> Map<String, Any> = { it }) {
+    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, forceOpaque: Boolean = true, transform: (Map<String, Any>) -> Map<String, Any> = { it }) {
         if (!iconSetDir.exists()) return
 
         val contents = iconSetDir.resolve("Contents.json")
@@ -172,17 +172,14 @@ public class ComposePlugin : Plugin<Project> {
                     ?: return@forEach
 
                 val (width, height) = image.size!!.split("x").map(String::toInt)
-                val scale = image.scale ?: "1x"
+                val scale = image.scale?.removeSuffix("x")?.toInt() ?: 1
 
                 val iconFile = iconSetDir.resolve(
                     image.filename
-                        ?: "app-icon-${if (width == height) width else image.size}${if (scale == "1x") "" else "@$scale"}${if (themeIndex == 0) "" else " $themeIndex"}.png",
+                        ?: "app-icon-${if (width == height) width else image.size}${if (scale == 1) "" else "@${scale}x"}${if (themeIndex == 0) "" else " $themeIndex"}.png",
                 )
 
-                svgToPng(
-                    svg, iconFile,
-                    width * scale.removeSuffix("x").toInt(),
-                )
+                svgToPng(svg, iconFile, width * scale, height * scale, forceOpaque)
             }
         }
     }
@@ -200,7 +197,7 @@ public class ComposePlugin : Plugin<Project> {
             val brandAssetDir = brandAssetsDir.resolve(asset["filename"] as String).takeIf(File::exists)
                 ?: return@forEach
 
-            adjustIconSet(composeResourcesDir, brandAssetDir) { image ->
+            adjustIconSet(composeResourcesDir, brandAssetDir, true) { image ->
                 buildMap {
                     asset["size"]?.let { size -> put("size", size) }
                     asset["scale"]?.let { scale -> put("scale", scale) }
@@ -222,11 +219,14 @@ public class ComposePlugin : Plugin<Project> {
         }
     }
 
-    private fun svgToPng(svgFile: File, pngFile: File, size: Int) {
+    private fun svgToPng(svgFile: File, pngFile: File, width: Int, height: Int, forceOpaque: Boolean = false) {
         FileInputStream(svgFile).use { input ->
             val transcoder = PNGTranscoder().apply {
-                addTranscodingHint(PNGTranscoder.KEY_WIDTH, size.toFloat())
-                addTranscodingHint(PNGTranscoder.KEY_HEIGHT, size.toFloat())
+                addTranscodingHint(PNGTranscoder.KEY_WIDTH, width.toFloat())
+                addTranscodingHint(PNGTranscoder.KEY_HEIGHT, height.toFloat())
+                if (forceOpaque) {
+                    addTranscodingHint(PNGTranscoder.KEY_FORCE_TRANSPARENT_WHITE, java.lang.Boolean.TRUE)
+                }
             }
             val transcoderInput = TranscoderInput(input)
             FileOutputStream(pngFile).use { output ->
@@ -234,6 +234,9 @@ public class ComposePlugin : Plugin<Project> {
             }
         }
     }
+
+    private fun svgToPng(svgFile: File, pngFile: File, size: Int, forceOpaque: Boolean = false) =
+        svgToPng(svgFile, pngFile, size, size, forceOpaque)
 
     private fun pngsToIconSet(pngFiles: List<File>, icnsFile: File) =
         Imaging.writeImage(ImageIO.read(pngFiles[3]), icnsFile, ImageFormats.ICNS)
