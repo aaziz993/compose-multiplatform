@@ -17,8 +17,8 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
 import javax.imageio.ImageIO
-import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.emptyIf
+import klib.data.type.serialization.deepPlus
 import kotlinx.serialization.json.Json
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
@@ -35,7 +35,7 @@ import org.jetbrains.compose.resources.getPreparedComposeResourcesDir
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
-private val THEMES = listOf("", "-light", "-dark")
+private val THEMES = listOf("", "-dark", "-light")
 private const val COMPOSE_MULTIPLATFORM_ICON_NAME = "compose-multiplatform"
 private val DENSITIES = mapOf(
     "ldpi" to 18,
@@ -45,7 +45,7 @@ private val DENSITIES = mapOf(
     "xxhdpi" to 72,
     "xxxhdpi" to 96,
 )
-private val IOS_ASSET_APPEARANCE = mapOf("" to 0, "tinted" to 0, "dark" to 2)
+private val IOS_IMAGE_APPEARANCE = mapOf("" to 0, "dark" to 1, "tinted" to 2)
 private const val IOS_APPICONSET_DIR = "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset"
 private const val TVOS_BRANDASSETS_DIR = "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
 private const val WATCHOS_APPICONSET_DIR = "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset"
@@ -149,27 +149,30 @@ public class ComposePlugin : Plugin<Project> {
         adjustIconSet(composeResourcesDir, rootProject.file(WATCHOS_APPICONSET_DIR))
     }
 
-    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, images: Set<Image> = emptySet()) {
+    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, images: Contents.() -> Set<Image> = { this.images.orEmpty() }) {
         if (!iconSetDir.exists()) return
 
         val contents: Contents = iconSetDir.resolve("Contents.json")
             .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
 
-        (contents.images.orEmpty() + images).forEach { image ->
+        contents.images().forEach { image ->
             image.appearances.filter { (appearance, _) -> appearance == "luminosity" }.forEach { (_, value) ->
-                val theme = THEMES[IOS_ASSET_APPEARANCE[value]!!]
+                val themeIndex = IOS_IMAGE_APPEARANCE[value]!!
+                val theme = THEMES[themeIndex]
 
                 val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg").takeIf(File::exists)
                     ?: return@forEach
 
+                val (width, height) = image.size!!.split("x").map(String::toInt)
+
                 val iconFile = iconSetDir.resolve(
                     image.filename
-                        ?: "app-icon-${image.size}${image.scale.emptyIf { scale -> scale == "1x" }}${value.addPrefixIfNotEmpty("-")}.png",
+                        ?: "app-icon-${if (width == height) width else image.size}${image.scale.emptyIf { scale -> scale == "1x" }}${if (themeIndex == 0) "" else " $themeIndex"}.png",
                 )
 
                 svgToPng(
                     svg, iconFile,
-                    image.size.split("x").first().toInt() * image.scale.removeSuffix("x").toInt(),
+                    width * image.scale.removeSuffix("x").toInt(),
                 )
             }
         }
@@ -183,20 +186,19 @@ public class ComposePlugin : Plugin<Project> {
 
         brandAssetsContents.assets?.forEach { asset ->
             val brandAssetDir = brandAssetsDir.resolve(asset.filename!!).takeIf(File::exists) ?: return@forEach
+
+            adjustIconSet(composeResourcesDir, brandAssetDir) {
+                images?.map { image -> image.deepPlus(asset) }.orEmpty().toSet()
+            }
+
             val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
                 .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: Contents()
 
-            adjustIconSet(composeResourcesDir, brandAssetDir, brandAssetsContents.assets + brandAssetContents.images.orEmpty())
-
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
-                val layerContents: Contents = layerDir.resolve("Contents.json")
-                    .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: Contents()
-
-                adjustIconSet(
-                    composeResourcesDir, layerDir.resolve("Content.imageset"),
-                    brandAssetsContents.assets + brandAssetContents.images.orEmpty() + layerContents.images.orEmpty(),
-                )
+                adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) {
+                    images?.map { image -> image.deepPlus(asset) }.orEmpty().toSet()
+                }
             }
         }
     }
