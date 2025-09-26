@@ -147,7 +147,7 @@ public fun <T : Any> T.plus(
     vararg others: T,
     sourceIteratorOrNull: Any.() -> Iterator<Map.Entry<Any?, Any?>>? = Any::iteratorOrNull,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
-    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> if (value != null) put(key, value) },
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = listOf(this, *others).fold(toNewMutableCollection() as T) { acc, value ->
     value.map(acc, sourceIteratorOrNull, sourceTransform, destinationSetter)
 }
@@ -443,7 +443,7 @@ public fun <T : Any> T.deepPlus(
         }
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        if (value != null) last().first.put(last().second, value)
+        last().first.put(last().second, value)
     },
 ): T = listOf(this, *others).fold(toNewMutableCollection() as T) { acc, value ->
     value.deepMap(acc, sourceIteratorOrNull, sourceTransform, destinationGetter, destinationSetter)
