@@ -19,7 +19,6 @@ import java.nio.file.Files
 import javax.imageio.ImageIO
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
-import klib.data.type.primitives.string.emptyIf
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.decodeFromAny
 import kotlinx.serialization.json.Json
@@ -174,7 +173,7 @@ public class ComposePlugin : Plugin<Project> {
 
                 val iconFile = iconSetDir.resolve(
                     image.filename
-                        ?: "app-icon-${if (width == height) width else image.size}${scale.emptyIf { scale -> scale == "1x" }}${if (themeIndex == 0) "" else " $themeIndex"}.png",
+                        ?: "app-icon-${if (width == height) width else image.size}${if (scale == "1x") "" else "@$scale"}${if (themeIndex == 0) "" else " $themeIndex"}.png",
                 )
 
                 svgToPng(
