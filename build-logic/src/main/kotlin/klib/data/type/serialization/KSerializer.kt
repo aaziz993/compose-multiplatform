@@ -1,8 +1,10 @@
 package klib.data.type.serialization
 
 import klib.data.type.collections.deepPlus
+import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.put
+import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.reflection.callMember
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.coders.tree.serialize
@@ -87,6 +89,11 @@ public fun <T : Any> KSerializer<T>.plus(
 public fun <T : Any> KSerializer<T>.deepPlus(
     vararg values: T,
     sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
+    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
+        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
+            (this as? MutableList<*>)?.clear()
+        }
+    },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
@@ -96,6 +103,7 @@ public fun <T : Any> KSerializer<T>.deepPlus(
         sources.first().deepPlus(
             *sources.drop().toTypedArray(),
             sourceTransform = sourceTransform,
+            destinationGetter = destinationGetter,
             destinationSetter = destinationSetter,
         ),
         serializersModule,

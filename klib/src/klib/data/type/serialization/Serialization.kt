@@ -82,6 +82,11 @@ public inline fun <reified T : Any> T.plus(
 public inline fun <reified T : Any> T.deepPlus(
     vararg values: T,
     noinline sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
+    noinline destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
+        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
+            (this as? MutableList<*>)?.clear()
+        }
+    },
     noinline destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
@@ -90,6 +95,7 @@ public inline fun <reified T : Any> T.deepPlus(
     this,
     *values,
     sourceTransform = sourceTransform,
+    destinationGetter = destinationGetter,
     destinationSetter = destinationSetter,
     serializersModule = serializersModule,
 )
