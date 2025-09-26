@@ -29,26 +29,16 @@ function publish(){
   ./gradlew publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToMavenCentralRepository
 }
 
-_CLEAN_APPLE_PATH=(
-  "iosApp/Assets.xcassets/AppIcon.appiconset/*.png"
-  "TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
-  "WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/*.png"
-)
-
 function clean_apple_app(){
   info "🧹Cleaning appleApp..."
 
   pushd "appleApp" >/dev/null || return
     pod deintegrate
     pod cache clean --all
-    rm -rf *.xcworkspace
-    rm -rf *.xcodeproj/project.xcworkspace
-    rm -rf *.xcodeproj/xcuserdata
-    rm -rf Podfile.lock
-
-    for pattern in "${_CLEAN_APPLE_PATH[@]}"; do
-      find . -type f -path "./$pattern" -print -delete
-    done
+    rm -rf "*.xcworkspace"
+    rm -rf "*.xcodeproj/project.xcworkspace"
+    rm -rf "*.xcodeproj/xcuserdata"
+    rm -rf "Podfile.lock"
   popd >/dev/null
 }
 
@@ -66,7 +56,9 @@ _CLEAN_PATH=(
   "*/composeResources/*/compose-multiplatform-png.png"
   "*/composeResources/*/compose-multiplatform-ico.ico"
   "*/composeResources/*/compose-multiplatform-icns.icns"
-)
+  "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset/*.png"
+  "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
+  "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/*.png")
 
 function clean_files(){
   info "🧹Cleaning files..."
