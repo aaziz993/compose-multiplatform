@@ -198,7 +198,12 @@ public class ComposePlugin : Plugin<Project> {
             val brandAssetDir = brandAssetsDir.resolve(asset["filename"] as String).takeIf(File::exists)
                 ?: return@forEach
 
-            adjustIconSet(composeResourcesDir, brandAssetDir) { image -> asset + image }
+            adjustIconSet(composeResourcesDir, brandAssetDir) { image ->
+                buildMap {
+                    asset["size"]?.let { size -> put("size", size) }
+                    asset["scale"]?.let { scale -> put("scale", scale) }
+                } + image
+            }
 
             val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
                 .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: Contents()
@@ -206,7 +211,10 @@ public class ComposePlugin : Plugin<Project> {
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
                 adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) { image ->
-                    asset + image
+                    buildMap {
+                        asset["size"]?.let { size -> put("size", size) }
+                        asset["scale"]?.let { scale -> put("scale", scale) }
+                    } + image
                 }
             }
         }
