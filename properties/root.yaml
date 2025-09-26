@@ -9,6 +9,7 @@ config:
     - org.gradle.api.tasks.testing.logging.TestLogEvent
     - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
     - gradle.api.project.*
+    - gradle.plugins.kover.*
 group: io.github.${developer.id}
 script:
   - buildscript:

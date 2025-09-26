@@ -2,6 +2,7 @@ config:
   imports:
     - org.jetbrains.compose.resources.ResourcesExtension
     - org.jetbrains.compose.ExperimentalComposeLibrary
+    - gradle.plugins.compose.*
 script:
   - plugins:
       - id: (libs.plugins("compose.multiplatform").pluginId)

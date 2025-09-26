@@ -7,6 +7,8 @@ config:
     - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
     - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
     - org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+    - gradle.plugins.kotlin.targets.web.node.*
+    - gradle.plugins.kotlin.targets.web.yarn.*
 script:
   # TODO remove if https://youtrack.jetbrains.com/issue/KT-55701 provides a better
   - rootProject.plugins.withType<YarnPlugin>: |

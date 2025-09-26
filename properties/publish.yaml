@@ -1,8 +1,9 @@
 config:
   imports:
     - org.gradle.api.publish.maven.MavenPublication
-    - gradle.plugins.signing.*
     - io.github.z4kn4fein.semver.toVersion
+    - gradle.plugins.publish.*
+    - gradle.plugins.signing.*
 script:
   - plugins:
       - id: ("maven-publish")
