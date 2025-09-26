@@ -9,6 +9,8 @@ import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import gradle.plugins.compose.apple.Contents
 import gradle.plugins.compose.apple.image.Image
+import java.awt.Color
+import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -224,19 +226,29 @@ public class ComposePlugin : Plugin<Project> {
             val transcoder = PNGTranscoder().apply {
                 addTranscodingHint(PNGTranscoder.KEY_WIDTH, width.toFloat())
                 addTranscodingHint(PNGTranscoder.KEY_HEIGHT, height.toFloat())
-                if (forceOpaque) {
+                if (forceOpaque)
                     addTranscodingHint(PNGTranscoder.KEY_FORCE_TRANSPARENT_WHITE, java.lang.Boolean.TRUE)
-                }
             }
             val transcoderInput = TranscoderInput(input)
             FileOutputStream(pngFile).use { output ->
                 transcoder.transcode(transcoderInput, TranscoderOutput(output))
             }
         }
+
+        if (forceOpaque) ensureOpaque(pngFile)
     }
 
     private fun svgToPng(svgFile: File, pngFile: File, size: Int, forceOpaque: Boolean = false) =
         svgToPng(svgFile, pngFile, size, size, forceOpaque)
+
+    private fun ensureOpaque(pngFile: File) {
+        val image = ImageIO.read(pngFile)
+        val opaque = BufferedImage(image.width, image.height, BufferedImage.TYPE_INT_RGB)
+        val graphics = opaque.createGraphics()
+        graphics.drawImage(image, 0, 0, Color.WHITE, null) // fills transparent areas with white
+        graphics.dispose()
+        ImageIO.write(opaque, "png", pngFile)
+    }
 
     private fun pngsToIconSet(pngFiles: List<File>, icnsFile: File) =
         Imaging.writeImage(ImageIO.read(pngFiles[3]), icnsFile, ImageFormats.ICNS)
