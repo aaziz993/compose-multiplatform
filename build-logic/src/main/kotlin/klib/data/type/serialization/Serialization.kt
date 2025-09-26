@@ -69,7 +69,7 @@ internal data class DecodeFileArgs<T>(
 public inline fun <reified T : Any> T.plus(
     vararg values: T,
     noinline sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
-    noinline destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    noinline destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> if (value != null) put(key, value) },
     serializersModule: SerializersModule = EmptySerializersModule()
 ): T = serializer<T>().plus(
     this,
@@ -88,7 +88,7 @@ public inline fun <reified T : Any> T.deepPlus(
         }
     },
     noinline destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
+        if (value != null) last().first.put(last().second, value)
     },
     serializersModule: SerializersModule = EmptySerializersModule()
 ): T = serializer<T>().deepPlus(

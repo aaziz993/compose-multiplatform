@@ -74,7 +74,7 @@ private class ElementDecoder(private val index: Int) : AbstractDecoder() {
 public fun <T : Any> KSerializer<T>.plus(
     vararg values: T,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
-    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> if (value != null) put(key, value) },
     serializersModule: SerializersModule = EmptySerializersModule()
 ): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->
     deserialize(
@@ -83,7 +83,7 @@ public fun <T : Any> KSerializer<T>.plus(
             sourceTransform = sourceTransform,
             destinationSetter = destinationSetter,
         ),
-        serializersModule
+        serializersModule,
     )
 }
 
@@ -96,7 +96,7 @@ public fun <T : Any> KSerializer<T>.deepPlus(
         }
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
+        if (value != null) last().first.put(last().second, value)
     },
     serializersModule: SerializersModule = EmptySerializersModule(),
 ): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->

@@ -11,6 +11,7 @@ import gradle.api.project.projectScript
 import gradle.api.project.resources
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import gradle.plugins.compose.apple.Contents
+import gradle.plugins.compose.apple.image.Appearance
 import gradle.plugins.compose.apple.image.Image
 import java.io.File
 import java.io.FileInputStream
@@ -149,14 +150,15 @@ public class ComposePlugin : Plugin<Project> {
         adjustIconSet(composeResourcesDir, rootProject.file(WATCHOS_APPICONSET_DIR))
     }
 
-    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, images: Contents.() -> Set<Image> = { this.images.orEmpty() }) {
+    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, transform: (Image) -> Image = { it }) {
         if (!iconSetDir.exists()) return
 
         val contents: Contents = iconSetDir.resolve("Contents.json")
             .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
 
-        contents.images().forEach { image ->
-            image.appearances?.filter { (appearance, _) -> appearance == "luminosity" }?.forEach { (_, value) ->
+        contents.images?.map(transform)?.forEach { image ->
+            (image.appearances
+                ?: listOf(Appearance())).filter { (appearance, _) -> appearance == "luminosity" }?.forEach { (_, value) ->
                 val themeIndex = IOS_IMAGE_APPEARANCE[value]!!
                 val theme = THEMES[themeIndex]
 
@@ -188,17 +190,15 @@ public class ComposePlugin : Plugin<Project> {
         brandAssetsContents.assets?.forEach { asset ->
             val brandAssetDir = brandAssetsDir.resolve(asset.filename!!).takeIf(File::exists) ?: return@forEach
 
-            adjustIconSet(composeResourcesDir, brandAssetDir) {
-                images?.map { image -> asset.plus(image) }.orEmpty().toSet()
-            }
+            adjustIconSet(composeResourcesDir, brandAssetDir) { image -> asset.plus(image) }
 
             val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
                 .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: Contents()
 
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
-                adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) {
-                    images?.map { image -> asset.plus(image) }.orEmpty().toSet()
+                adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) { image ->
+                    asset.plus(image)
                 }
             }
         }
