@@ -82,3 +82,45 @@ function clean() {
 
   clean_files
 }
+
+clean_mac() {
+  set -e
+  info "🧹 Starting cleanup..."
+
+  # 1. Empty system and user caches
+  info "Clearing user cache..."
+  rm -rf ~/Library/Caches/*
+
+  info "Clearing system cache (requires sudo)..."
+  sudo rm -rf /Library/Caches/* /System/Library/Caches/*
+
+  # 2. Delete old logs
+  info "Clearing log files..."
+  rm -rf ~/Library/Logs/*
+  sudo rm -rf /private/var/log/*
+
+  # 3. Xcode Derived Data, Archives, Module Cache
+  info "Cleaning Xcode derived data..."
+  rm -rf ~/Library/Developer/Xcode/DerivedData/*
+  rm -rf ~/Library/Developer/Xcode/Archives/*
+  rm -rf ~/Library/Developer/Xcode/DerivedData/*
+
+  info "Cleaning Xcode module cache..."
+  rm -rf ~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex
+
+  # 4. CocoaPods cache & build artifacts
+  info "Cleaning CocoaPods caches..."
+  pod cache clean --all 2>/dev/null || true
+  rm -rf ~/Library/Caches/CocoaPods
+
+  # 6. Temporary files & /tmp
+  info "Clearing temporary files..."
+  sudo rm -rf /private/var/tmp/*
+  rm -rf /tmp/*
+
+  # 7. Trash
+  info "Emptying Trash..."
+  rm -rf ~/.Trash/* /Volumes/*/.Trashes/*
+
+  df -h /
+}

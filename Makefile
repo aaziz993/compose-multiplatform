@@ -1,7 +1,7 @@
 .PHONY: chmod dependencies-check build-config format-check format quality-check \
 coverage-verify coverage doc doc-samples-check doc-samples test full-check kotlin-ts jar generate signing-gpg \
 list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github publish-maven publish\
-server-auto-reload clean_apple_app clean_files clean
+server-auto-reload clean_apple_app clean_files clean clean-mac
 
 chmod: # 🔓 Give permission to execute gradlew.
 	git update-index --chmod=+x gradlew && chmod -R 777 scripts/
@@ -87,3 +87,6 @@ clean-files: # 🧹 Clean appleApp.
 
 clean: # 🧹 Clean all.
 	@. project.sh && clean
+
+clean-mac: # 🧹 Clean Mac memory.
+	@. project.sh && clean_mac

@@ -1,28 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="0 0 64 64">
-    <!-- Path 1 -->
-    <path d="M56.25,18V46L32,60 7.75,46V18L32,4Z" fill="#6075f2"/>
+<svg xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+viewBox="0 0 120 120">
+<defs>
+    <polygon id="hex" points="10,0 20,5.8 20,17.3 10,23 0,17.3 0,5.8" />
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#4EFFD1"/>   <!-- Minty neon -->
+        <stop offset="50%" stop-color="#00C3FF"/>  <!-- Bright cyan -->
+        <stop offset="100%" stop-color="#8A00FF"/> <!-- Electric violet -->
+    </linearGradient>
+</defs>
 
-    <!-- Path 2 -->
-    <path d="m41.5,26.5v11L32,43V60L56.25,46V18Z" fill="#6b57ff"/>
+<g fill="none" stroke-linejoin="round">
+    <!-- Hex 1 -->
+    <use xlink:href="#hex" x="40" y="20" stroke="url(#neon)" stroke-width="4"/>
+    <use xlink:href="#hex" x="40" y="20" stroke="url(#neon)" stroke-width="8" opacity="0.2"/>
 
-    <!-- Path 3 with radial gradient -->
-    <defs>
-        <radialGradient id="grad1" cx="23.131" cy="18.441" r="42.132" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#5383EC"/>
-            <stop offset="0.867" stop-color="#7F52FF"/>
-        </radialGradient>
-    </defs>
-    <path d="m32,43 l-9.5,-5.5v-11L7.75,18V46L32,60Z" fill="url(#grad1)"/>
+    <!-- Hex 2 -->
+    <use xlink:href="#hex" x="27" y="42" stroke="url(#neon)" stroke-width="4"/>
+    <use xlink:href="#hex" x="27" y="42" stroke="url(#neon)" stroke-width="8" opacity="0.2"/>
 
-    <!-- Path 4 with linear gradient -->
-    <defs>
-        <linearGradient id="grad2" x1="44.172" y1="4.377" x2="17.973" y2="34.035" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#33C3FF"/>
-            <stop offset="0.878" stop-color="#5383EC"/>
-        </linearGradient>
-    </defs>
-    <path d="M22.5,26.5 L32,21 41.5,26.5 56.25,18 32,4 7.75,18Z" fill="url(#grad2)"/>
+    <!-- Hex 3 -->
+    <use xlink:href="#hex" x="53" y="42" stroke="url(#neon)" stroke-width="4"/>
+    <use xlink:href="#hex" x="53" y="42" stroke="url(#neon)" stroke-width="8" opacity="0.2"/>
 
-    <!-- Path 5 -->
-    <path d="m32,21 l9.526,5.5v11L32,43 22.474,37.5v-11z" fill="#000000"/>
+    <!-- Hex 4 -->
+    <use xlink:href="#hex" x="14" y="64" stroke="url(#neon)" stroke-width="4"/>
+    <use xlink:href="#hex" x="14" y="64" stroke="url(#neon)" stroke-width="8" opacity="0.2"/>
+
+    <!-- Hex 5 -->
+    <use xlink:href="#hex" x="66" y="64" stroke="url(#neon)" stroke-width="4"/>
+    <use xlink:href="#hex" x="66" y="64" stroke="url(#neon)" stroke-width="8" opacity="0.2"/>
+</g>
 </svg>
+
