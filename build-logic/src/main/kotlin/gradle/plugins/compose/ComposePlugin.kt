@@ -64,7 +64,8 @@ public class ComposePlugin : Plugin<Project> {
     }
 
     private fun Project.adjustResources() = project.pluginManager.withPlugin("org.jetbrains.compose") {
-        var resourcesDir = "src/commonMain/composeResources"
+        var composeResourcesDir = file("src/commonMain/composeResources")
+        var webResourcesDir = file("src/webMain/resources")
         when (project.projectScript.layout) {
             is ProjectLayout.Flat -> {
                 kotlin.sourceSets.forEach { sourceSet ->
@@ -73,16 +74,17 @@ public class ComposePlugin : Plugin<Project> {
                         project.provider { sourceSetsToComposeResourcesDirs[sourceSet] ?: error(sourceSet.name) },
                     )
                 }
-                resourcesDir = "composeResources"
+                composeResourcesDir = file("composeResources")
+                webResourcesDir = file("resources@web")
             }
 
             else -> Unit
         }
 
-        val composeResourcesDir = project.file(resourcesDir)
         if (composeResourcesDir.exists()) {
             adjustDesktopIcons(composeResourcesDir)
             adjustAppleIcons(composeResourcesDir)
+            adjustWebIcon(composeResourcesDir, webResourcesDir)
         }
     }
 
@@ -241,6 +243,14 @@ public class ComposePlugin : Plugin<Project> {
 
     private fun pngsToIconSet(pngFiles: List<File>, icnsFile: File) =
         Imaging.writeImage(ImageIO.read(pngFiles[3]), icnsFile, ImageFormats.ICNS)
+
+    private fun adjustWebIcon(composeResourcesDir: File, webResourcesDir: File) {
+        THEMES.forEach { theme ->
+            val svg = composeResourcesDir.resolve("drawable$theme/$APP_ICON.svg").takeIf(File::exists)
+                ?: return@forEach
+            svg.copyTo(webResourcesDir.resolve("favicon$theme"))
+        }
+    }
 
     // Trick to make assemble jvm and native resources task to work.
     private fun Project.adjustAssembleResTask() = kotlin.targets.matching { target ->
