@@ -7,7 +7,7 @@ script:
               withJvm()
               withAndroidTarget()
             }
-            group("jvmCommonIos") {
+            group("jvmAndroidIos") {
               group("jvmAndroid")
               withIos()
             }

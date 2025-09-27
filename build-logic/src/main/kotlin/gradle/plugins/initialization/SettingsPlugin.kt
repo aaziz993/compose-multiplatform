@@ -3,7 +3,6 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsScript
-import gradle.api.initialization.enableCacheRedirect
 import gradle.api.initialization.settingsScript
 import gradle.api.project.ProjectScript
 import gradle.plugins.project.ProjectPlugin
@@ -22,8 +21,6 @@ public class SettingsPlugin : Plugin<Settings> {
             with(target) {
                 // Load and apply settings.yaml.
                 SettingsScript()
-
-                enableCacheRedirect()
 
                 (listOfNotNull(
                     settingsScript.licenseFile,

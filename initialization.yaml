@@ -120,6 +120,7 @@ script:
       versionCatalogs:
         - create: ("kotlinWrappers"){ catalog -> catalog.fromLib(libs["kotlin.wrappers.catalog"]) }
         - create: ("ktor") { catalog -> catalog.fromLib(libs["ktor.version.catalog"]) }
+  - enableCacheRedirect: ()
   - buildCache:
       - local:
           isEnabled: CI == null # Default is if not CI.

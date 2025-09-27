@@ -1,4 +1,5 @@
 imports:
+  - application-server.yaml
   - application-koin.yaml
   - application-serialization.yaml
   - application-https-redirect.yaml
@@ -31,9 +32,6 @@ imports:
   - application-micrometer-metrics.yaml
   - application-dropwizard-metrics.yaml
   - application-shutdown.yaml
-host: 0.0.0.0
-port: 8080
-sslPort: 8443
 config:
   imports:
     - org.slf4j.event.Level

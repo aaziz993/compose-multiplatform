@@ -12,16 +12,17 @@ config:
     - gradle.plugins.kover.*
 group: io.github.${developer.id}
 script:
-  - buildscript:
-      repositories:
-        - mavenCentral: ()
-        - google: ()
-        - gradlePluginPortal: ()
   - plugins:
       - id: (libs.plugins("kover").pluginId)
       - id: (libs.plugins("dokka").pluginId)
       - id: (libs.plugins("dokkaJavadoc").pluginId)
       - id: (libs.plugins("knit").pluginId)
+  - buildscript:
+      repositories:
+        - mavenCentral: ()
+        - google: ()
+        - gradlePluginPortal: ()
+  - enableCacheRedirect: ()
   # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
   - kover:
       useJacoco: true

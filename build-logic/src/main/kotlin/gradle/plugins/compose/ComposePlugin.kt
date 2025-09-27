@@ -16,10 +16,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
 import javax.imageio.ImageIO
-import klib.data.type.collections.list.asList
-import klib.data.type.collections.map.asMap
-import klib.data.type.serialization.json.decodeAnyFromString
-import klib.data.type.serialization.json.decodeFromAny
 import kotlinx.serialization.json.Json
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
@@ -64,7 +60,7 @@ public class ComposePlugin : Plugin<Project> {
                 kotlin.sourceSets.forEach { sourceSet ->
                     compose.resources.customDirectory(
                         sourceSet.name,
-                        project.provider { sourceSetsToComposeResourcesDirs[sourceSet]!! },
+                        project.provider { sourceSetsToComposeResourcesDirs[sourceSet] ?: error(sourceSet.name) },
                     )
                 }
                 resourcesDir = "composeResources"
@@ -151,18 +147,13 @@ public class ComposePlugin : Plugin<Project> {
         adjustIconSet(composeResourcesDir, rootProject.file(WATCHOS_APPICONSET_DIR))
     }
 
-    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, forceOpaque: Boolean = false, transform: (Map<String, Any>) -> Map<String, Any> = { it }) {
+    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, forceOpaque: Boolean = false, transform: (Image) -> Image = { it }) {
         if (!iconSetDir.exists()) return
 
-        val contents = iconSetDir.resolve("Contents.json")
-            .takeIf(File::exists)?.readText()?.let(json::decodeAnyFromString)?.asMap ?: return
+        val contents: Contents =
+            iconSetDir.resolve("Contents.json").takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
 
-        val images: List<Image> = contents["images"]?.asList<Map<String, Any>>()?.map(transform)?.map(json::decodeFromAny)
-            ?: return
-
-
-
-        images.forEach { image ->
+        contents.images?.map(transform)?.forEach { image ->
             image.appearances.filter { (appearance, _) -> appearance == "luminosity" }.forEach { (_, value) ->
                 val themeIndex = IOS_IMAGE_APPEARANCE[value]!!
                 val theme = THEMES[themeIndex]
@@ -187,20 +178,15 @@ public class ComposePlugin : Plugin<Project> {
     private fun adjustTVosIcons(composeResourcesDir: File, brandAssetsDir: File) {
         if (!brandAssetsDir.exists()) return
 
-        val brandAssetsContents = brandAssetsDir.resolve("Contents.json")
-            .takeIf(File::exists)?.readText()?.let(json::decodeAnyFromString)?.asMap ?: return
+        val brandAssetsContents: Contents = brandAssetsDir.resolve("Contents.json")
+            .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
 
-        brandAssetsContents["assets"]?.asList?.forEach { asset ->
-            asset as Map<String, Any>
-
-            val brandAssetDir = brandAssetsDir.resolve(asset["filename"] as String).takeIf(File::exists)
+        brandAssetsContents.assets?.forEach { asset ->
+            val brandAssetDir = brandAssetsDir.resolve(asset.filename!!).takeIf(File::exists)
                 ?: return@forEach
 
             adjustIconSet(composeResourcesDir, brandAssetDir, true) { image ->
-                buildMap {
-                    asset["size"]?.let { size -> put("size", size) }
-                    asset["scale"]?.let { scale -> put("scale", scale) }
-                } + image
+                image.copy(size = image.size ?: asset.size, scale = image.scale ?: asset.scale)
             }
 
             val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
@@ -209,10 +195,7 @@ public class ComposePlugin : Plugin<Project> {
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
                 adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset"), true) { image ->
-                    buildMap {
-                        asset["size"]?.let { size -> put("size", size) }
-                        asset["scale"]?.let { scale -> put("scale", scale) }
-                    } + image
+                    image.copy(size = image.size ?: asset.size, scale = image.scale ?: asset.scale)
                 }
             }
         }

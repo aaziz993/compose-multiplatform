@@ -1,7 +1,6 @@
 package gradle.plugins.project
 
 import gradle.api.maybeNamed
-import gradle.api.project.enableCacheRedirect
 import gradle.api.project.projectScript
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
@@ -53,8 +52,6 @@ public class ProjectPlugin : Plugin<Project> {
 //    signAllPublications()
 //}
             configureLinkTasks()
-
-            enableCacheRedirect()
 
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())
