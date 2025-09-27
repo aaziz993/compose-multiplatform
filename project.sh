@@ -71,6 +71,8 @@ function clean_files(){
 }
 
 function clean() {
+  set -e
+
   clean_apple_app
 
   info "🧹Cleaning project..."
