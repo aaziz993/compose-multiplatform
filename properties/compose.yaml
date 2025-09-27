@@ -29,7 +29,17 @@ script:
                 implementation(composeLibs.materialIconsExtended)
                 implementation(libs.bundles("androidx.lifecycle"))
                 implementation(libs.bundles("androidx.navigation"))
+                implementation(libs.bundles("material3.adaptive"))
+                implementation(libs.bundles("compose.settings.ui"))
+                implementation(libs.bundles("androidx.paging"))
                 implementation(libs["connectivity.compose"])
+                implementation(libs["compose.colorpicker"])
+                implementation(libs.bundles("compose.icons"))
+                implementation(libs.bundles("coil.compose"))
+                // implementation(libs["squircle.shape"])
+                implementation(libs["filekit.compose"])
+                implementation(libs.bundles("koin.compose.multiplatform"))
+                // implementation(libs["circuit.foundation"])
               }
             }
         - named: |
@@ -54,20 +64,22 @@ script:
               }
             }
         - named: |
-            ("androidIosMain") { sourceSet ->
+            ("iosMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs["connectivity.compose.device"])
+                implementation(libs["androidx.paging.runtime.uikit"])
               }
             }
         - named: |
-            ("jsMain") { sourceSet ->
+            ("androidIosMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(composeLibs.html.core)
+                implementation(libs["permissions.compose"])
+                implementation(libs["connectivity.compose.device"])
               }
             }
         - named: |
             ("jvmWebMain") { sourceSet ->
               sourceSet.dependencies {
+                implementation(composeLibs.html.core)
                 implementation(libs["connectivity.compose.http"])
               }
             }

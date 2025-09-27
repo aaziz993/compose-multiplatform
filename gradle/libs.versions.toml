@@ -1223,7 +1223,7 @@ coil-compose = [
 ]
 # adaptive ui.
 material3-adaptive = [
-    "material3-window-size-clazz",
+#    "material3-window-size-clazz",
     #    "material3-adaptive-navigation-suite",
     "material3-adaptive",
     "material3-adaptive-layout",

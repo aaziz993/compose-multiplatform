@@ -1,53 +1,11 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import clib.generated.resources.Res
-import clib.generated.resources.flag_ad
-import org.jetbrains.compose.resources.painterResource
+import di.koinConfiguration
+import navigation.presentation.NavScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinApplication
 
 @Composable
 @Preview
-public fun App(
-    onNavHostReady: suspend (NavController) -> Unit = {}
-) {
-    val navController = rememberNavController()
-
-    MaterialTheme {
-        //    NavHost(...) {
-//        //...
-//    }
-        var showContent by remember { mutableStateOf(false) }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            Text("Test")
-            AnimatedVisibility(showContent) {
-                val greeting = remember { "Hello" }
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painterResource(Res.drawable.flag_ad), null)
-                    Text("Compose: $greeting")
-                }
-            }
-        }
-    }
-
-    LaunchedEffect(navController) {
-        onNavHostReady(navController)
-    }
-}
+public fun App(onNavHostReady: suspend (NavController) -> Unit = {}) =
+    KoinApplication({ koinConfiguration() }) { NavScreen(onNavHostReady = onNavHostReady) }
