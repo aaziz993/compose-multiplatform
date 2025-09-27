@@ -1,15 +1,6 @@
 package screen.navigation.presentation
 
 import about.AboutScreen
-import ai.tech.auth.forgotpassword.presentation.ForgotPasswordScreen
-import ai.tech.auth.login.presentation.LoginScreen
-import ai.tech.auth.profile.presentation.ProfileScreen
-import screen.main.MainScreen
-import ai.tech.map.MapScreen
-import ai.tech.settings.SettingsScreen
-import ai.tech.wallet.balance.BalanceScreen
-import ai.tech.wallet.crypto.CryptoScreen
-import ai.tech.wallet.stock.StockScreen
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -31,7 +22,16 @@ import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import presentation.event.navigator.NavigationAction
+import screen.auth.forgotpassword.presentation.ForgotPasswordScreen
+import screen.auth.login.presentation.LoginScreen
+import screen.auth.profile.presentation.ProfileScreen
+import screen.main.MainScreen
+import screen.map.MapScreen
 import screen.navigation.presentation.viewmodel.NavViewModel
+import screen.settings.SettingsScreen
+import screen.wallet.balance.BalanceScreen
+import screen.wallet.crypto.CryptoScreen
+import screen.wallet.stock.StockScreen
 
 @Composable
 public fun NavScreenNavHost(
