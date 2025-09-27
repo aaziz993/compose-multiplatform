@@ -71,7 +71,7 @@ public fun NavScreen(
                 "wallet_crypto",
                 "wallet_stock",
             ),
-            modifier.fillMaxSize(),
+            Modifier.fillMaxSize().then(modifier),
             customNavSuiteType,
         ) {
 
@@ -96,7 +96,7 @@ public fun NavScreen(
             }
 
             Scaffold(
-                modifier.fillMaxSize(),
+                Modifier.fillMaxSize().then(modifier),
                 snackbarHost = { SnackbarHost(snackbarHostState) },
             ) { innerPadding ->
                 // Global AlertDialog by GlobalAlertEventController
@@ -121,7 +121,7 @@ public fun NavScreen(
                 NavScreenNavHost(
                     navController,
                     Destination.Main,
-                    modifier.padding(innerPadding),
+                    Modifier.padding(innerPadding).then(modifier),
                     route = Destination.NavGraph::class,
                 )
             }
