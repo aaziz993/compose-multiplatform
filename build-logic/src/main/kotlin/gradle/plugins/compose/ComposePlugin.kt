@@ -248,7 +248,8 @@ public class ComposePlugin : Plugin<Project> {
         THEMES.forEach { theme ->
             val svg = composeResourcesDir.resolve("drawable$theme/$APP_ICON.svg").takeIf(File::exists)
                 ?: return@forEach
-            svg.copyTo(webResourcesDir.resolve("favicon$theme"))
+
+            svg.copyTo(webResourcesDir.resolve("favicon$theme.svg"))
         }
     }
 
