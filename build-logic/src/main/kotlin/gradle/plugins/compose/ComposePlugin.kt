@@ -16,6 +16,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
 import javax.imageio.ImageIO
+import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import kotlinx.serialization.json.Json
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
@@ -36,7 +37,7 @@ private val THEMES = listOf("") + ThemeQualifier.entries.map { theme -> "-${them
 
 private const val APP_ICON = "app-icon"
 
-private val IOS_IMAGE_APPEARANCE = mapOf("" to 0, "dark" to 1, "tinted" to 2)
+private val IOS_IMAGE_APPEARANCE = mapOf("" to 0, "dark" to 2, "tinted" to 1)
 private const val IOS_APPICONSET_DIR = "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset"
 private const val TVOS_BRANDASSETS_DIR = "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
 private const val WATCHOS_APPICONSET_DIR = "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset"
@@ -155,8 +156,7 @@ public class ComposePlugin : Plugin<Project> {
 
         contents.images?.map(transform)?.forEach { image ->
             image.appearances.filter { (appearance, _) -> appearance == "luminosity" }.forEach { (_, value) ->
-                val themeIndex = IOS_IMAGE_APPEARANCE[value]!!
-                val theme = THEMES[themeIndex]
+                val theme = THEMES[IOS_IMAGE_APPEARANCE[value]!!]
 
                 val svg = composeResourcesDir.resolve("drawable$theme/$APP_ICON.svg").takeIf(File::exists)
                     ?: return@forEach
@@ -166,7 +166,7 @@ public class ComposePlugin : Plugin<Project> {
 
                 val iconFile = iconSetDir.resolve(
                     image.filename
-                        ?: "app-icon-${if (width == height) width else image.size}${if (scale == 1) "" else "@${scale}x"}${if (themeIndex == 0) "" else " $themeIndex"}.png",
+                        ?: "app-icon-${if (width == height) width else image.size}${if (scale == 1) "" else "@${scale}x"}${value.addPrefixIfNotEmpty("-")}.png",
                 )
 
                 svgToPng(svg, iconFile, width * scale, height * scale, forceOpaque)
