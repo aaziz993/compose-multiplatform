@@ -39,7 +39,7 @@ script:
             {
               // Required properties
               // Framework name configuration. Use this property instead of deprecated 'frameworkName'
-              baseName = moduleName
+              baseName = pathUnderscore
 
               // Optional properties
               // Specify the framework linking type. It's dynamic by default.

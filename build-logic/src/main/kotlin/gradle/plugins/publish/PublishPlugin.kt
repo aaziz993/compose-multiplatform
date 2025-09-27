@@ -36,6 +36,9 @@ public class PublishPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
+            // Skip bom project.
+            if (pluginManager.hasPlugin("java-platform")) return@with
+
             pluginManager.withPlugin("maven-publish") {
                 configureJavadocArtifact()
                 registerAggregatingPublishTasks()

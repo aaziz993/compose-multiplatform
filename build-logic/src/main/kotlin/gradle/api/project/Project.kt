@@ -7,6 +7,7 @@ import gradle.api.initialization.sensitive
 import gradle.api.initialization.sensitiveOrElse
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
+import klib.data.type.primitives.string.LETTER_OR_DIGIT
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
@@ -14,6 +15,7 @@ import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.plugins.JavaApplication
+import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskCollection
@@ -30,22 +32,24 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 /**
- * Create native module name from project path.
+ * Create module name for compose resource package, web and native output from project path.
  */
-public val Project.moduleName: String
-    get() = path
-        .removePrefix(":")
-        .replace(":", "-")
-        .replace("[^A-Za-z0-9_]".toRegex(), "_")
+public val Project.pathUnderscore: String
+    get() = pathSanitize("_")
 
 /**
  * Create android namespace from project group and path.
- * Replace '-' and ':' in path with '.'
+ * Replace '-' and ':' in path with '.' and etc.
  */
-public val Project.androidNamespace: String
-    get() = path.removePrefix(":")
-        .split("[-_:]".toRegex()).filter(String::isNotBlank)
-        .joinToString(".", transform = String::sanitize)
+public val Project.pathDot: String
+    get() = pathSanitize(".")
+
+private fun Project.pathSanitize(separator: String) =
+    path.removePrefix(":")
+        .split("[^${Regex.LETTER_OR_DIGIT}]".toRegex())
+        .filter(String::isNotBlank)
+        .joinToString(separator, transform = String::sanitize)
+        .let { path -> if (path.first().isDigit()) "x$path" else path }
 
 private val RESERVED = setOf(
     "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class",
@@ -56,20 +60,7 @@ private val RESERVED = setOf(
     "throw", "throws", "transient", "try", "void", "volatile", "while",
 )
 
-private fun String.sanitize(): String {
-    val cleaned = replace("[^A-Za-z0-9_]".toRegex(), "_") // invalid → underscore
-        .trim('_')                               // no leading/trailing _
-        .ifEmpty { "module" }                    // fallback if empty
-
-    return if (cleaned in RESERVED) "${cleaned}x" else cleaned
-}
-
-public val Project.packageOfResClass: String
-    get() = "${name.lowercase().asUnderscoredIdentifier()}.generated.resources"
-
-private fun String.asUnderscoredIdentifier(): String =
-    replace('-', '_')
-        .let { if (it.isNotEmpty() && it.first().isDigit()) "_$it" else it }
+private fun String.sanitize(): String = if (this in RESERVED) "${this}x" else this
 
 public val Project.settings: Settings get() = (gradle as GradleInternal).settings
 
@@ -84,20 +75,13 @@ public val Project.libs: VersionCatalog
 public val Project.composeLibs: ComposePlugin.Dependencies
     get() = extensions.getByType<ComposeExtension>().dependencies
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 public val Project.javaToolchain: JavaToolchainService get() = the()
+
+public fun Project.javaToolchain(configure: JavaToolchainService.() -> Unit): Unit = extensions.configure(configure)
+
+public val Project.javaPlatform: JavaPlatformExtension get() = the()
+
+public fun Project.javaPlatform(configure: JavaPlatformExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.java: JavaPluginExtension get() = the()
 

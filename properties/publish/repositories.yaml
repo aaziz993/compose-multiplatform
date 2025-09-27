@@ -1,0 +1,45 @@
+script:
+  # publishing
+  - publishing:
+      repositories:
+        - mavenLocal: |
+            { repository ->
+              repository.url = uri("build/m2")
+            }
+        # Something that's easy to "clean" for development not mavenLocal
+        - maven: |
+            { repository ->
+              repository.name = "buildRepo"
+              repository.url = uri("../build/repo") // root build/repo
+            }
+        - maven: |
+            { repository ->
+              repository.name = "GithubPackages"
+              repository.url = uri("https://maven.pkg.github.com/${settings.settingsScript.developer.id}")
+              repository.credentials { credentials ->
+                credentials.username = sensitive("publishing.repositories.github.username")
+                credentials.password = sensitive("publishing.repositories.github.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "GitLab"
+              repository.url = uri("https://gitlab.com/api/v4/projects/${System.getenv("CI_PROJECT_ID")}/packages/maven")
+              repository.credentials { credentials ->
+                credentials.username = sensitive("publishing.repositories.gitlab.username")
+                credentials.password = sensitive("publishing.repositories.gitlab.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "MavenCentral"
+              repository.url = uri(
+                if(version.toString().toVersion().isPreRelease)
+                  "https://central.sonatype.com/repository/maven-snapshots/"
+                else "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
+              )
+              repository.credentials { credentials ->
+                credentials.username = sensitive("publishing.repositories.sonatype.username")
+                credentials.password = sensitive("publishing.repositories.sonatype.password")
+              }
+            }

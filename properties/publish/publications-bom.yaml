@@ -1,0 +1,10 @@
+script:
+  - publishing:
+      publications:
+        - create<MavenPublication>: |
+            ("bom") {
+              artifactId = project.name
+              groupId = project.group.toString()
+              version = project.version.toString()
+              from(components["javaPlatform"])
+            }

@@ -1,0 +1,19 @@
+imports:
+  - ../properties/project-meta.yaml
+  - ../properties/publish/publish.yaml
+  - ../properties/publish/repositories.yaml
+  - ../properties/publish/publications-bom.yaml
+  - ../properties/publish/sign.yaml
+script:
+  - plugins:
+      - id: ("java-platform")
+  - javaPlatform: |
+      {
+        allowDependencies()
+      }
+  - dependencies:
+      constraints:
+        - api: (project(":compiler"))
+        - api: (project(":klib"))
+        - api: (project(":clib"))
+        - api: (project(":shared"))

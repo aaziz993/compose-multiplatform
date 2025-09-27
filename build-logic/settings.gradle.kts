@@ -19,9 +19,9 @@ pluginManagement {
 
 plugins {
     // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-    id("com.gradle.develocity") version "3.19.1"
+    id("com.gradle.develocity") version "4.2"
     // Enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
-    id("com.gradle.common-custom-user-data-gradle-plugin") version "2.1"
+    id("com.gradle.common-custom-user-data-gradle-plugin") version "2.4.0"
 }
 
 develocity {
@@ -78,6 +78,6 @@ buildscript {
     }
 
     dependencies {
-        classpath("io.github.z4kn4fein:semver:2.0.0")
+        classpath("io.github.z4kn4fein:semver:3.0.0")
     }
 }

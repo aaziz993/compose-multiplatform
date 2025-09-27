@@ -25,7 +25,7 @@ import org.pgpainless.util.Passphrase
 
 @Suppress("UnusedReceiverParameter")
 context(project: Project)
-public fun SigningExtension.gpg(
+public fun SigningExtension.useGpg(
     keyFile: File = File(project.projectDir, "signing.gpg"),
     keyType: String = project.sensitiveOrElse("signing.gpg.key.type") { "RSA" },
     keyParam: String = project.sensitiveOrElse("signing.gpg.key.param") { "4096" },

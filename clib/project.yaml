@@ -19,7 +19,10 @@ imports:
   - ../properties/compose.yaml
   - ../properties/android/android-library-compose.yaml
   - ../properties/subproject.yaml
-  - ../properties/publish.yaml
+  - ../properties/publish/publish.yaml
+  - ../properties/publish/repositories.yaml
+  - ../properties/publish/publications.yaml
+  - ../properties/publish/sign.yaml
 description: Compose Multiplatform libraries.
 script:
   - kotlin:

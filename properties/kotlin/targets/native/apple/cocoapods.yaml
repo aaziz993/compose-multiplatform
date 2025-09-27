@@ -7,7 +7,7 @@ script:
       - id: (libs.plugins("cocoapods").pluginId)
   - kotlin:
       cocoapods:
-        - name: moduleName
+        - name: pathUnderscore
         - version: version.toString()
         - homepage: '"${settings.settingsScript.remote.url}/${project.projectDir.relativeTo(rootProject.projectDir)}"'
         - authors: settings.settingsScript.developer.name

@@ -1,0 +1,9 @@
+group: io.github.${developer.id}
+# Version is defined in libs. Uncomment if override needed.
+#version:
+#  major: 1
+#  minor: 0
+#  patch: 0
+#  preRelase:  alpha
+#  buildMetadata: 1
+

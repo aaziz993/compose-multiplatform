@@ -16,7 +16,10 @@ imports:
   - ../properties/kotlin/targets/web/web.yaml
   - ../properties/kotlin/targets/jvm-web.yaml
   - ../properties/subproject.yaml
-  - ../properties/publish.yaml
+  - ../properties/publish/publish.yaml
+  - ../properties/publish/repositories.yaml
+  - ../properties/publish/publications.yaml
+  - ../properties/publish/sign.yaml
 description: Shared sources for compose app and server app.
 script:
   - kotlin:

@@ -28,7 +28,7 @@ script:
               }
             }
   - android:
-      namespace: androidNamespace
+      namespace: pathDot
       compileSdk: libs.versions("android.compileSdk").requiredVersion.toInt()
       compileOptions:
         isCoreLibraryDesugaringEnabled: true
@@ -40,7 +40,7 @@ script:
         xmlReport: true
         xmlOutput: file("build/reports/lint-results.xml") # path to the lint report to consume by sonar
       defaultConfig:
-        applicationId: androidNamespace
+        applicationId: pathDot
         minSdk: libs.versions("android.minSdk").requiredVersion.toInt()
         targetSdk: libs.versions("android.targetSdk").requiredVersion.toInt()
         versionCode: libs.versions("android.versionCode").requiredVersion.toInt()

@@ -1,0 +1,11 @@
+config:
+  imports:
+    - gradle.plugins.signing.*
+script:
+  - plugins:
+      - id: ("signing")
+  - signing:
+      isRequired: (!version.toString().toVersion().isPreRelease)
+      useGpg: ()
+      # Sign all publications.
+      sign: (publishing.publications)

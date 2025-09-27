@@ -7,18 +7,30 @@
 ## additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
 ## a pre-release version MAY be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Numeric identifiers MUST NOT include leading zeroes. Examples: 1.0.0-alpha, 1.0.0-alpha.1, 1.0.0-0.3.7, 1.0.0-x.7.z.92, 1.0.0-x-y-z.--.
 ## build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
-# compose-multiplatform.
-compose-multiplatform-major = "1"
-compose-multiplatform-minor = "0"
-compose-multiplatform-patch = "0"
-compose-multiplatform-preRelase = "alpha" # optional
-#compose-multiplatform-buildMetadata = "" # optional
 # build-logic.
 build-logic-major = "1"
 build-logic-minor = "0"
 build-logic-patch = "0"
 build-logic-preRelase = "alpha" # optional
 #build-logic-buildMetadata = "" # optional
+# compose-multiplatform.
+compose-multiplatform-major = "1"
+compose-multiplatform-minor = "0"
+compose-multiplatform-patch = "0"
+compose-multiplatform-preRelase = "alpha" # optional
+#compose-multiplatform-buildMetadata = "" # optional
+# bom.
+bom-major = "1"
+bom-minor = "0"
+bom-patch = "0"
+bom-preRelase = "alpha" # optional
+#bom-buildMetadata = "" # optional
+# compiler.
+compiler-major = "1"
+compiler-minor = "0"
+compiler-patch = "0"
+compiler-preRelase = "alpha" # optional
+#compiler-buildMetadata = "" # optional
 # kmp-lib.
 klib-major = "1"
 klib-minor = "0"
@@ -31,30 +43,24 @@ clib-minor = "0"
 clib-patch = "0"
 clib-preRelase = "alpha" # optional
 #clib-buildMetadata = "" # optional
-# compiler.
-compiler-major = "1"
-compiler-minor = "0"
-compiler-patch = "0"
-compiler-preRelase = "alpha" # optional
-#compiler-buildMetadata = "" # optional
 # shared.
 shared-major = "1"
 shared-minor = "0"
 shared-patch = "0"
 shared-preRelase = "alpha" # optional
 #shared-buildMetadata = "" # optional
-# compose-app.
-compose-app-major = "1"
-compose-app-minor = "0"
-compose-app-patch = "0"
-compose-app-preRelase = "alpha" # optional
-#compose-app-buildMetadata = "" # optional
 # server-app.
 server-app-major = "1"
 server-app-minor = "0"
 server-app-patch = "0"
 server-app-preRelase = "alpha" # optional
 #server-app-buildMetadata = "" # optional
+# compose-app.
+compose-app-major = "1"
+compose-app-minor = "0"
+compose-app-patch = "0"
+compose-app-preRelase = "alpha" # optional
+#compose-app-buildMetadata = "" # optional
 ##Gradle.
 # intellij.
 intellij-platform = "243.23654.166"
@@ -1223,7 +1229,7 @@ coil-compose = [
 ]
 # adaptive ui.
 material3-adaptive = [
-#    "material3-window-size-clazz",
+    #    "material3-window-size-clazz",
     #    "material3-adaptive-navigation-suite",
     "material3-adaptive",
     "material3-adaptive-layout",

@@ -1,6 +1,6 @@
 imports:
   - properties/config.yaml
-  - properties/meta.yaml
+  - properties/initialization-meta.yaml
 config:
   imports:
     - org.gradle.api.initialization.resolve.RepositoriesMode
@@ -131,6 +131,7 @@ script:
           }
   - include: |
       (
+        ":bom",
         ":klib",
         ":clib",
         ":compiler",

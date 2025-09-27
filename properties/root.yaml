@@ -1,6 +1,7 @@
 imports:
   - config.yaml
-  - meta.yaml
+  - initialization-meta.yaml
+  - project-meta.yaml
 config:
   imports:
     - org.gradle.api.Project
@@ -10,7 +11,6 @@ config:
     - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
     - gradle.api.project.*
     - gradle.plugins.kover.*
-group: io.github.${developer.id}
 script:
   - plugins:
       - id: (libs.plugins("kover").pluginId)
