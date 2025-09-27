@@ -9,11 +9,15 @@ script:
             }
             group("jvmAndroidIos") {
               group("jvmAndroid")
-              withIos()
+              group("ios") {
+                withIos()
+              }
             }
             group("jvmIosWeb") {
               withJvm()
-              withIos()
+              group("ios") {
+                withIos()
+              }
               group("web")
             }
             group("jvmWeb") {
@@ -22,7 +26,9 @@ script:
             }
             group("androidIos") {
               withAndroidTarget()
-              withIos()
+              group("ios") {
+                withIos()
+              }
             }
             group("androidIosWeb") {
               group("androidIos")
@@ -36,60 +42,87 @@ script:
               withAndroidNativeX64()
               withAndroidNativeArm64()
             }
-            group("androidNative") {
-              group("androidNative32")
-              group("androidNative64")
-            }
             group("apple32") {
-              withWatchosArm32()
-              withWatchosArm64()  // NB watchosArm64 is weird target w/ 32-bit numbers.
+              group("watchos32") {
+                withWatchosArm32()
+                withWatchosArm64()  // NB watchosArm64 is weird target w/ 32-bit numbers.
+              }
             }
             group("apple64") {
-              withIos()
-              withMacos()
-              withTvos()
-              withWatchosX64()
-              withWatchosDeviceArm64()
-              withWatchosSimulatorArm64()
+              group("ios") {
+                withIos()
+              }
+              group("macos") {
+                withMacos()
+              }
+              group("tvos") {
+                withTvos()
+              }
+              group("watchos64") {
+                withWatchosX64()
+                withWatchosDeviceArm64()
+                withWatchosSimulatorArm64()
+              }
             }
-            group("apple") {
-              group("apple32")
-              group("apple64")
-            }
-            group("nonIos") {
+            group("jvmAndroidWeb") {
               group("jvmAndroid")
               group("web")
             }
             group("nix") {
-              withLinux()
-              withApple()
-              withAndroidNative()
+              group("linux") {
+                withLinux()
+              }
+              group("apple") {
+                withApple()
+              }
+              group("androidNative") {
+                withAndroidNative()
+              }
             }
             group("posix") {
-              withMingw()
+              group("mingw") {
+                withMingw()
+              }
               group("nix")
             }
             group("nativeNonApple") {
-              withAndroidNative()
-              withMingw()
-              withLinux()
+              group("androidNative") {
+                withAndroidNative()
+              }
+              group("mingw") {
+                withMingw()
+              }
+              group("linux") {
+                withLinux()
+              }
             }
             group("nativeNonAndroid") {
-              withApple()
-              withMingw()
-              withLinux()
-            }
-            group("native") {
-              withNative()
+              group("apple") {
+                withApple()
+              }
+              group("mingw") {
+                withMingw()
+              }
+              group("linux") {
+                withLinux()
+              }
             }
             group("desktop") {
-              withLinux()
-              withMingw()
-              withMacos()
+              group("linux") {
+                withLinux()
+              }
+              group("mingw") {
+                withMingw()
+              }
+              group("macos") {
+                withMacos()
+              }
             }
             group("multithreaded") {
               group("jvmAndroid")
-              withNative()
+              group("native") {
+                withNative()
+              }
             }
             group("wasm") {
               withWasmJs()

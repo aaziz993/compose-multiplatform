@@ -1,6 +1,6 @@
 package screen.navigation.presentation
 
-import ai.tech.core.misc.type.multiple.toLaunchedEffect
+import data.type.collections.toLaunchedEffect
 import ai.tech.core.presentation.component.dialog.alert.AlertDialog
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

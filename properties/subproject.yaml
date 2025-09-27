@@ -52,6 +52,8 @@ script:
           jvmToolchain.vendor /= JvmVendorSpec.ORACLE
         }
       compilerOptions:
+        apiVersion: KotlinVersion.fromVersion(libs.versions("kotlin.api").requiredVersion)
+        languageVersion: KotlinVersion.fromVersion(libs.versions("kotlin.lang").requiredVersion)
         allWarningsAsErrors: false
         progressiveMode: true
         suppressWarnings: false

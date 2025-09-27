@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import org.koin.compose.currentKoinScope
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.scope.Scope
@@ -54,10 +55,10 @@ public inline fun <reified Dest : Any, reified VM : ViewModel> koinViewModel(
     scope: Scope = currentKoinScope(),
     noinline parameters: ParametersDefinition? = null
 ): VM = koinViewModel(
-    qualifier,
     navController,
     backStackEntry,
     navController.getBackStackEntry<Dest>(),
+    qualifier,
     key,
     extras,
     scope,
@@ -78,10 +79,10 @@ public inline fun <T : Any, reified VM : ViewModel> koinViewModel(
     scope: Scope = currentKoinScope(),
     noinline parameters: ParametersDefinition? = null
 ): VM = koinViewModel(
-    qualifier,
     navController,
     backStackEntry,
     navController.getBackStackEntry(route),
+    qualifier,
     key,
     extras,
     scope,
@@ -103,10 +104,10 @@ public inline fun <reified VM : ViewModel> koinViewModel(
     scope: Scope = currentKoinScope(),
     noinline parameters: ParametersDefinition? = null
 ): VM = koinViewModel(
-    qualifier,
     navController,
     backStackEntry,
     navController.getBackStackEntry(route),
+    qualifier,
     key,
     extras,
     scope,

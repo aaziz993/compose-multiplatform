@@ -1,7 +1,7 @@
 package screen.map
 
 import androidx.compose.runtime.Composable
-import navigation.presentation.Destination
+import screen.navigation.presentation.Destination
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 

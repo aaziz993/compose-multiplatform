@@ -1,6 +1,7 @@
 package di
 
 import di.module.CommonModule
+import di.module.PlatformModule
 import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
 import org.koin.ksp.generated.*
@@ -10,6 +11,6 @@ public fun koinConfiguration(): KoinApplication = koinApplication {
 
     modules(
         CommonModule().module,
-        PlatformModule().module
+        PlatformModule().module,
     )
 }

@@ -91,7 +91,7 @@ script:
   - compose:
       resources:
         publicResClass: true
-        packageOfResClass: pathUnderscore
+        packageOfResClass: packageOfResClass
         generateResClass: ResourcesExtension.ResourceClassGeneration.Auto
   - dependencies:
       # Android dependencies.

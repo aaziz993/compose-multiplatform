@@ -152,6 +152,10 @@ jsch = "0.1.55"
 
 ##Kotlin.
 kotlin = "2.2.20"
+# in project version.
+kotlin-api = "2.2"
+# in project version.
+kotlin-lang = "2.2"
 # ktlint code formatter.
 ktlint = "1.7.1"
 # ktfmt code formatter.

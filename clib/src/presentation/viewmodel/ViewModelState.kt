@@ -1,7 +1,7 @@
 package presentation.viewmodel
 
 import androidx.compose.runtime.Composable
-import presentation.component.loading.LoadingCircle
+import presentation.components.loading.LoadingCircle
 import presentation.viewmodel.model.exception.ViewModelStateException
 
 public sealed interface ViewModelState<T : Any> {

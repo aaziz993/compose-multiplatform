@@ -1,0 +1,13 @@
+script:
+  - plugins:
+      - id: ("java-platform")
+  - javaPlatform: |
+      {
+        allowDependencies()
+      }
+  - dependencies:
+      constraints:
+        - api: (project(":compiler"))
+        - api: (project(":klib"))
+        - api: (project(":clib"))
+        - api: (project(":shared"))

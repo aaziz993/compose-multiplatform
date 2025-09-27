@@ -1,6 +1,6 @@
 package presentation.event.navigator
 
-import ai.tech.core.misc.type.multiple.toLaunchedEffect
+import data.type.collections.toLaunchedEffect
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder

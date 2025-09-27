@@ -44,6 +44,9 @@ public val Project.pathUnderscore: String
 public val Project.pathDot: String
     get() = pathSanitize(".")
 
+public val Project.packageOfResClass: String
+    get() = "${pathUnderscore}.generated.resources"
+
 private fun Project.pathSanitize(separator: String) =
     path.removePrefix(":")
         .split("[^${Regex.LETTER_OR_DIGIT}]".toRegex())

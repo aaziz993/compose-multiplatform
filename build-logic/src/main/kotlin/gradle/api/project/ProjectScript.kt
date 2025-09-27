@@ -30,7 +30,7 @@ public class ProjectScript(
             file(PROJECT_PROPERTIES_FILE).takeIf(File::exists)?.invoke<ProjectScript, Project>(project)
                 ?.also { properties ->
                     group = properties.group
-                    version = properties.version.toVersion().toString()
+                    version = properties.version.toVersion()
                     description = properties.description
                 }
                 .let { properties ->
