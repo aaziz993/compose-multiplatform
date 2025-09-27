@@ -56,10 +56,10 @@ _CLEAN_PATH=(
   "*/app-icon-png.png"
   "*/app-icon-ico.ico"
   "*/app-icon-icns.icns"
-  "apple-app/iosApp/Assets.xcassets/AppIcon.appiconset/*.png"
-  "apple-app/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
-  "apple-app/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/*.png"
-  "*/favicon*.svg"
+  "apple-app/ios-app/Assets.xcassets/AppIcon.appiconset/*.png"
+  "apple-app/tvos-app/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
+  "apple-app/watchos-app/Assets.xcassets/AppIcon.appiconset/*.png"
+  "compose_app/*/favicon*.svg"
 )
 
 function clean_files(){
