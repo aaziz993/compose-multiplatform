@@ -217,8 +217,6 @@ public class ComposePlugin : Plugin<Project> {
             val transcoder = PNGTranscoder().apply {
                 addTranscodingHint(PNGTranscoder.KEY_WIDTH, width.toFloat())
                 addTranscodingHint(PNGTranscoder.KEY_HEIGHT, height.toFloat())
-                if (forceOpaque)
-                    addTranscodingHint(PNGTranscoder.KEY_FORCE_TRANSPARENT_WHITE, java.lang.Boolean.TRUE)
             }
             val transcoderInput = TranscoderInput(input)
             FileOutputStream(pngFile).use { output ->
@@ -226,7 +224,7 @@ public class ComposePlugin : Plugin<Project> {
             }
         }
 
-        if (forceOpaque) ensureOpaque(pngFile)
+        if (forceOpaque) ensureOpaque(pngFile) else ensureTransparent(pngFile)
     }
 
     private fun svgToPng(svgFile: File, pngFile: File, size: Int, forceOpaque: Boolean = false) =
@@ -241,6 +239,15 @@ public class ComposePlugin : Plugin<Project> {
         ImageIO.write(opaque, "png", pngFile)
     }
 
+    private fun ensureTransparent(pngFile: File) {
+        val image = ImageIO.read(pngFile)
+        val transparentImage = BufferedImage(image.width, image.height, BufferedImage.TYPE_INT_ARGB)
+        val graphics = transparentImage.createGraphics()
+        graphics.drawImage(image, 0, 0, null) // draw with alpha
+        graphics.dispose()
+        ImageIO.write(transparentImage, "png", pngFile)
+    }
+
     private fun pngsToIconSet(pngFiles: List<File>, icnsFile: File) =
         Imaging.writeImage(ImageIO.read(pngFiles[3]), icnsFile, ImageFormats.ICNS)
 
@@ -249,7 +256,7 @@ public class ComposePlugin : Plugin<Project> {
             val svg = composeResourcesDir.resolve("drawable$theme/$APP_ICON.svg").takeIf(File::exists)
                 ?: return@forEach
 
-            svg.copyTo(webResourcesDir.resolve("favicon$theme.svg"))
+            svg.copyTo(webResourcesDir.resolve("favicon$theme.svg"), true)
         }
     }
 
