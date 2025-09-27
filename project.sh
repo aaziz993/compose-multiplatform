@@ -30,9 +30,9 @@ function publish(){
 }
 
 function clean_apple_app(){
-  info "🧹Cleaning appleApp..."
+  info "🧹Cleaning apple-app..."
 
-  pushd "appleApp" >/dev/null || return
+  pushd "apple-app" >/dev/null || return
     pod deintegrate
     pod cache clean --all
     rm -rf "*.xcworkspace"
@@ -56,9 +56,9 @@ _CLEAN_PATH=(
   "*/app-icon-png.png"
   "*/app-icon-ico.ico"
   "*/app-icon-icns.icns"
-  "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset/*.png"
-  "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
-  "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/*.png"
+  "apple-app/iosApp/Assets.xcassets/AppIcon.appiconset/*.png"
+  "apple-app/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
+  "apple-app/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/*.png"
   "*/favicon*.svg"
 )
 
@@ -71,8 +71,6 @@ function clean_files(){
 }
 
 function clean() {
-  set -euo pipefail
-
   clean_apple_app
 
   info "🧹Cleaning project..."
@@ -86,7 +84,6 @@ function clean() {
 }
 
 clean_mac() {
-  set -e
   info "🧹 Starting cleanup..."
 
   # 1. Empty system and user caches

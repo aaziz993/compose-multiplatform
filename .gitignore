@@ -31,7 +31,7 @@ compose-app/compose_app.podspec
 **/app-icon-png.png
 **/app-icon-ico.ico
 **/app-icon-icns.icns
-appleApp/iosApp/Assets.xcassets/AppIcon.appiconset/*.png
-appleApp/TVosApp/Assets.xcassets/App\ Icon\ &\ Top\ Shelf\ Image.brandassets/**/*.png
-appleApp/WatchosApp\ Watch\ App/Assets.xcassets/AppIcon.appiconset/*.png
+apple-app/iosApp/Assets.xcassets/AppIcon.appiconset/*.png
+apple-app/TVosApp/Assets.xcassets/App\ Icon\ &\ Top\ Shelf\ Image.brandassets/**/*.png
+apple-app/WatchosApp\ Watch\ App/Assets.xcassets/AppIcon.appiconset/*.png
 **/favicon*.svg

@@ -56,32 +56,24 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BD0A4CAD2DC2704D00FC6E3D /* WatchosApp Watch App */ = {
+		BD0A4CAD2DC2704D00FC6E3D /* watchos-app */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			path = "WatchosApp Watch App";
+			path = "watchos-app";
 			sourceTree = "<group>";
 		};
-		BD0A4CD92DC2724000FC6E3D /* TVosApp */ = {
+		BD0A4CD92DC2724000FC6E3D /* tvos-app */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			path = TVosApp;
+			path = "tvos-app";
 			sourceTree = "<group>";
 		};
-		BD0A4CDE2DC2724400FC6E3D /* MacosCLI */ = {
+		BD0A4CDE2DC2724400FC6E3D /* macos-cli */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			path = MacosCLI;
+			path = "macos-cli";
 			sourceTree = "<group>";
 		};
-		BD0A4CE32DC2724700FC6E3D /* iosApp */ = {
+		BD0A4CE32DC2724700FC6E3D /* ios-app */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			path = iosApp;
+			path = "ios-app";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -146,10 +138,10 @@
 		CB1BD2A5249B4CDC00707679 = {
 			isa = PBXGroup;
 			children = (
-				BD0A4CE32DC2724700FC6E3D /* iosApp */,
-				BD0A4CDE2DC2724400FC6E3D /* MacosCLI */,
-				BD0A4CD92DC2724000FC6E3D /* TVosApp */,
-				BD0A4CAD2DC2704D00FC6E3D /* WatchosApp Watch App */,
+				BD0A4CE32DC2724700FC6E3D /* ios-app */,
+				BD0A4CDE2DC2724400FC6E3D /* macos-cli */,
+				BD0A4CD92DC2724000FC6E3D /* tvos-app */,
+				BD0A4CAD2DC2704D00FC6E3D /* watchos-app */,
 				CB1BD2B1249B4D2000707679 /* Products */,
 				05D6FCDC1CDC24C84A5EA73F /* Pods */,
 				A646FCF391CC3256DB1233EB /* Frameworks */,
@@ -202,7 +194,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BD0A4CAD2DC2704D00FC6E3D /* WatchosApp Watch App */,
+				BD0A4CAD2DC2704D00FC6E3D /* watchos-app */,
 			);
 			name = "WatchosApp Watch App";
 			productName = "WatchosApp Watch App";
@@ -225,7 +217,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BD0A4CE32DC2724700FC6E3D /* iosApp */,
+				BD0A4CE32DC2724700FC6E3D /* ios-app */,
 			);
 			name = iosApp;
 			productName = iosApp;
@@ -245,7 +237,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BD0A4CDE2DC2724400FC6E3D /* MacosCLI */,
+				BD0A4CDE2DC2724400FC6E3D /* macos-cli */,
 			);
 			name = MacosCLI;
 			productName = MacosCLI;
@@ -265,7 +257,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BD0A4CD92DC2724000FC6E3D /* TVosApp */,
+				BD0A4CD92DC2724000FC6E3D /* tvos-app */,
 			);
 			name = TVosApp;
 			productName = TVosApp;
@@ -300,7 +292,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CB1BD2A9249B4CDC00707679 /* Build configuration list for PBXProject "appleApp" */;
+			buildConfigurationList = CB1BD2A9249B4CDC00707679 /* Build configuration list for PBXProject "apple-app" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -362,9 +354,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -379,9 +375,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1203,7 +1203,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CB1BD2A9249B4CDC00707679 /* Build configuration list for PBXProject "appleApp" */ = {
+		CB1BD2A9249B4CDC00707679 /* Build configuration list for PBXProject "apple-app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB1BD2AA249B4CDC00707679 /* Debug */,

@@ -79,10 +79,10 @@ warmup: # 🔥 Warmup for jetbrains development environment.
 server-auto-reload: # 🔄 Server application hot reload.
   ./gradlew -t autoreload-engine-main:build
 
-clean-apple-app: # 🧹 Clean appleApp.
+clean-apple-app: # 🧹 Clean apple-app.
 	@. project.sh && clean_apple_app
 
-clean-files: # 🧹 Clean appleApp.
+clean-files: # 🧹 Clean files.
 	@. project.sh && clean_files
 
 clean: # 🧹 Clean all.

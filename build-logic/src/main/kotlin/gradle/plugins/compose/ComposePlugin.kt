@@ -47,9 +47,9 @@ private val THEMES = listOf("") + ThemeQualifier.entries.map { theme -> "-${them
 private const val APP_ICON = "app-icon"
 
 private val IOS_IMAGE_APPEARANCE = mapOf("" to 0, "dark" to 2, "tinted" to 1)
-private const val IOS_APPICONSET_DIR = "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset"
-private const val TVOS_BRANDASSETS_DIR = "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
-private const val WATCHOS_APPICONSET_DIR = "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset"
+private const val IOS_APPICONSET_DIR = "apple-app/iosApp/Assets.xcassets/AppIcon.appiconset"
+private const val TVOS_BRANDASSETS_DIR = "apple-app/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
+private const val WATCHOS_APPICONSET_DIR = "apple-app/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset"
 private val MACOS_ICON_SIZES = listOf(16, 32, 64, 128, 256, 512, 1024)
 
 public class ComposePlugin : Plugin<Project> {

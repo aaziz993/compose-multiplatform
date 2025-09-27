@@ -28,7 +28,7 @@ script:
       - id: (libs.plugins("compose.hotReload").pluginId)
   - kotlin:
       cocoapods:
-        - podfile: file("../appleApp/Podfile")
+        - podfile: file("../apple-app/Podfile")
         - pod: |
             ("WebRTC-SDK") {
               version = libs.versions("pod.webrtc").requiredVersion
