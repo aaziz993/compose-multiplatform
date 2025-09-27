@@ -8,6 +8,7 @@ imports:
   #  - ../properties/kotlin/targets/native/apple/tvos.yaml
   #  - ../properties/kotlin/targets/native/apple/watchos.yaml
   - ../properties/kotlin/targets/web/js/js-library.yaml
+  - ../properties/kotlin/targets/web/js/karakum.yaml
   - ../properties/kotlin/targets/web/wasmJs/wasm-js-library.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
   - ../properties/kotlin/targets/native/apple/cocoapods.yaml

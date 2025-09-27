@@ -1,0 +1,4 @@
+script:
+  - plugins:
+      # Converter of TypeScript declaration files to Kotlin declarations.
+      - id: (libs.plugins("karakum").pluginId)

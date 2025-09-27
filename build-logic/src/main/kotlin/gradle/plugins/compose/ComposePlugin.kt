@@ -3,6 +3,7 @@
 package gradle.plugins.compose
 
 import gradle.api.all
+import gradle.api.configure
 import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
 import gradle.api.project.projectScript
@@ -25,12 +26,20 @@ import org.apache.commons.imaging.ImageFormats
 import org.apache.commons.imaging.Imaging
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.assign
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.compose.internal.utils.uppercaseFirstChar
 import org.jetbrains.compose.resources.AssembleTargetResourcesTask
+import org.jetbrains.compose.resources.KMP_RES_EXT
 import org.jetbrains.compose.resources.getPreparedComposeResourcesDir
+import org.jetbrains.kotlin.gradle.ComposeKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.resources.KotlinTargetResourcesPublication
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 private val THEMES = listOf("") + ThemeQualifier.entries.map { theme -> "-${theme.name.lowercase()}" }
@@ -49,7 +58,7 @@ public class ComposePlugin : Plugin<Project> {
         with(target) {
             project.pluginManager.withPlugin("org.jetbrains.compose") {
                 adjustResources()
-                adjustAssembleJvmResTask()
+                adjustAssembleResTask()
             }
         }
     }
@@ -233,8 +242,10 @@ public class ComposePlugin : Plugin<Project> {
     private fun pngsToIconSet(pngFiles: List<File>, icnsFile: File) =
         Imaging.writeImage(ImageIO.read(pngFiles[3]), icnsFile, ImageFormats.ICNS)
 
-    // Trick to make assemble jvm resources task to work.
-    private fun Project.adjustAssembleJvmResTask() = kotlin.targets.withType<KotlinJvmTarget> { adjustAssembleResTask(this) }
+    // Trick to make assemble jvm and native resources task to work.
+    private fun Project.adjustAssembleResTask() = kotlin.targets.matching { target ->
+        target is KotlinJvmTarget || target is KotlinNativeTarget
+    }.configureEach { adjustAssembleResTask(this) }
 
     private fun Project.adjustAssembleResTask(target: KotlinTarget) {
         target.compilations.all { compilation ->
@@ -252,7 +263,42 @@ public class ComposePlugin : Plugin<Project> {
 
             val allCompilationResources = assembleResTask.flatMap { it.outputDirectory.asFile }
 
-            compilation.defaultSourceSet.resources.srcDir(allCompilationResources)
+            if (
+                target.platformType in platformsForSetupKmpResources
+                && compilation.name == KotlinCompilation.MAIN_COMPILATION_NAME
+            ) configureKmpResources(compilation, allCompilationResources)
+            else configureResourcesForCompilation(compilation, allCompilationResources)
+
+        }
+    }
+
+    private val platformsForSetupKmpResources = listOf(
+        KotlinPlatformType.native, KotlinPlatformType.js, KotlinPlatformType.wasm,
+    )
+
+    @OptIn(ComposeKotlinGradlePluginApi::class)
+    private fun Project.configureKmpResources(
+        compilation: KotlinCompilation<*>,
+        allCompilationResources: Provider<File>
+    ) {
+        require(compilation.platformType in platformsForSetupKmpResources)
+        val kmpResources = extraProperties.get(KMP_RES_EXT) as KotlinTargetResourcesPublication
+
+        val allResources = kmpResources.resolveResources(compilation.target)
+        configureResourcesForCompilation(compilation, allResources)
+    }
+
+    private fun Project.configureResourcesForCompilation(
+        compilation: KotlinCompilation<*>,
+        directoryWithAllResourcesForCompilation: Provider<File>
+    ) {
+        compilation.defaultSourceSet.resources.srcDir(directoryWithAllResourcesForCompilation)
+
+        //JS packaging requires explicit dependency
+        if (compilation is KotlinJsCompilation) {
+            tasks.named(compilation.processResourcesTaskName).configure { processResourcesTask ->
+                processResourcesTask.dependsOn(directoryWithAllResourcesForCompilation)
+            }
         }
     }
 }

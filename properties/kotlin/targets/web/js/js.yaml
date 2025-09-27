@@ -2,13 +2,10 @@ config:
   imports:
     - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
     - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-    - gradle.plugins.karakum.*
 script:
   - plugins:
       - id: (libs.plugins("js.plain.objects").pluginId)
       - id: (libs.plugins("seskar").pluginId)
-      # Converter of TypeScript declaration files to Kotlin declarations.
-      - id: (libs.plugins("karakum").pluginId)
   - kotlin:
       js: |
         (kotlin.IR) {
