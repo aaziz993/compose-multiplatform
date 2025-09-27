@@ -1,6 +1,6 @@
 package klib.data.database.mdb
 
-import klib.data.type.collections.biMapOf
+import klib.data.type.collections.bimap.biMapOf
 import okio.IOException
 
 public actual class TableMetaData(public val tableMetadata: com.healthmarketscience.jackcess.TableMetaData) {

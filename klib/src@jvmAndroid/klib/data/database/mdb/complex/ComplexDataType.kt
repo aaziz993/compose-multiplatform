@@ -1,6 +1,6 @@
 package klib.data.database.mdb.complex
 
-import klib.data.type.collections.biMapOf
+import klib.data.type.collections.bimap.biMapOf
 
 internal val COMPLEX_DATA_TYPE_MAP = biMapOf(
     com.healthmarketscience.jackcess.complex.ComplexDataType.ATTACHMENT to ComplexDataType.ATTACHMENT,

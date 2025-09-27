@@ -1,6 +1,6 @@
 package klib.data.database.mdb.query
 
-import klib.data.type.collections.biMapOf
+import klib.data.type.collections.bimap.biMapOf
 
 internal class JavaQuery(
     private val query: com.healthmarketscience.jackcess.query.Query

@@ -1,7 +1,7 @@
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.TableBuilder
-import klib.data.type.collections.biMapOf
+import klib.data.type.collections.bimap.biMapOf
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import okio.IOException

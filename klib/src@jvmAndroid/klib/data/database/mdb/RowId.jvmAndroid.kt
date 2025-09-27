@@ -1,7 +1,7 @@
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.impl.RowIdImpl
-import klib.data.type.collections.biMapOf
+import klib.data.type.collections.bimap.biMapOf
 
 public actual class RowId(public val rowId: RowIdImpl) : Comparable<RowId> {
     public actual constructor(pageNumber: Int, rowNumber: Int) : this(RowIdImpl(pageNumber, rowNumber))

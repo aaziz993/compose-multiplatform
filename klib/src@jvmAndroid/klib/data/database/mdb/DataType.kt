@@ -1,6 +1,6 @@
 package klib.data.database.mdb
 
-import klib.data.type.collections.biMapOf
+import klib.data.type.collections.bimap.biMapOf
 
 internal val DATA_TYPE_MAP = biMapOf(
     com.healthmarketscience.jackcess.DataType.BOOLEAN to DataType.BOOLEAN,

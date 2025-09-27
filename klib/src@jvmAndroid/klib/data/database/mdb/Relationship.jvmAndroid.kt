@@ -1,7 +1,7 @@
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.RelationshipBuilder
-import klib.data.type.collections.biMapOf
+import klib.data.type.collections.bimap.biMapOf
 
 public actual class Relationship(public val relationship: com.healthmarketscience.jackcess.Relationship) {
     public actual constructor(fromTable: String, toTable: String, database: Database) :
