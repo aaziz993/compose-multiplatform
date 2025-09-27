@@ -82,11 +82,11 @@ public fun NavScreenNavHost(
         composable<Destination.Main>(
             Destination.Main.typeMap,
             Destination.Main.deepLinks,
-        ) {
+        ) { backStackEntry ->
             val navViewModel =
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-            MainScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+            MainScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                 navViewModel.action(NavigationAction.NavigateBack)
             }
         }
@@ -94,11 +94,11 @@ public fun NavScreenNavHost(
         composable<Destination.Map>(
             Destination.Map.typeMap,
             Destination.Map.deepLinks,
-        ) {
+        ) { backStackEntry ->
             val navViewModel =
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-            MapScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+            MapScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                 navViewModel.action(NavigationAction.NavigateBack)
             }
         }
@@ -106,11 +106,11 @@ public fun NavScreenNavHost(
         composable<Destination.Settings>(
             Destination.Settings.typeMap,
             Destination.Settings.deepLinks,
-        ) {
+        ) { backStackEntry ->
             val navViewModel =
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-            SettingsScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+            SettingsScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                 navViewModel.action(NavigationAction.NavigateBack)
             }
         }
@@ -118,11 +118,11 @@ public fun NavScreenNavHost(
         composable<Destination.About>(
             Destination.About.typeMap,
             Destination.About.deepLinks,
-        ) {
+        ) { backStackEntry ->
             val navViewModel =
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-            AboutScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+            AboutScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                 navViewModel.action(NavigationAction.NavigateBack)
             }
         }
@@ -131,11 +131,11 @@ public fun NavScreenNavHost(
             composable<Destination.Login>(
                 Destination.Login.typeMap,
                 Destination.Login.deepLinks,
-            ) {
+            ) { backStackEntry ->
                 val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-                LoginScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+                LoginScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                     navViewModel.action(NavigationAction.NavigateBack)
                 }
             }
@@ -143,11 +143,11 @@ public fun NavScreenNavHost(
             composable<Destination.ForgotPassword>(
                 Destination.ForgotPassword.typeMap,
                 Destination.ForgotPassword.deepLinks,
-            ) {
+            ) { backStackEntry ->
                 val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-                ForgotPasswordScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+                ForgotPasswordScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                     navViewModel.action(NavigationAction.NavigateBack)
                 }
             }
@@ -155,11 +155,11 @@ public fun NavScreenNavHost(
             composable<Destination.Profile>(
                 Destination.Profile.typeMap,
                 Destination.Profile.deepLinks,
-            ) {
+            ) { backStackEntry ->
                 val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-                ProfileScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+                ProfileScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                     navViewModel.action(NavigationAction.NavigateBack)
                 }
             }
@@ -169,11 +169,11 @@ public fun NavScreenNavHost(
             composable<Destination.Balance>(
                 Destination.Balance.typeMap,
                 Destination.Balance.deepLinks,
-            ) {
+            ) { backStackEntry ->
                 val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-                BalanceScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+                BalanceScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                     navViewModel.action(NavigationAction.NavigateBack)
                 }
             }
@@ -181,11 +181,11 @@ public fun NavScreenNavHost(
             composable<Destination.Crypto>(
                 Destination.Crypto.typeMap,
                 Destination.Crypto.deepLinks,
-            ) {
+            ) { backStackEntry ->
                 val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-                CryptoScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+                CryptoScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                     navViewModel.action(NavigationAction.NavigateBack)
                 }
             }
@@ -193,11 +193,11 @@ public fun NavScreenNavHost(
             composable<Destination.Stock>(
                 Destination.Stock.typeMap,
                 Destination.Stock.deepLinks,
-            ) {
+            ) { backStackEntry ->
                 val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = it)
+                    koinViewModel<Destination.NavGraph, NavViewModel>(navController = navController, backStackEntry = backStackEntry)
 
-                StockScreen({ navViewModel.action(NavigationAction.SafeNavigation.Navigate(it)) }) {
+                StockScreen({ destination -> navViewModel.action(NavigationAction.SafeNavigation.Navigate(destination)) }) {
                     navViewModel.action(NavigationAction.NavigateBack)
                 }
             }
