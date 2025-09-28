@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package data.type
+package presentation
 
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +23,7 @@ public fun temporalPickerStateToLocalDateTime(
     timePickerState.localTime
 )
 
-public fun temporalPickerStateToTemporal(
+public fun timePickerStateToTemporal(
     datePickerState: DatePickerState? = null,
     timePickerState: TimePickerState? = null
 ): Any? = when {

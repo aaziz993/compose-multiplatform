@@ -1,4 +1,4 @@
-package data.type.serialization.serializer.shapes.model
+package presentation.shapes
 
 internal object ShapeDefaults {
 

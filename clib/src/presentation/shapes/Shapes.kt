@@ -1,4 +1,4 @@
-package data.type.serialization.serializer.shapes.model
+package presentation.shapes
 
 import androidx.compose.material3.Shapes
 import kotlinx.serialization.Serializable

@@ -26,7 +26,9 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.PolymorphicKind
+import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.SerialKind
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.elementDescriptors
@@ -79,6 +81,9 @@ public val SerialDescriptor.primitiveTypeOrNull: KType?
 
 public val SerialDescriptor.primitiveType: KType
     get() = primitiveTypeOrNull!!
+
+public val SerialDescriptor.isEnum: Boolean
+    get() = kind == SerialKind.ENUM
 
 public val SerialDescriptor.classDiscriminator: String
     get() = getElementName(0)
@@ -192,5 +197,5 @@ public fun <T : Any> SerialDescriptor.unknownKeysOf(value: T): T =
 
                 else -> emptyList()
             }
-        }
+        },
     )

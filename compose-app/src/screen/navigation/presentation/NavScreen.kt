@@ -1,7 +1,7 @@
 package screen.navigation.presentation
 
 import data.type.collections.toLaunchedEffect
-import ai.tech.core.presentation.component.dialog.alert.AlertDialog
+import presentation.components.dialog.alert.AlertDialog
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -135,6 +135,6 @@ public fun NavScreen(
 
 @Preview
 @Composable
-public fun previewNavScreen() {
+public fun PreviewNavScreen() {
     NavScreen()
 }

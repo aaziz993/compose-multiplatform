@@ -29,6 +29,7 @@ import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.SerialKind
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.elementDescriptors
@@ -81,6 +82,9 @@ public val SerialDescriptor.primitiveTypeOrNull: KType?
 
 public val SerialDescriptor.primitiveType: KType
     get() = primitiveTypeOrNull!!
+
+public val SerialDescriptor.isEnum: Boolean
+    get() = kind == SerialKind.ENUM
 
 @Suppress("UNCHECKED_CAST")
 public val SerialDescriptor.typeParameterDescriptors: Array<SerialDescriptor>

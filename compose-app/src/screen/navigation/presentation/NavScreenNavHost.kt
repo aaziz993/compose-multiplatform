@@ -1,6 +1,6 @@
 package screen.navigation.presentation
 
-import about.AboutScreen
+import screen.about.AboutScreen
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition

@@ -1,9 +1,7 @@
-package data.type.serialization.serializer.shapes.model
+package presentation.shapes
 
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import data.type.serialization.serializer.shapes.DpSerial
 import kotlinx.serialization.Serializable
 
 @Serializable

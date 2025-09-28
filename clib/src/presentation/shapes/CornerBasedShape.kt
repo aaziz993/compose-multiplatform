@@ -1,4 +1,4 @@
-package data.type.serialization.serializer.shapes.model
+package presentation.shapes
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -34,7 +34,8 @@ public data class RoundedCornerShape(
 
 public val CircleShape: RoundedCornerShape = RoundedCornerShape(50)
 
-public fun RoundedCornerShape(corner: CornerSize): RoundedCornerShape = RoundedCornerShape(corner, corner, corner, corner)
+public fun RoundedCornerShape(corner: CornerSize): RoundedCornerShape =
+    RoundedCornerShape(corner, corner, corner, corner)
 
 public fun RoundedCornerShape(size: Dp): RoundedCornerShape = RoundedCornerShape(CornerSize(size))
 
