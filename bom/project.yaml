@@ -2,7 +2,4 @@ imports:
   - ../properties/config.yaml
   - ../properties/project-meta.yaml
   - project-plugin.yaml
-  - ../properties/publish/publish.yaml
-  - ../properties/publish/repositories.yaml
-  - ../properties/publish/publications-bom.yaml
-  - ../properties/publish/sign.yaml
+  - ../properties/publish.yaml

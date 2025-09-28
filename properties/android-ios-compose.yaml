@@ -1,0 +1,10 @@
+script:
+  kotlin:
+    sourceSets:
+      - named: |
+          ("androidIosMain") { sourceSet ->
+            sourceSet.dependencies {
+              implementation(libs["permissions.compose"])
+              implementation(libs["connectivity.compose.device"])
+            }
+          }

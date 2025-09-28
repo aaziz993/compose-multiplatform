@@ -775,6 +775,15 @@ firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = 
 firebase-auth-provider = { module = "com.kborowy:firebase-auth-provider", version.ref = "firebase-auth-provider" }
 # permissions.
 permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissions" }
+permissions-bluetooth = { module = "dev.icerock.moko:permissions-bluetooth", version.ref = "permissions" }
+permissions-camera = { module = "dev.icerock.moko:permissions-camera", version.ref = "permissions" }
+permissions-contacts = { module = "dev.icerock.moko:permissions-contacts", version.ref = "permissions" }
+permissions-gallery = { module = "dev.icerock.moko:permissions-gallery", version.ref = "permissions" }
+permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "permissions" }
+permissions-microphone = { module = "dev.icerock.moko:permissions-microphone", version.ref = "permissions" }
+permissions-motion = { module = "dev.icerock.moko:permissions-motion", version.ref = "permissions" }
+permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "permissions" }
+permissions-storage = { module = "dev.icerock.moko:permissions-storage", version.ref = "permissions" }
 permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissions" }
 permissions-test = { module = "dev.icerock.moko:permissions-test", version.ref = "permissions" }
 # testing.
@@ -1202,6 +1211,19 @@ kgraphql = [
 apollo = [
     "apollo-runtime",
     #    "apollo-normalized-cache" no wasmJs
+]
+# permissions.
+permissions = [
+    "permissions",
+    "permissions-bluetooth",
+    "permissions-camera",
+    "permissions-contacts",
+    "permissions-gallery",
+    "permissions-location",
+    "permissions-microphone",
+    "permissions-motion",
+    "permissions-notifications",
+    "permissions-storage",
 ]
 # testing.
 kotest-multiplatform = [

@@ -1,4 +1,4 @@
-package ai.tech.core.misc.permission
+package permission
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -6,6 +6,6 @@ import androidx.compose.runtime.remember
 @Composable
 public actual fun rememberPermissionControllerFactory(): PermissionControllerFactory = remember {
     PermissionControllerFactory {
-        permission.PermissionController()
+        PermissionController()
     }
 }

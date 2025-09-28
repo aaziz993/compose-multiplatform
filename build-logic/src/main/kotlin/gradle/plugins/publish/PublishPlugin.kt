@@ -40,47 +40,7 @@ public class PublishPlugin : Plugin<Project> {
             if (pluginManager.hasPlugin("java-platform")) return@with
 
             pluginManager.withPlugin("maven-publish") {
-                configureJavadocArtifact()
                 registerAggregatingPublishTasks()
-                configurePublishTask()
-            }
-        }
-    }
-
-    private fun Project.configureJavadocArtifact() {
-        val targetPublications = kotlin.targets.associateWithNotNull { target ->
-            publishing.publications.findByName<MavenPublication>(target.name)
-        }
-
-        val javadocJar =
-            if (pluginManager.hasPlugin("org.jetbrains.dokka-javadoc"))
-                tasks.register<Jar>("dokkaJavadocJar") {
-                    description = "A Javadoc JAR containing Dokka Javadoc"
-                    from(tasks.dokkaGeneratePublicationJavadoc!!.flatMap(DokkaGeneratePublicationTask::outputDirectory))
-                }
-            else tasks.register<Jar>("javadocJar") { archiveAppendix = "empty" }
-
-        targetPublications.forEach { (target, publication) ->
-            publication.artifact(javadocJar) { classifier = "javadoc" }
-
-            if (target.platformType.name != "jvm") {
-                publication.artifact(javadocJar) { classifier = "kdoc" }
-            }
-
-            if (target.platformType.name == "native") {
-                publication.artifact(javadocJar)
-            }
-        }
-
-        if (pluginManager.hasPlugin("org.jetbrains.dokka")) {
-            val dokkaHtmlJar by tasks.registering(Jar::class) {
-                description = "A HTML Documentation JAR containing Dokka HTML"
-                from(tasks.dokkaGeneratePublicationHtml!!.flatMap(DokkaGeneratePublicationTask::outputDirectory))
-                archiveClassifier = "html-doc"
-            }
-
-            targetPublications.values.forEach { publication ->
-                publication.artifact(dokkaHtmlJar)
             }
         }
     }
@@ -177,17 +137,6 @@ public class PublishPlugin : Plugin<Project> {
                     dependsOn(publishTasks)
                 }
             }
-        }
-    }
-
-    private fun Project.configurePublishTask() {
-        // We share emptyJar artifact between all publications, so all publish tasks should be run after all sign tasks.
-        // Otherwise, Gradle will throw an error like:
-        //   Task ':publishX' uses output of task ':signY' without declaring an explicit or implicit dependency.
-        tasks.withType<AbstractPublishToMaven>().configureEach { mustRunAfter(tasks.withType<Sign>()) }
-
-        tasks.named("publish") {
-            dependsOn(tasks.named("publishToMavenLocal"))
         }
     }
 }

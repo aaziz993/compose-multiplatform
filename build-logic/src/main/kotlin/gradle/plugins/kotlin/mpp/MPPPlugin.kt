@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.mpp
 
+import com.android.build.api.dsl.androidLibrary
 import com.github.ajalt.colormath.model.Ansi16
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
@@ -37,7 +38,16 @@ public class MPPPlugin : Plugin<Project> {
         with(target) {
             pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
                 adjustSourceSets()
-                registerTargetsHierarchyTask()
+                registerSourcesHierarchyTask()
+//                kotlin.androidLibrary {  }
+                kotlin.applyDefaultHierarchyTemplate {
+                    common {
+                        group("jvmAndroid"){
+                            withJvm()
+                            withAndroidTarget()
+                        }
+                    }
+                }
             }
         }
     }
@@ -101,8 +111,8 @@ public class MPPPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.registerTargetsHierarchyTask() =
-        tasks.register("targetsHierarchy") {
+    private fun Project.registerSourcesHierarchyTask() =
+        tasks.register("sourcesHierarchy") {
             group = "help"
             description = "Prints Kotlin source set hierarchy"
 
@@ -118,7 +128,7 @@ public class MPPPlugin : Plugin<Project> {
                 }
 
                 val commonMain = KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
-                project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from commonMain:")
+                project.logger.lifecycle("Kotlin SourceSet Hierarchy from commonMain:")
                 project.logger.lifecycle(
                     commonMain.toTreeString(dependees) {
                         last().ansiSpan {
@@ -133,7 +143,7 @@ public class MPPPlugin : Plugin<Project> {
                 val children = dependees.values.flatten().toSet()
                 val roots = all - children
                 roots.filter { root -> root != commonMain }.forEach { root ->
-                    project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from $root:")
+                    project.logger.lifecycle("Kotlin SourceSet Hierarchy from $root:")
                     project.logger.lifecycle(
                         root.toTreeString(dependees) {
                             last().ansiSpan {

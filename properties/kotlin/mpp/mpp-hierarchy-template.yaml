@@ -13,12 +13,11 @@ script:
                 withIos()
               }
             }
-            group("jvmIosWeb") {
-              withJvm()
+            group("jvmWebIos") {
+              group("jvmWeb")
               group("ios") {
                 withIos()
               }
-              group("web")
             }
             group("jvmWeb") {
               withJvm()
@@ -66,7 +65,7 @@ script:
             }
             group("jvmAndroidWeb") {
               group("jvmAndroid")
-              group("web")
+              group("jvmWeb")
             }
             group("nix") {
               group("linux") {
@@ -123,10 +122,6 @@ script:
               group("native") {
                 withNative()
               }
-            }
-            group("wasm") {
-              withWasmJs()
-              withWasmWasi()
             }
           }
         }

@@ -2,6 +2,6 @@ package permission
 
 import androidx.compose.runtime.Composable
 
-@Composable
 @Suppress("FunctionName")
+@Composable
 public actual fun BindEffect(permissionController: PermissionController): Unit = Unit

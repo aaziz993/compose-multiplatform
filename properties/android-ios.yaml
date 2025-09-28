@@ -5,7 +5,7 @@ script:
             ("androidIosMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs.bundles("compass.mobile"))
-                implementation(libs["permissions"])
+                implementation(libs.bundles("permissions"))
                 implementation(libs["connectivity.device"])
               }
             }

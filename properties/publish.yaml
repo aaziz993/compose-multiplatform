@@ -1,0 +1,102 @@
+config:
+  imports:
+    - io.github.z4kn4fein.semver.Version
+    - gradle.plugins.publish.*
+    - gradle.plugins.signing.*
+script:
+  - plugins:
+      - id: (libs.plugins("vanniktech.maven.publish").pluginId)
+      - id: ("signing")
+  - publishing:
+      repositories:
+        - mavenLocal: |
+            { repository ->
+              repository.url = uri(layout.buildDirectory.dir("repo"))
+            }
+        # Something that's easy to "clean" for development not mavenLocal
+        - maven: |
+            { repository ->
+              repository.name = "buildRepo"
+              repository.url = uri(rootProject.layout.buildDirectory.dir("repo")) // root build/repo
+            }
+        - maven: |
+            { repository ->
+              repository.name = "githubPackages"
+              repository.url = uri("https://maven.pkg.github.com/${settings.settingsScript.developer.id}")
+              repository.credentials { credentials ->
+                credentials.username = sensitive("publishing.repositories.github.username")
+                credentials.password = sensitive("publishing.repositories.github.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "gitLab"
+              repository.url = uri("https://gitlab.com/api/v4/projects/${System.getenv("CI_PROJECT_ID")}/packages/maven")
+              repository.credentials { credentials ->
+                credentials.username = sensitive("publishing.repositories.gitlab.username")
+                credentials.password = sensitive("publishing.repositories.gitlab.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "mavenCentral"
+              repository.url = uri(
+                if((version as Version).isPreRelease)
+                  "https://central.sonatype.com/repository/maven-snapshots/"
+                else "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
+              )
+              repository.credentials { credentials ->
+                credentials.username = sensitive("publishing.repositories.sonatype.username")
+                credentials.password = sensitive("publishing.repositories.sonatype.password")
+              }
+            }
+  - mavenPublishing: |
+      {
+        coordinates(project.name, project.group.toString(), project.version.toString())
+
+        pom { pom ->
+          pom.packaging = "jar"
+          pom.name /=project.name
+          pom.url /="${settings.settingsScript.remote.url}/${project.projectDir.relativeTo(rootProject.projectDir)}"
+          pom.description /= description.orEmpty()
+
+          pom.licenses { licenses ->
+              licenses.license { license ->
+                  license.name /= settings.settingsScript.license.name
+                  license.url /= settings.settingsScript.license.url
+                  license.distribution /= settings.settingsScript.license.distribution
+                  license.comments /= settings.settingsScript.license.comments
+              }
+          }
+
+          pom.developers { developers ->
+              developers.developer { developer ->
+                  developer.id /= settings.settingsScript.developer.id
+                  developer.name /= settings.settingsScript.developer.name
+                  developer.email /= settings.settingsScript.developer.email
+                  developer.organization /= settings.settingsScript.developer.organization
+                  developer.organizationUrl /= settings.settingsScript.developer.organizationUrl
+              }
+          }
+
+          pom.issueManagement { issueManagement ->
+              issueManagement.system /= "GitHub Issues"
+              issueManagement.url /= "${settings.settingsScript.remote.url}/issues"
+          }
+
+          pom.scm { scm ->
+              scm.url /= settings.settingsScript.remote.url
+              scm.connection /= settings.settingsScript.remote.connection
+              scm.developerConnection /= settings.settingsScript.remote.developerConnection
+              scm.tag /= settings.settingsScript.remote.tag
+          }
+        }
+        @Suppress("UnstableApiUsage")
+        configureBasedOnAppliedPlugins(true)
+      }
+
+  - signing:
+      isRequired: (!(version as Version).isPreRelease)
+      useGpg: ()
+      # Sign all publications.
+      sign: (publishing.publications)

@@ -3,10 +3,7 @@ imports:
   - ../properties/kotlin/mpp/mpp.yaml
   - ../properties/kotlin/targets/jvm/jvm.yaml
   - ../properties/subproject.yaml
-  - ../properties/publish/publish.yaml
-  - ../properties/publish/repositories.yaml
-  - ../properties/publish/publications.yaml
-  - ../properties/publish/sign.yaml
+  - ../properties/publish.yaml
 description: Source generator.
 script:
   - kotlin:

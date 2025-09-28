@@ -1,0 +1,10 @@
+script:
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("jvmMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(composeLibs.desktop.currentOs)
+                implementation(libs["kotlinx.coroutines.swing"])
+              }
+            }

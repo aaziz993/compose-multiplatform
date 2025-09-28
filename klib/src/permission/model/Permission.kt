@@ -1,6 +1,6 @@
 package permission.model
 
-public enum class PermissionType {
+public enum class Permission {
     CAMERA,
     GALLERY,
     STORAGE,

@@ -3,23 +3,20 @@ imports:
   - ../properties/kotlin/mpp/mpp.yaml
   - ../properties/kotlin/targets/jvm/jvm.yaml
   - ../properties/android/android-library.yaml
-  - ../properties/kotlin/targets/native/apple/ios.yaml
+  - ../properties/kotlin/targets/native/apple/ios/ios.yaml
   - ../properties/kotlin/targets/web/js/js-library.yaml
   - ../properties/kotlin/targets/web/wasmJs/wasm-js-library.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
   - ../properties/kotlin/targets/native/apple/cocoapods.yaml
-  - ../properties/kotlin/targets/jvm-android.yaml
+  - ../properties/jvm-android.yaml
   - ../properties/kotlin/targets/native/native-common.yaml
-  - ../properties/kotlin/targets/android-ios.yaml
-  - ../properties/kotlin/targets/android-ios-web.yaml
-  - ../properties/kotlin/targets/jvm-android-ios.yaml
+  - ../properties/android-ios.yaml
+  - ../properties/android-ios-web.yaml
+  - ../properties/jvm-android-ios.yaml
   - ../properties/kotlin/targets/web/web.yaml
   - ../properties/kotlin/targets/jvm-web.yaml
   - ../properties/subproject.yaml
-  - ../properties/publish/publish.yaml
-  - ../properties/publish/repositories.yaml
-  - ../properties/publish/publications.yaml
-  - ../properties/publish/sign.yaml
+  - ../properties/publish.yaml
 description: Shared sources for compose app and server app.
 script:
   - kotlin:

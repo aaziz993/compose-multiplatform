@@ -1,9 +1,0 @@
-config:
-  imports:
-    - org.gradle.api.publish.maven.MavenPublication
-    - io.github.z4kn4fein.semver.Version
-    - gradle.plugins.publish.*
-script:
-  - plugins:
-      - id: ("maven-publish")
-      - id: (libs.plugins("vanniktech.maven.publish").pluginId)
