@@ -121,17 +121,22 @@ script:
         {
           // Trick to integrate androidTarget with default hierarchy template when used new android kotlin multiplatform library plugin.
           pluginManager.withPlugin("com.android.kotlin.multiplatform.library") {
-            val jvmAndroidMain by getting
             val androidMain by getting
-
-            androidMain.dependsOn(jvmAndroidMain)
-
-            val jvmAndroidTest by getting
-
             val androidHostTest by getting
             val androidDeviceTest by getting
 
+            val jvmAndroidMain by getting
+            val jvmAndroidTest by getting
+
+            androidMain.dependsOn(jvmAndroidMain)
             androidHostTest.dependsOn(jvmAndroidTest)
             androidDeviceTest.dependsOn(jvmAndroidTest)
+
+            val iosMain by getting
+            val iosTest by getting
+
+            androidMain.dependsOn(iosMain)
+            androidHostTest.dependsOn(iosTest)
+            androidDeviceTest.dependsOn(iosTest)
           }
         }
