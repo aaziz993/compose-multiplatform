@@ -1,7 +1,7 @@
 package klib.data.database.mdb
 
 import klib.data.type.collections.bimap.biMapOf
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class TableMetaData(public val tableMetadata: com.healthmarketscience.jackcess.TableMetaData) {
     public actual val type: TableType
@@ -27,7 +27,6 @@ public actual class TableMetaData(public val tableMetadata: com.healthmarketscie
 
     public actual fun open(db: Database): Table = Table(tableMetadata.open(db.database))
 
-    @Throws(IOException::class)
     public actual fun getTableDefinition(db: Database): TableDefinition =
         TableDefinition(tableMetadata.getTableDefinition(db.database))
 

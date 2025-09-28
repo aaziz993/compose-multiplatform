@@ -16,5 +16,4 @@ public external interface Permissions : JsAny {
     public val permissions: JsArray<PermissionName>
 }
 
-@Suppress("UNCHECKED_CAST")
 public fun permissions(): Promise<Permissions> = js("browser.permissions.getAll()")
