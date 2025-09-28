@@ -7,17 +7,37 @@ script:
               withJvm()
               withAndroidTarget()
             }
+            group("ios") {
+              withIos()
+            }
+            group("watchos32") {
+              withWatchosArm32()
+              withWatchosArm64()  // NB watchosArm64 is weird target w/ 32-bit numbers.
+            }
+            group("watchos64") {
+              withWatchosX64()
+              withWatchosDeviceArm64()
+              withWatchosSimulatorArm64()
+            }
+            group("macos") {
+              withMacos()
+            }
+            group("tvos") {
+              withTvos()
+            }
+            group("linux") {
+              withLinux()
+            }
+            group("mingw") {
+              withMingw()
+            }
             group("jvmAndroidIos") {
               group("jvmAndroid")
-              group("ios") {
-                withIos()
-              }
+              group("ios")
             }
             group("jvmWebIos") {
               group("jvmWeb")
-              group("ios") {
-                withIos()
-              }
+              group("ios")
             }
             group("jvmWeb") {
               withJvm()
@@ -25,9 +45,7 @@ script:
             }
             group("androidIos") {
               withAndroidTarget()
-              group("ios") {
-                withIos()
-              }
+              group("ios")
             }
             group("androidIosWeb") {
               group("androidIos")
@@ -41,87 +59,79 @@ script:
               withAndroidNativeX64()
               withAndroidNativeArm64()
             }
+            group("androidNative") {
+              group("androidNative32")
+              group("androidNative64")
+            }
             group("apple32") {
-              group("watchos32") {
-                withWatchosArm32()
-                withWatchosArm64()  // NB watchosArm64 is weird target w/ 32-bit numbers.
-              }
+              group("watchos32")
             }
             group("apple64") {
-              group("ios") {
-                withIos()
-              }
-              group("macos") {
-                withMacos()
-              }
-              group("tvos") {
-                withTvos()
-              }
-              group("watchos64") {
-                withWatchosX64()
-                withWatchosDeviceArm64()
-                withWatchosSimulatorArm64()
-              }
+              group("ios")
+              group("macos")
+              group("tvos")
+              group("watchos64")
+            }
+            group("apple") {
+              group("apple32")
+              group("apple64")
             }
             group("jvmAndroidWeb") {
               group("jvmAndroid")
               group("jvmWeb")
             }
             group("nix") {
-              group("linux") {
-                withLinux()
-              }
-              group("apple") {
-                withApple()
-              }
-              group("androidNative") {
-                withAndroidNative()
-              }
+              group("androidNative")
+              group("apple")
+              group("linux")
             }
             group("posix") {
-              group("mingw") {
-                withMingw()
-              }
               group("nix")
+              group("mingw")
             }
-            group("nativeNonApple") {
-              group("androidNative") {
-                withAndroidNative()
-              }
-              group("mingw") {
-                withMingw()
-              }
-              group("linux") {
-                withLinux()
-              }
+            group("nativeAndroidLinuxMingw") {
+              group("androidNative")
+              group("linux")
+              group("mingw")
             }
-            group("nativeNonAndroid") {
-              group("apple") {
-                withApple()
-              }
-              group("mingw") {
-                withMingw()
-              }
-              group("linux") {
-                withLinux()
-              }
+            group("nativeAppleLinuxMingw") {
+              group("apple")
+              group("linux")
+              group("mingw")
             }
             group("desktop") {
-              group("linux") {
-                withLinux()
-              }
-              group("mingw") {
-                withMingw()
-              }
-              group("macos") {
-                withMacos()
-              }
+              group("linux")
+              group("mingw")
+              group("macos")
+            }
+            group("native") {
+              group("posix")
+              group("nativeAndroidLinuxMingw")
+              group("nativeAppleLinuxMingw")
+              group("desktop")
             }
             group("multithreaded") {
               group("jvmAndroid")
-              group("native") {
-                withNative()
-              }
+              group("native")
             }
+          }
+        }
+
+      sourceSets.apply: |
+        {
+          // Trick to integrate androidTarget with default hierarchy template when used new android kotlin multiplatform library plugin.
+          pluginManager.withPlugin("com.android.kotlin.multiplatform.library") {
+            val jvmAndroidMain by getting
+            val androidMain by getting
+
+            androidMain.dependsOn(jvmAndroidMain)
+
+            val jvmAndroidTest by getting
+
+            val androidHostTest by getting
+            val androidDeviceTest by getting
+
+            androidHostTest.dependsOn(jvmAndroidTest)
+            androidDeviceTest.dependsOn(jvmAndroidTest)
           }
         }

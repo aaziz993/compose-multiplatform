@@ -60,6 +60,11 @@ script:
           compilerOptions {
             jvmTarget /= libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
           }
+
+          localDependencySelection {
+            // For dependencies with multiple build types, select 'debug' first, and 'release' in case 'debug' is missing
+            selectBuildTypeFrom.set(listOf("debug", "release"))
+          }
         }
       sourceSets:
         - named: |

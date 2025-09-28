@@ -6,12 +6,12 @@ import js.objects.unsafeJso
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlinx.coroutines.await
 import permission.exception.PermissionDeniedException
-import permission.model.PermissionStateType
+import permission.model.PermissionState
 import permission.model.Permission
 import permission.permissions
 import web.navigator.navigator
 import web.permissions.PermissionName
-import web.permissions.PermissionState
+import web.permissions.PermissionState as WebPermissionState
 import web.permissions.camera
 import web.permissions.geolocation
 import web.permissions.granted
@@ -54,14 +54,14 @@ private val PERMISSIONS = listOf(
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 public actual class PermissionController {
 
-    public actual suspend fun getPermissionState(permission: Permission): PermissionStateType =
+    public actual suspend fun getPermissionState(permission: Permission): PermissionState =
         if (permissions()
                 .await()
                 .permissions
                 .toList()
                 .containsAll(permission.toPlatformPermission()!!)
-        ) PermissionStateType.GRANTED
-        else PermissionStateType.NOT_DETERMINED
+        ) PermissionState.GRANTED
+        else PermissionState.NOT_DETERMINED
 
     public actual suspend fun getPermissions(permission: Permission) {
         if (!permission
@@ -72,7 +72,7 @@ public actual class PermissionController {
                             unsafeJso {
                                 name = permission
                             },
-                        ).state == PermissionState.granted
+                        ).state == WebPermissionState.granted
                 }
         ) throw PermissionDeniedException("Permission denied")
     }

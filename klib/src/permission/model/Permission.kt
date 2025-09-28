@@ -14,7 +14,7 @@ public enum class Permission {
     BLUETOOTH_SCAN,
     BLUETOOTH_ADVERTISE,
     BLUETOOTH_CONNECT,
-    CONTACTS,
+    CONTACT,
     SENSORS,
 
     // JS

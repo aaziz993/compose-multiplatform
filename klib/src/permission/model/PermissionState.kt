@@ -1,6 +1,6 @@
 package permission.model
 
-public enum class PermissionStateType {
+public enum class PermissionState {
     UNSUPPORTED,
     NOT_DETERMINED,
     GRANTED,

@@ -4,49 +4,63 @@ import permission.exception.PermissionDeniedAlwaysException
 import permission.exception.PermissionDeniedException
 import permission.exception.PermissionRequestCanceledException
 import permission.exception.PermissionUnsupportedException
-import permission.model.PermissionStateType
+import permission.model.PermissionState
 import permission.model.Permission
-import dev.icerock.moko.permissions.Permission as MokoPermission
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.RequestCanceledException
+import dev.icerock.moko.permissions.bluetooth.BluetoothAdvertisePermission
+import dev.icerock.moko.permissions.bluetooth.BluetoothConnectPermission
+import dev.icerock.moko.permissions.bluetooth.BluetoothLEPermission
+import dev.icerock.moko.permissions.bluetooth.BluetoothScanPermission
+import dev.icerock.moko.permissions.camera.CameraPermission
+import dev.icerock.moko.permissions.contacts.ContactPermission
+import dev.icerock.moko.permissions.gallery.GalleryPermission
+import dev.icerock.moko.permissions.location.BackgroundLocationPermission
+import dev.icerock.moko.permissions.location.CoarseLocationPermission
+import dev.icerock.moko.permissions.location.LocationPermission
+import dev.icerock.moko.permissions.microphone.RecordAudioPermission
+import dev.icerock.moko.permissions.motion.MotionPermission
+import dev.icerock.moko.permissions.notifications.RemoteNotificationPermission
+import dev.icerock.moko.permissions.storage.StoragePermission
+import dev.icerock.moko.permissions.storage.WriteStoragePermission
 
 private val PERMISSION_STATES = mapOf(
-    PermissionState.NotDetermined to PermissionStateType.NOT_DETERMINED,
-    PermissionState.NotGranted to PermissionStateType.NOT_GRANTED,
-    PermissionState.Granted to PermissionStateType.GRANTED,
-    PermissionState.Denied to PermissionStateType.DENIED,
-    PermissionState.DeniedAlways to PermissionStateType.DENIED_ALWAYS,
+    PermissionState.NotDetermined to PermissionState.NOT_DETERMINED,
+    PermissionState.NotGranted to PermissionState.NOT_GRANTED,
+    PermissionState.Granted to PermissionState.GRANTED,
+    PermissionState.Denied to PermissionState.DENIED,
+    PermissionState.DeniedAlways to PermissionState.DENIED_ALWAYS,
 )
 
 private val PERMISSIONS: Map<Permission, Permission> =
     mapOf(
-        Permission.CAMERA to MokoPermission.CAMERA,
-        Permission.GALLERY to MokoPermission.GALLERY,
-        Permission.STORAGE to MokoPermission.STORAGE,
-        Permission.WRITE_STORAGE to MokoPermission.WRITE_STORAGE,
-        Permission.LOCATION to MokoPermission.LOCATION,
-        Permission.COARSE_LOCATION to MokoPermission.COARSE_LOCATION,
-        Permission.BACKGROUND_LOCATION to MokoPermission.BACKGROUND_LOCATION,
-        Permission.BLUETOOTH_LE to MokoPermission.BLUETOOTH_LE,
-        Permission.REMOTE_NOTIFICATION to MokoPermission.REMOTE_NOTIFICATION,
-        Permission.RECORD_AUDIO to MokoPermission.RECORD_AUDIO,
-        Permission.BLUETOOTH_SCAN to MokoPermission.BLUETOOTH_SCAN,
-        Permission.BLUETOOTH_ADVERTISE to MokoPermission.BLUETOOTH_ADVERTISE,
-        Permission.BLUETOOTH_CONNECT to MokoPermission.BLUETOOTH_CONNECT,
-        Permission.CONTACTS to MokoPermission.CONTACTS,
-        Permission.SENSORS to MokoPermission.MOTION,
+        Permission.CAMERA to CameraPermission,
+        Permission.GALLERY to GalleryPermission,
+        Permission.STORAGE to StoragePermission,
+        Permission.WRITE_STORAGE to WriteStoragePermission,
+        Permission.LOCATION to LocationPermission,
+        Permission.COARSE_LOCATION to CoarseLocationPermission,
+        Permission.BACKGROUND_LOCATION to BackgroundLocationPermission,
+        Permission.BLUETOOTH_LE to BluetoothLEPermission,
+        Permission.REMOTE_NOTIFICATION to RemoteNotificationPermission,
+        Permission.RECORD_AUDIO to RecordAudioPermission,
+        Permission.BLUETOOTH_SCAN to BluetoothScanPermission,
+        Permission.BLUETOOTH_ADVERTISE to BluetoothAdvertisePermission,
+        Permission.BLUETOOTH_CONNECT to BluetoothConnectPermission,
+        Permission.CONTACT to ContactPermission,
+        Permission.SENSORS to MotionPermission,
     )
 
 public abstract class PermissionControllerImpl(
     protected val permissionsController: PermissionsController,
 ) {
 
-    public suspend fun getPermissionState(permission: Permission): PermissionStateType =
+    public suspend fun getPermissionState(permission: Permission): PermissionState =
         PERMISSIONS[permission]?.let { PERMISSION_STATES[permissionsController.getPermissionState(it)]!! }
-            ?: PermissionStateType.UNSUPPORTED
+            ?: PermissionState.UNSUPPORTED
 
     public suspend fun getPermissions(permission: Permission) {
         PERMISSIONS[permission]?.let {
