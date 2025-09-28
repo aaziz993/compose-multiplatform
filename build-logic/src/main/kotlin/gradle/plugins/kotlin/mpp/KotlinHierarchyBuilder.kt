@@ -13,14 +13,14 @@ public fun KotlinHierarchyBuilder.withAndroidTarget(group: String) {
         project.kotlin.sourceSets.apply {
             val androidMain by getting
             val androidHostTest by getting
-            val androidDeviceTest by getting
 
-            val groupMain = getByName("${group}Main")
-            val groupTest = getByName("${group}Test")
+            project.afterEvaluate {
+                val groupMain = getByName("${group}Main")
+                val groupTest = getByName("${group}Test")
 
-            androidMain.dependsOn(groupMain)
-            androidHostTest.dependsOn(groupTest)
-            androidDeviceTest.dependsOn(groupTest)
+                androidMain.dependsOn(groupMain)
+                androidHostTest.dependsOn(groupTest)
+            }
         }
     }
     else withAndroidTarget()

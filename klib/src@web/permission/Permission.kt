@@ -5,13 +5,15 @@ package permission
 import js.objects.JsPlainObject
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.js.JsAny
+import kotlin.js.JsArray
 import kotlin.js.Promise
 import kotlin.js.js
+import web.permissions.PermissionName
 
 @JsPlainObject
 public external interface Permissions : JsAny {
 
-    public val permissions: Array<String>
+    public val permissions: JsArray<PermissionName>
 }
 
 @Suppress("UNCHECKED_CAST")

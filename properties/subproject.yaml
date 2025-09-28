@@ -90,7 +90,9 @@ script:
             "-Xcontext-parameters",
             "-Xmulti-dollar-interpolation",
             "-Xrender-internal-diagnostic-names",
-            "-Xbinary=preCodegenInlineThreshold=40"
+            "-Xbinary=preCodegenInlineThreshold=40",
+            // With the compiler option enabled, an IndexOutOfBoundsException is thrown instead of a trap.
+            "-Xwasm-enable-array-range-checks",
           )
   ## Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
   - dependencyCheck:

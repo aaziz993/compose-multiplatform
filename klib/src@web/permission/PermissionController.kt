@@ -3,15 +3,22 @@
 package permission
 
 import js.objects.unsafeJso
+import klib.data.type.await
+import kotlin.OptIn
+import kotlin.Suppress
+import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.all
+import kotlin.collections.find
+import kotlin.collections.listOf
+import kotlin.js.*
 import kotlin.js.ExperimentalWasmJsInterop
-import kotlinx.coroutines.await
+import kotlin.to
 import permission.exception.PermissionDeniedException
-import permission.model.PermissionState
 import permission.model.Permission
-import permission.permissions
+import permission.model.PermissionState
 import web.navigator.navigator
 import web.permissions.PermissionName
-import web.permissions.PermissionState as WebPermissionState
 import web.permissions.camera
 import web.permissions.geolocation
 import web.permissions.granted
@@ -22,6 +29,7 @@ import web.permissions.persistentStorage
 import web.permissions.push
 import web.permissions.query
 import web.permissions.storageAccess
+import web.permissions.PermissionState as WebPermissionState
 
 private val PERMISSIONS = listOf(
     listOf(Permission.CAMERA) to listOf(PermissionName.camera),
