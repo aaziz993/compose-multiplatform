@@ -132,11 +132,11 @@ script:
             androidHostTest.dependsOn(jvmAndroidTest)
             androidDeviceTest.dependsOn(jvmAndroidTest)
 
-            val iosMain by getting
-            val iosTest by getting
+            val androidIosMain by getting
+            val androidIosTest by getting
 
-            androidMain.dependsOn(iosMain)
-            androidHostTest.dependsOn(iosTest)
-            androidDeviceTest.dependsOn(iosTest)
+            androidMain.dependsOn(androidIosMain)
+            androidHostTest.dependsOn(androidIosTest)
+            androidDeviceTest.dependsOn(androidIosTest)
           }
         }
