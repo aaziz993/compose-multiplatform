@@ -29,8 +29,12 @@ import kotlinx.serialization.Serializable
 import presentation.components.model.item.NavigationItem
 import kotlin.collections.Map as MAP
 
+@Serializable
 public sealed interface Destination {
-    public data object NavGraph : Destination{
+
+    @Serializable
+    public data object NavGraph : Destination {
+
         public val deepLinks: List<String> = listOf("https://", "http://")
     }
 

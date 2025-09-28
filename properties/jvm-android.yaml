@@ -6,6 +6,7 @@ script:
               sourceSet.dependencies {
                 implementation(libs["bridj"])
                 implementation(libs.bundles("kotlin.scripting"))
+                implementation(kotlin("reflect"))
                 implementation(libs["reflections"])
                 implementation(libs["jackcess"])
                 implementation(libs.bundles("apache.commons"))

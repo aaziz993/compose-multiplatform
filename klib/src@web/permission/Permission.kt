@@ -17,4 +17,4 @@ public external interface Permissions : JsAny {
 }
 
 @Suppress("UNCHECKED_CAST")
-public fun permissions(): Promise<Permissions> = js("browser.permissions.getAll()") as Promise<Permissions>
+public fun permissions(): Promise<Permissions> = js("browser.permissions.getAll()")
