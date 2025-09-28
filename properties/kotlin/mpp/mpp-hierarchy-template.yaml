@@ -5,7 +5,7 @@ script:
           common {
             group("jvmAndroid") {
               withJvm()
-              withAndroidTarget()
+              withAndroidTarget("jvmAndroid")
             }
             group("ios") {
               withIos()
@@ -44,7 +44,7 @@ script:
               group("web")
             }
             group("androidIos") {
-              withAndroidTarget()
+              withAndroidTarget("androidIos")
               group("ios")
             }
             group("androidIosWeb") {
@@ -114,29 +114,5 @@ script:
               group("jvmAndroid")
               group("native")
             }
-          }
-        }
-
-      sourceSets.apply: |
-        {
-          // Trick to integrate androidTarget with default hierarchy template when used new android kotlin multiplatform library plugin.
-          pluginManager.withPlugin("com.android.kotlin.multiplatform.library") {
-            val androidMain by getting
-            val androidHostTest by getting
-            val androidDeviceTest by getting
-
-            val jvmAndroidMain by getting
-            val jvmAndroidTest by getting
-
-            androidMain.dependsOn(jvmAndroidMain)
-            androidHostTest.dependsOn(jvmAndroidTest)
-            androidDeviceTest.dependsOn(jvmAndroidTest)
-
-            val androidIosMain by getting
-            val androidIosTest by getting
-
-            androidMain.dependsOn(androidIosMain)
-            androidHostTest.dependsOn(androidIosTest)
-            androidDeviceTest.dependsOn(androidIosTest)
           }
         }

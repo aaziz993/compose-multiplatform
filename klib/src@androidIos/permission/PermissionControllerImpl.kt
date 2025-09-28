@@ -8,7 +8,8 @@ import permission.model.PermissionState
 import permission.model.Permission
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
-import dev.icerock.moko.permissions.PermissionState
+import dev.icerock.moko.permissions.PermissionState as MonoPermissionState
+import dev.icerock.moko.permissions.Permission as MonoPermission
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.RequestCanceledException
 import dev.icerock.moko.permissions.bluetooth.BluetoothAdvertisePermission
@@ -28,14 +29,14 @@ import dev.icerock.moko.permissions.storage.StoragePermission
 import dev.icerock.moko.permissions.storage.WriteStoragePermission
 
 private val PERMISSION_STATES = mapOf(
-    PermissionState.NotDetermined to PermissionState.NOT_DETERMINED,
-    PermissionState.NotGranted to PermissionState.NOT_GRANTED,
-    PermissionState.Granted to PermissionState.GRANTED,
-    PermissionState.Denied to PermissionState.DENIED,
-    PermissionState.DeniedAlways to PermissionState.DENIED_ALWAYS,
+    MonoPermissionState.NotDetermined to PermissionState.NOT_DETERMINED,
+    MonoPermissionState.NotGranted to PermissionState.NOT_GRANTED,
+    MonoPermissionState.Granted to PermissionState.GRANTED,
+    MonoPermissionState.Denied to PermissionState.DENIED,
+    MonoPermissionState.DeniedAlways to PermissionState.DENIED_ALWAYS,
 )
 
-private val PERMISSIONS: Map<Permission, Permission> =
+private val PERMISSIONS: Map<Permission, MonoPermission> =
     mapOf(
         Permission.CAMERA to CameraPermission,
         Permission.GALLERY to GalleryPermission,
