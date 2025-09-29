@@ -8,6 +8,12 @@ script:
   - kotlin:
       wasmJs: |
         {
+          compilerOptions {
+            freeCompilerArgs.addAll(
+              // With the compiler option enabled, an IndexOutOfBoundsException is thrown instead of a trap.
+              "-Xwasm-enable-array-range-checks",
+            )
+          }
           browser()
           nodejs()
         }

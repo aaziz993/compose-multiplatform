@@ -20,6 +20,7 @@ script:
                   "-Xexport-kdoc",
                   "-Xallocator=custom",
                   "-Xadd-light-debug=enable",
+                  "-Xbinary=preCodegenInlineThreshold=40",
                   "-Xbinary=bundleId=${project.group}.${project.name}",
                 )
               }

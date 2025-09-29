@@ -1,8 +1,8 @@
 package klib.data.database.mdb
 
-import kotlinx.io.IOException
 import kotlinx.io.RawSource
 import kotlinx.io.Sink
+import kotlinx.io.IOException
 
 /**
  * Extensions of the Blob interface with additional functionality for working
@@ -83,7 +83,7 @@ public expect class OleBlob {
     @Throws(IOException::class)
     public fun writeTo(out: Sink)
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val content: Content
 }
 
@@ -104,13 +104,13 @@ public interface Content {
  * Intermediate sub-interface for Content which has a nested package.
  */
 public interface PackageContent : Content {
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val prettyName: String
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val className: String
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val typeName: String
 }
 
@@ -120,7 +120,7 @@ public interface PackageContent : Content {
 public interface EmbeddedContent : Content {
     public val length: Long
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val source: RawSource
 }
 
@@ -136,7 +136,7 @@ public interface LinkContent : PackageContent {
 
     public val filePath: String
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val linkSource: RawSource
 }
 
@@ -172,7 +172,7 @@ public interface CompoundContent : PackageContent, EmbeddedContent, Iterable<Com
     @Throws(IOException::class)
     public fun hasContentsEntry(): Boolean
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val contentsEntry: Entry
 
     /**

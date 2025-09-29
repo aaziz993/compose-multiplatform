@@ -68,7 +68,6 @@ public actual class Column(public val column: com.healthmarketscience.jackcess.C
             ?.let(::ComplexColumnInfo)
 
     public actual val properties: PropertyMap
-        @Throws(IOException::class)
         get() = PropertyMap(column.properties)
 
     public actual val versionHistoryColumn: Column

@@ -3,7 +3,6 @@ script:
       - id: (libs.plugins("kotlin.multiplatform").pluginId)
   - kotlin:
       sourceSets:
-        # Common.
         - named: |
             ("commonMain") { sourceSet ->
               // Ksp generated source directory.

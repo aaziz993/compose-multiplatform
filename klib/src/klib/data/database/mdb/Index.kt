@@ -1,6 +1,6 @@
 package klib.data.database.mdb
 
-import kotlinx.io.IOException
+// import kotlinx.io.IOException
 
 /**
  * Access database index definition.  A [Table] has a list of Index
@@ -42,7 +42,7 @@ public expect class Index
      * @return the Index referenced by this Index's ForeignKeyReference (if it
      * has one), otherwise `null`.
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val referencedIndex: Index
 
     /**

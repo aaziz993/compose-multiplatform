@@ -50,7 +50,7 @@ public expect class Database(
      * @return The names of all of the user tables
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val tableNames: Set<String>
 
     /**
@@ -60,7 +60,7 @@ public expect class Database(
      * directly!*.
      * @usage _intermediate_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val systemTableNames: Set<String>
 
     /**
@@ -112,7 +112,7 @@ public expect class Database(
      * database which could cause memory issues.
      * @usage _intermediate_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val relationships: List<Relationship>
 
     /**
@@ -124,14 +124,14 @@ public expect class Database(
      * database which could cause memory issues.
      * @usage _intermediate_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val systemRelationships: List<Relationship>
 
     /**
      * Finds all the queries in the database.
      * @usage _intermediate_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val queries: List<Query>
 
     /**
@@ -155,28 +155,28 @@ public expect class Database(
      * @return the core properties for the database
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val databaseProperties: PropertyMap
 
     /**
      * @return the summary properties for the database
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val summaryProperties: PropertyMap
 
     /**
      * @return the user-defined properties for the database
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val userDefinedProperties: PropertyMap
 
     /**
      * @return the current database password, or `null` if none set.
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val databasePassword: String?
 
     /**
@@ -296,7 +296,7 @@ public expect class Database(
      * @throws IllegalStateException if the file format cannot be determined
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val fileFormat: FileFormat
 
     /**

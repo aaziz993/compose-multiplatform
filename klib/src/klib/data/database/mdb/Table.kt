@@ -75,7 +75,7 @@ public expect class Table(
      * @return the properties for this table
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val properties: PropertyMap
 
     /**

@@ -1,7 +1,7 @@
 package klib.data.database.mdb
 
 import kotlinx.datetime.LocalDateTime
-import kotlinx.io.IOException
+// import kotlinx.io.IOException
 
 /**
  * The definition of a single database table.  A TableDefinition instance is
@@ -55,14 +55,14 @@ public expect class TableDefinition {
      * @return the properties for this table
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val properties: PropertyMap
 
     /**
      * @return the created date for this table if available
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val createdDate: LocalDateTime
 
     /**
@@ -72,7 +72,7 @@ public expect class TableDefinition {
      * @return the last updated date for this table if available
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val updatedDate: LocalDateTime
 
     /**

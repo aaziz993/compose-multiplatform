@@ -17,7 +17,7 @@ package klib.data.database.mdb
 
 import klib.data.database.mdb.complex.ComplexColumnInfo
 import klib.data.database.mdb.complex.ComplexValue
-import kotlinx.io.IOException
+// import kotlinx.io.IOException
 
 /**
  * Access database column definition.  A [com.healthmarketscience.jackcess.Table] has a list of Column
@@ -134,9 +134,8 @@ public expect class Column(
      * @return the properties for this column
      * @usage _general_method_
      */
+    // @get:Throws(IOException::class)
     public val properties: PropertyMap
-        @Throws(IOException::class)
-        get
 
     /**
      * Returns the column which tracks the version history for an "append only"

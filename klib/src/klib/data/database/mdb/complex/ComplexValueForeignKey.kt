@@ -34,19 +34,19 @@ public expect class ComplexValueForeignKey(
     @Throws(IOException::class)
     public fun countValues(): Int
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val values: List<ComplexValue>
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val versions: List<Version>
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val attachments: List<Attachment>
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val multiValues: List<SingleValue>
 
-    @get:Throws(IOException::class)
+    // @get:Throws(IOException::class)
     public val unsupportedValues: List<UnsupportedValue>
 
     public fun reset()
