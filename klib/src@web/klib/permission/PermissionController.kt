@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalWasmJsInterop::class)
 
-package permission
+package klib.permission
 
 import js.objects.unsafeJso
 import klib.data.type.await

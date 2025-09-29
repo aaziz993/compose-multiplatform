@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalWasmJsInterop::class)
 
-package permission
+package klib.permission
 
 import js.objects.JsPlainObject
 import kotlin.js.ExperimentalWasmJsInterop

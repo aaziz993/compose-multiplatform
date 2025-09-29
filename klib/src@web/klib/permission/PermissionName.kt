@@ -1,4 +1,4 @@
-package permission
+package klib.permission
 
 import js.reflect.unsafeCast
 import web.permissions.PermissionName
