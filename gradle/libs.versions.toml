@@ -119,7 +119,7 @@ logback-classic = "1.5.18"
 # cinterop.
 bridj = "0.7.0"
 # apache commons.
-commons-lang3 = "3.18.0"
+commons-lang3 = "3.19.0"
 commons-beanutils = "1.11.0"
 commons-net = "3.12.0"
 # access class members.
@@ -253,11 +253,11 @@ multiplatform-settings = "1.3.0"
 # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
 sqldelight = "2.1.0"
 # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
-room = "2.8.0"
+room = "2.8.1"
 # realm database.
 realm = "10.19.0"
 # sqlite.
-androidx-sqlite = "2.6.0"
+androidx-sqlite = "2.6.1"
 # h2 jdbc driver.
 h2 = "2.3.232"
 # sqlite jdbc driver.
@@ -350,7 +350,7 @@ androidx-test-espresso-core = "3.7.0"
 androidx-test-rules = "1.7.0"
 androidx-test-monitor = "1.8.0"
 androidx-arch-core-testing = "2.2.0"
-androidx-ui-test = "1.9.1"
+androidx-ui-test = "1.9.2"
 # tooling.
 desugar = "2.1.5"
 compose-lint-checks = "1.4.2"
@@ -798,7 +798,6 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 # knit.
 kotlinx-knit-test = { module = "org.jetbrains.kotlinx:kotlinx-knit-test", version.ref = "knit" }
-
 
 ##Android.
 # gradle plugin.

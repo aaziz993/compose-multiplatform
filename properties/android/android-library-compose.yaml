@@ -1,9 +1,2 @@
-script:
-  - kotlin:
-      sourceSets:
-        - named:
-            ("androidMain") { sourceSet ->
-              sourceSet.dependencies {
-                implementation(composeLibs.preview)
-              }
-            }
+imports:
+  - android-compose.yaml

@@ -16,6 +16,7 @@ import gradle.plugins.kotlin.targets.web.WebPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
+import gradle.plugins.sqldelight.SqlDelightPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -34,6 +35,7 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(DokkaPlugin::class.java)
             pluginManager.apply(KnitPlugin::class.java)
             pluginManager.apply(ApiValidationPlugin::class.java)
+            pluginManager.apply(SqlDelightPlugin ::class.java)
             pluginManager.apply(MPPPlugin::class.java)
             pluginManager.apply(AndroidPlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)
