@@ -61,7 +61,19 @@ script:
         - named: |
             ("webMain") { sourceSet ->
               sourceSet.dependencies {
+                implementation(libs["seskar"])
                 implementation(libs("kotlinWrappers")["browser"])
+                implementation(libs["compass.geolocation.browser"])
+                implementation(libs("ktor")["client.js"])
+                implementation(libs["kstore.storage"])
+                implementation(libs["sqldelight.web.worker.driver"])
+                implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone").requiredVersion))
+                implementation(npm("@cashapp/sqldelight-sqljs-worker", libs.versions("sqldelight").requiredVersion))
+                implementation(npm("sql.js", libs.versions("npm.sql.js").requiredVersion))
+                implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin").requiredVersion))
+                implementation(npm("openpgp", libs.versions("npm.openpgp").requiredVersion))
+                implementation(npm("pako", libs.versions("npm.pako").requiredVersion))
+                implementation(npm("puppeteer", libs.versions("npm.puppeteer").requiredVersion))
               }
             }
   - tasks:

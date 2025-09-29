@@ -1,25 +1,25 @@
-CREATE TABLE IF NOT EXISTS KV (key TEXT NOT NULL, value TEXT);
+CREATE TABLE IF NOT EXISTS KeyValue (key TEXT NOT NULL, value TEXT);
 
 insert:
-INSERT INTO KV(key,value) VALUES(?, ?);
+INSERT INTO KeyValue(key,value) VALUES(?, ?);
 
 select:
-SELECT KV.* FROM KV WHERE key = ?;
+SELECT KeyValue.* FROM KeyValue WHERE key = ?;
 
 selectAll:
-SELECT KV.* FROM KV;
+SELECT KeyValue.* FROM KeyValue;
 
 delete:
-DELETE FROM KV WHERE key = ?;
+DELETE FROM KeyValue WHERE key = ?;
 
 deleteLike:
-DELETE FROM KV WHERE key LIKE ?;
+DELETE FROM KeyValue WHERE key LIKE ?;
 
 deleteAll:
-DELETE FROM KV;
+DELETE FROM KeyValue;
 
 exists:
-SELECT EXISTS(SELECT 1 FROM KV WHERE key=? LIMIT 1);
+SELECT EXISTS(SELECT 1 FROM KeyValue WHERE key=? LIMIT 1);
 
 count:
-SELECT COUNT(*) FROM KV;
+SELECT COUNT(*) FROM KeyValue;

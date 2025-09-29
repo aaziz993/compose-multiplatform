@@ -35,3 +35,11 @@ script:
                   testRun.setExecutionSourceFrom(binaries.getTest(NativeBuildType.RELEASE))
               }
             }
+      sourceSets:
+        - named: |
+            ("nativeMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs["cryptography.provider.openssl3"])
+                implementation(libs["sqldelight.native.driver"])
+              }
+            }

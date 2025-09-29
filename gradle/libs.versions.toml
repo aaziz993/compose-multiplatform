@@ -369,6 +369,7 @@ seskar = "4.20.0"
 # converter of TypeScript declaration files to Kotlin declarations.
 karakum = "1.0.0-alpha.76"
 npm-js-joda-timezone = "2.22.0"
+npm-sql-js = "1.13.0"
 npm-copy-webpack-plugin = "13.0.1"
 npm-encoding-japanese = "2.2.0"
 npm-encoding-japanese-types = "v2.0.5"
