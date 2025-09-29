@@ -1,4 +1,3 @@
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.NavController
 import androidx.navigation.bindToBrowserNavigation
@@ -8,7 +7,6 @@ import data.type.favicon
 import org.jetbrains.compose.resources.getString
 import web.dom.document
 
-@OptIn(ExperimentalComposeUiApi::class)
 public suspend fun main() {
     document.favicon(Res.getUri("drawable/compose-multiplatform.svg"), "image/svg+xml")
     document.title = getString(Res.string.app_name)

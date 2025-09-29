@@ -12,7 +12,6 @@ script:
         optIn.addAll: |
           (
             "androidx.compose.ui.ExperimentalComposeUiApi",
-            "androidx.navigation.ExperimentalBrowserHistoryApi",
             "org.jetbrains.compose.resources.InternalResourceApi",
           )
       sourceSets:

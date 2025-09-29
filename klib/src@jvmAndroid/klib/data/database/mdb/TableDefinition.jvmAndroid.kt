@@ -1,11 +1,14 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.TableDefinition
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class TableDefinition(public val tableDefinition: TableDefinition) {
+
     public actual val name: String
         get() = tableDefinition.name
 

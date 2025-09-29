@@ -135,4 +135,4 @@ public fun NavScreen(
 
 @Preview
 @Composable
-public fun PreviewNavScreen() = NavScreen()
+public fun PreviewNavScreen(): Unit = NavScreen()

@@ -1,9 +1,12 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb
 
 import klib.data.type.collections.bimap.biMapOf
 import kotlinx.io.IOException
 
 public actual class TableMetaData(public val tableMetadata: com.healthmarketscience.jackcess.TableMetaData) {
+
     public actual val type: TableType
         get() = TYPE_MAP[tableMetadata.type]!!
 
@@ -25,16 +28,19 @@ public actual class TableMetaData(public val tableMetadata: com.healthmarketscie
     public actual val connectionName: String
         get() = tableMetadata.connectionName
 
+    @Throws(IOException::class)
     public actual fun open(db: Database): Table = Table(tableMetadata.open(db.database))
 
+    @Throws(IOException::class)
     public actual fun getTableDefinition(db: Database): TableDefinition =
         TableDefinition(tableMetadata.getTableDefinition(db.database))
 
     public companion object {
+
         internal val TYPE_MAP = biMapOf(
             com.healthmarketscience.jackcess.TableMetaData.Type.LOCAL to TableType.LOCAL,
             com.healthmarketscience.jackcess.TableMetaData.Type.LINKED to TableType.LINKED,
-            com.healthmarketscience.jackcess.TableMetaData.Type.LINKED_ODBC to TableType.LINKED_ODBC
+            com.healthmarketscience.jackcess.TableMetaData.Type.LINKED_ODBC to TableType.LINKED_ODBC,
         )
     }
 }

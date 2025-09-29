@@ -1,13 +1,15 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb.complex
 
 import klib.data.database.mdb.Row
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class ComplexColumnInfo<V : ComplexValue>(
     private val complexColumnInfo: com.healthmarketscience.jackcess.complex.ComplexColumnInfo<com.healthmarketscience.jackcess.complex.ComplexValue>
 ) {
     public actual val type: ComplexDataType
-        get() = COMPLEX_DATA_TYPE_MAP[complexColumnInfo.type]!!
+        get() = COMPLEX_DATA_TYPES[complexColumnInfo.type]!!
 
     @Throws(IOException::class)
     public actual fun countValues(complexValueFk: Int): Int = complexColumnInfo.countValues(complexValueFk)

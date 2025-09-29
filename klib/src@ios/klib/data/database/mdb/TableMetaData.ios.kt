@@ -1,6 +1,6 @@
 package klib.data.database.mdb
 
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class TableMetaData {
     public actual val type: TableType
@@ -18,12 +18,12 @@ public actual class TableMetaData {
     public actual val connectionName: String
         get() = TODO("Not yet implemented")
 
-    @Throws(exceptionClasses = [IOException::class])
+    @Throws(IOException::class)
     public actual fun open(db: Database): Table {
         TODO("Not yet implemented")
     }
 
-    @Throws(exceptionClasses = [IOException::class])
+    @Throws(IOException::class)
     public actual fun getTableDefinition(db: Database): TableDefinition {
         TODO("Not yet implemented")
     }

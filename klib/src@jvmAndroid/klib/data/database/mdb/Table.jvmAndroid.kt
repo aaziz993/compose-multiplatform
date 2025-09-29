@@ -1,10 +1,12 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.TableBuilder
 import klib.data.type.collections.bimap.biMapOf
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class Table(public val table: com.healthmarketscience.jackcess.Table) : Iterable<Row> {
     public actual constructor(name: String, escapeIdentifiers: Boolean, database: Database) :
@@ -38,7 +40,7 @@ public actual class Table(public val table: com.healthmarketscience.jackcess.Tab
         get() = table.columns.map(::Column)
 
     public actual val properties: PropertyMap
-        @Throws(IOException::class)
+        // @Throws(IOException::class)
         get() = PropertyMap(table.properties)
 
     public actual val createdDate: LocalDateTime

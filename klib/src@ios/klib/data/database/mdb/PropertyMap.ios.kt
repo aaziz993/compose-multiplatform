@@ -1,6 +1,6 @@
 package klib.data.database.mdb
 
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class PropertyMap public actual constructor(
     name: String,
@@ -54,7 +54,7 @@ public actual class PropertyMap public actual constructor(
         TODO("Not yet implemented")
     }
 
-    @Throws(exceptionClasses = [IOException::class])
+    @Throws(IOException::class)
     public actual fun save() {
     }
 

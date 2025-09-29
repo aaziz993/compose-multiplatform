@@ -1,15 +1,16 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.impl.PropertyMapImpl
 import com.healthmarketscience.jackcess.impl.TableImpl
-import okio.IOException
-
+import kotlinx.io.IOException
 
 public actual class PropertyMap(public val propertyMap: com.healthmarketscience.jackcess.PropertyMap) :
     Iterable<Property> {
 
-     public actual constructor(name: String, type: Short, owner: Table) :
-            this(PropertyMapImpl(name, type, (owner.table as TableImpl).propertyMaps))
+    public actual constructor(name: String, type: Short, owner: Table) :
+        this(PropertyMapImpl(name, type, (owner.table as TableImpl).propertyMaps))
 
     public actual val name: String
         get() = propertyMap.name
@@ -28,13 +29,13 @@ public actual class PropertyMap(public val propertyMap: com.healthmarketscience.
     public actual fun put(name: String, value: Any): Property = Property(propertyMap.put(name, value))
 
     public actual fun put(name: String, type: DataType, value: Any): Property =
-        Property(propertyMap.put(name, DATA_TYPE_MAP.inverse[type], value))
+        Property(propertyMap.put(name, DATA_TYPES.inverse[type], value))
 
     public actual fun put(name: String, type: DataType, value: Any, isDdl: Boolean): Property =
-        Property(propertyMap.put(name, DATA_TYPE_MAP.inverse[type], value, isDdl))
+        Property(propertyMap.put(name, DATA_TYPES.inverse[type], value, isDdl))
 
     public actual fun putAll(props: Iterable<Property>): Unit = propertyMap.putAll(
-        props.map(Property::property)
+        props.map(Property::property),
     )
 
     public actual fun remove(name: String): Property = Property(propertyMap.remove(name))
@@ -57,17 +58,17 @@ public actual class Property(public val property: com.healthmarketscience.jackce
     ) : this(
         PropertyMapImpl.createProperty(
             name,
-            DATA_TYPE_MAP.inverse[type],
+            DATA_TYPES.inverse[type],
             value,
-            isDdl
-        )
+            isDdl,
+        ),
     )
 
     public actual val name: String
         get() = property.name
 
     public actual val type: DataType
-        get() = DATA_TYPE_MAP[property.type]!!
+        get() = DATA_TYPES[property.type]!!
 
     public actual val isDdl: Boolean
         get() = property.isDdl

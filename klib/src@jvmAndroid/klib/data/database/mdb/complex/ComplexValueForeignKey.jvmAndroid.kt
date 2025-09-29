@@ -5,7 +5,7 @@ import com.healthmarketscience.jackcess.impl.complex.ComplexValueForeignKeyImpl
 import klib.data.database.mdb.Column
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class ComplexValueForeignKey(
     public val complexValueFk: com.healthmarketscience.jackcess.complex.ComplexValueForeignKey
@@ -20,7 +20,7 @@ public actual class ComplexValueForeignKey(
     public actual val value: Int
         get() = complexValueFk.get()
 
-    public actual val complexType: ComplexDataType = COMPLEX_DATA_TYPE_MAP[complexValueFk.complexType]!!
+    public actual val complexType: ComplexDataType = COMPLEX_DATA_TYPES[complexValueFk.complexType]!!
 
     @Throws(IOException::class)
     public actual fun countValues(): Int = complexValueFk.countValues()

@@ -3,6 +3,7 @@ package klib.data.database.mdb
 import klib.data.database.mdb.query.Query
 import klib.data.type.primitives.string.Charset
 import kotlinx.datetime.TimeZone
+import kotlinx.io.IOException
 
 public actual class Database public actual constructor(
     path: String,
@@ -12,6 +13,7 @@ public actual class Database public actual constructor(
     ignoreBrokenSystemCatalogIndex: Boolean?,
     timeZone: TimeZone?
 ) : Iterable<Table>, AutoCloseable {
+
     public actual val path: String
         get() = TODO("Not yet implemented")
     public actual val tableNames: Set<String>
@@ -23,16 +25,13 @@ public actual class Database public actual constructor(
         TODO("Not yet implemented")
     }
 
-
     public actual fun getTable(name: String): Table {
         TODO("Not yet implemented")
     }
 
-
     public actual fun getTableMetaData(name: String): TableMetaData {
         TODO("Not yet implemented")
     }
-
 
     public actual fun getRelationships(
         table1: Table,
@@ -40,7 +39,6 @@ public actual class Database public actual constructor(
     ): List<Relationship> {
         TODO("Not yet implemented")
     }
-
 
     public actual fun getRelationships(table: Table): List<Relationship> {
         TODO("Not yet implemented")
@@ -52,7 +50,6 @@ public actual class Database public actual constructor(
         get() = TODO("Not yet implemented")
     public actual val queries: List<Query>
         get() = TODO("Not yet implemented")
-
 
     public actual fun getSystemTable(tableName: String): Table {
         TODO("Not yet implemented")
@@ -67,14 +64,11 @@ public actual class Database public actual constructor(
     public actual val databasePassword: String?
         get() = TODO("Not yet implemented")
 
-
     public actual fun createLinkedTable(name: String, linkedDbName: String, linkedTableName: String) {
     }
 
-
     public actual fun flush() {
     }
-
 
     public actual override fun close() {
     }
@@ -85,7 +79,6 @@ public actual class Database public actual constructor(
     public actual var linkResolver: LinkResolver
         get() = TODO("Not yet implemented")
         set(value) {}
-
 
     public actual fun isLinkedTable(table: Table): Boolean {
         TODO("Not yet implemented")

@@ -1,3 +1,5 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.Row
@@ -7,7 +9,7 @@ import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import klib.data.database.mdb.complex.ComplexValueForeignKey
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class Row(public val row: Row) : MutableMap<String, Any?> by row {
     public actual constructor(rowId: RowId) : this(RowImpl(rowId.rowId))

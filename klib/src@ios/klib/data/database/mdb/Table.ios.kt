@@ -1,7 +1,7 @@
 package klib.data.database.mdb
 
 import kotlinx.datetime.LocalDateTime
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class Table public actual constructor(
     name: String,
@@ -51,7 +51,7 @@ public actual class Table public actual constructor(
         TODO("Not yet implemented")
     }
 
-    @Throws(exceptionClasses = [IOException::class])
+    @Throws(IOException::class)
     public actual fun addRowsFromMaps(rows: List<Map<String, Any?>>): List<Map<String, Any?>> {
         TODO("Not yet implemented")
     }

@@ -2,7 +2,7 @@ package klib.data.database.mdb
 
 import klib.data.type.collections.bimap.biMapOf
 
-internal val DATA_TYPE_MAP = biMapOf(
+internal val DATA_TYPES = biMapOf(
     com.healthmarketscience.jackcess.DataType.BOOLEAN to DataType.BOOLEAN,
     com.healthmarketscience.jackcess.DataType.BYTE to DataType.BYTE,
     com.healthmarketscience.jackcess.DataType.INT to DataType.INT,

@@ -1,3 +1,5 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb
 
 import com.fleeksoft.io.kotlinx.asSource
@@ -10,7 +12,7 @@ import kotlinx.io.asOutputStream
 
 public actual class OleBlob(public val oleBlob: com.healthmarketscience.jackcess.util.OleBlob) {
 
-    @Throws(exceptionClasses = [IOException::class])
+    @Throws(IOException::class)
     public actual fun writeTo(out: Sink): Unit = oleBlob.writeTo(out.asOutputStream())
 
     public actual val content: Content = when (val content = oleBlob.content) {

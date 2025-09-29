@@ -4,7 +4,7 @@ import kotlinx.io.IOException
 import kotlinx.io.Sink
 
 public actual class OleBlob {
-    @Throws(exceptionClasses = [IOException::class])
+    @Throws(IOException::class)
     public actual fun writeTo(out: Sink) {
     }
 

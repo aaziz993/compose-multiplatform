@@ -1,3 +1,5 @@
+@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
+
 package klib.data.database.mdb
 
 import com.healthmarketscience.jackcess.Database
@@ -29,7 +31,7 @@ import klib.data.type.functions.tryInvoke
 import klib.data.type.primitives.string.Charset
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaZoneId
-import okio.IOException
+import kotlinx.io.IOException
 
 public actual class Database(public val database: Database) :
     Iterable<Table>, AutoCloseable {
@@ -74,12 +76,12 @@ public actual class Database(public val database: Database) :
 
     @Throws(IOException::class)
     public actual fun getRelationships(table1: Table, table2: Table): List<Relationship> =
-        database.getRelationships((table1 as Table).table, (table2 as Table).table)
+        database.getRelationships(table1.table, table2.table)
             .map(::Relationship)
 
     @Throws(IOException::class)
     public actual fun getRelationships(table: Table): List<Relationship> =
-        database.getRelationships((table as Table).table).map(::Relationship)
+        database.getRelationships(table.table).map(::Relationship)
 
     public actual val relationships: List<Relationship>
         get() = database.relationships.map(::Relationship)
@@ -146,7 +148,7 @@ public actual class Database(public val database: Database) :
         }
 
     @Throws(IOException::class)
-    public actual fun isLinkedTable(table: Table): Boolean = database.isLinkedTable((table as Table).table)
+    public actual fun isLinkedTable(table: Table): Boolean = database.isLinkedTable(table.table)
 
     public actual var timeZone: TimeZone
         get() = TimeZone.of(database.timeZone.toZoneId().id)
@@ -194,7 +196,6 @@ public actual class Database(public val database: Database) :
         @Throws(IOException::class)
         get() = FILE_FORMAT_MAP[database.fileFormat]!!
 
-    @Throws(IOException::class)
     public actual override fun close(): Unit = database.close()
 
     public companion object {

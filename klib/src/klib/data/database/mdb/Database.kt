@@ -208,7 +208,6 @@ public expect class Database(
      * OutputStream or jdbc Connection).
      * @usage _general_method_
      */
-    @Throws(IOException::class)
     override fun close()
 
     /**

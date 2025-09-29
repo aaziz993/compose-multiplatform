@@ -3,17 +3,16 @@ package klib.data.database.mdb
 import com.healthmarketscience.jackcess.ColumnBuilder
 import klib.data.database.mdb.complex.ComplexColumnInfo
 import klib.data.database.mdb.complex.ComplexValue
-import kotlinx.io.IOException
 
 public actual class Column(public val column: com.healthmarketscience.jackcess.Column) {
     public actual constructor(name: String, type: DataType, table: Table) :
-        this(ColumnBuilder(name, DATA_TYPE_MAP.inverse[type]!!).addToTable(table.table))
+        this(ColumnBuilder(name, DATA_TYPES.inverse[type]!!).addToTable(table.table))
 
     public actual constructor(name: String, type: DataType, tableDefinition: TableDefinition) :
         this(
             ColumnBuilder(
                 name,
-                DATA_TYPE_MAP.inverse[type]!!,
+                DATA_TYPES.inverse[type]!!,
             ).addToTableDefinition(tableDefinition.tableDefinition),
         )
 
@@ -36,7 +35,7 @@ public actual class Column(public val column: com.healthmarketscience.jackcess.C
         get() = column.columnIndex
 
     public actual val type: DataType
-        get() = DATA_TYPE_MAP[column.type]!!
+        get() = DATA_TYPES[column.type]!!
 
     public actual val isCompressedUnicode: Boolean
         get() = column.isCompressedUnicode
