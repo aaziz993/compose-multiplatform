@@ -49,9 +49,9 @@ public class AndroidPlugin : Plugin<Project> {
                         else {
                             val rest = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                            (variants.singleOrNull { variant ->
+                            variants.find { variant ->
                                 rest == "${variant.first()}${variant.drop().joinToString("", transform = String::uppercaseFirstChar)}"
-                            } ?: error(rest)).let { dimension ->
+                            }?.let { dimension ->
                                 if (dimension.first() in ANDROID_APPLICATION_COMPILATIONS) {
                                     "${
                                         if (dimension.first() == KotlinCompilation.TEST_COMPILATION_NAME) "instrumentedTest"
@@ -69,7 +69,7 @@ public class AndroidPlugin : Plugin<Project> {
                                         "${layout.androidVariantDelimiter}${variant.uppercaseFirstChar()}"
                                     }
                                 }"
-                            }.pair()
+                            }?.pair() ?: rest.pair()
                         }
 
                     val targetPart = if (sourceSet.name.startsWith("android") ||
