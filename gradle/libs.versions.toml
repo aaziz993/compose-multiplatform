@@ -346,6 +346,7 @@ androidx-fragment-ktx = "1.8.9"
 androidx-activity = "1.11.0"
 androidx-constraint-layout = "2.2.1"
 androidx-core-ktx = "1.17.0"
+androidx-benchmark-macro = "1.4.1"
 androidx-test-espresso-core = "3.7.0"
 androidx-test-rules = "1.7.0"
 androidx-test-monitor = "1.8.0"
@@ -392,10 +393,11 @@ squircle-shape = "4.0.0"
 # adaptive ui.
 material3-adaptive = "1.1.2"
 androidx-material = "1.13.0"
+haze = "1.6.10"
 # setting ui.
 compose-settings = "2.13.0"
 # repository paging.
-androidx-paging = "3.3.0-alpha02-0.5.1"
+androidx-paging = "3.4.0-alpha04"
 # business logic.
 androidx-lifecycle = "2.9.4"
 # navigation.
@@ -813,6 +815,7 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-material = { module = "com.google.android.material:material", version.ref = "androidx-material" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraint-layout" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidx-benchmark-macro" }
 # testing.
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
@@ -859,15 +862,17 @@ material3-adaptive-navigation-suite = { module = "org.jetbrains.compose.material
 material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3-adaptive" }
 material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "material3-adaptive" }
 material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
+# haze is a library providing a 'glassmorphism' style blur for Compose.
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 # settings ui.
 compose-settings-ui = { module = "com.github.alorma.compose-settings:ui-tiles", version.ref = "compose-settings" }
 compose-settings-ui-extended = { module = "com.github.alorma.compose-settings:ui-tiles-extended", version.ref = "compose-settings" }
 # paging.
-androidx-paging-common = { module = "app.cash.paging:paging-common", version.ref = "androidx-paging" }
-androidx-paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "androidx-paging" }
-androidx-paging-runtime = { module = "app.cash.paging:paging-runtime", version.ref = "androidx-paging" }
-androidx-paging-runtime-uikit = { module = "app.cash.paging:paging-runtime-uikit", version.ref = "androidx-paging" }
-androidx-paging-testing = { module = "app.cash.paging:paging-testing", version.ref = "androidx-paging" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidx-paging" }
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "androidx-paging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
+androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
 # lifecycle.
 androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -1267,9 +1272,9 @@ compose-settings-ui = [
     "compose-settings-ui-extended"
 ]
 # repository paging.
-androidx-paging = [
-    "androidx-paging-common",
-    "androidx-paging-compose",
+androidx-paging-runtime = [
+    "androidx-paging-runtime",
+    "androidx-paging-runtime-ktx",
 ]
 # business logic.
 androidx-lifecycle = [

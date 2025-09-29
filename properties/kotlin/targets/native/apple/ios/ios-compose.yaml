@@ -4,6 +4,6 @@ script:
         - named: |
             ("iosMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs["androidx.paging.runtime.uikit"])
+
               }
             }

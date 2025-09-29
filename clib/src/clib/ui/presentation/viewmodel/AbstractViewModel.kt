@@ -5,9 +5,20 @@ package clib.ui.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.RemoteMediator
+import androidx.paging.cachedIn
 import arrow.core.Either
 import arrow.core.raise.Raise
 import arrow.core.raise.either
+import clib.data.crud.CRUDProjectionRefreshablePager
+import clib.data.crud.CRUDRefreshableMutablePager
+import clib.data.crud.CRUDRefreshablePager
+import clib.data.crud.model.EntityProperty
+import clib.data.crud.mutablePager
+import clib.data.crud.pager
 import clib.data.type.collections.map
 import clib.data.type.collections.restartableflow.OnetimeWhileSubscribed
 import clib.data.type.collections.restartableflow.RestartableMutableStateFlow
@@ -15,6 +26,10 @@ import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.data.type.collections.restartableflow.restartableStateIn
 import clib.ui.presentation.viewmodel.ViewModelState.Success
 import clib.ui.presentation.viewmodel.model.exception.ViewModelStateException
+import klib.data.database.crud.CRUDRepository
+import klib.data.database.crud.model.query.Order
+import klib.data.type.BooleanVariable
+import klib.data.type.Variable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.Job
@@ -64,6 +79,9 @@ public abstract class AbstractViewModel<T : Any>(protected val savedStateHandle:
     protected fun <T, R> StateFlow<T>.map(initialValue: R, transform: suspend (data: T) -> R): StateFlow<R> =
         map(viewModelScope, initialValue, transform)
 
+    protected val <T : Any> Flow<PagingData<T>>.cached: Flow<PagingData<T>>
+        get() = cachedIn(viewModelScope)
+
     protected val <T> Flow<T>.launch: Job
         get() = launchIn(viewModelScope)
 
@@ -89,16 +107,66 @@ public abstract class AbstractViewModel<T : Any>(protected val savedStateHandle:
     ): RestartableMutableStateFlow<ViewModelState<T>> {
         val mutableStateFlow = MutableStateFlow(initialValue)
 
-        val restartableStateFlow = (if (block == null) mutableStateFlow
-        else mutableStateFlow.onStart { mutableStateFlow.update { mutableStateFlow.block(it) } })
-            .viewModelScopeFlow(initialValue, started)
+        val restartableStateFlow = if (block == null) {
+            mutableStateFlow
+        }
+        else {
+            mutableStateFlow.onStart { mutableStateFlow.update { mutableStateFlow.block(it) } }
+        }.viewModelScopeFlow(initialValue, started)
 
-        // final wrapper
         return object : RestartableMutableStateFlow<ViewModelState<T>>, MutableStateFlow<ViewModelState<T>> by mutableStateFlow {
 
             override fun restart() = restartableStateFlow.restart()
         }
     }
+
+    @OptIn(ExperimentalPagingApi::class)
+    protected fun <Value : Any> CRUDRepository<Value>.viewModelPagingFlow(
+        sort: List<Order>? = null,
+        predicate: BooleanVariable? = null,
+        config: PagingConfig = PagingConfig(10),
+        initialKey: Long? = null,
+        remoteMediator: RemoteMediator<Long, Value>? = null,
+        firstItemOffset: Long = 0,
+        disablePrepend: Boolean = false,
+    ): CRUDRefreshablePager<Value> = pager(sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset, disablePrepend)
+
+    @OptIn(ExperimentalPagingApi::class)
+    protected fun <Value : Any> CRUDRepository<Value>.viewModelMutablePager(
+        sort: List<Order>? = null,
+        predicate: BooleanVariable? = null,
+        properties: List<EntityProperty>,
+        getEntityValues: (Value) -> List<String>,
+        createEntity: (Map<String, String>) -> Value,
+        config: PagingConfig = PagingConfig(10),
+        initialKey: Long? = null,
+        remoteMediator: RemoteMediator<Long, Value>? = null,
+        firstItemOffset: Long = 0,
+        disablePrepend: Boolean = false,
+    ): CRUDRefreshableMutablePager<Value> = mutablePager(
+        sort,
+        predicate,
+        properties,
+        getEntityValues,
+        createEntity,
+        config,
+        initialKey,
+        remoteMediator,
+        viewModelScope,
+        firstItemOffset,
+        disablePrepend,
+    )
+
+    @OptIn(ExperimentalPagingApi::class)
+    protected fun CRUDRepository<*>.viewModelPagingFlow(
+        projections: List<Variable>,
+        sort: List<Order>? = null,
+        predicate: BooleanVariable? = null,
+        config: PagingConfig = PagingConfig(10),
+        initialKey: Long? = null,
+        remoteMediator: RemoteMediator<Long, List<Any?>>? = null,
+        firstItemOffset: Long = 0,
+    ): CRUDProjectionRefreshablePager = pager(projections, sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset)
 
     public companion object {
 

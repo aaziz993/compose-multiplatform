@@ -58,6 +58,7 @@ script:
                 implementation(libs.bundles("koin.kotlin.multiplatform"))
                 implementation(libs["semver"])
                 implementation(libs["kotlinx.benchmark.runtime"])
+                implementation(libs["androidx.paging.common"])
                 // implementation(libs.bundles("opentelemetry"))
               }
             }
@@ -68,7 +69,7 @@ script:
                 implementation(kotlin("test-annotations-common"))
                 implementation(libs.bundles("kotest.multiplatform"))
                 implementation(libs["kotlinx.coroutines.test"])
-                // implementation(libs["androidx.paging.testing"])
+                implementation(libs["androidx.paging.testing"])
                 implementation(libs["koin.test"])
               }
             }

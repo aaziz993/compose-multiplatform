@@ -23,6 +23,12 @@ script:
         - named: |
             ("androidInstrumentedTest") { sourceSet ->
               sourceSet.dependencies {
+                implementation(libs["androidx.benchmark.macro"])
+              }
+            }
+        - named: |
+            ("androidInstrumentedTest") { sourceSet ->
+              sourceSet.dependencies {
                 implementation(libs["mockk.android"])
                 implementation(libs["androidx.ui.test.junit4.android"])
               }

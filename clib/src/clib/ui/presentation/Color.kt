@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-public value class Color(public val value: Long) {
+public value class Color(public val value: ULong) {
 
     public fun toColor(): Color = Color(value)
 }

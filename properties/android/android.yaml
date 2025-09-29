@@ -17,6 +17,7 @@ script:
                 implementation(libs["sqldelight.android.driver"])
                 implementation(libs["androidx.room.runtime.android"])
                 implementation(libs["androidx.room.paging"])
+                implementation(libs.bundles("androidx.paging.runtime"))
               }
             }
   - dependencies:

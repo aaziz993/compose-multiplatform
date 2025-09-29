@@ -32,6 +32,11 @@ public infix fun <E> MutableCollection<E>.updateAll(elements: Iterable<E>): Bool
 public infix fun <E> MutableCollection<E>.tryUpdateAll(elements: Iterable<E>?): Boolean? =
     elements?.let(::updateAll)
 
+public fun <T> MutableCollection<T>.replaceWith(src: Collection<T>) {
+    clear()
+    addAll(src)
+}
+
 public inline fun <E> MutableCollection<E>.removeFirstOrNull(predicate: (E) -> Boolean): E? {
     val iterator = iterator()
 
