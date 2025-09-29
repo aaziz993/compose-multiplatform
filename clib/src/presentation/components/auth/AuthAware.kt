@@ -1,8 +1,8 @@
 package presentation.components.auth
 
 import androidx.compose.runtime.Composable
-import auth.AuthResource
-import auth.User
+import klib.data.type.auth.AuthResource
+import klib.data.type.auth.User
 
 @Composable
 public inline fun AuthAware(

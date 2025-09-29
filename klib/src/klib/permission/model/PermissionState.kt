@@ -1,4 +1,4 @@
-package permission.model
+package klib.permission.model
 
 public enum class PermissionState {
     UNSUPPORTED,

@@ -14,9 +14,9 @@ import kotlin.collections.listOf
 import kotlin.js.*
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.to
-import permission.exception.PermissionDeniedException
-import permission.model.Permission
-import permission.model.PermissionState
+import klib.permission.exception.PermissionDeniedException
+import klib.permission.model.Permission
+import klib.permission.model.PermissionState
 import web.navigator.navigator
 import web.permissions.PermissionName
 import web.permissions.camera

@@ -7,7 +7,7 @@ import androidx.compose.runtime.remember
 public actual fun rememberPermissionControllerFactory(): PermissionControllerFactory {
     return remember {
         PermissionControllerFactory {
-            PermissionController()
+            klib.permission.PermissionController()
         }
     }
 }

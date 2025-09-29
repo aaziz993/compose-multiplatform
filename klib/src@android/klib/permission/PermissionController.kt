@@ -1,4 +1,4 @@
-package permission
+package klib.permission
 
 import android.content.Context
 import androidx.activity.ComponentActivity

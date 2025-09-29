@@ -1,11 +1,11 @@
-package permission
+package klib.permission
 
-import permission.exception.PermissionDeniedAlwaysException
-import permission.exception.PermissionDeniedException
-import permission.exception.PermissionRequestCanceledException
-import permission.exception.PermissionUnsupportedException
-import permission.model.PermissionState
-import permission.model.Permission
+import klib.permission.exception.PermissionDeniedAlwaysException
+import klib.permission.exception.PermissionDeniedException
+import klib.permission.exception.PermissionRequestCanceledException
+import klib.permission.exception.PermissionUnsupportedException
+import klib.permission.model.PermissionState
+import klib.permission.model.Permission
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.PermissionState as MonoPermissionState

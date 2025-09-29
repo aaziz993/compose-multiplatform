@@ -91,12 +91,19 @@ script:
               buildType.applicationIdSuffix = ".debug"
               buildType.versionNameSuffix = "-DEBUG"
               buildType.buildConfigField("String", "API_URL", "\"https://dev.api.example.com\"")
+              // Specifies a sorted list of fallback build types that the
+              // plugin can try to use when a dependency does not include a
+              // "staging" build type. You may specify as many fallbacks as you
+              // like, and the plugin selects the first build type that's
+              // available in the dependency.
+              buildType.matchingFallbacks += listOf("qa", "release")
             }
         - create: |
             ("staging") { buildType ->
               buildType.applicationIdSuffix = ".staging"
               buildType.versionNameSuffix = "-STAGING"
               buildType.buildConfigField("String", "API_URL", "\"https://staging.api.example.com\"")
+              buildType.matchingFallbacks += listOf("debug", "qa", "release")
             }
       # Specifies the flavor dimensions you want to use. The order in which you
       # list the dimensions determines their priority, from highest to lowest,
@@ -179,4 +186,3 @@ script:
           isIncludeAndroidResources: true
   - dependencies:
       - debugImplementation: (libs["androidx.ui.test.manifest"])
-

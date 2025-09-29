@@ -1,7 +1,7 @@
-package permission
+package klib.permission
 
-import permission.model.Permission
-import permission.model.PermissionState
+import klib.permission.model.Permission
+import klib.permission.model.PermissionState
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 public actual class PermissionController {

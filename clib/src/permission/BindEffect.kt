@@ -1,6 +1,7 @@
 package permission
 
 import androidx.compose.runtime.Composable
+import klib.permission.PermissionController
 
 @Suppress("FunctionName")
 @Composable

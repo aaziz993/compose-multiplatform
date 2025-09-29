@@ -10,7 +10,7 @@ public actual fun rememberPermissionControllerFactory(): PermissionControllerFac
     val context: Context = LocalContext.current
     return remember(context) {
         PermissionControllerFactory {
-            PermissionController(context.applicationContext)
+            klib.permission.PermissionController(context.applicationContext)
         }
     }
 }
