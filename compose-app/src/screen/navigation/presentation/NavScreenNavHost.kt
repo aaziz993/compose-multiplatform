@@ -17,7 +17,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import di.koinViewModel
+import klib.di.koinViewModel
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType

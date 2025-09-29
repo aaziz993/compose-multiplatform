@@ -1,4 +1,4 @@
-//package klib.data.type.serialization.serializers.primitive
+//package klib.data.type.serialization.serializers.primitive//package klib.data.type.serialization.serializers.primitive
 //
 //import diglol.encoding.decodeBase64ToBytes
 //import diglol.encoding.encodeBase64ToString

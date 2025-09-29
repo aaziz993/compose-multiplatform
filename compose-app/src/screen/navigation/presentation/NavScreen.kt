@@ -1,6 +1,6 @@
 package screen.navigation.presentation
 
-import data.type.collections.toLaunchedEffect
+import klib.data.type.collections.toLaunchedEffect
 import presentation.components.dialog.alert.AlertDialog
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

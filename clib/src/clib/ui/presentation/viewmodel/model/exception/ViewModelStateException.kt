@@ -1,0 +1,5 @@
+package clib.ui.presentation.viewmodel.model.exception
+
+public class ViewModelStateException(message: String, cause: Throwable) : Throwable(message, cause) {
+    public constructor(throwable: Throwable) : this(throwable.stackTraceToString(), throwable)
+}
