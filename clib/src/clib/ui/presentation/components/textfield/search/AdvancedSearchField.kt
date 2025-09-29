@@ -86,13 +86,14 @@ public fun AdvancedSearchField(
     ignoreCase: Boolean = false,
     compareMatchers: List<SearchFieldCompare> = listOf(
         SearchFieldCompare.EQUALS,
+        SearchFieldCompare.NOT_EQUALS,
         SearchFieldCompare.LESS_THAN_EQUAL,
         SearchFieldCompare.LESS_THAN,
-        SearchFieldCompare.BETWEEN,
-        SearchFieldCompare.NOT_EQUAL,
         SearchFieldCompare.GREATER_THAN,
         SearchFieldCompare.GREATER_THAN_EQUAL,
-    )): Unit = AdvancedTextField(
+        SearchFieldCompare.BETWEEN,
+    )
+): Unit = AdvancedTextField(
     modifier,
     iconModifier,
     state.query,
@@ -197,13 +198,13 @@ public fun AdvancedSearchField(
 
             Icon(
                 when (state.compareMatch) {
-                    SearchFieldCompare.BETWEEN -> LineAwesomeIcons.MinusSolid
+                    SearchFieldCompare.EQUALS -> LineAwesomeIcons.EqualsSolid
+                    SearchFieldCompare.NOT_EQUALS -> LineAwesomeIcons.NotEqualSolid
                     SearchFieldCompare.LESS_THAN -> LineAwesomeIcons.LessThanSolid
                     SearchFieldCompare.LESS_THAN_EQUAL -> LineAwesomeIcons.LessThanEqualSolid
-                    SearchFieldCompare.EQUALS -> LineAwesomeIcons.EqualsSolid
                     SearchFieldCompare.GREATER_THAN_EQUAL -> LineAwesomeIcons.GreaterThanEqualSolid
                     SearchFieldCompare.GREATER_THAN -> LineAwesomeIcons.GreaterThanSolid
-                    SearchFieldCompare.NOT_EQUAL -> LineAwesomeIcons.NotEqualSolid
+                    SearchFieldCompare.BETWEEN -> LineAwesomeIcons.MinusSolid
                 },
                 null,
                 iconModifier.clickable {

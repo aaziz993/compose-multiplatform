@@ -1,11 +1,11 @@
 package clib.ui.presentation.components.textfield.search.model
 
 public enum class SearchFieldCompare {
-    BETWEEN,
+    EQUALS,
+    NOT_EQUALS,
     LESS_THAN,
     LESS_THAN_EQUAL,
-    EQUALS,
     GREATER_THAN_EQUAL,
     GREATER_THAN,
-    NOT_EQUAL,
+    BETWEEN,
 }

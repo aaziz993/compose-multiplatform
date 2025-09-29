@@ -35,15 +35,14 @@ public class SearchFieldState(
 
     public var compareMatch: SearchFieldCompare by mutableStateOf(compareMatch)
 
-    public val matcher: (String, String) -> Boolean
-        get() = matcher(this@SearchFieldState.matchAll, regexMatch, this@SearchFieldState.ignoreCase).let { m ->
-            if (compareMatch == SearchFieldCompare.NOT_EQUAL) {
-                { s1, s2 -> !m(s1, s2) }
-            }
-            else {
-                m
-            }
+    public fun matcher(): (String, String) -> Boolean = matcher(this@SearchFieldState.matchAll, regexMatch, this@SearchFieldState.ignoreCase).let { m ->
+        if (compareMatch == SearchFieldCompare.NOT_EQUALS) {
+            { s1, s2 -> !m(s1, s2) }
         }
+        else {
+            m
+        }
+    }
 
     public companion object {
 

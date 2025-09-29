@@ -124,10 +124,10 @@ internal fun <T : Any> HeaderRow(
                                 },
                                 singleLine = true,
                                 outlined = true,
-                                matchAll = searchFieldState.compareMatch != SearchFieldCompare.NOT_EQUAL,
+                                matchAll = searchFieldState.compareMatch != SearchFieldCompare.NOT_EQUALS,
                                 regexMatch = false,
-                                ignoreCase = !(searchFieldState.compareMatch == SearchFieldCompare.NOT_EQUAL || searchFieldState.matchAll),
-                                compareMatchers = listOf(SearchFieldCompare.EQUALS, SearchFieldCompare.NOT_EQUAL),
+                                ignoreCase = !(searchFieldState.compareMatch == SearchFieldCompare.NOT_EQUALS || searchFieldState.matchAll),
+                                compareMatchers = listOf(SearchFieldCompare.EQUALS, SearchFieldCompare.NOT_EQUALS),
                             )
 
                             else -> AdvancedSearchField(

@@ -22,7 +22,7 @@ public data class ExposedProperty(
 
     override fun predicate(state: SearchFieldState): BooleanVariable? = when {
         descriptor.primitiveTypeOrNull == typeOf<String>() -> {
-            if (state.compareMatch == SearchFieldCompare.NOT_EQUAL) {
+            if (state.compareMatch == SearchFieldCompare.NOT_EQUALS) {
                 name.f.neq(state.query)
             }
             else if (state.regexMatch) {
@@ -62,7 +62,7 @@ public data class ExposedProperty(
                         SearchFieldCompare.EQUALS -> name.f.eq(it)
                         SearchFieldCompare.LESS_THAN -> name.f.lt(it)
                         SearchFieldCompare.LESS_THAN_EQUAL -> name.f.lte(it)
-                        SearchFieldCompare.NOT_EQUAL -> name.f.neq(it)
+                        SearchFieldCompare.NOT_EQUALS -> name.f.neq(it)
                         else -> throw IllegalStateException()
                     }
                 }
