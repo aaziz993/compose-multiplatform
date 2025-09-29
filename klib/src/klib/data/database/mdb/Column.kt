@@ -35,6 +35,7 @@ public expect class Column(
     type: DataType,
     table: Table,
 ) {
+
     public constructor(
         name: String,
         type: DataType,
@@ -133,8 +134,9 @@ public expect class Column(
      * @return the properties for this column
      * @usage _general_method_
      */
-    @get:Throws(IOException::class)
     public val properties: PropertyMap
+        @Throws(IOException::class)
+        get
 
     /**
      * Returns the column which tracks the version history for an "append only"
