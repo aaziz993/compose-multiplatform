@@ -10,18 +10,8 @@ config:
     - gradle.plugins.kotlin.targets.web.node.*
     - gradle.plugins.kotlin.targets.web.yarn.*
 script:
-  # TODO remove if https://youtrack.jetbrains.com/issue/KT-55701 provides a better
-  - rootProject.plugins.withType<YarnPlugin>: |
-      {
-        rootProject.yarn.yarnLockMismatchReport = YarnLockMismatchReport.WARNING // NONE | FAIL
-        rootProject.yarn.reportNewYarnLock = true
-        rootProject.yarn.yarnLockAutoReplace = true
-      }
-  # TODO Remove when it's fixed https://github.com/antelle/argon2-browser/issues/81
-  - rootProject.plugins.withType<NodeJsRootPlugin>: |
-      {
-        rootProject.nodeJsEnv.version /= "24.7.0"
-      }
+  - plugins:
+      - id: (libs.plugins("seskar").pluginId)
   - kotlin:
       targets:
         - withType<KotlinJsTargetDsl>: |
@@ -64,9 +54,9 @@ script:
                 implementation(libs["seskar"])
                 implementation(libs("kotlinWrappers")["browser"])
                 implementation(libs["compass.geolocation.browser"])
-                implementation(libs("ktor")["client.js"])
                 implementation(libs["kstore.storage"])
                 implementation(libs["sqldelight.web.worker.driver"])
+                implementation(libs("ktor")["client.js"])
                 implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone").requiredVersion))
                 implementation(npm("@cashapp/sqldelight-sqljs-worker", libs.versions("sqldelight").requiredVersion))
                 implementation(npm("sql.js", libs.versions("npm.sql.js").requiredVersion))
@@ -76,6 +66,18 @@ script:
                 implementation(npm("puppeteer", libs.versions("npm.puppeteer").requiredVersion))
               }
             }
+  # TODO remove if https://youtrack.jetbrains.com/issue/KT-55701 provides a better
+  - rootProject.plugins.withType<YarnPlugin>: |
+      {
+        rootProject.yarn.yarnLockMismatchReport = YarnLockMismatchReport.WARNING // NONE | FAIL
+        rootProject.yarn.reportNewYarnLock = true
+        rootProject.yarn.yarnLockAutoReplace = true
+      }
+  # TODO Remove when it's fixed https://github.com/antelle/argon2-browser/issues/81
+  - rootProject.plugins.withType<NodeJsRootPlugin>: |
+      {
+        rootProject.nodeJsEnv.version /= "24.7.0"
+      }
   - tasks:
       - withType<KotlinNpmInstallTask>: |
           {
