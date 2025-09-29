@@ -1,5 +1,3 @@
-@file:Suppress("OPTIONAL_DECLARATION_USAGE_IN_NON_COMMON_SOURCE")
-
 package klib.data.database.mdb.complex
 
 import klib.data.database.mdb.Row

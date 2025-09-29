@@ -1,4 +1,5 @@
 @file:JvmName("KClass_jvm")
+
 package klib.data.type.reflection
 
 import java.lang.reflect.Method
@@ -175,7 +176,9 @@ public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> 
                 }.forEach { method ->
                     yield(method)
                 }
-            } catch (_: NoClassDefFoundError) { }
+            }
+            catch (_: NoClassDefFoundError) {
+            }
         }
 }
 
