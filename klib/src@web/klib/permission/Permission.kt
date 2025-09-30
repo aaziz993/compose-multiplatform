@@ -10,7 +10,6 @@ import kotlin.js.Promise
 import kotlin.js.js
 import web.permissions.PermissionName
 
-@JsPlainObject
 public external interface Permissions : JsAny {
 
     public val permissions: JsArray<PermissionName>

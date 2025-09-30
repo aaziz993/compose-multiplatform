@@ -5,28 +5,39 @@ package klib.data.net.http.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiationConfig.ConverterRegistration
-import io.ktor.client.plugins.plugin
 import io.ktor.http.ContentType
 import io.ktor.serialization.ContentConverter
+import io.ktor.util.AttributeKey
 import io.ktor.utils.io.InternalAPI
 import klib.data.net.http.client.model.Pin
+
+private val PLUGIN_CONFIGURATIONS: MutableMap<AttributeKey<*>, Any> = mutableMapOf()
 
 public expect fun createHttpClient(
     pins: List<Pin> = emptyList(),
     block: HttpClientConfig<*>.() -> Unit = {}
 ): HttpClient
 
-//public fun HttpClientConfig<*>.consulDiscovery(
-//    address: String,
-//    loadBalancer: LoadBalancer = LoadBalancer.ROUND_ROBIN,
-//    serviceName: String
-//) = install(ConsulDiscovery(address, loadBalancer, serviceName))
+public fun <TBuilder : Any, TPlugin : Any> HttpClientConfig<*>.installConfigAware(
+    plugin: HttpClientPlugin<TBuilder, TPlugin>,
+    configure: TBuilder.() -> Unit = {}
+): Unit = install(plugin) {
+    configure()
+    PLUGIN_CONFIGURATIONS[plugin.key] = this
+}
+
+@Suppress("UnusedReceiverParameter", "UNCHECKED_CAST")
+public fun <TConfig : Any, TPlugin : Any> HttpClient.pluginConfig(plugin: HttpClientPlugin<TConfig, TPlugin>): TConfig? =
+    PLUGIN_CONFIGURATIONS[plugin.key] as TConfig?
 
 public fun HttpClient.converters(contentType: ContentType): List<ContentConverter>? =
-    plugin(ContentNegotiation)
-        .config
-        .registrations
-        .filter { it.contentTypeMatcher.contains(contentType) }
-        .map(ConverterRegistration::converter)
+    pluginConfig(ContentNegotiation)
+        ?.registrations
+        ?.filter { registration -> registration.contentTypeMatcher.contains(contentType) }
+        ?.map { registration -> registration.converter }
+
+
+
+

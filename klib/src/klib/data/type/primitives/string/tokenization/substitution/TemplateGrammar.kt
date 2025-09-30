@@ -1,8 +1,8 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
+import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PLAIN_PATTERN
 import klib.data.type.primitives.string.tokenization.lexer.TokenMatch
 import klib.data.type.primitives.string.tokenization.parser.toParsedOrThrow
-import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PLAIN
 import klib.data.type.primitives.string.ID
 import klib.data.type.primitives.string.tokenization.combinators.mapWithMatches
 
@@ -10,7 +10,7 @@ private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
 private val NULL_KEY_REGEX = Regex("""\s*(null)\s*""")
 private val INTEGER_KEY_REGEX = Regex("""\s*(\d+)\s*""")
 private val KEY_REGEX = Regex("""\s*((?:${Regex.ID}|[\d-])+)\s*""")
-private val DOUBLE_QUOTED_STRING_KEY_REGEX = Regex("""\s*"(${Regex.DOUBLE_QUOTED_STRING_PLAIN})"\s*""")
+private val DOUBLE_QUOTED_STRING_KEY_REGEX = Regex("""\s*"(${Regex.DOUBLE_QUOTED_STRING_PLAIN_PATTERN})"\s*""")
 private val INTERPOLATE_START_REGEX = Regex("""\$""")
 private val INTERPOLATE_BRACED_START_REGEX = Regex("""\$\{""")
 private val EVALUATE_START_REGEX = Regex("""\$<""")

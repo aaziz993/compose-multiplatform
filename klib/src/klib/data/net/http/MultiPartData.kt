@@ -9,4 +9,7 @@ public suspend fun MultiPartData.readParts(): List<PartData> = mutableListOf<Par
 }
 
 public suspend fun MultiPartData.readFormData(): Map<String?, String> =
-    readParts().associate { (it as PartData.FormItem).let { it.name to it.value } }
+    readParts().associate { item ->
+        item as PartData.FormItem
+        item.name to item.value
+    }

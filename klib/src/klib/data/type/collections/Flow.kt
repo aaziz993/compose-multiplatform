@@ -2,6 +2,8 @@ package klib.data.type.collections
 
 import io.ktor.util.cio.ChannelWriteException
 import io.ktor.utils.io.ByteWriteChannel
+import io.ktor.utils.io.close
+import io.ktor.utils.io.writeByteArray
 import io.ktor.utils.io.writeStringUtf8
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,18 +26,15 @@ public fun MutableSharedFlow<*>.onHasSubscriptionChange(
     .onEach(change)
     .launchIn(coroutineScope)
 
-public suspend fun Flow<String>.toByteWriteChannel(byteWriteChannel: ByteWriteChannel) {
-    val job = CoroutineScope(currentCoroutineContext()).launch {
-        collect { value ->
-            try {
-                byteWriteChannel.writeStringUtf8("$value\n")
-                byteWriteChannel.flush()
-            }
-            catch (e: ChannelWriteException) {
-                byteWriteChannel.cancel(e)
-            }
-        }
+public suspend inline fun Flow<ByteArray>.writeToChannel(channel: ByteWriteChannel): Unit = try {
+    collect { value ->
+        channel.writeByteArray(value)
+        channel.flush()
     }
-
-    job.join()
+}
+catch (e: ChannelWriteException) {
+    channel.cancel(e)
+}
+finally {
+    channel.flushAndClose()
 }

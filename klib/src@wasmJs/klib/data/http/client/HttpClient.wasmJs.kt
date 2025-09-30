@@ -1,13 +1,10 @@
-package klib.data.net.http.client
+package klib.data.http.client
 
 import io.ktor.client.*
-import io.ktor.client.engine.js.*
-import io.ktor.util.Platform
+import io.ktor.client.engine.js.Js
 import klib.data.net.http.client.model.Pin
 
 public actual fun createHttpClient(
     pins: List<Pin>,
     block: HttpClientConfig<*>.() -> Unit
 ): HttpClient = HttpClient(Js, block)
-
-

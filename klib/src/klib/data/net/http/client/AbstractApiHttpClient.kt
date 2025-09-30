@@ -33,7 +33,7 @@ public abstract class AbstractApiHttpClient(
     protected val ktorfit: Ktorfit = Ktorfit.Builder()
         .httpClient(httpClient).baseUrl(baseUrl).configureKtorfit().build()
 
-    protected open fun DefaultRequest.DefaultRequestBuilder.configureDefaultRequest() = Unit
+    protected open fun DefaultRequest.DefaultRequestBuilder.configureDefaultRequest(): Unit = Unit
 
     protected open fun Ktorfit.Builder.configureKtorfit(): Ktorfit.Builder = this
 }

@@ -10,10 +10,14 @@ public actual fun createHttpClient(
     block: HttpClientConfig<*>.() -> Unit
 ): HttpClient = HttpClient(Darwin) {
     engine {
-        val builder = pins.fold(CertificatePinner.Builder()) { acc, v ->
-            acc.add(v.pattern, *v.pins.toTypedArray())
+        val builder = pins.fold(CertificatePinner.Builder()) { acc, pin ->
+            acc.add(pin.pattern, *pin.pins.toTypedArray())
         }
         handleChallenge(builder.build())
+
+        configureRequest {
+            setAllowsCellularAccess(true)
+        }
     }
     block()
 }

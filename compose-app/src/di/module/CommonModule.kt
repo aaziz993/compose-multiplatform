@@ -6,6 +6,8 @@ import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 import clib.ui.presentation.event.navigator.DefaultNavigator
 import clib.ui.presentation.event.navigator.Navigator
+import io.ktor.client.HttpClient
+import klib.data.net.http.client.createHttpClient
 import ui.navigation.presentation.Destination
 
 @Module
@@ -17,6 +19,42 @@ public class CommonModule {
         isLenient = true
         ignoreUnknownKeys = true
     }
+
+//    @Single
+//    public fun provideHttpClient(config: ClientConfigImpl, json: Json): HttpClient = with(config.httpClient) {
+//        createHttpClient {
+//            this@with.timeout?.takeIf(EnabledConfig::enabled)?.let {
+//                install(HttpTimeout) {
+//                    it.requestTimeoutMillis?.let { requestTimeoutMillis }
+//                    it.connectTimeoutMillis.let { connectTimeoutMillis }
+//                    it.socketTimeoutMillis.let { socketTimeoutMillis }
+//                }
+//            }
+//
+//            this@with.cache?.takeIf(EnabledConfig::enabled)?.let {
+//                install(HttpCache) {
+//                    it.isShared?.let { isShared = it }
+//                }
+//            }
+//
+//            install(ContentNegotiation) {
+//                json(
+//                    Json {
+//                        isLenient = true
+//                        ignoreUnknownKeys = true
+//                        explicitNulls = false
+//                    },
+//                )
+//            }
+//
+//            log?.takeIf(EnabledConfig::enabled)?.let {
+//                install(Logging) {
+//                    logger = Logger.DEFAULT
+//                    it.level?.let { level = LogLevel.valueOf(it.uppercase()) }
+//                }
+//            }
+//        }
+//    }
 
     @Single
     public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(Destination.Main)

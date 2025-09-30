@@ -35,7 +35,7 @@ script:
                 // implementation(libs.bundles("kache"))
                 implementation(libs["kotlinx.io.core"])
                 implementation(libs.bundles("multiplatform.settings"))
-                // implementation(libs["kstore"])
+                implementation(libs["kstore"])
                 implementation(libs.bundles("sqldelight"))
                 implementation(libs.bundles("store"))
                 implementation(libs["connectivity.core"])

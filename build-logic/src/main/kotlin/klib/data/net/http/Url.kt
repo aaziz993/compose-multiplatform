@@ -6,26 +6,21 @@ import kotlin.IllegalArgumentException
 public val Regex.Companion.HTTP_PATTERN: String
     get() = "^https?://.*"
 
-public val Regex.Companion.HTTP
+public val Regex.Companion.HTTP: Regex
     get() = HTTP_PATTERN.toRegex()
 
 public val Regex.Companion.GITHUB_HTTP_PATTERN: String
     get() = """https?://(www\.)?github\.com/.*"""
 
-public val Regex.Companion.GITHUB_HTTP
+public val Regex.Companion.GITHUB_HTTP: Regex
     get() = GITHUB_HTTP_PATTERN.toRegex()
 
 public fun String.isGithubUrl(): Boolean = matches(Regex.GITHUB_HTTP)
 
-public fun Url.Companion.parseOrNull(value: String): Url? = try {
-    Url(value)
-}
-catch (_: URLParserException) {
-    null
-}
+public fun Url.Companion.parseOrNull(urlString: String): Url? = parseUrl(urlString)
 
-public fun Url.Companion.parse(value: String): Url =
-    parseOrNull(value) ?: throw IllegalArgumentException("Invalid URL: $this")
+public fun Url.Companion.parse(urlString: String): Url =
+    parseOrNull(urlString) ?: throw IllegalArgumentException("Invalid URL: $this")
 
 public fun String.toHttpUrlOrNull(): Url? = Url.parseOrNull(this)
 
