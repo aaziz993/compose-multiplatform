@@ -10,8 +10,6 @@ config:
     - gradle.plugins.kotlin.targets.web.node.*
     - gradle.plugins.kotlin.targets.web.yarn.*
 script:
-  - plugins:
-      - id: (libs.plugins("seskar").pluginId)
   - kotlin:
       targets:
         - withType<KotlinJsTargetDsl>: |
@@ -51,7 +49,6 @@ script:
         - named: |
             ("webMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs["seskar"])
                 implementation(libs("kotlinWrappers")["browser"])
                 implementation(libs["compass.geolocation.browser"])
                 implementation(libs["kstore.storage"])

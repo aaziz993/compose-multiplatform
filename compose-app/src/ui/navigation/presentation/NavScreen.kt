@@ -47,14 +47,11 @@ public fun NavScreen(
         val adaptiveInfo = currentWindowAdaptiveInfo()
 
         val customNavSuiteType = with(adaptiveInfo) {
-            if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
+            if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
                 NavigationSuiteType.NavigationDrawer
-            }
-            else {
-                NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
-                    currentWindowAdaptiveInfo(),
-                )
-            }
+            else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
+                currentWindowAdaptiveInfo(),
+            )
         }
 
         NavigationSuiteScaffold(

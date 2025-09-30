@@ -2,6 +2,8 @@ config:
   imports:
     - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 script:
+  - plugins:
+      - id: (libs.plugins("seskar").pluginId)
   - kotlin:
       js: |
         (kotlin.IR) {
@@ -21,6 +23,7 @@ script:
         - named: |
             ("jsMain") { sourceSet ->
               sourceSet.dependencies {
+                implementation(libs["seskar"])
                 implementation(libs("kotlinWrappers")["js"])
                 implementation(libs["worldwind"])
               }
