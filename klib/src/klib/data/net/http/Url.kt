@@ -1,10 +1,20 @@
-package klib.data.type
+package klib.data.net.http
 
 import io.ktor.http.*
 
-public val HTTP_REGEX: Regex = "^https?://.*".toRegex(RegexOption.IGNORE_CASE)
+public val Regex.Companion.HTTP_PATTERN: String
+    get() = "^https?://.*"
 
-public val GITHUB_URL_REGEX: Regex = """https?://(www\.)?github\.com/.*""".toRegex()
+public val Regex.Companion.HTTP
+    get() = HTTP_PATTERN.toRegex()
+
+public val Regex.Companion.GITHUB_HTTP_PATTERN: String
+    get() = """https?://(www\.)?github\.com/.*"""
+
+public val Regex.Companion.GITHUB_HTTP
+    get() = GITHUB_HTTP_PATTERN.toRegex()
+
+public fun String.isGithubUrl(): Boolean = matches(Regex.GITHUB_HTTP)
 
 public fun Url.Companion.parseOrNull(value: String): Url? = try {
     Url(value)
@@ -20,7 +30,7 @@ public fun String.toHttpUrlOrNull(): Url? = Url.parseOrNull(this)
 
 public fun String.toHttpUrl(): Url = Url.parse(this)
 
-public fun String.isHttpUrl(): Boolean = matches(HTTP_REGEX)
+public fun String.isHttpUrl(): Boolean = matches(Regex.HTTP)
 
 public fun String.isValidHttpUrl(): Boolean =
     toHttpUrlOrNull()?.let { it.protocol == URLProtocol.HTTP || it.protocol == URLProtocol.HTTPS } == true
@@ -28,6 +38,4 @@ public fun String.isValidHttpUrl(): Boolean =
 public fun String.encodeHttpUrl(): String = URLBuilder().apply { encodedPath = this@encodeHttpUrl }.buildString()
 
 public fun String.decodeHttpUrl(): String = URLBuilder().apply { path(this@decodeHttpUrl) }.buildString()
-
-public fun String.isGithubUrl(): Boolean = matches(GITHUB_URL_REGEX)
 

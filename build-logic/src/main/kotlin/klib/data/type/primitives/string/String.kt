@@ -156,12 +156,12 @@ public fun randomString(length: Int, charPool: List<Char> = ('a'..'z') + ('A'..'
 
 private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
     mapOf(
-        "json" to Regex("""^\s*(\{${Regex.ANY}*\}|\[${Regex.ANY}*\])\s*$"""),
+        "json" to Regex("""^\s*(\{${Regex.ANY_PATTERN}*\}|\[${Regex.ANY_PATTERN}*\])\s*$"""),
         "xml" to """^\s*<\?xml[\s\S]*""".toRegex(),
-        "html" to Regex("""^\s*<(!DOCTYPE +)?html${Regex.ANY}*"""),
-        "yaml" to Regex("""^( *((#|[^{\s]*:|-).*)?${Regex.NEW_LINE}?)+$"""),
-        "properties" to Regex("""^( *((#|[^{\s\[].*?=).*)?${Regex.NEW_LINE}?)+$"""),
-        "toml" to """^( *(([#\[\]"{}]|.*=).*)?${Regex.NEW_LINE}?)+$""".toRegex(),
+        "html" to Regex("""^\s*<(!DOCTYPE +)?html${Regex.ANY_PATTERN}*"""),
+        "yaml" to Regex("""^( *((#|[^{\s]*:|-).*)?${Regex.NEW_LINE_PATTERN}?)+$"""),
+        "properties" to Regex("""^( *((#|[^{\s\[].*?=).*)?${Regex.NEW_LINE_PATTERN}?)+$"""),
+        "toml" to """^( *(([#\[\]"{}]|.*=).*)?${Regex.NEW_LINE_PATTERN}?)+$""".toRegex(),
     )
 
 public val String.extension: String?

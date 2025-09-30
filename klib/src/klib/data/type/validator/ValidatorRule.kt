@@ -6,7 +6,7 @@ import klib.data.type.primitives.string.DIGIT
 import klib.data.type.primitives.string.LETTER
 import klib.data.type.primitives.string.LETTER_OR_DIGIT
 import klib.data.type.primitives.string.LOWERCASE_LETTER
-import klib.data.type.primitives.string.NEW_LINE
+import klib.data.type.primitives.string.NEW_LINE_PATTERN
 import klib.data.type.primitives.string.NON_WHITESPACE
 import klib.data.type.primitives.string.UPPERCASE_LETTER
 import klib.data.type.primitives.string.escapePattern
@@ -147,7 +147,7 @@ public data class ValidatorRule(
         )
 
         public fun singleLine(message: String): ValidatorRule = ValidatorRule(
-            """[^${Regex.NEW_LINE}]*""",
+            """[^${Regex.NEW_LINE_PATTERN}]*""",
             message = message,
         )
 

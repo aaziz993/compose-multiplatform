@@ -7,7 +7,7 @@ import gradle.api.initialization.sensitive
 import gradle.api.initialization.sensitiveOrElse
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
-import klib.data.type.primitives.string.LETTER_OR_DIGIT
+import klib.data.type.primitives.string.LETTER_OR_DIGIT_PATTERN
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
@@ -49,7 +49,7 @@ public val Project.packageOfResClass: String
 
 private fun Project.pathSanitize(separator: String) =
     path.removePrefix(":")
-        .split("[^${Regex.LETTER_OR_DIGIT}]".toRegex())
+        .split("[^${Regex.LETTER_OR_DIGIT_PATTERN}]".toRegex())
         .filter(String::isNotBlank)
         .joinToString(separator, transform = String::sanitize)
         .let { path -> if (path.first().isDigit()) "x$path" else path }

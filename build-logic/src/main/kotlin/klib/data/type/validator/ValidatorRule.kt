@@ -1,14 +1,14 @@
 package klib.data.type.validator
 
-import klib.data.type.primitives.string.ANY
-import klib.data.type.primitives.string.ASCII
-import klib.data.type.primitives.string.DIGIT
-import klib.data.type.primitives.string.LETTER
-import klib.data.type.primitives.string.LETTER_OR_DIGIT
-import klib.data.type.primitives.string.LOWERCASE_LETTER
-import klib.data.type.primitives.string.NEW_LINE
-import klib.data.type.primitives.string.NON_WHITESPACE
-import klib.data.type.primitives.string.UPPERCASE_LETTER
+import klib.data.type.primitives.string.ANY_PATTERN
+import klib.data.type.primitives.string.ASCII_PATTERN
+import klib.data.type.primitives.string.DIGIT_PATTERN
+import klib.data.type.primitives.string.LETTER_PATTERN
+import klib.data.type.primitives.string.LETTER_OR_DIGIT_PATTERN
+import klib.data.type.primitives.string.LOWERCASE_LETTER_PATTERN
+import klib.data.type.primitives.string.NEW_LINE_PATTERN
+import klib.data.type.primitives.string.NON_WHITESPACE_PATTERN
+import klib.data.type.primitives.string.UPPERCASE_LETTER_PATTERN
 import klib.data.type.primitives.string.escapePattern
 import klib.data.type.validator.ValidatorRule.Length.DELIMITED_PHONE_NUMBER
 import klib.data.type.validator.ValidatorRule.Pattern.INTERNATIONAL_DELIMITED_PHONE_NUMBER
@@ -31,123 +31,123 @@ public data class ValidatorRule(
     public companion object {
 
         public fun nonEmpty(message: String): ValidatorRule = ValidatorRule(
-            "${Regex.ANY}+",
+            "${Regex.ANY_PATTERN}+",
             message = message,
         )
 
         public fun lengthInRange(min: Int, max: Int? = null, message: String): ValidatorRule = ValidatorRule(
-            "${Regex.ANY}{$min,${max ?: ""}}",
+            "${Regex.ANY_PATTERN}{$min,${max ?: ""}}",
             message = message,
         )
 
         public fun startsWith(value: String, ignoreCase: Boolean = false, message: String): ValidatorRule =
             ValidatorRule(
-                "^${value.escapePattern()}${Regex.ANY}*",
+                "^${value.escapePattern()}${Regex.ANY_PATTERN}*",
                 if (ignoreCase) setOf(RegexOption.IGNORE_CASE) else emptySet(),
                 message,
             )
 
         public fun endsWith(value: String, ignoreCase: Boolean = false, message: String): ValidatorRule =
             ValidatorRule(
-                "${Regex.ANY}*${value.escapePattern()}$",
+                "${Regex.ANY_PATTERN}*${value.escapePattern()}$",
                 if (ignoreCase) setOf(RegexOption.IGNORE_CASE) else emptySet(),
                 message,
             )
 
         public fun contains(value: String, ignoreCase: Boolean = false, message: String): ValidatorRule =
             ValidatorRule(
-                "${Regex.ANY}*${value.escapePattern()}${Regex.ANY}*",
+                "${Regex.ANY_PATTERN}*${value.escapePattern()}${Regex.ANY_PATTERN}*",
                 if (ignoreCase) setOf(RegexOption.IGNORE_CASE) else emptySet(),
                 message,
             )
 
         public fun isAlphaNumeric(message: String): ValidatorRule = ValidatorRule(
-            "${Regex.LETTER_OR_DIGIT}+",
+            "${Regex.LETTER_OR_DIGIT_PATTERN}+",
             message = message,
         )
 
         public fun nonDigits(message: String): ValidatorRule = ValidatorRule(
-            "[^${Regex.DIGIT}]*",
+            "[^${Regex.DIGIT_PATTERN}]*",
             message = message,
         )
 
         public fun containsDigit(message: String): ValidatorRule = ValidatorRule(
-            """${Regex.ANY}*${Regex.DIGIT}+${Regex.ANY}*""",
+            """${Regex.ANY_PATTERN}*${Regex.DIGIT_PATTERN}+${Regex.ANY_PATTERN}*""",
             message = message,
         )
 
         public fun nonLetters(message: String): ValidatorRule = ValidatorRule(
-            "[^${Regex.LETTER}]*",
+            "[^${Regex.LETTER_PATTERN}]*",
             message = message,
         )
 
         public fun containsLetter(message: String): ValidatorRule = ValidatorRule(
-            "${Regex.ANY}*${Regex.LETTER}+${Regex.ANY}*",
+            "${Regex.ANY_PATTERN}*${Regex.LETTER_PATTERN}+${Regex.ANY_PATTERN}*",
             message = message,
         )
 
         public fun lettersOnly(message: String): ValidatorRule = ValidatorRule(
-            "${Regex.LETTER}+",
+            "${Regex.LETTER_PATTERN}+",
             message = message,
         )
 
         public fun digitsOnly(message: String): ValidatorRule = ValidatorRule(
-            """${Regex.DIGIT}+""",
+            """${Regex.DIGIT_PATTERN}+""",
             message = message,
         )
 
         public fun nonZero(message: String): ValidatorRule = ValidatorRule(
-            """[+-]?[^0]${Regex.DIGIT}*""",
+            """[+-]?[^0]${Regex.DIGIT_PATTERN}*""",
             message = message,
         )
 
         public fun positive(message: String): ValidatorRule = ValidatorRule(
-            """[^-]${Regex.DIGIT}+""",
+            """[^-]${Regex.DIGIT_PATTERN}+""",
             message = message,
         )
 
         public fun negative(message: String): ValidatorRule = ValidatorRule(
-            """-${Regex.DIGIT}+""",
+            """-${Regex.DIGIT_PATTERN}+""",
             message = message,
         )
 
         public fun intValue(message: String): ValidatorRule = ValidatorRule(
-            """[+-]?${Regex.DIGIT}+""",
+            """[+-]?${Regex.DIGIT_PATTERN}+""",
             message = message,
         )
 
         public fun uIntValue(message: String): ValidatorRule = ValidatorRule(
-            """[^-]?${Regex.DIGIT}+""",
+            """[^-]?${Regex.DIGIT_PATTERN}+""",
             message = message,
         )
 
         public fun floatValue(message: String): ValidatorRule = ValidatorRule(
-            """[+-]?${Regex.DIGIT}+\.${Regex.DIGIT}+""",
+            """[+-]?${Regex.DIGIT_PATTERN}+\.${Regex.DIGIT_PATTERN}+""",
             message = message,
         )
 
         public fun isAsciiOnly(message: String): ValidatorRule = ValidatorRule(
-            """${Regex.ASCII}+""",
+            """${Regex.ASCII_PATTERN}+""",
             message = message,
         )
 
         public fun lowercaseOnly(message: String): ValidatorRule = ValidatorRule(
-            "${Regex.LOWERCASE_LETTER}+",
+            "${Regex.LOWERCASE_LETTER_PATTERN}+",
             message = message,
         )
 
         public fun uppercaseOnly(message: String): ValidatorRule = ValidatorRule(
-            "${Regex.UPPERCASE_LETTER}+",
+            "${Regex.UPPERCASE_LETTER_PATTERN}+",
             message = message,
         )
 
         public fun nonWhitespace(message: String): ValidatorRule = ValidatorRule(
-            "${Regex.NON_WHITESPACE}*",
+            "${Regex.NON_WHITESPACE_PATTERN}*",
             message = message,
         )
 
         public fun singleLine(message: String): ValidatorRule = ValidatorRule(
-            """[^${Regex.NEW_LINE}]*""",
+            """[^${Regex.NEW_LINE_PATTERN}]*""",
             message = message,
         )
 

@@ -16,7 +16,7 @@ public data class ExposedProperty(
     override val name: String,
     override val descriptor: SerialDescriptor,
     override val isId: Boolean = false,
-    override val isReadOnly: Boolean,
+    override val immutable: Boolean,
     override val validator: Validator?
 ) : EntityProperty {
 

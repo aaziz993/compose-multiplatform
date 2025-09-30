@@ -3,6 +3,7 @@ package ui.main
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +19,7 @@ public fun MainScreen(
     navigateTo: (route: Destination) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
-    Box(Modifier.width(600.dp).height(480.dp)) {
+    Surface(Modifier.width(600.dp).height(480.dp)) {
         WeatherGlassOverlay(
             WeatherData(
                 "Dushanbe",

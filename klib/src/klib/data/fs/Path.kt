@@ -1,4 +1,4 @@
-package klib.data.type
+package klib.data.fs
 
 import kotlinx.io.files.Path
 
