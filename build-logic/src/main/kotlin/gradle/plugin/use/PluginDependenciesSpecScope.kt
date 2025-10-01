@@ -1,7 +1,5 @@
 package gradle.plugin.use
 
-import klib.data.type.collections.set.MutableMergeSet
-import klib.data.type.collections.set.mutableMergeSetOf
 import org.gradle.kotlin.dsl.GradleDsl
 import org.gradle.plugin.use.PluginDependenciesSpec
 

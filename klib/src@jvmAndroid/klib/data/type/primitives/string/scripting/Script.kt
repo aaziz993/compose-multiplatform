@@ -67,7 +67,7 @@ public const val SCRIPT_KEY: String = "script"
 public val DECLARATION_KEYWORDS: Set<String> = setOf(
     "val", "var", "fun", "class", "interface", "object", "enum", "annotation", "typealias",
     "abstract", "data", "sealed", "open", "private", "public", "internal",
-    "inline", "tailrec", "suspend", "operator", "infix", "const", "lateinit"
+    "inline", "tailrec", "suspend", "operator", "infix", "const", "lateinit",
 )
 
 public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
@@ -113,9 +113,10 @@ public abstract class Script {
         }
     }
 
-    public operator fun invoke(): Unit = compiled(config).run {
-        if (this is Throwable) throw this else Unit
-    }
+    public operator fun invoke(transform: (compiled: String) -> String = { it }): Unit =
+        transform(compiled)(config).run {
+            if (this is Throwable) throw this else Unit
+        }
 
     override fun toString(): String = buildStringAnsi {
         attribute(

@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.api.kotlin.mpp.kotlin
 import gradle.api.project.ProjectLayout
-import gradle.api.project.kotlin
 import gradle.api.project.projectScript
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.gradle.api.Plugin

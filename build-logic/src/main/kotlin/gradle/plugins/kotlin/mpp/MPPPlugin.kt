@@ -2,8 +2,8 @@ package gradle.plugins.kotlin.mpp
 
 import com.github.ajalt.colormath.model.Ansi16
 import gradle.api.file.replace
+import gradle.api.kotlin.mpp.kotlin
 import gradle.api.project.ProjectLayout
-import gradle.api.project.kotlin
 import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import klib.data.type.collections.associateWithNotNull

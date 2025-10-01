@@ -9,7 +9,8 @@ config:
     - org.jetbrains.kotlin.gradle.dsl.JvmTarget
     - gradle.plugins.kotlin.targets.jvm.toJvmTarget
     - org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-    - gradle.plugins.allopen.*
+    - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+    - org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
   jvmTarget: 22
   compilerOptions:
     - -Xignore-const-optimization-errors

@@ -1,26 +1,26 @@
 config:
   imports:
-    - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
     - org.gradle.api.file.DuplicatesStrategy
     - com.diffplug.spotless.kotlin.KotlinConstants
     - kotlinx.benchmark.gradle.JvmBenchmarkTarget
     - kotlinx.rpc.RpcStrictMode
+    - de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-    - gradle.plugins.dependencycheck.*
-    - gradle.plugins.buildconfig.*
-    - gradle.plugins.spotless.*
-    - gradle.plugins.sonar.*
-    - gradle.plugins.dokka.*
-    - gradle.plugins.apivalidation.*
-    - gradle.plugins.ksp.*
-    - gradle.plugins.allopen.*
-    - gradle.plugins.noarg.*
-    - gradle.plugins.benchmark.*
-    - gradle.plugins.sqldelight.*
-    - gradle.plugins.room.*
-    - gradle.plugins.ktorfit.*
-    - gradle.plugins.apollo.*
-    - gradle.plugins.powerassert.*
+    - gradle.api.dependencycheck.*
+    - gradle.api.buildconfig.*
+    - gradle.api.spotless.*
+    - gradle.api.sonar.*
+    - gradle.api.dokka.*
+    - gradle.api.apivalidation.*
+    - gradle.api.ksp.*
+    - gradle.api.allopen.*
+    - gradle.api.noarg.*
+    - gradle.api.benchmark.*
+    - gradle.api.sqldelight.*
+    - gradle.api.room.*
+    - gradle.api.ktorfit.*
+    - gradle.api.apollo.*
+    - gradle.api.powerassert.*
 script:
   - plugins:
       - id: (libs.plugins("dependencycheck").pluginId)
@@ -371,6 +371,7 @@ script:
   ## Http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
   - ktorfit:
       generateQualifiedTypeName: true
+      errorCheckingMode: ErrorCheckingMode.NONE
   ## Strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
   - apollo:
       generateSourcesDuringGradleSync: true
@@ -405,6 +406,12 @@ script:
       - withType<KotlinCompile>: |
           {
             compilerOptions.jvmTarget /= libs.versions("jvm.target").requiredVersion.toJvmTarget()
+          }
+      - withType<KotlinCompilationTask<*>>: |
+          {
+            if (name != "kspCommonMainMetadata") {
+              dependsOn("kspCommonMainMetadata")
+            }
           }
       - withType<ShadowJar>: |
           {

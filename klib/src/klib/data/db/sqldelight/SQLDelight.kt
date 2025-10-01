@@ -3,7 +3,6 @@ package klib.data.db.sqldelight
 import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
-import klib.data.db.Cache
 
 public expect suspend fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
@@ -15,8 +14,8 @@ public expect suspend fun createInMemorySQLDelightDriver(
     databaseName: String
 ): SqlDriver
 
-public suspend fun createSQLDelightKeyValueDatabase(databaseName: String = "key_value"): Cache =
+public suspend fun createSQLDelightCacheDatabase(databaseName: String = "cache"): Cache =
     Cache(createSQLDelightDriver(Cache.Schema, databaseName))
 
-public suspend fun createInMemorySQLDelightKeyValueDatabase(databaseName: String = "in_memory_key_value"): Cache =
+public suspend fun createInMemorySQLDelightCacheDatabase(databaseName: String = "inMemoryCache"): Cache =
     Cache(createInMemorySQLDelightDriver(Cache.Schema, databaseName))

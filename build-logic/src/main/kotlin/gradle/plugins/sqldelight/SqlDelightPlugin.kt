@@ -1,8 +1,9 @@
 package gradle.plugins.sqldelight
 
+import gradle.api.kotlin.mpp.kotlin
 import gradle.api.project.ProjectLayout
-import gradle.api.project.kotlin
 import gradle.api.project.projectScript
+import gradle.api.sqldelight.sqldelight
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

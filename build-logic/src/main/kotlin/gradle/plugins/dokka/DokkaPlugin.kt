@@ -1,6 +1,7 @@
 package gradle.plugins.dokka
 
 import gradle.api.configureEach
+import gradle.api.dokka.dokka
 import gradle.api.project.ProjectLayout
 import gradle.api.project.projectScript
 import org.gradle.api.Plugin

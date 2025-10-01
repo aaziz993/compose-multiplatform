@@ -3,13 +3,18 @@
 package gradle.plugins.compose
 
 import gradle.api.all
+import gradle.api.compose.DensityQualifier
+import gradle.api.compose.ThemeQualifier
 import gradle.api.configure
 import gradle.api.project.ProjectLayout
-import gradle.api.project.kotlin
 import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
-import gradle.plugins.compose.apple.Contents
-import gradle.plugins.compose.apple.image.Image
+import gradle.api.compose.apple.Contents
+import gradle.api.compose.apple.image.Image
+import gradle.api.compose.compose
+import gradle.api.compose.desktop
+import gradle.api.compose.resources
+import gradle.api.kotlin.mpp.kotlin
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File

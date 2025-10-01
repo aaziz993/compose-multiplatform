@@ -1,8 +1,8 @@
 package gradle.api.repositories
 
 import gradle.api.ci.CI
-import gradle.plugins.kotlin.targets.web.node.nodeJsEnv
-import gradle.plugins.kotlin.targets.web.yarn.yarnEnv
+import gradle.api.kotlin.web.node.nodeJsEnv
+import gradle.api.kotlin.web.yarn.yarnEnv
 import java.net.URI
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler

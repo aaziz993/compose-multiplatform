@@ -5,6 +5,7 @@ import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.initialization.libs
 import gradle.api.initialization.sensitive
 import gradle.api.initialization.sensitiveOrElse
+import gradle.api.kotlin.mpp.kotlin
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
 import klib.data.type.primitives.string.LETTER_OR_DIGIT_PATTERN
@@ -93,11 +94,6 @@ public fun Project.java(configure: JavaPluginExtension.() -> Unit): Unit = exten
 public val Project.javaApp: JavaApplication get() = the()
 
 public fun Project.javaApp(configure: JavaApplication.() -> Unit): Unit = extensions.configure(configure)
-
-public val Project.kotlin: KotlinMultiplatformExtension get() = the()
-
-public fun Project.kotlin(configure: KotlinMultiplatformExtension.() -> Unit): Unit =
-    extensions.configure(configure)
 
 public val Project.sourceSets: SourceSetContainer get() = the()
 

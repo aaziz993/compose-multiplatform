@@ -1,7 +1,7 @@
 package gradle.plugins.karakum
 
 import gradle.api.configureEach
-import gradle.api.project.kotlin
+import gradle.api.kotlin.mpp.kotlin
 import java.io.File
 import klib.data.type.collections.map.asMap
 import klib.data.type.primitives.string.uppercaseFirstChar
