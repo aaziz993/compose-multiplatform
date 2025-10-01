@@ -32,12 +32,12 @@ public class FtpUrl(
             val (scheme, username, password, host, port, path) = matchResult.destructured
             val ftpScheme = FtpScheme.valueOf(scheme.uppercase())
             return FtpUrl(
-                scheme = ftpScheme,
-                username = username.ifBlank { ftpScheme.defaultUsername },
-                password = if (username == ftpScheme.defaultUsername) "" else password.ifBlank { "" },
-                host = host,
-                port = if (port.isBlank()) ftpScheme.defaultPort else port.toInt(),
-                path = path.ifBlank { "/" },
+                 ftpScheme,
+                 username.ifBlank { ftpScheme.defaultUsername },
+                if (username == ftpScheme.defaultUsername) "" else password.ifBlank { "" },
+                 host,
+                 if (port.isBlank()) ftpScheme.defaultPort else port.toInt(),
+                path.ifBlank { "/" },
             )
         }
     }

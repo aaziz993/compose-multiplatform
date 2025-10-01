@@ -23,7 +23,7 @@ public fun rangeEquals(
     var segment = segment
     var segmentPos = segmentPos
     var segmentLimit = segment.limit
-    var data = segment.data
+    var data = segment.dataAsByteArray()
 
     var i = bytesOffset
     while (i < bytesLimit) {
