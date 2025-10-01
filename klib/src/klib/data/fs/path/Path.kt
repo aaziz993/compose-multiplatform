@@ -54,7 +54,7 @@ public val Path.root: Path?
     get() = root()
 
 public val Path.isRoot: Boolean
-    get() = isRoot()
+    get() = commonIsRoot()
 public val Path.volumeLetter: Char?
     get() = volumeLetter()
 
@@ -248,7 +248,7 @@ public fun Path.nameBytes(): ByteString {
     }
 }
 
-internal fun Path.isRoot(): Boolean = rootLength() == bytes.size
+internal fun Path.commonIsRoot(): Boolean = rootLength() == bytes.size
 
 public fun Path.resolve(child: String, normalize: Boolean): Path =
     resolve(Buffer().apply { writeString(child) }, normalize = normalize)
