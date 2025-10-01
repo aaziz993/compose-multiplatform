@@ -7,10 +7,10 @@ config:
     - org.gradle.jvm.toolchain.JavaLanguageVersion
     - org.gradle.jvm.toolchain.JvmVendorSpec
     - org.jetbrains.kotlin.gradle.dsl.JvmTarget
-    - gradle.plugins.kotlin.targets.jvm.toJvmTarget
     - org.jetbrains.kotlin.gradle.dsl.KotlinVersion
     - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
     - org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+    - gradle.api.kotlin.targets.jvm.toJvmTarget
   jvmTarget: 22
   compilerOptions:
     - -Xignore-const-optimization-errors
