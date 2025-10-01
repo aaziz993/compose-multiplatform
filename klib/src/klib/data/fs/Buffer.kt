@@ -29,7 +29,7 @@ public fun rangeEquals(
     while (i < bytesLimit) {
         if (segmentPos == segmentLimit) {
             segment = segment.next!!
-            data = segment.data
+            data = segment.dataAsByteArray()
             segmentPos = segment.pos
             segmentLimit = segment.limit
         }
