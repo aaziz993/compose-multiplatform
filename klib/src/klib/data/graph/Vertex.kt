@@ -1,7 +1,7 @@
 package klib.data.graph
 
 import klib.data.BooleanVariable
-import klib.data.db.crud.CRUDRepository
+import klib.data.crud.CRUDRepository
 import klib.data.f
 import kotlinx.coroutines.flow.Flow
 

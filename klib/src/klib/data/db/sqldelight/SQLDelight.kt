@@ -3,7 +3,7 @@ package klib.data.db.sqldelight
 import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
-import data.database.sqldelight.Cache
+import klib.data.db.Cache
 
 public expect suspend fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,

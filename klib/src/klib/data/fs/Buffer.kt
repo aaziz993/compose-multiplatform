@@ -74,8 +74,8 @@ public fun Buffer.indexOf(
 ): Long {
     checkOffsetAndCount(bytes.size.toLong(), bytesOffset.toLong(), byteCount.toLong())
     require(byteCount > 0) { "byteCount == 0" }
-    require(startIndex >= 0) { "fromIndex < 0: $startIndex" }
-    require(startIndex <= endIndex) { "fromIndex > toIndex: $startIndex > $endIndex" }
+    require(startIndex >= 0) { "startIndex < 0: $startIndex" }
+    require(startIndex <= endIndex) { "startIndex > endIndex: $startIndex > $endIndex" }
 
     var fromIndex = startIndex
     var toIndex = endIndex

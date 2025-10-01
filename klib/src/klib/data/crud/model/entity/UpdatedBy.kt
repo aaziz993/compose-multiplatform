@@ -1,4 +1,4 @@
-package klib.data.db.crud.model.entity
+package klib.data.crud.model.entity
 
 public interface UpdatedBy {
 

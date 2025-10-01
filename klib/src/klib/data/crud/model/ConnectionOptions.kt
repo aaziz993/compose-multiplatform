@@ -1,9 +1,9 @@
-package klib.data.db.crud.model
+package klib.data.crud.model
 
 import klib.data.type.auth.AuthResource
 import kotlinx.datetime.TimeZone
 
-public interface CRUDRepositoryConfig {
+public interface ConnectionOptions {
 
     public val transactionIsolation: Int?
     public val statementCount: Int?

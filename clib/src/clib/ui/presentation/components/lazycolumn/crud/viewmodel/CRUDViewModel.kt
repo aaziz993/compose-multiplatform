@@ -8,8 +8,8 @@ import androidx.paging.RemoteMediator
 import clib.data.crud.AbstractCRUDMutablePager
 import clib.data.crud.model.EntityProperty
 import clib.ui.presentation.viewmodel.AbstractViewModel
-import klib.data.db.crud.CRUDRepository
-import klib.data.db.crud.model.query.Order
+import klib.data.crud.CRUDRepository
+import klib.data.crud.model.query.Order
 import klib.data.BooleanVariable
 import kotlin.Any
 import kotlin.Long

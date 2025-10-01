@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
 import clib.data.paging.AbstractRefreshablePager
-import klib.data.db.crud.model.query.Order
+import klib.data.crud.model.query.Order
 import klib.data.BooleanVariable
 import klib.data.Variable
 import kotlinx.coroutines.CoroutineScope

@@ -2,7 +2,7 @@ package clib.ui.presentation.components.lazycolumn.crud.viewmodel
 
 import clib.data.crud.model.EntityItem
 import clib.ui.presentation.components.textfield.search.model.SearchFieldState
-import klib.data.db.crud.model.query.Order
+import klib.data.crud.model.query.Order
 
 public sealed interface CRUDAction<out T:Any> {
     public data class Find(

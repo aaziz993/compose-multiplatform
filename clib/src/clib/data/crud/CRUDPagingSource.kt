@@ -1,7 +1,7 @@
 package clib.data.crud
 
 import clib.data.paging.AbstractPagingSource
-import klib.data.db.crud.model.query.LimitOffset
+import klib.data.crud.model.query.LimitOffset
 
 public class CRUDPagingSource<T : Any>(
     private val fetchData: suspend (limitOffset: LimitOffset) -> List<T>,

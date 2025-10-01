@@ -26,8 +26,8 @@ import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.data.type.collections.restartableflow.restartableStateIn
 import clib.ui.presentation.viewmodel.ViewModelState.Success
 import clib.ui.presentation.viewmodel.model.exception.ViewModelStateException
-import klib.data.db.crud.CRUDRepository
-import klib.data.db.crud.model.query.Order
+import klib.data.crud.CRUDRepository
+import klib.data.crud.model.query.Order
 import klib.data.BooleanVariable
 import klib.data.Variable
 import kotlinx.coroutines.ExperimentalCoroutinesApi

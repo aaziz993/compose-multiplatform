@@ -1,7 +1,7 @@
 package klib.data.graph
 
-import klib.data.db.crud.CRUDRepository
-import klib.data.db.crud.model.entity.Entity
+import klib.data.crud.CRUDRepository
+import klib.data.crud.model.entity.Entity
 import klib.data.f
 
 public abstract class GraphEntity<T : GraphEntity<T, ID>, ID : Comparable<ID>>(

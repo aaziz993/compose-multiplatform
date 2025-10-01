@@ -1,4 +1,4 @@
-package klib.data.db.crud.model.query
+package klib.data.crud.model.query
 
 import kotlinx.serialization.Serializable
 

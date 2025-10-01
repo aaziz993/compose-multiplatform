@@ -1,7 +1,7 @@
-package klib.data.db.crud
+package klib.data.crud
 
-import klib.data.db.crud.model.query.LimitOffset
-import klib.data.db.crud.model.query.Order
+import klib.data.crud.model.query.LimitOffset
+import klib.data.crud.model.query.Order
 import klib.data.transaction.Transaction
 import klib.data.AggregateExpression
 import klib.data.BooleanVariable

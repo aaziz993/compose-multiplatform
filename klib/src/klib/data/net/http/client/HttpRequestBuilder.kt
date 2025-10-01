@@ -12,9 +12,11 @@ import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
 import klib.data.type.collections.writeToChannel
 import klib.data.type.primitives.toByteArray
+import klib.data.type.serialization.json.encodeAnyToString
 import kotlin.jvm.JvmName
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.Json
 
 @JvmName("setBodyByteArray")
 @Suppress("UnusedReceiverParameter")
@@ -32,7 +34,7 @@ public fun HttpRequestBuilder.setBody(
 
 public fun HttpRequestBuilder.setBody(
     flow: Flow<String>,
-    contentType: ContentType = ContentType.Application.Json,
+    contentType: ContentType? = null,
     status: HttpStatusCode? = null,
     contentLength: Long? = null,
 ): ChannelWriterContent = setBody(
@@ -42,7 +44,7 @@ public fun HttpRequestBuilder.setBody(
     contentLength,
 )
 
-public fun <T : Any> HttpRequestBuilder.setBody(
+public fun <T> HttpRequestBuilder.setBody(
     client: HttpClient,
     flow: Flow<T>,
     typeInfo: TypeInfo,
@@ -68,9 +70,26 @@ public fun <T : Any> HttpRequestBuilder.setBody(
     return setBody(byteFlow, contentType = contentType)
 }
 
-public inline fun <reified T : Any> HttpRequestBuilder.setBody(
+public inline fun <reified T> HttpRequestBuilder.setBody(
     client: HttpClient,
     flow: Flow<T>,
     contentType: ContentType,
     charset: Charset = Charsets.UTF_8
 ): ChannelWriterContent = setBody(client, flow, typeInfo<T>(), contentType, charset)
+
+public fun HttpRequestBuilder.setBodyAny(
+    flow: Flow<Any?>,
+    contentType: ContentType
+): ChannelWriterContent {
+    val byteFlow: Flow<ByteArray> = flow.map { value ->
+
+        val bytes = Json.Default.encodeAnyToString(value).encodeToByteArray()
+        val lengthBytes = bytes.size.toLong().toByteArray(Long.SIZE_BYTES)
+
+        lengthBytes + bytes
+    }
+
+    return setBody(byteFlow, contentType = contentType)
+}
+
+

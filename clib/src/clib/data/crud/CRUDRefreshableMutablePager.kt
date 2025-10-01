@@ -13,7 +13,7 @@ import clib.data.crud.model.news
 import clib.data.crud.model.selected
 import clib.data.crud.model.selectedExists
 import com.benasher44.uuid.uuid4
-import klib.data.db.crud.model.query.Order
+import klib.data.crud.model.query.Order
 import klib.data.BooleanVariable
 import klib.data.type.collections.replaceAt
 import klib.data.type.collections.replaceFirst

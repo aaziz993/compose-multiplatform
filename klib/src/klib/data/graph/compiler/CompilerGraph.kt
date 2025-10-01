@@ -1,6 +1,6 @@
 package klib.data.graph.compiler
 
-import klib.data.db.crud.CRUDRepository
+import klib.data.crud.CRUDRepository
 import klib.data.graph.Graph
 
 public class CompilerGraph<VID : Comparable<VID>, EID : Comparable<EID>>(
