@@ -2,6 +2,7 @@ package klib.data.db.mdb.complex
 
 import klib.data.db.mdb.Column
 import kotlinx.datetime.LocalDateTime
+import kotlinx.io.IOException
 
 public actual class ComplexValueForeignKey public actual constructor(column: Column, value: Int) {
     public actual val column: Column
@@ -12,6 +13,7 @@ public actual class ComplexValueForeignKey public actual constructor(column: Col
         get() = TODO("Not yet implemented")
 
 
+    @Throws(IOException::class)
     public actual fun countValues(): Int {
         TODO("Not yet implemented")
     }
@@ -31,11 +33,13 @@ public actual class ComplexValueForeignKey public actual constructor(column: Col
     }
 
 
+    @Throws(IOException::class)
     public actual fun addVersion(value: String): Version {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun addVersion(
         value: String,
         modifiedDate: LocalDateTime
@@ -44,11 +48,13 @@ public actual class ComplexValueForeignKey public actual constructor(column: Col
     }
 
 
+    @Throws(IOException::class)
     public actual fun addAttachment(data: ByteArray): Attachment {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun addAttachment(
         url: String,
         name: String,
@@ -61,11 +67,13 @@ public actual class ComplexValueForeignKey public actual constructor(column: Col
     }
 
 
+    @Throws(IOException::class)
     public actual fun addEncodedAttachment(encodedData: ByteArray): Attachment {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun addEncodedAttachment(
         url: String,
         name: String,
@@ -78,46 +86,55 @@ public actual class ComplexValueForeignKey public actual constructor(column: Col
     }
 
 
+    @Throws(IOException::class)
     public actual fun updateAttachment(attachment: Attachment): Attachment {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun deleteAttachment(attachment: Attachment): Attachment {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun addMultiValue(value: Any?): SingleValue {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun updateMultiValue(value: SingleValue): SingleValue {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun deleteMultiValue(value: SingleValue): SingleValue {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun addUnsupportedValue(values: MutableMap<String, *>): UnsupportedValue {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun updateUnsupportedValue(value: UnsupportedValue): UnsupportedValue {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun deleteUnsupportedValue(value: UnsupportedValue): UnsupportedValue {
         TODO("Not yet implemented")
     }
 
 
+    @Throws(IOException::class)
     public actual fun deleteAllValues() {
     }
 
