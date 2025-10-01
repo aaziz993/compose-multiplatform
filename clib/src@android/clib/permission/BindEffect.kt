@@ -7,7 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import klib.permission.PermissionController
+import klib.data.permission.PermissionController
 
 @Suppress("FunctionName")
 @Composable

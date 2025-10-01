@@ -12,8 +12,8 @@ import androidx.compose.runtime.toMutableStateList
 import clib.data.crud.model.EntityProperty
 import clib.ui.presentation.components.textfield.search.model.SearchFieldState
 import clib.ui.presentation.components.textfield.search.model.rememberSearchFieldState
-import klib.data.database.crud.model.query.LimitOffset
-import klib.data.database.crud.model.query.Order
+import klib.data.db.crud.model.query.LimitOffset
+import klib.data.db.crud.model.query.Order
 import klib.data.type.collections.removeFirst
 import klib.data.type.collections.replaceFirst
 import klib.data.type.collections.replaceWith

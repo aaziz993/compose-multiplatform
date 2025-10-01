@@ -93,7 +93,7 @@ public fun Buffer.indexOf(
         val resultLimit = minOf(toIndex, size - byteCount + 1L)
         while (offset < resultLimit) {
             // Scan through the current segment.
-            val data = s.data
+            val data = s.dataAsByteArray()
             val segmentLimit = minOf(s.limit, s.pos + resultLimit - offset).toInt()
             for (pos in (s.pos + fromIndex - offset).toInt() until segmentLimit) {
                 if (

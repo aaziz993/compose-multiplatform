@@ -1,7 +1,7 @@
 package clib.ui.presentation.components.lazycolumn.crud.model.config
 
 import clib.ui.presentation.components.lazycolumn.crud.model.CRUDLazyColumnStateData
-import klib.data.database.crud.model.CRUDRepositoryConfig
+import klib.data.db.crud.model.CRUDRepositoryConfig
 import klib.data.type.auth.AuthResource
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
