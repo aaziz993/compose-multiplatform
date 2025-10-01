@@ -1,19 +1,45 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package klib.data.fs
+package klib.data.fs.path
 
+import klib.data.BUFFER_SIZE
+import klib.data.fs.canonicalize
+import klib.data.fs.copy
+import klib.data.fs.createSymlink
+import klib.data.fs.iterator
+import klib.data.fs.rangeEquals
+import klib.data.type.collections.iterator.AbstractClosableAbstractIterator
+import klib.data.type.collections.iterator.coroutine.CoroutineIterator
+import klib.data.type.collections.iterator.coroutine.forEach
+import kotlin.jvm.JvmName
 import kotlinx.io.Buffer
+import kotlinx.io.IOException
 import kotlinx.io.bytestring.ByteString
 import kotlinx.io.bytestring.decodeToString
 import kotlinx.io.bytestring.encodeToByteString
 import kotlinx.io.bytestring.indexOf
 import kotlinx.io.bytestring.lastIndexOf
+import kotlinx.io.files.FileNotFoundException
 import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
 import kotlinx.io.files.SystemPathSeparator
 import kotlinx.io.indexOf
 import kotlinx.io.readByteString
 import kotlinx.io.write
 import kotlinx.io.writeString
+
+private val SLASH = "/".encodeToByteString()
+
+private val BACKSLASH = "\\".encodeToByteString()
+
+private val ANY_SLASH = "/\\".encodeToByteString()
+
+private val DOT = ".".encodeToByteString()
+
+private val DOT_DOT = "..".encodeToByteString()
+
+private val Path.bytes
+    get() = toString().encodeToByteString()
 
 public val Path.nameBytes: ByteString
     get() = name.encodeToByteString()
@@ -32,27 +58,107 @@ public val Path.isRoot: Boolean
 public val Path.volumeLetter: Char?
     get() = volumeLetter()
 
+public val Path.isRelative: Boolean
+    get() = !isAbsolute
+
+public val Path.extension: String?
+    get() = toString().substringAfterLast(".", "").ifEmpty { null }
+
+private fun Path(byteString: ByteString) = Path(byteString.decodeToString())
+
 public fun pathOrNull(base: String, vararg parts: String): Path? =
     try {
         Path(base, *parts)
-    } catch (_: IllegalArgumentException) {
+    }
+    catch (_: IllegalArgumentException) {
         null
     }
 
-private val SLASH = "/".encodeToByteString()
+public expect fun Path.metadataOrNull(): PathMetadata?
 
-private val BACKSLASH = "\\".encodeToByteString()
+@Throws(IOException::class)
+public fun Path.metadata(): PathMetadata =
+    metadataOrNull() ?: throw FileNotFoundException("no such file: $this")
 
-private val ANY_SLASH = "/\\".encodeToByteString()
+public fun Path.exists(): Boolean = SystemFileSystem.exists(this)
 
-private val DOT = ".".encodeToByteString()
+/** Returns a resolved path to the symlink target, resolving it if necessary. */
+@Throws(IOException::class)
+public fun Path.symlinkTarget(): Path? {
+    val target = metadata().symlinkTarget ?: return null
+    return parent!! / target
+}
 
-private val DOT_DOT = "..".encodeToByteString()
+public fun Path.absolute(): Path =
+    when {
+        isAbsolute -> this
+        else -> {
+            val currentDir = "".toPath()
+            SystemFileSystem.canonicalize(currentDir) / (this)
+        }
+    }
 
-private val Path.bytes
-    get() = toString().encodeToByteString()
+public fun Path.canonical(): Path = SystemFileSystem.canonicalize(this)
 
-private fun Path(byteString: ByteString) = Path(byteString.decodeToString())
+public fun Path.list(): Collection<Path> = SystemFileSystem.list(this)
+
+public fun Path.listRecursively(followSymlinks: Boolean = false): Sequence<PathMetadata> =
+    metadata().listRecursively(
+        {
+            SystemFileSystem.list(this).map(Path::metadata)
+        },
+        followSymlinks,
+    )
+
+public fun Path.createDirectories(mustCreate: Boolean = false): Unit =
+    SystemFileSystem.createDirectories(this, mustCreate)
+
+public fun Path.createSymlink(target: String): Unit =
+    SystemFileSystem.createSymlink(this, target.toPath())
+
+public fun Path.move(destination: String): Unit =
+    SystemFileSystem.atomicMove(this, destination.toPath())
+
+public fun Path.copy(destination: String, bufferSize: Long = BUFFER_SIZE.toLong()): Unit =
+    SystemFileSystem.copy(this, destination.toPath(), bufferSize)
+
+public fun Path.delete(mustExist: Boolean = true): Unit = SystemFileSystem.delete(this, mustExist)
+
+public fun Path.deleteRecursively(mustExist: Boolean = true): Unit =
+    metadata().deleteRecursively(
+        { SystemFileSystem.list(this).map(Path::metadata) },
+        mustExist,
+        Path::delete,
+    )
+
+public fun Path.read(bufferSize: Int = BUFFER_SIZE): AbstractClosableAbstractIterator<ByteArray> =
+    SystemFileSystem.source(this).iterator(bufferSize)
+
+public fun Path.write(
+    data: Iterator<ByteArray>,
+    append: Boolean = false
+): Unit = SystemFileSystem.sink(this, append).use { sink ->
+    val buffer = Buffer()
+    data.forEach { bytes ->
+        buffer.write(bytes)
+        sink.write(buffer, bytes.size.toLong())
+        sink.flush()
+        buffer.clear()
+    }
+}
+
+public suspend fun Path.write(
+    data: CoroutineIterator<ByteArray>,
+    append: Boolean = false,
+): Unit = SystemFileSystem.sink(this, append).use { sink ->
+    val buffer = Buffer()
+    data.forEach { bytes ->
+        buffer.write(bytes)
+        sink.write(buffer, bytes.size.toLong())
+        sink.flush()
+        buffer.clear()
+    }
+}
 
 internal fun Path.root(): Path? =
     when (val rootLength = rootLength()) {
@@ -71,7 +177,8 @@ internal fun Path.segmentsBytes(): List<ByteString> {
     // segmentStart should always follow a `\`, but for UNC paths it doesn't.
     if (segmentStart == -1) {
         segmentStart = 0
-    } else if (segmentStart < bytes.size && bytes[segmentStart] == '\\'.code.toByte()) {
+    }
+    else if (segmentStart < bytes.size && bytes[segmentStart] == '\\'.code.toByte()) {
         segmentStart++
     }
 
@@ -115,9 +222,6 @@ private fun Path.rootLength(): Int {
 
     return -1
 }
-
-public val Path.commonIsRelative: Boolean
-    get() = !isAbsolute
 
 internal fun Path.volumeLetter(): Char? {
     if (bytes.indexOf(SLASH) != -1) return null
@@ -169,6 +273,15 @@ public fun Path.resolve(child: Path, normalize: Boolean): Path {
     return buffer.toPath(normalize = normalize)
 }
 
+@JvmName("resolve")
+public operator fun Path.div(child: String): Path = resolve(child, normalize = false)
+
+@JvmName("resolve")
+public operator fun Path.div(child: ByteString): Path = resolve(child, normalize = false)
+
+@JvmName("resolve")
+public operator fun Path.div(child: Path): Path = resolve(child, normalize = false)
+
 public fun Path.relativeTo(other: Path): Path {
     require(root == other.root) {
         "Paths of different roots cannot be relative to each other: $this and $other"
@@ -192,7 +305,7 @@ public fun Path.relativeTo(other: Path): Path {
     }
 
     require(
-        otherSegments.subList(firstNewSegmentIndex, otherSegments.size).indexOf(DOT_DOT) == -1
+        otherSegments.subList(firstNewSegmentIndex, otherSegments.size).indexOf(DOT_DOT) == -1,
     ) {
         "Impossible relative path to resolve: $this and $other"
     }
@@ -215,6 +328,8 @@ public fun Path.relativeTo(other: Path): Path {
     return buffer.toPath(normalize = false)
 }
 
+public fun Path.resolveToRoot(fromRootPath: Path, toRootPath: Path): Path =
+    toRootPath / relativeTo(fromRootPath)
 
 public fun Path.normalized(): Path = toString().toPath(normalize = true)
 
@@ -248,14 +363,16 @@ public fun Buffer.toPath(normalize: Boolean = false): Path {
     val windowsUncPath = leadingSlashCount >= 2 && slash == BACKSLASH
     if (windowsUncPath) {
         // This is a Windows UNC path, like \\server\directory\file.txt.
-        result.write(slash!!)
         result.write(slash)
-    } else if (leadingSlashCount > 0) {
+        result.write(slash)
+    }
+    else if (leadingSlashCount > 0) {
         // This is platform-dependent:
         //  * On UNIX: an absolute path like /home
         //  * On Windows: this is relative to the current volume, like \Windows.
         result.write(slash!!)
-    } else {
+    }
+    else {
         // This path doesn't start with any slash. We must initialize the slash character to use.
         val limit = indexOf(ANY_SLASH)
         slash = slash ?: when (limit) {
@@ -265,7 +382,8 @@ public fun Buffer.toPath(normalize: Boolean = false): Path {
         if (startsWithVolumeLetterAndColon(slash)) {
             if (limit == 2L) {
                 result.write(this, 3L) // Absolute on a named volume, like `C:\`.
-            } else {
+            }
+            else {
                 result.write(this, 2L) // Relative to the named volume, like `C:`.
             }
         }
@@ -280,7 +398,8 @@ public fun Buffer.toPath(normalize: Boolean = false): Path {
         val part: ByteString
         if (limit == -1L) {
             part = readByteString()
-        } else {
+        }
+        else {
             part = readByteString(limit.toInt())
             readByte()
         }
@@ -288,14 +407,18 @@ public fun Buffer.toPath(normalize: Boolean = false): Path {
         if (part == DOT_DOT) {
             if (absolute && canonicalParts.isEmpty()) {
                 // Silently consume `..`.
-            } else if (!normalize || !absolute && (canonicalParts.isEmpty() || canonicalParts.last() == DOT_DOT)) {
+            }
+            else if (!normalize || !absolute && (canonicalParts.isEmpty() || canonicalParts.last() == DOT_DOT)) {
                 canonicalParts.add(part) // '..' doesn't pop '..' for relative paths.
-            } else if (windowsUncPath && canonicalParts.size == 1) {
+            }
+            else if (windowsUncPath && canonicalParts.size == 1) {
                 // `..` doesn't pop UNC hostnames.
-            } else {
+            }
+            else {
                 canonicalParts.removeLastOrNull()
             }
-        } else if (part != DOT && part != ByteString.EMPTY) {
+        }
+        else if (part != DOT && part != ByteString.EMPTY) {
             canonicalParts.add(part)
         }
     }

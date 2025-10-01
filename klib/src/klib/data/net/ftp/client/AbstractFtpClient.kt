@@ -1,19 +1,20 @@
 package klib.data.net.ftp.client
 
-import ai.tech.core.DEFAULT_BUFFER_SIZE
-import ai.tech.core.data.filesystem.localPathWrite
-import klib.data.fs.model.PathMetadata
-import ai.tech.core.data.filesystem.pathResolveToRoot
-import ai.tech.core.data.filesystem.traverser
+import klib.data.BUFFER_SIZE
+import klib.data.fs.path.PathMetadata
+import klib.data.fs.path.resolveToRoot
+import klib.data.fs.path.write
 import klib.data.net.ftp.client.model.FtpClientConfig
 import klib.data.net.ftp.client.model.FtpHost
-import ai.tech.core.misc.type.multiple.model.AbstractClosableAbstractIterator
+import klib.data.type.collections.iterator.AbstractClosableAbstractIterator
+import kotlinx.io.files.Path
 
 @OptIn(ExperimentalStdlibApi::class)
 public abstract class AbstractFtpClient(
     protected val host: FtpHost,
     protected val config: FtpClientConfig,
 ) : AutoCloseable {
+
     public abstract var implicit: Boolean
     public abstract var utf8: Boolean
     public abstract var passive: Boolean
@@ -21,81 +22,78 @@ public abstract class AbstractFtpClient(
     public abstract var privateData: Boolean
     public abstract fun connect()
     public abstract fun login()
-    public abstract fun pathMetadata(path: String): PathMetadata
+    public abstract fun metadata(path: Path): PathMetadata
 
-    protected abstract fun pathIterator(path: String? = null): Iterator<PathMetadata>
-    public fun pathTraverser(
-        path: String,
-        depth: Int = 0,
+    protected abstract fun list(path: Path? = null): Collection<PathMetadata>
+
+    public fun listRecursively(
+        path: Path,
         followSymlinks: Boolean = false,
-        depthFirst: Boolean = false,
-    ): Iterator<PathMetadata> = pathIterator(path).traverser(depth, followSymlinks, depthFirst)
+    ): Sequence<PathMetadata> = metadata(path).listRecursively(
+        ::list,
+        followSymlinks,
+    )
 
-    public abstract fun createDirectory(path: String): Boolean
-    public abstract fun createSymlink(
-        linkPath: String,
-        targetPath: String,
-    ): Boolean
+    public abstract fun createDirectory(path: Path): Boolean
 
-    public abstract fun move(
-        fromPath: String,
-        toPath: String,
-    ): Boolean
+    public abstract fun createSymlink(source: Path, destination: Path): Boolean
 
-    public abstract fun copyFile(
-        fromPath: String,
-        toPath: String,
-    ): Boolean
+    public abstract fun move(source: Path, destination: Path): Boolean
+
+    public abstract fun copyFile(source: Path, destination: Path, append: Boolean = true): Boolean
 
     public fun copyDirectory(
-        fromPath: String,
-        toPath: String,
-    ): Unit =
-        pathTraverser(fromPath, depth = -1, depthFirst = true).forEach {
-            val path = it.path.pathResolveToRoot(fromPath, toPath)
-            if (it.isDirectory) {
-                createDirectory(path)
-            } else if (it.isRegularFile) {
-                copyFile(it.path, path)
-            }
+        source: Path,
+        destination: Path,
+        followSymlinks: Boolean = false,
+        append: Boolean = true,
+    ): Unit = listRecursively(source, followSymlinks).forEach { metadata ->
+
+        val path = metadata.path.resolveToRoot(source, destination)
+        when {
+            metadata.isRegularFile -> copyFile(metadata.path, path, append)
+            metadata.isDirectory -> createDirectory(path)
+
+            else -> Unit
         }
+    }
 
     public fun copy(
-        fromPath: String,
-        toPath: String,
-    ): Unit =
-        pathMetadata(fromPath).let {
-            if (it.isRegularFile) {
-                copyFile(fromPath, toPath)
-            } else if (it.isDirectory) {
-                copyDirectory(fromPath, toPath)
-            }
-        }
+        source: Path,
+        destination: Path,
+        followSymlinks: Boolean = false,
+    ): Unit = metadata(source).let { metadata ->
+        when {
+            metadata.isRegularFile -> copyFile(source, destination)
+            metadata.isDirectory -> copyDirectory(source, destination, followSymlinks)
 
-    public abstract fun delete(path: String): Boolean
+            else -> Unit
+        }
+    }
+
+    public abstract fun delete(path: Path): Boolean
 
     public abstract fun readFile(
-        path: String,
-        bufferSize: Int = DEFAULT_BUFFER_SIZE,
+        path: Path,
+        bufferSize: Int = BUFFER_SIZE,
     ): AbstractClosableAbstractIterator<ByteArray>
 
     public fun readBytes(
-        path: String,
-        bufferSize: Int = DEFAULT_BUFFER_SIZE
-    ): ByteArray = readFile(path, bufferSize).flatMap(ByteArray::iterator).toList()
+        path: Path,
+        bufferSize: Int = BUFFER_SIZE
+    ): ByteArray = readFile(path, bufferSize).asSequence().flatMap(ByteArray::asSequence).toList()
         .toByteArray()
 
     public fun copyFileToLocal(
-        remotePath: String,
-        localPath: String,
-        bufferSize: Int = DEFAULT_BUFFER_SIZE,
-        ifNotExists: Boolean = false
-    ): Unit =
-        localPath.localPathWrite(readFile(remotePath, bufferSize), ifNotExists)
+        source: Path,
+        destination: Path,
+        bufferSize: Int = BUFFER_SIZE,
+        append: Boolean = false
+    ): Unit = destination.write(readFile(source, bufferSize), append)
 
     public abstract fun writeFile(
+        path: Path,
         data: Iterator<ByteArray>,
-        path: String,
         append: Boolean = false,
     ): Boolean
 }
