@@ -1,12 +1,10 @@
 package klib.data.fs
 
 import klib.data.BUFFER_SIZE
-import klib.data.fs.path.symlinkTarget
 import kotlinx.io.Buffer
 import kotlinx.io.IOException
 import kotlinx.io.files.FileSystem
 import kotlinx.io.files.Path
-import kotlinx.io.files.SystemFileSystem
 
 public val Regex.Companion.FILE_PATTERN: String
     get() = "^file://.*"

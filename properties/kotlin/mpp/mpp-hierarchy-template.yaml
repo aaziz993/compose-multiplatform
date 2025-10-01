@@ -80,21 +80,23 @@ script:
               group("jvmAndroid")
               group("jvmWeb")
             }
-            group("nix") {
-              group("androidNative")
-              group("apple")
+            group("unix") {
               group("linux")
+              group("androidNative")
+            }
+            group("nix") {
+              group("unix")
+              group("apple")
             }
             group("posix") {
               group("nix")
               group("mingw")
             }
-            group("nativeAndroidLinuxMingw") {
-              group("androidNative")
-              group("linux")
+            group("unixMingw") {
+              group("unix")
               group("mingw")
             }
-            group("nativeAppleLinuxMingw") {
+            group("appleLinuxMingw") {
               group("apple")
               group("linux")
               group("mingw")
@@ -106,13 +108,17 @@ script:
             }
             group("native") {
               group("posix")
-              group("nativeAndroidLinuxMingw")
-              group("nativeAppleLinuxMingw")
+              group("unixMingw")
+              group("appleLinuxMingw")
               group("desktop")
             }
             group("multithreaded") {
               group("jvmAndroid")
               group("native")
+            }
+            group("wasm") {
+                withWasmJs()
+                withWasmWasi()
             }
           }
         }

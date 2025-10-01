@@ -23,13 +23,13 @@ public fun rangeEquals(
     var segment = segment
     var segmentPos = segmentPos
     var segmentLimit = segment.limit
-    var data = segment.dataAsByteArray()
+    var data = segment.dataAsByteArray(true)
 
     var i = bytesOffset
     while (i < bytesLimit) {
         if (segmentPos == segmentLimit) {
             segment = segment.next!!
-            data = segment.dataAsByteArray()
+            data = segment.dataAsByteArray(true)
             segmentPos = segment.pos
             segmentLimit = segment.limit
         }
@@ -65,7 +65,6 @@ public fun Buffer.rangeEquals(
     ) != -1L
 }
 
-
 public fun Buffer.indexOf(
     bytes: ByteString,
     startIndex: Long,
@@ -93,7 +92,7 @@ public fun Buffer.indexOf(
         val resultLimit = minOf(toIndex, size - byteCount + 1L)
         while (offset < resultLimit) {
             // Scan through the current segment.
-            val data = s.dataAsByteArray()
+            val data = s.dataAsByteArray(true)
             val segmentLimit = minOf(s.limit, s.pos + resultLimit - offset).toInt()
             for (pos in (s.pos + fromIndex - offset).toInt() until segmentLimit) {
                 if (
