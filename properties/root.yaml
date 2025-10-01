@@ -12,6 +12,7 @@ config:
     - gradle.api.project.*
     - gradle.api.kover.*
     - gradle.api.dokka.*
+    - gradle.api.knit.*
 script:
   - plugins:
       - id: (libs.plugins("kover").pluginId)
