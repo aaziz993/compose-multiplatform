@@ -8,6 +8,7 @@ config:
     - com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
     - gradle.api.initialization.*
     - gradle.api.ci.CI
+    - gradle.api.develocity.*
     - gradle.api.githooks.*
 script:
   - enableFeaturePreview: ("TYPESAFE_PROJECT_ACCESSORS")
