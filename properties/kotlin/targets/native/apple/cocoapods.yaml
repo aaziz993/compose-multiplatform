@@ -1,7 +1,6 @@
 config:
   imports:
     - org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-    - gradle.plugins.kotlin.mpp.*
 script:
   - plugins:
       - id: (libs.plugins("cocoapods").pluginId)
