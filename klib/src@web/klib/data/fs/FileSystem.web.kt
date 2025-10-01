@@ -17,7 +17,7 @@ catch (_: Exception) {
 
 public actual fun FileSystem.canonicalize(path: Path): Path {
     try {
-        val canonicalPath = realpathSync(path.toString())
+        val canonicalPath = Fs.realpathSync(path.toString())
         return canonicalPath.toPath()
     }
     catch (e: Throwable) {
@@ -34,7 +34,7 @@ public actual fun FileSystem.createSymlink(source: Path, destination: Path) {
         throw IOException("already exists: $source")
     }
 
-    symlinkSync(destination.toString(), source.toString())
+    Fs.symlinkSync(destination.toString(), source.toString())
 }
 
 internal val Throwable.errorCode

@@ -55,6 +55,7 @@ public val Path.root: Path?
 
 public val Path.isRoot: Boolean
     get() = commonIsRoot()
+
 public val Path.volumeLetter: Char?
     get() = volumeLetter()
 

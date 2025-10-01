@@ -1,9 +1,12 @@
+@file:OptIn(ExperimentalWasmJsInterop::class)
+
 package klib.data.fs.path
 
+import klib.data.fs.Fs
 import klib.data.fs.errorCode
-import klib.data.fs.lstatSync
-import klib.data.fs.readlinkSync
 import klib.data.fs.toIOException
+import kotlin.js.ExperimentalWasmJsInterop
+import kotlin.js.toInt
 import kotlinx.io.IOException
 import kotlinx.io.files.Path
 
@@ -15,7 +18,7 @@ private var S_IFLNK = 0xa000 // fs.constants.S_IFLNK
 public actual fun Path.metadataOrNull(): PathMetadata? {
     val pathString = toString()
     val stat = try {
-        lstatSync(pathString)
+        Fs.lstatSync(pathString)
     }
     catch (e: Throwable) {
         if (e.errorCode == "ENOENT") return null // "No such file or directory".
@@ -25,7 +28,7 @@ public actual fun Path.metadataOrNull(): PathMetadata? {
     var symlinkTarget: Path? = null
     if ((stat.mode.toInt() and S_IFMT) == S_IFLNK) {
         try {
-            symlinkTarget = readlinkSync(pathString).toPath()
+            symlinkTarget = Fs.readlinkSync(pathString).toPath()
         }
         catch (e: Throwable) {
             throw e.toIOException()
@@ -37,9 +40,9 @@ public actual fun Path.metadataOrNull(): PathMetadata? {
         isRegularFile = (stat.mode.toInt() and S_IFMT) == S_IFREG,
         isDirectory = (stat.mode.toInt() and S_IFMT) == S_IFDIR,
         symlinkTarget = symlinkTarget,
-        size = stat.size.toLong(),
-        createdAtMillis = stat.birthtimeMs.toLong(),
-        lastModifiedAtMillis = stat.mtimeMs.toLong(),
-        lastAccessedAtMillis = stat.atimeMs.toLong(),
+        size = stat.size,
+        createdAtMillis = stat.birthtimeMs,
+        lastModifiedAtMillis = stat.mtimeMs,
+        lastAccessedAtMillis = stat.atimeMs,
     )
 }
