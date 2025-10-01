@@ -19,13 +19,13 @@ public val GreenwichMeanTime: ZoneId = ZoneId.of("GMT")
 public fun Instant.toGMTDate(): GMTDate =
     GMTDate(TimeUnit.SECONDS.toMillis(atZone(ZoneOffset.UTC).toEpochSecond()))
 
-public fun LocalDate.toJavaInstant(timeZone: TimeZone) = toInstant(timeZone).toJavaInstant()
+public fun LocalDate.toJavaInstant(timeZone: TimeZone): Instant = toInstant(timeZone).toJavaInstant()
 
 public fun LocalDate.toJavaDateOrNull(timeZone: TimeZone): Date? = Date.from(toJavaInstant(timeZone))
 
 public fun LocalDate.toJavaDate(timeZone: TimeZone): Date? = toJavaDate(timeZone)!!
 
-public fun LocalDateTime.toJavaInstant(timeZone: TimeZone) = toInstant(timeZone).toJavaInstant()
+public fun LocalDateTime.toJavaInstant(timeZone: TimeZone): Instant = toInstant(timeZone).toJavaInstant()
 
 public fun LocalDateTime.toJavaDate(timeZone: TimeZone): Date? = Date.from(toJavaInstant(timeZone))
 

@@ -1,12 +1,12 @@
 package klib.data.net.ftp.client.model
 
-public val Regex.Companion.FTP_PATTERN: Regex
+public val Regex.Companion.FTP_PATTERN: String
     get() = "^(ftp|ftps|sftp)://.*"
 
 public val Regex.Companion.FTP: Regex
     get() = FTP_PATTERN.toRegex()
 
-public val Regex.Companion.FTP_URL_PATTERN: Regex
+public val Regex.Companion.FTP_URL_PATTERN: String
     get() = """^(ftp|ftps|sftp)://(?:(\w+)(?::(\w+))?@)?([^:/]+)(?::(\d+))?(/.*)?$"""
 public val Regex.Companion.FTP_URL: Regex
     get() = FTP_URL_PATTERN.toRegex()
@@ -26,7 +26,7 @@ public class FtpUrl(
 
         public operator fun invoke(url: String): FtpUrl {
             val matchResult =
-                FTP_URL.matchEntire(url)
+                Regex.FTP_URL.matchEntire(url)
                     ?: throw IllegalArgumentException("Invalid FTP url: $url")
 
             val (scheme, username, password, host, port, path) = matchResult.destructured
@@ -43,6 +43,6 @@ public class FtpUrl(
     }
 }
 
-public fun String.isFtpUrl(): Boolean = matches(FTP)
+public fun String.isFtpUrl(): Boolean = matches(Regex.FTP)
 
-public fun String.isValidFtpUrl(): Boolean = matches(FTP_URL)
+public fun String.isValidFtpUrl(): Boolean = matches(Regex.FTP_URL)

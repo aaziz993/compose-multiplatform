@@ -84,19 +84,19 @@ public fun ByteString.rangeEquals(
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
 
-public fun ByteString.startsWith(prefix: ByteString) =
+public fun ByteString.startsWith(prefix: ByteString): Boolean =
     rangeEquals(0, prefix, 0, prefix.size)
 
 
-public fun ByteString.startsWith(prefix: ByteArray) =
+public fun ByteString.startsWith(prefix: ByteArray): Boolean =
     rangeEquals(0, prefix, 0, prefix.size)
 
 
-public fun ByteString.endsWith(suffix: ByteString) =
+public fun ByteString.endsWith(suffix: ByteString): Boolean =
     rangeEquals(size - suffix.size, suffix, 0, suffix.size)
 
 
-public fun ByteString.endsWith(suffix: ByteArray) =
+public fun ByteString.endsWith(suffix: ByteArray): Boolean =
     rangeEquals(size - suffix.size, suffix, 0, suffix.size)
 
 public fun byteStringOf(data: ByteArray): ByteString = ByteString(data)
