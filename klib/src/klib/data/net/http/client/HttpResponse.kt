@@ -13,7 +13,9 @@ import io.ktor.utils.io.InternalAPI
 import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.readByteArray
+import io.ktor.utils.io.readRemaining
 import klib.data.type.primitives.toInt
+import klib.data.type.primitives.toLong
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -28,10 +30,10 @@ public fun <T : Any> HttpResponse.bodyAsFlow(typeInfo: TypeInfo, charset: Charse
         ?: error("No suitable converter for $contentType")
 
     while (!channel.isClosedForRead) {
-        val lengthBytes = channel.readByteArray(Int.SIZE_BYTES)
-        val itemBytes = channel.readByteArray(lengthBytes.toInt())
+        val lengthBytes = channel.readByteArray(Long.SIZE_BYTES)
+        val itemSource = channel.readRemaining(lengthBytes.toLong())
 
-        emit(converter.deserialize(charset, typeInfo, ByteReadChannel(itemBytes)) as T)
+        emit(converter.deserialize(charset, typeInfo, ByteReadChannel(itemSource)) as T)
     }
 }
 

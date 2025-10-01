@@ -643,6 +643,7 @@ universal-cache = { module = "io.github.andrew0000:universal-cache", version.ref
 klibs-kstorage = { module = "ru.astrainteractive.klibs:kstorage", version.ref = "klibs-kstorage" }
 # file system.
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
+kotlinx-io-bytestring = { module = "org.jetbrains.kotlinx:kotlinx-io-bytestring", version.ref = "kotlinx-io" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
 okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem", version.ref = "okio" }
@@ -1095,6 +1096,10 @@ cryptography = [
 kache = [
     "kache",
     "file-kache"
+]
+kotlinx-io = [
+    "kotlinx-io-core",
+    "kotlinx-io-bytestring"
 ]
 # multiplatform settings.
 multiplatform-settings = [

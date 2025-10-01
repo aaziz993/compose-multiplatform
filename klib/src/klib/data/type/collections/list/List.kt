@@ -1,5 +1,7 @@
 package klib.data.type.collections.list
 
+import klib.data.type.collections.rangeEquals
+
 @Suppress("UNCHECKED_CAST")
 public val Any.asNullableListOrNull: List<Any?>?
     get() = this as? List<Any?>
@@ -41,3 +43,10 @@ public fun <T> List<T>.unzip(size: Int): List<List<T>> =
     List(size) { offset ->
         (indices step size).map { this[offset + it] }
     }
+
+public fun <T> List<T>.rangeEquals(
+    offset: Int,
+    other: ByteArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)

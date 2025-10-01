@@ -157,7 +157,7 @@ public class CoroutineIteratorBreadthIterator<T>(
 }
 
 // ////////////////////////////////////////////ITERATOR/////////////////////////////////////////////
-public fun <T> CoroutineIterator<T>.scopeIterator(
+public fun <T> CoroutineIterator<T>.asIterator(
     coroutineScope: CoroutineScope = CoroutineScope(
         Dispatchers.Default,
     )
@@ -179,6 +179,17 @@ private class CoroutineIteratorIterator<T>(
             }
         }
     }
+}
+
+public fun <T> Iterator<T>.asCoroutineIterator(): CoroutineIterator<T> = IteratorCoroutineIterator(this)
+
+private class IteratorCoroutineIterator<T>(
+    private val iterator: Iterator<T>,
+) : CoroutineIterator<T> {
+
+    override suspend fun hasNext(): Boolean = iterator.hasNext()
+
+    override suspend fun next(): T = iterator.next()
 }
 
 // ////////////////////////////////////////CHANNELITERATOR//////////////////////////////////////////

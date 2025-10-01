@@ -12,9 +12,11 @@ import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
 import klib.data.type.collections.writeToChannel
 import klib.data.type.primitives.toByteArray
+import kotlin.jvm.JvmName
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+@JvmName("setBodyByteArray")
 @Suppress("UnusedReceiverParameter")
 public fun HttpRequestBuilder.setBody(
     flow: Flow<ByteArray>,
@@ -40,8 +42,8 @@ public fun HttpRequestBuilder.setBody(
     contentLength,
 )
 
-context(client: HttpClient)
 public fun <T : Any> HttpRequestBuilder.setBody(
+    client: HttpClient,
     flow: Flow<T>,
     typeInfo: TypeInfo,
     contentType: ContentType,
@@ -58,7 +60,7 @@ public fun <T : Any> HttpRequestBuilder.setBody(
         }
 
         val bytes = outgoing.bytes()
-        val lengthBytes = bytes.size.toByteArray(Int.SIZE_BYTES)
+        val lengthBytes = bytes.size.toLong().toByteArray(Long.SIZE_BYTES)
 
         lengthBytes + bytes
     }
@@ -66,9 +68,9 @@ public fun <T : Any> HttpRequestBuilder.setBody(
     return setBody(byteFlow, contentType = contentType)
 }
 
-context(client: HttpClient)
 public inline fun <reified T : Any> HttpRequestBuilder.setBody(
+    client: HttpClient,
     flow: Flow<T>,
     contentType: ContentType,
     charset: Charset = Charsets.UTF_8
-): ChannelWriterContent = setBody(flow, typeInfo<T>(), contentType, charset)
+): ChannelWriterContent = setBody(client, flow, typeInfo<T>(), contentType, charset)

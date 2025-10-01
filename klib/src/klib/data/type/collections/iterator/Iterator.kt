@@ -1,10 +1,5 @@
 package klib.data.type.collections.iterator
 
-import klib.data.type.collections.iterator.coroutine.CoroutineIterator
-import okio.Buffer
-import okio.Source
-import okio.Timeout
-
 internal object EmptyIterator : Iterator<Nothing> {
 
     override fun hasNext(): Boolean = false
@@ -131,36 +126,4 @@ public class IteratorBreadthIterator<T>(
 
         done()
     }
-}
-
-// ///////////////////////////////////////////////////ASYNCITERATOR/////////////////////////////////////////////////////
-public fun <T> Iterator<T>.coroutineIterator(): CoroutineIterator<T> = IteratorCoroutineIterator(this)
-
-private class IteratorCoroutineIterator<T>(
-    private val iterator: Iterator<T>,
-) : CoroutineIterator<T> {
-
-    override suspend fun hasNext(): Boolean = iterator.hasNext()
-
-    override suspend fun next(): T = iterator.next()
-}
-
-// ////////////////////////////////////////////////////////SOURCE///////////////////////////////////////////////////////
-public fun Iterator<Byte>.asSource(): Source = IteratorSource(this)
-
-private class IteratorSource(
-    private val iterator: Iterator<Byte>,
-) : Source {
-
-    override fun read(
-        sink: Buffer,
-        byteCount: Long,
-    ): Long = iterator.next(byteCount.toInt()).let {
-        sink.write(it.toByteArray())
-        it.size.toLong()
-    }
-
-    override fun timeout(): Timeout = Timeout.NONE
-
-    override fun close() = Unit
 }

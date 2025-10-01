@@ -22,7 +22,6 @@ public const val STRING_DEFAULT: String = ""
 public val BIG_INTEGER_DEFAULT: BigInteger = BigInteger.ZERO
 public val BIG_DECIMAL_DEFAULT: BigDecimal = BigDecimal.ZERO
 
-
 private val INT_MIN = BigInteger(Int.MIN_VALUE)
 private val INT_MAX = BigInteger(Int.MAX_VALUE)
 private val LONG_MIN = BigInteger(Long.MIN_VALUE)
@@ -64,7 +63,8 @@ public fun String.toNumber(): Any {
         return if (suffix == "ul") {
             require(bi in ULONG_MIN..ULONG_MAX) { "ULong literal out of range: $this" }
             bi.ulongValue()
-        } else {
+        }
+        else {
             require(bi in UINT_MIN..UINT_MAX) { "UInt literal out of range: $this" }
             bi.uintValue()
         }
@@ -134,13 +134,38 @@ public fun Byte.unsigned(): UByte = (this + Byte.MAX_VALUE + 1).toUByte()
 
 public fun Byte.normalize(max: Byte = Byte.MAX_VALUE): Float = toFloat() / max
 
-public fun Byte.toIntLSB(): Int = toInt() and 0xff
+// Syntactic sugar.
+public infix fun Byte.shr(other: Int): Int = toInt() shr other
 
-public fun Byte.toUIntLSB(): UInt = toUInt() and 0xffu
+public infix fun Byte.shl(other: Int): Int = toInt() shl other
 
-public fun Byte.toLongLSB(): Long = toLong() and 0xff
+// Syntactic sugar.
+public infix fun Byte.and(other: Int): Int = toInt() and other
 
-public fun Byte.toULongLSB(): ULong = toULong() and 0xffu
+public infix fun Byte.and(other: UInt): UInt = toUInt() and other
+
+// Syntactic sugar.
+public infix fun Byte.and(other: Long): Long = toLong() and other
+
+public infix fun Byte.and(other: ULong): ULong = toULong() and other
+
+// Pending `kotlin.experimental.xor` becoming stable
+public infix fun Byte.xor(other: Byte): Byte = (toInt() xor other.toInt()).toByte()
+
+public fun Byte.toIntLSB(): Int = this and 0xff
+
+public fun Byte.toUIntLSB(): UInt = this and 0xffu
+
+public fun Byte.toLongLSB(): Long = this and 0xffL
+
+public fun Byte.toULongLSB(): ULong = this and 0xffuL
+
+public fun Byte.toHexString(): String {
+    val result = CharArray(2)
+    result[0] = HEX_DIGIT_CHARS[this shr 4 and 0xf]
+    result[1] = HEX_DIGIT_CHARS[this and 0xf]
+    return result.concatToString()
+}
 
 // ///////////////////////////////////////////////////////USHORT////////////////////////////////////////////////////////
 public val UShort.Companion.DEFAULT: UShort
@@ -158,6 +183,12 @@ public val Short.Companion.DEFAULT: Short
 public fun Short.unsigned(): UShort = (this + Short.MAX_VALUE + 1).toUShort()
 
 public fun Short.normalize(max: Short = Short.MAX_VALUE): Float = toFloat() / max
+
+public fun Short.reverseBytes(): Short {
+    val i = toInt() and 0xffff
+    val reversed = (i and 0xff00 ushr 8) or (i and 0x00ff shl 8)
+    return reversed.toShort()
+}
 
 // ////////////////////////////////////////////////////////UINT/////////////////////////////////////////////////////////
 @Suppress("SameReturnValue")
@@ -188,7 +219,8 @@ public fun UInt.assignBits(
     intSetBits(lowIndex, highIndex).toUInt().let {
         if (set) {
             this or it
-        } else {
+        }
+        else {
             this and it.inv()
         }
     }
@@ -209,9 +241,9 @@ public fun BooleanArray.toUInt(): UInt = map { if (it) 1u else 0u }.foldIndexed(
 
 public fun ByteArray.toUInt(offset: Int = 0): UInt =
     this[offset].toUIntLSB() or
-            (this[offset + 1].toUIntLSB() shl 8) or
-            (this[offset + 2].toUIntLSB() shl 16) or
-            (this[offset + 3].toUIntLSB() shl 24)
+        (this[offset + 1].toUIntLSB() shl 8) or
+        (this[offset + 2].toUIntLSB() shl 16) or
+        (this[offset + 3].toUIntLSB() shl 24)
 
 public fun ByteArray.toUInt(
     size: Int,
@@ -231,6 +263,9 @@ public fun Int.unsigned(): UInt = (this + Int.MAX_VALUE + 1).toUInt() + 1u
 
 public fun Int.normalize(max: Int = Int.MAX_VALUE): Float = toFloat() / max
 
+// Syntactic sugar.
+public infix fun Int.and(other: Long): Long = toLong() and other
+
 public fun Int.toLSB(): Int = this and 0xff
 
 public fun intSetBits(
@@ -246,7 +281,8 @@ public fun Int.assignBits(
     intSetBits(lowIndex, highIndex).let {
         if (set) {
             this or it
-        } else {
+        }
+        else {
             this and it.inv()
         }
     }
@@ -262,9 +298,9 @@ public fun BooleanArray.toInt(): Int = map { if (it) 1 else 0 }.foldIndexed(0) {
 
 public fun ByteArray.toInt(offset: Int = 0): Int =
     this[offset].toIntLSB() or
-            (this[offset + 1].toIntLSB() shl 8) or
-            (this[offset + 2].toIntLSB() shl 16) or
-            (this[offset + 3].toIntLSB() shl 24)
+        (this[offset + 1].toIntLSB() shl 8) or
+        (this[offset + 2].toIntLSB() shl 16) or
+        (this[offset + 3].toIntLSB() shl 24)
 
 public fun ByteArray.toInt(
     size: Int,
@@ -289,6 +325,36 @@ public fun Any.toInt(): Int = when (this) {
     is String -> toInt()
 
     else -> throw IllegalArgumentException("Expected integer value, but got $this")
+}
+
+public fun Int.reverseBytes(): Int = (this and -0x1000000 ushr 24) or
+    (this and 0x00ff0000 ushr 8) or
+    (this and 0x0000ff00 shl 8) or
+    (this and 0x000000ff shl 24)
+
+public infix fun Int.leftRotate(bitCount: Int): Int = (this shl bitCount) or (this ushr (Int.SIZE_BITS - bitCount))
+
+public fun Int.toHexString(): String {
+    if (this == 0) return "0" // Required as code below does not handle 0
+
+    val result = CharArray(8)
+    result[0] = HEX_DIGIT_CHARS[this shr 28 and 0xf]
+    result[1] = HEX_DIGIT_CHARS[this shr 24 and 0xf]
+    result[2] = HEX_DIGIT_CHARS[this shr 20 and 0xf]
+    result[3] = HEX_DIGIT_CHARS[this shr 16 and 0xf]
+    result[4] = HEX_DIGIT_CHARS[this shr 12 and 0xf]
+    result[5] = HEX_DIGIT_CHARS[this shr 8 and 0xf]
+    result[6] = HEX_DIGIT_CHARS[this shr 4 and 0xf]
+    result[7] = HEX_DIGIT_CHARS[this and 0xf]
+
+    // Find the first non-zero index
+    var i = 0
+    while (i < result.size) {
+        if (result[i] != '0') break
+        i++
+    }
+
+    return result.concatToString(i, result.size)
 }
 
 // ///////////////////////////////////////////////////////ULONG/////////////////////////////////////////////////////////
@@ -320,7 +386,8 @@ public fun ULong.assignBits(
     longSetBits(lowIndex, highIndex).toULong().let {
         if (set) {
             this or it
-        } else {
+        }
+        else {
             this and it.inv()
         }
     }
@@ -345,13 +412,13 @@ public fun ByteArray.toULong(
         0,
 ): ULong =
     this[offset].toULongLSB() or
-            (this[offset + 1].toULongLSB() shl 8) or
-            (this[offset + 2].toULongLSB() shl 16) or
-            (this[offset + 3].toULongLSB() shl 24) or
-            (this[offset + 4].toULongLSB() shl 32) or
-            (this[offset + 5].toULongLSB() shl 40) or
-            (this[offset + 6].toULongLSB() shl 48) or
-            (this[offset + 7].toULongLSB() shl 56)
+        (this[offset + 1].toULongLSB() shl 8) or
+        (this[offset + 2].toULongLSB() shl 16) or
+        (this[offset + 3].toULongLSB() shl 24) or
+        (this[offset + 4].toULongLSB() shl 32) or
+        (this[offset + 5].toULongLSB() shl 40) or
+        (this[offset + 6].toULongLSB() shl 48) or
+        (this[offset + 7].toULongLSB() shl 56)
 
 public fun ByteArray.toULong(
     size: Int,
@@ -385,7 +452,8 @@ public fun Long.assignBits(
     longSetBits(lowIndex, highIndex).let {
         if (set) {
             this or it
-        } else {
+        }
+        else {
             this and it.inv()
         }
     }
@@ -404,13 +472,13 @@ public fun ByteArray.toLong(
         0,
 ): Long =
     this[offset].toLongLSB() or
-            (this[offset + 1].toLongLSB() shl 8) or
-            (this[offset + 2].toLongLSB() shl 16) or
-            (this[offset + 3].toLongLSB() shl 24) or
-            (this[offset + 4].toLongLSB() shl 32) or
-            (this[offset + 5].toLongLSB() shl 40) or
-            (this[offset + 6].toLongLSB() shl 48) or
-            (this[offset + 7].toLongLSB() shl 56)
+        (this[offset + 1].toLongLSB() shl 8) or
+        (this[offset + 2].toLongLSB() shl 16) or
+        (this[offset + 3].toLongLSB() shl 24) or
+        (this[offset + 4].toLongLSB() shl 32) or
+        (this[offset + 5].toLongLSB() shl 40) or
+        (this[offset + 6].toLongLSB() shl 48) or
+        (this[offset + 7].toLongLSB() shl 56)
 
 public fun ByteArray.toLong(
     size: Int,
@@ -419,6 +487,50 @@ public fun ByteArray.toLong(
     var value = 0L
     (0 until size).forEach { value = value or (this[offset + it].toLongLSB() shl (it * 8)) }
     return value
+}
+
+public fun Long.reverseBytes(): Long =
+    (this and -0x100000000000000L ushr 56) or
+        (this and 0x00ff000000000000L ushr 40) or
+        (this and 0x0000ff0000000000L ushr 24) or
+        (this and 0x000000ff00000000L ushr 8) or
+        (this and 0x00000000ff000000L shl 8) or
+        (this and 0x0000000000ff0000L shl 24) or
+        (this and 0x000000000000ff00L shl 40) or
+        (this and 0x00000000000000ffL shl 56)
+
+public infix fun Long.rightRotate(bitCount: Int): Long =
+    (this ushr bitCount) or (this shl (Long.SIZE_BITS - bitCount))
+
+public fun Long.toHexString(): String {
+    if (this == 0L) return "0" // Required as code below does not handle 0
+
+    val result = CharArray(16)
+    result[0] = HEX_DIGIT_CHARS[(this shr 60 and 0xf).toInt()]
+    result[1] = HEX_DIGIT_CHARS[(this shr 56 and 0xf).toInt()]
+    result[2] = HEX_DIGIT_CHARS[(this shr 52 and 0xf).toInt()]
+    result[3] = HEX_DIGIT_CHARS[(this shr 48 and 0xf).toInt()]
+    result[4] = HEX_DIGIT_CHARS[(this shr 44 and 0xf).toInt()]
+    result[5] = HEX_DIGIT_CHARS[(this shr 40 and 0xf).toInt()]
+    result[6] = HEX_DIGIT_CHARS[(this shr 36 and 0xf).toInt()]
+    result[7] = HEX_DIGIT_CHARS[(this shr 32 and 0xf).toInt()]
+    result[8] = HEX_DIGIT_CHARS[(this shr 28 and 0xf).toInt()]
+    result[9] = HEX_DIGIT_CHARS[(this shr 24 and 0xf).toInt()]
+    result[10] = HEX_DIGIT_CHARS[(this shr 20 and 0xf).toInt()]
+    result[11] = HEX_DIGIT_CHARS[(this shr 16 and 0xf).toInt()]
+    result[12] = HEX_DIGIT_CHARS[(this shr 12 and 0xf).toInt()]
+    result[13] = HEX_DIGIT_CHARS[(this shr 8 and 0xf).toInt()]
+    result[14] = HEX_DIGIT_CHARS[(this shr 4 and 0xf).toInt()]
+    result[15] = HEX_DIGIT_CHARS[(this and 0xf).toInt()]
+
+    // Find the first non-zero index
+    var i = 0
+    while (i < result.size) {
+        if (result[i] != '0') break
+        i++
+    }
+
+    return result.concatToString(i, result.size)
 }
 
 // ////////////////////////////////////////////////////////FLOAT////////////////////////////////////////////////////////
@@ -636,3 +748,7 @@ public fun Long.toByteArray(): ByteArray =
     )
 
 public fun Long.toByteArray(size: Int): ByteArray = ByteArray(size) { sliceByte(it * 8).toByte() }
+
+public fun minOf(a: Long, b: Int): Long = minOf(a, b.toLong())
+
+public fun minOf(a: Int, b: Long): Long = minOf(a.toLong(), b)

@@ -105,3 +105,78 @@ public fun <E> Array<E>.swap(i: Int, j: Int) {
     this[i] = this[j]
     this[j] = tmp
 }
+
+public fun checkOffsetAndCount(size: Long, offset: Long, byteCount: Long) {
+    if (offset or byteCount < 0 || offset > size || size - offset < byteCount) {
+        throw IndexOutOfBoundsException("size=$size offset=$offset byteCount=$byteCount")
+    }
+}
+
+public fun <T> rangeEquals(
+    getter: (index: Int) -> T,
+    offset: Int,
+    otherGetter: (index: Int) -> T,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean {
+    for (i in 0 until byteCount)
+        if (getter(i + offset) != otherGetter(i + otherOffset)) return false
+    return true
+}
+
+public fun <T> Array<T>.rangeEquals(
+    offset: Int,
+    other: Array<T>,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun ByteArray.rangeEquals(
+    offset: Int,
+    other: ByteArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun ShortArray.rangeEquals(
+    offset: Int,
+    other: ShortArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun IntArray.rangeEquals(
+    offset: Int,
+    other: IntArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun LongArray.rangeEquals(
+    offset: Int,
+    other: LongArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun FloatArray.rangeEquals(
+    offset: Int,
+    other: FloatArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun DoubleArray.rangeEquals(
+    offset: Int,
+    other: DoubleArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun CharArray.rangeEquals(
+    offset: Int,
+    other: CharArray,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+

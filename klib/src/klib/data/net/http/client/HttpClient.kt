@@ -1,5 +1,4 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-@file:OptIn(InternalAPI::class)
 
 package klib.data.net.http.client
 

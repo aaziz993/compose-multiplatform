@@ -43,14 +43,6 @@ script:
                   }
                 }
               }
-
-              nodejs {
-                testTask { testTask ->
-                    testTask.useMocha {
-                      timeout = "10s"
-                    }
-                }
-              }
               generateTypeScriptDefinitions()
             }
       sourceSets:
@@ -61,7 +53,6 @@ script:
                 implementation(libs["compass.geolocation.browser"])
                 implementation(libs["kstore.storage"])
                 implementation(libs["sqldelight.web.worker.driver"])
-                implementation(libs("ktor")["client.js"])
                 implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone").requiredVersion))
                 implementation(npm("@cashapp/sqldelight-sqljs-worker", libs.versions("sqldelight").requiredVersion))
                 implementation(npm("sql.js", libs.versions("npm.sql.js").requiredVersion))
