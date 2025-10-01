@@ -7,8 +7,8 @@ config:
     - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
     - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
     - org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
-    - gradle.plugins.kotlin.targets.web.node.*
-    - gradle.plugins.kotlin.targets.web.yarn.*
+    - gradle.api.kotlin.targets.web.node.*
+    - gradle.api.kotlin.targets.web.yarn.*
 script:
   - kotlin:
       targets:

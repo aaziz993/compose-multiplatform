@@ -1,4 +1,4 @@
-package gradle.api.kotlin.web.karakum
+package gradle.api.kotlin.targets.web.karakum
 
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import org.gradle.api.Project

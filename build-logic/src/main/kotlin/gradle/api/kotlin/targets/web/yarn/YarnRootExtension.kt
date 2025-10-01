@@ -1,4 +1,4 @@
-package gradle.api.kotlin.web.yarn
+package gradle.api.kotlin.targets.web.yarn
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

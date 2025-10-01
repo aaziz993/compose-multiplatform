@@ -1,4 +1,4 @@
-package gradle.api.kotlin.web.npm
+package gradle.api.kotlin.targets.web.npm
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
