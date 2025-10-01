@@ -3,9 +3,9 @@ package klib.data.db.crud
 import klib.data.db.crud.model.query.LimitOffset
 import klib.data.db.crud.model.query.Order
 import klib.data.transaction.Transaction
-import klib.data.type.AggregateExpression
-import klib.data.type.BooleanVariable
-import klib.data.type.Variable
+import klib.data.AggregateExpression
+import klib.data.BooleanVariable
+import klib.data.Variable
 import kotlinx.coroutines.flow.Flow
 
 public interface CRUDRepository<T : Any> {

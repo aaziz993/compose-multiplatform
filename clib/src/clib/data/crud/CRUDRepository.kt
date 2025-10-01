@@ -7,8 +7,8 @@ import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
 import klib.data.db.crud.CRUDRepository
 import klib.data.db.crud.model.query.Order
-import klib.data.type.BooleanVariable
-import klib.data.type.Variable
+import klib.data.BooleanVariable
+import klib.data.Variable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.toList
 

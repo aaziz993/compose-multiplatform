@@ -2,8 +2,8 @@ package clib.data.crud.model
 
 import clib.ui.presentation.components.textfield.search.model.SearchFieldCompare
 import clib.ui.presentation.components.textfield.search.model.SearchFieldState
-import klib.data.type.BooleanVariable
-import klib.data.type.f
+import klib.data.BooleanVariable
+import klib.data.f
 import klib.data.type.reflection.kClass
 import klib.data.type.reflection.parsePrimitiveOrNull
 import klib.data.type.serialization.primitiveType

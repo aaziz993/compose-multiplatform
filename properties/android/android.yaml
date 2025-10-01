@@ -15,6 +15,7 @@ script:
                 implementation(libs["androidx.activity.ktx"])
                 implementation(libs["androidx.fragment.ktx"])
                 implementation(libs["sqldelight.android.driver"])
+                implementation(libs["androidx.room.sqlite.wrapper"])
                 implementation(libs["androidx.room.runtime.android"])
                 implementation(libs["androidx.room.paging"])
                 implementation(libs.bundles("androidx.paging.runtime"))

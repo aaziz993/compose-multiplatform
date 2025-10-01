@@ -28,8 +28,8 @@ import clib.ui.presentation.viewmodel.ViewModelState.Success
 import clib.ui.presentation.viewmodel.model.exception.ViewModelStateException
 import klib.data.db.crud.CRUDRepository
 import klib.data.db.crud.model.query.Order
-import klib.data.type.BooleanVariable
-import klib.data.type.Variable
+import klib.data.BooleanVariable
+import klib.data.Variable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.Job

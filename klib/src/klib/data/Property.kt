@@ -1,4 +1,4 @@
-package klib.data.type
+package klib.data
 
 import klib.data.type.validator.Validator
 import kotlinx.serialization.descriptors.SerialDescriptor

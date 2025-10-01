@@ -6,7 +6,7 @@ import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
 import clib.data.paging.AbstractRefreshablePager
 import klib.data.db.crud.model.query.Order
-import klib.data.type.BooleanVariable
+import klib.data.BooleanVariable
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalPagingApi::class)

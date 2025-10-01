@@ -1,4 +1,4 @@
-package klib.data.type
+package klib.data
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
@@ -10,11 +10,12 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.invoke
 
 @Serializable
 public sealed class Variable
 
-public interface ComparableOperand {
+public sealed interface ComparableOperand {
 
     public infix fun eq(other: ComparableOperand): Equals = CompareExpression.eq(this, other)
 
@@ -57,7 +58,7 @@ public inline infix fun <reified T> ComparableOperand.nin(other: Collection<T>):
 @Serializable
 public sealed class ComparableVariable : Variable(), ComparableOperand
 
-public interface BooleanOperand {
+public sealed interface BooleanOperand {
 
     public fun and(vararg values: BooleanOperand): And = LogicExpression.and(this, *values)
 
@@ -78,7 +79,7 @@ public interface BooleanOperand {
 @Serializable
 public sealed class BooleanVariable : ComparableVariable(), BooleanOperand
 
-public interface NumberOperand {
+public sealed interface NumberOperand {
 
     public fun add(vararg values: NumberOperand): Add = ArithmeticExpression.add(this, *values)
 
@@ -114,7 +115,7 @@ public sealed class NumberVariable : ComparableVariable(), NumberOperand
 @Serializable
 public sealed class CharVariable : ComparableVariable()
 
-public interface StringOperand {
+public sealed interface StringOperand {
 
     public fun eq(other: StringOperand, ignoreCase: BooleanOperand, matchAll: BooleanOperand): Equals =
         StringExpression.eq(this, other, ignoreCase, matchAll)
@@ -235,7 +236,7 @@ public interface StringOperand {
 @Serializable
 public sealed class StringVariable : ComparableVariable(), StringOperand
 
-public interface TemporalOperand {
+public sealed interface TemporalOperand {
 
     public val time: Time
         get() = TemporalExpression.time(this)
@@ -257,7 +258,7 @@ public sealed class TemporalVariable : ComparableVariable(), TemporalOperand
 @Serializable
 public sealed class CollectionVariable : Variable()
 
-public interface Expression {
+public sealed interface Expression {
 
     public val arguments: List<Variable>
 
@@ -663,7 +664,7 @@ public data class Split(override val arguments: List<Variable>) : StringExpressi
 @Serializable
 public data class SplitPattern(override val arguments: List<Variable>) : StringExpression()
 
-public interface Value<T> {
+public sealed interface Value<T> {
 
     public val value: T
 }
@@ -840,6 +841,7 @@ public val Number.v: NumberVariable
 
 public val <T>  T.v: ComparableOperand
     get() = when (this) {
+        null -> NullValue
         is Boolean -> v
         is UByte -> v
         is UShort -> v
@@ -854,8 +856,7 @@ public val <T>  T.v: ComparableOperand
         is BigInteger -> v
         is BigDecimal -> v
         is Uuid -> v
-        else -> this?.let { throw IllegalArgumentException("Unknown expression value type \"${it::class.simpleName}\"") }
-            ?: NullValue
+        else -> throw IllegalArgumentException("Unknown expression value $this")
     }
 
 @Suppress("UNCHECKED_CAST")

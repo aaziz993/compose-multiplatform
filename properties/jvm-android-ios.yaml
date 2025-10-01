@@ -10,3 +10,9 @@ script:
                 implementation(libs["androidx.sqlite"])
               }
             }
+        - named: |
+            ("jvmAndroidIosTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs["androidx.room.testing"])
+              }
+            }

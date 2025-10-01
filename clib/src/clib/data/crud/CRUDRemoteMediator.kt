@@ -6,7 +6,7 @@ import clib.data.paging.AbstractRemoteMediator
 import clib.data.paging.model.RemoteKeys
 import klib.data.db.crud.CRUDRepository
 import klib.data.db.crud.model.query.LimitOffset
-import klib.data.type.f
+import klib.data.f
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 

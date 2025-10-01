@@ -1,9 +1,9 @@
 package clib.data.crud.model
 
 import clib.ui.presentation.components.textfield.search.model.SearchFieldState
-import klib.data.type.BooleanVariable
+import klib.data.BooleanVariable
 import klib.data.type.collections.takeIfNotEmpty
-import klib.data.type.Property
+import klib.data.Property
 
 public interface EntityProperty : Property {
 
