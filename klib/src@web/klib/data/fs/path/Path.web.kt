@@ -40,9 +40,9 @@ public actual fun Path.metadataOrNull(): PathMetadata? {
         isRegularFile = (stat.mode.toInt() and S_IFMT) == S_IFREG,
         isDirectory = (stat.mode.toInt() and S_IFMT) == S_IFDIR,
         symlinkTarget = symlinkTarget,
-        size = stat.size,
-        createdAtMillis = stat.birthtimeMs,
-        lastModifiedAtMillis = stat.mtimeMs,
-        lastAccessedAtMillis = stat.atimeMs,
+        size = stat.size.toInt().toLong(),
+        createdAtMillis = stat.birthtimeMs.toInt().toLong(),
+        lastModifiedAtMillis = stat.mtimeMs.toInt().toLong(),
+        lastAccessedAtMillis = stat.atimeMs.toInt().toLong(),
     )
 }

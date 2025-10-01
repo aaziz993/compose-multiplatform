@@ -4,7 +4,9 @@ package klib.data.fs
 
 import js.date.Date
 import kotlin.js.ExperimentalWasmJsInterop
+import kotlin.js.JsAny
 import kotlin.js.JsModule
+import kotlin.js.JsNumber
 
 @JsModule("fs")
 public external object Fs {
@@ -17,7 +19,7 @@ public external object Fs {
     public fun lstatSync(path: String): Stats
 }
 
-public external interface StatsBase<T> {
+public external interface StatsBase<T : JsAny> {
 
     public fun isFile(): Boolean
     public fun isDirectory(): Boolean
@@ -46,7 +48,7 @@ public external interface StatsBase<T> {
     public var birthtime: Date
 }
 
-public open external class Stats : StatsBase<Long> {
+public open external class Stats : StatsBase<JsNumber> {
 
     override fun isFile(): Boolean
     override fun isDirectory(): Boolean
@@ -55,20 +57,20 @@ public open external class Stats : StatsBase<Long> {
     override fun isSymbolicLink(): Boolean
     override fun isFIFO(): Boolean
     override fun isSocket(): Boolean
-    override var dev: Long
-    override var ino: Long
-    override var mode: Long
-    override var nlink: Long
-    override var uid: Long
-    override var gid: Long
-    override var rdev: Long
-    override var size: Long
-    override var blksize: Long
-    override var blocks: Long
-    override var atimeMs: Long
-    override var mtimeMs: Long
-    override var ctimeMs: Long
-    override var birthtimeMs: Long
+    override var dev: JsNumber
+    override var ino: JsNumber
+    override var mode: JsNumber
+    override var nlink: JsNumber
+    override var uid: JsNumber
+    override var gid: JsNumber
+    override var rdev: JsNumber
+    override var size: JsNumber
+    override var blksize: JsNumber
+    override var blocks: JsNumber
+    override var atimeMs: JsNumber
+    override var mtimeMs: JsNumber
+    override var ctimeMs: JsNumber
+    override var birthtimeMs: JsNumber
     override var atime: Date
     override var mtime: Date
     override var ctime: Date
