@@ -1,5 +1,7 @@
 package klib.data.db.mdb
 
+import kotlinx.io.IOException
+
 public actual class TableMetaData {
     public actual val type: TableType
         get() = TODO("Not yet implemented")
@@ -20,6 +22,7 @@ public actual class TableMetaData {
         TODO("Not yet implemented")
     }
 
+    @Throws(IOException::class)
     public actual fun getTableDefinition(db: Database): TableDefinition {
         TODO("Not yet implemented")
     }

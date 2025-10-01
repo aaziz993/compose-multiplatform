@@ -1,5 +1,7 @@
 package klib.data.db.mdb
 
+import kotlinx.io.IOException
+
 public actual class PropertyMap public actual constructor(
     name: String,
     type: Short,
@@ -52,6 +54,7 @@ public actual class PropertyMap public actual constructor(
         TODO("Not yet implemented")
     }
 
+    @Throws(IOException::class)
     public actual fun save() {
     }
 

@@ -3,6 +3,7 @@ package klib.data.db.mdb
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import klib.data.db.mdb.complex.ComplexValueForeignKey
 import kotlinx.datetime.LocalDateTime
+import kotlinx.io.IOException
 
 public actual class Row() : MutableMap<String, Any?> {
 
@@ -59,6 +60,7 @@ public actual class Row() : MutableMap<String, Any?> {
         TODO("Not yet implemented")
     }
 
+    @Throws(IOException::class)
     public actual fun getBlob(name: String): OleBlob {
         TODO("Not yet implemented")
     }

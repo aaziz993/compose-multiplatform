@@ -1,9 +1,11 @@
 package klib.data.db.mdb
 
+import kotlinx.io.IOException
 import kotlinx.io.Sink
 
 public actual class OleBlob {
 
+    @Throws(IOException::class)
     public actual fun writeTo(out: Sink) {
     }
 

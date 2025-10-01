@@ -3,6 +3,7 @@ package klib.data.db.mdb
 import klib.data.db.mdb.query.Query
 import klib.data.type.primitives.string.Charset
 import kotlinx.datetime.TimeZone
+import kotlinx.io.IOException
 
 public actual class Database public actual constructor(
     path: String,
@@ -24,14 +25,17 @@ public actual class Database public actual constructor(
         TODO("Not yet implemented")
     }
 
+    @Throws(IOException::class)
     public actual fun getTable(name: String): Table {
         TODO("Not yet implemented")
     }
 
+    @Throws(IOException::class)
     public actual fun getTableMetaData(name: String): TableMetaData {
         TODO("Not yet implemented")
     }
 
+    @Throws(IOException::class)
     public actual fun getRelationships(
         table1: Table,
         table2: Table
@@ -39,6 +43,7 @@ public actual class Database public actual constructor(
         TODO("Not yet implemented")
     }
 
+    @Throws(IOException::class)
     public actual fun getRelationships(table: Table): List<Relationship> {
         TODO("Not yet implemented")
     }
@@ -50,6 +55,7 @@ public actual class Database public actual constructor(
     public actual val queries: List<Query>
         get() = TODO("Not yet implemented")
 
+    @Throws(IOException::class)
     public actual fun getSystemTable(tableName: String): Table {
         TODO("Not yet implemented")
     }
@@ -63,9 +69,11 @@ public actual class Database public actual constructor(
     public actual val databasePassword: String?
         get() = TODO("Not yet implemented")
 
+    @Throws(IOException::class)
     public actual fun createLinkedTable(name: String, linkedDbName: String, linkedTableName: String) {
     }
 
+    @Throws(IOException::class)
     public actual fun flush() {
     }
 
@@ -79,6 +87,7 @@ public actual class Database public actual constructor(
         get() = TODO("Not yet implemented")
         set(value) {}
 
+    @Throws(IOException::class)
     public actual fun isLinkedTable(table: Table): Boolean {
         TODO("Not yet implemented")
     }
