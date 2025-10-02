@@ -62,6 +62,7 @@ import kotlinx.datetime.format.DateTimeFormat
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
+import org.reflections.util.FilterBuilder
 
 //////////////////////////////////////////////////////////GENERIC///////////////////////////////////////////////////////
 public val KClass<*>.isUIntNumber: Boolean
@@ -385,13 +386,13 @@ internal fun KClass<*>.callCallable(
 
 public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> = sequence {
     val reflections = Reflections(
-        ConfigurationBuilder().forPackages(
-            *packages.toTypedArray(),
-        ).addScanners(
-            Scanners.SubTypes,
-            Scanners.TypesAnnotated,
-            Scanners.MethodsSignature,
-        ),
+        ConfigurationBuilder().forPackages(*packages.toTypedArray())
+            .filterInputsBy(
+                FilterBuilder().apply {
+                    packages.forEach(::includePackage)
+                },
+            )
+            .addScanners(Scanners.MethodsSignature),
     )
 
     (reflections.getSubTypesOf(Any::class.java) +
@@ -404,7 +405,9 @@ public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> 
                 }.forEach { method ->
                     yield(method)
                 }
-            } catch (_: NoClassDefFoundError) { }
+            }
+            catch (_: NoClassDefFoundError) {
+            }
         }
 }
 

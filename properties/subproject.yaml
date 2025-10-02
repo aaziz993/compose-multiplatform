@@ -6,6 +6,7 @@ config:
     - kotlinx.rpc.RpcStrictMode
     - de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+    - gradle.api.kotlin.mpp.*
     - gradle.api.dependencycheck.*
     - gradle.api.buildconfig.*
     - gradle.api.spotless.*

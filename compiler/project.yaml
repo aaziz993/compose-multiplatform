@@ -11,7 +11,6 @@ script:
         - named: |
             ("jvmMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(project(":klib"))
                 implementation(libs["symbol.processing.api"])
               }
             }

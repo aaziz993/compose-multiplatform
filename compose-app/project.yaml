@@ -59,6 +59,7 @@ script:
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(project(":shared"))
+                implementation(project(":clib"))
               }
             }
   - compose:

@@ -27,8 +27,6 @@ script:
         - named: |
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
-                api(project(":clib"))
+                implementation(project(":klib"))
               }
             }
-  - dependencies:
-      - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))

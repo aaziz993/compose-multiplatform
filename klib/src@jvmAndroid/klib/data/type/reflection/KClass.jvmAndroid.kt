@@ -1,5 +1,3 @@
-@file:JvmName("KClass_jvm")
-
 package klib.data.type.reflection
 
 import java.lang.reflect.Method
@@ -30,6 +28,7 @@ import kotlin.reflect.full.staticProperties
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
+import org.reflections.util.FilterBuilder
 
 //////////////////////////////////////////////////////////GENERIC///////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
@@ -157,13 +156,13 @@ internal fun KClass<*>.callCallable(
 
 public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> = sequence {
     val reflections = Reflections(
-        ConfigurationBuilder().forPackages(
-            *packages.toTypedArray(),
-        ).addScanners(
-            Scanners.SubTypes,
-            Scanners.TypesAnnotated,
-            Scanners.MethodsSignature,
-        ),
+        ConfigurationBuilder().forPackages(*packages.toTypedArray())
+            .filterInputsBy(
+                FilterBuilder().apply {
+                    packages.forEach(::includePackage)
+                },
+            )
+            .addScanners(Scanners.MethodsSignature),
     )
 
     (reflections.getSubTypesOf(Any::class.java) +

@@ -37,3 +37,5 @@ script:
               // Required by asynchronous web-worker-driver for js.
               database.generateAsync /= true
             }
+  - dependencies:
+      - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))

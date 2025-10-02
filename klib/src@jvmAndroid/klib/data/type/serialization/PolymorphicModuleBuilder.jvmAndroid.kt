@@ -1,8 +1,6 @@
-@file:JvmName("PolymorphicModuleBuilder_jvm")
 package klib.data.type.serialization
 
 import klib.data.type.reflection.REFLECTIONS
-import klib.data.type.serialization.hasAnnotation
 import kotlin.reflect.KClass
 import kotlin.reflect.full.hasAnnotation
 import kotlinx.serialization.KSerializer
