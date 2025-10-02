@@ -1,21 +1,21 @@
 imports:
-  - root.yaml
-  - dependencycheck.yaml
-  - buildconfig.yaml
-  - spotless.yaml
-  - sonar.yaml
-  - apivalidation.yaml
-  - allopen.yaml
-  - noarg.yaml
-  - benchmark.yaml
-  - sqldelight.yaml
-  - room.yaml
-#  - rpc.yaml
-  - ktorfit.yaml
-  - apollo.yaml
+  - ../../root.yaml
+  - ../../dependencycheck.yaml
+  - ../../buildconfig.yaml
+  - ../../spotless.yaml
+  - ../../sonar.yaml
+  - ../../apivalidation.yaml
+  - ../../allopen.yaml
+  - ../../noarg.yaml
+  - ../../benchmark.yaml
+  - ../../sqldelight.yaml
+  - ../../room.yaml
+#  - ../../rpc.yaml
+  - ../../ktorfit.yaml
+  - ../../apollo.yaml
   - mpp-plugin.yaml
   - ../kotlin.yaml
-  - shadow.yaml
+  - ../../shadow.yaml
 config:
   imports:
     - gradle.api.kotlin.mpp.*
