@@ -13,7 +13,7 @@ script:
       - arg: ("room.expandProjection", "true")
       - arg: ("room.generateKotlin", "true")
   - powerAssert:
-      includedKotlinSourceSets: ()
+      includeKotlinSourceSets: ()
   - dependencies:
       - add: ("kspCommonMainMetadata", libs["arrow.optics.ksp.plugin"])
       - add: ("kspCommonMainMetadata", libs["androidx.room.compiler"])
