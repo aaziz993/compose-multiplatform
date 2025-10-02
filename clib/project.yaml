@@ -1,5 +1,4 @@
 imports:
-  - ../properties/root.yaml
   - ../properties/kotlin/mpp/mpp.yaml
   - ../properties/kotlin/targets/jvm/jvm.yaml
   - ../properties/android/android-library.yaml
@@ -23,7 +22,6 @@ imports:
   - ../properties/kotlin/targets/web/js/js-compose.yaml
   - ../properties/android-ios-compose.yaml
   - ../properties/jvm-web-compose.yaml
-  - ../properties/subproject.yaml
   - ../properties/publish.yaml
 description: Compose Multiplatform libraries.
 script:
