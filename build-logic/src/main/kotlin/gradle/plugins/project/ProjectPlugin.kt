@@ -32,8 +32,8 @@ public class ProjectPlugin : Plugin<Project> {
             // Apply project.yaml.
             projectScript()
 
-            pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(DokkaPlugin::class.java)
+            pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(KnitPlugin::class.java)
             pluginManager.apply(ApiValidationPlugin::class.java)
             pluginManager.apply(MPPPlugin::class.java)

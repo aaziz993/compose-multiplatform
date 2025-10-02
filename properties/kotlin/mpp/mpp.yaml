@@ -10,8 +10,8 @@ imports:
   - ../../benchmark.yaml
   - ../../sqldelight.yaml
   - ../../room.yaml
-#  - ../../rpc.yaml
   - ../../ktorfit.yaml
+#  - ../../rpc.yaml
   - ../../apollo.yaml
   - mpp-plugin.yaml
   - ../kotlin.yaml
