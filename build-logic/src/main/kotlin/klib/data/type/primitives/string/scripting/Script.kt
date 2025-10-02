@@ -65,6 +65,7 @@ import kotlinx.serialization.serializer
 public const val SCRIPT_KEY: String = "script"
 
 public val DECLARATION_KEYWORDS: Set<String> = setOf(
+    "import",
     "val", "var", "fun", "class", "interface", "object", "enum", "annotation", "typealias",
     "abstract", "data", "sealed", "open", "private", "public", "internal",
     "inline", "tailrec", "suspend", "operator", "infix", "const", "lateinit",
@@ -170,13 +171,7 @@ public abstract class Script {
                     },
                 ) {
                     if (size < path.size)
-                        error(
-                            "Unresolved reference '${
-                                dropLast()
-                                    .joinToString(".", transform = Pair<*, String>::second)
-                                    .addSuffixIfNotEmpty("->")
-                            }${last().second}' on '${last().first}' with imports ${config.imports}",
-                        )
+                        return@deepRunOnPenultimate " $value"
 
                     val receiver = last().first
 

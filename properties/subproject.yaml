@@ -6,7 +6,6 @@ config:
     - kotlinx.rpc.RpcStrictMode
     - de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-    - gradle.api.kotlin.mpp.*
     - gradle.api.dependencycheck.*
     - gradle.api.buildconfig.*
     - gradle.api.spotless.*
@@ -408,10 +407,10 @@ script:
           {
             compilerOptions.jvmTarget /= libs.versions("jvm.target").requiredVersion.toJvmTarget()
           }
-      - withType<KotlinCompilationTask<*>>: |
-          {
-            if (name != "kspCommonMainMetadata") {
-              dependsOn("kspCommonMainMetadata")
+      - withType: |
+          (KotlinCompilationTask::class.java).configureEach { task ->
+            if (task.name != "kspCommonMainKotlinMetadata") {
+              task.dependsOn("kspCommonMainKotlinMetadata")
             }
           }
       - withType<ShadowJar>: |
