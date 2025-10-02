@@ -1,6 +1,29 @@
 imports:
+  - root.yaml
+  - dependencycheck.yaml
+  - buildconfig.yaml
+  - spotless.yaml
+  - sonar.yaml
+  - apivalidation.yaml
+  - allopen.yaml
+  - noarg.yaml
+  - benchmark.yaml
+  - sqldelight.yaml
+  - room.yaml
+#  - rpc.yaml
+  - ktorfit.yaml
+  - apollo.yaml
   - mpp-plugin.yaml
   - ../kotlin.yaml
+  - shadow.yaml
 config:
   imports:
     - gradle.api.kotlin.mpp.*
+script:
+  # Api documentation engine for Kotlin.
+  - dokka:
+      pluginsConfiguration:
+        - html:
+            customStyleSheets.from: ("../dokka/style.css", "../dokka/prism.css", "../dokka/logo-styles.css")
+            customAssets.from: ("../dokka/logo-icon.svg")
+

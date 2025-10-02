@@ -1,5 +1,6 @@
 imports:
-  - ../../subproject.yaml
+  - ksp.yaml
+  - power-assert.yaml
 script:
   - kotlin:
       applyDefaultHierarchyTemplate: |
