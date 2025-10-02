@@ -15,7 +15,6 @@ imports:
   - ../../apollo.yaml
   - mpp-plugin.yaml
   - ../kotlin.yaml
-  - ../../shadow.yaml
 config:
   imports:
     - gradle.api.kotlin.mpp.*
