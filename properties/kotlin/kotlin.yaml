@@ -1,0 +1,56 @@
+imports:
+  - java.yaml
+script:
+  - kotlin:
+      explicitApi: ExplicitApiMode.Strict
+      jvmToolchain: |
+        { jvmToolchain ->
+          jvmToolchain.languageVersion /= JavaLanguageVersion.of(libs.versions("java.toolchain").requiredVersion.toInt())
+          jvmToolchain.vendor /= JvmVendorSpec.ORACLE
+        }
+      compilerOptions:
+        apiVersion: KotlinVersion.fromVersion(libs.versions("kotlin.api").requiredVersion)
+        languageVersion: KotlinVersion.fromVersion(libs.versions("kotlin.lang").requiredVersion)
+        allWarningsAsErrors: false
+        progressiveMode: true
+        suppressWarnings: false
+        verbose: true
+        optIn.addAll: |
+          (
+            "kotlin.RequiresOptIn",
+            "kotlin.ExperimentalSubclassOptIn",
+            "kotlin.ExperimentalStdlibApi",
+            "kotlin.ExperimentalUnsignedTypes",
+            "kotlin.uuid.ExperimentalUuidApi",
+            "kotlin.time.ExperimentalTime",
+            "kotlin.concurrent.atomics.ExperimentalAtomicApi",
+            "nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
+            "nl.adaptivity.xmlutil.XmlUtilInternal",
+            "kotlin.contracts.ExperimentalContracts",
+            "kotlin.experimental.ExperimentalObjCName",
+            "kotlin.js.ExperimentalJsExport",
+            "kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "kotlinx.coroutines.DelicateCoroutinesApi",
+            "kotlinx.coroutines.FlowPreview",
+            "kotlinx.serialization.ExperimentalSerializationApi",
+            "kotlinx.serialization.InternalSerializationApi",
+            "dev.whyoleg.cryptography.DelicateCryptographyApi",
+          )
+        freeCompilerArgs.addAll: |
+          (
+            "-Xignore-const-optimization-errors",
+            "-Xexport-kdoc",
+            "-Xinline-classes",
+            "-Xwhen-guards",
+            "-Xnon-local-break-continue",
+            "-Xexpect-actual-classes",
+            "-Xcontext-parameters",
+            "-Xmulti-dollar-interpolation",
+            "-XXLanguage:+ExplicitBackingFields",
+            "-Xrender-internal-diagnostic-names",
+          )
+  - tasks:
+      - withType<KotlinCompile>: |
+          {
+            compilerOptions.jvmTarget /= libs.versions("jvm.target").requiredVersion.toJvmTarget()
+          }

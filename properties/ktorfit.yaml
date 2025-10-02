@@ -1,0 +1,11 @@
+# Http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
+config:
+  imports:
+    - de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
+    - gradle.api.ktorfit.*
+script:
+  - plugins:
+      - id: (libs.plugins("ktorfit").pluginId)
+  - ktorfit:
+      generateQualifiedTypeName: true
+      errorCheckingMode: ErrorCheckingMode.NONE

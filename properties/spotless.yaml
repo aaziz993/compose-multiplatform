@@ -1,0 +1,205 @@
+# Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+config:
+  imports:
+    - com.diffplug.spotless.kotlin.KotlinConstants
+    - gradle.api.spotless.*
+script:
+  - plugins:
+      - id: (libs.plugins("spotless").pluginId)
+  - spotless:
+      - java: |
+          { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
+            // include source files
+            format.target("**/*.java")
+            // uses the default importOrder configuration
+            format.importOrder()
+            // removes any unused imports from any of your Java classes
+            format.removeUnusedImports()
+            // Tells spotless to format according to the Google Style Guide
+            // (https://google.github.io/styleguide/javaguide.html)
+            format.googleJavaFormat(libs.versions("googleJavaFormat").requiredVersion).apply {
+              groupArtifact("com.google.googlejavaformat:google-java-format")
+              reflowLongStrings(true)
+              reorderImports(true)
+              formatJavadoc(false)
+            }
+            // fixes formatting of type annotations
+            format.formatAnnotations()
+            // cleanthat will refactor your code, but it may break your style: apply it before your formatter
+            format.cleanthat()
+          }
+      - kotlin: |
+          { format ->
+            // use ktlint with version and custom .editorconfig
+            format.ktlint(libs.versions("ktlint").requiredVersion)
+              .setEditorConfigPath("../.editorconfig")
+            // use ktfmt
+            format.ktfmt(libs.versions("ktfmt").requiredVersion)
+              .googleStyle()
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
+            // include source files
+            format.target("**/*.kt", "**/*.kts")
+          }
+      - kotlinGradle: |
+          { format ->
+            // use ktlint with version and custom .editorconfig
+            format.ktlint(libs.versions("ktlint").requiredVersion)
+              .setEditorConfigPath("../.editorconfig")
+            // use ktfmt
+            format.ktfmt(libs.versions("ktfmt").requiredVersion)
+              .googleStyle()
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
+            // include source files
+            format.target("**/*.gradle.kts")
+          }
+      - javascript: |
+          { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
+            // include source files
+            format.target("**/*.js")
+          }
+      - typescript: |
+          { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
+            // include source files
+            format.target("**/*.ts")
+          }
+      - json: |
+          { format ->
+            // include source files
+            format.target("**/*.json")
+          }
+      - yaml: |
+          { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
+            // include source files
+            format.target("**/*.yaml", "**/*.yml")
+          }
+      - format: |
+          ("xml") { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // remove old license header
+              format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.html", "^")
+            }
+            // include source files
+            format.target("**/*.xml")
+          }
+      - format: |
+          ("properties") { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
+            // include source files
+            format.target("**/*.properties")
+            // removes any extra whitespace at the beginning of lines
+            format.leadingTabsToSpaces()
+          }
+      - format: |
+          ("html") { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // remove old license header
+              format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.html", "^")
+            }
+            // include source files
+            format.target("**/*.html")
+          }
+      - format: |
+          ("md") { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // remove old license header
+              format.replaceRegex("remove license header", """^\s*<!--[\s\S]*?-->\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.html", "^")
+            }
+            // include source files
+            format.target("**/*.md")
+          }
+      - format: |
+          ("editconfig") { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
+            // include source files
+            format.target("**/.editconfig")
+            // removes any extra whitespace at the beginning of lines
+            format.leadingTabsToSpaces()
+          }
+      - format: |
+          ("gitignore") { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
+            // include source files
+            format.target("**/.gitignore")
+            // removes any extra whitespace at the beginning of lines
+            format.leadingTabsToSpaces()
+          }
+      - format: |
+          ("gitattributes") { format ->
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
+            // include source files
+            format.target("**/.gitattributes")
+            // removes any extra whitespace at the beginning of lines
+            format.leadingTabsToSpaces()
+          }
+      - formats: |
+          {
+            // exclude source files
+            targetExclude(
+              "**/license.header*",
+              "**/generated-src/**",
+              "**/build-*/**",
+              "**/.idea/**",
+              "**/.fleet/**",
+              "**/.idea/**",
+              "**/.gradle/**",
+              "/spotless/**",
+              "**/resources/**",
+              "**/buildSrc/**"
+            )
+            // removes any extra whitespace at the end of lines
+            trimTrailingWhitespace()
+            // adds a newline character to the end of files content
+            endWithNewline()
+            // adds the ability to have spotless ignore specific portions of a project. The usage looks like the following
+            toggleOffOn()
+          }

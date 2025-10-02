@@ -1,0 +1,17 @@
+# Providing detailed failure messages with contextual information during testing.
+config:
+  imports:
+    - gradle.api.powerassert.*
+script:
+  - plugins:
+      - id: (libs.plugins("powerAssert").pluginId)
+  - powerAssert:
+      functions.addAll: |
+        (
+          "kotlin.assert",
+          "kotlin.test.assertTrue",
+          "kotlin.test.assertEquals",
+          "kotlin.test.assertNull",
+          "kotlin.test.assertFails",
+          "kotlin.test.assertFailsWith",
+        )

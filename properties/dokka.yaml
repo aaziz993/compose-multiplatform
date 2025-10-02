@@ -1,0 +1,39 @@
+# Api documentation engine for Kotlin.
+config:
+  imports:
+    - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+    - gradle.api.dokka.*
+script:
+  - plugins:
+      - id: (libs.plugins("dokka").pluginId)
+      - id: (libs.plugins("dokkaJavadoc").pluginId)
+  - dokka:
+      dokkaPublications:
+        - configureEach: |
+            { dokkaPublication ->
+              dokkaPublication.suppressObviousFunctions /= true
+              dokkaPublication.suppressInheritedMembers /= false
+            }
+      dokkaSourceSets:
+        - configureEach: |
+            { dokkaSourceSet ->
+              dokkaSourceSet.includes.from("README.md")
+              dokkaSourceSet.documentedVisibilities /= setOf<VisibilityModifier>(VisibilityModifier.Public)
+              dokkaSourceSet.reportUndocumented /= false
+              dokkaSourceSet.sourceLink { sourceLink ->
+                sourceLink.remoteLineSuffix /= "#L"
+              }
+              dokkaSourceSet.skipEmptyPackages /= true
+              dokkaSourceSet.skipDeprecated /= true
+              dokkaSourceSet.enableKotlinStdLibDocumentationLink /= true
+              dokkaSourceSet.enableJdkDocumentationLink /= true
+              dokkaSourceSet.enableAndroidDocumentationLink /= true
+              dokkaSourceSet.jdkVersion /= libs.versions("jvm-target").requiredVersion.toInt()
+            }
+      pluginsConfiguration:
+        - html:
+            footerMessage: '"© ${settings.settingsScript.year} - ${settings.settingsScript.developer.name}. All rights reserved."'
+            templatesDir: layout.projectDirectory.dir("dokka-templates")
+        - versioning:
+            olderVersionsDir: layout.projectDirectory.dir("documentation/version")
+

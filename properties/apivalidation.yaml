@@ -1,0 +1,12 @@
+# Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+config:
+  imports:
+    - gradle.api.apivalidation.*
+script:
+  - plugins:
+      - id: (libs.plugins("binaryCompatibilityValidator").pluginId)
+  - apiValidation:
+      apiDumpDirectory: '"api-validation"'
+      klib:
+        enabled: true
+        strictValidation: true

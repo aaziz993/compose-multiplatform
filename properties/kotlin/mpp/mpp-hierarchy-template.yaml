@@ -122,3 +122,9 @@ script:
             }
           }
         }
+  - dependencies:
+      - add: ("kspCommonMainMetadata", libs["arrow.optics.ksp.plugin"])
+      - add: ("kspCommonMainMetadata", libs["androidx.room.compiler"])
+      - add: ("kspCommonMainMetadata", libs["ktorfit.ksp"])
+      # Use import org.koin.ksp.generated.* in project.
+      - add: ("kspCommonMainMetadata", libs["koin.ksp.compiler"])

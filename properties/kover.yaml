@@ -1,0 +1,29 @@
+# Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
+config:
+  imports:
+    - gradle.api.kover.*
+script:
+  - plugins:
+      - id: (libs.plugins("kover").pluginId)
+  - kover:
+      useJacoco: true
+      reports:
+        total:
+          html:
+            title: '"Generate coverage report"'
+            htmlDir: file("build/reports/kover")
+            onCheck: true
+            charset: '"UTF8"'
+          xml:
+            xmlFile: file("build/reports/kover/report.xml")
+            onCheck: true
+          verify:
+            rule: |
+              { rule ->
+                // 85 is our baseline that we aim to raise to 90+.
+                // Missing coverage is typically due to bugs in the agent
+                // (e.g. signatures deprecated with an error are counted),
+                // sometimes it's various diagnostic toString or catch for OOMs/VerificationErrors,
+                // but some places are definitely worth visiting.
+                rule.minBound(85) // COVERED_LINES_PERCENTAGE
+              }

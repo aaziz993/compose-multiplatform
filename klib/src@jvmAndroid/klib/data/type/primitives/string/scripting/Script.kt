@@ -144,9 +144,7 @@ public abstract class Script {
     }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
-        val packages = config.imports.filter { import -> import.endsWith(".*") }.map { import ->
-            import.removeSuffix(".*")
-        }.toSet()
+        val packages = config.imports.map { import -> import.substringBeforeLast(".") }.toSet()
 
         return config.compilationImplicitReceivers
             .firstNotNullOfOrNull { implicitReceiver ->
@@ -170,13 +168,7 @@ public abstract class Script {
                     },
                 ) {
                     if (size < path.size)
-                        error(
-                            "Unresolved reference '${
-                                dropLast()
-                                    .joinToString(".", transform = Pair<*, String>::second)
-                                    .addSuffixIfNotEmpty("->")
-                            }${last().second}' on '${last().first}' with imports ${config.imports}",
-                        )
+                        return@deepRunOnPenultimate " $value"
 
                     val receiver = last().first
 

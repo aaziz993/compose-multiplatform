@@ -1,5 +1,4 @@
 imports:
-  - ../properties/root.yaml
   - ../properties/kotlin/mpp/mpp.yaml
   - ../properties/kotlin/targets/jvm/jvm.yaml
   - ../properties/android/android-library.yaml
@@ -20,7 +19,6 @@ imports:
   - ../properties/jvm-android-ios.yaml
   - ../properties/kotlin/targets/web/web.yaml
   - ../properties/kotlin/targets/jvm-web.yaml
-  - ../properties/subproject.yaml
   - ../properties/publish.yaml
 description: Kotlin Multiplatform libraries.
 script:
@@ -37,5 +35,5 @@ script:
               // Required by asynchronous web-worker-driver for js.
               database.generateAsync /= true
             }
-  - dependencies:
-      - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))
+#  - dependencies:
+#      - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))

@@ -1,0 +1,16 @@
+# Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+config:
+  imports:
+    - kotlinx.benchmark.gradle.JvmBenchmarkTarget
+    - gradle.api.benchmark.*
+script:
+  - plugins:
+      - id: (libs.plugins("kotlinx.benchmark").pluginId)
+  - benchmark:
+      reportsDir: '"build/reports"'
+      kotlinCompilerVersion: libs.versions("kotlin").requiredVersion
+      targets:
+        - withType<JvmBenchmarkTarget>: |
+            {
+              jmhVersion = "1.37"
+            }

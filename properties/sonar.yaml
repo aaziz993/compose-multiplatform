@@ -1,0 +1,21 @@
+# Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
+config:
+  imports:
+    - gradle.api.sonar.*
+script:
+  - plugins:
+      - id: (libs.plugins("sonarqube").pluginId)
+  - sonar:
+      properties: |
+        { properties ->
+          properties.properties(
+            mapOf(
+                "sonar.host.url" to "https://sonarcloud.io",
+                "sonar.organization" to settings.settingsScript.developer.id,
+                "sonar.projectKey" to "${settings.settingsScript.developer.id}_compose-multiplatform",
+                "sonar.coverage.jacoco.xmlReportPaths" to "build/reports/kover/report.xml",
+                "sonar.androidLint.reportPaths" to "build/reports/lint-results.xml",
+                "sonar.projectVersion" to version,
+            )
+          )
+        }

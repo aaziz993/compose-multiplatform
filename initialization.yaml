@@ -132,11 +132,11 @@ script:
           }
   - include: |
       (
-        ":bom",
+        //":bom",
         ":klib",
-        ":clib",
-        ":compiler",
-        ":shared",
-        ":compose-app",
-        ":server-app",
+        //":clib",
+        //":compiler",
+        //":shared",
+        //":compose-app",
+        //":server-app",
       )

@@ -1,0 +1,12 @@
+# Kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
+config:
+  imports:
+    - kotlinx.rpc.RpcStrictMode
+script:
+  - plugins:
+      - id: (libs.plugins("kotlinx.rpc").pluginId)
+  - rpc:
+      strict:
+        stateFlow: RpcStrictMode.WARNING
+        sharedFlow: RpcStrictMode.WARNING
+        nestedFlow: RpcStrictMode.WARNING

@@ -1,0 +1,9 @@
+# Strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
+config:
+  imports:
+    - gradle.api.apollo.*
+script:
+  - plugins:
+      - id: (libs.plugins("apollo3").pluginId)
+  - apollo:
+      generateSourcesDuringGradleSync: true

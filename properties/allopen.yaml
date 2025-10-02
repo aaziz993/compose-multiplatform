@@ -1,0 +1,17 @@
+# Adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
+config:
+  imports:
+    - gradle.api.allopen.*
+script:
+  - plugins:
+      - id: (libs.plugins("allopen").pluginId)
+  - allOpen:
+      - annotations: |
+          (
+            "javax.ws.rs.Path",
+            "javax.enterprise.context.ApplicationScoped",
+            "javax.persistence.Entity",
+            "org.openjdk.jmh.annotations.State",
+            // apply to ensure your benchmark classes and methods are open.
+            "data.type.annotation.AllOpen",
+          )

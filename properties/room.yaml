@@ -1,0 +1,9 @@
+# Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
+config:
+  imports:
+    - gradle.api.room.*
+script:
+  - plugins:
+      - id: (libs.plugins("room").pluginId)
+  - room:
+      - schemaDirectory: ("$projectDir/schemas")

@@ -10,6 +10,7 @@ config:
     - org.jetbrains.kotlin.gradle.dsl.KotlinVersion
     - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
     - org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+    - org.gradle.api.file.DuplicatesStrategy
     - gradle.api.kotlin.targets.jvm.toJvmTarget
   jvmTarget: 22
   compilerOptions:

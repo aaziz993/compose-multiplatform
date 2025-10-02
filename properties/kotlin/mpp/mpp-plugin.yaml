@@ -1,0 +1,75 @@
+script:
+  - plugins:
+      - id: (libs.plugins("kotlin.multiplatform").pluginId)
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("commonMain") { sourceSet ->
+              // Ksp generated source directory.
+              sourceSet.kotlin.srcDir("${layout.buildDirectory.get()}/generated/ksp/metadata/commonMain/kotlin")
+
+              sourceSet.dependencies {
+                // implementation(libs["km.logging"])
+                implementation(libs["kotlinx.datetime"])
+                implementation(libs["kcron.common"])
+                implementation(libs["bignum"])
+                implementation(libs.bundles("kmath"))
+                implementation(libs["javamath2kmp"])
+                implementation(libs["kotlinx.uuid.core"])
+                implementation(libs.bundles("fleeksoft.charset"))
+                // implementation(libs.bundles("diglol"))
+                implementation(libs["highlights"])
+                implementation(libs.bundles("kmputils"))
+                implementation(libs.bundles("kotlinx.serialization"))
+                implementation(libs.bundles("serialization"))
+                implementation(libs.bundles("ksoup"))
+                // implementation(libs["rssparser"]) // no js target
+                implementation(libs["xmpcore"])
+                implementation(libs["jsonpathkt.kotlinx"])
+                implementation(libs.bundles("coroutines"))
+                implementation(libs.bundles("cryptography"))
+                implementation(libs["colormath"])
+                implementation(libs["kim"])
+                implementation(libs.bundles("arrow"))
+                implementation(libs["cache4k"])
+                // implementation(libs.bundles("kache"))
+                implementation(libs.bundles("kotlinx.io"))
+                implementation(libs.bundles("multiplatform.settings"))
+                implementation(libs["kstore"])
+                implementation(libs.bundles("sqldelight"))
+                implementation(libs.bundles("store"))
+                implementation(libs["connectivity.core"])
+                implementation(libs("ktor")["client.core"])
+                implementation(libs("ktor")["client.contentNegotiation"])
+                implementation(libs("ktor")["client.auth"])
+                implementation(libs("ktor")["client.logging"])
+                implementation(libs("ktor")["client.json"])
+                implementation(libs("ktor")["client.serialization"])
+                implementation(libs("ktor")["serialization.kotlinx.json"])
+                implementation(libs("ktor")["serialization.kotlinx.xml"])
+                implementation(libs("ktor")["serialization.kotlinx.cbor"])
+                implementation(libs("ktor")["serialization.kotlinx.protobuf"])
+                implementation(libs["kotlinx.rpc.core"])
+                implementation(libs.bundles("kotlinx.rpc.client"))
+                implementation(libs.bundles("kotlinx.rpc.serialization"))
+                implementation(libs.bundles("ktorfit"))
+                implementation(libs.bundles("apollo"))
+                implementation(libs.bundles("compass"))
+                implementation(libs.bundles("koin.kotlin.multiplatform"))
+                implementation(libs["semver"])
+                implementation(libs["kotlinx.benchmark.runtime"])
+                implementation(libs["androidx.paging.common"])
+                // implementation(libs.bundles("opentelemetry"))
+              }
+            }
+        - named: |
+            ("commonTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+                implementation(libs.bundles("kotest.multiplatform"))
+                implementation(libs["kotlinx.coroutines.test"])
+                implementation(libs["androidx.paging.testing"])
+                implementation(libs["koin.test"])
+              }
+            }

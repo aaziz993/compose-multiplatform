@@ -162,7 +162,7 @@ public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> 
                     packages.forEach(::includePackage)
                 },
             )
-            .addScanners(Scanners.MethodsSignature),
+            .addScanners(Scanners.SubTypes, Scanners.TypesAnnotated, Scanners.MethodsSignature),
     )
 
     (reflections.getSubTypesOf(Any::class.java) +

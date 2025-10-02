@@ -1,0 +1,12 @@
+config:
+  imports:
+    - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+script:
+  - plugins:
+      - id: (libs.plugins("shadow").pluginId)
+  - tasks:
+      - withType<ShadowJar>: |
+          {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+            mergeServiceFiles()
+          }

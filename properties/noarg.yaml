@@ -1,0 +1,12 @@
+# Generates an additional zero-argument constructor for classes with a specific annotation.
+config:
+  imports:
+    - gradle.api.noarg.*
+script:
+  - plugins:
+      - id: (libs.plugins("noarg").pluginId)
+  - noArg:
+      - annotations: |
+          (
+            "data.type.annotation.NoArg",
+          )

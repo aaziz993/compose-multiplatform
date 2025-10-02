@@ -14,6 +14,7 @@ import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.targets.jvm.JvmPlugin
 import gradle.plugins.kotlin.targets.web.WebPlugin
 import gradle.plugins.kover.KoverPlugin
+import gradle.plugins.ksp.KspPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
 import gradle.plugins.sqldelight.SqlDelightPlugin
@@ -36,6 +37,7 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(KnitPlugin::class.java)
             pluginManager.apply(ApiValidationPlugin::class.java)
             pluginManager.apply(MPPPlugin::class.java)
+            pluginManager.apply(KspPlugin::class.java)
             pluginManager.apply(SqlDelightPlugin::class.java)
             pluginManager.apply(AndroidPlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)

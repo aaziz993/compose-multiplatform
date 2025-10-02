@@ -1,0 +1,6 @@
+script:
+  - java:
+      toolchain:
+        languageVersion: JavaLanguageVersion.of(libs.versions("java.toolchain").requiredVersion.toInt())
+      sourceCompatibility: JavaVersion.toVersion(libs.versions("jvm.target").requiredVersion)
+      targetCompatibility: JavaVersion.toVersion(libs.versions("jvm.target").requiredVersion)

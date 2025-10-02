@@ -1,0 +1,8 @@
+# Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
+config:
+  imports:
+    - gradle.api.buildconfig.*
+script:
+  - plugins:
+      - id: (libs.plugins("buildconfig").pluginId)
+  - buildConfig: '{ }'
