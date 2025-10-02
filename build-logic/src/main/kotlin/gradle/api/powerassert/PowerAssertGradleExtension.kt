@@ -13,9 +13,11 @@ public val Project.powerAssert: PowerAssertGradleExtension get() = the()
 public fun Project.powerAssert(configure: PowerAssertGradleExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
-public fun Project.includeKotlinSourceSets(): Unit =
-    pluginManager.withPlugin("org.jetbrains.kotlin.plugin.power-assert") {
-        pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-            powerAssert.includedSourceSets = kotlin.sourceSets.map(KotlinSourceSet::getName)
+@Suppress("UnusedReceiverParameter")
+context(project: Project)
+public fun PowerAssertGradleExtension.includeKotlinSourceSets(): Unit =
+    project.pluginManager.withPlugin("org.jetbrains.kotlin.plugin.power-assert") {
+        project.pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+            project.powerAssert.includedSourceSets = project.kotlin.sourceSets.map(KotlinSourceSet::getName)
         }
     }
