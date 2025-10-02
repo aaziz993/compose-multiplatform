@@ -6,7 +6,7 @@ script:
         - named: |
             ("commonMain") { sourceSet ->
               // Ksp generated source directory.
-              sourceSet.kotlin.srcDir("${layout.buildDirectory.get()}/generated/ksp/metadata/commonMain/kotlin")
+              sourceSet.kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 
               sourceSet.dependencies {
                 // implementation(libs["km.logging"])

@@ -1,22 +1,6 @@
 imports:
   - mpp-plugin.yaml
   - ../kotlin.yaml
-  - ../../subproject.yaml
 config:
   imports:
     - gradle.api.kotlin.mpp.*
-script:
-  - ksp:
-      # room
-      - arg: ("room.schemaLocation", "schemas")
-      - arg: ("room.incremental", "true")
-      - arg: ("room.expandProjection", "true")
-      - arg: ("room.generateKotlin", "true")
-  - powerAssert:
-      includeKotlinSourceSets: ()
-  - dependencies:
-      - add: ("kspCommonMainMetadata", libs["arrow.optics.ksp.plugin"])
-      - add: ("kspCommonMainMetadata", libs["androidx.room.compiler"])
-      - add: ("kspCommonMainMetadata", libs["ktorfit.ksp"])
-      # Use import org.koin.ksp.generated.* in project.
-      - add: ("kspCommonMainMetadata", libs["koin.ksp.compiler"])

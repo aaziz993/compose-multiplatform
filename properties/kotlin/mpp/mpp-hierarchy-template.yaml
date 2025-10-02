@@ -1,3 +1,5 @@
+imports:
+  - ../../subproject.yaml
 script:
   - kotlin:
       applyDefaultHierarchyTemplate: |
@@ -122,6 +124,14 @@ script:
             }
           }
         }
+  - ksp:
+      # room
+      - arg: ("room.schemaLocation", "schemas")
+      - arg: ("room.incremental", "true")
+      - arg: ("room.expandProjection", "true")
+      - arg: ("room.generateKotlin", "true")
+  - powerAssert:
+      includeKotlinSourceSets: ()
   - dependencies:
       - add: ("kspCommonMainMetadata", libs["arrow.optics.ksp.plugin"])
       - add: ("kspCommonMainMetadata", libs["androidx.room.compiler"])
