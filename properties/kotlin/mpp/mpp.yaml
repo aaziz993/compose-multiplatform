@@ -7,6 +7,7 @@ imports:
   - ../../apivalidation.yaml
   - ../../allopen.yaml
   - ../../noarg.yaml
+  - ../../serialization.yaml
   - ../../benchmark.yaml
   - ../../sqldelight.yaml
   - ../../room.yaml

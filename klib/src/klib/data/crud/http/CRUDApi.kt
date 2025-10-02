@@ -13,7 +13,7 @@ internal interface CRUDApi {
 
     @Headers("Content-Type: application/stream+json")
     @POST("transaction")
-    suspend fun transaction(@ReqBuilder ext: suspend HttpRequestBuilder.() -> Unit)
+    suspend fun transaction(@ReqBuilder ext: HttpRequestBuilder.() -> Unit)
 
     @Headers("Content-Type: application/json")
     @PUT("insert")
