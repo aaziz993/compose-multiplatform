@@ -2,6 +2,7 @@ package gradle.plugins.ksp
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 public class KspPlugin : Plugin<Project> {
@@ -14,9 +15,9 @@ public class KspPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.configureTasks() = tasks.withType(KotlinCompilationTask::class.java).configureEach {
-        if (name != "kspCommonMainKotlinMetadata") {
+    // Trigger Common Metadata Generation from Native tasks.
+    private fun Project.configureTasks() =
+        tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }.configureEach {
             dependsOn("kspCommonMainKotlinMetadata")
         }
-    }
 }
