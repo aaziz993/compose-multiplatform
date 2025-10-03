@@ -5,16 +5,15 @@ import androidx.compose.ui.Modifier
 
 @Suppress("ComposeUnstableReceiver")
 public open class SelectableItem(
+    modifier: Modifier = Modifier,
+    public val selectedModifier: Modifier = modifier,
     text: (@Composable (Modifier) -> Unit)? = null,
     public val selectedText: (@Composable (Modifier) -> Unit)? = text,
     icon: (@Composable (Modifier) -> Unit)? = null,
     public val selectedIcon: (@Composable (Modifier) -> Unit)? = icon,
     badge: (@Composable (Modifier) -> Unit)? = null,
     public val selectedBadge: (@Composable (Modifier) -> Unit)? = badge,
-    modifier: Modifier = Modifier,
-    public val selectedModifier: Modifier = modifier,
 ) : Item(text, icon, badge, modifier) {
-
 
     @Composable
     public fun Text(modifier: Modifier = Modifier, selected: Boolean = false) {

@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package ui.navigation.presentation
 
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,7 +18,6 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
-import androidx.compose.material3.adaptive.navigationsuite.WindowAdaptiveInfoDefault
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +33,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.type.collections.toLaunchedEffect
 import clib.ui.presentation.components.dialog.alert.AlertDialog
 import clib.ui.presentation.event.alert.GlobalAlertEventController
@@ -44,7 +40,6 @@ import clib.ui.presentation.event.alert.model.AlertEvent
 import clib.ui.presentation.event.navigator.Navigator
 import clib.ui.presentation.event.snackbar.GlobalSnackbarEventController
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 @Composable
 public fun <T : Any> NavigationScaffold(
@@ -73,14 +68,16 @@ public fun <T : Any> NavigationScaffold(
         val adaptiveInfo = currentWindowAdaptiveInfo()
 
         NavigationSuiteScaffold(
-            { navigationSuiteItems(currentDestination) },
+            { navigationSuiteItems(currentDestination)
+
+
+            },
             Modifier.fillMaxSize(),
             layoutType(adaptiveInfo),
             navigationSuiteColors,
             containerColor,
             contentColor,
         ) {
-
             // Global Snackbar by GlobalSnackbarEventController
             val snackbarHostState = remember { SnackbarHostState() }
             val scope = rememberCoroutineScope()

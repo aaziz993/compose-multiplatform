@@ -1,7 +1,6 @@
 package ui.navigation.presentation
 
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
-import androidx.compose.runtime.Composable
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -10,27 +9,10 @@ import androidx.navigation.NavHostController
 public fun navScreenNavigationSuiteItems(
     navController: NavHostController,
     currentDestination: NavDestination?,
-    homeMainLabel: String,
-    homeMapLabel: String,
-    homeSettingsLabel: String,
-    homeAboutLabel: String,
-    authLoginLabel: String,
-    authProfileLabel: String,
-    walletBalanceLabel: String,
-    walletCryptoLabel: String,
-    walletStockLabel: String,
+    label: Destination.() -> String = { this::class.simpleName!! },
 ): NavigationSuiteScope.() -> Unit = {
-    Destination.Companion.navigationItems(
-        homeMainLabel,
-        homeMapLabel,
-        homeSettingsLabel,
-        homeAboutLabel,
-        authLoginLabel,
-        authProfileLabel,
-        walletBalanceLabel,
-        walletCryptoLabel,
-        walletStockLabel,
-    ).forEach { navItem ->
+    Destination.Companion.destinations().forEach { destination ->
+        val navItem = destination.navigationItem(label)
         val selected = currentDestination?.hierarchy?.any { it.hasRoute(navItem.route::class) } == true
         item(
             selected,
@@ -52,9 +34,10 @@ public fun navScreenNavigationSuiteItems(
             },
             { navItem.Icon(selected = selected) },
             navItem.modifier(selected),
-            label = { navItem.Text(selected = selected) },
-            alwaysShowLabel = navItem.alwaysShowLabel,
-            badge = { navItem.Badge(selected = selected) },
+            navItem.enabled,
+            { navItem.Text(selected = selected) },
+            navItem.alwaysShowLabel,
+            { navItem.Badge(selected = selected) },
         )
     }
 }

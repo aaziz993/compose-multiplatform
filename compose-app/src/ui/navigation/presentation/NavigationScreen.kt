@@ -22,21 +22,12 @@ import org.koin.compose.koinInject
 public fun NavigationScreen(
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {}
-): Unit = NavigationScaffold<Destination>(
+): Unit = NavigationScaffold(
     { currentDestination ->
         navScreenNavigationSuiteItems(
             navController,
             currentDestination,
-            "Home",
-            "Map",
-            "Settings",
-            "About",
-            "Auth",
-            "Profile",
-            "Balance",
-            "Crypto",
-            "Stock",
-        )
+        ) { this::class.simpleName!! }
     },
     koinInject<Navigator<Destination>>(),
     navController = navController,

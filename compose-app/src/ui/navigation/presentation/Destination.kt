@@ -21,6 +21,9 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
 import androidx.navigation.navDeepLink
@@ -29,81 +32,154 @@ import kotlinx.serialization.Serializable
 import clib.ui.presentation.components.navigation.model.NavigationItem
 import kotlin.collections.Map as MAP
 
+@Immutable
 @Serializable
-public sealed interface Destination {
+public sealed class Destination {
+
+    protected open val modifier: Modifier = Modifier
+    protected open val selectedModifier: Modifier = modifier
+
+    protected open val enabled: Boolean = true
+    protected open val alwaysShowLabel: Boolean = true
+
+    @Composable
+    protected open fun Text(label: String, modifier: Modifier = Modifier): Unit = Unit
+
+    @Composable
+    protected open fun SelectedText(label: String, modifier: Modifier = Modifier): Unit = Unit
+
+    @Composable
+    protected open fun Icon(label: String, modifier: Modifier = Modifier): Unit = Unit
+
+    @Composable
+    protected open fun SelectedIcon(label: String, modifier: Modifier = Modifier): Unit = Unit
+
+    @Composable
+    protected open fun Badge(label: String, modifier: Modifier = Modifier): Unit = Unit
+
+    @Composable
+    protected open fun SelectedBadge(label: String, modifier: Modifier = Modifier): Unit = Unit
+
+    public fun navigationItem(label: Destination.() -> String = { this::class.simpleName!! }): NavigationItem<Destination> = label().let { label ->
+        NavigationItem(
+            modifier,
+            selectedModifier,
+            enabled,
+            alwaysShowLabel,
+            { modifier -> Text(label, modifier) },
+            { SelectedText(label, modifier) },
+            { modifier -> Icon(label, modifier) },
+            { modifier -> SelectedIcon(label, modifier) },
+            { modifier -> Badge(label, modifier) },
+            { modifier -> SelectedBadge(label, modifier) },
+            route = this,
+        )
+    }
 
     @Serializable
-    public data object NavGraph : Destination {
+    public data object NavGraph : Destination() {
 
         public val deepLinks: List<String> = listOf("https://", "http://")
     }
 
     @Serializable
-    public data object Main : Destination {
+    public data object Main : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = NavGraph.deepLinks.map { navDeepLink<Main>("${it}main") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.Home, label) },
-            selectedIcon = { Icon(Icons.Filled.Home, label) },
-            route = Main,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.Home, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.Home, label)
+        }
     }
 
     @Serializable
-    public data object Map : Destination {
+    public data object Map : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = NavGraph.deepLinks.map { navDeepLink<Map>("${it}map") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.Map, label) },
-            selectedIcon = { Icon(Icons.Filled.Map, label) },
-            route = Map,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.Map, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.Map, label)
+        }
     }
 
     @Serializable
-    public data object Settings : Destination {
+    public data object Settings : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = NavGraph.deepLinks.map { navDeepLink<Settings>("${it}settings") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.Settings, label) },
-            selectedIcon = { Icon(Icons.Filled.Settings, label) },
-            route = Settings,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.Settings, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.Settings, label)
+        }
     }
 
     @Serializable
-    public data object About : Destination {
+    public data object About : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = NavGraph.deepLinks.map { navDeepLink<About>("${it}about") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.Info, label) },
-            selectedIcon = { Icon(Icons.Filled.Info, label) },
-            route = About,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.Info, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.Info, label)
+        }
     }
 
     @Serializable
-    public data object AuthGraph : Destination {
+    public data object AuthGraph : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
@@ -112,51 +188,66 @@ public sealed interface Destination {
     }
 
     @Serializable
-    public data object Login : Destination {
+    public data object Login : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = AuthGraph.deepLinks.map { navDeepLink<Login>("${it}login") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.AutoMirrored.Outlined.Login, label) },
-            selectedIcon = { Icon(Icons.AutoMirrored.Filled.Login, label) },
-            route = Login,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.AutoMirrored.Outlined.Login, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.AutoMirrored.Filled.Login, label)
+        }
     }
 
     @Serializable
-    public data class ForgotPassword(val username: String) : Destination {
+    public data class ForgotPassword(val username: String) : Destination() {
 
         public companion object {
 
             public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
-            public val deepLinks: List<NavDeepLink> =
-                AuthGraph.deepLinks.map { navDeepLink<ForgotPassword>("${it}forgotpassword") }
+            public val deepLinks: List<NavDeepLink> = AuthGraph.deepLinks.map { navDeepLink<ForgotPassword>("${it}forgotpassword") }
         }
     }
 
     @Serializable
-    public data object Profile : Destination {
+    public data object Profile : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = AuthGraph.deepLinks.map { navDeepLink<Profile>("${it}profile") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.Person, label) },
-            selectedIcon = { Icon(Icons.Filled.Person, label) },
-            route = Profile,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.Person, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.Person, label)
+        }
     }
 
     @Serializable
-    public data object WalletGraph : Destination {
+    public data object WalletGraph : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
@@ -165,75 +256,89 @@ public sealed interface Destination {
     }
 
     @Serializable
-    public data object Balance : Destination {
+    public data object Balance : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = WalletGraph.deepLinks.map { navDeepLink<Balance>("${it}balance") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.AccountBalance, label) },
-            selectedIcon = { Icon(Icons.Filled.AccountBalance, label) },
-            route = Balance,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.AccountBalance, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.AccountBalance, label)
+        }
     }
 
     @Serializable
-    public data object Crypto : Destination {
+    public data object Crypto : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = WalletGraph.deepLinks.map { navDeepLink<Crypto>("${it}crypto") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.EnhancedEncryption, label) },
-            selectedIcon = { Icon(Icons.Filled.EnhancedEncryption, label) },
-            route = Crypto,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.EnhancedEncryption, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.EnhancedEncryption, label)
+        }
     }
 
     @Serializable
-    public data object Stock : Destination {
+    public data object Stock : Destination() {
 
         public val typeMap: MAP<KType, NavType<*>> = emptyMap()
 
         public val deepLinks: List<NavDeepLink>
             get() = WalletGraph.deepLinks.map { navDeepLink<Stock>("${it}stock") }
 
-        public fun navigationItem(label: String): NavigationItem<Destination> = NavigationItem(
-            text = { Text(label) },
-            icon = { Icon(Icons.Outlined.CurrencyExchange, label) },
-            selectedIcon = { Icon(Icons.Filled.CurrencyExchange, label) },
-            route = Stock,
-        )
+        @Composable
+        override fun Text(label: String, modifier: Modifier) {
+            Text(label)
+        }
+
+        @Composable
+        override fun Icon(label: String, modifier: Modifier) {
+            Icon(Icons.Outlined.CurrencyExchange, label)
+        }
+
+        @Composable
+        override fun SelectedIcon(label: String, modifier: Modifier) {
+            Icon(Icons.Filled.CurrencyExchange, label)
+        }
     }
 
     public companion object {
 
-        public fun navigationItems(
-            homeMainLabel: String,
-            homeMapLabel: String,
-            homeSettingsLabel: String,
-            homeAboutLabel: String,
-            authLoginLabel: String,
-            authProfileLabel: String,
-            walletBalanceLabel: String,
-            walletCryptoLabel: String,
-            walletStockLabel: String,
-        ): List<NavigationItem<Destination>> = listOf(
-            Main.navigationItem(homeMainLabel),
-            Map.navigationItem(homeMapLabel),
-            Settings.navigationItem(homeSettingsLabel),
-            About.navigationItem(homeAboutLabel),
-            Login.navigationItem(authLoginLabel),
-            Profile.navigationItem(authProfileLabel),
-            Balance.navigationItem(walletBalanceLabel),
-            Crypto.navigationItem(walletCryptoLabel),
-            Stock.navigationItem(walletStockLabel),
+        public fun destinations(): List<Destination> = listOf(
+            Main,
+            Map,
+            Settings,
+            About,
+            Login,
+            Profile,
+            Balance,
+            Crypto,
+            Stock,
         )
     }
 }
