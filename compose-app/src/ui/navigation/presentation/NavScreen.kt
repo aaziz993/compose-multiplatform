@@ -90,9 +90,7 @@ public fun NavScreen(
 
     AdvancedNavigationSuiteScaffold(
         {
-            Destination.destinations.forEach { destination ->
-                destination.item(navController, currentDestination) { it }
-            }
+            Destination.NavGraph.items(navController, currentDestination) { it }
         },
         koinInject<Navigator<Destination>>(),
         Modifier.nestedScroll(nestedScrollConnection),

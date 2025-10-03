@@ -44,7 +44,7 @@ public sealed class Destination : AbstractDestination() {
 
         override val deepLinks: List<String> = listOf("https://", "http://")
 
-        override val children: List<Destination> by lazy {
+        override val composableChildren: List<Destination> by lazy {
             listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
         }
     }
@@ -138,7 +138,8 @@ public sealed class Destination : AbstractDestination() {
 
         override val deepLinks: List<String> = listOf("auth")
 
-        override val children: List<AbstractDestination> by lazy { listOf(Login, ForgotPassword, Profile) }
+        override val composableChildren: List<AbstractDestination> by lazy { listOf(Login, ForgotPassword, Profile) }
+        override val navigationChildren: List<AbstractDestination> by lazy { listOf(Login, Profile) }
     }
 
     @Serializable
@@ -202,7 +203,7 @@ public sealed class Destination : AbstractDestination() {
 
         override val deepLinks: List<String> = listOf("wallet")
 
-        override val children: List<AbstractDestination> by lazy { listOf(Balance, Crypto, Stock) }
+        override val composableChildren: List<AbstractDestination> by lazy { listOf(Balance, Crypto, Stock) }
     }
 
     @Serializable

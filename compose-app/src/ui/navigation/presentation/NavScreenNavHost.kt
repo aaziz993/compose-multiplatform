@@ -76,9 +76,7 @@ public fun NavScreenNavHost(
         popExitTransition,
         sizeTransform,
     ) {
-        Destination.destinations.forEach { destination ->
-            destination.item { backStackEntry ->
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-            }
+        Destination.NavGraph.items { backStackEntry ->
+            koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
         }
     }
