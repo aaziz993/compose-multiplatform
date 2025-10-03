@@ -7,5 +7,5 @@ script:
   - plugins:
       - id: (libs.plugins("ktorfit").pluginId)
   - ktorfit:
-      generateQualifiedTypeName: true
-      errorCheckingMode: ErrorCheckingMode.NONE
+      generateQualifiedTypeName: false
+      errorCheckingMode: ErrorCheckingMode.ERROR

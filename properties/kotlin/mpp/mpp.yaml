@@ -12,7 +12,7 @@ imports:
   - ../../sqldelight.yaml
   - ../../room.yaml
   - ../../ktorfit.yaml
-#  - ../../rpc.yaml
+  #  - ../../rpc.yaml
   - ../../apollo.yaml
   - mpp-plugin.yaml
   - ../kotlin.yaml
@@ -20,6 +20,12 @@ config:
   imports:
     - gradle.api.kotlin.mpp.*
 script:
+  - kotlin:
+      compilerOptions:
+        optIn.addAll: |
+          (
+            "kotlinx.cinterop.ExperimentalForeignApi",
+          )
   # Api documentation engine for Kotlin.
   - dokka:
       pluginsConfiguration:

@@ -380,6 +380,7 @@ npm-puppeteer = "24.22.0"
 
 ##Compose.
 compose = "1.9.0"
+material3 = "1.9.0-beta06"
 compose-hotReload = "1.0.0-beta08"
 materialExtendedIcon = "1.7.0-rc01"
 # colorr picker.
@@ -858,6 +859,8 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3"
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil3" }
 # additional cricle shapes.
 squircle-shape = { module = "io.github.stoyan-vuchev:squircle-shape", version.ref = "squircle-shape" }
+# material 3
+material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
 # material3 Adaptive.
 material3-window-size-clazz = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose" }
 material3-adaptive-navigation-suite = { module = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite", version.ref = "compose" }

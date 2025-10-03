@@ -30,6 +30,7 @@ script:
             "kotlin.experimental.ExperimentalObjCName",
             "kotlin.js.ExperimentalJsExport",
             "kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi",
             "kotlinx.coroutines.DelicateCoroutinesApi",
             "kotlinx.coroutines.FlowPreview",
             "kotlinx.serialization.ExperimentalSerializationApi",

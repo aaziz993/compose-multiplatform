@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package clib.ui.presentation
 
 import androidx.compose.material3.DatePickerState

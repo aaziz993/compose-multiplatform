@@ -1,9 +1,7 @@
-@file:OptIn(ExperimentalForeignApi::class)
 package klib.data.db.room
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSUserDomainMask

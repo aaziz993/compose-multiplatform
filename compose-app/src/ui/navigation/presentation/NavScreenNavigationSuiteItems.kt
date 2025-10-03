@@ -7,7 +7,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 
-@Composable
 public fun navScreenNavigationSuiteItems(
     navController: NavHostController,
     currentDestination: NavDestination?,

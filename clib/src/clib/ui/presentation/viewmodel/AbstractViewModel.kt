@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalForInheritanceCoroutinesApi::class)
-
 package clib.ui.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle

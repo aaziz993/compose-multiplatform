@@ -1,17 +1,27 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package ui.navigation.presentation
 
-import clib.ui.presentation.components.dialog.alert.AlertDialog
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
+import androidx.compose.material3.adaptive.navigationsuite.WindowAdaptiveInfoDefault
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,25 +30,41 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.type.collections.toLaunchedEffect
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.koinInject
+import clib.ui.presentation.components.dialog.alert.AlertDialog
 import clib.ui.presentation.event.alert.GlobalAlertEventController
 import clib.ui.presentation.event.alert.model.AlertEvent
 import clib.ui.presentation.event.navigator.Navigator
 import clib.ui.presentation.event.snackbar.GlobalSnackbarEventController
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @Composable
-public fun NavScreen(
-    modifier: Modifier = Modifier,
+public fun <T : Any> NavigationScaffold(
+    navigationSuiteItems: NavigationSuiteScope.(currentDestination: NavDestination?) -> Unit,
+    navigator: Navigator<T>,
+    modifier: Modifier = Modifier.fillMaxSize(),
     navController: NavHostController = rememberNavController(),
-    onNavHostReady: suspend (NavController) -> Unit = {}
+    onNavHostReady: suspend (NavController) -> Unit = {},
+    topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
+    floatingActionButtonPosition: FabPosition = FabPosition.End,
+    navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
+    containerColor: Color = MaterialTheme.colorScheme.background,
+    contentColor: Color = contentColorFor(containerColor),
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    layoutType: @Composable (WindowAdaptiveInfo) -> NavigationSuiteType = { adaptiveInfo ->
+        NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
+    },
+    content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
     MaterialTheme {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -46,30 +72,13 @@ public fun NavScreen(
 
         val adaptiveInfo = currentWindowAdaptiveInfo()
 
-        val customNavSuiteType = with(adaptiveInfo) {
-            if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
-                NavigationSuiteType.NavigationDrawer
-            else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
-                currentWindowAdaptiveInfo(),
-            )
-        }
-
         NavigationSuiteScaffold(
-            navScreenNavigationSuiteItems(
-                navController,
-                currentDestination,
-                "Home",
-                "Map",
-                "Settings",
-                "About",
-                "Auth",
-                "Profile",
-                "Balance",
-                "Crypto",
-                "Stock",
-            ),
-            Modifier.fillMaxSize().then(modifier),
-            customNavSuiteType,
+            { navigationSuiteItems(currentDestination) },
+            Modifier.fillMaxSize(),
+            layoutType(adaptiveInfo),
+            navigationSuiteColors,
+            containerColor,
+            contentColor,
         ) {
 
             // Global Snackbar by GlobalSnackbarEventController
@@ -93,8 +102,15 @@ public fun NavScreen(
             }
 
             Scaffold(
-                Modifier.fillMaxSize().then(modifier),
+                modifier,
+                topBar,
+                bottomBar,
                 snackbarHost = { SnackbarHost(snackbarHostState) },
+                floatingActionButton,
+                floatingActionButtonPosition,
+                containerColor,
+                contentColor,
+                contentWindowInsets,
             ) { innerPadding ->
                 // Global AlertDialog by GlobalAlertEventController
                 var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
@@ -111,16 +127,9 @@ public fun NavScreen(
                     )
                 }
 
-                val navigator = koinInject<Navigator<Destination>>()
-
                 navigator.HandleAction(navController)
 
-                NavScreenNavHost(
-                    navController,
-                    Destination.Main,
-                    Modifier.padding(innerPadding).then(modifier),
-                    route = Destination.NavGraph::class,
-                )
+                content(innerPadding)
             }
         }
     }
@@ -129,7 +138,3 @@ public fun NavScreen(
         onNavHostReady(navController)
     }
 }
-
-@Preview
-@Composable
-public fun PreviewNavScreen(): Unit = NavScreen()

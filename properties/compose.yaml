@@ -12,6 +12,8 @@ script:
         optIn.addAll: |
           (
             "androidx.compose.ui.ExperimentalComposeUiApi",
+            "androidx.compose.material3.ExperimentalMaterial3Api",
+            "kotlin.js.ExperimentalWasmJsInterop",
             "org.jetbrains.compose.resources.InternalResourceApi",
           )
       sourceSets:
@@ -20,7 +22,8 @@ script:
               sourceSet.dependencies {
                 implementation(composeLibs.runtime)
                 implementation(composeLibs.foundation)
-                implementation(composeLibs.material3)
+                // implementation(composeLibs.material3)
+                implementation(libs["material3"]) // newer version with expressive design.
                 implementation(composeLibs.ui)
                 implementation(composeLibs.components.resources)
                 implementation(composeLibs.components.uiToolingPreview)

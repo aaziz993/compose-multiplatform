@@ -41,9 +41,9 @@ public class CompilerProcessor(
   override fun process(resolver: Resolver): List<KSAnnotated> {
     logger.info("Processing compilation graph...")
 
-    val compiledFile = codeGenerator.getFile("data.type", "Compiled")
+    val compiledFile = codeGenerator.getFile("klib.data.type", "Compiled")
 
-    compiledFile += "package data.type\n\n"
+    compiledFile += "package klib.data.type\n\n"
 
     compiledFile += imports.joinToString("\n", postfix = "\n\n") { "import $it" }
 
