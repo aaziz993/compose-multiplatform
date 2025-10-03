@@ -133,9 +133,9 @@ script:
   - include: |
       (
         ":bom",
+        ":klib-ksp",
         ":klib",
         ":clib",
-        ":compiler",
         ":shared",
         ":compose-app",
         ":server-app",

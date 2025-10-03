@@ -12,6 +12,7 @@ import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
 import klib.data.type.primitives.string.fuzzywuzzy.model.BoundExtractedResult
 import klib.data.type.primitives.string.fuzzywuzzy.model.ExtractedResult
+import kotlin.IllegalArgumentException
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.time.Duration
@@ -142,6 +143,9 @@ public fun String.addPrefixIfNotEmpty(prefix: String): String =
 public fun String.addSuffixIfNotEmpty(suffix: String): String =
     ifNotEmpty { "$it$suffix" }
 
+public fun String.surroundIfNotEmpty(prefix: String, suffix: String): String =
+    ifNotEmpty { "$prefix$it$suffix" }
+
 private val STRING_FORMAT_REGEX: Regex = "%(\\d+)\\$[ds]".toRegex()
 
 public fun String.format(vararg args: Any?): String =
@@ -156,9 +160,9 @@ public fun randomString(length: Int, charPool: List<Char> = ('a'..'z') + ('A'..'
 
 private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
     mapOf(
-        "json" to Regex("""^\s*(\{${Regex.ANY_PATTERN}*\}|\[${Regex.ANY_PATTERN}*\])\s*$"""),
+        "json" to Regex("""^\s*(\{${Regex.ANY}*\}|\[${Regex.ANY}*\])\s*$"""),
         "xml" to """^\s*<\?xml[\s\S]*""".toRegex(),
-        "html" to Regex("""^\s*<(!DOCTYPE +)?html${Regex.ANY_PATTERN}*"""),
+        "html" to Regex("""^\s*<(!DOCTYPE +)?html${Regex.ANY}*"""),
         "yaml" to Regex("""^( *((#|[^{\s]*:|-).*)?${Regex.NEW_LINE_PATTERN}?)+$"""),
         "properties" to Regex("""^( *((#|[^{\s\[].*?=).*)?${Regex.NEW_LINE_PATTERN}?)+$"""),
         "toml" to """^( *(([#\[\]"{}]|.*=).*)?${Regex.NEW_LINE_PATTERN}?)+$""".toRegex(),

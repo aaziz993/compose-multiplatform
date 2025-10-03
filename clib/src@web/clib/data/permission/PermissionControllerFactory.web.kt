@@ -1,0 +1,15 @@
+package clib.data.permission
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import clib.data.permission.PermissionControllerFactory
+import klib.data.permission.PermissionController
+
+@Composable
+public actual fun rememberPermissionControllerFactory(): PermissionControllerFactory {
+    return remember {
+        PermissionControllerFactory {
+            PermissionController()
+        }
+    }
+}

@@ -36,4 +36,4 @@ script:
               database.generateAsync /= true
             }
   - dependencies:
-      - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))
+      - add: ("kspCommonMainMetadata", dependencies.project(":klib-ksp"))

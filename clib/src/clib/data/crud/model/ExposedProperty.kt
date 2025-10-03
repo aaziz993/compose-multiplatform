@@ -1,7 +1,7 @@
 package clib.data.crud.model
 
-import clib.ui.presentation.components.textfield.search.model.SearchFieldCompare
-import clib.ui.presentation.components.textfield.search.model.SearchFieldState
+import clib.presentation.components.textfield.search.model.SearchFieldCompare
+import clib.presentation.components.textfield.search.model.SearchFieldState
 import klib.data.BooleanVariable
 import klib.data.f
 import klib.data.type.reflection.kClass

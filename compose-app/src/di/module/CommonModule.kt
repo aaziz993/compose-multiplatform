@@ -4,14 +4,12 @@ import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
-import clib.ui.presentation.event.navigator.DefaultNavigator
-import clib.ui.presentation.event.navigator.Navigator
-import io.ktor.client.HttpClient
-import klib.data.net.http.client.createHttpClient
-import ui.navigation.presentation.Destination
+import clib.presentation.event.navigator.DefaultNavigator
+import clib.presentation.event.navigator.Navigator
+import presentation.navigation.presentation.Destination
 
 @Module
-@ComponentScan("ui")
+@ComponentScan("presentation")
 public class CommonModule {
 
     @Single
