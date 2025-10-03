@@ -1,4 +1,4 @@
-package ui.navigation.presentation
+package clib.presentation.components.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 public fun <T : Any> AdvancedNavigationSuiteScaffold(
-    navigationSuiteItems: NavigationSuiteScope.(currentDestination: NavDestination?) -> Unit,
+    navigationSuiteItems: NavigationSuiteScope.() -> Unit,
     navigator: Navigator<T>,
     modifier: Modifier = Modifier.fillMaxSize(),
     navController: NavHostController = rememberNavController(),
@@ -63,13 +63,10 @@ public fun <T : Any> AdvancedNavigationSuiteScaffold(
     },
     content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-
     val adaptiveInfo = currentWindowAdaptiveInfo()
 
     NavigationSuiteScaffold(
-        { navigationSuiteItems(currentDestination) },
+        navigationSuiteItems,
         Modifier.fillMaxSize(),
         layoutType(adaptiveInfo),
         navigationSuiteColors,

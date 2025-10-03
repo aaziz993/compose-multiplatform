@@ -23,45 +23,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDeepLink
-import androidx.navigation.NavType
 import androidx.navigation.navDeepLink
 import clib.presentation.components.navigation.model.AbstractDestination
-import kotlin.reflect.KType
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import clib.presentation.components.navigation.model.NavigationItem
-import kotlin.collections.Map as MAP
 
 @Serializable
 public sealed class Destination : AbstractDestination() {
 
-    override fun item(label: AbstractDestination. () -> String): NavigationItem = label().let { label ->
-        NavigationItem(
-            modifier,
-            selectedModifier,
-            enabled,
-            alwaysShowLabel,
-            { modifier -> Text(label, modifier) },
-            { SelectedText(label, modifier) },
-            { modifier -> Icon(label, modifier) },
-            { modifier -> SelectedIcon(label, modifier) },
-            { modifier -> Badge(label, modifier) },
-            { modifier -> SelectedBadge(label, modifier) },
-        )
-    }
-
     @Serializable
     public data object NavGraph : Destination() {
 
-        public val deepLinks: List<String> = listOf("https://", "http://")
+        public val rootDeepLinks: List<String> = listOf("https://", "http://")
     }
 
     @Serializable
+    @SerialName("home")
     public data object Home : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = NavGraph.deepLinks.map { navDeepLink<Home>("${it}main") }
+        override val deepLinks: List<NavDeepLink>
+            get() = NavGraph.rootDeepLinks.map { navDeepLink<Home>("${it}main") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -75,12 +56,11 @@ public sealed class Destination : AbstractDestination() {
     }
 
     @Serializable
+    @SerialName("map")
     public data object Map : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = NavGraph.deepLinks.map { navDeepLink<Map>("${it}map") }
+        override val deepLinks: List<NavDeepLink>
+            get() = NavGraph.rootDeepLinks.map { navDeepLink<Map>("${it}map") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -94,12 +74,11 @@ public sealed class Destination : AbstractDestination() {
     }
 
     @Serializable
+    @SerialName("settings")
     public data object Settings : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = NavGraph.deepLinks.map { navDeepLink<Settings>("${it}settings") }
+        override val deepLinks: List<NavDeepLink>
+            get() = NavGraph.rootDeepLinks.map { navDeepLink<Settings>("${it}settings") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -113,12 +92,11 @@ public sealed class Destination : AbstractDestination() {
     }
 
     @Serializable
+    @SerialName("about")
     public data object About : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = NavGraph.deepLinks.map { navDeepLink<About>("${it}about") }
+        override val deepLinks: List<NavDeepLink>
+            get() = NavGraph.rootDeepLinks.map { navDeepLink<About>("${it}about") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -134,19 +112,15 @@ public sealed class Destination : AbstractDestination() {
     @Serializable
     public data object AuthGraph : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<String>
-            get() = NavGraph.deepLinks.map { "${it}auth/" }
+        public val nodeDeepLinks: List<String> = NavGraph.rootDeepLinks.map { "${it}auth/" }
     }
 
     @Serializable
+    @SerialName("login")
     public data object Login : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = AuthGraph.deepLinks.map { navDeepLink<Login>("${it}login") }
+        override val deepLinks: List<NavDeepLink>
+            get() = AuthGraph.nodeDeepLinks.map { navDeepLink<Login>("${it}login") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -160,23 +134,21 @@ public sealed class Destination : AbstractDestination() {
     }
 
     @Serializable
+    @SerialName("forgotpassword")
     public data class ForgotPassword(val username: String) : Destination() {
 
-        public companion object {
+        public companion object : AbstractDestination() {
 
-            public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-            public val deepLinks: List<NavDeepLink> = AuthGraph.deepLinks.map { navDeepLink<ForgotPassword>("${it}forgotpassword") }
+            override val deepLinks: List<NavDeepLink> = AuthGraph.nodeDeepLinks.map { navDeepLink<ForgotPassword>("${it}forgotpassword") }
         }
     }
 
     @Serializable
+    @SerialName("profile")
     public data object Profile : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = AuthGraph.deepLinks.map { navDeepLink<Profile>("${it}profile") }
+        override val deepLinks: List<NavDeepLink>
+            get() = AuthGraph.nodeDeepLinks.map { navDeepLink<Profile>("${it}profile") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -192,19 +164,15 @@ public sealed class Destination : AbstractDestination() {
     @Serializable
     public data object WalletGraph : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<String>
-            get() = NavGraph.deepLinks.map { "${it}wallet/" }
+        public val nodeDeepLinks: List<String> = NavGraph.rootDeepLinks.map { "${it}wallet/" }
     }
 
     @Serializable
+    @SerialName("balance")
     public data object Balance : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = WalletGraph.deepLinks.map { navDeepLink<Balance>("${it}balance") }
+        override val deepLinks: List<NavDeepLink>
+            get() = WalletGraph.nodeDeepLinks.map { navDeepLink<Balance>("${it}balance") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -218,12 +186,11 @@ public sealed class Destination : AbstractDestination() {
     }
 
     @Serializable
+    @SerialName("crypto")
     public data object Crypto : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = WalletGraph.deepLinks.map { navDeepLink<Crypto>("${it}crypto") }
+        override val deepLinks: List<NavDeepLink>
+            get() = WalletGraph.nodeDeepLinks.map { navDeepLink<Crypto>("${it}crypto") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -237,12 +204,11 @@ public sealed class Destination : AbstractDestination() {
     }
 
     @Serializable
+    @SerialName("stock")
     public data object Stock : Destination() {
 
-        public val typeMap: MAP<KType, NavType<*>> = emptyMap()
-
-        public val deepLinks: List<NavDeepLink>
-            get() = WalletGraph.deepLinks.map { navDeepLink<Stock>("${it}stock") }
+        override val deepLinks: List<NavDeepLink>
+            get() = WalletGraph.nodeDeepLinks.map { navDeepLink<Stock>("${it}stock") }
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -257,16 +223,8 @@ public sealed class Destination : AbstractDestination() {
 
     public companion object {
 
-        public val destinations: List<Destination> = listOf(
-            Home,
-            Map,
-            Settings,
-            About,
-            Login,
-            Profile,
-            Balance,
-            Crypto,
-            Stock,
-        )
+        public val destinations: List<Destination> by lazy {
+            listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
+        }
     }
 }

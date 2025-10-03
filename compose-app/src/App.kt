@@ -1,30 +1,31 @@
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import clib.presentation.AppEnvironment
-import clib.presentation.theme.systemColorScheme
 import di.koinConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.KoinApplicationPreview
 import org.koin.core.KoinApplication
-import ui.navigation.presentation.NavigationScreen
+import presentation.theme.darkColorScheme
+import presentation.theme.lightColorScheme
+import ui.navigation.presentation.NavScreen
 
 @Composable
 public fun App(onNavHostReady: suspend (NavController) -> Unit = {}): Unit =
     KoinApplication(KoinApplication::koinConfiguration) {
-        AppScreen(onNavHostReady)
+        AppComposable(onNavHostReady)
     }
 
 @Preview
 @Composable
 public fun PreviewApp(): Unit = KoinApplicationPreview(KoinApplication::koinConfiguration) {
-    AppScreen()
+    AppComposable()
 }
 
 @Composable
-private fun AppScreen(onNavHostReady: suspend (NavController) -> Unit = {}): Unit = AppEnvironment {
-    MaterialTheme(systemColorScheme()) {
-        NavigationScreen(onNavHostReady = onNavHostReady)
+public fun AppComposable(onNavHostReady: suspend (NavController) -> Unit = {}) {
+    AppEnvironment(lightColorScheme, darkColorScheme) {
+        NavScreen(onNavHostReady = onNavHostReady)
     }
 }
+

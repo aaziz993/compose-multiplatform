@@ -11,24 +11,16 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 
 public var customAppDensity: Density? by mutableStateOf(null)
+
 public object LocalAppDensity {
+
     public val current: Density
-        @Composable get() = LocalDensity.current
+        @Composable
+        get() = LocalDensity.current
 
     @Composable
     public infix fun provides(value: Density?): ProvidedValue<*> {
         val new = value ?: LocalDensity.current
         return LocalDensity.provides(new)
-    }
-}
-
-@Composable
-public fun AppEnvironment(content: @Composable () -> Unit) {
-    CompositionLocalProvider(
-        LocalAppDensity provides customAppDensity,
-    ) {
-        key(customAppDensity) {
-            content()
-        }
     }
 }

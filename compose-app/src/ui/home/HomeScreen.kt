@@ -1,39 +1,33 @@
-package home
+package ui.home
 
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.card.weather.WeatherGlassOverlay
-import clib.presentation.components.card.weather.model.WeatherCondition
-import clib.presentation.components.card.weather.model.WeatherData
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import navigation.presentation.Destination
+import ui.navigation.presentation.Destination
 
 @Composable
 public fun HomeScreen(
-    navigateTo: (route: navigation.presentation.Destination) -> Unit = {},
+    navigateTo: (route: Destination) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
-    Surface(Modifier.width(600.dp).height(480.dp)) {
-        clib.presentation.components.card.weather.WeatherGlassOverlay(
-            clib.presentation.components.card.weather.model.WeatherData(
-                "Dushanbe",
-                35,
-                clib.presentation.components.card.weather.model.WeatherCondition.Sunny,
-                0,
-                100,
-                "good",
-                "1m/s",
-                36,
-                40,
-                listOf(Color.Cyan, Color.Yellow).map { clib.presentation.Color(it.value) },
-            ),
-            emptyList(),
-        )
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        val list = (0..75).map { it.toString() }
+        items(count = list.size) {
+            Text(
+                text = list[it],
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            )
+        }
     }
 }
 

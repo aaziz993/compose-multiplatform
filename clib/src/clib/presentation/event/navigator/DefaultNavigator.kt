@@ -18,25 +18,25 @@ public data class DefaultNavigator<T : Any>(override val startDestination: T) : 
 
     override fun navigate(route: String): Boolean = navigate(NavigationAction.Navigation.Navigate(route))
 
-    override fun navigate(route: T): Boolean = navigate(NavigationAction.SafeNavigation.Navigate(route))
+    override fun navigate(route: T): Boolean = navigate(NavigationAction.TypeSafeNavigation.Navigate(route))
 
     override fun navigateBackTo(route: String, inclusive: Boolean, saveState: Boolean): Boolean =
         navigate(NavigationAction.Navigation.NavigateBackTo(route, inclusive, saveState))
 
     override fun navigateBackTo(route: T, inclusive: Boolean, saveState: Boolean): Boolean =
-        navigate(NavigationAction.SafeNavigation.NavigateBackTo(route, inclusive, saveState))
+        navigate(NavigationAction.TypeSafeNavigation.NavigateBackTo(route, inclusive, saveState))
 
     override fun navigateAndClear(route: String): Boolean =
         navigate(NavigationAction.Navigation.NavigateAndClearTop(route))
 
     override fun navigateAndClear(route: T): Boolean =
-        navigate(NavigationAction.SafeNavigation.NavigateAndClearTop(route))
+        navigate(NavigationAction.TypeSafeNavigation.NavigateAndClearTop(route))
 
     override fun navigateAndClearCurrent(route: String): Boolean =
         navigate(NavigationAction.Navigation.NavigateAndClearCurrent(route))
 
     override fun navigateAndClearCurrent(route: T): Boolean =
-        navigate(NavigationAction.SafeNavigation.NavigateAndClearCurrent(route))
+        navigate(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(route))
 
     @Composable
     override fun HandleAction(navController: NavHostController): Unit = navigationActions.toLaunchedEffect { action ->
@@ -48,7 +48,7 @@ public data class DefaultNavigator<T : Any>(override val startDestination: T) : 
                 navigateNavOptionsBuilder(navController),
             )
 
-            is NavigationAction.SafeNavigation.Navigate<*> -> navController.navigate(
+            is NavigationAction.TypeSafeNavigation.Navigate<*> -> navController.navigate(
                 action.route,
                 navigateNavOptionsBuilder(navController),
             )
@@ -59,7 +59,7 @@ public data class DefaultNavigator<T : Any>(override val startDestination: T) : 
                 action.saveState,
             )
 
-            is NavigationAction.SafeNavigation.NavigateBackTo<*> -> navController.navigateBackTo(
+            is NavigationAction.TypeSafeNavigation.NavigateBackTo<*> -> navController.navigateBackTo(
                 action.route,
                 action.inclusive,
                 action.saveState,
@@ -70,14 +70,14 @@ public data class DefaultNavigator<T : Any>(override val startDestination: T) : 
                 navigateAndClearCurrentNavOptionsBuilder(navController),
             )
 
-            is NavigationAction.SafeNavigation.NavigateAndClearCurrent<*> -> navController.navigate(
+            is NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent<*> -> navController.navigate(
                 action.route,
                 navigateAndClearCurrentNavOptionsBuilder(navController),
             )
 
             is NavigationAction.Navigation.NavigateAndClearTop -> navController.navigateAndReplaceStartRoute(action.route)
 
-            is NavigationAction.SafeNavigation.NavigateAndClearTop<*> ->
+            is NavigationAction.TypeSafeNavigation.NavigateAndClearTop<*> ->
                 navController.navigateAndReplaceStartRoute(action.route)
         }
 
