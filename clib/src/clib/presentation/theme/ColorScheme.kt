@@ -11,5 +11,8 @@ public val lightColorScheme: ColorScheme = lightColorScheme()
 public val darkColorScheme: ColorScheme = darkColorScheme()
 
 @Composable
-public fun systemColorScheme(): ColorScheme = if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
+public fun systemColorScheme(
+    light: () -> ColorScheme = { lightColorScheme },
+    dark: () -> ColorScheme = { darkColorScheme }
+): ColorScheme = if (isSystemInDarkTheme()) dark() else light()
 

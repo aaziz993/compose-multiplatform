@@ -8,7 +8,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.KoinApplicationPreview
 import org.koin.core.KoinApplication
-import navigation.presentation.NavigationScreen
+import ui.navigation.presentation.NavigationScreen
 
 @Composable
 public fun App(onNavHostReady: suspend (NavController) -> Unit = {}): Unit =
