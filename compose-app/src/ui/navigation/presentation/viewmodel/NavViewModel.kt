@@ -1,6 +1,7 @@
 package ui.navigation.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import clib.presentation.components.navigation.viewmodel.AbstractNavViewModel
 import org.koin.android.annotation.KoinViewModel
 import clib.presentation.event.navigator.NavigationAction
 import clib.presentation.event.navigator.Navigator
@@ -9,11 +10,6 @@ import ui.navigation.presentation.Destination
 
 @KoinViewModel
 public class NavViewModel(
-    public val navigator: Navigator<Destination>,
+    navigator: Navigator<Destination>,
     savedStateHandle: SavedStateHandle
-) : AbstractViewModel<NavigationAction>(savedStateHandle) {
-
-    override fun action(action: NavigationAction) {
-        navigator.navigate(action)
-    }
-}
+) : AbstractNavViewModel<Destination>(navigator, savedStateHandle)

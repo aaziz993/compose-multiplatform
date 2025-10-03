@@ -1,6 +1,5 @@
 package clib.presentation.components.navigation.model
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -11,13 +10,16 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavDeepLink
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
+import androidx.navigation.navigation
+import clib.presentation.components.navigation.viewmodel.AbstractNavViewModel
+import clib.presentation.event.navigator.NavigationAction
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 import kotlinx.serialization.Transient
@@ -25,12 +27,15 @@ import kotlinx.serialization.Transient
 @Immutable
 public abstract class AbstractDestination {
 
+    @Transient
     public val label: String
         get() = this::class.simpleName!!
 
+    @Transient
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
 
-    public open val deepLinks: List<NavDeepLink> = emptyList()
+    @Transient
+    public open val deepLinks: List<String> = emptyList()
 
     @Transient
     protected open val modifier: Modifier = Modifier
@@ -43,6 +48,9 @@ public abstract class AbstractDestination {
 
     @Transient
     protected open val alwaysShowLabel: Boolean = true
+
+    @Transient
+    protected open val children: List<AbstractDestination> = emptyList()
 
     @Composable
     protected open fun Text(label: String, modifier: Modifier = Modifier): Unit =
@@ -69,7 +77,7 @@ public abstract class AbstractDestination {
         navController: NavController,
         currentDestination: NavDestination?,
         transform: AbstractDestination.(label: String) -> String = { it }
-    ) {
+    ): Unit = with(navigationSuiteScope) {
         val selected = isSelected(currentDestination)
 
         val label = transform(this@AbstractDestination.label)
@@ -87,7 +95,7 @@ public abstract class AbstractDestination {
             { modifier -> SelectedBadge(label, modifier) },
         )
 
-        navigationSuiteScope.item(
+        item(
             selected,
             {
                 navController.navigate(this) {
@@ -114,8 +122,16 @@ public abstract class AbstractDestination {
         )
     }
 
+    @Composable
+    protected open fun Screen(
+        navigateTo: (route: AbstractDestination) -> Unit = {},
+        navigateBack: () -> Unit = {}
+    ): Unit = Unit
+
     context(navGraphBuilder: NavGraphBuilder)
-    public fun composable(
+    public fun item(
+        typeMap: Map<KType, NavType<*>> = emptyMap(),
+        deepLinks: List<String> = emptyList(),
         enterTransition:
         (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
         EnterTransition?)? =
@@ -136,21 +152,79 @@ public abstract class AbstractDestination {
         (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
         SizeTransform?)? =
             null,
-        content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
-    ): Unit = navGraphBuilder.composable(
-        this::class,
-        typeMap,
-        deepLinks,
-        enterTransition,
-        exitTransition,
-        popEnterTransition,
-        popExitTransition,
-        sizeTransform,
-        content,
-    )
+        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out AbstractDestination>
+    ): Unit = if (children.isEmpty())
+        composable(deepLinks, enterTransition, exitTransition, popEnterTransition, popExitTransition, sizeTransform, viewModel)
+    else navigation(enterTransition, exitTransition, popEnterTransition, popExitTransition, sizeTransform, viewModel)
 
     private fun AbstractDestination.isSelected(currentDestination: NavDestination?) =
         currentDestination?.hierarchy?.any { it.hasRoute(this::class) } == true
+
+    context(navGraphBuilder: NavGraphBuilder)
+    private fun composable(
+        deepLinks: List<String>,
+        enterTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        exitTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        popEnterTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        popExitTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        sizeTransform:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)?,
+        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out AbstractDestination>
+    ): Unit = with(navGraphBuilder) {
+        composable(
+            this::class,
+            typeMap + this@AbstractDestination.typeMap,
+            deepLinks.map { basePath -> navDeepLink(this::class, basePath) {} },
+            enterTransition,
+            exitTransition,
+            popEnterTransition,
+            popExitTransition,
+            sizeTransform,
+        ) { backStackEntry ->
+            val navViewModel = viewModel(backStackEntry)
+            Screen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
+                navViewModel.action(NavigationAction.NavigateBack)
+            }
+        }
+    }
+
+    context(navGraphBuilder: NavGraphBuilder)
+    private fun navigation(
+        enterTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        exitTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        popEnterTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        popExitTransition:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        sizeTransform:
+        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)?,
+        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out AbstractDestination>
+    ): Unit = with(navGraphBuilder) {
+        navigation(this::class, children.first()) {
+            children.forEach { children ->
+                item(
+                    typeMap,
+                    deepLinks.flatMap { basePath ->
+                        children.deepLinks.map { childrenBasePath ->
+                            "$basePath/$childrenBasePath"
+                        }
+                    },
+                    enterTransition,
+                    exitTransition,
+                    popEnterTransition,
+                    popExitTransition,
+                    sizeTransform,
+                    viewModel,
+                )
+            }
+        }
+    }
 }
 
 

@@ -22,11 +22,19 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavDeepLink
-import androidx.navigation.navDeepLink
 import clib.presentation.components.navigation.model.AbstractDestination
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ui.about.AboutScreen
+import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
+import ui.auth.login.presentation.LoginScreen
+import ui.auth.profile.presentation.ProfileScreen
+import ui.home.HomeScreen
+import ui.map.MapScreen
+import ui.settings.SettingsScreen
+import ui.wallet.balance.BalanceScreen
+import ui.wallet.crypto.CryptoScreen
+import ui.wallet.stock.StockScreen
 
 @Serializable
 public sealed class Destination : AbstractDestination() {
@@ -34,15 +42,18 @@ public sealed class Destination : AbstractDestination() {
     @Serializable
     public data object NavGraph : Destination() {
 
-        public val rootDeepLinks: List<String> = listOf("https://", "http://")
+        override val deepLinks: List<String> = listOf("https://", "http://")
+
+        override val children: List<Destination> by lazy {
+            listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
+        }
     }
 
     @Serializable
     @SerialName("home")
     public data object Home : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = NavGraph.rootDeepLinks.map { navDeepLink<Home>("${it}main") }
+        override val deepLinks: List<String> = listOf("main")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -53,14 +64,17 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.Home, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            HomeScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     @SerialName("map")
     public data object Map : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = NavGraph.rootDeepLinks.map { navDeepLink<Map>("${it}map") }
+        override val deepLinks: List<String> = listOf("map")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -71,14 +85,17 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.Map, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            MapScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     @SerialName("settings")
     public data object Settings : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = NavGraph.rootDeepLinks.map { navDeepLink<Settings>("${it}settings") }
+        override val deepLinks: List<String> = listOf("settings")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -89,14 +106,17 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.Settings, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            SettingsScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     @SerialName("about")
     public data object About : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = NavGraph.rootDeepLinks.map { navDeepLink<About>("${it}about") }
+        override val deepLinks: List<String> = listOf("about")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -107,20 +127,25 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.Info, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            AboutScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     public data object AuthGraph : Destination() {
 
-        public val nodeDeepLinks: List<String> = NavGraph.rootDeepLinks.map { "${it}auth/" }
+        override val deepLinks: List<String> = listOf("auth")
+
+        override val children: List<AbstractDestination> by lazy { listOf(Login, ForgotPassword, Profile) }
     }
 
     @Serializable
     @SerialName("login")
     public data object Login : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = AuthGraph.nodeDeepLinks.map { navDeepLink<Login>("${it}login") }
+        override val deepLinks: List<String> = listOf("login")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -131,6 +156,10 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.AutoMirrored.Filled.Login, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            LoginScreen(navigateTo, navigateBack)
     }
 
     @Serializable
@@ -139,16 +168,19 @@ public sealed class Destination : AbstractDestination() {
 
         public companion object : AbstractDestination() {
 
-            override val deepLinks: List<NavDeepLink> = AuthGraph.nodeDeepLinks.map { navDeepLink<ForgotPassword>("${it}forgotpassword") }
+            override val deepLinks: List<String> = listOf("forgotpassword")
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            ForgotPasswordScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     @SerialName("profile")
     public data object Profile : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = AuthGraph.nodeDeepLinks.map { navDeepLink<Profile>("${it}profile") }
+        override val deepLinks: List<String> = listOf("profile")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -159,20 +191,27 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.Person, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            ProfileScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     public data object WalletGraph : Destination() {
 
-        public val nodeDeepLinks: List<String> = NavGraph.rootDeepLinks.map { "${it}wallet/" }
+        override val deepLinks: List<String> = listOf("wallet")
+
+        override val children: List<AbstractDestination> by lazy { listOf(Balance, Crypto, Stock) }
     }
 
     @Serializable
     @SerialName("balance")
     public data object Balance : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = WalletGraph.nodeDeepLinks.map { navDeepLink<Balance>("${it}balance") }
+        override val enabled: Boolean = false
+
+        override val deepLinks: List<String> = listOf("balance")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -183,14 +222,19 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.AccountBalance, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            BalanceScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     @SerialName("crypto")
     public data object Crypto : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = WalletGraph.nodeDeepLinks.map { navDeepLink<Crypto>("${it}crypto") }
+        override val enabled: Boolean = false
+
+        override val deepLinks: List<String> = listOf("crypto")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -201,14 +245,19 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.EnhancedEncryption, label)
         }
+
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            CryptoScreen(navigateTo, navigateBack)
     }
 
     @Serializable
     @SerialName("stock")
     public data object Stock : Destination() {
 
-        override val deepLinks: List<NavDeepLink>
-            get() = WalletGraph.nodeDeepLinks.map { navDeepLink<Stock>("${it}stock") }
+        override val enabled: Boolean = false
+
+        override val deepLinks: List<String> = listOf("stock")
 
         @Composable
         override fun Icon(label: String, modifier: Modifier) {
@@ -219,12 +268,9 @@ public sealed class Destination : AbstractDestination() {
         override fun SelectedIcon(label: String, modifier: Modifier) {
             Icon(Icons.Filled.CurrencyExchange, label)
         }
-    }
 
-    public companion object {
-
-        public val destinations: List<Destination> by lazy {
-            listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
-        }
+        @Composable
+        override fun Screen(navigateTo: (AbstractDestination) -> Unit, navigateBack: () -> Unit): Unit =
+            StockScreen(navigateTo, navigateBack)
     }
 }

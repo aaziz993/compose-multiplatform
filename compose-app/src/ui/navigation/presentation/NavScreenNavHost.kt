@@ -1,6 +1,5 @@
 package ui.navigation.presentation
 
-import ui.about.AboutScreen
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -15,18 +14,16 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import clib.di.koinViewModel
+import clib.presentation.event.navigator.NavigationAction
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
-import clib.presentation.event.navigator.NavigationAction
-import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
+import ui.about.AboutScreen
 import ui.auth.login.presentation.LoginScreen
 import ui.auth.profile.presentation.ProfileScreen
 import ui.map.MapScreen
-import ui.home.HomeScreen
 import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.settings.SettingsScreen
 import ui.wallet.balance.BalanceScreen
@@ -79,97 +76,9 @@ public fun NavScreenNavHost(
         popExitTransition,
         sizeTransform,
     ) {
-        Destination.Home.composable { backStackEntry ->
-            val navViewModel =
+        Destination.destinations.forEach { destination ->
+            destination.item { backStackEntry ->
                 koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-            HomeScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                navViewModel.action(NavigationAction.NavigateBack)
-            }
-        }
-
-        Destination.Map.composable { backStackEntry ->
-            val navViewModel =
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-            MapScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                navViewModel.action(NavigationAction.NavigateBack)
-            }
-        }
-
-        Destination.Settings.composable { backStackEntry ->
-            val navViewModel =
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-            SettingsScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                navViewModel.action(NavigationAction.NavigateBack)
-            }
-        }
-
-        Destination.About.composable { backStackEntry ->
-            val navViewModel =
-                koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-            AboutScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                navViewModel.action(NavigationAction.NavigateBack)
-            }
-        }
-
-        navigation<Destination.AuthGraph>(Destination.Login) {
-            Destination.Login.composable { backStackEntry ->
-                val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-                LoginScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                    navViewModel.action(NavigationAction.NavigateBack)
-                }
-            }
-
-            Destination.ForgotPassword.composable { backStackEntry ->
-                val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-                ForgotPasswordScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                    navViewModel.action(NavigationAction.NavigateBack)
-                }
-            }
-
-            Destination.Profile.composable { backStackEntry ->
-                val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-                ProfileScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                    navViewModel.action(NavigationAction.NavigateBack)
-                }
-            }
-        }
-
-        navigation<Destination.WalletGraph>(Destination.Balance) {
-            Destination.Balance.composable { backStackEntry ->
-                val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-                BalanceScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                    navViewModel.action(NavigationAction.NavigateBack)
-                }
-            }
-
-            Destination.Crypto.composable { backStackEntry ->
-                val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-                CryptoScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                    navViewModel.action(NavigationAction.NavigateBack)
-                }
-            }
-
-            Destination.Stock.composable {  backStackEntry ->
-                val navViewModel =
-                    koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
-
-                StockScreen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
-                    navViewModel.action(NavigationAction.NavigateBack)
-                }
             }
         }
     }
