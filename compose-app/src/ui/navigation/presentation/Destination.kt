@@ -30,16 +30,21 @@ import androidx.navigation.navDeepLink
 import kotlin.reflect.KType
 import kotlinx.serialization.Serializable
 import clib.ui.presentation.components.navigation.model.NavigationItem
+import kotlinx.serialization.Transient
 import kotlin.collections.Map as MAP
 
 @Immutable
 @Serializable
 public sealed class Destination {
 
+    @Transient
     protected open val modifier: Modifier = Modifier
+    @Transient
     protected open val selectedModifier: Modifier = modifier
 
+    @Transient
     protected open val enabled: Boolean = true
+    @Transient
     protected open val alwaysShowLabel: Boolean = true
 
     @Composable
