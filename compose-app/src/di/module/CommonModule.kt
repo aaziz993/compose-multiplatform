@@ -6,7 +6,7 @@ import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 import clib.presentation.event.navigator.DefaultNavigator
 import clib.presentation.event.navigator.Navigator
-import presentation.navigation.presentation.Destination
+import navigation.presentation.Destination
 
 @Module
 @ComponentScan("presentation")
