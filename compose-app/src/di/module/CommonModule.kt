@@ -1,7 +1,7 @@
 package di.module
 
-import clib.presentation.event.navigator.DefaultNavigator
-import clib.presentation.event.navigator.Navigator
+import clib.presentation.components.navigation.DefaultNavigator
+import clib.presentation.components.navigation.Navigator
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module

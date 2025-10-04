@@ -1,4 +1,4 @@
-package clib.presentation.event.navigator
+package clib.presentation.components.navigation.viewmodel
 
 public sealed interface NavigationAction {
 

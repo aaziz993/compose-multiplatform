@@ -15,11 +15,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
+import clib.presentation.components.navigation.model.NavigationRoute
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
 @Composable
-public fun <Route : NavigationRoute<Route, *>, Dest : NavigationRoute<Route, Dest>> AdvancedNavHost(
+public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavHost(
     navController: NavHostController,
     route: NavigationRoute<Route, *>,
     startDestination: Dest,

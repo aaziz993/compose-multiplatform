@@ -1,7 +1,7 @@
 package ui.about
 
 import androidx.compose.runtime.Composable
-import clib.presentation.components.navigation.NavigationRoute
+import clib.presentation.components.navigation.model.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.About
 import ui.navigation.presentation.NavRoute

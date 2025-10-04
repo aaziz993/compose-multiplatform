@@ -1,4 +1,4 @@
-package clib.presentation.components.navigation
+package clib.presentation.components.navigation.model
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
@@ -22,12 +22,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import clib.presentation.components.navigation.model.NavigationItem
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
 @Immutable
-public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : NavigationRoute<Route, Dest>> {
+public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : Any> {
 
     public val label: String
         get() = this::class.simpleName!!
@@ -178,7 +177,7 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
         item(
             selected,
             {
-                navController.navigate(this) {
+                navController.navigate(this@NavigationRoute) {
                     // Pop up to the start destination of the graph to
                     // avoid building up a large stack of destinations
                     // on the back stack as users select items

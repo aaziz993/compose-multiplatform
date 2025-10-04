@@ -41,8 +41,8 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.topappbar.fabNestedScrollConnection
-import clib.presentation.event.navigator.NavigationAction
-import clib.presentation.event.navigator.Navigator
+import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.Navigator
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject

@@ -33,14 +33,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import clib.data.type.collections.toLaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
+import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
-import clib.presentation.event.navigator.Navigator
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import kotlinx.coroutines.launch
 
 @Composable
-public fun <Route : NavigationRoute<Route, *>, Dest : NavigationRoute<Route, Dest>> AdvancedNavigationSuiteScaffold(
+public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSuiteScaffold(
     route: NavigationRoute<Route, *>,
     navigationSuiteItem: NavigationSuiteScope.(NavigationRoute<Route, *>) -> Unit,
     navigator: Navigator<Route, Dest>,

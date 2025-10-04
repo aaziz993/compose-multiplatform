@@ -22,10 +22,11 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import clib.presentation.components.navigation.NavigationRoute
+import clib.presentation.components.navigation.model.NavigationRoute
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ui.about.AboutScreen
+import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
 import ui.auth.login.presentation.LoginScreen
 import ui.auth.profile.presentation.ProfileScreen
 import ui.home.HomeScreen
@@ -34,6 +35,8 @@ import ui.settings.SettingsScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
+
+public sealed interface Destination
 
 @Serializable
 public data object NavRoute : NavigationRoute<NavRoute, NavRoute>() {
@@ -163,19 +166,19 @@ public data object Login : NavigationRoute<NavRoute, Login>() {
         LoginScreen(route, navigateTo, navigateBack)
 }
 
-//public data class ForgotPassword(val username: String) {
-//
-//    @Serializable
-//    @SerialName("forgotpassword")
-//    public companion object : NavigationRoute<NavRoute, Companion>() {
-//
-//        override val deepLinks: List<String> = listOf("forgotpassword")
-//
-//        @Composable
-//        override fun Screen(route: Companion, navigateTo: (NavigationRoute<NavRoute, *>) -> Unit, navigateBack: () -> Unit): Unit =
-//            ForgotPasswordScreen(route, navigateTo, navigateBack)
-//    }
-//}
+public data class ForgotPassword(val username: String) {
+
+    @Serializable
+    @SerialName("forgotpassword")
+    public companion object : NavigationRoute<NavRoute, ForgotPassword>() {
+
+        override val deepLinks: List<String> = listOf("forgotpassword")
+
+        @Composable
+        override fun Screen(route: ForgotPassword, navigateTo: (NavigationRoute<NavRoute, *>) -> Unit, navigateBack: () -> Unit): Unit =
+            ForgotPasswordScreen(route, navigateTo, navigateBack)
+    }
+}
 
 @Serializable
 @SerialName("profile")

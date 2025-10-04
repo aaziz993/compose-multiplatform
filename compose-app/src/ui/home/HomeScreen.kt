@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.navigation.NavigationRoute
+import clib.presentation.components.navigation.model.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Home
 import ui.navigation.presentation.NavRoute
