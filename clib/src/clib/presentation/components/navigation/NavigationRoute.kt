@@ -4,6 +4,9 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -69,24 +72,33 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
     ): Unit = Unit
 
     context(navGraphBuilder: NavGraphBuilder)
-    private fun item(
-        typeMap: Map<KType, NavType<*>>,
-        deepLinks: List<String>,
+    public fun item(
+        typeMap: Map<KType, NavType<*>> = emptyMap(),
+        deepLinks: List<String> = emptyList(),
         enterTransition:
         (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+            {
+                fadeIn(animationSpec = tween(700))
+            },
         exitTransition:
         (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+            {
+                fadeOut(animationSpec = tween(700))
+            },
         popEnterTransition:
         (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+            enterTransition,
         popExitTransition:
         (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+            exitTransition,
         sizeTransform:
         (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
+            null,
         navigateTo: (NavBackStackEntry, route: NavigationRoute<Route, *>) -> Unit,
         navigateBack: (NavBackStackEntry) -> Unit
     ): Unit = with(navGraphBuilder) {

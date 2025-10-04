@@ -75,7 +75,7 @@ public fun NavScreen(
     AdvancedNavigationSuiteScaffold(
         NavRoute,
         { route -> route.item(navController, currentDestination) { it } },
-        koinInject<Navigator<Node>>(),
+        koinInject<Navigator<NavRoute, *>>(),
         Modifier.nestedScroll(fabNestedScrollConnection),
         navController = navController,
         onNavHostReady = onNavHostReady,
