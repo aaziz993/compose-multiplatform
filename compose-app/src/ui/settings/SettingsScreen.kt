@@ -1,17 +1,19 @@
 package ui.settings
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.NavRoute
+import ui.navigation.presentation.Settings
 
 @Composable
 public fun SettingsScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route: Settings,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewSettingsScreen(): Unit = SettingsScreen()
+public fun PreviewSettingsScreen(): Unit = SettingsScreen(Settings)

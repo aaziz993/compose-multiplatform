@@ -429,7 +429,7 @@ cohort-http = "2.4.1"
 ##Koin.
 koin = "4.1.1"
 koin-annotations = "2.1.0"
-
+kotzilla = "1.2.2"
 # Semantic version.
 semver = "3.0.0"
 
@@ -925,8 +925,8 @@ cohort-micrometer = { module = "com.sksamuel.cohort:cohort-micrometer", version.
 
 ##Dependency injection.
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android-compat = { module = "io.insert-koin:koin-android-compat", version.ref = "koin" }
 koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines", version.ref = "koin" }
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }
 koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
@@ -935,6 +935,9 @@ koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-view
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+# ai Performance Monitoring for Koin
+kotzilla-core = { module = "io.kotzilla:kotzilla-core", version.ref = "kotzilla" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
 
 ##Semantic version.
@@ -1333,6 +1336,7 @@ koin-kotlin-multiplatform = [
     "koin-core",
     #    "koin-core-coroutines",
     "koin-annotations",
+#    "kotzilla-core",
 ]
 koin-compose-multiplatform = [
     "koin-compose",

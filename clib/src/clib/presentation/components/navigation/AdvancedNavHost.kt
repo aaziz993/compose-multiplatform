@@ -15,17 +15,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import clib.presentation.components.navigation.model.AbstractDestination
-import clib.presentation.components.navigation.model.AbstractRoute
-import clib.presentation.components.navigation.model.NavigationNode
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
 @Composable
-public fun <T : NavigationNode<T>> AdvancedNavHost(
+public fun <Route : NavigationRoute<Route, *>, Dest : NavigationRoute<Route, Dest>> AdvancedNavHost(
     navController: NavHostController,
-    route: AbstractRoute<T>,
-    startDestination: AbstractDestination<T>,
+    route: NavigationRoute<Route, *>,
+    startDestination: Dest,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.TopStart,
     typeMap: Map<KType, NavType<*>> = emptyMap(),
@@ -53,7 +50,7 @@ public fun <T : NavigationNode<T>> AdvancedNavHost(
     (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
         null,
-    builder: NavGraphBuilder.(NavigationNode<T>) -> Unit
+    builder: NavGraphBuilder.(NavigationRoute<Route, *>) -> Unit
 ): Unit =
     NavHost(
         navController,

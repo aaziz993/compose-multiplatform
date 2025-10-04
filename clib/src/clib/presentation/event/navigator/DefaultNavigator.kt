@@ -4,11 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import clib.data.type.collections.toLaunchedEffect
-import clib.presentation.components.navigation.model.NavigationNode
+import clib.presentation.components.navigation.NavigationRoute
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-public data class DefaultNavigator<T : NavigationNode<T>>(override val startDestination: T) : Navigator<T> {
+public data class DefaultNavigator<
+    Route : NavigationRoute<Route, *>,
+    Dest : NavigationRoute<Route, Dest>
+    >(override val startDestination: Dest) : Navigator<Route, Dest> {
 
     private val navigationActions =
         MutableSharedFlow<NavigationAction>(replay = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
@@ -19,30 +22,32 @@ public data class DefaultNavigator<T : NavigationNode<T>>(override val startDest
 
     override fun navigate(route: String): Boolean = navigate(NavigationAction.Navigation.Navigate(route))
 
-    override fun navigate(route: T): Boolean = navigate(NavigationAction.TypeSafeNavigation.Navigate(route))
+    override fun navigate(route: NavigationRoute<Route, *>): Boolean = navigate(NavigationAction.TypeSafeNavigation.Navigate(route))
 
     override fun navigateBackTo(route: String, inclusive: Boolean, saveState: Boolean): Boolean =
         navigate(NavigationAction.Navigation.NavigateBackTo(route, inclusive, saveState))
 
-    override fun navigateBackTo(route: T, inclusive: Boolean, saveState: Boolean): Boolean =
+    override fun navigateBackTo(route: NavigationRoute<Route, *>, inclusive: Boolean, saveState: Boolean): Boolean =
         navigate(NavigationAction.TypeSafeNavigation.NavigateBackTo(route, inclusive, saveState))
 
     override fun navigateAndClear(route: String): Boolean =
         navigate(NavigationAction.Navigation.NavigateAndClearTop(route))
 
-    override fun navigateAndClear(route: T): Boolean =
+    override fun navigateAndClear(route: NavigationRoute<Route, *>): Boolean =
         navigate(NavigationAction.TypeSafeNavigation.NavigateAndClearTop(route))
 
     override fun navigateAndClearCurrent(route: String): Boolean =
         navigate(NavigationAction.Navigation.NavigateAndClearCurrent(route))
 
-    override fun navigateAndClearCurrent(route: T): Boolean =
+    override fun navigateAndClearCurrent(route: NavigationRoute<Route, *>): Boolean =
         navigate(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(route))
 
     @Composable
     override fun HandleAction(navController: NavHostController): Unit = navigationActions.toLaunchedEffect { action ->
         when (action) {
-            NavigationAction.NavigateBack -> navController.navigateUp()
+            NavigationAction.NavigateUp -> if (!navController.navigateUp()) navigate(startDestination)
+
+            NavigationAction.NavigateBack -> if (!navController.popBackStack()) navigate(startDestination)
 
             is NavigationAction.Navigation.Navigate -> navController.navigate(
                 action.route,

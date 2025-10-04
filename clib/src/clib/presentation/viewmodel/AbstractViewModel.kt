@@ -42,7 +42,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 
-public abstract class AbstractViewModel<T : Any>(protected val savedStateHandle: SavedStateHandle) : ViewModel(), KoinComponent {
+public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent {
+
+    protected abstract val savedStateHandle: SavedStateHandle
 
     public open fun exceptionTransform(exception: Throwable): ViewModelStateException = ViewModelStateException(exception)
 

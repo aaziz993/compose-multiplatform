@@ -1,17 +1,19 @@
 package ui.auth.forgotpassword.presentation
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.ForgotPassword
+import ui.navigation.presentation.NavRoute
 
 @Composable
 public fun ForgotPasswordScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route: ForgotPassword,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewForgotPasswordScreen(): Unit = ForgotPasswordScreen()
+public fun PreviewForgotPasswordScreen(): Unit = ForgotPasswordScreen(ForgotPassword(""))

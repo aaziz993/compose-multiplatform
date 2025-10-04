@@ -11,7 +11,9 @@ script:
             "javax.ws.rs.Path",
             "javax.enterprise.context.ApplicationScoped",
             "javax.persistence.Entity",
-            "org.openjdk.jmh.annotations.State",
             // apply to ensure your benchmark classes and methods are open.
+            "org.openjdk.jmh.annotations.State",
+            // apply to ensure your koin monitoring classes and methods are open.
+            "org.koin.core.annotation.Monitor",
             "data.type.annotation.AllOpen",
           )

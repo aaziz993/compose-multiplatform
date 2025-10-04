@@ -1,17 +1,19 @@
 package ui.map
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.Map
+import ui.navigation.presentation.NavRoute
 
 @Composable
 public fun MapScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route: Map,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewMapScreen(): Unit = MapScreen()
+public fun PreviewMapScreen(): Unit = MapScreen(Map)

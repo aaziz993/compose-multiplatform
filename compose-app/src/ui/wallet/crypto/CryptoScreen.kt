@@ -1,17 +1,19 @@
 package ui.wallet.crypto
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.Crypto
+import ui.navigation.presentation.NavRoute
 
 @Composable
 public fun CryptoScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route: Crypto,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewCryptoScreen(): Unit = CryptoScreen()
+public fun PreviewCryptoScreen(): Unit = CryptoScreen(Crypto)

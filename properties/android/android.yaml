@@ -19,6 +19,7 @@ script:
                 implementation(libs["androidx.room.runtime.android"])
                 implementation(libs["androidx.room.paging"])
                 implementation(libs.bundles("androidx.paging.runtime"))
+                implementation(libs["koin.android.compat"])
               }
             }
   - dependencies:

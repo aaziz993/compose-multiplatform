@@ -1,17 +1,19 @@
 package ui.auth.profile.presentation
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.NavRoute
+import ui.navigation.presentation.Profile
 
 @Composable
 public fun ProfileScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route: Profile,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewProfileScreen(): Unit = ProfileScreen()
+public fun PreviewProfileScreen(): Unit = ProfileScreen(Profile)

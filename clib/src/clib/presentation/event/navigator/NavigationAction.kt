@@ -3,9 +3,15 @@ package clib.presentation.event.navigator
 public sealed interface NavigationAction {
 
     /**
+     * Navigate Up
+     */
+    public data object NavigateUp : NavigationAction
+
+    /**
      * Navigate back
      */
     public data object NavigateBack : NavigationAction
+
 
     public sealed class Navigation : NavigationAction {
         public abstract val route: String

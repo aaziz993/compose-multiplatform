@@ -1,17 +1,19 @@
 package ui.wallet.balance
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.Balance
+import ui.navigation.presentation.NavRoute
 
 @Composable
 public fun BalanceScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route:Balance,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewBalanceScreen(): Unit = BalanceScreen()
+public fun PreviewBalanceScreen(): Unit = BalanceScreen(Balance)

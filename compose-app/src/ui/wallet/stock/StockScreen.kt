@@ -1,17 +1,19 @@
 package ui.wallet.stock
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.NavRoute
+import ui.navigation.presentation.Stock
 
 @Composable
 public fun StockScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route:Stock,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewStockScreen(): Unit = StockScreen()
+public fun PreviewStockScreen(): Unit = StockScreen(Stock)

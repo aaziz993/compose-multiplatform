@@ -1,17 +1,19 @@
 package ui.about
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Route
+import clib.presentation.components.navigation.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.About
+import ui.navigation.presentation.NavRoute
 
 @Composable
 public fun AboutScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    route: About,
+    navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }
 
 @Preview
 @Composable
-public fun PreviewAboutScreen(): Unit = AboutScreen()
+public fun PreviewAboutScreen(): Unit = AboutScreen(About)

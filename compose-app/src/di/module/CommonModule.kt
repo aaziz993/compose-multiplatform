@@ -7,7 +7,7 @@ import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 import ui.navigation.presentation.Home
-import ui.navigation.presentation.Node
+import ui.navigation.presentation.NavRoute
 
 @Module
 @ComponentScan("ui")
@@ -56,5 +56,5 @@ public class CommonModule {
 //    }
 
     @Single
-    public fun provideNavigator(): Navigator<Node> = DefaultNavigator(Home)
+    public fun provideNavigator(): Navigator<NavRoute, *> = DefaultNavigator(Home)
 }

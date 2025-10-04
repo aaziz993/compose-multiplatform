@@ -1,4 +1,4 @@
-package clib.presentation.components.navigation.model
+package clib.presentation.components.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
@@ -6,6 +6,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -16,47 +17,59 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import clib.presentation.event.navigator.NavigationAction
+import clib.presentation.components.navigation.model.NavigationItem
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
-public abstract class AbstractDestination<T : NavigationNode<T>> : NavigationNode<T> {
+@Immutable
+public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : NavigationRoute<Route, Dest>> {
 
     public val label: String
         get() = this::class.simpleName!!
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
 
-    protected open val modifier: Modifier = Modifier
+    public open val deepLinks: List<String> = emptyList()
+
+    protected open val modifier: Modifier = Modifier.Companion
     protected open val selectedModifier: Modifier = modifier
     protected open val enabled: Boolean = true
     protected open val alwaysShowLabel: Boolean = true
 
+    public open val composableChildren: List<NavigationRoute<Route, *>> = emptyList()
+    public open val navigationChildren: List<NavigationRoute<Route, *>>
+        get() = composableChildren
+
     @Composable
-    protected open fun Text(label: String, modifier: Modifier = Modifier): Unit =
+    protected open fun Text(label: String, modifier: Modifier = Modifier.Companion): Unit =
         androidx.compose.material3.Text(text = label)
 
     @Composable
-    protected open fun SelectedText(label: String, modifier: Modifier = Modifier): Unit =
+    protected open fun SelectedText(label: String, modifier: Modifier = Modifier.Companion): Unit =
         androidx.compose.material3.Text(text = label)
 
     @Composable
-    protected open fun Icon(label: String, modifier: Modifier = Modifier): Unit = Unit
+    protected open fun Icon(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
 
     @Composable
-    protected open fun SelectedIcon(label: String, modifier: Modifier = Modifier): Unit = Unit
+    protected open fun SelectedIcon(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
 
     @Composable
-    protected open fun Badge(label: String, modifier: Modifier = Modifier): Unit = Unit
+    protected open fun Badge(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
 
     @Composable
-    protected open fun SelectedBadge(label: String, modifier: Modifier = Modifier): Unit = Unit
+    protected open fun SelectedBadge(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
 
     @Composable
-    protected open fun Screen(route: T, navigateTo: (route: AbstractDestination<T>) -> Unit = {}, navigateBack: () -> Unit = {}): Unit = Unit
+    protected open fun Screen(
+        route: Dest,
+        navigateTo: (NavigationRoute<Route, *>) -> Unit,
+        navigateBack: () -> Unit
+    ): Unit = Unit
 
     context(navGraphBuilder: NavGraphBuilder)
-    override fun item(
+    private fun item(
         typeMap: Map<KType, NavType<*>>,
         deepLinks: List<String>,
         enterTransition:
@@ -74,14 +87,33 @@ public abstract class AbstractDestination<T : NavigationNode<T>> : NavigationNod
         sizeTransform:
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
-        navigateTo: (NavBackStackEntry, route: AbstractDestination<T>) -> Unit,
+        navigateTo: (NavBackStackEntry, route: NavigationRoute<Route, *>) -> Unit,
         navigateBack: (NavBackStackEntry) -> Unit
     ): Unit = with(navGraphBuilder) {
-        val deepDeepLinks = deepDeepLinks(deepLinks)
+        val concatenatedTypeMap = concatenateTypeMap(typeMap)
+        val concatenatedDeepLinks = concatenateDeepLinks(deepLinks)
+
+        if (composableChildren.isNotEmpty())
+            return@with navigation(this::class, composableChildren.first()) {
+                composableChildren.forEach { child ->
+                    child.item(
+                        concatenatedTypeMap,
+                        concatenatedDeepLinks,
+                        enterTransition,
+                        exitTransition,
+                        popEnterTransition,
+                        popExitTransition,
+                        sizeTransform,
+                        navigateTo,
+                        navigateBack,
+                    )
+                }
+            }
+
         composable(
             this::class,
-            typeMap + this@AbstractDestination.typeMap,
-            deepDeepLinks.map { basePath ->
+            concatenatedTypeMap,
+            concatenatedDeepLinks.map { basePath ->
                 navDeepLink(this::class, basePath) {}
             },
             enterTransition,
@@ -91,21 +123,32 @@ public abstract class AbstractDestination<T : NavigationNode<T>> : NavigationNod
             sizeTransform,
         ) { backStackEntry ->
             Screen(
-                backStackEntry.toRoute<T>(this::class),
+                backStackEntry.toRoute(this::class),
                 { route -> navigateTo(backStackEntry, route) },
             ) { navigateBack(backStackEntry) }
         }
     }
 
+    private fun concatenateTypeMap(typeMap: Map<KType, NavType<*>>) = typeMap + this.typeMap
+
+    private fun concatenateDeepLinks(deepLinks: List<String>) =
+        if (deepLinks.isEmpty()) this.deepLinks
+        else deepLinks.flatMap { basePath0 -> this.deepLinks.map { basePath1 -> "$basePath0/$basePath1" } }
+
     context(navigationSuiteScope: NavigationSuiteScope)
-    override fun item(
+    public fun item(
         navController: NavController,
         currentDestination: NavDestination?,
-        transform: NavigationNode<T>.(String) -> String
+        transform: NavigationRoute<Route, *>.(String) -> String
     ): Unit = with(navigationSuiteScope) {
+        if (navigationChildren.isNotEmpty())
+            return@with navigationChildren.forEach { child ->
+                child.item(navController, currentDestination, transform)
+            }
+
         val selected = isSelected(currentDestination)
 
-        val label = transform(this@AbstractDestination.label)
+        val label = transform(this@NavigationRoute.label)
 
         val navItem = NavigationItem(
             modifier,

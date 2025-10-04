@@ -32,8 +32,8 @@ public class CRUDViewModel<T : Any>(
     initialKey: Long? = null,
     remoteMediator: RemoteMediator<Long, T>? = null,
     firstItemOffset: Long = 0,
-    savedStateHandle: SavedStateHandle
-) : AbstractViewModel<CRUDAction<T>>(savedStateHandle) {
+    override val savedStateHandle: SavedStateHandle = SavedStateHandle()
+) : AbstractViewModel<CRUDAction<T>>() {
 
     public val pager: AbstractCRUDMutablePager<T>
         field = repository.viewModelMutablePager(
