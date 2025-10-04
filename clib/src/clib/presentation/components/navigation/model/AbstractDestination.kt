@@ -16,7 +16,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
-import clib.presentation.components.navigation.viewmodel.AbstractNavViewModel
+import androidx.navigation.toRoute
 import clib.presentation.event.navigator.NavigationAction
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
@@ -53,7 +53,7 @@ public abstract class AbstractDestination<T : NavigationNode<T>> : NavigationNod
     protected open fun SelectedBadge(label: String, modifier: Modifier = Modifier): Unit = Unit
 
     @Composable
-    protected open fun Screen(navigateTo: (route: AbstractDestination<T>) -> Unit = {}, navigateBack: () -> Unit = {}): Unit = Unit
+    protected open fun Screen(route: T, navigateTo: (route: AbstractDestination<T>) -> Unit = {}, navigateBack: () -> Unit = {}): Unit = Unit
 
     context(navGraphBuilder: NavGraphBuilder)
     override fun item(
@@ -74,7 +74,8 @@ public abstract class AbstractDestination<T : NavigationNode<T>> : NavigationNod
         sizeTransform:
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
-        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<T>
+        navigateTo: (NavBackStackEntry, route: AbstractDestination<T>) -> Unit,
+        navigateBack: (NavBackStackEntry) -> Unit
     ): Unit = with(navGraphBuilder) {
         val deepDeepLinks = deepDeepLinks(deepLinks)
         composable(
@@ -89,19 +90,10 @@ public abstract class AbstractDestination<T : NavigationNode<T>> : NavigationNod
             popExitTransition,
             sizeTransform,
         ) { backStackEntry ->
-            val navViewModel = viewModel(backStackEntry)
-
             Screen(
-                { destination ->
-                    navViewModel.action(
-                        NavigationAction.TypeSafeNavigation.Navigate(
-                            destination,
-                        ),
-                    )
-                },
-            ) {
-                navViewModel.action(NavigationAction.NavigateBack)
-            }
+                backStackEntry.toRoute<T>(this::class),
+                { route -> navigateTo(backStackEntry, route) },
+            ) { navigateBack(backStackEntry) }
         }
     }
 

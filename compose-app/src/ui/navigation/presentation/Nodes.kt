@@ -47,13 +47,11 @@ public sealed class Destination : Node, AbstractDestination<Node>()
 public sealed class Route : Node, AbstractRoute<Node>()
 
 @Serializable
-public data object RootRoute : Route() {
+public data object NavRoute : Route() {
 
     override val deepLinks: List<String> = listOf("https://", "http://")
 
-    override val composableChildren: List<Node> by lazy {
-        listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
-    }
+    override val composableChildren: List<Node> = listOf(Home, Map, Settings)
 }
 
 @Serializable
@@ -141,12 +139,13 @@ public data object About : Destination() {
 }
 
 @Serializable
-public data object AuthGraph : Route() {
+public data object AuthRoute : Route() {
 
     override val deepLinks: List<String> = listOf("auth")
 
-    override val composableChildren: List<Node> by lazy { listOf(Login, ForgotPassword, Profile) }
-    override val navigationChildren: List<Node> by lazy { listOf(Login, Profile) }
+    override val composableChildren: List<Node> = listOf(Login, ForgotPassword.ForgotPassword, Profile)
+
+    override val navigationChildren: List<Node> = composableChildren.filter { child -> child !is ForgotPassword.ForgotPassword }
 }
 
 @Serializable
@@ -206,7 +205,7 @@ public data object Profile : Destination() {
 }
 
 @Serializable
-public data object WalletGraph : Route() {
+public data object WalletRoute : Route() {
 
     override val deepLinks: List<String> = listOf("wallet")
 

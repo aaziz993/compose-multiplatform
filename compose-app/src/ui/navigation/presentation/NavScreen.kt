@@ -43,6 +43,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.di.koinViewModel
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.topappbar.fabNestedScrollConnection
@@ -52,15 +53,14 @@ import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
+import presentation.components.tooltipbox.AppTooltipBox
 import ui.navigation.presentation.viewmodel.NavViewModel
 
 @Suppress("ComposeModifierMissing")
 @Composable
 public fun NavScreen(
+    navViewModel: NavViewModel = koinViewModel<NavViewModel>(),
     navController: NavHostController = rememberNavController(),
-    navViewModel: NavViewModel = koinViewModel<NavViewModel>(
-        viewModelStoreOwner = navController.getBackStackEntry<RootRoute>(),
-    ),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val startDestination = Home
@@ -79,10 +79,8 @@ public fun NavScreen(
     }
 
     AdvancedNavigationSuiteScaffold(
-        RootRoute,
-        { route ->
-            route.item(navController, currentDestination) { it }
-        },
+        NavRoute,
+        { route -> route.item(navController, currentDestination) { it } },
         koinInject<Navigator<Node>>(),
         Modifier.nestedScroll(fabNestedScrollConnection),
         navController = navController,
@@ -92,15 +90,8 @@ public fun NavScreen(
                 title = { Text(title) },
                 navigationIcon = {
                     Row {
-                        if (adaptiveInfo.windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
-                            TooltipBox(
-                                positionProvider =
-                                    TooltipDefaults.rememberTooltipPositionProvider(
-                                        TooltipAnchorPosition.Above,
-                                    ),
-                                tooltip = { PlainTooltip { Text("Menu") } },
-                                state = rememberTooltipState(),
-                            ) {
+                        if (adaptiveInfo.windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
+                            AppTooltipBox("Menu") {
                                 IconButton(
                                     onClick = {
                                         isDrawerOpen = !isDrawerOpen
@@ -112,20 +103,13 @@ public fun NavScreen(
                                     )
                                 }
                             }
-                        }
+
 
                         if (isBackButtonVisible)
-                            TooltipBox(
-                                positionProvider =
-                                    TooltipDefaults.rememberTooltipPositionProvider(
-                                        TooltipAnchorPosition.Above,
-                                    ),
-                                tooltip = { PlainTooltip { Text("NavigateBack") } },
-                                state = rememberTooltipState(),
-                            ) {
+                            AppTooltipBox("Navigate back") {
                                 IconButton(
                                     onClick = {
-                                        navViewModel.action(NavigationAction.NavigateBack)
+//                                        navViewModel.action(NavigationAction.NavigateBack)
                                     },
                                 ) {
                                     Icon(
@@ -137,15 +121,17 @@ public fun NavScreen(
                     }
                 },
                 actions = {
-                    IconButton(
-                        onClick = {
-                            /* click action */
-                        },
-                    ) {
-                        Icon(
-                            imageVector = if (true) Icons.Filled.LightMode else Icons.Filled.DarkMode,
-                            contentDescription = "Share items",
-                        )
+                    AppTooltipBox("Switch theme") {
+                        IconButton(
+                            onClick = {
+                                /* click action */
+                            },
+                        ) {
+                            Icon(
+                                imageVector = if (true) Icons.Filled.LightMode else Icons.Filled.DarkMode,
+                                contentDescription = "Switch theme",
+                            )
+                        }
                     }
                 },
                 scrollBehavior = scrollBehavior,
@@ -157,14 +143,7 @@ public fun NavScreen(
                 enter = slideInVertically(initialOffsetY = { it * 2 }),
                 exit = slideOutVertically(targetOffsetY = { it * 2 }),
             ) {
-                TooltipBox(
-                    positionProvider =
-                        TooltipDefaults.rememberTooltipPositionProvider(
-                            TooltipAnchorPosition.Above,
-                        ),
-                    tooltip = { PlainTooltip { Text("Scroll to top") } },
-                    state = rememberTooltipState(),
-                ) {
+                AppTooltipBox("Scroll to top") {
                     ExtendedFloatingActionButton(
                         onClick = {
                             scrollBehavior
@@ -192,12 +171,15 @@ public fun NavScreen(
     ) { innerPadding ->
         AdvancedNavHost(
             navController,
-            RootRoute,
+            NavRoute,
             startDestination,
             Modifier.padding(innerPadding),
         ) { route ->
-
-            route.item { backStackEntry -> navViewModel }
+            route.item(
+                navigateTo = { _, route ->
+                    navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(route))
+                },
+            ) { navViewModel.action(NavigationAction.NavigateBack) }
         }
     }
 }

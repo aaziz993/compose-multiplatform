@@ -20,7 +20,8 @@ public abstract class AbstractRoute<T : NavigationNode<T>> : NavigationNode<T> {
 
     public abstract val composableChildren: List<T>
 
-    public open val navigationChildren: List<T> = composableChildren
+    public open val navigationChildren: List<T>
+        get() = composableChildren
 
     context(navGraphBuilder: NavGraphBuilder)
     override fun item(

@@ -52,7 +52,8 @@ public interface NavigationNode<T : NavigationNode<T>> {
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
             null,
-        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<T>
+        navigateTo: (NavBackStackEntry, route: AbstractDestination<T>) -> Unit = { _, _ -> },
+        navigateBack: (NavBackStackEntry) -> Unit = {}
     )
 
     context(navigationSuiteScope: NavigationSuiteScope)
