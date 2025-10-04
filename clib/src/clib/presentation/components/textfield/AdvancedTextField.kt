@@ -42,7 +42,7 @@ import compose.icons.evaicons.Outline
 import compose.icons.evaicons.fill.Close
 import compose.icons.evaicons.outline.Eye
 import compose.icons.evaicons.outline.EyeOff2
-import clib.presentation.timePickerStateToTemporal
+import clib.presentation.state.timePickerStateToTemporal
 import klib.data.type.primitives.now
 import klib.data.type.primitives.parseOrNull
 import klib.data.type.primitives.toEpochMilliseconds
@@ -51,7 +51,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
-import clib.presentation.color
+import clib.presentation.theme.model.color
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 
 @OptIn(ExperimentalMaterial3Api::class)

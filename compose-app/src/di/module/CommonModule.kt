@@ -6,7 +6,7 @@ import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 import clib.presentation.event.navigator.DefaultNavigator
 import clib.presentation.event.navigator.Navigator
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.Route
 
 @Module
 @ComponentScan("ui")
@@ -55,5 +55,5 @@ public class CommonModule {
 //    }
 
     @Single
-    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(Destination.Home)
+    public fun provideNavigator(): Navigator<Route> = DefaultNavigator(Route.Home)
 }

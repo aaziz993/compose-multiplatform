@@ -48,7 +48,7 @@ public fun WeatherGlassOverlay(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = currentWeather.backgroundColors.map(clib.presentation.Color::toColor),
+                        colors = currentWeather.backgroundColors.map(clib.presentation.theme.model.Color::toColor),
                     ),
                 ),
         )

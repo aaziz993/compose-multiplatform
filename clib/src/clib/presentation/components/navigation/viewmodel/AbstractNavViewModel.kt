@@ -1,12 +1,12 @@
 package clib.presentation.components.navigation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import clib.presentation.components.navigation.model.AbstractDestination
+import clib.presentation.components.navigation.model.AbstractRoute
 import clib.presentation.event.navigator.NavigationAction
 import clib.presentation.event.navigator.Navigator
 import clib.presentation.viewmodel.AbstractViewModel
 
-public abstract class AbstractNavViewModel<T : AbstractDestination>(
+public abstract class AbstractNavViewModel<T : AbstractRoute>(
     private val navigator: Navigator<T>,
     savedStateHandle: SavedStateHandle
 ) : AbstractViewModel<NavigationAction>(savedStateHandle) {

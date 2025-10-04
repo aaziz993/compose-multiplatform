@@ -1,4 +1,4 @@
-package ui.navigation.presentation
+package clib.presentation.components.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
@@ -11,32 +11,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.navigation
-import clib.di.koinViewModel
-import clib.presentation.event.navigator.NavigationAction
+import clib.presentation.components.navigation.model.AbstractRoute
 import kotlin.jvm.JvmSuppressWildcards
-import kotlin.reflect.KClass
 import kotlin.reflect.KType
-import ui.about.AboutScreen
-import ui.auth.login.presentation.LoginScreen
-import ui.auth.profile.presentation.ProfileScreen
-import ui.map.MapScreen
-import ui.navigation.presentation.viewmodel.NavViewModel
-import ui.settings.SettingsScreen
-import ui.wallet.balance.BalanceScreen
-import ui.wallet.crypto.CryptoScreen
-import ui.wallet.stock.StockScreen
 
 @Composable
-public fun NavScreenNavHost(
+public fun AdvancedNavHost(
     navController: NavHostController,
-    startDestination: Destination,
+    route: AbstractRoute,
+    startDestination: AbstractRoute,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.TopStart,
-    route: KClass<*>? = null,
     typeMap: Map<KType, NavType<*>> = emptyMap(),
     enterTransition:
     (@JvmSuppressWildcards
@@ -62,13 +51,14 @@ public fun NavScreenNavHost(
     (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
         null,
+    builder: NavGraphBuilder.(AbstractRoute) -> Unit
 ): Unit =
     NavHost(
         navController,
         startDestination,
         modifier,
         contentAlignment,
-        route,
+        route::class,
         typeMap,
         enterTransition,
         exitTransition,
@@ -76,7 +66,7 @@ public fun NavScreenNavHost(
         popExitTransition,
         sizeTransform,
     ) {
-        Destination.NavGraph.items { backStackEntry ->
-            koinViewModel<Destination.NavGraph, NavViewModel>(navController, backStackEntry)
+        route.composableChildren.forEach { composableChild ->
+            builder(composableChild)
         }
     }

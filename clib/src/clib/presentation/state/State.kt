@@ -1,4 +1,4 @@
-package clib.presentation
+package clib.presentation.state
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SnapshotMutationPolicy

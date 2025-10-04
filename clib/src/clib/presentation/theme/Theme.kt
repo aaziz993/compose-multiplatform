@@ -1,0 +1,17 @@
+package clib.presentation.theme
+
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+
+public val lightColorScheme: androidx.compose.material3.ColorScheme = lightColorScheme()
+
+public val darkColorScheme: androidx.compose.material3.ColorScheme = darkColorScheme()
+
+@Composable
+public fun systemTheme(
+    lightTheme: androidx.compose.material3.ColorScheme = lightColorScheme,
+    darkTheme: androidx.compose.material3.ColorScheme = darkColorScheme
+): ColorScheme = if (isSystemInDarkTheme()) darkTheme else lightTheme

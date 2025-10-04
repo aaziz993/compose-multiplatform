@@ -29,14 +29,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import clib.data.type.collections.toLaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
+import clib.presentation.components.navigation.model.AbstractRoute
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.navigator.Navigator
@@ -44,9 +41,10 @@ import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import kotlinx.coroutines.launch
 
 @Composable
-public fun <T : Any> AdvancedNavigationSuiteScaffold(
-    navigationSuiteItems: NavigationSuiteScope.() -> Unit,
-    navigator: Navigator<T>,
+public fun AdvancedNavigationSuiteScaffold(
+    route: AbstractRoute,
+    navigationSuiteItem: NavigationSuiteScope.(AbstractRoute) -> Unit,
+    navigator: Navigator<out AbstractRoute>,
     modifier: Modifier = Modifier.fillMaxSize(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
@@ -66,7 +64,9 @@ public fun <T : Any> AdvancedNavigationSuiteScaffold(
     val adaptiveInfo = currentWindowAdaptiveInfo()
 
     NavigationSuiteScaffold(
-        navigationSuiteItems,
+        {
+            route.navigationChildren.forEach { child -> navigationSuiteItem(child) }
+        },
         Modifier.fillMaxSize(),
         layoutType(adaptiveInfo),
         navigationSuiteColors,

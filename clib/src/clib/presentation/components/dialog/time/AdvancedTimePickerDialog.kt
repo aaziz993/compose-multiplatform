@@ -37,8 +37,8 @@ import compose.icons.EvaIcons
 import compose.icons.evaicons.Outline
 import compose.icons.evaicons.outline.Checkmark
 import compose.icons.evaicons.outline.Close
-import clib.presentation.localDate
-import clib.presentation.localTime
+import clib.presentation.state.localDate
+import clib.presentation.state.localTime
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 

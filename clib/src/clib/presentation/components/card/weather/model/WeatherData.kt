@@ -1,6 +1,6 @@
 package clib.presentation.components.card.weather.model
 
-import clib.presentation.Color
+import clib.presentation.theme.model.Color
 import kotlinx.serialization.Serializable
 
 @Serializable

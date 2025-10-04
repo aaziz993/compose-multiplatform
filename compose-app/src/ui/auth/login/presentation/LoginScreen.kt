@@ -1,12 +1,12 @@
 package ui.auth.login.presentation
 
 import androidx.compose.runtime.Composable
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.Route
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 public fun LoginScreen(
-    navigateTo: (route: Destination) -> Unit = {},
+    navigateTo: (route: Route) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }

@@ -11,7 +11,7 @@ import clib.presentation.theme.LocalAppDensity
 import clib.presentation.theme.customAppDensity
 import clib.presentation.theme.darkColorScheme
 import clib.presentation.theme.lightColorScheme
-import clib.presentation.theme.systemColorScheme
+import clib.presentation.theme.systemTheme
 
 @Composable
 public fun AppEnvironment(
@@ -19,7 +19,7 @@ public fun AppEnvironment(
     lightTheme: ColorScheme = lightColorScheme,
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(systemColorScheme(lightTheme, darkTheme)) {
+    MaterialTheme(systemTheme(lightTheme, darkTheme)) {
         CompositionLocalProvider(
             LocalAppLocale provides customAppLocale,
             LocalAppDensity provides customAppDensity,

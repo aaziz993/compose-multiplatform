@@ -40,7 +40,7 @@ import compose.icons.lineawesomeicons.LessThanEqualSolid
 import compose.icons.lineawesomeicons.LessThanSolid
 import compose.icons.lineawesomeicons.MinusSolid
 import compose.icons.lineawesomeicons.NotEqualSolid
-import clib.presentation.timePickerStateToTemporal
+import clib.presentation.state.timePickerStateToTemporal
 import klib.data.type.primitives.now
 import klib.data.type.primitives.toEpochMilliseconds
 import klib.data.type.validator.Validator
@@ -49,7 +49,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import org.jetbrains.compose.resources.painterResource
-import clib.presentation.color
+import clib.presentation.theme.model.color
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 
 @OptIn(ExperimentalMaterial3Api::class)

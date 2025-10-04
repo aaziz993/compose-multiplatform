@@ -1,4 +1,4 @@
-package clib.presentation
+package clib.presentation.theme.model
 
 import androidx.compose.material3.ColorScheme
 import kotlinx.serialization.Serializable
@@ -41,6 +41,18 @@ public data class ColorScheme(
     val surfaceContainerHighest: Color,
     val surfaceContainerLow: Color,
     val surfaceContainerLowest: Color,
+    val primaryFixed: Color,
+    val primaryFixedDim: Color,
+    val onPrimaryFixed: Color,
+    val onPrimaryFixedVariant: Color,
+    val secondaryFixed: Color,
+    val secondaryFixedDim: Color,
+    val onSecondaryFixed: Color,
+    val onSecondaryFixedVariant: Color,
+    val tertiaryFixed: Color,
+    val tertiaryFixedDim: Color,
+    val onTertiaryFixed: Color,
+    val onTertiaryFixedVariant: Color,
 ) {
 
     public fun toColorScheme(): ColorScheme = ColorScheme(
@@ -80,5 +92,18 @@ public data class ColorScheme(
         surfaceContainerHighest.toColor(),
         surfaceContainerLow.toColor(),
         surfaceContainerLowest.toColor(),
+        primaryFixed.toColor(),
+        primaryFixedDim.toColor(),
+        onPrimaryFixed.toColor(),
+        onPrimaryFixedVariant.toColor(),
+        secondaryFixed.toColor(),
+        secondaryFixedDim.toColor(),
+        onSecondaryFixed.toColor(),
+        onSecondaryFixedVariant.toColor(),
+        tertiaryFixed.toColor(),
+        tertiaryFixedDim.toColor(),
+        onTertiaryFixed.toColor(),
+        onTertiaryFixedVariant.toColor(),
     )
 }
+
