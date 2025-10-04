@@ -27,15 +27,20 @@ public abstract class NavigationRoute : NavigationEndpoint() {
         typeMap: Map<KType, NavType<*>>,
         deepLinks: List<String>,
         enterTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
         exitTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
         popEnterTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
         popExitTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
         sizeTransform:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out NavigationRoute>
     ): Unit = with(navGraphBuilder) {
         val deepDeepLinks = deepDeepLinks(deepLinks)

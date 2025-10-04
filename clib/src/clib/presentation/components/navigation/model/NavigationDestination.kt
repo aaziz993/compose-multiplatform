@@ -4,6 +4,9 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -72,15 +75,20 @@ public abstract class NavigationDestination : NavigationEndpoint() {
         typeMap: Map<KType, NavType<*>>,
         deepLinks: List<String>,
         enterTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
         exitTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
         popEnterTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
         popExitTransition:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
         sizeTransform:
-        (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)?,
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out NavigationRoute>
     ): Unit = with(navGraphBuilder) {
         val deepDeepLinks = deepDeepLinks(deepLinks)

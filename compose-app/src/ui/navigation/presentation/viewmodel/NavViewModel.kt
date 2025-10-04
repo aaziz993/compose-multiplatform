@@ -1,13 +1,13 @@
 package ui.navigation.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import clib.presentation.components.navigation.model.NavigationEndpoint
 import clib.presentation.components.navigation.viewmodel.AbstractNavViewModel
-import org.koin.android.annotation.KoinViewModel
 import clib.presentation.event.navigator.Navigator
-import ui.navigation.presentation.Route
+import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 public class NavViewModel(
-    navigator: Navigator<Route>,
+    navigator: Navigator<NavigationEndpoint>,
     savedStateHandle: SavedStateHandle
-) : AbstractNavViewModel<Route>(navigator, savedStateHandle)
+) : AbstractNavViewModel<NavigationEndpoint>(navigator, savedStateHandle)
