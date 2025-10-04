@@ -59,8 +59,15 @@ public fun NavScreen(
 ) {
     val startDestination = Home
     var isDrawerOpen by remember { mutableStateOf(true) }
-
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    val isFabButton by remember {
+        derivedStateOf { scrollBehavior.state.heightOffset < 0f }
+    }
+
+    navController.addOnDestinationChangedListener { _, _, _ ->
+        scrollBehavior.state.heightOffset = 0f
+    }
 
     AdvancedNavigationSuiteScaffold(
         NavRoute,
@@ -125,7 +132,25 @@ public fun NavScreen(
             )
         },
         floatingActionButton = {
-
+            AnimatedVisibility(
+                visible = isFabButton,
+                enter = slideInVertically(initialOffsetY = { it * 2 }),
+                exit = slideOutVertically(targetOffsetY = { it * 2 }),
+            ) {
+                AppTooltipBox("Scroll to top") {
+                    ExtendedFloatingActionButton(
+                        onClick = {
+                            scrollBehavior.state.heightOffset = 0f
+                        },
+                        shape = CircleShape,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowUpward,
+                            contentDescription = "Scroll to top",
+                        )
+                    }
+                }
+            }
         },
         layoutType = { adaptiveInfo ->
             with(adaptiveInfo) {

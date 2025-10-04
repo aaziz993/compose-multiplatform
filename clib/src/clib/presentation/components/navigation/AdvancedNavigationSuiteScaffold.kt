@@ -142,7 +142,7 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
         )
 
     @Composable
-    fun Scaffold(modifier: Modifier, content: @Composable (PaddingValues) -> Unit = {}) =
+    fun Scaffold(content: @Composable (PaddingValues) -> Unit = {}) =
         Scaffold(
             modifier,
             { topBar(adaptiveInfo, title, isBackButton) },
@@ -157,7 +157,7 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
         )
 
     if (topBarOnTop)
-        Scaffold(modifier) { innerPadding ->
+        Scaffold { innerPadding ->
             NavigationSuiteScaffold(Modifier.padding(innerPadding).fillMaxSize()) {
                 Snackbar()
                 AlertDialog()
@@ -165,7 +165,7 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
             }
         }
     else NavigationSuiteScaffold(Modifier) {
-        Scaffold(Modifier.then(modifier).fillMaxSize()) { innerPadding ->
+        Scaffold { innerPadding ->
             Snackbar()
             AlertDialog()
             Box(Modifier.padding(innerPadding).fillMaxSize()) {
