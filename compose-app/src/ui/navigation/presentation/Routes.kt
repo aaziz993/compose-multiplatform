@@ -26,7 +26,6 @@ import clib.presentation.components.navigation.NavigationRoute
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ui.about.AboutScreen
-import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
 import ui.auth.login.presentation.LoginScreen
 import ui.auth.profile.presentation.ProfileScreen
 import ui.home.HomeScreen

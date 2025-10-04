@@ -106,7 +106,7 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
         val concatenatedDeepLinks = concatenateDeepLinks(deepLinks)
 
         if (composableChildren.isNotEmpty())
-            return@with navigation(this::class, composableChildren.first()) {
+            return@with navigation(this@NavigationRoute::class, composableChildren.first()) {
                 composableChildren.forEach { child ->
                     child.item(
                         concatenatedTypeMap,
@@ -123,10 +123,10 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
             }
 
         composable(
-            this::class,
+            this@NavigationRoute::class,
             concatenatedTypeMap,
             concatenatedDeepLinks.map { basePath ->
-                navDeepLink(this::class, basePath) {}
+                navDeepLink(this@NavigationRoute::class, basePath) {}
             },
             enterTransition,
             exitTransition,
@@ -135,7 +135,7 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
             sizeTransform,
         ) { backStackEntry ->
             Screen(
-                backStackEntry.toRoute(this::class),
+                backStackEntry.toRoute(this@NavigationRoute::class),
                 { route -> navigateTo(backStackEntry, route) },
             ) { navigateBack(backStackEntry) }
         }
