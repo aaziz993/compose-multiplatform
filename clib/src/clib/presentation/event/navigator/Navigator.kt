@@ -3,9 +3,11 @@ package clib.presentation.event.navigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.navigation.NavHostController
+import clib.presentation.components.navigation.model.NavigationEndpoint
 
 @Immutable
-public interface Navigator<T : Any> {
+public interface Navigator<T : NavigationEndpoint> {
+
     public val startDestination: T
 
     public fun navigate(navAction: NavigationAction): Boolean

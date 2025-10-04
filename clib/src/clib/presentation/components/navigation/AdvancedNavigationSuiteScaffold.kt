@@ -33,7 +33,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import clib.data.type.collections.toLaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
-import clib.presentation.components.navigation.model.AbstractRoute
+import clib.presentation.components.navigation.model.NavigationEndpoint
+import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.navigator.Navigator
@@ -42,9 +43,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 public fun AdvancedNavigationSuiteScaffold(
-    route: AbstractRoute,
-    navigationSuiteItem: NavigationSuiteScope.(AbstractRoute) -> Unit,
-    navigator: Navigator<out AbstractRoute>,
+    route: NavigationRoute,
+    navigationSuiteItem: NavigationSuiteScope.(NavigationEndpoint) -> Unit,
+    navigator: Navigator<out NavigationEndpoint>,
     modifier: Modifier = Modifier.fillMaxSize(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},

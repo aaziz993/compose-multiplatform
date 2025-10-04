@@ -43,9 +43,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
-import clib.di.koinViewModel
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
+import clib.presentation.components.navigation.model.NavigationEndpoint
 import clib.presentation.components.topappbar.fabNestedScrollConnection
 import clib.presentation.event.navigator.NavigationAction
 import clib.presentation.event.navigator.Navigator
@@ -59,10 +59,12 @@ import ui.navigation.presentation.viewmodel.NavViewModel
 @Composable
 public fun NavScreen(
     navController: NavHostController = rememberNavController(),
-    navViewModel: NavViewModel = koinViewModel<NavViewModel>(),
+    navViewModel: NavViewModel = koinViewModel<NavViewModel>(
+        viewModelStoreOwner = navController.getBackStackEntry<NavGraph>(),
+    ),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
-    val startDestination: Route = Route.Home
+    val startDestination = Home
     var title: String by remember { mutableStateOf(startDestination.label) }
     var isDrawerOpen by remember { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -78,11 +80,11 @@ public fun NavScreen(
     }
 
     AdvancedNavigationSuiteScaffold(
-        Route.NavGraph,
+        NavGraph,
         { route ->
             route.item(navController, currentDestination) { it }
         },
-        koinInject<Navigator<Route>>(),
+        koinInject<Navigator<NavigationEndpoint>>(),
         Modifier.nestedScroll(fabNestedScrollConnection),
         navController = navController,
         onNavHostReady = onNavHostReady,
@@ -191,7 +193,7 @@ public fun NavScreen(
     ) { innerPadding ->
         AdvancedNavHost(
             navController,
-            Route.NavGraph,
+            NavGraph,
             startDestination,
             Modifier.padding(innerPadding),
         ) { route ->

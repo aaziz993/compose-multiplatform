@@ -1,12 +1,13 @@
 package di.module
 
+import clib.presentation.components.navigation.model.NavigationEndpoint
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 import clib.presentation.event.navigator.DefaultNavigator
 import clib.presentation.event.navigator.Navigator
-import ui.navigation.presentation.Route
+import ui.navigation.presentation.Home
 
 @Module
 @ComponentScan("ui")
@@ -55,5 +56,5 @@ public class CommonModule {
 //    }
 
     @Single
-    public fun provideNavigator(): Navigator<Route> = DefaultNavigator(Route.Home)
+    public fun provideNavigator(): Navigator<NavigationEndpoint> = DefaultNavigator(Home)
 }

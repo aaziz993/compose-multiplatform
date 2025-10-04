@@ -22,7 +22,9 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import clib.presentation.components.navigation.model.AbstractRoute
+import clib.presentation.components.navigation.model.NavigationDestination
+import clib.presentation.components.navigation.model.NavigationRoute
+import clib.presentation.components.navigation.model.NavigationEndpoint
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ui.about.AboutScreen
@@ -37,241 +39,237 @@ import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
 @Serializable
-public sealed class Route : AbstractRoute() {
+public data object NavGraph : NavigationRoute() {
 
-    @Serializable
-    public data object NavGraph : Route() {
+    override val deepLinks: List<String> = listOf("https://", "http://")
 
-        override val deepLinks: List<String> = listOf("https://", "http://")
+    override val composableChildren: List<NavigationEndpoint> by lazy {
+        listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
+    }
+}
 
-        override val composableChildren: List<Route> by lazy {
-            listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
-        }
+@Serializable
+@SerialName("home")
+public data object Home : NavigationDestination() {
+
+    override val deepLinks: List<String> = listOf("main")
+
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.Home, label)
     }
 
-    @Serializable
-    @SerialName("home")
-    public data object Home : Route() {
-
-        override val deepLinks: List<String> = listOf("main")
-
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.Home, label)
-        }
-
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.Home, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            HomeScreen(navigateTo, navigateBack)
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.Home, label)
     }
 
-    @Serializable
-    @SerialName("map")
-    public data object Map : Route() {
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        HomeScreen(navigateTo, navigateBack)
+}
 
-        override val deepLinks: List<String> = listOf("map")
+@Serializable
+@SerialName("map")
+public data object Map : NavigationDestination() {
 
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.Map, label)
-        }
+    override val deepLinks: List<String> = listOf("map")
 
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.Map, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            MapScreen(navigateTo, navigateBack)
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.Map, label)
     }
 
-    @Serializable
-    @SerialName("settings")
-    public data object Settings : Route() {
-
-        override val deepLinks: List<String> = listOf("settings")
-
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.Settings, label)
-        }
-
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.Settings, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            SettingsScreen(navigateTo, navigateBack)
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.Map, label)
     }
 
-    @Serializable
-    @SerialName("about")
-    public data object About : Route() {
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        MapScreen(navigateTo, navigateBack)
+}
 
-        override val deepLinks: List<String> = listOf("about")
+@Serializable
+@SerialName("settings")
+public data object Settings : NavigationDestination() {
 
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.Info, label)
-        }
+    override val deepLinks: List<String> = listOf("settings")
 
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.Info, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            AboutScreen(navigateTo, navigateBack)
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.Settings, label)
     }
 
-    @Serializable
-    public data object AuthGraph : Route() {
-
-        override val deepLinks: List<String> = listOf("auth")
-
-        override val composableChildren: List<AbstractRoute> by lazy { listOf(Login, ForgotPassword, Profile) }
-        override val navigationChildren: List<AbstractRoute> by lazy { listOf(Login, Profile) }
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.Settings, label)
     }
 
-    @Serializable
-    @SerialName("login")
-    public data object Login : Route() {
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        SettingsScreen(navigateTo, navigateBack)
+}
 
-        override val deepLinks: List<String> = listOf("login")
+@Serializable
+@SerialName("about")
+public data object About : NavigationDestination() {
 
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.AutoMirrored.Outlined.Login, label)
-        }
+    override val deepLinks: List<String> = listOf("about")
 
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.AutoMirrored.Filled.Login, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            LoginScreen(navigateTo, navigateBack)
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.Info, label)
     }
 
-    @Serializable
-    @SerialName("forgotpassword")
-    public data class ForgotPassword(val username: String) : Route() {
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.Info, label)
+    }
 
-        public companion object : AbstractRoute() {
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        AboutScreen(navigateTo, navigateBack)
+}
 
-            override val deepLinks: List<String> = listOf("forgotpassword")
-        }
+@Serializable
+public data object AuthGraph : NavigationRoute() {
+
+    override val deepLinks: List<String> = listOf("auth")
+
+    override val composableChildren: List<NavigationEndpoint> by lazy { listOf(Login, ForgotPassword, Profile) }
+    override val navigationChildren: List<NavigationEndpoint> by lazy { listOf(Login, Profile) }
+}
+
+@Serializable
+@SerialName("login")
+public data object Login : NavigationDestination() {
+
+    override val deepLinks: List<String> = listOf("login")
+
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.AutoMirrored.Outlined.Login, label)
+    }
+
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.AutoMirrored.Filled.Login, label)
+    }
+
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        LoginScreen(navigateTo, navigateBack)
+}
+
+@Serializable
+@SerialName("forgotpassword")
+public data class ForgotPassword(val username: String) {
+
+    public companion object ForgotPassword : NavigationDestination() {
+
+        override val deepLinks: List<String> = listOf("forgotpassword")
 
         @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
             ForgotPasswordScreen(navigateTo, navigateBack)
     }
+}
 
-    @Serializable
-    @SerialName("profile")
-    public data object Profile : Route() {
+@Serializable
+@SerialName("profile")
+public data object Profile : NavigationDestination() {
 
-        override val deepLinks: List<String> = listOf("profile")
+    override val deepLinks: List<String> = listOf("profile")
 
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.Person, label)
-        }
-
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.Person, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            ProfileScreen(navigateTo, navigateBack)
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.Person, label)
     }
 
-    @Serializable
-    public data object WalletGraph : Route() {
-
-        override val deepLinks: List<String> = listOf("wallet")
-
-        override val composableChildren: List<AbstractRoute> by lazy { listOf(Balance, Crypto, Stock) }
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.Person, label)
     }
 
-    @Serializable
-    @SerialName("balance")
-    public data object Balance : Route() {
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        ProfileScreen(navigateTo, navigateBack)
+}
 
-        override val enabled: Boolean = false
+@Serializable
+public data object WalletGraph : NavigationRoute() {
 
-        override val deepLinks: List<String> = listOf("balance")
+    override val deepLinks: List<String> = listOf("wallet")
 
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.AccountBalance, label)
-        }
+    override val composableChildren: List<NavigationEndpoint> by lazy { listOf(Balance, Crypto, Stock) }
+}
 
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.AccountBalance, label)
-        }
+@Serializable
+@SerialName("balance")
+public data object Balance : NavigationDestination() {
 
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            BalanceScreen(navigateTo, navigateBack)
+    override val enabled: Boolean = false
+
+    override val deepLinks: List<String> = listOf("balance")
+
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.AccountBalance, label)
     }
 
-    @Serializable
-    @SerialName("crypto")
-    public data object Crypto : Route() {
-
-        override val enabled: Boolean = false
-
-        override val deepLinks: List<String> = listOf("crypto")
-
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.EnhancedEncryption, label)
-        }
-
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.EnhancedEncryption, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            CryptoScreen(navigateTo, navigateBack)
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.AccountBalance, label)
     }
 
-    @Serializable
-    @SerialName("stock")
-    public data object Stock : Route() {
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        BalanceScreen(navigateTo, navigateBack)
+}
 
-        override val enabled: Boolean = false
+@Serializable
+@SerialName("crypto")
+public data object Crypto : NavigationDestination() {
 
-        override val deepLinks: List<String> = listOf("stock")
+    override val enabled: Boolean = false
 
-        @Composable
-        override fun Icon(label: String, modifier: Modifier) {
-            Icon(Icons.Outlined.CurrencyExchange, label)
-        }
+    override val deepLinks: List<String> = listOf("crypto")
 
-        @Composable
-        override fun SelectedIcon(label: String, modifier: Modifier) {
-            Icon(Icons.Filled.CurrencyExchange, label)
-        }
-
-        @Composable
-        override fun Screen(navigateTo: (AbstractRoute) -> Unit, navigateBack: () -> Unit): Unit =
-            StockScreen(navigateTo, navigateBack)
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.EnhancedEncryption, label)
     }
+
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.EnhancedEncryption, label)
+    }
+
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        CryptoScreen(navigateTo, navigateBack)
+}
+
+@Serializable
+@SerialName("stock")
+public data object Stock : NavigationDestination() {
+
+    override val enabled: Boolean = false
+
+    override val deepLinks: List<String> = listOf("stock")
+
+    @Composable
+    override fun Icon(label: String, modifier: Modifier) {
+        Icon(Icons.Outlined.CurrencyExchange, label)
+    }
+
+    @Composable
+    override fun SelectedIcon(label: String, modifier: Modifier) {
+        Icon(Icons.Filled.CurrencyExchange, label)
+    }
+
+    @Composable
+    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        StockScreen(navigateTo, navigateBack)
 }
