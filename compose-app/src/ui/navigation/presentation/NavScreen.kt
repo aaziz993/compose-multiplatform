@@ -40,9 +40,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
-import clib.presentation.components.topappbar.fabNestedScrollConnection
-import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.navigation.Navigator
+import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.fabNestedScrollConnection
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -58,33 +58,23 @@ public fun NavScreen(
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val startDestination = Home
-    var title: String by remember { mutableStateOf(startDestination.label) }
     var isDrawerOpen by remember { mutableStateOf(true) }
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    val isBackButtonVisible by remember(navBackStackEntry) {
-        derivedStateOf { navController.previousBackStackEntry != null }
-    }
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val fabNestedScrollConnection = scrollBehavior.fabNestedScrollConnection()
 
-    // Dynamically set title on navigation.
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
-    }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     AdvancedNavigationSuiteScaffold(
         NavRoute,
-        { route ->
+        startDestination,
+        { currentDestination, route ->
             route.item(navController, currentDestination, { label -> label.uppercaseFirstChar() }) { destination ->
                 navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
             }
         },
         koinInject<Navigator<NavRoute, *>>(),
-        Modifier.nestedScroll(fabNestedScrollConnection),
+        Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         navController = navController,
         onNavHostReady = onNavHostReady,
-        topBar = { adaptiveInfo ->
+        topBar = { adaptiveInfo, title, isBackButton ->
             TopAppBar(
                 title = { Text(title) },
                 navigationIcon = {
@@ -104,7 +94,7 @@ public fun NavScreen(
                             }
 
 
-                        if (isBackButtonVisible)
+                        if (isBackButton)
                             AppTooltipBox("Navigate back") {
                                 IconButton(
                                     onClick = { navViewModel.action(NavigationAction.NavigateBack) },
@@ -135,25 +125,7 @@ public fun NavScreen(
             )
         },
         floatingActionButton = {
-            AnimatedVisibility(
-                visible = fabNestedScrollConnection.isFabVisible,
-                enter = slideInVertically(initialOffsetY = { it * 2 }),
-                exit = slideOutVertically(targetOffsetY = { it * 2 }),
-            ) {
-                AppTooltipBox("Scroll to top") {
-                    ExtendedFloatingActionButton(
-                        onClick = {
-                            scrollBehavior
-                        },
-                        shape = CircleShape,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowUpward,
-                            contentDescription = "Scroll to top",
-                        )
-                    }
-                }
-            }
+
         },
         layoutType = { adaptiveInfo ->
             with(adaptiveInfo) {
@@ -165,12 +137,11 @@ public fun NavScreen(
                 )
             }
         },
-    ) { innerPadding ->
+    ) {
         AdvancedNavHost(
             navController,
             NavRoute,
             startDestination,
-            Modifier.padding(innerPadding),
         ) { route ->
             route.item(
                 navigateTo = { _, destination ->

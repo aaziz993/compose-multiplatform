@@ -7,13 +7,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 
-public fun NestedScrollConnection.asFabNestedScrollConnection(threshold: Int = 1): FabNestedScrollConnection =
-    FabNestedScrollConnection(threshold, this)
+public fun fabNestedScrollConnection(threshold: Int = 1): FabNestedScrollConnection =
+    FabNestedScrollConnection(threshold)
 
-public class FabNestedScrollConnection(
-    private val threshold: Int,
-    private val scrollConnection: NestedScrollConnection
-) : NestedScrollConnection by scrollConnection {
+public class FabNestedScrollConnection(private val threshold: Int) : NestedScrollConnection {
 
     public var isFabVisible: Boolean by mutableStateOf(true)
         private set

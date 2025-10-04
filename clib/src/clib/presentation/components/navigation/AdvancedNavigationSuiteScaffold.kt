@@ -1,8 +1,10 @@
 package clib.presentation.components.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -21,6 +23,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +32,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import clib.data.type.collections.toLaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
@@ -37,17 +42,20 @@ import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
+import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlinx.coroutines.launch
 
 @Composable
 public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSuiteScaffold(
     route: NavigationRoute<Route, *>,
-    navigationSuiteItem: NavigationSuiteScope.(NavigationRoute<Route, *>) -> Unit,
+    startDestination: NavigationRoute<Route, *>,
+    navigationSuiteRoute: NavigationSuiteScope.(currentDestination: NavDestination?, route: NavigationRoute<Route, *>) -> Unit,
     navigator: Navigator<Route, Dest>,
     modifier: Modifier = Modifier.fillMaxSize(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
-    topBar: @Composable (WindowAdaptiveInfo) -> Unit = {},
+    topBarOnTop: Boolean = true,
+    topBar: @Composable (WindowAdaptiveInfo, title: String, isBackButton: Boolean) -> Unit = { _, _, _ -> },
     bottomBar: @Composable (WindowAdaptiveInfo) -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
@@ -58,23 +66,29 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
     layoutType: @Composable (WindowAdaptiveInfo) -> NavigationSuiteType = { adaptiveInfo ->
         NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
     },
-    content: @Composable (innerPadding: PaddingValues) -> Unit
+    content: @Composable () -> Unit
 ) {
-    val adaptiveInfo = currentWindowAdaptiveInfo()
 
-    NavigationSuiteScaffold(
-        {
-            route.navigationChildren.forEach { child -> navigationSuiteItem(child) }
-        },
-        Modifier.fillMaxSize(),
-        layoutType(adaptiveInfo),
-        navigationSuiteColors,
-        containerColor,
-        contentColor,
-    ) {
-        // Global Snackbar by GlobalSnackbarEventController
-        val snackbarHostState = remember { SnackbarHostState() }
-        val scope = rememberCoroutineScope()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val isBackButton by remember(navBackStackEntry) {
+        derivedStateOf { navController.previousBackStackEntry != null }
+    }
+
+    var title: String by remember { mutableStateOf(startDestination.label) }
+
+    // Dynamically set title on navigation.
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
+    }
+
+    val scope = rememberCoroutineScope()
+
+    // Global Snackbar by GlobalSnackbarEventController
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    @Composable
+    fun Snackbar() =
         GlobalSnackbarEventController.events.toLaunchedEffect(
             snackbarHostState,
         ) { event ->
@@ -92,9 +106,46 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
             }
         }
 
+    // Global AlertDialog by GlobalAlertEventController
+    var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
+
+    @Composable
+    fun AlertDialog() {
+        GlobalAlertEventController.events.toLaunchedEffect { event ->
+            alertDialogState = event
+        }
+
+        alertDialogState?.let {
+            AlertDialog(
+                it.message,
+                isError = it.isError,
+                onConfirm = it.action,
+                onCancel = { scope.launch { GlobalAlertEventController.sendEvent(null) } },
+            )
+        }
+    }
+
+    val adaptiveInfo = currentWindowAdaptiveInfo()
+
+    @Composable
+    fun NavigationSuiteScaffold(modifier: Modifier, content: @Composable () -> Unit = {}) =
+        NavigationSuiteScaffold(
+            {
+                route.navigationChildren.forEach { child -> navigationSuiteRoute(currentDestination, child) }
+            },
+            modifier,
+            layoutType(adaptiveInfo),
+            navigationSuiteColors,
+            containerColor,
+            contentColor,
+            content,
+        )
+
+    @Composable
+    fun Scaffold(modifier: Modifier, content: @Composable (PaddingValues) -> Unit = {}) =
         Scaffold(
             modifier,
-            { topBar(adaptiveInfo) },
+            { topBar(adaptiveInfo, title, isBackButton) },
             { bottomBar(adaptiveInfo) },
             snackbarHost = { SnackbarHost(snackbarHostState) },
             floatingActionButton,
@@ -102,27 +153,28 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
             containerColor,
             contentColor,
             contentWindowInsets,
-        ) { innerPadding ->
-            // Global AlertDialog by GlobalAlertEventController
-            var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
-            GlobalAlertEventController.events.toLaunchedEffect { event ->
-                alertDialogState = event
+            content,
+        )
+
+    if (topBarOnTop)
+        Scaffold(modifier) { innerPadding ->
+            NavigationSuiteScaffold(Modifier.padding(innerPadding).fillMaxSize()) {
+                Snackbar()
+                AlertDialog()
+                content()
             }
-
-            alertDialogState?.let {
-                AlertDialog(
-                    it.message,
-                    isError = it.isError,
-                    onConfirm = it.action,
-                    onCancel = { scope.launch { GlobalAlertEventController.sendEvent(null) } },
-                )
+        }
+    else NavigationSuiteScaffold(Modifier) {
+        Scaffold(Modifier.then(modifier).fillMaxSize()) { innerPadding ->
+            Snackbar()
+            AlertDialog()
+            Box(Modifier.padding(innerPadding).fillMaxSize()) {
+                content()
             }
-
-            navigator.HandleAction(navController)
-
-            content(innerPadding)
         }
     }
+
+    navigator.HandleAction(navController)
 
     LaunchedEffect(navController) {
         onNavHostReady(navController)
