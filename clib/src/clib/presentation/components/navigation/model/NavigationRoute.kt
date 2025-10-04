@@ -7,6 +7,8 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -22,46 +24,39 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import clib.presentation.components.model.item.Item
+import clib.presentation.components.model.item.SelectableItem
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
+import kotlinx.serialization.serializer
 
 @Immutable
 public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : Any> {
 
     public val label: String
-        get() = this::class.simpleName!!
-    public open val typeMap: Map<KType, NavType<*>> = emptyMap()
+        get() = this::class.serializer().descriptor.serialName
 
+    public open val typeMap: Map<KType, NavType<*>> = emptyMap()
     public open val deepLinks: List<String> = emptyList()
+    protected open val enabled: Boolean = true
+    protected open val alwaysShowLabel: Boolean = true
 
     protected open val modifier: Modifier = Modifier.Companion
     protected open val selectedModifier: Modifier = modifier
-    protected open val enabled: Boolean = true
-    protected open val alwaysShowLabel: Boolean = true
+    protected open val text: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
+        androidx.compose.material3.Text(label, modifier)
+    }
+    protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
+        androidx.compose.material3.Text(label, modifier)
+    }
+    protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+    protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+    protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+    protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
 
     public open val composableChildren: List<NavigationRoute<Route, *>> = emptyList()
     public open val navigationChildren: List<NavigationRoute<Route, *>>
         get() = composableChildren
-
-    @Composable
-    protected open fun Text(label: String, modifier: Modifier = Modifier.Companion): Unit =
-        androidx.compose.material3.Text(text = label)
-
-    @Composable
-    protected open fun SelectedText(label: String, modifier: Modifier = Modifier.Companion): Unit =
-        androidx.compose.material3.Text(text = label)
-
-    @Composable
-    protected open fun Icon(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
-
-    @Composable
-    protected open fun SelectedIcon(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
-
-    @Composable
-    protected open fun Badge(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
-
-    @Composable
-    protected open fun SelectedBadge(label: String, modifier: Modifier = Modifier.Companion): Unit = Unit
 
     @Composable
     protected open fun Screen(
@@ -150,57 +145,46 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
     public fun item(
         navController: NavController,
         currentDestination: NavDestination?,
-        transform: NavigationRoute<Route, *>.(String) -> String
+        transform: NavigationRoute<Route, *>.(String) -> String,
+        navigateTo: (NavigationRoute<Route, *>) -> Unit
     ): Unit = with(navigationSuiteScope) {
         if (navigationChildren.isNotEmpty())
             return@with navigationChildren.forEach { child ->
-                child.item(navController, currentDestination, transform)
+                child.item(navController, currentDestination, transform, navigateTo)
             }
 
         val selected = isSelected(currentDestination)
 
         val label = transform(this@NavigationRoute.label)
 
-        val navItem = NavigationItem(
+        val selectedItem = if (selected)
+            Item(
+                selectedModifier,
+                { selectedText(label, it) },
+                { selectedIcon(label, it) },
+                { selectedBadge(label, it) },
+            )
+        else Item(
             modifier,
-            selectedModifier,
-            enabled,
-            alwaysShowLabel,
-            { modifier -> Text(label, modifier) },
-            { SelectedText(label, modifier) },
-            { modifier -> Icon(label, modifier) },
-            { modifier -> SelectedIcon(label, modifier) },
-            { modifier -> Badge(label, modifier) },
-            { modifier -> SelectedBadge(label, modifier) },
+            { text(label, it) },
+            { icon(label, it) },
+            { badge(label, it) },
         )
 
         item(
             selected,
+            { navigateTo(this@NavigationRoute) },
+            { selectedItem.icon?.invoke(Modifier) },
+            selectedItem.modifier,
+            enabled,
             {
-                navController.navigate(this@NavigationRoute) {
-                    // Pop up to the start destination of the graph to
-                    // avoid building up a large stack of destinations
-                    // on the back stack as users select items
-                    popUpTo(navController.graph.startDestinationRoute!!) {
-                        saveState = true
-                    }
-
-                    // Avoid multiple copies of the same destination when
-                    // re-selecting the same item
-                    launchSingleTop = true
-                    // Restore state when re-selecting a previously selected item
-                    restoreState = true
-                }
+                selectedItem.text?.invoke(Modifier)
             },
-            { navItem.Icon(selected = selected) },
-            navItem.modifier(selected),
-            navItem.enabled,
-            { navItem.Text(selected = selected) },
-            navItem.alwaysShowLabel,
-            { navItem.Badge(selected = selected) },
+            alwaysShowLabel,
+            { selectedItem.badge?.invoke(Modifier) },
         )
     }
 
     private fun isSelected(currentDestination: NavDestination?): Boolean =
-        currentDestination?.hierarchy?.any { it.hasRoute(this::class) } == true
+        currentDestination?.hierarchy?.any { destination -> destination.hasRoute(this::class) } == true
 }

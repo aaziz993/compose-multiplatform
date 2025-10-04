@@ -19,6 +19,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Volcano
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,14 +37,20 @@ import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
-public sealed interface Destination
-
 @Serializable
 public data object NavRoute : NavigationRoute<NavRoute, NavRoute>() {
 
     override val deepLinks: List<String> = listOf("https://", "http://")
 
-    override val composableChildren: List<NavigationRoute<NavRoute, *>> = listOf(Home, Map, Settings, About, AuthRoute, WalletRoute)
+    override val composableChildren: List<NavigationRoute<NavRoute, *>> =
+        listOf(
+            Home,
+            Map,
+            Settings,
+            About,
+            AuthRoute,
+//            WalletRoute,
+        )
 }
 
 @Serializable
@@ -52,14 +59,12 @@ public data object Home : NavigationRoute<NavRoute, Home>() {
 
     override val deepLinks: List<String> = listOf("main")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.Home, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.Home, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.Home, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.Home, label, modifier)
     }
 
     @Composable
@@ -78,14 +83,12 @@ public data object Map : NavigationRoute<NavRoute, Map>() {
 
     override val deepLinks: List<String> = listOf("map")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.Map, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.Map, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.Map, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.Map, label, modifier)
     }
 
     @Composable
@@ -99,14 +102,12 @@ public data object Settings : NavigationRoute<NavRoute, Settings>() {
 
     override val deepLinks: List<String> = listOf("settings")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.Settings, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.Settings, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.Settings, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.Settings, label, modifier)
     }
 
     @Composable
@@ -120,14 +121,12 @@ public data object About : NavigationRoute<NavRoute, About>() {
 
     override val deepLinks: List<String> = listOf("about")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.Info, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.Info, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.Info, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.Info, label, modifier)
     }
 
     @Composable
@@ -142,7 +141,7 @@ public data object AuthRoute : NavigationRoute<NavRoute, AuthRoute>() {
 
     override val composableChildren: List<NavigationRoute<NavRoute, *>> = listOf(Login, Profile)
 
-//    override val navigationChildren: List<NavigationRoute<NavRoute, *>> = composableChildren.filterNot { child -> child == ForgotPassword.Companion }
+    override val navigationChildren: List<NavigationRoute<NavRoute, *>> = composableChildren.filterNot { child -> child == ForgotPassword.Companion }
 }
 
 @Serializable
@@ -151,14 +150,12 @@ public data object Login : NavigationRoute<NavRoute, Login>() {
 
     override val deepLinks: List<String> = listOf("login")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.AutoMirrored.Outlined.Login, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.AutoMirrored.Outlined.Login, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.AutoMirrored.Filled.Login, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.AutoMirrored.Filled.Login, label, modifier)
     }
 
     @Composable
@@ -186,14 +183,12 @@ public data object Profile : NavigationRoute<NavRoute, Profile>() {
 
     override val deepLinks: List<String> = listOf("profile")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.Person, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.Person, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.Person, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.Person, label, modifier)
     }
 
     @Composable
@@ -213,18 +208,14 @@ public data object WalletRoute : NavigationRoute<NavRoute, WalletRoute>() {
 @SerialName("balance")
 public data object Balance : NavigationRoute<NavRoute, Balance>() {
 
-    override val enabled: Boolean = false
-
     override val deepLinks: List<String> = listOf("balance")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.AccountBalance, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.AccountBalance, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.AccountBalance, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.AccountBalance, label, modifier)
     }
 
     @Composable
@@ -236,18 +227,14 @@ public data object Balance : NavigationRoute<NavRoute, Balance>() {
 @SerialName("crypto")
 public data object Crypto : NavigationRoute<NavRoute, Crypto>() {
 
-    override val enabled: Boolean = false
-
     override val deepLinks: List<String> = listOf("crypto")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.EnhancedEncryption, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.EnhancedEncryption, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.EnhancedEncryption, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.EnhancedEncryption, label, modifier)
     }
 
     @Composable
@@ -259,18 +246,14 @@ public data object Crypto : NavigationRoute<NavRoute, Crypto>() {
 @SerialName("stock")
 public data object Stock : NavigationRoute<NavRoute, Stock>() {
 
-    override val enabled: Boolean = false
-
     override val deepLinks: List<String> = listOf("stock")
 
-    @Composable
-    override fun Icon(label: String, modifier: Modifier) {
-        Icon(Icons.Outlined.CurrencyExchange, label)
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.CurrencyExchange, label, modifier)
     }
 
-    @Composable
-    override fun SelectedIcon(label: String, modifier: Modifier) {
-        Icon(Icons.Filled.CurrencyExchange, label)
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.CurrencyExchange, label, modifier)
     }
 
     @Composable

@@ -1,5 +1,8 @@
 package clib.presentation.components.navigation.viewmodel
 
+import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
+
 public sealed interface NavigationAction {
 
     /**
@@ -12,14 +15,23 @@ public sealed interface NavigationAction {
      */
     public data object NavigateBack : NavigationAction
 
-
     public sealed class Navigation : NavigationAction {
+
         public abstract val route: String
 
         /**
          * Navigate to route
          */
-        public data class Navigate(override val route: String) : Navigation()
+        public data class Navigate(
+            override val route: String,
+            val block: NavOptionsBuilder.(NavHostController) -> Unit = { navController ->
+                // Avoid multiple copies of the same destination when
+                // re-selecting the same item
+                launchSingleTop = true
+                // Restore state when re-selecting a previously selected item
+                restoreState = true
+            }
+        ) : Navigation()
 
         /**
          * Navigate back to specific route inclusive or exclusive
@@ -42,12 +54,22 @@ public sealed interface NavigationAction {
     }
 
     public sealed class TypeSafeNavigation<out T> : NavigationAction {
+
         public abstract val route: T
 
         /**
          * Navigate to route
          */
-        public data class Navigate<out T : Any>(override val route: T) : TypeSafeNavigation<T>()
+        public data class Navigate<out T : Any>(
+            override val route: T,
+            val block: NavOptionsBuilder.(NavHostController) -> Unit = { navController ->
+                // Avoid multiple copies of the same destination when
+                // re-selecting the same item
+                launchSingleTop = true
+                // Restore state when re-selecting a previously selected item
+                restoreState = true
+            }
+        ) : TypeSafeNavigation<T>()
 
         /**
          * Navigate back to specific route inclusive or exclusive

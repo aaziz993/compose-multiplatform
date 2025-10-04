@@ -49,13 +49,11 @@ public data class DefaultNavigator<Route : NavigationRoute<Route, *>, Dest : Any
 
             is NavigationAction.Navigation.Navigate -> navController.navigate(
                 action.route,
-                navigateNavOptionsBuilder(navController),
-            )
+            ) { action.block(this, navController) }
 
             is NavigationAction.TypeSafeNavigation.Navigate<*> -> navController.navigate(
                 action.route,
-                navigateNavOptionsBuilder(navController),
-            )
+            ) { action.block(this, navController) }
 
             is NavigationAction.Navigation.NavigateBackTo -> navController.navigateBackTo(
                 action.route,
@@ -89,20 +87,6 @@ public data class DefaultNavigator<Route : NavigationRoute<Route, *>, Dest : Any
     }
 
     public companion object {
-
-        private fun navigateNavOptionsBuilder(navController: NavHostController): NavOptionsBuilder.() -> Unit = {
-            // Pop up to the start destination of the graph to
-            // avoid building up a large stack of destinations
-            // on the back stack as users select items
-            popUpTo(navController.graph.startDestinationRoute!!) {
-                saveState = true
-            }
-            // Avoid multiple copies of the same destination when
-            // re-selecting the same item
-            launchSingleTop = true
-            // Restore state when re-selecting a previously selected item
-            restoreState = true
-        }
 
         private fun navigateAndClearCurrentNavOptionsBuilder(navController: NavHostController): NavOptionsBuilder.() -> Unit =
             {

@@ -68,13 +68,18 @@ public fun NavScreen(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val fabNestedScrollConnection = scrollBehavior.fabNestedScrollConnection()
 
-    navController.addOnDestinationChangedListener { controller, destination, args ->
+    // Dynamically set title on navigation.
+    navController.addOnDestinationChangedListener { _, destination, _ ->
         title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
     }
 
     AdvancedNavigationSuiteScaffold(
         NavRoute,
-        { route -> route.item(navController, currentDestination) { it } },
+        { route ->
+            route.item(navController, currentDestination, { label -> label.uppercaseFirstChar() }) { destination ->
+                navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
+            }
+        },
         koinInject<Navigator<NavRoute, *>>(),
         Modifier.nestedScroll(fabNestedScrollConnection),
         navController = navController,
@@ -168,8 +173,8 @@ public fun NavScreen(
             Modifier.padding(innerPadding),
         ) { route ->
             route.item(
-                navigateTo = { _, route ->
-                    navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(route))
+                navigateTo = { _, destination ->
+                    navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
                 },
             ) { navViewModel.action(NavigationAction.NavigateBack) }
         }
