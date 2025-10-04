@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import clib.data.type.collections.toLaunchedEffect
+import clib.presentation.components.navigation.model.NavigationNode
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-public data class DefaultNavigator<T : Any>(override val startDestination: T) : Navigator<T> {
+public data class DefaultNavigator<T : NavigationNode<T>>(override val startDestination: T) : Navigator<T> {
 
     private val navigationActions =
         MutableSharedFlow<NavigationAction>(replay = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)

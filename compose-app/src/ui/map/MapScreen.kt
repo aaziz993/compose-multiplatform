@@ -3,10 +3,11 @@ package ui.map
 import androidx.compose.runtime.Composable
 import ui.navigation.presentation.Route
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import ui.navigation.presentation.Destination
 
 @Composable
 public fun MapScreen(
-    navigateTo: (route: Route) -> Unit = {},
+    navigateTo: (route: Destination) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
 }

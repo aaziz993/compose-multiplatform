@@ -13,8 +13,6 @@ import androidx.compose.runtime.Immutable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import clib.presentation.components.navigation.viewmodel.AbstractNavViewModel
@@ -22,15 +20,12 @@ import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
 @Immutable
-public abstract class NavigationEndpoint {
+public interface NavigationNode<T : NavigationNode<T>> {
 
-    public open val deepLinks: List<String> = emptyList()
-
-    protected fun NavigationEndpoint.isSelected(currentDestination: NavDestination?) =
-        currentDestination?.hierarchy?.any { it.hasRoute(this::class) } == true
+    public val deepLinks: List<String>
 
     context(navGraphBuilder: NavGraphBuilder)
-    public abstract fun item(
+    public fun item(
         typeMap: Map<KType, NavType<*>> = emptyMap(),
         deepLinks: List<String> = emptyList(),
         enterTransition:
@@ -57,17 +52,17 @@ public abstract class NavigationEndpoint {
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
             null,
-        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out NavigationRoute>
+        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<T>
     )
 
     context(navigationSuiteScope: NavigationSuiteScope)
-    public abstract fun item(
+    public fun item(
         navController: NavController,
         currentDestination: NavDestination?,
-        transform: NavigationEndpoint.(label: String) -> String = { it }
+        transform: NavigationNode<T>.(label: String) -> String = { it }
     )
 
-    protected fun deepDeepLinks(deepLinks: List<String>): List<String> =
+    public fun deepDeepLinks(deepLinks: List<String>): List<String> =
         if (deepLinks.isEmpty()) this.deepLinks
         else deepLinks.flatMap { basePath0 -> this.deepLinks.map { basePath1 -> "$basePath0/$basePath1" } }
 }

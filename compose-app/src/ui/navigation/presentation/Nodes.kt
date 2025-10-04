@@ -22,9 +22,9 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import clib.presentation.components.navigation.model.NavigationDestination
-import clib.presentation.components.navigation.model.NavigationRoute
-import clib.presentation.components.navigation.model.NavigationEndpoint
+import clib.presentation.components.navigation.model.AbstractDestination
+import clib.presentation.components.navigation.model.AbstractRoute
+import clib.presentation.components.navigation.model.NavigationNode
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ui.about.AboutScreen
@@ -38,19 +38,27 @@ import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
+public interface Node : NavigationNode<Node>
+
 @Serializable
-public data object NavGraph : NavigationRoute() {
+public sealed class Destination : Node, AbstractDestination<Node>()
+
+@Serializable
+public sealed class Route : Node, AbstractRoute<Node>()
+
+@Serializable
+public data object RootRoute : Route() {
 
     override val deepLinks: List<String> = listOf("https://", "http://")
 
-    override val composableChildren: List<NavigationEndpoint> by lazy {
+    override val composableChildren: List<Node> by lazy {
         listOf(Home, Map, Settings, About, Login, Profile, Balance, Crypto, Stock)
     }
 }
 
 @Serializable
 @SerialName("home")
-public data object Home : NavigationDestination() {
+public data object Home : Destination() {
 
     override val deepLinks: List<String> = listOf("main")
 
@@ -65,13 +73,13 @@ public data object Home : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         HomeScreen(navigateTo, navigateBack)
 }
 
 @Serializable
 @SerialName("map")
-public data object Map : NavigationDestination() {
+public data object Map : Destination() {
 
     override val deepLinks: List<String> = listOf("map")
 
@@ -86,13 +94,13 @@ public data object Map : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         MapScreen(navigateTo, navigateBack)
 }
 
 @Serializable
 @SerialName("settings")
-public data object Settings : NavigationDestination() {
+public data object Settings : Destination() {
 
     override val deepLinks: List<String> = listOf("settings")
 
@@ -107,13 +115,13 @@ public data object Settings : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         SettingsScreen(navigateTo, navigateBack)
 }
 
 @Serializable
 @SerialName("about")
-public data object About : NavigationDestination() {
+public data object About : Destination() {
 
     override val deepLinks: List<String> = listOf("about")
 
@@ -128,22 +136,22 @@ public data object About : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         AboutScreen(navigateTo, navigateBack)
 }
 
 @Serializable
-public data object AuthGraph : NavigationRoute() {
+public data object AuthGraph : Route() {
 
     override val deepLinks: List<String> = listOf("auth")
 
-    override val composableChildren: List<NavigationEndpoint> by lazy { listOf(Login, ForgotPassword, Profile) }
-    override val navigationChildren: List<NavigationEndpoint> by lazy { listOf(Login, Profile) }
+    override val composableChildren: List<Node> by lazy { listOf(Login, ForgotPassword, Profile) }
+    override val navigationChildren: List<Node> by lazy { listOf(Login, Profile) }
 }
 
 @Serializable
 @SerialName("login")
-public data object Login : NavigationDestination() {
+public data object Login : Destination() {
 
     override val deepLinks: List<String> = listOf("login")
 
@@ -158,7 +166,7 @@ public data object Login : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         LoginScreen(navigateTo, navigateBack)
 }
 
@@ -166,19 +174,19 @@ public data object Login : NavigationDestination() {
 @SerialName("forgotpassword")
 public data class ForgotPassword(val username: String) {
 
-    public companion object ForgotPassword : NavigationDestination() {
+    public companion object ForgotPassword : Destination() {
 
         override val deepLinks: List<String> = listOf("forgotpassword")
 
         @Composable
-        override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+        override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
             ForgotPasswordScreen(navigateTo, navigateBack)
     }
 }
 
 @Serializable
 @SerialName("profile")
-public data object Profile : NavigationDestination() {
+public data object Profile : Destination() {
 
     override val deepLinks: List<String> = listOf("profile")
 
@@ -193,21 +201,21 @@ public data object Profile : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         ProfileScreen(navigateTo, navigateBack)
 }
 
 @Serializable
-public data object WalletGraph : NavigationRoute() {
+public data object WalletGraph : Route() {
 
     override val deepLinks: List<String> = listOf("wallet")
 
-    override val composableChildren: List<NavigationEndpoint> by lazy { listOf(Balance, Crypto, Stock) }
+    override val composableChildren: List<Node> by lazy { listOf(Balance, Crypto, Stock) }
 }
 
 @Serializable
 @SerialName("balance")
-public data object Balance : NavigationDestination() {
+public data object Balance : Destination() {
 
     override val enabled: Boolean = false
 
@@ -224,13 +232,13 @@ public data object Balance : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         BalanceScreen(navigateTo, navigateBack)
 }
 
 @Serializable
 @SerialName("crypto")
-public data object Crypto : NavigationDestination() {
+public data object Crypto : Destination() {
 
     override val enabled: Boolean = false
 
@@ -247,13 +255,13 @@ public data object Crypto : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         CryptoScreen(navigateTo, navigateBack)
 }
 
 @Serializable
 @SerialName("stock")
-public data object Stock : NavigationDestination() {
+public data object Stock : Destination() {
 
     override val enabled: Boolean = false
 
@@ -270,6 +278,6 @@ public data object Stock : NavigationDestination() {
     }
 
     @Composable
-    override fun Screen(navigateTo: (NavigationRoute) -> Unit, navigateBack: () -> Unit): Unit =
+    override fun Screen(navigateTo: (AbstractDestination<Node>) -> Unit, navigateBack: () -> Unit): Unit =
         StockScreen(navigateTo, navigateBack)
 }

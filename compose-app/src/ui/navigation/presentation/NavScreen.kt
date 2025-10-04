@@ -45,7 +45,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
-import clib.presentation.components.navigation.model.NavigationEndpoint
 import clib.presentation.components.topappbar.fabNestedScrollConnection
 import clib.presentation.event.navigator.NavigationAction
 import clib.presentation.event.navigator.Navigator
@@ -60,7 +59,7 @@ import ui.navigation.presentation.viewmodel.NavViewModel
 public fun NavScreen(
     navController: NavHostController = rememberNavController(),
     navViewModel: NavViewModel = koinViewModel<NavViewModel>(
-        viewModelStoreOwner = navController.getBackStackEntry<NavGraph>(),
+        viewModelStoreOwner = navController.getBackStackEntry<RootRoute>(),
     ),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
@@ -80,11 +79,11 @@ public fun NavScreen(
     }
 
     AdvancedNavigationSuiteScaffold(
-        NavGraph,
+        RootRoute,
         { route ->
             route.item(navController, currentDestination) { it }
         },
-        koinInject<Navigator<NavigationEndpoint>>(),
+        koinInject<Navigator<Node>>(),
         Modifier.nestedScroll(fabNestedScrollConnection),
         navController = navController,
         onNavHostReady = onNavHostReady,
@@ -193,10 +192,11 @@ public fun NavScreen(
     ) { innerPadding ->
         AdvancedNavHost(
             navController,
-            NavGraph,
+            RootRoute,
             startDestination,
             Modifier.padding(innerPadding),
         ) { route ->
+
             route.item { backStackEntry -> navViewModel }
         }
     }

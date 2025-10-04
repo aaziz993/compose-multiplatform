@@ -16,11 +16,11 @@ import clib.presentation.components.navigation.viewmodel.AbstractNavViewModel
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
-public abstract class NavigationRoute : NavigationEndpoint() {
+public abstract class AbstractRoute<T : NavigationNode<T>> : NavigationNode<T> {
 
-    public abstract val composableChildren: List<NavigationEndpoint>
+    public abstract val composableChildren: List<T>
 
-    public open val navigationChildren: List<NavigationEndpoint> = composableChildren
+    public open val navigationChildren: List<T> = composableChildren
 
     context(navGraphBuilder: NavGraphBuilder)
     override fun item(
@@ -41,7 +41,7 @@ public abstract class NavigationRoute : NavigationEndpoint() {
         sizeTransform:
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
-        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out NavigationRoute>
+        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<T>
     ): Unit = with(navGraphBuilder) {
         val deepDeepLinks = deepDeepLinks(deepLinks)
         navigation(this::class, composableChildren.first()) {
@@ -64,7 +64,7 @@ public abstract class NavigationRoute : NavigationEndpoint() {
     override fun item(
         navController: NavController,
         currentDestination: NavDestination?,
-        transform: NavigationEndpoint.(String) -> String
+        transform: NavigationNode<T>.(String) -> String
     ): Unit = navigationChildren.forEach { child ->
         child.item(navController, currentDestination, transform)
     }

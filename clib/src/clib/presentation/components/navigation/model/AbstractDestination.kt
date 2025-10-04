@@ -4,15 +4,14 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -21,27 +20,16 @@ import clib.presentation.components.navigation.viewmodel.AbstractNavViewModel
 import clib.presentation.event.navigator.NavigationAction
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
-import kotlinx.serialization.Transient
 
-public abstract class NavigationDestination : NavigationEndpoint() {
+public abstract class AbstractDestination<T : NavigationNode<T>> : NavigationNode<T> {
 
-    @Transient
     public val label: String
         get() = this::class.simpleName!!
-
-    @Transient
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
 
-    @Transient
     protected open val modifier: Modifier = Modifier
-
-    @Transient
     protected open val selectedModifier: Modifier = modifier
-
-    @Transient
     protected open val enabled: Boolean = true
-
-    @Transient
     protected open val alwaysShowLabel: Boolean = true
 
     @Composable
@@ -65,10 +53,7 @@ public abstract class NavigationDestination : NavigationEndpoint() {
     protected open fun SelectedBadge(label: String, modifier: Modifier = Modifier): Unit = Unit
 
     @Composable
-    protected open fun Screen(
-        navigateTo: (route: NavigationRoute) -> Unit = {},
-        navigateBack: () -> Unit = {}
-    ): Unit = Unit
+    protected open fun Screen(navigateTo: (route: AbstractDestination<T>) -> Unit = {}, navigateBack: () -> Unit = {}): Unit = Unit
 
     context(navGraphBuilder: NavGraphBuilder)
     override fun item(
@@ -89,12 +74,12 @@ public abstract class NavigationDestination : NavigationEndpoint() {
         sizeTransform:
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
-        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<out NavigationRoute>
+        viewModel: @Composable (NavBackStackEntry) -> AbstractNavViewModel<T>
     ): Unit = with(navGraphBuilder) {
         val deepDeepLinks = deepDeepLinks(deepLinks)
         composable(
             this::class,
-            typeMap + this@NavigationDestination.typeMap,
+            typeMap + this@AbstractDestination.typeMap,
             deepDeepLinks.map { basePath ->
                 navDeepLink(this::class, basePath) {}
             },
@@ -106,7 +91,15 @@ public abstract class NavigationDestination : NavigationEndpoint() {
         ) { backStackEntry ->
             val navViewModel = viewModel(backStackEntry)
 
-            Screen({ destination -> navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination)) }) {
+            Screen(
+                { destination ->
+                    navViewModel.action(
+                        NavigationAction.TypeSafeNavigation.Navigate(
+                            destination,
+                        ),
+                    )
+                },
+            ) {
                 navViewModel.action(NavigationAction.NavigateBack)
             }
         }
@@ -116,11 +109,11 @@ public abstract class NavigationDestination : NavigationEndpoint() {
     override fun item(
         navController: NavController,
         currentDestination: NavDestination?,
-        transform: NavigationEndpoint.(String) -> String
+        transform: NavigationNode<T>.(String) -> String
     ): Unit = with(navigationSuiteScope) {
         val selected = isSelected(currentDestination)
 
-        val label = transform(this@NavigationDestination.label)
+        val label = transform(this@AbstractDestination.label)
 
         val navItem = NavigationItem(
             modifier,
@@ -161,4 +154,7 @@ public abstract class NavigationDestination : NavigationEndpoint() {
             { navItem.Badge(selected = selected) },
         )
     }
+
+    private fun isSelected(currentDestination: NavDestination?): Boolean =
+        currentDestination?.hierarchy?.any { it.hasRoute(this::class) } == true
 }

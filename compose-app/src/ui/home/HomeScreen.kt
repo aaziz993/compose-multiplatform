@@ -10,11 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import ui.navigation.presentation.Destination
 import ui.navigation.presentation.Route
 
 @Composable
 public fun HomeScreen(
-    navigateTo: (route: Route) -> Unit = {},
+    navigateTo: (route: Destination) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
     LazyColumn(
