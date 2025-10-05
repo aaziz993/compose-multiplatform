@@ -4,8 +4,8 @@ package klib.data.type.serialization.csv
 
 import app.softwork.serialization.csv.*
 import app.softwork.serialization.csv.CSVNode
-import klib.data.type.collections.chunked
-import klib.data.type.collections.intersperse
+import klib.data.type.collections.iterator.chunked
+import klib.data.type.collections.iterator.intersperse
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.descriptors.StructureKind
@@ -24,28 +24,30 @@ internal fun CSVFormat.encodeListsToNodes(value: List<List<Any?>>): List<CSVNode
     value.map { elements -> elements.map(::encodeAnyToCSVElement) }.iterator()
         .intersperse { listOf(CSVNode.NewLine) }.flatten()
 
-private fun CSVFormat.encodeAnyToCSVElement(value: Any?) = CSVNode.Element(buildString {
-    val valueToAppend =
-        when (value) {
-            is Float, Double ->
-                when (configuration.numberFormat) {
-                    CSVFormat.NumberFormat.Dot -> value
-                    CSVFormat.NumberFormat.Comma -> value.toString().replace(".", ",")
-                }
+private fun CSVFormat.encodeAnyToCSVElement(value: Any?) = CSVNode.Element(
+        buildString {
+            val valueToAppend =
+                    when (value) {
+                        is Float, Double ->
+                            when (configuration.numberFormat) {
+                                CSVFormat.NumberFormat.Dot -> value
+                                CSVFormat.NumberFormat.Comma -> value.toString().replace(".", ",")
+                            }
 
-            is Enum<*> -> value.ordinal
+                        is Enum<*> -> value.ordinal
 
-            else -> value
-        }?.toString().orEmpty()
+                        else -> value
+                    }?.toString().orEmpty()
 
-    val quote =
-        configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend
-    if (quote) append('"')
+            val quote =
+                    configuration.alwaysEmitQuotes || configuration.separator in valueToAppend || configuration.lineSeparator in valueToAppend
+            if (quote) append('"')
 
-    append(valueToAppend)
+            append(valueToAppend)
 
-    if (quote) append('"')
-})
+            if (quote) append('"')
+        },
+)
 
 @Suppress("UNCHECKED_CAST")
 internal fun CSVFormat.decodeListsFromNodes(value: List<CSVNode>): List<List<Any?>> =
@@ -87,24 +89,25 @@ public fun <T> CSVFormat.decodeFromLists(deserializer: DeserializationStrategy<T
 
         val isSequentially = headers.isSequentially(deserializer.descriptor)
         deserializer.deserialize(
-            decoder = CSVDecoderImpl(
-                header = headers,
-                nodes = parsed,
-                configuration = configuration,
-                decodesSequentially = isSequentially,
-                level = if (deserializer.descriptor.kind is StructureKind.LIST) -1 else 0,
-            )
+                decoder = CSVDecoderImpl(
+                        header = headers,
+                        nodes = parsed,
+                        configuration = configuration,
+                        decodesSequentially = isSequentially,
+                        level = if (deserializer.descriptor.kind is StructureKind.LIST) -1 else 0,
+                ),
         )
-    } else {
+    }
+    else {
         val decodesSequentially = deserializer.descriptor.kind !is StructureKind.LIST
         deserializer.deserialize(
-            decoder = CSVDecoderImpl(
-                header = emptyList(),
-                nodes = parsed,
-                configuration = configuration,
-                decodesSequentially = decodesSequentially,
-                level = if (deserializer.descriptor.kind is StructureKind.LIST) -1 else 0,
-            )
+                decoder = CSVDecoderImpl(
+                        header = emptyList(),
+                        nodes = parsed,
+                        configuration = configuration,
+                        decodesSequentially = decodesSequentially,
+                        level = if (deserializer.descriptor.kind is StructureKind.LIST) -1 else 0,
+                ),
         )
     }
 }
@@ -117,12 +120,11 @@ public fun CSVFormat.encodeListsToString(value: List<List<Any?>>): String = buil
     CSVEncoderImpl(this, configuration).encodeLists(value)
 }
 
-
 public fun CSVFormat.decodeListsFromString(value: String): List<List<Any?>> =
     decodeListsFromNodes(
-        value.parse(configuration.separator, configuration.lineSeparator)
-            .asSequence()
-            .toList()
+            value.parse(configuration.separator, configuration.lineSeparator)
+                    .asSequence()
+                    .toList(),
     )
 
 public fun String.encodeCsv(format: CSVFormat = CSVFormat.Default): List<List<Any?>> =

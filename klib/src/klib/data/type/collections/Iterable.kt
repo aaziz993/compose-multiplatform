@@ -128,7 +128,20 @@ public fun <E> Iterable<E>.contains(
         true -> containsAll(other, equator)
     }
 
-public inline fun <reified E> Iterable<*>.containsInstance(): Boolean = any { it is E }
+public fun <E> Iterable<E>.equals(other: Iterable<E>, equator: Equator<E>): Boolean {
+    val iter1 = this.iterator()
+    val iter2 = other.iterator()
+
+    while (iter1.hasNext() && iter2.hasNext()) {
+        val e1 = iter1.next()
+        val e2 = iter2.next()
+        if (!equator.equate(e1, e2)) return false
+    }
+
+    return !iter1.hasNext() && !iter2.hasNext()
+}
+
+public inline fun <reified E> Iterable<*>.anyInstance(): Boolean = any { it is E }
 
 public inline fun <E, R : Any> Iterable<E>.firstNotThrowOf(transform: (E) -> R?): R? {
     var throwable: Throwable? = null

@@ -2,7 +2,7 @@ package klib.data.type.serialization
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import klib.data.type.collections.containsInstance
+import klib.data.type.collections.anyInstance
 import klib.data.type.collections.deepMinusKeys
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
@@ -91,7 +91,7 @@ public val SerialDescriptor.valueDiscriminator: String
     get() = getElementName(1)
 
 public inline fun <reified T : Annotation> SerialDescriptor.hasAnnotation(): Boolean =
-    annotations.containsInstance<T>()
+    annotations.anyInstance<T>()
 
 public inline fun <reified T : Annotation> SerialDescriptor.getAnnotations(): List<T> =
     annotations.filterIsInstance<T>()

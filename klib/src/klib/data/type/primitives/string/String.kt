@@ -13,6 +13,7 @@ import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
 import klib.data.type.primitives.string.fuzzywuzzy.model.BoundExtractedResult
 import klib.data.type.primitives.string.fuzzywuzzy.model.ExtractedResult
+import kotlin.IllegalArgumentException
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.time.Duration
@@ -173,11 +174,11 @@ private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
 public val String.extension: String?
     get() = EXTENSION_TEXT_REGEX.entries.find { (_, regex) -> regex.matches(this) }?.key
 
-public fun String.isLetter() = all(Char::isLetter)
+public fun String.isLetter(): Boolean = all(Char::isLetter)
 
-public fun String.isLetterOrDigit() = all(Char::isLetterOrDigit)
+public fun String.isLetterOrDigit(): Boolean = all(Char::isLetterOrDigit)
 
-public fun String.isDigit() = all(Char::isDigit)
+public fun String.isDigit(): Boolean = all(Char::isDigit)
 
 public fun <T> String.rangeEquals(
     offset: Int,
