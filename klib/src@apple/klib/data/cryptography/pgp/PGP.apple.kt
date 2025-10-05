@@ -56,7 +56,7 @@ public actual suspend fun generatePGPKey(
         }
 
         is RSA -> {
-            require(key.size.compareTo(MIN_RSA_KEY_SIZE)) {
+            require(key.size >= MIN_RSA_KEY_SIZE) {
                 "RSA size should be at least ${MIN_RSA_KEY_SIZE}, got: ${key.size}"
             }
 
@@ -81,7 +81,7 @@ public actual suspend fun generatePGPKey(
                             is RSA -> SubkeyOptions(
                                 "rsa",
                                 rsaBits = it.key.size.toDouble(),
-                                sign = it.sign
+                                sign = it.sign,
                             )
 
                             else -> SubkeyOptions(keyType, curve, rsaBits, it.sign)
@@ -152,9 +152,10 @@ public actual suspend fun ByteArray.dearmorPGPKey(): ByteArray =
     )!!.await()!!.resultToByteArray()
 
 private fun ByteArray.readPrivateKey(): String = "openpgp.readPrivateKey({${
-    if (isPGPArmored) {
+    if (isPGPArmored()) {
         "armoredKey: `${decodeToString()}`"
-    } else {
+    }
+    else {
         "binaryKey: new Uint8Array(${toUByteArray().toList()})"
     }
 }})"
@@ -163,18 +164,20 @@ private fun ByteArray.readPrivateKey(): String = "openpgp.readPrivateKey({${
 public actual suspend fun ByteArray.privatePGPKeys(armored: Boolean): List<ByteArray> =
     JSContext.createOpenPGP().evaluateScript(
         "openpgp.readPrivateKeys({${
-            if (isPGPArmored) {
+            if (isPGPArmored()) {
                 "armoredKeys: `${decodeToString()}`"
-            } else {
+            }
+            else {
                 "binaryKeys: new Uint8Array(${toUByteArray().toList()})"
             }
         }}).then((ks) => ks.map((k) => Array.from(${if (armored) "new TextEncoder().encode(k.armor())" else "k.write()"})));",
     )!!.await()!!.let { it as List<Any> }.map { it.resultToByteArray() }
 
 private fun ByteArray.readKey(): String = "openpgp.readKey({${
-    if (isPGPArmored) {
+    if (isPGPArmored()) {
         "armoredKey: `${decodeToString()}`"
-    } else {
+    }
+    else {
         "binaryKey: new Uint8Array(${toUByteArray().toList()})"
     }
 }})"
@@ -188,9 +191,10 @@ public actual suspend fun ByteArray.publicPGPKey(armored: Boolean): ByteArray =
 public actual suspend fun ByteArray.publicPGPKeys(armored: Boolean): List<ByteArray> =
     JSContext.createOpenPGP().evaluateScript(
         "openpgp.readKeys({${
-            if (isPGPArmored) {
+            if (isPGPArmored()) {
                 "armoredKeys: `${decodeToString()}`"
-            } else {
+            }
+            else {
                 "binaryKeys: new Uint8Array(${toUByteArray().toList()})"
             }
         }}).then((ks) => ks.map((k) => Array.from(${if (armored) "new TextEncoder().encode(k.armor())" else "k.write()"})));",
@@ -207,7 +211,8 @@ public actual suspend fun ByteArray.changePGPKeyPassword(
             })).then((k) => ${
         if (password == null) {
             "k"
-        } else {
+        }
+        else {
             """openpgp.encryptKey({
                         privateKey: k,
                         passphrase: [$password]
@@ -256,7 +261,8 @@ public actual suspend fun ByteArray.encryptPGP(
         OPENPGP_JSON.encodeToString(
             if (isText) {
                 CreateMessageOptions(decodeToString())
-            } else {
+            }
+            else {
                 CreateMessageOptions(binary = this)
             },
         )
@@ -266,7 +272,7 @@ public actual suspend fun ByteArray.encryptPGP(
         signingKeys?.let {
             "signingKeys: await ${
                 signingKeys.readDecryptedKeys(
-                    signingKeysPasswords
+                    signingKeysPasswords,
                 )
             },"
         }
@@ -284,9 +290,10 @@ public actual suspend fun ByteArray.decryptPGP(
     passwords: List<String>?,
 ): PGPVerifiedResult = JSContext.createOpenPGP().evaluateScript(
     """openpgp.readMessage(${
-        if (isPGPArmored) {
+        if (isPGPArmored()) {
             ReadMessageOptions(decodeToString())
-        } else {
+        }
+        else {
             ReadMessageOptions(binaryMessage = this)
         }
     }).then(async (m) => openpgp.decrypt({
@@ -303,15 +310,14 @@ public actual suspend fun ByteArray.decryptPGP(
 )!!.await()!!.let { it as Map<String, *> }.let {
     PGPVerifiedResult(
         it["data"]!!.toString().encodeToByteArray(),
-        {
-            (it["verifications"] as List<Map<String, *>>).map {
-                PGPVerification(
-                    it["keyID"]!!.toString(),
-                    it["verified"]!! as Boolean,
-                )
-            }
-        },
-    )
+    ) {
+        (it["verifications"] as List<Map<String, *>>).map { verification ->
+            PGPVerification(
+                verification["keyID"]!!.toString(),
+                verification["verified"]!! as Boolean,
+            )
+        }
+    }
 }
 
 public actual suspend fun ByteArray.signPGP(
@@ -326,19 +332,19 @@ public actual suspend fun ByteArray.signPGP(
         when (mode) {
             PGPSignMode.BINARY -> "openpgp.createMessage(${
                 OPENPGP_JSON.encodeToString(
-                    CreateMessageOptions(binary = this)
+                    CreateMessageOptions(binary = this),
                 )
             })"
 
             PGPSignMode.TEXT -> "openpgp.createMessage(${
                 OPENPGP_JSON.encodeToString(
-                    CreateMessageOptions(decodeToString())
+                    CreateMessageOptions(decodeToString()),
                 )
             })"
 
             PGPSignMode.CLEARTEXT_SIGN -> "openpgp.createCleartextMessage(${
                 OPENPGP_JSON.encodeToString(
-                    CreateCleartextMessageOptions(decodeToString())
+                    CreateCleartextMessageOptions(decodeToString()),
                 )
             })"
         }
@@ -365,19 +371,19 @@ public actual suspend fun ByteArray.verifyPGP(
             when (mode) {
                 PGPSignMode.BINARY -> "openpgp.createMessage(${
                     OPENPGP_JSON.encodeToString(
-                        CreateMessageOptions(binary = this)
+                        CreateMessageOptions(binary = this),
                     )
                 })"
 
                 PGPSignMode.TEXT -> "openpgp.createMessage(${
                     OPENPGP_JSON.encodeToString(
-                        CreateMessageOptions(decodeToString())
+                        CreateMessageOptions(decodeToString()),
                     )
                 })"
 
                 PGPSignMode.CLEARTEXT_SIGN -> "openpgp.createCleartextMessage(${
                     OPENPGP_JSON.encodeToString(
-                        CreateCleartextMessageOptions(decodeToString())
+                        CreateCleartextMessageOptions(decodeToString()),
                     )
                 })"
             }
@@ -386,9 +392,10 @@ public actual suspend fun ByteArray.verifyPGP(
             signatures?.first()?.let {
                 "signature: await openpgp.readSignature(${
                     OPENPGP_JSON.encodeToString(
-                        if (it.isPGPArmored) {
+                        if (it.isPGPArmored()) {
                             ReadSignatureOptions(it.decodeToString())
-                        } else {
+                        }
+                        else {
                             ReadSignatureOptions(binarySignature = it)
                         },
                     )
@@ -400,7 +407,8 @@ public actual suspend fun ByteArray.verifyPGP(
                     data: Array.from(${
             if (mode == PGPSignMode.CLEARTEXT_SIGN) {
                 "new TextEncoder().encode(vr.data)"
-            } else {
+            }
+            else {
                 "vr.data"
             }
         }),
@@ -412,15 +420,14 @@ public actual suspend fun ByteArray.verifyPGP(
     )!!.await()!!.let { it as Map<String, *> }.let {
         PGPVerifiedResult(
             it["data"]!!.resultToByteArray(),
-            {
-                (it["verifications"] as List<Map<String, *>>).map {
-                    PGPVerification(
-                        it["keyID"]!!.toString(),
-                        it["verified"]!! as Boolean,
-                    )
-                }
-            },
-        )
+        ) {
+            (it["verifications"] as List<Map<String, *>>).map { verification ->
+                PGPVerification(
+                    verification["keyID"]!!.toString(),
+                    verification["verified"]!! as Boolean,
+                )
+            }
+        }
     }
 }
 
@@ -19117,7 +19124,7 @@ var openpgp = function (e) {
 }, Object.defineProperty(e, "__esModule", {value: !0}), e
 }({});
 //# sourceMappingURL=openpgp.min.js.map
-"""
+""",
 )
 
 
