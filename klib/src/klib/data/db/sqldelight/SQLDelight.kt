@@ -14,7 +14,17 @@ public expect suspend fun createInMemorySQLDelightDriver(
     databaseName: String
 ): SqlDriver
 
-public suspend fun createSQLDelightCacheDatabase(databaseName: String = "cache"): Cache =
+public suspend fun createSQLDelightDatabase(
+    schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
+    databaseName: String,
+): SQLDelightDatabase = SQLDelightDatabase(createSQLDelightDriver(schema, databaseName))
+
+public suspend fun createInMemorySQLDelightDatabase(
+    schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
+    databaseName: String,
+): SQLDelightDatabase = SQLDelightDatabase(createSQLDelightDriver(schema, databaseName))
+
+public suspend fun createSQLDelightCacheQueries(databaseName: String = "cache"): Cache =
     Cache(createSQLDelightDriver(Cache.Schema, databaseName))
 
 public suspend fun createInMemorySQLDelightCacheDatabase(databaseName: String = "inMemoryCache"): Cache =
