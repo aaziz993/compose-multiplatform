@@ -1,6 +1,6 @@
 package klib.data.cryptography.pgp.model
 
-import data.type.model.Compression
+import klib.data.model.Compression
 
 internal val COMPRESSION_MAP = mapOf(
     Compression.UNCOMPRESSED to 0,

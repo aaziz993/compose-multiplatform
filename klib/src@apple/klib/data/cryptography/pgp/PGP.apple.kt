@@ -1,13 +1,13 @@
 package klib.data.cryptography.pgp
 
 import klib.data.cryptography.pgp.model.COMPRESSION_MAP
-import klib.data.cryptography.pgp.model.CURVE_MAP
+import klib.data.cryptography.pgp.model.CURVES
 import klib.data.cryptography.pgp.model.Config
 import klib.data.cryptography.pgp.model.CreateCleartextMessageOptions
 import klib.data.cryptography.pgp.model.CreateMessageOptions
 import klib.data.cryptography.pgp.model.ECC
 import klib.data.cryptography.pgp.model.GenerateKeyOptions
-import klib.data.cryptography.pgp.model.HASH_ALGORITHM_MAP
+import klib.data.cryptography.pgp.model.HASH_ALGORITHMS
 import klib.data.cryptography.pgp.model.PGPKey
 import klib.data.cryptography.pgp.model.PGPKeyMetadata
 import klib.data.cryptography.pgp.model.PGPSignMode
@@ -18,7 +18,7 @@ import klib.data.cryptography.pgp.model.PGPVerifiedResult
 import klib.data.cryptography.pgp.model.RSA
 import klib.data.cryptography.pgp.model.ReadMessageOptions
 import klib.data.cryptography.pgp.model.ReadSignatureOptions
-import klib.data.cryptography.pgp.model.SYMMETRIC_ALGORITHM_MAP
+import klib.data.cryptography.pgp.model.SYMMETRIC_ALGORITHMS
 import klib.data.cryptography.pgp.model.SubkeyOptions
 import klib.data.js.await
 import klib.data.js.create
@@ -52,7 +52,7 @@ public actual suspend fun generatePGPKey(
     when (key) {
         is ECC -> {
             keyType = "ecc"
-            curve = CURVE_MAP[key.curve]!!
+            curve = CURVES[key.curve]!!
         }
 
         is RSA -> {
@@ -77,7 +77,7 @@ public actual suspend fun generatePGPKey(
                     expireDate?.toDouble(),
                     subKeys.map {
                         when (it.key) {
-                            is ECC -> SubkeyOptions("ecc", CURVE_MAP[it.key.curve], sign = it.sign)
+                            is ECC -> SubkeyOptions("ecc", CURVES[it.key.curve], sign = it.sign)
                             is RSA -> SubkeyOptions(
                                 "rsa",
                                 rsaBits = it.key.size.toDouble(),
@@ -99,13 +99,13 @@ public actual suspend fun generatePGPKey(
                             require(it.size == 1) {
                                 "Only one symmetric algorithm allowed"
                             }
-                            HASH_ALGORITHM_MAP[it.single()]!!
+                            HASH_ALGORITHMS[it.single()]!!
                         },
                         key.symmetricKeyAlgorithms?.let {
                             require(it.size == 1) {
                                 "Only one symmetric algorithm allowed"
                             }
-                            SYMMETRIC_ALGORITHM_MAP[it.single()]!!
+                            SYMMETRIC_ALGORITHMS[it.single()]!!
                         },
                     ),
                 ),

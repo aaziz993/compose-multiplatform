@@ -1,8 +1,8 @@
 package klib.data.cryptography.pgp.model
 
-import data.type.cryptography.model.HashAlgorithm
+import klib.data.cryptography.model.HashAlgorithm
 
-internal val HASH_ALGORITHM_MAP = mapOf(
+internal val HASH_ALGORITHMS = mapOf(
     HashAlgorithm.MD5 to 1,
     HashAlgorithm.SHA1 to 2,
     HashAlgorithm.RIPEMD160 to 3,

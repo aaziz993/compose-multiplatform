@@ -1,8 +1,8 @@
 package klib.data.cryptography.pgp.model
 
-import data.type.cryptography.model.SymmetricAlgorithm
+import klib.data.cryptography.model.SymmetricAlgorithm
 
-internal val SYMMETRIC_ALGORITHM_MAP = mapOf(
+internal val SYMMETRIC_ALGORITHMS = mapOf(
     SymmetricAlgorithm.PLAINTEXT to 0,
     SymmetricAlgorithm.TRIPLEDES to 2,
     SymmetricAlgorithm.CAST_5 to 3,
