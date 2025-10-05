@@ -6,4 +6,5 @@ script:
   - plugins:
       - id: (libs.plugins("room").pluginId)
   - room:
-      - schemaDirectory: ("$projectDir/schemas")
+      schemaDirectory: ("$projectDir/schemas")
+      generateKotlin: true

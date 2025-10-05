@@ -127,18 +127,15 @@ script:
         }
   - ksp:
       # room
-      - arg: ("room.schemaLocation", "schemas")
       - arg: ("room.incremental", "true")
       - arg: ("room.expandProjection", "true")
-      - arg: ("room.generateKotlin", "true")
-  - ksp:
-      dependencies: |
-        (
-          libs["arrow.optics.ksp.plugin"],
-          libs["androidx.room.compiler"],
-          libs["ktorfit.ksp"],
-          // Use import org.koin.ksp.generated.* in project.
-          libs["koin.ksp.compiler"],
-        )
+      - dependencies: |
+          (
+            libs["arrow.optics.ksp.plugin"],
+            libs["androidx.room.compiler"],
+            libs["ktorfit.ksp"],
+            // Use import org.koin.ksp.generated.* in project.
+            libs["koin.ksp.compiler"],
+          )
   - powerAssert:
       includeKotlinSourceSets: ()
