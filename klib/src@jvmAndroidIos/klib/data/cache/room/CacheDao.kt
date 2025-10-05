@@ -11,6 +11,9 @@ public interface CacheDao {
     @Insert
     public suspend fun insert(cache: Cache)
 
+    @Query("SELECT rowid, key, value FROM cache WHERE cache MATCH :key")
+    public suspend fun search(key: String): List<Cache>
+
     @Query("SELECT * FROM cache WHERE key = :key")
     public suspend fun select(key: String): Cache?
 
@@ -22,6 +25,9 @@ public interface CacheDao {
 
     @Query("DELETE FROM cache WHERE key LIKE :key")
     public suspend fun deleteLike(key: String)
+
+    @Query("DELETE FROM cache WHERE cache MATCH :key")
+    public suspend fun deleteMatch(key: String)
 
     @Query("DELETE FROM cache")
     public suspend fun deleteAll()
