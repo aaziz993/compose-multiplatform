@@ -2,7 +2,7 @@ package klib.data.cryptography.pgp.model
 
 import klib.data.model.Compression
 
-internal val COMPRESSION_MAP = mapOf(
+internal val COMPRESSIONS = mapOf(
     Compression.UNCOMPRESSED to 0,
     Compression.ZIP to 1,
     Compression.ZLIB to 2,

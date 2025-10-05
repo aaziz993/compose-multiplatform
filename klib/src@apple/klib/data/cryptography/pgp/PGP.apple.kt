@@ -1,6 +1,7 @@
 package klib.data.cryptography.pgp
 
-import klib.data.cryptography.pgp.model.COMPRESSION_MAP
+import klib.data.cryptography.MIN_RSA_KEY_SIZE
+import klib.data.cryptography.pgp.model.COMPRESSIONS
 import klib.data.cryptography.pgp.model.CURVES
 import klib.data.cryptography.pgp.model.Config
 import klib.data.cryptography.pgp.model.CreateCleartextMessageOptions
@@ -93,7 +94,7 @@ public actual suspend fun generatePGPKey(
                             require(it.size == 1) {
                                 "Only one compression algorithm allowed"
                             }
-                            COMPRESSION_MAP[it.single()]!!
+                            COMPRESSIONS[it.single()]!!
                         },
                         key.hashAlgorithms?.let {
                             require(it.size == 1) {

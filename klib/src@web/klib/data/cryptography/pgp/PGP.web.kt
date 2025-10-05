@@ -23,6 +23,7 @@ import js.promise.catch
 import js.typedarrays.Uint8Array
 import js.typedarrays.toByteArray
 import js.typedarrays.toUint8Array
+import klib.data.cryptography.MIN_RSA_KEY_SIZE
 import klib.data.type.await
 import klib.data.type.collections.flatten
 import klib.data.type.collections.takeIfNotEmpty

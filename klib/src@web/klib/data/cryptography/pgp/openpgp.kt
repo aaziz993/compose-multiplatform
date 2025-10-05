@@ -18,37 +18,37 @@ import kotlin.js.definedExternally
 @JsModule("openpgp")
 public external object openpgp {
 
-    public external fun generateKey(options: GenerateKeyOptions): Promise<GeneratedKey>
+    public fun generateKey(options: GenerateKeyOptions): Promise<GeneratedKey>
 
-    public external fun readKey(options: ReadKeyOptions): Promise<Key>
+    public fun readKey(options: ReadKeyOptions): Promise<Key>
 
-    public external fun readKeys(options: ReadKeysOptions): Promise<JsArray<Key>>
+    public fun readKeys(options: ReadKeysOptions): Promise<JsArray<Key>>
 
-    public external fun readPrivateKey(options: ReadKeyOptions): Promise<PrivateKey>
+    public fun readPrivateKey(options: ReadKeyOptions): Promise<PrivateKey>
 
-    public external fun readPrivateKeys(options: ReadKeysOptions): Promise<JsArray<PrivateKey>>
+    public fun readPrivateKeys(options: ReadKeysOptions): Promise<JsArray<PrivateKey>>
 
-    public external fun encryptKey(options: EncryptDecryptKeyOptions): Promise<PrivateKey>
+    public fun encryptKey(options: EncryptDecryptKeyOptions): Promise<PrivateKey>
 
-    public external fun decryptKey(options: EncryptDecryptKeyOptions): Promise<PrivateKey>
+    public fun decryptKey(options: EncryptDecryptKeyOptions): Promise<PrivateKey>
 
-    public external fun revokeKey(options: RevokeKeyOptions): Promise<JsAny>
+    public fun revokeKey(options: RevokeKeyOptions): Promise<JsAny>
 
-    public external fun createMessage(options: CreateMessageOptions): Promise<Message>
+    public fun createMessage(options: CreateMessageOptions): Promise<Message>
 
-    public external fun createCleartextMessage(options: CreateCleartextMessageOptions): Promise<CleartextMessage>
+    public fun createCleartextMessage(options: CreateCleartextMessageOptions): Promise<CleartextMessage>
 
-    public external fun encrypt(options: EncryptOptions): Promise<JsAny>
+    public fun encrypt(options: EncryptOptions): Promise<JsAny>
 
-    public external fun readMessage(options: ReadMessageOptions): Promise<Message>
+    public fun readMessage(options: ReadMessageOptions): Promise<Message>
 
-    public external fun decrypt(options: DecryptOptions): Promise<DecryptVerifyMessageResult>
+    public fun decrypt(options: DecryptOptions): Promise<DecryptVerifyMessageResult>
 
-    public external fun sign(options: SignOptions): Promise<JsAny>
+    public fun sign(options: SignOptions): Promise<JsAny>
 
-    public external fun verify(options: VerifyOptions): Promise<DecryptVerifyMessageResult>
+    public fun verify(options: VerifyOptions): Promise<DecryptVerifyMessageResult>
 
-    public external fun readSignature(options: ReadSignatureOptions): Promise<Signature>
+    public fun readSignature(options: ReadSignatureOptions): Promise<Signature>
 }
 
 @JsPlainObject
