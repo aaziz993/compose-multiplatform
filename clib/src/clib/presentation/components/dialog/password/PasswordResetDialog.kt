@@ -29,7 +29,7 @@ import androidx.compose.ui.window.Dialog
 import compose.icons.EvaIcons
 import compose.icons.evaicons.Outline
 import compose.icons.evaicons.outline.Lock
-import klib.data.type.validator.Validator
+import klib.data.validator.Validator
 import clib.presentation.components.dialog.password.model.PasswordResetDialogLocalization
 import clib.presentation.components.dialog.password.model.PasswordResetDialogState
 import clib.presentation.components.dialog.password.model.rememberPasswordResetDialogState

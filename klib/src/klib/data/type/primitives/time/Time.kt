@@ -1,4 +1,4 @@
-package klib.data.type.primitives
+package klib.data.type.primitives.time
 
 import kotlin.time.Clock
 import kotlin.time.Duration

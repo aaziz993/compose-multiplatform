@@ -1,6 +1,6 @@
-package klib.data.type.validator.model
+package klib.data.validator.model
 
-import klib.data.type.validator.Validator
+import klib.data.validator.Validator
 import kotlinx.serialization.Serializable
 
 @Serializable

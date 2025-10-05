@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import clib.presentation.components.column.expandable.ExpandableSection
 import clib.presentation.components.textfield.AdvancedTextField
-import klib.data.type.validator.Validator
+import klib.data.validator.Validator
 
 @Composable
 internal fun OptionRow(

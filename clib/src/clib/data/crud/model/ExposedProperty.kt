@@ -8,7 +8,7 @@ import klib.data.type.reflection.kClass
 import klib.data.type.reflection.parsePrimitiveOrNull
 import klib.data.type.serialization.primitiveType
 import klib.data.type.serialization.primitiveTypeOrNull
-import klib.data.type.validator.Validator
+import klib.data.validator.Validator
 import kotlin.reflect.typeOf
 import kotlinx.serialization.descriptors.SerialDescriptor
 

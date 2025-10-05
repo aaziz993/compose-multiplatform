@@ -1,4 +1,4 @@
-package klib.data.type.validator
+package klib.data.validator
 
 import klib.data.type.primitives.string.ANY
 import klib.data.type.primitives.string.ASCII
@@ -10,9 +10,9 @@ import klib.data.type.primitives.string.NEW_LINE_PATTERN
 import klib.data.type.primitives.string.NON_WHITESPACE
 import klib.data.type.primitives.string.UPPERCASE_LETTER
 import klib.data.type.primitives.string.escapePattern
-import klib.data.type.validator.ValidatorRule.Length.DELIMITED_PHONE_NUMBER
-import klib.data.type.validator.ValidatorRule.Pattern.INTERNATIONAL_DELIMITED_PHONE_NUMBER
-import klib.data.type.validator.ValidatorRule.Pattern.INTERNATIONAL_NUMERIC_PHONE_NUMBER
+import klib.data.validator.ValidatorRule.Length.DELIMITED_PHONE_NUMBER
+import klib.data.validator.ValidatorRule.Pattern.INTERNATIONAL_DELIMITED_PHONE_NUMBER
+import klib.data.validator.ValidatorRule.Pattern.INTERNATIONAL_NUMERIC_PHONE_NUMBER
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 

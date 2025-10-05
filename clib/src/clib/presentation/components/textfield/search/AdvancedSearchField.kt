@@ -41,9 +41,9 @@ import compose.icons.lineawesomeicons.LessThanSolid
 import compose.icons.lineawesomeicons.MinusSolid
 import compose.icons.lineawesomeicons.NotEqualSolid
 import clib.presentation.state.timePickerStateToTemporal
-import klib.data.type.primitives.now
-import klib.data.type.primitives.toEpochMilliseconds
-import klib.data.type.validator.Validator
+import klib.data.type.primitives.time.now
+import klib.data.type.primitives.time.toEpochMilliseconds
+import klib.data.validator.Validator
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime

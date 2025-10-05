@@ -6,7 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.structuralEqualityPolicy
 import klib.data.TemporalExpression.Companion.now
-import klib.data.type.primitives.nowEpochMillis
+import klib.data.type.primitives.time.nowEpochMillis
 
 public fun <T> mutableStateOf(
     debounceTime: Long,

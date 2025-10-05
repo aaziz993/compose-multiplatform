@@ -1,4 +1,4 @@
-package klib.data.type.validator
+package klib.data.validator
 
 public enum class Validation {
     FAIL_FAST,

@@ -1,6 +1,6 @@
 package klib.data
 
-import klib.data.type.validator.Validator
+import klib.data.validator.Validator
 import kotlinx.serialization.descriptors.SerialDescriptor
 
 public interface Property {

@@ -1,4 +1,4 @@
-package klib.data.type.primitives
+package klib.data.type.primitives.time
 
 import io.ktor.util.date.*
 import java.time.Instant
@@ -9,7 +9,6 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.time.toJavaInstant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
