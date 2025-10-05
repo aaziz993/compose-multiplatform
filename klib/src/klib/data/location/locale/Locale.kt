@@ -83,7 +83,7 @@ public class Locale private constructor(
     }
 }
 
-public expect fun currentLocale(): Locale
+public expect val Locale.Companion.current: Locale
 
 public fun String.toLocale(delimiter: String = "-"): Locale =
     Locale.forLanguage(substringBefore(delimiter), region = substringAfter(delimiter, "").ifEmpty { null })

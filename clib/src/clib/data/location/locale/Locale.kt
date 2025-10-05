@@ -1,19 +1,18 @@
-package clib.presentation.locale
+package clib.data.location.locale
 
-import klib.data.locale.Language
+import klib.data.location.locale.Locale
 import org.jetbrains.compose.resources.ResourceItem
 import org.jetbrains.compose.resources.StringResource
 
-//@OptIn(InternalResourceApi::class, ExperimentalResourceApi::class)
 public fun getStringResource(
     res: String,
-    localization: Language,
+    localization: Locale,
 ): StringResource {
     return StringResource(
         "string:$res",
         res,
         setOf(
-            ResourceItem(setOf(), "values${localization.value}/strings.xml"),
+            ResourceItem(setOf(), "values${localization.toLanguageTag()}/strings.xml", -1, -1),
         ),
     )
 }

@@ -2,10 +2,7 @@ package klib.data.location.locale
 
 import platform.Foundation.NSLocale
 import platform.Foundation.currentLocale
-import platform.Foundation.languageCode
 import platform.Foundation.localeIdentifier
-import platform.Foundation.regionCode
-import platform.Foundation.scriptCode
 
 public fun NSLocale.toKotlinLocale(): Locale {
     val tag = localeIdentifier.replace('_', '-')
@@ -31,5 +28,6 @@ public fun Locale.toNSLocale(): NSLocale {
     )
 }
 
-public actual fun currentLocale(): Locale = NSLocale.currentLocale.toKotlinLocale()
+public actual val Locale.Companion.current: Locale
+    get() = NSLocale.currentLocale.toKotlinLocale()
 

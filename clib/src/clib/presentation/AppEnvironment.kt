@@ -9,13 +9,10 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import clib.presentation.locale.LocalAppLocale
-import clib.presentation.locale.customAppLocale
+import clib.data.location.locale.LocalAppLocale
+import clib.data.location.locale.customAppLocale
 import clib.presentation.theme.LocalAppDensity
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.customAppDensity
@@ -24,10 +21,6 @@ import clib.presentation.theme.darkColorScheme
 import clib.presentation.theme.lightColorScheme
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.systemTheme
-import klib.data.locale.Language
-import klib.data.locale.languages
-
-private val LocalLocalization: ProvidableCompositionLocal<Language> = staticCompositionLocalOf { languages["eng-US"]!!() }
 
 @Composable
 public fun AppEnvironment(
