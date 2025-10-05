@@ -18,6 +18,7 @@ script:
         optIn.addAll: |
           (
             "kotlin.RequiresOptIn",
+            "kotlin.experimental.ExperimentalTypeInference",
             "kotlin.ExperimentalSubclassOptIn",
             "kotlin.ExperimentalStdlibApi",
             "kotlin.ExperimentalUnsignedTypes",

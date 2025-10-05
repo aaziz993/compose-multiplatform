@@ -6,9 +6,9 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-public val lightColorScheme: androidx.compose.material3.ColorScheme = lightColorScheme()
+public val lightColorScheme: ColorScheme = lightColorScheme()
 
-public val darkColorScheme: androidx.compose.material3.ColorScheme = darkColorScheme()
+public val darkColorScheme: ColorScheme = darkColorScheme()
 
 @Composable
 public fun systemTheme(

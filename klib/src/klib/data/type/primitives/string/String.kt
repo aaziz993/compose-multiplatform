@@ -173,6 +173,12 @@ private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
 public val String.extension: String?
     get() = EXTENSION_TEXT_REGEX.entries.find { (_, regex) -> regex.matches(this) }?.key
 
+public fun String.isLetter() = all(Char::isLetter)
+
+public fun String.isLetterOrDigit() = all(Char::isLetterOrDigit)
+
+public fun String.isDigit() = all(Char::isDigit)
+
 public fun <T> String.rangeEquals(
     offset: Int,
     other: String,

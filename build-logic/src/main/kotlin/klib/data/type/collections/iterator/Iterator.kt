@@ -1,5 +1,7 @@
 package klib.data.type.collections.iterator
 
+import kotlin.NoSuchElementException
+
 internal object EmptyIterator : Iterator<Nothing> {
 
     override fun hasNext(): Boolean = false

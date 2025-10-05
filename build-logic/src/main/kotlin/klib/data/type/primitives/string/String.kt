@@ -174,6 +174,12 @@ private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
 public val String.extension: String?
     get() = EXTENSION_TEXT_REGEX.entries.find { (_, regex) -> regex.matches(this) }?.key
 
+public fun String.isLetter() = all(Char::isLetter)
+
+public fun String.isLetterOrDigit() = all(Char::isLetterOrDigit)
+
+public fun String.isDigit() = all(Char::isDigit)
+
 public fun <T> String.rangeEquals(
     offset: Int,
     other: String,
@@ -416,12 +422,14 @@ public fun matcher(
     }
 
 // /////////////////////////////////////////////////////STRING//////////////////////////////////////////////////////////
-public fun ByteArray.decode(charset: Charset = Charset.UTF_8): String = decodeToString(Charsets.forName(charset.name))
+public fun ByteArray.decodeToString(charset: Charset = Charset.UTF_8): String =
+    decodeToString(Charsets.forName(charset.name))
 
 // ///////////////////////////////////////////////////////ENUM//////////////////////////////////////////////////////////
 public inline fun <reified T : Enum<T>> String.toEnum(): T = enumValueOf(this)
 
 // ///////////////////////////////////////////////////////ARRAY//////////////////////////////////////////////////////////
-public fun String.encode(charset: Charset = Charset.UTF_8): ByteArray = toByteArray(Charsets.forName(charset.name))
+public fun String.encodeToByteArray(charset: Charset = Charset.UTF_8): ByteArray =
+    toByteArray(Charsets.forName(charset.name))
 
 public fun String.toBuffer(): Buffer = Buffer().apply { writeString(this@toBuffer) }

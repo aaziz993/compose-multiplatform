@@ -1,3 +1,5 @@
+@file:Suppress("ComposeCompositionLocalUsage")
+
 package clib.presentation
 
 import androidx.compose.material3.ColorScheme
@@ -6,30 +8,48 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import clib.presentation.locale.LocalAppLocale
 import clib.presentation.locale.customAppLocale
 import clib.presentation.theme.LocalAppDensity
+import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.customAppDensity
+import clib.presentation.theme.customAppTheme
 import clib.presentation.theme.darkColorScheme
 import clib.presentation.theme.lightColorScheme
+import clib.presentation.theme.model.Theme
 import clib.presentation.theme.systemTheme
+import klib.data.locale.Language
+import klib.data.locale.languages
+
+private val LocalLocalization: ProvidableCompositionLocal<Language> = staticCompositionLocalOf { languages["eng-US"]!!() }
 
 @Composable
 public fun AppEnvironment(
-    colorScheme: ColorScheme = systemTheme(),
+    lightTheme: ColorScheme = lightColorScheme,
+    darkTheme: ColorScheme = darkColorScheme,
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = MaterialTheme.typography,
     content: @Composable () -> Unit
+): Unit = CompositionLocalProvider(
+    LocalAppLocale provides customAppLocale,
+    LocalAppTheme provides customAppTheme,
+    LocalAppDensity provides customAppDensity,
 ) {
-    MaterialTheme(colorScheme, shapes, typography) {
-        CompositionLocalProvider(
-            LocalAppLocale provides customAppLocale,
-            LocalAppDensity provides customAppDensity,
-        ) {
-            key(customAppLocale, customAppDensity) {
-                content()
-            }
+    key(customAppLocale, customAppTheme, customAppDensity) {
+        val colorScheme = when (LocalAppTheme.current) {
+            Theme.LIGHT -> lightTheme
+            Theme.DARK -> darkTheme
+            Theme.SYSTEM -> systemTheme(lightTheme, darkTheme)
+        }
+
+        MaterialTheme(colorScheme, shapes, typography) {
+            content()
         }
     }
 }

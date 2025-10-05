@@ -212,7 +212,7 @@ public actual suspend fun ByteArray.changePGPKeyPassword(
     else openpgp.encryptKey(
         unsafeJso {
             privateKey = decryptedKey
-            passphrase = arrayOf(password)
+            passphrase = listOf(password.toJsString()).toJsArray()
         },
     ).await()
 }.let { key ->
