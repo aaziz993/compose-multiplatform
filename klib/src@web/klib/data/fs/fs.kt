@@ -8,8 +8,9 @@ import kotlin.js.JsAny
 import kotlin.js.JsModule
 import kotlin.js.JsNumber
 
+@Suppress("ClassName")
 @JsModule("fs")
-public external object Fs {
+public external object fs {
 
     public fun realpathSync(path: String): String
     public fun symlinkSync(target: String, path: String)

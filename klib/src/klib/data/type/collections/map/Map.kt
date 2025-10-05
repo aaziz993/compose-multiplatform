@@ -34,6 +34,8 @@ public infix fun <K, V> Map<K, V>.tryPlus(map: Map<K, V>?): Map<K, V> =
 
 public fun <K, V> Map<K, V>.takeIfNotEmpty(): Map<K, V>? = takeIf(Map<K, V>::isNotEmpty)
 
+public fun <K, V> Map<K, V>.getStrict(key: K): V = this[key]!!
+
 public fun <K : V, V> Map<K, V>.getOrKey(key: K): V = this[key] ?: key
 
 public infix fun <K, V> Map<K, V>.slice(keys: Iterable<K>): Map<K, V> =

@@ -2,8 +2,8 @@
 
 package klib.data.fs.path
 
-import klib.data.fs.Fs
 import klib.data.fs.errorCode
+import klib.data.fs.fs
 import klib.data.fs.toIOException
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.js.toInt
@@ -18,7 +18,7 @@ private var S_IFLNK = 0xa000 // fs.constants.S_IFLNK
 public actual fun Path.metadataOrNull(): PathMetadata? {
     val pathString = toString()
     val stat = try {
-        Fs.lstatSync(pathString)
+        fs.lstatSync(pathString)
     }
     catch (e: Throwable) {
         if (e.errorCode == "ENOENT") return null // "No such file or directory".
@@ -28,7 +28,7 @@ public actual fun Path.metadataOrNull(): PathMetadata? {
     var symlinkTarget: Path? = null
     if ((stat.mode.toInt() and S_IFMT) == S_IFLNK) {
         try {
-            symlinkTarget = Fs.readlinkSync(pathString).toPath()
+            symlinkTarget = fs.readlinkSync(pathString).toPath()
         }
         catch (e: Throwable) {
             throw e.toIOException()
