@@ -11,6 +11,7 @@ import kotlin.js.JsAny
 import kotlin.js.JsArray
 import kotlin.js.JsBoolean
 import kotlin.js.JsModule
+import kotlin.js.JsString
 import kotlin.js.Promise
 import kotlin.js.definedExternally
 
@@ -89,14 +90,14 @@ public external interface SubkeyOptions : JsAny {
 @JsPlainObject
 public external interface GenerateKeyOptions : JsAny {
 
-    public var userIDs: Array<UserID>?
+    public var userIDs: JsArray<UserID>?
     public var passphrase: String?
     public var type: String
     public var curve: String?
     public var rsaBits: Double?
     public var keyExpirationTime: Double?
     public var date: Date?
-    public var subkeys: Array<SubkeyOptions>?
+    public var subkeys: JsArray<SubkeyOptions>?
     public var format: String
     public var config: Config?
 }
@@ -110,7 +111,7 @@ public open external class Key : JsAny {
         config: Config = definedExternally,
     ): Promise<JsAny? /* Date | typeof Infinity | null */>
 
-    public fun getUserIDs(): Array<String>
+    public fun getUserIDs(): JsArray<JsString>
     public fun toPublic(): Key
     public fun getFingerprint(): String
     public fun getCreationTime(): Date
@@ -140,7 +141,7 @@ public external interface ReadKeysOptions : JsAny {
 public external interface EncryptDecryptKeyOptions : JsAny {
 
     public var privateKey: PrivateKey
-    public var passphrase: Array<String>
+    public var passphrase: JsArray<JsString>
 }
 
 @JsPlainObject
@@ -171,9 +172,9 @@ public external interface CreateCleartextMessageOptions : JsAny {
 public external interface EncryptOptions : JsAny {
 
     public var message: Message
-    public var encryptionKeys: Array<Key>?
-    public var signingKeys: Array<PrivateKey>?
-    public var passwords: Array<String>?
+    public var encryptionKeys: JsArray<Key>?
+    public var signingKeys: JsArray<PrivateKey>?
+    public var passwords: JsArray<JsString>?
     public var format: String?
 }
 
@@ -201,7 +202,7 @@ public external interface VerificationResult : JsAny {
 public external interface DecryptVerifyMessageResult : JsAny {
 
     public var data: JsAny
-    public var signatures: Array<VerificationResult>
+    public var signatures: JsArray<VerificationResult>
 }
 
 public external class Signature : JsAny
@@ -210,9 +211,9 @@ public external class Signature : JsAny
 public external interface DecryptOptions : JsAny {
 
     public var message: Message
-    public var decryptionKeys: Array<PrivateKey>
-    public var passwords: Array<String>?
-    public var verificationKeys: Array<Key>?
+    public var decryptionKeys: JsArray<PrivateKey>
+    public var passwords: JsArray<JsString>?
+    public var verificationKeys: JsArray<Key>?
     public var format: String?
     public var signature: Signature?
 }
@@ -221,7 +222,7 @@ public external interface DecryptOptions : JsAny {
 public external interface SignOptions : JsAny {
 
     public var message: Any
-    public var signingKeys: Array<PrivateKey>
+    public var signingKeys: JsArray<PrivateKey>
     public var format: String?
     public var detached: Boolean?
 }
@@ -230,7 +231,7 @@ public external interface SignOptions : JsAny {
 public external interface VerifyOptions : JsAny {
 
     public var message: Any
-    public var verificationKeys: Array<Key>
+    public var verificationKeys: JsArray<Key>
     public var format: String?
     public var signature: Signature?
 }

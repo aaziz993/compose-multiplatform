@@ -8,9 +8,9 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-public abstract class AbstractApiHttpClient(
-    httpClient: HttpClient,
-    baseUrl: String
+public abstract class KtorfitClient(
+    baseUrl: String,
+    httpClient: HttpClient = HttpClient()
 ) {
 
     protected open val json: Json = Json {

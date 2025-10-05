@@ -31,7 +31,9 @@ import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.js.JsString
 import kotlin.js.Promise
 import kotlin.js.toBoolean
+import kotlin.js.toJsArray
 import kotlin.js.toJsBoolean
+import kotlin.js.toJsString
 import kotlin.js.toList
 
 public actual suspend fun generatePGPKey(
@@ -93,7 +95,7 @@ public actual suspend fun generatePGPKey(
                         }
                         sign = subKey.sign
                     }
-                }.toTypedArray()
+                }.toJsArray()
             }
             this.userIDs = userIDs.map { userId ->
                 unsafeJso<UserID> {
@@ -101,7 +103,7 @@ public actual suspend fun generatePGPKey(
                     userId.comment?.let { comment = it }
                     userId.email?.let { email = it }
                 }
-            }.toTypedArray()
+            }.toJsArray()
             expireDate?.let { keyExpirationTime = it.toDouble() }
             password?.let { passphrase = it }
             config = unsafeJso {
@@ -140,7 +142,7 @@ public actual suspend fun ByteArray.pgpKeyMetadata(): PGPKeyMetadata = readKey()
     val expireDate = key.getExpirationTime().await()
     PGPKeyMetadata(
         fingerprint = key.getFingerprint(),
-        userIDs = key.getUserIDs().map(PGPUserId::parse),
+        userIDs = key.getUserIDs().toList().map(JsString::toString).map(PGPUserId::parse),
         createDate = key.getCreationTime().getTime().toLong(),
         expireDate = expireDate?.let { if (it is Date) it.getTime().toLong() else 0 },
     )
@@ -202,7 +204,7 @@ public actual suspend fun ByteArray.changePGPKeyPassword(
     openpgp.decryptKey(
         unsafeJso {
             this.privateKey = privateKey
-            passphrase = arrayOf(*oldPasswords)
+            passphrase = oldPasswords.map(String::toJsString).toJsArray()
         },
     )
 }.await().let { decryptedKey ->
@@ -226,7 +228,7 @@ public actual suspend fun ByteArray.revokePGPKey(
     else openpgp.decryptKey(
         unsafeJso {
             this.privateKey = privateKey
-            passphrase = arrayOf(*passphrase)
+            passphrase = passwords.map(String::toJsString).toJsArray()
         },
     ).await()
 }.let { key ->
@@ -245,7 +247,7 @@ private suspend fun List<ByteArray>.readDecryptedKeys(passwords: List<String>?):
             else openpgp.decryptKey(
                 unsafeJso {
                     this.privateKey = privateKey
-                    passphrase = passwords?.toTypedArray() ?: emptyArray()
+                    passphrase = passwords.orEmpty().map(String::toJsString).toJsArray()
                 },
             ).await()
         }
@@ -270,8 +272,8 @@ public actual suspend fun ByteArray.encryptPGP(
                 }
             },
         ).await()
-        this.encryptionKeys = encryptionKeys.map { encryptionKey -> encryptionKey.readKey() }.toTypedArray()
-        signingKeys?.let { this.signingKeys = signingKeys.readDecryptedKeys(signingKeysPasswords) }
+        this.encryptionKeys = encryptionKeys.map { encryptionKey -> encryptionKey.readKey() }.toJsArray()
+        signingKeys?.let { this.signingKeys = signingKeys.readDecryptedKeys(signingKeysPasswords).toJsArray() }
         passwords?.let {
             this.passwords = it.toTypedArray()
         }
@@ -296,14 +298,14 @@ public actual suspend fun ByteArray.decryptPGP(
 ).await().let {
     openpgp.decrypt(
         unsafeJso {
-            this.decryptionKeys = decryptionKeys.readDecryptedKeys(decryptionKeysPasswords)
+            this.decryptionKeys = decryptionKeys.readDecryptedKeys(decryptionKeysPasswords).toJsArray()
             verificationKeys?.let {
-                this.verificationKeys = verificationKeys.map { verificationKey -> verificationKey.readKey() }.toTypedArray()
+                this.verificationKeys = verificationKeys.map { verificationKey -> verificationKey.readKey() }.toJsArray()
             }
-            passwords?.let { this.passwords = it.toTypedArray() }
+            passwords?.let { this.passwords = it.map(String::toJsString).toJsArray() }
         },
     ).await().let { decryptVerifyMessageResult ->
-        decryptVerifyMessageResult.signatures.map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let { verifications ->
+        decryptVerifyMessageResult.signatures.toList().map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let { verifications ->
             PGPVerifiedResult(
                 (decryptVerifyMessageResult.data as JsString).toString().encodeToByteArray(),
             ) { verifications }
@@ -338,7 +340,7 @@ public actual suspend fun ByteArray.signPGP(
                 },
             )
         }.await()
-        this.signingKeys = signingKeys.readDecryptedKeys(signingKeysPasswords)
+        this.signingKeys = signingKeys.readDecryptedKeys(signingKeysPasswords).toJsArray()
         this.detached = detached
         format = if (armored) "armored" else "binary"
     },
@@ -387,10 +389,10 @@ public actual suspend fun ByteArray.verifyPGP(
                     },
                 ).await()
             }
-            this.verificationKeys = verificationKeys.map { verificationKey -> verificationKey.readKey() }.toTypedArray()
+            this.verificationKeys = verificationKeys.map { verificationKey -> verificationKey.readKey() }.toJsArray()
         },
     ).await().let { decryptVerifyMessageResult ->
-        decryptVerifyMessageResult.signatures.map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let { verifications ->
+        decryptVerifyMessageResult.signatures.toList().map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let { verifications ->
             PGPVerifiedResult(
                 if (mode == PGPSignMode.CLEARTEXT_SIGN) (decryptVerifyMessageResult.data as JsString).toString().encodeToByteArray() else (decryptVerifyMessageResult.data as Uint8Array<*>).toByteArray(),
             ) { verifications }

@@ -12,6 +12,6 @@ public val darkColorScheme: androidx.compose.material3.ColorScheme = darkColorSc
 
 @Composable
 public fun systemTheme(
-    lightTheme: androidx.compose.material3.ColorScheme = lightColorScheme,
-    darkTheme: androidx.compose.material3.ColorScheme = darkColorScheme
+    lightTheme: ColorScheme = lightColorScheme,
+    darkTheme: ColorScheme = darkColorScheme
 ): ColorScheme = if (isSystemInDarkTheme()) darkTheme else lightTheme
