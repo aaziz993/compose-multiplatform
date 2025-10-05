@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalDensity
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 
@@ -22,6 +23,7 @@ public object LocalAppLocale {
 
     @Composable
     public infix fun provides(value: Locale?): ProvidedValue<*> {
-        return LocalAppLocale.provides(Locale.current)
+        val new = value ?: LocalAppLocale.current
+        return LocalAppLocale.provides(new)
     }
 }
