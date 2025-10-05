@@ -1,17 +1,17 @@
 package klib.data.cache.room
 
-import data.cache.AbstractCoroutineCache
+import klib.data.cache.CoroutineCache
 import klib.data.cache.room.model.Cache
 import kotlin.reflect.KClass
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
 @Suppress("UNCHECKED_CAST")
-public class RoomCache<in K : Any, V : Any>(
+public class RoomCache<K : Any, V : Any>(
     private val keyKClass: KClass<K>,
     private val valueKClass: KClass<V>,
     database: CacheDatabase
-) : AbstractCoroutineCache<K, V>() {
+) : CoroutineCache<K, V> {
 
     private val dao = database.getDao()
 
@@ -29,22 +29,22 @@ public class RoomCache<in K : Any, V : Any>(
         { Json.Default.decodeFromString(keyKClass.serializer(), it) }
     }
 
-    private val toMap: suspend () -> Map<in K, V> = if (valueKClass == Any::class) {
+    private val toMap: suspend () -> Map<K, V> = if (valueKClass == Any::class) {
         { dao.selectAll().listIterator().asSequence().associate { outKey(it.key) to it.value as V } }
     }
     else {
         { dao.selectAll().listIterator().asSequence().associate { outKey(it.key) to Json.Default.decodeFromString(valueKClass.serializer(), it.value) } }
     }
 
-    override suspend fun _get(key: K): V? =
+    override suspend fun get(key: K): V? =
         dao.select(inKey(key))?.value?.let { Json.Default.decodeFromString(valueKClass.serializer(), it) }
 
-    override suspend fun _put(key: K, value: V): Unit =
+    override suspend fun set(key: K, value: V): Unit =
         dao.insert(Cache(key = inKey(key), value = Json.Default.encodeToString(valueKClass.serializer(), value)))
 
-    override suspend fun _remove(key: K): Unit = dao.delete(inKey(key))
+    override suspend fun remove(key: K): Unit = dao.delete(inKey(key))
 
-    override suspend fun _clear(): Unit = dao.deleteAll()
+    override suspend fun clear(): Unit = dao.deleteAll()
 
-    override suspend fun _asMap(): Map<in K, V> = toMap()
+    override suspend fun asMap(): Map<K, V> = toMap()
 }

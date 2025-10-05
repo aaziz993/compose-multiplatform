@@ -7,4 +7,4 @@ public val Char.Companion.DEFAULT: Char
 public val HEX_DIGIT_CHARS: CharArray =
     charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f')
 
-public fun Char.isLatin() = this in 'a'..'z' || this in 'A'..'Z'
+public fun Char.isLatinLetter(): Boolean = this in 'a'..'z' || this in 'A'..'Z'
