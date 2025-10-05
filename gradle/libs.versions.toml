@@ -817,6 +817,7 @@ kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref 
 # mocking.
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+# a small library that provides helper functions to work with Mockito in Kotlin.
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 # fluent assertions for Java and Android.
 truth = { module = "com.google.truth:truth", version.ref = "truth" }

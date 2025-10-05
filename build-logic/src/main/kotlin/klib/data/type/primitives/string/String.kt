@@ -146,6 +146,8 @@ public fun String.addSuffixIfNotEmpty(suffix: String): String =
 public fun String.surroundIfNotEmpty(prefix: String, suffix: String): String =
     ifNotEmpty { "$prefix$it$suffix" }
 
+public fun String.removeWhiteSpaces(): String = this.replace("\\s".toRegex(), "")
+
 private val STRING_FORMAT_REGEX: Regex = "%(\\d+)\\$[ds]".toRegex()
 
 public fun String.format(vararg args: Any?): String =
