@@ -156,8 +156,8 @@ public external interface Message : JsAny
 @JsPlainObject
 public external interface CreateMessageOptions : JsAny {
 
-    public var text: Any?
-    public var binary: Any?
+    public var text: String?
+    public var binary: Uint8Array<ArrayBuffer>?
 }
 
 public external interface CleartextMessage : JsAny
@@ -181,8 +181,8 @@ public external interface EncryptOptions : JsAny {
 @JsPlainObject
 public external interface ReadMessageOptions : JsAny {
 
-    public var armoredMessage: String
-    public var binaryMessage: Any
+    public var armoredMessage: String?
+    public var binaryMessage: Uint8Array<ArrayBuffer>?
 }
 
 public external class KeyID : JsAny {
@@ -221,7 +221,7 @@ public external interface DecryptOptions : JsAny {
 @JsPlainObject
 public external interface SignOptions : JsAny {
 
-    public var message: Any
+    public var message: JsAny
     public var signingKeys: JsArray<PrivateKey>
     public var format: String?
     public var detached: Boolean?
@@ -230,7 +230,7 @@ public external interface SignOptions : JsAny {
 @JsPlainObject
 public external interface VerifyOptions : JsAny {
 
-    public var message: Any
+    public var message: JsAny
     public var verificationKeys: JsArray<Key>
     public var format: String?
     public var signature: Signature?

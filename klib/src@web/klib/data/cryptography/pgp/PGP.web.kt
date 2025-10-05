@@ -268,7 +268,7 @@ public actual suspend fun ByteArray.encryptPGP(
                     text = decodeToString()
                 }
                 else {
-                    binary = this@encryptPGP
+                    binary = toUint8Array()
                 }
             },
         ).await()
@@ -292,7 +292,7 @@ public actual suspend fun ByteArray.decryptPGP(
             armoredMessage = decodeToString()
         }
         else {
-            binaryMessage = this@decryptPGP
+            binaryMessage = toUint8Array()
         }
     },
 ).await().let {
@@ -324,7 +324,7 @@ public actual suspend fun ByteArray.signPGP(
         message = when (mode) {
             PGPSignMode.BINARY -> openpgp.createMessage(
                 unsafeJso {
-                    binary = this@signPGP
+                    binary = toUint8Array()
                 },
             )
 
@@ -360,7 +360,7 @@ public actual suspend fun ByteArray.verifyPGP(
             message = when (mode) {
                 PGPSignMode.BINARY -> openpgp.createMessage(
                     unsafeJso {
-                        binary = this@verifyPGP
+                        binary = toUint8Array()
                     },
                 )
 
