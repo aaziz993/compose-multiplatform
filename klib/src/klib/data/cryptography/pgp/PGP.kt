@@ -7,10 +7,11 @@ import klib.data.cryptography.pgp.model.PGPSignMode
 import klib.data.cryptography.pgp.model.PGPSubKeyType
 import klib.data.cryptography.pgp.model.PGPUserId
 import klib.data.cryptography.pgp.model.PGPVerifiedResult
+import klib.data.type.collections.startsWith
 
 internal const val MIN_RSA_KEY_SIZE: Int = 2047
 
-private const val PGP_ARMOR_HEADER_START: String = "-----BEGIN PGP "
+private val PGP_ARMOR_HEADER_START: ByteArray = "-----BEGIN PGP ".encodeToByteArray()
 
 public expect suspend fun generatePGPKey(
     key: PGPKey = ECC(),
@@ -78,5 +79,5 @@ public expect suspend fun ByteArray.verifyPGP(
     signatures: List<ByteArray>? = null,
 ): PGPVerifiedResult
 
-public val ByteArray.isPGPArmored: Boolean
-    get() = copyOf(PGP_ARMOR_HEADER_START.length).decodeToString() == PGP_ARMOR_HEADER_START
+public fun ByteArray.isPGPArmored(): Boolean = startsWith(PGP_ARMOR_HEADER_START)
+

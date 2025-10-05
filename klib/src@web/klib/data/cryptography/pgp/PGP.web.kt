@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalWasmJsInterop::class)
+
 package klib.data.cryptography.pgp
 
 import klib.data.cryptography.pgp.model.COMPRESSIONS
@@ -13,14 +15,23 @@ import klib.data.cryptography.pgp.model.PGPVerification
 import klib.data.cryptography.pgp.model.PGPVerifiedResult
 import klib.data.cryptography.pgp.model.RSA
 import klib.data.cryptography.pgp.model.SYMMETRIC_ALGORITHM_MAP
-import klib.data.type.primitives.string.decode
+import klib.data.type.primitives.string.decodeToString
 import js.buffer.ArrayBuffer
 import js.date.Date
 import js.objects.unsafeJso
-import js.promise.Promise
 import js.promise.catch
 import js.typedarrays.Uint8Array
+import js.typedarrays.toByteArray
 import js.typedarrays.toUint8Array
+import klib.data.type.await
+import klib.data.type.collections.flatten
+import klib.data.type.collections.takeIfNotEmpty
+import kotlin.js.ExperimentalWasmJsInterop
+import kotlin.js.JsString
+import kotlin.js.Promise
+import kotlin.js.toBoolean
+import kotlin.js.toJsBoolean
+import kotlin.js.toList
 
 public actual suspend fun generatePGPKey(
     key: PGPKey,
@@ -54,12 +65,12 @@ public actual suspend fun generatePGPKey(
         }
     }
 
-    return generateKey(
+    return openpgp.generateKey(
         unsafeJso {
             type = keyType
             curve?.let { this.curve = it }
             rsaBits?.let { rsaBits = it }
-            subKeys.takeIf(List<*>::isNotEmpty)?.let {
+            subKeys.takeIfNotEmpty()?.let {
                 subkeys = it.map {
                     unsafeJso<SubkeyOptions> {
                         when (it.key) {
@@ -114,35 +125,31 @@ public actual suspend fun generatePGPKey(
             }
             format = if (armored) "armored" else "binary"
         },
-    ).then {
-        if (armored) {
-            (it.privateKey as String).encodeToByteArray()
-        }
-        else {
-            (it.privateKey as Uint8Array<*>).toByteArray()
-        }
-    }.await()
+    ).await().let { generatedKey ->
+        if (armored) (generatedKey.privateKey as JsString).toString().encodeToByteArray()
+        else (generatedKey.privateKey as Uint8Array<*>).toByteArray()
+    }
 }
 
-public actual suspend fun ByteArray.armorPGPKey(): ByteArray = readKey().then { it.armor().encodeToByteArray() }.await()
+public actual suspend fun ByteArray.armorPGPKey(): ByteArray = readKey().armor().encodeToByteArray()
 
-public actual suspend fun ByteArray.dearmorPGPKey(): ByteArray = readKey().then { it.write().toByteArray() }.await()
+public actual suspend fun ByteArray.dearmorPGPKey(): ByteArray = readKey().write().toByteArray()
 
-public actual suspend fun ByteArray.pgpKeyMetadata(): PGPKeyMetadata = readKey().flatThen { k ->
-    k.getExpirationTime().then {
-        PGPKeyMetadata(
-            fingerprint = k.getFingerprint(),
-            userIDs = k.getUserIDs().map(PGPUserId::parse),
-            createDate = k.getCreationTime().getTime().toLong(),
-            expireDate = it?.let { if (it is Date) it.getTime().toLong() else 0 },
-        )
-    }
-}.await()
+public actual suspend fun ByteArray.pgpKeyMetadata(): PGPKeyMetadata = readKey().let { key ->
+    val expireDate = key.getExpirationTime().await()
+    PGPKeyMetadata(
+        fingerprint = key.getFingerprint(),
+        userIDs = key.getUserIDs().map(PGPUserId::parse),
+        createDate = key.getCreationTime().getTime().toLong(),
+        expireDate = expireDate?.let { if (it is Date) it.getTime().toLong() else 0 },
+    )
 
-private fun ByteArray.readPrivateKey(): Promise<PrivateKey> = readPrivateKey(
+}
+
+private fun ByteArray.readPrivateKey(): Promise<PrivateKey> = openpgp.readPrivateKey(
     unsafeJso {
-        if (isPGPArmored) {
-            armoredKey = decode()
+        if (isPGPArmored()) {
+            armoredKey = decodeToString()
         }
         else {
             binaryKey = toUint8Array()
@@ -150,109 +157,97 @@ private fun ByteArray.readPrivateKey(): Promise<PrivateKey> = readPrivateKey(
     },
 )
 
-public actual suspend fun ByteArray.privatePGPKeys(armored: Boolean): List<ByteArray> = readPrivateKeys(
+public actual suspend fun ByteArray.privatePGPKeys(armored: Boolean): List<ByteArray> = openpgp.readPrivateKeys(
     unsafeJso {
-        if (isPGPArmored) {
-            armoredKeys = decode()
+        if (isPGPArmored()) {
+            armoredKeys = decodeToString()
         }
         else {
             binaryKeys = toUint8Array()
         }
     },
-).then { it.map { if (armored) it.armor().encodeToByteArray() else it.write().toByteArray() } }.await()
+).await().let { privateKeys -> privateKeys.toList().map { privateKey -> if (armored) privateKey.armor().encodeToByteArray() else privateKey.write().toByteArray() } }
 
-private fun ByteArray.readKey(): Promise<Key> = readKey(
+private suspend fun ByteArray.readKey(): Key = openpgp.readKey(
     unsafeJso {
-        if (isPGPArmored) {
-            armoredKey = decode()
+        if (isPGPArmored()) {
+            armoredKey = decodeToString()
         }
         else {
             binaryKey = toUint8Array()
         }
     },
-)
+).await()
 
 public actual suspend fun ByteArray.publicPGPKey(armored: Boolean): ByteArray =
-    readKey().then(Key::toPublic).then { if (armored) it.armor().encodeToByteArray() else it.write().toByteArray() }.await()
+    readKey().toPublic().let { key -> if (armored) key.armor().encodeToByteArray() else key.write().toByteArray() }
 
-public actual suspend fun ByteArray.publicPGPKeys(armored: Boolean): List<ByteArray> = readKeys(
+public actual suspend fun ByteArray.publicPGPKeys(armored: Boolean): List<ByteArray> = openpgp.readKeys(
     unsafeJso {
-        if (isPGPArmored) {
-            armoredKeys = decode()
+        if (isPGPArmored()) {
+            armoredKeys = decodeToString()
         }
         else {
             binaryKeys = toUint8Array()
         }
     },
-).then { it.map { if (armored) it.armor().encodeToByteArray() else it.write().toByteArray() } }.await()
+).await().let { keys -> keys.toList().map { key -> if (armored) key.armor().encodeToByteArray() else key.write().toByteArray() } }
 
 public actual suspend fun ByteArray.changePGPKeyPassword(
     vararg oldPasswords: String,
     password: String?,
     armored: Boolean,
-): ByteArray = readPrivateKey().flatThen { k ->
-    decryptKey(
+): ByteArray = readPrivateKey().await().let { privateKey ->
+    openpgp.decryptKey(
         unsafeJso {
-            privateKey = k
+            this.privateKey = privateKey
             passphrase = arrayOf(*oldPasswords)
         },
     )
-}.flatThen { dk ->
-    if (password == null) {
-        Promise.resolve(dk)
-    }
-    else {
-        encryptKey(
-            unsafeJso {
-                privateKey = dk
-                passphrase = arrayOf(password)
-            },
-        )
-    }
-}.then {
-    if (armored) it.armor().encodeToByteArray() else it.write().toByteArray()
-}.await()
+}.await().let { decryptedKey ->
+    if (password == null) decryptedKey
+    else openpgp.encryptKey(
+        unsafeJso {
+            privateKey = decryptedKey
+            passphrase = arrayOf(password)
+        },
+    ).await()
+}.let { key ->
+    if (armored) key.armor().encodeToByteArray() else key.write().toByteArray()
+}
 
 @Suppress("UNCHECKED_CAST")
 public actual suspend fun ByteArray.revokePGPKey(
     vararg passwords: String,
     armored: Boolean,
-): ByteArray = readPrivateKey().flatThen {
-    if (it.isDecrypted()) {
-        Promise.resolve(it)
-    }
-    else {
-        decryptKey(
-            unsafeJso {
-                privateKey = it
-                passphrase = arrayOf(*passphrase)
-            },
-        )
-    }
-}.then {
-    revokeKey(
+): ByteArray = readPrivateKey().await().let { privateKey ->
+    if (privateKey.isDecrypted()) privateKey
+    else openpgp.decryptKey(
         unsafeJso {
-            key = it
+            this.privateKey = privateKey
+            passphrase = arrayOf(*passphrase)
+        },
+    ).await()
+}.let { key ->
+    openpgp.revokeKey(
+        unsafeJso {
+            this.key = key
             format = if (armored) "armored" else "binary"
         },
-    )
-}.then { if (armored) (it as String).encodeToByteArray() else (it as Uint8Array<ArrayBuffer>).toByteArray() }.await()
+    ).await()
+}.let { key -> if (armored) (key as JsString).toString().encodeToByteArray() else (key as Uint8Array<*>).toByteArray() }
 
 private suspend fun List<ByteArray>.readDecryptedKeys(passwords: List<String>?): Array<PrivateKey> =
     map {
-        it.readPrivateKey().flatThen {
-            if (it.isDecrypted()) {
-                Promise.resolve(it)
-            }
-            else {
-                decryptKey(
-                    unsafeJso {
-                        privateKey = it
-                        passphrase = passwords?.toTypedArray() ?: emptyArray()
-                    },
-                )
-            }
-        }.await()
+        it.readPrivateKey().await().let { privateKey ->
+            if (privateKey.isDecrypted()) privateKey
+            else openpgp.decryptKey(
+                unsafeJso {
+                    this.privateKey = privateKey
+                    passphrase = passwords?.toTypedArray() ?: emptyArray()
+                },
+            ).await()
+        }
     }.toTypedArray()
 
 public actual suspend fun ByteArray.encryptPGP(
@@ -262,56 +257,55 @@ public actual suspend fun ByteArray.encryptPGP(
     passwords: List<String>?,
     armored: Boolean,
     isText: Boolean,
-): ByteArray = encrypt(
+): ByteArray = openpgp.encrypt(
     unsafeJso {
-        message = createMessage(
+        message = openpgp.createMessage(
             unsafeJso {
                 if (isText) {
-                    text = this@encryptPGP.decodeToString()
+                    text = decodeToString()
                 }
                 else {
                     binary = this@encryptPGP
                 }
             },
         ).await()
-        this.encryptionKeys = encryptionKeys.map { it.readKey().await() }.toTypedArray()
+        this.encryptionKeys = encryptionKeys.map { encryptionKey -> encryptionKey.readKey() }.toTypedArray()
         signingKeys?.let { this.signingKeys = signingKeys.readDecryptedKeys(signingKeysPasswords) }
         passwords?.let {
             this.passwords = it.toTypedArray()
         }
         format = if (armored) "armored" else "binary"
     },
-).then { if (armored) (it as String).encodeToByteArray() else (it as Uint8Array<*>).toByteArray() }.await()
+).await().let { encrypted -> if (armored) (encrypted as JsString).toString().encodeToByteArray() else (encrypted as Uint8Array<*>).toByteArray() }
 
 public actual suspend fun ByteArray.decryptPGP(
     decryptionKeys: List<ByteArray>,
     decryptionKeysPasswords: List<String>?,
     verificationKeys: List<ByteArray>?,
     passwords: List<String>?,
-): PGPVerifiedResult = readMessage(
+): PGPVerifiedResult = openpgp.readMessage(
     unsafeJso {
-        if (isPGPArmored) {
-            armoredMessage = this@decryptPGP.decodeToString()
+        if (isPGPArmored()) {
+            armoredMessage = decodeToString()
         }
         else {
             binaryMessage = this@decryptPGP
         }
     },
 ).await().let {
-    decrypt(
+    openpgp.decrypt(
         unsafeJso {
             this.decryptionKeys = decryptionKeys.readDecryptedKeys(decryptionKeysPasswords)
             verificationKeys?.let {
-                this.verificationKeys = verificationKeys.map { it.readKey().await() }.toTypedArray()
+                this.verificationKeys = verificationKeys.map { verificationKey -> verificationKey.readKey() }.toTypedArray()
             }
             passwords?.let { this.passwords = it.toTypedArray() }
         },
-    ).await().let { dr ->
-        dr.signatures.map { PGPVerification(it.keyID.toHex(), it.verified.catch { false }.await()) }.let {
+    ).await().let { decryptVerifyMessageResult ->
+        decryptVerifyMessageResult.signatures.map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let { verifications ->
             PGPVerifiedResult(
-                (dr.data as String).encodeToByteArray(),
-                { it },
-            )
+                (decryptVerifyMessageResult.data as JsString).toString().encodeToByteArray(),
+            ) { verifications }
         }
     }
 }
@@ -322,24 +316,24 @@ public actual suspend fun ByteArray.signPGP(
     mode: PGPSignMode,
     detached: Boolean,
     armored: Boolean,
-): ByteArray = sign(
+): ByteArray = openpgp.sign(
     unsafeJso {
         message = when (mode) {
-            PGPSignMode.BINARY -> createMessage(
+            PGPSignMode.BINARY -> openpgp.createMessage(
                 unsafeJso {
                     binary = this@signPGP
                 },
             )
 
-            PGPSignMode.TEXT -> createMessage(
+            PGPSignMode.TEXT -> openpgp.createMessage(
                 unsafeJso {
-                    text = this@signPGP.decodeToString()
+                    text = decodeToString()
                 },
             )
 
-            PGPSignMode.CLEARTEXT_SIGN -> createCleartextMessage(
+            PGPSignMode.CLEARTEXT_SIGN -> openpgp.createCleartextMessage(
                 unsafeJso {
-                    text = decode()
+                    text = decodeToString()
                 },
             )
         }.await()
@@ -347,7 +341,7 @@ public actual suspend fun ByteArray.signPGP(
         this.detached = detached
         format = if (armored) "armored" else "binary"
     },
-).then { if (armored) (it as String).encodeToByteArray() else (it as Uint8Array<*>).toByteArray() }.await()
+).await().let { signed -> if (armored) (signed as JsString).toString().encodeToByteArray() else (signed as Uint8Array<*>).toByteArray() }
 
 public actual suspend fun ByteArray.verifyPGP(
     verificationKeys: List<ByteArray>,
@@ -358,47 +352,47 @@ public actual suspend fun ByteArray.verifyPGP(
         "Only one or zero signatures can be used to verify"
     }
 
-    return verify(
+    return openpgp.verify(
         unsafeJso {
             message = when (mode) {
-                PGPSignMode.BINARY -> createMessage(
+                PGPSignMode.BINARY -> openpgp.createMessage(
                     unsafeJso {
                         binary = this@verifyPGP
                     },
                 )
 
-                PGPSignMode.TEXT -> createMessage(
+                PGPSignMode.TEXT -> openpgp.createMessage(
                     unsafeJso {
-                        text = decode()
+                        text = decodeToString()
                     },
                 )
 
-                PGPSignMode.CLEARTEXT_SIGN -> createCleartextMessage(
+                PGPSignMode.CLEARTEXT_SIGN -> openpgp.createCleartextMessage(
                     unsafeJso {
-                        text = decode()
+                        text = decodeToString()
                     },
                 )
             }.await()
-            signatures?.first()?.let { s ->
-                signature = readSignature(
+
+            signatures?.first()?.let { signature ->
+                this.signature = openpgp.readSignature(
                     unsafeJso {
-                        if (s.isPGPArmored) {
-                            armoredSignature = s.decodeToString()
+                        if (signature.isPGPArmored()) {
+                            armoredSignature = signature.decodeToString()
                         }
                         else {
-                            binarySignature = s.toUint8Array()
+                            binarySignature = signature.toUint8Array()
                         }
                     },
                 ).await()
             }
-            this.verificationKeys = verificationKeys.map { it.readKey().await() }.toTypedArray()
+            this.verificationKeys = verificationKeys.map { verificationKey -> verificationKey.readKey() }.toTypedArray()
         },
-    ).await().let { vr ->
-        vr.signatures.map { PGPVerification(it.keyID.toHex(), it.verified.catch { false }.await()) }.let {
+    ).await().let { decryptVerifyMessageResult ->
+        decryptVerifyMessageResult.signatures.map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let {verifications ->
             PGPVerifiedResult(
-                if (mode == PGPSignMode.CLEARTEXT_SIGN) (vr.data as String).encodeToByteArray() else (vr.data as Uint8Array<*>).toByteArray(),
-                { it },
-            )
+                if (mode == PGPSignMode.CLEARTEXT_SIGN) (decryptVerifyMessageResult.data as JsString).toString().encodeToByteArray() else (decryptVerifyMessageResult.data as Uint8Array<*>).toByteArray(),
+            ) { verifications }
         }
     }
 }

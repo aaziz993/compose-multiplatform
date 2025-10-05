@@ -7,6 +7,7 @@ import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
 import klib.data.type.collections.bimap.BiMap
 import klib.data.type.collections.bimap.biMapOf
+import klib.data.type.collections.rangeEquals
 import klib.data.type.primitives.string.fuzzywuzzy.Applicable
 import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
@@ -173,7 +174,14 @@ private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
 public val String.extension: String?
     get() = EXTENSION_TEXT_REGEX.entries.find { (_, regex) -> regex.matches(this) }?.key
 
-public fun String.toTemporal(kClass: KClass<*>): Any =
+public fun <T> String.rangeEquals(
+    offset: Int,
+    other: String,
+    otherOffset: Int,
+    byteCount: Int,
+): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun String.toTime(kClass: KClass<*>): Any =
     when (kClass) {
         LocalTime::class -> LocalTime.parse(this)
         LocalDate::class -> LocalDate.parse(this)
@@ -201,7 +209,7 @@ public fun String.toPrimitive(kClass: KClass<*>): Any =
         String::class -> this
         BigInteger::class -> BigInteger.parseString(this)
         BigDecimal::class -> BigDecimal.parseString(this)
-        else -> toTemporal(kClass)
+        else -> toTime(kClass)
     }
 
 // /////////////////////////////////////////////////////MATCH///////////////////////////////////////////////////////////

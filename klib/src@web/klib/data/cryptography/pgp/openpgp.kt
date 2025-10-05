@@ -18,7 +18,7 @@ import kotlin.js.definedExternally
 @JsModule("openpgp")
 public external object openpgp {
 
-    public external fun generateKey(options: GenerateKeyOptions): Promise<dynamic>
+    public external fun generateKey(options: GenerateKeyOptions): Promise<GeneratedKey>
 
     public external fun readKey(options: ReadKeyOptions): Promise<Key>
 
@@ -32,13 +32,13 @@ public external object openpgp {
 
     public external fun decryptKey(options: EncryptDecryptKeyOptions): Promise<PrivateKey>
 
-    public external fun revokeKey(options: RevokeKeyOptions): Promise<dynamic>
+    public external fun revokeKey(options: RevokeKeyOptions): Promise<JsAny>
 
     public external fun createMessage(options: CreateMessageOptions): Promise<Message>
 
     public external fun createCleartextMessage(options: CreateCleartextMessageOptions): Promise<CleartextMessage>
 
-    public external fun encrypt(options: EncryptOptions): Promise<dynamic>
+    public external fun encrypt(options: EncryptOptions): Promise<JsAny>
 
     public external fun readMessage(options: ReadMessageOptions): Promise<Message>
 
@@ -49,6 +49,14 @@ public external object openpgp {
     public external fun verify(options: VerifyOptions): Promise<DecryptVerifyMessageResult>
 
     public external fun readSignature(options: ReadSignatureOptions): Promise<Signature>
+}
+
+@JsPlainObject
+public external interface GeneratedKey : JsAny {
+
+    public val privateKey: JsAny // PrivateKey | Uint8Array | String
+    public val publicKey: JsAny  // PublicKey | Uint8Array | String
+    public val revocationCertificate: String
 }
 
 @JsPlainObject
@@ -192,7 +200,7 @@ public external interface VerificationResult : JsAny {
 @JsPlainObject
 public external interface DecryptVerifyMessageResult : JsAny {
 
-    public var data: dynamic
+    public var data: JsAny
     public var signatures: Array<VerificationResult>
 }
 

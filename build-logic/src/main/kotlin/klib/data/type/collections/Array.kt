@@ -140,12 +140,26 @@ public fun ByteArray.rangeEquals(
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
 
+public fun ByteArray.startsWith(prefix: ByteArray): Boolean =
+    rangeEquals(0, prefix, 0, prefix.size)
+
+public fun ByteArray.endsWith(suffix: ByteArray): Boolean =
+    rangeEquals(size - suffix.size, suffix, 0, suffix.size)
+
+
 public fun ShortArray.rangeEquals(
     offset: Int,
     other: ShortArray,
     otherOffset: Int,
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun ShortArray.startsWith(prefix: ShortArray): Boolean =
+    rangeEquals(0, prefix, 0, prefix.size)
+
+public fun ShortArray.endsWith(suffix: ShortArray): Boolean =
+    rangeEquals(size - suffix.size, suffix, 0, suffix.size)
+
 
 public fun IntArray.rangeEquals(
     offset: Int,
@@ -154,12 +168,26 @@ public fun IntArray.rangeEquals(
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
 
+public fun IntArray.startsWith(prefix: IntArray): Boolean =
+    rangeEquals(0, prefix, 0, prefix.size)
+
+public fun IntArray.endsWith(suffix: IntArray): Boolean =
+    rangeEquals(size - suffix.size, suffix, 0, suffix.size)
+
+
 public fun LongArray.rangeEquals(
     offset: Int,
     other: LongArray,
     otherOffset: Int,
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun LongArray.startsWith(prefix: LongArray): Boolean =
+    rangeEquals(0, prefix, 0, prefix.size)
+
+public fun LongArray.endsWith(suffix: LongArray): Boolean =
+    rangeEquals(size - suffix.size, suffix, 0, suffix.size)
+
 
 public fun FloatArray.rangeEquals(
     offset: Int,
@@ -168,12 +196,26 @@ public fun FloatArray.rangeEquals(
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
 
+public fun FloatArray.startsWith(prefix: FloatArray): Boolean =
+    rangeEquals(0, prefix, 0, prefix.size)
+
+public fun FloatArray.endsWith(suffix: FloatArray): Boolean =
+    rangeEquals(size - suffix.size, suffix, 0, suffix.size)
+
+
 public fun DoubleArray.rangeEquals(
     offset: Int,
     other: DoubleArray,
     otherOffset: Int,
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
+
+public fun DoubleArray.startsWith(prefix: DoubleArray): Boolean =
+    rangeEquals(0, prefix, 0, prefix.size)
+
+public fun DoubleArray.endsWith(suffix: DoubleArray): Boolean =
+    rangeEquals(size - suffix.size, suffix, 0, suffix.size)
+
 
 public fun CharArray.rangeEquals(
     offset: Int,
@@ -182,3 +224,8 @@ public fun CharArray.rangeEquals(
     byteCount: Int,
 ): Boolean = rangeEquals(::get, offset, other::get, otherOffset, byteCount)
 
+public fun CharArray.startsWith(prefix: CharArray): Boolean =
+    rangeEquals(0, prefix, 0, prefix.size)
+
+public fun CharArray.endsWith(suffix: CharArray): Boolean =
+    rangeEquals(size - suffix.size, suffix, 0, suffix.size)
