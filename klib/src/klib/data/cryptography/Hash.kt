@@ -1,6 +1,6 @@
 package klib.data.cryptography
 
-import klib.data.type.cryptography.model.HashAlgorithm
+import klib.data.cryptography.model.HashAlgorithm
 import dev.whyoleg.cryptography.CryptographyAlgorithmId
 import dev.whyoleg.cryptography.CryptographyProvider
 import dev.whyoleg.cryptography.algorithms.Digest

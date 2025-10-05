@@ -70,18 +70,18 @@ public actual suspend fun generatePGPKey(
             type = keyType
             curve?.let { this.curve = it }
             rsaBits?.let { rsaBits = it }
-            subKeys.takeIfNotEmpty()?.let {
-                subkeys = it.map {
+            subKeys.takeIfNotEmpty()?.let { subKeys ->
+                this.subkeys = subKeys.map { subKey ->
                     unsafeJso<SubkeyOptions> {
-                        when (it.key) {
+                        when (subKey.key) {
                             is ECC -> {
                                 type = "ecc"
-                                curve = CURVES[it.key.curve]
+                                curve = CURVES[subKey.key.curve]
                             }
 
                             is RSA -> {
                                 type = "rsa"
-                                rsaBits = it.key.size.toDouble()
+                                rsaBits = subKey.key.size.toDouble()
                             }
 
                             null -> {
@@ -90,15 +90,15 @@ public actual suspend fun generatePGPKey(
                                 this.rsaBits = rsaBits
                             }
                         }
-                        sign = it.sign
+                        sign = subKey.sign
                     }
                 }.toTypedArray()
             }
-            this.userIDs = userIDs.map { uid ->
+            this.userIDs = userIDs.map { userId ->
                 unsafeJso<UserID> {
-                    uid.name?.let { name = it }
-                    uid.comment?.let { comment = it }
-                    uid.email?.let { email = it }
+                    userId.name?.let { name = it }
+                    userId.comment?.let { comment = it }
+                    userId.email?.let { email = it }
                 }
             }.toTypedArray()
             expireDate?.let { keyExpirationTime = it.toDouble() }
@@ -389,7 +389,7 @@ public actual suspend fun ByteArray.verifyPGP(
             this.verificationKeys = verificationKeys.map { verificationKey -> verificationKey.readKey() }.toTypedArray()
         },
     ).await().let { decryptVerifyMessageResult ->
-        decryptVerifyMessageResult.signatures.map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let {verifications ->
+        decryptVerifyMessageResult.signatures.map { result -> PGPVerification(result.keyID.toHex(), result.verified.catch { false.toJsBoolean() }.await().toBoolean()) }.let { verifications ->
             PGPVerifiedResult(
                 if (mode == PGPSignMode.CLEARTEXT_SIGN) (decryptVerifyMessageResult.data as JsString).toString().encodeToByteArray() else (decryptVerifyMessageResult.data as Uint8Array<*>).toByteArray(),
             ) { verifications }
