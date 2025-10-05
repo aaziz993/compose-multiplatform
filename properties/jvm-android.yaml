@@ -25,6 +25,7 @@ script:
             ("jvmAndroidTest") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["mockk"])
+                implementation(libs["mockito.kotlin"])
                 implementation(libs["truth"])
                 implementation(libs["kotlinx.knit.test"])
               }

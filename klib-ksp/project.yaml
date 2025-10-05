@@ -1,0 +1,18 @@
+imports:
+  - ../properties/kotlin/mpp/mpp.yaml
+  - ../properties/kotlin/targets/jvm/jvm.yaml
+  - ../properties/shadow.yaml
+  - ../properties/publish.yaml
+description: Source generator.
+script:
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("jvmMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs["symbol.processing.api"])
+                implementation(libs.bundles("kotlinpoet"))
+                implementation(libs["auto.service"])
+                implementation(libs.bundles("kctfork"))
+              }
+            }
