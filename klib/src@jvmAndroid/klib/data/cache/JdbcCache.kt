@@ -3,6 +3,7 @@ package klib.data.cache
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
+import kotlin.use
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 

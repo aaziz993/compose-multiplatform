@@ -15,7 +15,7 @@ public interface CoroutineCache<K, V> {
 
     public suspend fun clear()
 
-    public suspend fun asMap(): Map<in K, V>
+    public suspend fun asMap(): Map<K, V>
 }
 
 private object NoCoroutineCache : CoroutineCache<Nothing, Nothing> {

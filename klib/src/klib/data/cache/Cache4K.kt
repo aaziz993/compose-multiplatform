@@ -12,5 +12,5 @@ public class Cache4K<K : Any, V : Any>(
 
     override fun clear(): Unit = cache.invalidateAll()
 
-    override fun asMap(): Map<in K, V> = cache.asMap()
+    override fun asMap(): Map<K, V> = cache.asMap() as Map<K, V>
 }

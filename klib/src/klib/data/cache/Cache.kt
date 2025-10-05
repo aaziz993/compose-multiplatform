@@ -19,7 +19,7 @@ public interface Cache<K, V> {
 
     public fun clear()
 
-    public fun asMap(): Map<in K, V>
+    public fun asMap(): Map<K, V>
 }
 
 private object NoCache : Cache<Nothing, Nothing> {
@@ -62,7 +62,7 @@ private class CacheCoroutineCache<K, V>(
         cache.clear()
     }
 
-    override suspend fun asMap(): Map<in K, V> = withContext(dispatcher) {
+    override suspend fun asMap(): Map<K, V> = withContext(dispatcher) {
         cache.asMap()
     }
 }

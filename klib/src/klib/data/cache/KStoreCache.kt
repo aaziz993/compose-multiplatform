@@ -14,5 +14,5 @@ public open class KStoreCache<K, V>(
 
     override suspend fun clear(): Unit = store.delete()
 
-    override suspend fun asMap(): Map<in K, V> = store.get()!!
+    override suspend fun asMap(): Map<K, V> = store.get()!!
 }

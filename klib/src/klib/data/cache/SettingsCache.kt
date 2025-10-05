@@ -27,7 +27,7 @@ public class SettingsCache<K : Any, V : Any>(
         { Json.Default.decodeFromString(keyKClass.serializer(), it) }
     }
 
-    private val toMap: () -> Map<in K, V> = when (valueKClass) {
+    private val toMap: () -> Map<K, V> = when (valueKClass) {
         Boolean::class -> {
             { settings.keys.associate { key -> outKey(key) to settings.getBooleanOrNull(key)!! as V } }
         }
@@ -93,5 +93,5 @@ public class SettingsCache<K : Any, V : Any>(
 
     override fun clear(): Unit = settings.clear()
 
-    override fun asMap(): Map<in K, V> = toMap()
+    override fun asMap(): Map<K, V> = toMap()
 }

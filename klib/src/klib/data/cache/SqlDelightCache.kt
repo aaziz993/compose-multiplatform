@@ -26,7 +26,7 @@ public class SqlDelightCache<K : Any, V : Any>(
         { Json.Default.decodeFromString(keyKClass.serializer(), it) }
     }
 
-    private val toMap: suspend () -> Map<in K, V> =
+    private val toMap: suspend () -> Map<K, V> =
         if (valueKClass == Any::class) {
             {
                 queries.transactionWithResult {
@@ -63,5 +63,5 @@ public class SqlDelightCache<K : Any, V : Any>(
         queries.deleteAll()
     }
 
-    override suspend fun asMap(): Map<in K, V> = toMap()
+    override suspend fun asMap(): Map<K, V> = toMap()
 }
