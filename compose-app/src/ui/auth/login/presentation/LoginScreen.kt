@@ -1,5 +1,7 @@
 package ui.auth.login.presentation
 
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import clib.presentation.components.navigation.model.NavigationRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -12,6 +14,11 @@ public fun LoginScreen(
     navigateTo: (route: NavigationRoute<NavRoute, *>) -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
+    Button({
+//        navigateTo(ForgotPassword("aziz"))
+    }){
+        Text("Forgot")
+    }
 }
 
 @Preview

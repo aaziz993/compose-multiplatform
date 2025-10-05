@@ -167,7 +167,7 @@ kotlinpoet = "2.2.0"
 # a configuration/metadata generator for java.util.ServiceLoader-style service providers.
 auto-service = "1.1.1"
 # multiplatform logging.
-km-logging = "2.0.3"
+diamondedge-logging = "2.0.3"
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = "0.29.0"
 # human-readable.
@@ -539,7 +539,7 @@ kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlin
 # a configuration/metadata generator for java.util.ServiceLoader-style service providers.
 auto-service = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
 # logging library targeting Android, iOS, JVM, WasmJS and JS.
-km-logging = { module = "com.diamondedge:logging", version.ref = "km-logging" }
+diamondedge-logging = { module = "com.diamondedge:logging", version.ref = "diamondedge-logging" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 # human-readable.

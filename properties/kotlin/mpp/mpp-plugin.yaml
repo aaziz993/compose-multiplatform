@@ -9,7 +9,7 @@ script:
               sourceSet.kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 
               sourceSet.dependencies {
-                // implementation(libs["km.logging"])
+                implementation(libs["diamondedge.logging"])
                 implementation(libs["kotlinx.datetime"])
                 implementation(libs["kcron.common"])
                 implementation(libs["bignum"])

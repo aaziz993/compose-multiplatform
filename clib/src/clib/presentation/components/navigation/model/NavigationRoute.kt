@@ -135,12 +135,6 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
         }
     }
 
-    private fun concatenateTypeMap(typeMap: Map<KType, NavType<*>>) = typeMap + this.typeMap
-
-    private fun concatenateDeepLinks(deepLinks: List<String>) =
-        if (deepLinks.isEmpty()) this.deepLinks
-        else deepLinks.flatMap { basePath0 -> this.deepLinks.map { basePath1 -> "$basePath0/$basePath1" } }
-
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
         navController: NavController,
@@ -184,6 +178,12 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
             { selectedItem.badge?.invoke(Modifier) },
         )
     }
+
+    private fun concatenateTypeMap(typeMap: Map<KType, NavType<*>>) = typeMap + this.typeMap
+
+    private fun concatenateDeepLinks(deepLinks: List<String>) =
+        if (deepLinks.isEmpty()) this.deepLinks
+        else deepLinks.flatMap { basePath0 -> this.deepLinks.map { basePath1 -> "$basePath0/$basePath1" } }
 
     private fun isSelected(currentDestination: NavDestination?): Boolean =
         currentDestination?.hierarchy?.any { destination -> destination.hasRoute(this::class) } == true

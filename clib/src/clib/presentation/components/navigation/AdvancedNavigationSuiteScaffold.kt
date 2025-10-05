@@ -76,7 +76,6 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
     }
 
     var title: String by remember { mutableStateOf(startDestination.label) }
-
     // Dynamically set title on navigation.
     navController.addOnDestinationChangedListener { _, destination, _ ->
         title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
