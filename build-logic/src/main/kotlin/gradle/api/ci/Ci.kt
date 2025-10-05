@@ -32,6 +32,8 @@ public sealed class Ci {
 
     public abstract var dependenciesCheck: Boolean
 
+    public abstract var licenseeCheck: Boolean
+
     public abstract var formatCheck: Boolean
 
     public abstract var qualityCheck: Boolean
@@ -54,6 +56,7 @@ public sealed class Ci {
 
     public class Github internal constructor(
         override var dependenciesCheck: Boolean = true,
+        override var licenseeCheck: Boolean = true,
         override var formatCheck: Boolean = true,
         override var qualityCheck: Boolean = true,
         override var coverageReport: Boolean = true,
@@ -88,6 +91,7 @@ public sealed class Ci {
 
     public class TeamCity internal constructor(
         override var dependenciesCheck: Boolean = true,
+        override var licenseeCheck: Boolean = true,
         override var formatCheck: Boolean = true,
         override var qualityCheck: Boolean = true,
         override var coverageReport: Boolean = true,

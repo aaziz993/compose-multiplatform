@@ -75,15 +75,17 @@ doctor = "0.12.1"
 # ktlint.
 gradle-ktlint = "13.1.0"
 # software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
-dependencycheck = "12.1.5"
+dependencycheck = "12.1.6"
+# validates the licenses of your dependency graph match what you expect, or it fails your build.
+licensee = "1.13.0"
 # gives the data to speed up your build, improve build reliability and accelerate build debugging.
-develocity = "4.2" # Should be compatible with our server: ge.jetbrains.com
+develocity = "4.2.1" # Should be compatible with our server: ge.jetbrains.com
 # enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
 develocityCommonCustomUserData = "2.4.0"
 # provides a repository for downloading JVMs.
 foojayResolverConvention = "1.0.0"
 # creates fat/uber JARs with support for package relocation.
-shadow = "9.1.0"
+shadow = "9.2.2"
 # generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin.
 buildconfig = "5.6.8"
 # string and image resource generation.
@@ -1394,6 +1396,8 @@ doctor = { id = "com.osacky.doctor", version.ref = "doctor" }
 gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
 # software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
 dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }
+# validates the licenses of your dependency graph match what you expect, or it fails your build.
+licensee = { id = "app.cash.licensee", version.ref = "licensee" }
 # gives you the data to speed up your build, improve build reliability and accelerate build debugging.
 develocity = { id = "com.gradle.develocity", version.ref = "develocity" }
 # enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.

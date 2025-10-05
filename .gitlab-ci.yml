@@ -36,6 +36,13 @@ dependency-check:
   script:
     - ./gradlew ciDependencyCheckAnalyze
 
+licensee:
+  stage: licensee
+  image: gradle:8.4-jdk23
+  needs: [setup]
+  script:
+    - ./gradlew ciLicensee
+
 #-------------------------------------------------------------------------------#
 #            Format & Quality Check                                             #
 #-------------------------------------------------------------------------------#

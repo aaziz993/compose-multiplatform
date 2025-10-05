@@ -1,0 +1,9 @@
+config:
+  imports:
+    - gradle.api.licensee.*
+script:
+  - plugins:
+      - id: (libs.plugins("licensee").pluginId)
+  - licensee:
+      - allow: ("Apache-2.0")
+      - allow: ("MIT")

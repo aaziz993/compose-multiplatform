@@ -104,6 +104,8 @@ dependencies {
     implementation(libs.plugins.foojayResolverConvention.toDep())
     // software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
     implementation(libs.plugins.dependencycheck.toDep())
+    // validates the licenses of your dependency graph match what you expect, or it fails your build.
+    implementation(libs.plugins.licensee.toDep())
     // creates fat/uber JARs with support for package relocation.
     implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
     // set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.

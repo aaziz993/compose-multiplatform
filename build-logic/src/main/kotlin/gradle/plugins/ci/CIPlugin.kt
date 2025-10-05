@@ -31,9 +31,7 @@ public class CIPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            CI?.run {
-                configureTasks()
-            }
+            CI?.configureTasks()
         }
     }
 
@@ -43,6 +41,14 @@ public class CIPlugin : Plugin<Project> {
             tasks.register("ciDependencyCheckAnalyze") {
                 group = "ci"
                 dependsOn(tasks.named("dependencyCheckAnalyze"))
+                onlyIf { dependenciesCheck }
+            }
+        }
+
+        pluginManager.withPlugin("app.cash.licensee") {
+            tasks.register("ciLicensee") {
+                group = "ci"
+                dependsOn(tasks.named("licensee"))
                 onlyIf { dependenciesCheck }
             }
         }

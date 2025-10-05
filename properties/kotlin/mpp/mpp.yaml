@@ -1,6 +1,7 @@
 imports:
   - ../../root.yaml
   - ../../dependencycheck.yaml
+  - ../../licensee.yaml
   - ../../buildconfig.yaml
   - ../../spotless.yaml
   - ../../sonar.yaml

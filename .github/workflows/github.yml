@@ -66,6 +66,10 @@ jobs:
         name: 🔬 Run Dependency Analysis
         run: ./gradlew ciDependencyCheckAnalyze
 
+      - id: licensee
+        name: 🔬 Run Dependency Licenses check
+        run: ./gradlew ciLicensee
+
   #-------------------------------------------------------------------------------#
   #            Format & Quality Check                                             #
   #-------------------------------------------------------------------------------#
