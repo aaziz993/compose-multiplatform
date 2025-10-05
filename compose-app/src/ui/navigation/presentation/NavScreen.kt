@@ -6,7 +6,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -35,14 +34,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.viewmodel.NavigationAction
-import clib.presentation.fabNestedScrollConnection
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject

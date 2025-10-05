@@ -1,3 +1,5 @@
+@file:Suppress("ComposeCompositionLocalUsage")
+
 package clib.presentation.theme
 
 import androidx.compose.runtime.Composable
@@ -11,10 +13,9 @@ import clib.presentation.theme.model.Theme
 
 public var customAppTheme: Theme? by mutableStateOf(null)
 
-@Suppress("ComposeCompositionLocalUsage")
-private val LocalTheme = staticCompositionLocalOf<Theme> { noLocalProvidedFor("LocalTheme") }
-
 public object LocalAppTheme {
+
+    private val LocalTheme = staticCompositionLocalOf<Theme> { noLocalProvidedFor("LocalTheme") }
 
     /** Returns the current [Theme] in composition. */
     public val current: Theme

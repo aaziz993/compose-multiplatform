@@ -275,7 +275,7 @@ public actual suspend fun ByteArray.encryptPGP(
         this.encryptionKeys = encryptionKeys.map { encryptionKey -> encryptionKey.readKey() }.toJsArray()
         signingKeys?.let { this.signingKeys = signingKeys.readDecryptedKeys(signingKeysPasswords).toJsArray() }
         passwords?.let {
-            this.passwords = it.toTypedArray()
+            this.passwords = it.map(String::toJsString).toJsArray()
         }
         format = if (armored) "armored" else "binary"
     },
