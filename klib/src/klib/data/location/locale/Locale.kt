@@ -1,5 +1,7 @@
 package klib.data.location.locale
 
+import klib.data.location.country.Country
+
 public data class Locale(
     private val languageTag: LanguageTag,
 ) {
@@ -20,6 +22,8 @@ public data class Locale(
         get() = languageTag.variants
 
     public fun toLanguageTag(): LanguageTag = languageTag
+
+    public fun country(): Country? = languageTag.region?.let(Country::forCodeOrNull)
 
     override fun toString(): String = languageTag.toString()
 
@@ -76,9 +80,7 @@ public expect val Locale.Companion.current: Locale
 
 public expect fun Locale.Companion.setCurrent(locale: Locale?)
 
-public fun String.toLocale(): Locale =
-    Locale.forLanguage(this)
+public fun String.toLocale(): Locale = Locale.forLanguage(this)
 
-public fun String.toLocaleOrNull(): Locale? =
-    Locale.forLanguageOrNull(this)
+public fun String.toLocaleOrNull(): Locale? = Locale.forLanguageOrNull(this)
 

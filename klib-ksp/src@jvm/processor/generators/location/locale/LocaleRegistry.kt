@@ -50,24 +50,17 @@ public fun generateLocaleRegistry(
     val items = languages
         .filter { it.alpha3b.length == 3 }
         .map { language ->
-            val alpha2 = language.alpha2
-            val alpha3b = language.alpha3b
-            val alpha3t = language.alpha3t
-
             CodeBlock.builder().apply {
-                add("%T(%S) to {\n", alpha3Class, alpha3b)
+                add("%T(%S) to {\n", alpha3Class, language.alpha3b)
                 indent()
                 add("Locale(\n")
                 indent()
                 add("languageTag = LanguageTagRegistry.languageTags.find { tag ->\n")
                 indent()
                 add("val languageTag = tag()\n")
-                if (alpha3t != null) add("languageTag.language == %S || languageTag.language == %S\n", alpha3b, alpha3t)
-                else add("languageTag.language == %S\n", alpha3b)
-                unindent()
-                add("}?.invoke() ?: LanguageTagRegistry.languageTags.find { tag ->\n")
-                indent()
-                add("tag().language == %S\n", alpha2)
+                add("languageTag.language == %S\n", language.alpha3b)
+                language.alpha3t?.let { add("|| languageTag.language == %S\n", it) }
+                language.alpha2?.let { add("|| languageTag.language == %S\n", it) }
                 unindent()
                 add("}!!(),\n")
                 unindent()
