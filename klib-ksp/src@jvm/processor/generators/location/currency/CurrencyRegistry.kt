@@ -4,6 +4,7 @@ package processor.generators.location.currency
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.CodeGenerator
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
@@ -15,18 +16,19 @@ import com.squareup.kotlinpoet.asClassName
 import java.io.File
 import klib.data.processing.Logger
 import klib.data.processing.model.ClassData
-import klib.data.processing.model.CompilerClass
+import klib.data.processing.model.builder
 import klib.data.processing.writeToWithOverride
 import kotlinx.serialization.json.Json
 import processor.CompilerOptions
 
+// https://github.com/ourworldincode/currency/blob/main/currencies.json
 public fun generateCurrencyRegistry(
     logger: Logger,
     codeGenerator: CodeGenerator,
     options: CompilerOptions
 ) {
 
-    val file = File(options.kspResourcesDir).resolve("iso/currencies.json")
+    val file = File(options.kspResourcesDir).resolve("iso/currency/currencies.json")
     if (!file.exists()) {
         logger.error("Currencies file not found at '$file'")
         return
@@ -34,24 +36,26 @@ public fun generateCurrencyRegistry(
 
     logger.info("Generating CurrencyRegistry...")
 
-    val currencies: List<Currency> = Json.decodeFromString(file.readText())
+    val currencies: Map<String, Currency> = Json.decodeFromString(file.readText())
 
     val classData = ClassData(
         name = "CurrencyRegistry",
         packageName = "klib.data.location.currency",
         imports = setOf(
-            "klib.data.location.currency.Currency",
             "klib.data.iso.Alpha3Letter",
         ),
     )
 
-    val items = currencies.map { currency ->
+    val alpha3Class = ClassName("klib.data.iso", "Alpha3Letter")
+
+    val items = currencies.map { (code, currency) ->
         CodeBlock.builder().apply {
-            add("Alpha3Letter(%S) to {\n", currency.demonym)
+            add("%T(%S) to {\n", alpha3Class, code.lowercase())
             indent()
             add("Currency(\n")
             indent()
             currency.name?.let { add("name = %S,\n", it) }
+            add("code = Alpha3Letter(%S),\n", currency.demonym)
             add("demonym = %S,\n", currency.demonym)
             currency.majorSingle?.let { add("majorSingle = %S,\n", it) }
             currency.majorPlural?.let { add("majorPlural = %S,\n", it) }
@@ -74,8 +78,8 @@ public fun generateCurrencyRegistry(
     val mapSpec = PropertySpec.builder(
         "currencies",
         Map::class.asClassName().parameterizedBy(
-            CompilerClass("Alpha3Letter", "klib.data.iso", "").toClassName(),
-            LambdaTypeName.get(returnType = CompilerClass("Currency", "klib.data.location.currency", "").toClassName()),
+            ClassName("klib.data.iso", "Alpha3Letter"),
+            LambdaTypeName.get(returnType = ClassName("klib.data.location.currency", "Currency")),
         ),
     ).initializer(
         CodeBlock.builder().apply {
@@ -87,7 +91,7 @@ public fun generateCurrencyRegistry(
         }.build(),
     ).addModifiers(KModifier.PUBLIC).build()
 
-    val fileSpec = FileSpec.builder(classData.packageName, classData.name)
+    val fileSpec = FileSpec.builder(classData)
         .addType(
             TypeSpec.objectBuilder("CurrencyRegistry")
                 .addProperty(mapSpec)

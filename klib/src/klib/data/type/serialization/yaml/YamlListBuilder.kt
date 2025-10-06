@@ -146,7 +146,7 @@ public inline fun buildYamlList(
     path: YamlPath = YamlPath(),
     sequenceBlockIndent: Int = Yaml.SEQUENCE_BLOCK_INDENT,
     encodingIndentationSize: Int = Yaml.ENCODING_INDENTATION_SIZE,
-    builderAction: YamlListBuilder.() -> Unit
+    @BuilderInference builderAction: YamlListBuilder.() -> Unit
 ): YamlList {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     val builder = YamlListBuilder(path, sequenceBlockIndent, encodingIndentationSize)

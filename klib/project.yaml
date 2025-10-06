@@ -37,5 +37,4 @@ script:
             }
   - ksp:
       - arg: ("kspResourcesDir", projectDir.resolve("kspResources").path)
-  - dependencies:
-      - add: ("kspCommonMainMetadata", dependencies.project(":klib-ksp"))
+      - dependencies: (dependencies.project(":klib-ksp"))

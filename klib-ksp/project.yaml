@@ -14,5 +14,6 @@ script:
                 implementation(libs.bundles("kotlinpoet"))
                 implementation(libs["auto.service"])
                 implementation(libs.bundles("kctfork"))
+                implementation(libs["ktorfit.ksp"])
               }
             }

@@ -1,8 +1,10 @@
 package klib.data.location.country
 
+import klib.data.iso.Alpha3Letter
+
 public data class Country(
     val name: String,
-    val alpha2: Alpha2Letter,
+    val alpha2: klib.data.iso.Alpha2Letter,
     val alpha3: Alpha3Letter,
     val countryCode: Int,
     val iso31662: String? = null,
@@ -19,22 +21,22 @@ public data class Country(
     public companion object {
 
         // https://www.iso.org/obp/ui/
-        public fun forCode(code: Alpha2Letter): Country =
+        public fun forCode(code: klib.data.iso.Alpha2Letter): Country =
             forCodeOrNull(code) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
-        public fun forCodeOrNull(code: Alpha2Letter): Country? = CountryRegistry.countries[code]?.invoke()
+        public fun forCodeOrNull(code: klib.data.iso.Alpha2Letter): Country? = CountryRegistry.countries[code]?.invoke()
 
         public fun forCode(code: String): Country =
-            forCodeOrNull(Alpha2Letter.parse(code)) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
+            forCodeOrNull(_root_ide_package_.klib.data.iso.Alpha2Letter.parse(code)) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
         public fun forCodeOrNull(code: String): Country? =
-            Alpha2Letter.parseOrNull(code)?.let(::forCodeOrNull)
+            _root_ide_package_.klib.data.iso.Alpha2Letter.parseOrNull(code)?.let(::forCodeOrNull)
     }
 }
 
-public fun Alpha2Letter.toCountry(): Country = Country.forCode(this)
+public fun klib.data.iso.Alpha2Letter.toCountry(): Country = Country.forCode(this)
 
-public fun Alpha2Letter.toCountryOrNull(): Country? = Country.forCodeOrNull(this)
+public fun klib.data.iso.Alpha2Letter.toCountryOrNull(): Country? = Country.forCodeOrNull(this)
 
 public fun String.toCountry(): Country = Country.forCode(this)
 

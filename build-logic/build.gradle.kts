@@ -43,6 +43,7 @@ kotlin {
                 "org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalWasmDsl",
                 "kotlin.RequiresOptIn",
+                "kotlin.experimental.ExperimentalTypeInference",
                 "kotlin.ExperimentalSubclassOptIn",
                 "kotlin.ExperimentalStdlibApi",
                 "kotlin.ExperimentalUnsignedTypes",

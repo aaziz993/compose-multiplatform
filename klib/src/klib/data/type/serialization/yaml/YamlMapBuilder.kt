@@ -142,7 +142,7 @@ public inline fun buildYamlMap(
     path: YamlPath = YamlPath(YamlPathSegment.Root),
     encodingIndentationSize: Int = Yaml.ENCODING_INDENTATION_SIZE,
     sequenceBlockIndent: Int = Yaml.SEQUENCE_BLOCK_INDENT,
-    builderAction: YamlMapBuilder.() -> Unit
+    @BuilderInference builderAction: YamlMapBuilder.() -> Unit
 ): YamlMap {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     val builder = YamlMapBuilder(path, encodingIndentationSize, sequenceBlockIndent)

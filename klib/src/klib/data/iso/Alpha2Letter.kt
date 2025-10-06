@@ -1,4 +1,4 @@
-package klib.data.location.country
+package klib.data.iso
 
 import klib.data.type.primitives.string.isLatinLetter
 import kotlin.jvm.JvmInline

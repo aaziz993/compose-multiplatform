@@ -8,7 +8,7 @@ public data class Currency(
     val demonym: String,
     val majorSingle: String? = null,
     val majorPlural: String? = null,
-    val ISOnum: Int,
+    val ISOnum: Int? = null,
     val symbol: String? = null,
     val symbolNative: String? = null,
     val minorSingle: String? = null,

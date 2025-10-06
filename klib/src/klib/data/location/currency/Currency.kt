@@ -1,14 +1,14 @@
 package klib.data.location.currency
 
-import klib.data.location.country.Alpha3Letter
+import klib.data.iso.Alpha3Letter
 
-// https://github.com/ourworldincode/currency/blob/main/currencies.json
 public data class Currency(
+    val code: Alpha3Letter,
     val name: String? = null,
-    val demonym: Alpha3Letter,
+    val demonym: String,
     val majorSingle: String? = null,
     val majorPlural: String? = null,
-    val ISOnum: Int,
+    val ISOnum: Int? = null,
     val symbol: String? = null,
     val symbolNative: String? = null,
     val minorSingle: String? = null,
@@ -26,14 +26,11 @@ public data class Currency(
         public fun forCode(code: Alpha3Letter): Currency =
             forCodeOrNull(code) ?: error("Invalid ISO 4217 currency code: $code")
 
-
         public fun forCodeOrNull(code: Alpha3Letter): Currency? =
-            CurrencyRegistry.currencies[code]
-
+            CurrencyRegistry.currencies[code]?.invoke()
 
         public fun forCode(code: String): Currency =
             forCodeOrNull(Alpha3Letter(code)) ?: error("Invalid ISO 4217 currency code: $code")
-
 
         public fun forCodeOrNull(code: String): Currency? = forCodeOrNull(Alpha3Letter(code))
     }

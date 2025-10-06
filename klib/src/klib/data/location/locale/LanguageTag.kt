@@ -500,10 +500,6 @@ public data class LanguageTag(
                 variants = variants.orEmpty(),
             )
         }
-
-        public fun forRegion(region: String): LanguageTag = forRegionOrNull(region) ?: error("Invalid region: $region")
-
-        public fun forRegionOrNull(region: String): LanguageTag? = LanguageTagRegistry.languageTags[region]?.invoke()
     }
 }
 

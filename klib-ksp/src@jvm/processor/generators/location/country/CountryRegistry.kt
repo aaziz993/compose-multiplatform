@@ -4,6 +4,7 @@ package processor.generators.location.country
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.CodeGenerator
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
@@ -15,7 +16,7 @@ import com.squareup.kotlinpoet.asClassName
 import java.io.File
 import klib.data.processing.Logger
 import klib.data.processing.model.ClassData
-import klib.data.processing.model.CompilerClass
+import klib.data.processing.model.builder
 import klib.data.processing.writeToWithOverride
 import kotlinx.serialization.json.Json
 import processor.CompilerOptions
@@ -27,7 +28,7 @@ public fun generateCountryRegistry(
     options: CompilerOptions
 ) {
 
-    val file = File(options.kspResourcesDir).resolve("iso/countries.json")
+    val file = File(options.kspResourcesDir).resolve("iso/country/countries.json")
     if (!file.exists()) {
         logger.error("Countries file not found at '$file'")
         return
@@ -41,21 +42,23 @@ public fun generateCountryRegistry(
         name = "CountryRegistry",
         packageName = "klib.data.location.country",
         imports = setOf(
-            "klib.data.location.country.Country",
             "klib.data.iso.Alpha2Letter",
             "klib.data.iso.Alpha3Letter",
         ),
     )
 
+    val alpha2Class = ClassName("klib.data.iso", "Alpha2Letter")
+    val alpha3Class = ClassName("klib.data.iso", "Alpha3Letter")
+
     val items = countries.map { country ->
         CodeBlock.builder().apply {
-            add("Alpha2Letter(%S) to {\n", country.alpha2) // use alpha3 or another unique key
+            add("%T(%S) to {\n", alpha2Class, country.alpha2)
             indent()
             add("Country(\n")
             indent()
             add("name = %S,\n", country.name)
-            add("alpha2 = Alpha2Letter(%S),\n", country.alpha2)
-            add("alpha3 = Alpha3Letter(%S),\n", country.alpha3)
+            add("alpha2 = %T(%S),\n", alpha2Class, country.alpha2)
+            add("alpha3 = %T(%S),\n", alpha3Class, country.alpha3)
             add("countryCode = %L,\n", country.countryCode.toIntOrNull() ?: 0)
             country.iso31662?.let { add("iso31662 = %S,\n", it) }
             country.region?.let { add("region = %S,\n", it) }
@@ -74,8 +77,8 @@ public fun generateCountryRegistry(
     val mapSpec = PropertySpec.builder(
         "countries",
         Map::class.asClassName().parameterizedBy(
-            CompilerClass("Alpha2Letter", "klib.data.iso", "").toClassName(),
-            LambdaTypeName.get(returnType = CompilerClass("Country", "klib.data.location.country", "").toClassName()),
+            ClassName("klib.data.iso", "Alpha2Letter"),
+            LambdaTypeName.get(returnType = ClassName("klib.data.location.country", "Country")),
         ),
     ).initializer(
         CodeBlock.builder().apply {
@@ -87,7 +90,7 @@ public fun generateCountryRegistry(
         }.build(),
     ).addModifiers(KModifier.PUBLIC).build()
 
-    val fileSpec = FileSpec.builder(classData.packageName, classData.name)
+    val fileSpec = FileSpec.builder(classData)
         .addType(
             TypeSpec.objectBuilder("CountryRegistry")
                 .addProperty(mapSpec)
