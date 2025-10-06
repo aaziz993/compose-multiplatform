@@ -68,17 +68,20 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
     },
     content: @Composable () -> Unit
 ) {
+    val adaptiveInfo = currentWindowAdaptiveInfo()
 
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    val isBackButton by remember(navBackStackEntry) {
-        derivedStateOf { navController.previousBackStackEntry != null }
-    }
+
 
     var title: String by remember { mutableStateOf(startDestination.label) }
     // Dynamically set title on navigation.
     navController.addOnDestinationChangedListener { _, destination, _ ->
         title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
+    }
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val isBackButton by remember(navBackStackEntry) {
+        derivedStateOf { navController.previousBackStackEntry != null }
     }
 
     val scope = rememberCoroutineScope()
@@ -124,7 +127,7 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
         }
     }
 
-    val adaptiveInfo = currentWindowAdaptiveInfo()
+
 
     @Composable
     fun NavigationSuiteScaffold(modifier: Modifier, content: @Composable () -> Unit = {}) =

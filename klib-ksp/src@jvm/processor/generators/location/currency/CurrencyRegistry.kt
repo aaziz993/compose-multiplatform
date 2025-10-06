@@ -1,6 +1,6 @@
 @file:OptIn(KspExperimental::class)
 
-package processor.generators.location.country
+package processor.generators.location.currency
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -19,51 +19,51 @@ import klib.data.processing.model.CompilerClass
 import klib.data.processing.writeToWithOverride
 import kotlinx.serialization.json.Json
 import processor.CompilerOptions
-import processor.generators.location.country.model.Country
 
-public fun generateCountryRegistry(
+public fun generateCurrencyRegistry(
     logger: Logger,
     codeGenerator: CodeGenerator,
     options: CompilerOptions
 ) {
 
-    val file = File(options.kspResourcesDir).resolve("iso/countries.json")
+    val file = File(options.kspResourcesDir).resolve("iso/currencies.json")
     if (!file.exists()) {
-        logger.error("Countries file not found at '$file'")
+        logger.error("Currencies file not found at '$file'")
         return
     }
 
-    logger.info("Generating CountryRegistry...")
+    logger.info("Generating CurrencyRegistry...")
 
-    val countries: List<Country> = Json.decodeFromString(file.readText())
+    val currencies: List<Currency> = Json.decodeFromString(file.readText())
 
     val classData = ClassData(
-        name = "CountryRegistry",
-        packageName = "klib.data.location.country",
+        name = "CurrencyRegistry",
+        packageName = "klib.data.location.currency",
         imports = setOf(
-            "klib.data.location.country.Country",
-            "klib.data.iso.Alpha2Letter",
+            "klib.data.location.currency.Currency",
             "klib.data.iso.Alpha3Letter",
         ),
     )
 
-    val items = countries.map { country ->
+    val items = currencies.map { currency ->
         CodeBlock.builder().apply {
-            add("Alpha2Letter(%S) to {\n", country.alpha2) // use alpha3 or another unique key
+            add("Alpha3Letter(%S) to {\n", currency.demonym)
             indent()
-            add("Country(\n")
+            add("Currency(\n")
             indent()
-            add("name = %S,\n", country.name)
-            add("alpha2 = Alpha2Letter(%S),\n", country.alpha2)
-            add("alpha3 = Alpha3Letter(%S),\n", country.alpha3)
-            add("countryCode = %L,\n", country.countryCode.toIntOrNull() ?: 0)
-            country.iso31662?.let { add("iso31662 = %S,\n", it) }
-            country.region?.let { add("region = %S,\n", it) }
-            country.subRegion?.let { add("subRegion = %S,\n", it) }
-            country.intermediateRegion?.let { add("intermediateRegion = %S,\n", it) }
-            country.regionCode?.toIntOrNull()?.let { add("regionCode = %L,\n", it) }
-            country.subRegionCode?.toIntOrNull()?.let { add("subRegionCode = %L,\n", it) }
-            country.intermediateRegionCode?.toIntOrNull()?.let { add("intermediateRegionCode = %L,\n", it) }
+            currency.name?.let { add("name = %S,\n", it) }
+            add("demonym = %S,\n", currency.demonym)
+            currency.majorSingle?.let { add("majorSingle = %S,\n", it) }
+            currency.majorPlural?.let { add("majorPlural = %S,\n", it) }
+            add("ISOnum = %L,\n", currency.ISOnum)
+            currency.symbol?.let { add("symbol = %S,\n", it) }
+            currency.symbolNative?.let { add("symbolNative = %S,\n", it) }
+            currency.minorSingle?.let { add("minorSingle = %S,\n", it) }
+            currency.minorPlural?.let { add("minorPlural = %S,\n", it) }
+            add("ISOdigits = %L,\n", currency.ISOdigits)
+            currency.decimals?.let { add("decimals = %L,\n", it) }
+            currency.numToBasic?.let { add("numToBasic = %L,\n", it) }
+
             unindent()
             add(")\n")
             unindent()
@@ -72,10 +72,10 @@ public fun generateCountryRegistry(
     }
 
     val mapSpec = PropertySpec.builder(
-        "countries",
+        "currencies",
         Map::class.asClassName().parameterizedBy(
-            CompilerClass("Alpha2Letter", "klib.data.iso", "").toClassName(),
-            LambdaTypeName.get(returnType = CompilerClass("Country", "klib.data.location.country", "").toClassName()),
+            CompilerClass("Alpha3Letter", "klib.data.iso", "").toClassName(),
+            LambdaTypeName.get(returnType = CompilerClass("Currency", "klib.data.location.currency", "").toClassName()),
         ),
     ).initializer(
         CodeBlock.builder().apply {
@@ -89,7 +89,7 @@ public fun generateCountryRegistry(
 
     val fileSpec = FileSpec.builder(classData.packageName, classData.name)
         .addType(
-            TypeSpec.objectBuilder("CountryRegistry")
+            TypeSpec.objectBuilder("CurrencyRegistry")
                 .addProperty(mapSpec)
                 .build(),
         )

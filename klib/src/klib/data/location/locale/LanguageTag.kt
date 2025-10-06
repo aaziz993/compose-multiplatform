@@ -1,6 +1,7 @@
 package klib.data.location.locale
 
 import klib.data.location.country.Country
+import klib.data.location.country.CountryRegistry
 import klib.data.type.collections.equals
 import klib.data.type.collections.iterator.nextOrNull
 import klib.data.type.primitives.string.isDigit
@@ -17,7 +18,7 @@ import kotlin.collections.iterator
  */
 public data class LanguageTag(
     public val extensions: List<String>,
-    public val extLangs: List<String>,
+    public val extlangs: List<String>,
     public val language: String?,
     public val privateUse: String?,
     public val region: String?,
@@ -35,7 +36,7 @@ public data class LanguageTag(
         if (language != null) {
             append(language)
 
-            extLangs.forEach { extLang ->
+            extlangs.forEach { extLang ->
                 append(SEPARATOR)
                 append(extLang)
             }
@@ -150,8 +151,8 @@ public data class LanguageTag(
         public fun canonicalizeExtLang(extLang: String?): String? =
             extLang?.ifEmpty { null }?.lowercase()
 
-        public fun canonicalizeExtLangs(extLangs: List<String>): List<String> =
-            extLangs.ifEmpty { null }?.mapNotNull(::canonicalizeExtLang).orEmpty()
+        public fun canonicalizeExtlangs(extlangs: List<String>): List<String> =
+            extlangs.ifEmpty { null }?.mapNotNull(::canonicalizeExtLang).orEmpty()
 
         public fun canonicalizeLanguage(language: String?): String? =
             language?.ifEmpty { null }?.lowercase()
@@ -182,7 +183,7 @@ public data class LanguageTag(
             script: String? = null,
             region: String? = null,
             variants: List<String> = emptyList(),
-            extLangs: List<String> = emptyList(),
+            extlangs: List<String> = emptyList(),
             extensions: List<String> = emptyList(),
             privateUse: String? = null,
         ): LanguageTag {
@@ -190,7 +191,7 @@ public data class LanguageTag(
             val canonicalScript = canonicalizeScript(script)
             val canonicalRegion = canonicalizeRegion(region)
             val canonicalVariants = canonicalizeVariants(variants)
-            val canonicalExtLangs = canonicalizeExtLangs(extLangs)
+            val canonicalExtlangs = canonicalizeExtlangs(extlangs)
             val canonicalExtensions = canonicalizeExtensions(extensions)
             val canonicalPrivateUse = canonicalizePrivateUse(privateUse)
 
@@ -200,7 +201,7 @@ public data class LanguageTag(
 
             for (variant in canonicalVariants)
                 require(isVariant(variant)) { "Invalid variant: $variant" }
-            for (extLang in canonicalExtLangs)
+            for (extLang in canonicalExtlangs)
                 require(isExtLang(extLang)) { "Invalid extLang: $extLang" }
             for (extension in canonicalExtensions)
                 require(isExtension(extension)) { "Invalid extension: $extension" }
@@ -209,7 +210,7 @@ public data class LanguageTag(
 
             return LanguageTag(
                 extensions = canonicalExtensions,
-                extLangs = canonicalExtLangs,
+                extlangs = canonicalExtlangs,
                 language = canonicalLanguage,
                 privateUse = canonicalPrivateUse,
                 region = canonicalRegion,
@@ -223,7 +224,7 @@ public data class LanguageTag(
             script: String? = null,
             region: String? = null,
             variants: List<String> = emptyList(),
-            extLangs: List<String> = emptyList(),
+            extlangs: List<String> = emptyList(),
             extensions: List<String> = emptyList(),
             privateUse: String? = null,
         ): LanguageTag? {
@@ -231,7 +232,7 @@ public data class LanguageTag(
             val canonicalScript = canonicalizeScript(script)
             val canonicalRegion = canonicalizeRegion(region)
             val canonicalVariants = canonicalizeVariants(variants)
-            val canonicalExtLangs = canonicalizeExtLangs(extLangs)
+            val canonicalExtlangs = canonicalizeExtlangs(extlangs)
             val canonicalExtensions = canonicalizeExtensions(extensions)
             val canonicalPrivateUse = canonicalizePrivateUse(privateUse)
 
@@ -241,7 +242,7 @@ public data class LanguageTag(
 
             for (variant in canonicalVariants)
                 require(isVariant(variant)) { return null }
-            for (extLang in canonicalExtLangs)
+            for (extLang in canonicalExtlangs)
                 require(isExtLang(extLang)) { return null }
             for (extension in canonicalExtensions)
                 require(isExtension(extension)) { return null }
@@ -250,7 +251,7 @@ public data class LanguageTag(
 
             return LanguageTag(
                 extensions = canonicalExtensions,
-                extLangs = canonicalExtLangs,
+                extlangs = canonicalExtlangs,
                 language = canonicalLanguage,
                 privateUse = canonicalPrivateUse,
                 region = canonicalRegion,
@@ -267,7 +268,7 @@ public data class LanguageTag(
 
             return LanguageTag(
                 extensions = emptyList(),
-                extLangs = emptyList(),
+                extlangs = emptyList(),
                 language = null,
                 privateUse = canonicalPrivateUse,
                 region = null,
@@ -284,7 +285,7 @@ public data class LanguageTag(
 
             return LanguageTag(
                 extensions = emptyList(),
-                extLangs = emptyList(),
+                extlangs = emptyList(),
                 language = null,
                 privateUse = canonicalPrivateUse,
                 region = null,
@@ -399,7 +400,7 @@ public data class LanguageTag(
 
             val tokens = string.splitToSequence(SEPARATOR).iterator()
 
-            var extLangs: MutableList<String>? = null
+            var extlangs: MutableList<String>? = null
             var extensions: MutableList<String>? = null
             var language: String? = null
             var privateUse: String? = null
@@ -414,13 +415,13 @@ public data class LanguageTag(
                 token = tokens.nextOrNull()
 
                 if (token != null && isExtLang(token)) {
-                    extLangs = mutableListOf()
+                    extlangs = mutableListOf()
 
                     do {
-                        extLangs.add(canonicalizeExtLang(token)!!)
+                        extlangs.add(canonicalizeExtLang(token)!!)
 
                         token = tokens.nextOrNull()
-                    } while (token != null && extLangs.size < 3 && isExtLang(token))
+                    } while (token != null && extlangs.size < 3 && isExtLang(token))
                 }
 
                 if (token != null && isScript(token)) {
@@ -491,7 +492,7 @@ public data class LanguageTag(
 
             return LanguageTag(
                 extensions = extensions.orEmpty(),
-                extLangs = extLangs.orEmpty(),
+                extlangs = extlangs.orEmpty(),
                 language = language,
                 privateUse = privateUse,
                 region = region,
@@ -499,6 +500,10 @@ public data class LanguageTag(
                 variants = variants.orEmpty(),
             )
         }
+
+        public fun forRegion(region: String): LanguageTag = forRegionOrNull(region) ?: error("Invalid region: $region")
+
+        public fun forRegionOrNull(region: String): LanguageTag? = LanguageTagRegistry.languageTags[region]?.invoke()
     }
 }
 

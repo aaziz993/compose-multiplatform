@@ -17,7 +17,7 @@ public value class Alpha2Letter(public val value: String) {
 
     init {
         require(isValidFormat(value)) {
-            "Invalid ISO 3166-1 alpha-2 country code format: $value"
+            "Invalid ISO alpha-2 code format: $value"
         }
     }
 

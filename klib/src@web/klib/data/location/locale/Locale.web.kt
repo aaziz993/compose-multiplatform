@@ -6,7 +6,11 @@ private typealias WebLocale = Intl.Locale
 
 public fun WebLocale.toKotlinLocale(): Locale = Locale.forLanguageTag(toString())
 
-public fun Locale.toWebLocale(): WebLocale = WebLocale(languageTag.toString())
+public fun Locale.toWebLocale(): WebLocale = WebLocale(toLanguageTag().toString())
 
 public actual val Locale.Companion.current: Locale
     get() = Locale.forLanguageTag(navigator.language)
+
+public actual fun Locale.Companion.setCurrent(locale: Locale?) {
+    window.__customLocale = locale?.toString()
+}

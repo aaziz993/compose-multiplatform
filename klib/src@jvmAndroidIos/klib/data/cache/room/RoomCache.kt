@@ -40,7 +40,7 @@ public class RoomCache<K : Any, V : Any>(
         dao.select(inKey(key))?.value?.let { Json.Default.decodeFromString(valueKClass.serializer(), it) }
 
     override suspend fun set(key: K, value: V): Unit =
-        dao.insert(Cache(inKey(key), Json.Default.encodeToString(valueKClass.serializer(), value)))
+        dao.insert(Cache(key = inKey(key), value = Json.Default.encodeToString(valueKClass.serializer(), value)))
 
     override suspend fun remove(key: K): Unit = dao.delete(inKey(key))
 

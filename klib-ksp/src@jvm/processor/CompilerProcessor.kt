@@ -26,6 +26,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.symbol.KSAnnotated
 import klib.data.processing.Logger
 import processor.generators.location.country.generateCountryRegistry
+import processor.generators.location.currency.generateCurrencyRegistry
 import processor.generators.location.locale.generateLanguageTagRegistry
 
 public class CompilerProcessor(
@@ -40,12 +41,11 @@ public class CompilerProcessor(
 
         generateCountryRegistry(logger, codeGenerator, options)
         generateLanguageTagRegistry(logger, codeGenerator, options)
+        generateCurrencyRegistry(logger, codeGenerator, options)
 
         return emptyList()
     }
 }
-
-
 
 
 

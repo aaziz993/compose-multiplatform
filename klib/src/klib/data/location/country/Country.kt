@@ -19,13 +19,10 @@ public data class Country(
     public companion object {
 
         // https://www.iso.org/obp/ui/
-
-        private val countriesByCode: Map<Alpha2Letter, Country> = CountryRegistry.countries.associateByTo(hashMapOf()) { it.alpha2 }
-
         public fun forCode(code: Alpha2Letter): Country =
             forCodeOrNull(code) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
-        public fun forCodeOrNull(code: Alpha2Letter): Country? = countriesByCode[code]
+        public fun forCodeOrNull(code: Alpha2Letter): Country? = CountryRegistry.countries[code]?.invoke()
 
         public fun forCode(code: String): Country =
             forCodeOrNull(Alpha2Letter.parse(code)) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")

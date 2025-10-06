@@ -43,6 +43,8 @@ import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.Theme
+import klib.data.location.locale.Locale
+import klib.data.location.locale.current
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -184,3 +186,13 @@ public fun NavScreen(
 @Preview
 @Composable
 public fun PreviewNavScreen(): Unit = NavScreen()
+
+//@Composable
+//public fun LocaleController() {
+//    var localeTextField by remember { mutableStateOf("ar") }
+//    val locale = LocalComposeEnvironment.current
+//
+//    ComposeEnvironment
+//
+//    locale.setLocale(Locale(localeTextField))
+//}

@@ -1,9 +1,11 @@
 package processor.generators.location.locale
 
+import com.github.jasync.sql.db.util.length
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
@@ -42,28 +44,34 @@ public fun generateLanguageTagRegistry(
 
     val items = languageTags.map { tag ->
         CodeBlock.builder().apply {
+            add("%S to {\n", tag.language ?: tag.privateUse)
+            indent()
             add("LanguageTag(\n")
             indent()
-            add("extensions = listOf(${tag.extensions.joinToString(",") { "%S".format(it) }}),\n")
-            add("extLangs = listOf(${tag.extlangs.joinToString(",") { "%S".format(it) }}),\n")
+            add("extensions = listOf(${tag.extensions.joinToString(",", "\"", "\"")}),\n")
+            add("extlangs = listOf(${tag.extlangs.joinToString(",", "\"", "\"")}),\n")
             add("language = %S,\n", tag.language)
             add("privateUse = %S,\n", tag.privateUse)
             add("region = %S,\n", tag.region)
             add("script = %S,\n", tag.script)
-            add("variants = listOf(${tag.variants.joinToString(",") { "%S".format(it) }})\n")
+            add("variants = listOf(${tag.variants.joinToString(",", "\"", "\"")})\n")
             unindent()
-            add(")")
+            add(")\n")
+            unindent()
+            add("}")
         }.build()
     }
 
-    val listSpec = PropertySpec.builder(
+    val mapSpec = PropertySpec.builder(
         "languageTags",
-        List::class.asClassName().parameterizedBy(
-            CompilerClass("LanguageTag", "klib.data.location.locale", "").toClassName(),
-        ),
+        Map::class.asClassName()
+            .parameterizedBy(
+                String::class.asClassName(),
+                LambdaTypeName.get(returnType = CompilerClass("LanguageTag", "klib.data.location.locale", "").toClassName()),
+            ),
     ).initializer(
         CodeBlock.builder().apply {
-            add("listOf(\n")
+            add("mapOf(\n")
             indent()
             items.forEach { add("%L,\n", it) }
             unindent()
@@ -74,7 +82,7 @@ public fun generateLanguageTagRegistry(
     val fileSpec = FileSpec.builder(classData.packageName, classData.name)
         .addType(
             TypeSpec.objectBuilder("LanguageTagRegistry")
-                .addProperty(listSpec)
+                .addProperty(mapSpec)
                 .build(),
         )
         .build()
@@ -88,25 +96,38 @@ private fun parseLanguageTags(file: File): List<LanguageTag> {
         .split("""^%%\s*""".toRegex(RegexOption.MULTILINE))
         .drop(1) // skip the header before the first %%
         .map { record ->
-            record.lines().associate { line ->
-                line.split(":", limit = 2).map(String::trim).let { (key, value) -> key to value }
-            }
+            record.lines().mapNotNull { line ->
+                line.split(":", limit = 2)
+                    .takeIf { it.length == 2 }
+                    ?.map(String::trim)
+                    ?.let { (key, value) -> key to value }
+            }.toMap()
         }
 
     val privateUseRange = items.find { item -> item["Scope"] == "private-use" }?.let { item ->
         item["Subtag"]!!.split("..").let { (key, value) -> key to value }
     }
 
-    return items.filter { item -> item["Type"] == "language" }
+    val inPrivateUseRange: (tag: String) -> Boolean = if (privateUseRange == null) {
+        { false }
+    }
+    else {
+        { tag -> tag in privateUseRange.first..privateUseRange.second }
+    }
+
+    return items.filter { item -> item["Type"] == "language" && item["Scope"] != "private-use" }
         .map { item ->
             val subTag = item["Subtag"]!!
             val script = item["Script"] ?: item["Suppress-Script"]
+            val (language, privateUse) = if (inPrivateUseRange(subTag)) null to subTag else subTag to null
             LanguageTag(
-                extlangs = items.filter { item -> item["Type"] == "extlang" && item["Prefix"] == subTag }.map { item -> item["Subtag"]!! }.toSet(),
-                language = if (item["Scope"] == "private-use") null else subTag,
-                privateUse = if (item["Scope"] == "private-use") subTag else null,
-                script = script,
-                variants = items.filter { item -> item["Type"] == "variant" && item["Prefix"] == subTag }.map { item -> item["Subtag"]!! }.toSet(),
+                item["Extension"]?.split(",")?.map(String::trim).orEmpty().toSet(),
+                items.filter { item -> item["Type"] == "extlang" && item["Prefix"] == subTag }.map { item -> item["Subtag"]!! }.toSet(),
+                language,
+                privateUse,
+                null,
+                script,
+                items.filter { item -> item["Type"] == "variant" && item["Prefix"] == subTag }.map { item -> item["Subtag"]!! }.toSet(),
             )
         }
 }
