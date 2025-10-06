@@ -13,7 +13,7 @@ import javax.xml.stream.XMLOutputFactory
 import klib.data.type.collections.combinatorics.Combinatorics
 import klib.data.type.collections.combinatorics.cartesianProduct
 import klib.data.type.collections.list.drop
-import klib.data.type.pair
+import klib.data.type.tuples.pair
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.lowercaseFirstChar
 import klib.data.type.primitives.string.uppercaseFirstChar

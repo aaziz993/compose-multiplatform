@@ -14,53 +14,42 @@
  * limitations under the License.
  *
  */
+
+@file:OptIn(KspExperimental::class)
+
 package processor
 
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
-import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSVisitorVoid
-import java.io.OutputStream
+import klib.data.processing.Logger
+import processor.generators.location.country.generateCountryRegistry
+import processor.generators.location.locale.generateLanguageTagRegistry
 
 public class CompilerProcessor(
-  private val options: Map<String, String>,
-  private val logger: KSPLogger,
-  private val codeGenerator: CodeGenerator,
+    private val env: SymbolProcessorEnvironment,
+    private val options: CompilerOptions,
 ) : SymbolProcessor {
 
-  private var imports = mutableSetOf<String>()
+    override fun process(resolver: Resolver): List<KSAnnotated> {
+        val loggingType = options.errorsLoggingType
+        val logger = Logger(env.logger, loggingType)
+        val codeGenerator = env.codeGenerator
 
-  public operator fun OutputStream.plusAssign(str: String) {
-    this.write(str.toByteArray())
-  }
+        generateCountryRegistry(logger, codeGenerator, options)
+        generateLanguageTagRegistry(logger, codeGenerator, options)
 
-  override fun process(resolver: Resolver): List<KSAnnotated> {
-    logger.info("Processing compilation graph...")
-
-    val compiledFile = codeGenerator.getFile("klib.data.type", "Compiled")
-
-    compiledFile += "package klib.data.type\n\n"
-
-    compiledFile += imports.joinToString("\n", postfix = "\n\n") { "import $it" }
-
-    compiledFile.close()
-
-    return emptyList()
-  }
-
-  private inner class CompilerVisitor : KSVisitorVoid() {
-
-    override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {}
-  }
-
-  private fun CodeGenerator.getFile(packageName: String, fileName: String): OutputStream =
-    try {
-      createNewFile(Dependencies.ALL_FILES, packageName, fileName)
-    } catch (ex: FileAlreadyExistsException) {
-      ex.file.outputStream()
+        return emptyList()
     }
 }
+
+
+
+
+
+
+
+
+

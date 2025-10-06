@@ -1,4 +1,4 @@
-package klib.processing.model
+package klib.data.processing.model
 
 internal class Error {
     companion object Companion {
@@ -11,13 +11,5 @@ internal class Error {
         const val TYPE_PARAMETERS_ARE_UNSUPPORTED_ON = "Type parameters are unsupported on "
         const val VARARG_NOT_SUPPORTED_USE_LIST_OR_ARRAY = "vararg not supported use List or Array"
         const val PROPERTIES_NOT_SUPPORTED = "throw IllegalStateException(\"Properties not supported by Compiler\")"
-
-        fun missingEitherKeywordUrlOrUrlParameter(keyword: String) = "Missing either @$keyword URL or @Url parameter"
-
-        fun missingXInRelativeUrlPath(keyword: String) = "Missing {$keyword} in relative url path"
-
-        fun noHttpAnnotationAt(functionName: String) = "No Http annotation at $functionName"
-
-        fun urlCanOnlyBeUsedWithEmpty(keyword: String) = "@Url can only be used with empty @$keyword URL value"
     }
 }

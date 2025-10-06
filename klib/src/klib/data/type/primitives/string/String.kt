@@ -8,6 +8,7 @@ import com.ionspin.kotlin.bignum.integer.BigInteger
 import klib.data.type.collections.bimap.BiMap
 import klib.data.type.collections.bimap.biMapOf
 import klib.data.type.collections.rangeEquals
+import klib.data.type.primitives.isLatinLetter
 import klib.data.type.primitives.string.fuzzywuzzy.Applicable
 import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
@@ -173,6 +174,8 @@ private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
 
 public val String.extension: String?
     get() = EXTENSION_TEXT_REGEX.entries.find { (_, regex) -> regex.matches(this) }?.key
+
+public fun String.isLatinLetter(): Boolean = all(Char::isLatinLetter)
 
 public fun String.isLetter(): Boolean = all(Char::isLetter)
 

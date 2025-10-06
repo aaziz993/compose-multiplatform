@@ -1,5 +1,6 @@
 package klib.data.location.locale
 
+import klib.data.location.country.Country
 import klib.data.type.collections.equals
 import klib.data.type.collections.iterator.nextOrNull
 import klib.data.type.primitives.string.isDigit
@@ -14,7 +15,7 @@ import kotlin.collections.iterator
  * References:
  * - [https://tools.ietf.org/html/bcp47]
  */
-public class LanguageTag private constructor(
+public data class LanguageTag(
     public val extensions: List<String>,
     public val extLangs: List<String>,
     public val language: String?,
@@ -24,90 +25,45 @@ public class LanguageTag private constructor(
     public val variants: List<String>,
 ) {
 
-    public fun copy(
-        extensions: List<String> = this.extensions,
-        extLangs: List<String> = this.extLangs,
-        language: String? = this.language,
-        privateUse: String? = this.privateUse,
-        region: String? = this.region,
-        script: String? = this.script,
-        variants: List<String> = this.variants,
-    ): LanguageTag =
-        when {
-            language != null ->
-                forLanguage(
-                    extensions = extensions,
-                    extLangs = extLangs,
-                    language = language,
-                    privateUse = privateUse,
-                    region = region,
-                    script = script,
-                    variants = variants,
-                )
+    public fun forPrivateUse(privateUse: String): LanguageTag = copy(language = null, privateUse = privateUse)
 
-            privateUse != null ->
-                forPrivateUse(privateUse = privateUse)
+    public fun forLanguage(language: String): LanguageTag = copy(language = language, privateUse = null)
 
-            else ->
-                error("Either 'language' or 'privateUse' must be non-null.")
-        }
-
-    override fun equals(other: Any?): Boolean =
-        this === other ||
-            (other is LanguageTag &&
-                extensions == other.extensions &&
-                extLangs == other.extLangs &&
-                language == other.language &&
-                privateUse == other.privateUse &&
-                region == other.region &&
-                script == other.script &&
-                variants.equals(other.variants) { a, b -> a.equals(b, true) })
-
-    override fun hashCode(): Int {
-        var result = extensions.hashCode()
-        result = 31 * result + extLangs.hashCode()
-        result = 31 * result + language.hashCode()
-        result = 31 * result + privateUse.hashCode()
-        result = 31 * result + region.hashCode()
-        result = 31 * result + script.hashCode()
-        result = 31 * result + variants.ifEmpty { null }?.map(String::lowercase).hashCode()
-
-        return result
-    }
+    public fun country(): Country = Country.forCode(region ?: "")
 
     override fun toString(): String = buildString {
         if (language != null) {
             append(language)
 
-            for (extlang in extLangs) {
-                append(separator)
-                append(extlang)
+            extLangs.forEach { extLang ->
+                append(SEPARATOR)
+                append(extLang)
             }
 
             if (script != null) {
-                append(separator)
+                append(SEPARATOR)
                 append(script)
             }
 
             if (region != null) {
-                append(separator)
+                append(SEPARATOR)
                 append(region)
             }
 
-            for (variant in variants) {
-                append(separator)
+            variants.forEach { variant ->
+                append(SEPARATOR)
                 append(variant)
             }
 
-            for (extension in extensions) {
-                append(separator)
+            extensions.forEach { extension ->
+                append(SEPARATOR)
                 append(extension)
             }
         }
 
         if (privateUse != null) {
             if (isNotEmpty())
-                append(separator)
+                append(SEPARATOR)
 
             append(privateUse)
         }
@@ -115,9 +71,9 @@ public class LanguageTag private constructor(
 
     public companion object {
 
-        public const val privateusePrefix: Char = 'x'
-        public const val separator: Char = '-'
-        public const val undeterminedPrefix: String = "und"
+        public const val PRIVATE_USE_PREFIX: Char = 'x'
+        public const val SEPARATOR: Char = '-'
+        public const val UNDETERMINED_PREFIX: String = "und"
 
         // https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
         // grandfathered = irregular           ; non-redundant tags registered
@@ -191,22 +147,22 @@ public class LanguageTag private constructor(
         public fun canonicalizeExtensions(extensions: List<String>): List<String> =
             extensions.ifEmpty { null }?.mapNotNull(::canonicalizeExtension)?.sorted().orEmpty()
 
-        public fun canonicalizeExtlang(extlang: String?): String? =
-            extlang?.ifEmpty { null }?.lowercase()
+        public fun canonicalizeExtLang(extLang: String?): String? =
+            extLang?.ifEmpty { null }?.lowercase()
 
-        public fun canonicalizeExtlangs(extLangs: List<String>): List<String> =
-            extLangs.ifEmpty { null }?.mapNotNull(::canonicalizeExtlang).orEmpty()
+        public fun canonicalizeExtLangs(extLangs: List<String>): List<String> =
+            extLangs.ifEmpty { null }?.mapNotNull(::canonicalizeExtLang).orEmpty()
 
         public fun canonicalizeLanguage(language: String?): String? =
             language?.ifEmpty { null }?.lowercase()
 
-        public fun canonicalizePrivateuse(privateUse: String?): String? =
+        public fun canonicalizePrivateUse(privateUse: String?): String? =
             privateUse?.ifEmpty { null }?.lowercase()
 
-        public fun canonicalizePrivateusePrefix(prefix: String?): String? =
+        public fun canonicalizePrivateUsePrefix(prefix: String?): String? =
             prefix?.ifEmpty { null }?.lowercase()
 
-        public fun canonicalizePrivateuseSubtag(subtag: String?): String? =
+        public fun canonicalizePrivateUseSubtag(subtag: String?): String? =
             subtag?.ifEmpty { null }?.lowercase()
 
         public fun canonicalizeRegion(region: String?): String? =
@@ -234,9 +190,9 @@ public class LanguageTag private constructor(
             val canonicalScript = canonicalizeScript(script)
             val canonicalRegion = canonicalizeRegion(region)
             val canonicalVariants = canonicalizeVariants(variants)
-            val canonicalExtlangs = canonicalizeExtlangs(extLangs)
+            val canonicalExtLangs = canonicalizeExtLangs(extLangs)
             val canonicalExtensions = canonicalizeExtensions(extensions)
-            val canonicalPrivateuse = canonicalizePrivateuse(privateUse)
+            val canonicalPrivateUse = canonicalizePrivateUse(privateUse)
 
             require(canonicalLanguage != null && isLanguage(canonicalLanguage)) { "Invalid language: $language" }
             require(canonicalScript == null || isScript(canonicalScript)) { "Invalid script: $script" }
@@ -244,18 +200,18 @@ public class LanguageTag private constructor(
 
             for (variant in canonicalVariants)
                 require(isVariant(variant)) { "Invalid variant: $variant" }
-            for (extlang in canonicalExtlangs)
-                require(isExtlang(extlang)) { "Invalid extlang: $extlang" }
+            for (extLang in canonicalExtLangs)
+                require(isExtLang(extLang)) { "Invalid extLang: $extLang" }
             for (extension in canonicalExtensions)
                 require(isExtension(extension)) { "Invalid extension: $extension" }
 
-            require(canonicalPrivateuse == null || isPrivateuse(canonicalPrivateuse)) { "Invalid privateUse: $privateUse" }
+            require(canonicalPrivateUse == null || isPrivateUse(canonicalPrivateUse)) { "Invalid privateUse: $privateUse" }
 
             return LanguageTag(
                 extensions = canonicalExtensions,
-                extLangs = canonicalExtlangs,
+                extLangs = canonicalExtLangs,
                 language = canonicalLanguage,
-                privateUse = canonicalPrivateuse,
+                privateUse = canonicalPrivateUse,
                 region = canonicalRegion,
                 script = canonicalScript,
                 variants = canonicalVariants,
@@ -275,9 +231,9 @@ public class LanguageTag private constructor(
             val canonicalScript = canonicalizeScript(script)
             val canonicalRegion = canonicalizeRegion(region)
             val canonicalVariants = canonicalizeVariants(variants)
-            val canonicalExtlangs = canonicalizeExtlangs(extLangs)
+            val canonicalExtLangs = canonicalizeExtLangs(extLangs)
             val canonicalExtensions = canonicalizeExtensions(extensions)
-            val canonicalPrivateuse = canonicalizePrivateuse(privateUse)
+            val canonicalPrivateUse = canonicalizePrivateUse(privateUse)
 
             require(canonicalLanguage != null && isLanguage(canonicalLanguage)) { return null }
             require(canonicalScript == null || isScript(canonicalScript)) { return null }
@@ -285,18 +241,18 @@ public class LanguageTag private constructor(
 
             for (variant in canonicalVariants)
                 require(isVariant(variant)) { return null }
-            for (extlang in canonicalExtlangs)
-                require(isExtlang(extlang)) { return null }
+            for (extLang in canonicalExtLangs)
+                require(isExtLang(extLang)) { return null }
             for (extension in canonicalExtensions)
                 require(isExtension(extension)) { return null }
 
-            require(canonicalPrivateuse == null || isPrivateuse(canonicalPrivateuse)) { return null }
+            require(canonicalPrivateUse == null || isPrivateUse(canonicalPrivateUse)) { return null }
 
             return LanguageTag(
                 extensions = canonicalExtensions,
-                extLangs = canonicalExtlangs,
+                extLangs = canonicalExtLangs,
                 language = canonicalLanguage,
-                privateUse = canonicalPrivateuse,
+                privateUse = canonicalPrivateUse,
                 region = canonicalRegion,
                 script = canonicalScript,
                 variants = canonicalVariants,
@@ -306,14 +262,14 @@ public class LanguageTag private constructor(
         public fun forPrivateUse(
             privateUse: String,
         ): LanguageTag {
-            val canonicalPrivateuse = canonicalizePrivateuse(privateUse)
-            require(canonicalPrivateuse != null && isPrivateuse(privateUse)) { "Invalid privateUse: $privateUse" }
+            val canonicalPrivateUse = canonicalizePrivateUse(privateUse)
+            require(canonicalPrivateUse != null && isPrivateUse(privateUse)) { "Invalid privateUse: $privateUse" }
 
             return LanguageTag(
                 extensions = emptyList(),
                 extLangs = emptyList(),
                 language = null,
-                privateUse = canonicalPrivateuse,
+                privateUse = canonicalPrivateUse,
                 region = null,
                 script = null,
                 variants = emptyList(),
@@ -323,14 +279,14 @@ public class LanguageTag private constructor(
         public fun forPrivateUseOrNull(
             privateUse: String,
         ): LanguageTag? {
-            val canonicalPrivateuse = canonicalizePrivateuse(privateUse)
-            require(canonicalPrivateuse != null && isPrivateuse(privateUse)) { return null }
+            val canonicalPrivateUse = canonicalizePrivateUse(privateUse)
+            require(canonicalPrivateUse != null && isPrivateUse(privateUse)) { return null }
 
             return LanguageTag(
                 extensions = emptyList(),
                 extLangs = emptyList(),
                 language = null,
-                privateUse = canonicalPrivateuse,
+                privateUse = canonicalPrivateUse,
                 region = null,
                 script = null,
                 variants = emptyList(),
@@ -339,7 +295,7 @@ public class LanguageTag private constructor(
 
         // extension     = singleton 1*("-" (2*8alphanum))
         public fun isExtension(extension: String): Boolean {
-            val tokens = extension.splitToSequence(separator).iterator()
+            val tokens = extension.splitToSequence(SEPARATOR).iterator()
 
             if (!isExtensionSingleton(tokens.next()))
                 return false
@@ -362,7 +318,7 @@ public class LanguageTag private constructor(
         //               / %x61-77             ; a - w
         //               / %x79-7A             ; y - z
         public fun isExtensionSingleton(singleton: Char): Boolean =
-            singleton.isLetterOrDigit() && !isPrivateusePrefix(singleton)
+            singleton.isLetterOrDigit() && !isPrivateUsePrefix(singleton)
 
         public fun isExtensionSingleton(singleton: String): Boolean =
             singleton.length == 1 && isExtensionSingleton(singleton[0])
@@ -371,13 +327,13 @@ public class LanguageTag private constructor(
         public fun isExtensionSubtag(extension: String): Boolean =
             extension.length in 2..8 && extension.isLetterOrDigit()
 
-        // extlang       = 3ALPHA              ; selected ISO 639 codes
+        // extLang       = 3ALPHA              ; selected ISO 639 codes
         //                 *2("-" 3ALPHA)      ; permanently reserved
-        public fun isExtlang(extlang: String): Boolean =
-            extlang.length == 3 && extlang.isLetter()
+        public fun isExtLang(extLang: String): Boolean =
+            extLang.length == 3 && extLang.isLetter()
 
         // language      = 2*3ALPHA            ; shortest ISO 639 code
-        //                 ["-" extlang]       ; sometimes followed by
+        //                 ["-" extLang]       ; sometimes followed by
         //                                     ; extended language subtags
         //               / 4ALPHA              ; or reserved for future use
         //               / 5*8ALPHA            ; or registered language subtag
@@ -385,31 +341,31 @@ public class LanguageTag private constructor(
             language.length in 2..8 && language.isLetter()
 
         // privateUse    = "x" 1*("-" (1*8alphanum))
-        public fun isPrivateuse(privateUse: String): Boolean {
-            val tokens = privateUse.splitToSequence(separator).iterator()
+        public fun isPrivateUse(privateUse: String): Boolean {
+            val tokens = privateUse.splitToSequence(SEPARATOR).iterator()
 
-            if (!isPrivateusePrefix(tokens.next()))
+            if (!isPrivateUsePrefix(tokens.next()))
                 return false
 
             if (!tokens.hasNext())
                 return false
 
             for (token in tokens)
-                if (!isPrivateuseSubtag(token))
+                if (!isPrivateUseSubtag(token))
                     return false
 
             return true
         }
 
         // privateUse    = "x" 1*("-" (1*8alphanum))
-        public fun isPrivateusePrefix(prefix: Char): Boolean =
-            prefix.equals(privateusePrefix, ignoreCase = true)
+        public fun isPrivateUsePrefix(prefix: Char): Boolean =
+            prefix.equals(PRIVATE_USE_PREFIX, ignoreCase = true)
 
-        public fun isPrivateusePrefix(prefix: String): Boolean =
-            prefix.length == 1 && isPrivateusePrefix(prefix[0])
+        public fun isPrivateUsePrefix(prefix: String): Boolean =
+            prefix.length == 1 && isPrivateUsePrefix(prefix[0])
 
         // privateUse    = "x" 1*("-" (1*8alphanum))
-        public fun isPrivateuseSubtag(privateUse: String): Boolean =
+        public fun isPrivateUseSubtag(privateUse: String): Boolean =
             privateUse.length in 1..8 && privateUse.isLetterOrDigit()
 
         // region        = 2ALPHA              ; ISO 3166-1 code
@@ -441,7 +397,7 @@ public class LanguageTag private constructor(
         public fun parseOrNull(string: String): LanguageTag? {
             val string = grandfathered[string.lowercase()] ?: string
 
-            val tokens = string.splitToSequence(separator).iterator()
+            val tokens = string.splitToSequence(SEPARATOR).iterator()
 
             var extLangs: MutableList<String>? = null
             var extensions: MutableList<String>? = null
@@ -457,14 +413,14 @@ public class LanguageTag private constructor(
                 language = canonicalizeLanguage(token)
                 token = tokens.nextOrNull()
 
-                if (token != null && isExtlang(token)) {
+                if (token != null && isExtLang(token)) {
                     extLangs = mutableListOf()
 
                     do {
-                        extLangs.add(canonicalizeExtlang(token)!!)
+                        extLangs.add(canonicalizeExtLang(token)!!)
 
                         token = tokens.nextOrNull()
-                    } while (token != null && extLangs.size < 3 && isExtlang(token))
+                    } while (token != null && extLangs.size < 3 && isExtLang(token))
                 }
 
                 if (token != null && isScript(token)) {
@@ -497,7 +453,7 @@ public class LanguageTag private constructor(
 
                         if (token != null && isExtensionSubtag(token)) {
                             do {
-                                extensionBuilder.append(separator)
+                                extensionBuilder.append(SEPARATOR)
                                 extensionBuilder.append(canonicalizeExtensionSubtag(token))
 
                                 token = tokens.nextOrNull()
@@ -511,18 +467,18 @@ public class LanguageTag private constructor(
                 }
             }
 
-            if (token != null && isPrivateusePrefix(token)) {
-                val privateuseBuilder = StringBuilder(canonicalizePrivateusePrefix(token)!!)
+            if (token != null && isPrivateUsePrefix(token)) {
+                val privateuseBuilder = StringBuilder(canonicalizePrivateUsePrefix(token)!!)
 
                 token = tokens.nextOrNull()
 
-                if (token != null && isPrivateuseSubtag(token)) {
+                if (token != null && isPrivateUseSubtag(token)) {
                     do {
-                        privateuseBuilder.append(separator)
-                        privateuseBuilder.append(canonicalizePrivateuseSubtag(token))
+                        privateuseBuilder.append(SEPARATOR)
+                        privateuseBuilder.append(canonicalizePrivateUseSubtag(token))
 
                         token = tokens.nextOrNull()
-                    } while (token != null && isPrivateuseSubtag(token))
+                    } while (token != null && isPrivateUseSubtag(token))
                 }
                 else
                     return null // incomplete privateUse
@@ -545,3 +501,7 @@ public class LanguageTag private constructor(
         }
     }
 }
+
+public fun String.toLanguageTagOrNull(): LanguageTag? = LanguageTag.parseOrNull(this)
+
+public fun String.toLanguageTag(): LanguageTag = LanguageTag.parse(this)

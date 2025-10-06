@@ -1,4 +1,4 @@
-package klib.processing
+package klib.data.processing
 
 import com.google.devtools.ksp.getDeclaredFunctions
 import com.google.devtools.ksp.getDeclaredProperties
@@ -8,8 +8,8 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.ksp.toKModifier
 import com.squareup.kotlinpoet.ksp.toTypeName
-import klib.processing.model.ClassData
-import klib.processing.model.FunctionData
+import klib.data.processing.model.ClassData
+import klib.data.processing.model.FunctionData
 
 /**
  * Convert a [KSClassDeclaration] to [ClassData]

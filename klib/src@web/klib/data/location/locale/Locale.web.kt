@@ -6,7 +6,7 @@ private typealias WebLocale = Intl.Locale
 
 public fun WebLocale.toKotlinLocale(): Locale = Locale.forLanguageTag(toString())
 
-public fun Locale.toWebLocale(): WebLocale = WebLocale(toLanguageTag().toString())
+public fun Locale.toWebLocale(): WebLocale = WebLocale(languageTag.toString())
 
 public actual val Locale.Companion.current: Locale
     get() = Locale.forLanguageTag(navigator.language)

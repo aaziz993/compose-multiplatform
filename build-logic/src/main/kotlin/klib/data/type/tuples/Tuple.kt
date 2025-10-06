@@ -26,7 +26,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T> Tuple5<T1, T2, T3, T4, T5
         t2,
         t3,
         t4,
-        t5
+        t5,
     )
 
 public data class Tuple6<T1, T2, T3, T4, T5, T6>(
@@ -45,7 +45,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T> Tuple6<T1, T2, T3
         t3,
         t4,
         t5,
-        t6
+        t6,
     )
 
 public data class Tuple7<T1, T2, T3, T4, T5, T6, T7>(
@@ -66,7 +66,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T> Tuple7<T1
         t4,
         t5,
         t6,
-        t7
+        t7,
     )
 
 public data class Tuple8<T1, T2, T3, T4, T5, T6, T7, T8>(
@@ -89,7 +89,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T> T
         t5,
         t6,
         t7,
-        t8
+        t8,
     )
 
 public data class Tuple9<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
@@ -114,7 +114,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t6,
         t7,
         t8,
-        t9
+        t9,
     )
 
 public data class Tuple10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
@@ -141,7 +141,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t7,
         t8,
         t9,
-        t10
+        t10,
     )
 
 public data class Tuple11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
@@ -170,7 +170,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t8,
         t9,
         t10,
-        t11
+        t11,
     )
 
 public data class Tuple12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
@@ -201,7 +201,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t9,
         t10,
         t11,
-        t12
+        t12,
     )
 
 public data class Tuple13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(
@@ -234,7 +234,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t10,
         t11,
         t12,
-        t13
+        t13,
     )
 
 public data class Tuple14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(
@@ -269,7 +269,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t11,
         t12,
         t13,
-        t14
+        t14,
     )
 
 public data class Tuple15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(
@@ -306,7 +306,7 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t12,
         t13,
         t14,
-        t15
+        t15,
     )
 
 public data class Tuple16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(
@@ -345,9 +345,12 @@ public val <T, T1 : T, T2 : T, T3 : T, T4 : T, T5 : T, T6 : T, T7 : T, T8 : T, T
         t13,
         t14,
         t15,
-        t16
+        t16,
     )
 
+public fun <T> T.triple(): Triple<T, T, T> = Triple(this, this, this)
+
+public fun <T> T.quadruple(): Tuple4<T, T, T, T> = Tuple4(this, this, this, this)
 
 public infix fun <A, B, C, D> Tuple3<A, B, C>.and(t4: D): Tuple4<A, B, C, D> =
     Tuple4(t1, t2, t3, t4)

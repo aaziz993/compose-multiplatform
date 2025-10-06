@@ -1,7 +1,7 @@
-package klib.processing.model
+package klib.data.processing.model
 
 import com.squareup.kotlinpoet.ParameterSpec
-import klib.processing.model.annotations.ParameterAnnotation
+import klib.data.processing.model.annotations.ParameterAnnotation
 
 public data class ParameterData(
     val name: String,

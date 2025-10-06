@@ -1,6 +1,8 @@
 package klib.data.type.tuples
 
-public fun <A> A.to(): Pair<A, A> = this to this
+public fun <T> T.pair(): Pair<T, T> = this to this
+
+public infix fun <V, T> T.pairBy(other: V): Pair<V, T> = other to this
 
 public infix fun <A, B> A.to(second: (A) -> B): Pair<A, B> = this to second(this)
 

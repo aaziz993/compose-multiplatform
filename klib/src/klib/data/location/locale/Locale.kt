@@ -1,18 +1,12 @@
 package klib.data.location.locale
 
-public class Locale private constructor(
-    private val languageTag: LanguageTag,
+public data class Locale(
+    public val languageTag: LanguageTag,
 ) {
-
-    override fun equals(other: Any?): Boolean =
-        this === other || (other is Locale && languageTag == other.languageTag)
-
-    override fun hashCode(): Int =
-        languageTag.hashCode()
 
     public val language: String?
         get() = when (val language = languageTag.language) {
-            LanguageTag.Companion.undeterminedPrefix -> null
+            LanguageTag.UNDETERMINED_PREFIX -> null
             else -> language
         }
 
@@ -25,49 +19,43 @@ public class Locale private constructor(
     public val variants: List<String>
         get() = languageTag.variants
 
-    public fun toLanguageTag(): LanguageTag =
-        languageTag
-
-    override fun toString(): String =
-        languageTag.toString()
+    override fun toString(): String = languageTag.toString()
 
     public companion object {
 
-        public val root: Locale = Locale(languageTag = LanguageTag.Companion.forLanguage(language = LanguageTag.Companion.undeterminedPrefix))
+        public val root: Locale = Locale(LanguageTag.forLanguage(LanguageTag.UNDETERMINED_PREFIX))
 
         public fun forLanguage(
             language: String?,
             script: String? = null,
             region: String? = null,
             variants: List<String> = emptyList(),
-        ): Locale =
-            forLanguageTag(
-                    LanguageTag.Companion.forLanguage(
-                            language = when (language) {
-                                null, "" -> LanguageTag.Companion.undeterminedPrefix
-                                else -> language
-                            },
-                            script = script,
-                            region = region,
-                            variants = variants,
-                    ),
-            )
+        ): Locale = forLanguageTag(
+            LanguageTag.forLanguage(
+                when (language) {
+                    null, "" -> LanguageTag.UNDETERMINED_PREFIX
+                    else -> language
+                },
+                script,
+                region,
+                variants,
+            ),
+        )
 
         public fun forLanguageOrNull(
             language: String?,
             script: String? = null,
             region: String? = null,
             variants: List<String> = emptyList(),
-        ): Locale? =
-            LanguageTag.Companion.forLanguageOrNull(
-                language = when (language) {
-                    null, "" -> LanguageTag.Companion.undeterminedPrefix
-                    else -> language
-                },
-                script = script,
-                region = region,
-                variants = variants,
-            )?.let(::forLanguageTag)
+        ): Locale? = LanguageTag.forLanguageOrNull(
+            when (language) {
+                null, "" -> LanguageTag.UNDETERMINED_PREFIX
+                else -> language
+            },
+            script,
+            region,
+            variants,
+        )?.let(::forLanguageTag)
 
         public fun forLanguageTag(tag: LanguageTag): Locale =
             when (tag) {
@@ -75,11 +63,10 @@ public class Locale private constructor(
                 else -> Locale(languageTag = tag)
             }
 
-        public fun forLanguageTag(tag: String): Locale =
-            forLanguageTag(LanguageTag.Companion.parse(tag))
+        public fun forLanguageTag(tag: String): Locale = forLanguageTag(LanguageTag.parse(tag))
 
         public fun forLanguageTagOrNull(tag: String): Locale? =
-            LanguageTag.Companion.parseOrNull(tag)?.let(::forLanguageTag)
+            LanguageTag.parseOrNull(tag)?.let(::forLanguageTag)
     }
 }
 

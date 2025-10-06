@@ -1,4 +1,4 @@
-package klib.processing.model.annotations
+package klib.data.processing.model.annotations
 
 /**
  * Annotation at a function

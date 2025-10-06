@@ -1,7 +1,5 @@
 package klib.data.location.locale
 
-import klib.data.locale.LocalizedValueResolver
-
 internal class HierarchicalLocalizedValueResolver<in Key : Any, out Value : Any>(
 	private val delegate: LocalizedValueResolver<Key, Value>
 ) : LocalizedValueResolver<Key, Value> {

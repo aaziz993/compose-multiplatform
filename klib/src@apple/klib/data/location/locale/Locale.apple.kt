@@ -9,20 +9,20 @@ public fun NSLocale.toKotlinLocale(): Locale {
 
     return Locale.forLanguageTag(
         when {
-            tag.isEmpty() -> LanguageTag.undeterminedPrefix
-            tag.startsWith("-") -> "${LanguageTag.undeterminedPrefix}$tag"
+            tag.isEmpty() -> LanguageTag.UNDETERMINED_PREFIX
+            tag.startsWith("-") -> "${LanguageTag.UNDETERMINED_PREFIX}$tag"
             else -> tag
         },
     )
 }
 
 public fun Locale.toNSLocale(): NSLocale {
-    val tag = toLanguageTag().toString()
+    val tag = languageTag.toString()
 
     return NSLocale(
         when {
-            tag == LanguageTag.undeterminedPrefix -> ""
-            tag.startsWith("${LanguageTag.undeterminedPrefix}-") -> tag.removePrefix(LanguageTag.undeterminedPrefix)
+            tag == LanguageTag.UNDETERMINED_PREFIX -> ""
+            tag.startsWith("${LanguageTag.UNDETERMINED_PREFIX}-") -> tag.removePrefix(LanguageTag.UNDETERMINED_PREFIX)
             else -> tag
         },
     )

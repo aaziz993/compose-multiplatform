@@ -1,4 +1,4 @@
-package klib.processing.model
+package klib.data.processing.model
 
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.TypeName

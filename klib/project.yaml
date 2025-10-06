@@ -35,5 +35,7 @@ script:
               // Required by asynchronous web-worker-driver for js.
               database.generateAsync /= true
             }
+  - ksp:
+      - arg: ("kspResourcesDir", projectDir.resolve("kspResources").path)
   - dependencies:
       - add: ("kspCommonMainMetadata", dependencies.project(":klib-ksp"))

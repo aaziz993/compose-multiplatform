@@ -1,4 +1,4 @@
-package klib.processing
+package klib.data.processing
 
 import com.google.devtools.ksp.symbol.KSName
 

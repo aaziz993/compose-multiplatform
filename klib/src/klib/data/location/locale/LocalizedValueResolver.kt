@@ -1,8 +1,4 @@
-package klib.data.locale
-
-import klib.data.location.locale.HierarchicalLocalizedValueResolver
-import klib.data.location.locale.LanguageTag
-import klib.data.location.locale.Locale
+package klib.data.location.locale
 
 public interface LocalizedValueResolver<in Key : Any, out Value : Any> {
 
@@ -52,10 +48,10 @@ public interface LocalizedValueResolver<in Key : Any, out Value : Any> {
 
 		@Suppress("NAME_SHADOWING")
 		public fun put(key: Key, value: Value, language: String?, script: String? = null, region: String? = null, variants: List<String> = emptyList()) {
-			val language = LanguageTag.Companion.canonicalizeLanguage(language)
-			val script = LanguageTag.Companion.canonicalizeScript(script)
-			val region = LanguageTag.Companion.canonicalizeRegion(region)
-			val variants = LanguageTag.Companion.canonicalizeVariants(variants)
+			val language = LanguageTag.canonicalizeLanguage(language)
+			val script = LanguageTag.canonicalizeScript(script)
+			val region = LanguageTag.canonicalizeRegion(region)
+			val variants = LanguageTag.canonicalizeVariants(variants)
 
 			(languageMaps ?: hashMapOf<String?, MutableLanguageMap>().also { languageMaps = it })
 				.getOrPut(language, ::MutableLanguageMap).put(key = key, value = value, script = script, region = region, variants = variants)
@@ -153,10 +149,10 @@ public interface LocalizedValueResolver<in Key : Any, out Value : Any> {
 
 		@Suppress("NAME_SHADOWING")
 		override fun resolve(key: Key, language: String?, script: String?, region: String?, variants: List<String>): Value? {
-			val language = LanguageTag.Companion.canonicalizeLanguage(language)
-			val script = LanguageTag.Companion.canonicalizeScript(script)
-			val region = LanguageTag.Companion.canonicalizeRegion(region)
-			val variants = LanguageTag.Companion.canonicalizeVariants(variants)
+			val language = LanguageTag.canonicalizeLanguage(language)
+			val script = LanguageTag.canonicalizeScript(script)
+			val region = LanguageTag.canonicalizeRegion(region)
+			val variants = LanguageTag.canonicalizeVariants(variants)
 
 			return languageMaps?.get(language)?.resolve(key = key, script = script, region = region, variants = variants)
 		}

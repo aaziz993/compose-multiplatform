@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.AutoMode
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
@@ -40,6 +41,8 @@ import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.theme.LocalAppTheme
+import clib.presentation.theme.model.Theme
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -119,7 +122,11 @@ public fun NavScreen(
                             },
                         ) {
                             Icon(
-                                imageVector = if (true) Icons.Filled.LightMode else Icons.Filled.DarkMode,
+                                imageVector = when (LocalAppTheme.current) {
+                                    Theme.SYSTEM -> Icons.Filled.LightMode
+                                    Theme.LIGHT -> Icons.Filled.DarkMode
+                                    Theme.DARK -> Icons.Filled.AutoMode
+                                },
                                 contentDescription = "Switch theme",
                             )
                         }

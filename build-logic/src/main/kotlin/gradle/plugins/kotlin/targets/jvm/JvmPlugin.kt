@@ -5,7 +5,7 @@ import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.java
 import gradle.api.project.projectScript
-import klib.data.type.pair
+import klib.data.type.tuples.pair
 import klib.data.type.primitives.string.lowercaseFirstChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project

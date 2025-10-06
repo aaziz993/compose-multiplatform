@@ -1,7 +1,5 @@
 package klib.data.type
 
-import klib.data.type.tuples.Tuple4
-
 public val <T> T.exhaustive: T
     get() = this
 
@@ -24,13 +22,4 @@ public inline fun <T : R, R> T.letIf(
 else {
     this
 }
-
-public fun <T> T.pair(): Pair<T, T> = this to this
-
-public infix fun <V, T> T.pairBy(other: V): Pair<V, T> = other to this
-
-public fun <T> T.triple(): Triple<T, T, T> = Triple(this, this, this)
-
-public fun <T> T.quadruple(): Tuple4<T, T, T, T> = Tuple4(this, this, this, this)
-
 

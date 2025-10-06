@@ -8,7 +8,7 @@ import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import klib.data.type.collections.associateWithNotNull
 import klib.data.type.collections.toTreeString
-import klib.data.type.pair
+import klib.data.type.tuples.pair
 import klib.data.type.primitives.string.ansi.Attribute
 import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.lowercaseFirstChar
