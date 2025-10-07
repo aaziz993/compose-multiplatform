@@ -179,6 +179,10 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
         )
     }
 
+    public fun selected(currentDestination: NavDestination): NavigationRoute<Route, *>? =
+        if (isSelected(currentDestination)) this
+        else composableChildren.firstNotNullOfOrNull { child -> child.selected(currentDestination) }
+
     private fun concatenateTypeMap(typeMap: Map<KType, NavType<*>>) = typeMap + this.typeMap
 
     private fun concatenateDeepLinks(deepLinks: List<String>) =

@@ -14,7 +14,10 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Unarchive
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -133,9 +136,9 @@ public fun NavScreen(
                         ) {
                             Icon(
                                 imageVector = when (themeMode) {
-                                    ThemeMode.SYSTEM -> Icons.Filled.LightMode
-                                    ThemeMode.LIGHT -> Icons.Filled.DarkMode
-                                    ThemeMode.DARK -> Icons.Filled.Unarchive
+                                    ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
+                                    ThemeMode.LIGHT -> Icons.Outlined.LightMode
+                                    ThemeMode.DARK -> Icons.Outlined.DarkMode
                                 },
                                 contentDescription = "Switch theme",
                             )
