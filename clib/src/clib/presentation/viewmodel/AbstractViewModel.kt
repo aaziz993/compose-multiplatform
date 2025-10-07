@@ -68,14 +68,13 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         )
 
     public suspend fun <T : Any> ViewModelState<T>.mapRaise(block: suspend Raise<Throwable>.() -> T): ViewModelState<T> =
-        mapEither { either<Throwable, T> { block() } }
+        mapEither { either { block() } }
 
     public abstract fun action(action: T)
 
     protected fun <T, R> StateFlow<T>.map(transform: (data: T) -> R): StateFlow<R> =
         map(scope = viewModelScope, transform)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     protected fun <T, R> StateFlow<T>.map(initialValue: R, transform: suspend (data: T) -> R): StateFlow<R> =
         map(viewModelScope, initialValue, transform)
 
@@ -120,7 +119,6 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         }
     }
 
-    @OptIn(ExperimentalPagingApi::class)
     protected fun <Value : Any> CRUDRepository<Value>.viewModelPagingFlow(
         sort: List<Order>? = null,
         predicate: BooleanVariable? = null,
@@ -131,7 +129,6 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         disablePrepend: Boolean = false,
     ): CRUDRefreshablePager<Value> = pager(sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset, disablePrepend)
 
-    @OptIn(ExperimentalPagingApi::class)
     protected fun <Value : Any> CRUDRepository<Value>.viewModelMutablePager(
         sort: List<Order>? = null,
         predicate: BooleanVariable? = null,
@@ -157,7 +154,6 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         disablePrepend,
     )
 
-    @OptIn(ExperimentalPagingApi::class)
     protected fun CRUDRepository<*>.viewModelPagingFlow(
         projections: List<Variable>,
         sort: List<Order>? = null,

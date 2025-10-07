@@ -43,8 +43,8 @@ import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.Theme
+import clib.presentation.theme.model.ThemeMode
 import klib.data.type.primitives.string.uppercaseFirstChar
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel

@@ -26,6 +26,7 @@ script:
         optIn.addAll: |
           (
             "kotlinx.cinterop.ExperimentalForeignApi",
+            "androidx.paging.ExperimentalPagingApi",
           )
   # Api documentation engine for Kotlin.
   - dokka:

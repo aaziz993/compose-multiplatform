@@ -6,7 +6,6 @@ import com.google.devtools.ksp.symbol.KSFile
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.kspDependencies
 import com.squareup.kotlinpoet.ksp.originatingKSFiles
-import com.squareup.kotlinpoet.ksp.writeTo
 import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 
@@ -24,19 +23,19 @@ public fun FileSpec.Builder.addImports(imports: Set<String>): FileSpec.Builder {
     return this
 }
 
-public fun FileSpec.writeToWithOverride(
+public fun FileSpec.writeToOrOverride(
     codeGenerator: CodeGenerator,
     aggregating: Boolean,
     originatingKSFiles: Iterable<KSFile> = originatingKSFiles(),
 ) {
     val dependencies = kspDependencies(aggregating, originatingKSFiles)
-    writeToWithOverride(codeGenerator, dependencies)
+    writeToOrOverride(codeGenerator, dependencies)
 }
 
-public fun FileSpec.writeToWithOverride(
+public fun FileSpec.writeToOrOverride(
     codeGenerator: CodeGenerator,
     dependencies: Dependencies,
 ) {
-    val file = codeGenerator.createNewFileWithOverride(dependencies, packageName, name)
+    val file = codeGenerator.createNewFileOrOverride(dependencies, packageName, name)
     OutputStreamWriter(file, StandardCharsets.UTF_8).use(::writeTo)
 }

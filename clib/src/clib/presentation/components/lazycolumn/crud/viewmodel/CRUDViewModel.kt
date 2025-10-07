@@ -48,7 +48,6 @@ public class CRUDViewModel<T : Any>(
             firstItemOffset,
         )
 
-    @OptIn(ExperimentalPagingApi::class)
     override fun action(action: CRUDAction<T>) {
         when (action) {
             is CRUDAction.Find -> {

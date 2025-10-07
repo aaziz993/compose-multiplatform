@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import clib.presentation.components.loading.LoadingCircle
 import clib.presentation.viewmodel.model.exception.ViewModelStateException
 
-public sealed interface ViewModelState<T : Any> {
+public sealed interface  ViewModelState<T : Any> {
 
     public data class Idle<T : Any>(val exception: ViewModelStateException? = null) : ViewModelState<T>
 

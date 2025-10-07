@@ -12,7 +12,7 @@ import com.squareup.kotlinpoet.asClassName
 import java.io.File
 import klib.data.processing.Logger
 import klib.data.processing.model.ClassData
-import klib.data.processing.writeToWithOverride
+import klib.data.processing.writeToOrOverride
 import processor.CompilerOptions
 import app.softwork.serialization.csv.*
 import com.squareup.kotlinpoet.ClassName
@@ -25,7 +25,6 @@ public fun generateLanguageTagRegistry(
     codeGenerator: CodeGenerator,
     options: CompilerOptions
 ) {
-
     val file = File(options.kspResourcesDir).resolve("iso/locale/ietf-language-tags.csv")
     if (!file.exists()) {
         logger.error("Language tags file not found at '$file'")
@@ -76,7 +75,7 @@ public fun generateLanguageTagRegistry(
         .build()
 
 
-    fileSpec.writeToWithOverride(codeGenerator, aggregating = false)
+    fileSpec.writeToOrOverride(codeGenerator, aggregating = false)
 }
 
 

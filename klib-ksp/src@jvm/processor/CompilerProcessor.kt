@@ -39,6 +39,7 @@ import de.jensklingenberg.ktorfit.http.PATCH
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.PUT
 import de.jensklingenberg.ktorfit.model.toClassData
+import java.io.File
 import klib.data.processing.Logger
 import processor.generators.ktorfit.generateImplClass
 import processor.generators.location.country.generateCountryRegistry
@@ -59,6 +60,9 @@ public class CompilerProcessor(
         if (invoked) return emptyList()
         invoked = true
 
+        val logger = Logger(env.logger, loggingType)
+        val codeGenerator = env.codeGenerator
+
         val classDataList =
             getAnnotatedFunctions(ktorfitResolver)
                 .groupBy { it.closestClassDeclaration() }
@@ -66,8 +70,7 @@ public class CompilerProcessor(
                     classDec?.toClassData(KtorfitLogger(env.logger, loggingType))
                 }.mapNotNull { it }
 
-        val ktorfitOptions = KtorfitOptions(env.options)
-//        generateImplClass(classDataList, env.codeGenerator, resolver, ktorfitOptions)
+        generateImplClass(classDataList, env.codeGenerator, resolver, KtorfitOptions(env.options), options)
 
         val commonMainModuleName = "commonMain"
         val moduleName =
@@ -78,13 +81,8 @@ public class CompilerProcessor(
                 ""
             }
 
-        val logger = Logger(env.logger, loggingType)
-        val codeGenerator = env.codeGenerator
 
         if (moduleName.contains(commonMainModuleName)) {
-            classDataList.forEach {
-                logger.warn(it.ksFile.filePath)
-            }
             generateCountryRegistry(logger, codeGenerator, options)
             generateLanguageTagRegistry(logger, codeGenerator, options)
             generateCurrencyRegistry(logger, codeGenerator, options)

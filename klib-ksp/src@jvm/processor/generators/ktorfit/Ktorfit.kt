@@ -8,7 +8,8 @@ import de.jensklingenberg.ktorfit.KtorfitOptions
 import de.jensklingenberg.ktorfit.model.ClassData
 import de.jensklingenberg.ktorfit.poetspec.createFileSpec
 import de.jensklingenberg.ktorfit.poetspec.getImplClassSpec
-import java.io.OutputStreamWriter
+import klib.data.processing.writeToOrOverride
+import processor.CompilerOptions
 
 /**
  * Generate the Impl class for every interface used for Ktorfit
@@ -19,6 +20,7 @@ public fun generateImplClass(
     codeGenerator: CodeGenerator,
     resolver: Resolver,
     ktorfitOptions: KtorfitOptions,
+    options: CompilerOptions
 ) {
     classDataList.forEach { classData ->
         with(classData) {
@@ -29,9 +31,8 @@ public fun generateImplClass(
                     classData,
                     classData.implName,
                     implClassSpec,
-                ).toString()
+                )
 
-            val fileName = classData.implName
             val commonMainModuleName = "commonMain"
             val moduleName =
                 try {
@@ -43,24 +44,14 @@ public fun generateImplClass(
 
             if (!ktorfitOptions.multiplatformWithSingleTarget) {
                 if (moduleName.contains(commonMainModuleName)) {
-                    if (!ksFile.filePath.contains(commonMainModuleName)) {
-                        return@forEach
-                    }
+                    if (!ksFile.filePath.contains(options.commonMainKotlinSrc)) return@forEach
                 }
                 else {
-                    if (ksFile.filePath.contains(commonMainModuleName)) {
-                        return@forEach
-                    }
+                    if (ksFile.filePath.contains(options.commonMainKotlinSrc)) return@forEach
                 }
             }
 
-//            codeGenerator
-//                .createNewFile(dependencies = Dependencies(false, ksFile), packageName, fileName, "kt")
-//                .use { output ->
-//                    OutputStreamWriter(output).use { writer ->
-//                        writer.write(fileSource)
-//                    }
-//                }
+//            fileSource.writeToOrOverride(codeGenerator, Dependencies(false, ksFile))
         }
     }
 }

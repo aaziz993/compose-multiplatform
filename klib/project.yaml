@@ -36,5 +36,4 @@ script:
               database.generateAsync /= true
             }
   - ksp:
-      - arg: ("kspResourcesDir", projectDir.resolve("kspResources").path)
       - dependencies: (dependencies.project(":klib-ksp"))

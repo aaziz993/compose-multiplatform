@@ -17,7 +17,7 @@ import java.io.File
 import klib.data.processing.Logger
 import klib.data.processing.model.ClassData
 import klib.data.processing.model.builder
-import klib.data.processing.writeToWithOverride
+import klib.data.processing.writeToOrOverride
 import kotlinx.serialization.json.Json
 import processor.CompilerOptions
 import processor.generators.location.country.model.Country
@@ -27,7 +27,6 @@ public fun generateCountryRegistry(
     codeGenerator: CodeGenerator,
     options: CompilerOptions
 ) {
-
     val file = File(options.kspResourcesDir).resolve("iso/country/countries.json")
     if (!file.exists()) {
         logger.error("Countries file not found at '$file'")
@@ -99,5 +98,5 @@ public fun generateCountryRegistry(
         .build()
 
 
-    fileSpec.writeToWithOverride(codeGenerator, aggregating = false)
+    fileSpec.writeToOrOverride(codeGenerator, aggregating = false)
 }

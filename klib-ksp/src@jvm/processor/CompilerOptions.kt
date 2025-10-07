@@ -11,8 +11,11 @@ public class CompilerOptions(
      *
      * 2: Turn errors into warnings
      */
-    public val errorsLoggingType: Int = (options["Compiler_Errors"]?.toIntOrNull()) ?: 1
+    public val errorsLoggingType: Int = (options["errorsLoggingType"]?.toIntOrNull()) ?: 1
 
-    public val kspResourcesDir: String = options["kspResourcesDir"]
-        ?: error("KSP argument 'kspResourcesDir' is missing")
+    public val kspResourcesDir: String = options["projectDir"]?.let { projectDir -> "$projectDir/kspResources" }
+        ?: error("KSP argument 'projectDir' is missing")
+
+    public val commonMainKotlinSrc: String = options["commonMainKotlinSrc"]
+        ?: error("KSP argument 'commonMainKotlinSrc' is missing")
 }

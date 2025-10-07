@@ -21,7 +21,6 @@ public abstract class AbstractPager<Key : Any, Value : Any> (
 
     protected lateinit var pagingSource: PagingSource<Key, Value>
 
-    @OptIn(ExperimentalPagingApi::class)
     public val data: Flow<PagingData<Value>> by lazy {
         Pager(config, initialKey, remoteMediator) { createPagingSource().also { pagingSource = it } }
             .flow.letIf({ remoteMediator == null && cacheCoroutineScope != null }) { it.cachedIn(cacheCoroutineScope!!) }
