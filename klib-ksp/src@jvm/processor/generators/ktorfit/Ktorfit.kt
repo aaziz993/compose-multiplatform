@@ -38,7 +38,7 @@ public fun generateImplClass(
                 try {
                     resolver.getModuleName().getShortName()
                 }
-                catch (e: Throwable) {
+                catch (_: Throwable) {
                     ""
                 }
 

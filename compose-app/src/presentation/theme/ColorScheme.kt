@@ -4,6 +4,8 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import clib.presentation.theme.darkHighContrast
+import clib.presentation.theme.lightHighContrast
 
 public val lightColorScheme: ColorScheme = lightColorScheme(
     primary = Color(0xFF1A3E8C),       // Яркий синий
@@ -20,6 +22,8 @@ public val lightColorScheme: ColorScheme = lightColorScheme(
     onError = Color(0xFFFFFFFF),       // Белый текст на красном
 )
 
+public val lightColorSchemeHighContrast: ColorScheme = lightColorScheme.lightHighContrast()
+
 public val darkColorScheme: ColorScheme = darkColorScheme(
     primary = Color(0xFF3A5FBF),       // Яркий синий для элементов
     primaryContainer = Color(0xFF1A3E8C), // Темно-синий фон
@@ -34,3 +38,5 @@ public val darkColorScheme: ColorScheme = darkColorScheme(
     error = Color(0xFFE74C3C),         // Красный для ошибок
     onError = Color(0xFFFFFFFF),       // Белый текст на красном
 )
+
+public val darkColorSchemeHighContrast: ColorScheme = darkColorScheme.darkHighContrast()

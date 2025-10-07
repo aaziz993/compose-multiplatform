@@ -3,7 +3,6 @@ package clib.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.RemoteMediator
@@ -24,12 +23,10 @@ import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.data.type.collections.restartableflow.restartableStateIn
 import clib.presentation.viewmodel.ViewModelState.Success
 import clib.presentation.viewmodel.model.exception.ViewModelStateException
-import klib.data.crud.CRUDRepository
-import klib.data.crud.model.query.Order
 import klib.data.BooleanVariable
 import klib.data.Variable
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
+import klib.data.crud.CRUDRepository
+import klib.data.crud.model.query.Order
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -42,9 +39,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 
+// The reasoning 5_000 was chosen for the stopTimeoutMillis can be found in the official Android documentation, which discusses the ANR (Application Not Responding) timeout threshold.
+public const val STATE_STARTED_STOP_TIMEOUT_MILLIS: Long = 5_000
+
 public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent {
 
-    protected abstract val savedStateHandle: SavedStateHandle
+    protected open val savedStateHandle: SavedStateHandle = SavedStateHandle()
 
     public open fun exceptionTransform(exception: Throwable): ViewModelStateException = ViewModelStateException(exception)
 
@@ -163,10 +163,4 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         remoteMediator: RemoteMediator<Long, List<Any?>>? = null,
         firstItemOffset: Long = 0,
     ): CRUDProjectionRefreshablePager = pager(projections, sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset)
-
-    public companion object {
-
-        // The reasoning 5_000 was chosen for the stopTimeoutMillis can be found in the official Android documentation, which discusses the ANR (Application Not Responding) timeout threshold.
-        public const val STATE_STARTED_STOP_TIMEOUT_MILLIS: Long = 5_000
-    }
 }

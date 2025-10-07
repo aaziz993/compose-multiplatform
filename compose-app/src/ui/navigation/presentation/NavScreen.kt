@@ -10,10 +10,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.AutoMode
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Unarchive
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -42,7 +42,6 @@ import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.LocalAppTheme
-import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -119,14 +118,14 @@ public fun NavScreen(
                     AppTooltipBox("Switch theme") {
                         IconButton(
                             onClick = {
-                                /* click action */
+
                             },
                         ) {
                             Icon(
-                                imageVector = when (LocalAppTheme.current) {
-                                    Theme.SYSTEM -> Icons.Filled.LightMode
-                                    Theme.LIGHT -> Icons.Filled.DarkMode
-                                    Theme.DARK -> Icons.Filled.AutoMode
+                                imageVector = when (LocalAppTheme.current.mode) {
+                                    ThemeMode.SYSTEM -> Icons.Filled.LightMode
+                                    ThemeMode.LIGHT -> Icons.Filled.DarkMode
+                                    ThemeMode.DARK -> Icons.Filled.Unarchive
                                 },
                                 contentDescription = "Switch theme",
                             )
