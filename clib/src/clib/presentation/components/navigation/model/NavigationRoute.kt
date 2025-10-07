@@ -179,9 +179,12 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
         )
     }
 
-    public fun selected(currentDestination: NavDestination): NavigationRoute<Route, *>? =
-        if (isSelected(currentDestination)) this
-        else composableChildren.firstNotNullOfOrNull { child -> child.selected(currentDestination) }
+    public fun selected(currentDestination: NavDestination?): NavigationRoute<Route, *>? {
+        if (composableChildren.isNotEmpty())
+            return composableChildren.firstNotNullOfOrNull { child -> child.selected(currentDestination) }
+
+        return if (isSelected(currentDestination)) this else null
+    }
 
     private fun concatenateTypeMap(typeMap: Map<KType, NavType<*>>) = typeMap + this.typeMap
 

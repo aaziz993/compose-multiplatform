@@ -63,15 +63,6 @@ public class CompilerProcessor(
         val logger = Logger(env.logger, loggingType)
         val codeGenerator = env.codeGenerator
 
-        val classDataList =
-            getAnnotatedFunctions(ktorfitResolver)
-                .groupBy { it.closestClassDeclaration() }
-                .map { (classDec) ->
-                    classDec?.toClassData(KtorfitLogger(env.logger, loggingType))
-                }.mapNotNull { it }
-
-        generateImplClass(classDataList, env.codeGenerator, resolver, KtorfitOptions(env.options), options)
-
         val commonMainModuleName = "commonMain"
         val moduleName =
             try {
@@ -81,13 +72,21 @@ public class CompilerProcessor(
                 ""
             }
 
-
         if (moduleName.contains(commonMainModuleName)) {
             generateCountryRegistry(logger, codeGenerator, options)
             generateLanguageTagRegistry(logger, codeGenerator, options)
             generateCurrencyRegistry(logger, codeGenerator, options)
             generateLocaleRegistry(logger, codeGenerator, options)
         }
+
+        val classDataList =
+            getAnnotatedFunctions(ktorfitResolver)
+                .groupBy { it.closestClassDeclaration() }
+                .map { (classDec) ->
+                    classDec?.toClassData(KtorfitLogger(env.logger, loggingType))
+                }.mapNotNull { it }
+
+        generateImplClass(classDataList, env.codeGenerator, resolver, KtorfitOptions(env.options), options)
 
         return emptyList()
     }

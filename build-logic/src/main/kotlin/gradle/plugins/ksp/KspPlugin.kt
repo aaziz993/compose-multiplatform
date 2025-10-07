@@ -25,10 +25,12 @@ public class KspPlugin : Plugin<Project> {
         pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
             arg(
                 "commonMainKotlinSrc",
-                when (projectScript.layout) {
-                    is ProjectLayout.Flat -> "/src/"
-                    else -> "/src/${KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME}/kotlin/"
-                },
+                projectDir.resolve(
+                    when (projectScript.layout) {
+                        is ProjectLayout.Flat -> "src"
+                        else -> "src/${KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME}/kotlin"
+                    },
+                ).path,
             )
         }
     }

@@ -42,16 +42,18 @@ public fun generateImplClass(
                     ""
                 }
 
+            val commonMainKotlinSrc = "${options.commonMainKotlinSrc}/"
+
             if (!ktorfitOptions.multiplatformWithSingleTarget) {
                 if (moduleName.contains(commonMainModuleName)) {
-                    if (!ksFile.filePath.contains(options.commonMainKotlinSrc)) return@forEach
+                    if (!ksFile.filePath.contains(commonMainKotlinSrc)) return@forEach
                 }
                 else {
-                    if (ksFile.filePath.contains(options.commonMainKotlinSrc)) return@forEach
+                    if (ksFile.filePath.contains(commonMainKotlinSrc)) return@forEach
                 }
             }
 
-//            fileSource.writeToOrOverride(codeGenerator, Dependencies(false, ksFile))
+            fileSource.writeToOrOverride(codeGenerator, Dependencies(false, ksFile))
         }
     }
 }
