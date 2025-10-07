@@ -2,6 +2,8 @@ package di.module
 
 import clib.presentation.components.navigation.DefaultNavigator
 import clib.presentation.components.navigation.Navigator
+import dev.jordond.connectivity.Connectivity
+import klib.data.net.createConnectivity
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
@@ -10,7 +12,7 @@ import ui.navigation.presentation.Home
 import ui.navigation.presentation.NavRoute
 
 @Module
-@ComponentScan("ui")
+@ComponentScan("ui", "presentation")
 public class CommonModule {
 
     @Single
@@ -18,6 +20,9 @@ public class CommonModule {
         isLenient = true
         ignoreUnknownKeys = true
     }
+
+    @Single
+    public fun provideConnectivity(): Connectivity = createConnectivity()
 
 //    @Single
 //    public fun provideHttpClient(config: ClientConfigImpl, json: Json): HttpClient = with(config.httpClient) {

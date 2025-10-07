@@ -1,15 +1,29 @@
 package clib.presentation.theme
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import clib.presentation.theme.model.Theme
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
-public class ThemeState(initial: Theme = Theme()) {
+public class ThemeState(theme: Theme = Theme()) {
 
-    public val theme: StateFlow<Theme>
-        field = MutableStateFlow<Theme>(initial)
+    public var theme: Theme by mutableStateOf(theme)
 
-    public fun setTheme(value: Theme) {
-        theme.value = value
+    public companion object {
+
+        public val Saver: Saver<ThemeState, *> = listSaver(
+            save = { listOf(it.theme) },
+            restore = { ThemeState(it[0]) },
+        )
     }
 }
+
+@Composable
+public fun rememberThemeState(state: ThemeState = ThemeState()): ThemeState = rememberSaveable(saver = ThemeState.Saver) { state }
+
+@Composable
+public fun rememberTheme(theme: Theme = Theme()): ThemeState = rememberThemeState(ThemeState(theme))

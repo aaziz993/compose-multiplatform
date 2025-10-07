@@ -91,12 +91,12 @@ public fun AdvancedTextField(
     showValue: Boolean = true,
     onShowValueChange: ((Boolean) -> Unit)? = null
 ) {
-    val isTemporal =
+    val isTime =
         type is TextField.LocalTime || type is TextField.LocalDate || type == TextField.LocalDateTime
 
     val isEnum = type is TextField.Enum
 
-    val isUnvalidated = readOnly || isTemporal || isEnum || validator == null
+    val isUnvalidated = readOnly || isTime || isEnum || validator == null
 
     val validation = if (isUnvalidated) {
         emptyList()
@@ -107,7 +107,7 @@ public fun AdvancedTextField(
 
     val isErrorWithValidation = isError || validation.isNotEmpty()
 
-    val advancedOnValueChange = if (readOnly || isTemporal || type is TextField.Enum) {
+    val advancedOnValueChange = if (readOnly || isTime || type is TextField.Enum) {
         {}
     }
     else {
@@ -145,7 +145,7 @@ public fun AdvancedTextField(
         }
     }
 
-    val temporalIconButton: (@Composable () -> Unit)? = if (isTemporal && !readOnly) {
+    val temporalIconButton: (@Composable () -> Unit)? = if (isTime && !readOnly) {
         var showTemporalPicker by remember { mutableStateOf(false) }
 
         if (showTemporalPicker) {

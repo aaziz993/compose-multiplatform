@@ -105,11 +105,11 @@ public fun AdvancedSearchField(
     placeholder,
     leadingIcon,
     {
-        val isTemporal = type is TextField.LocalTime || type is TextField.LocalDate || type is TextField.LocalDateTime
+        val isTime = type is TextField.LocalTime || type is TextField.LocalDate || type is TextField.LocalDateTime
 
         val isEnum = type is TextField.Enum
 
-        if (state.compareMatch == SearchFieldCompare.BETWEEN && isTemporal) {
+        if (state.compareMatch == SearchFieldCompare.BETWEEN && isTime) {
             var showTemporalPicker by remember { mutableStateOf(false) }
 
             if (showTemporalPicker) {
@@ -164,7 +164,7 @@ public fun AdvancedSearchField(
             )
         }
 
-        if (!(isTemporal || isEnum)) {
+        if (!(isTime || isEnum)) {
             if (ignoreCase) {
                 Icon(
                     painterResource(Res.drawable.case_sensitive),

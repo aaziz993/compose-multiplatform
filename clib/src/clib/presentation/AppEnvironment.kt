@@ -20,7 +20,7 @@ import clib.presentation.theme.lightColorSchemeHighContrast
 
 @Composable
 public fun AppEnvironment(
-    themeState: ThemeState = ThemeState(),
+    themeState: ThemeState,
     lightTheme: ColorScheme = lightColorScheme,
     lightThemeHighContrast: ColorScheme = lightColorSchemeHighContrast,
     darkTheme: ColorScheme = darkColorScheme,
