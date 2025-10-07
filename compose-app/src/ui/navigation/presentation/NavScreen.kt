@@ -37,7 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
-import clib.presentation.components.connectivity.Connectivity
+import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
@@ -190,7 +190,7 @@ public fun NavScreen(
         }
     }
 
-    Connectivity(koinInject())
+    ConnectivityGlobalSnackbar(koinInject())
 }
 
 @Preview
