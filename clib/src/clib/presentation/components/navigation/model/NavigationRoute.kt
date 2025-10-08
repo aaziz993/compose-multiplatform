@@ -104,7 +104,7 @@ public sealed interface Route {
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
         text: @Composable (label: String, modifier: Modifier) -> Unit,
-        selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
+        selectedText: @Composable (label: String, modifier: Modifier) -> Unit = text,
         currentDestination: NavDestination?,
         navigateTo: (Route) -> Unit
     ): Unit = with(navigationSuiteScope) {

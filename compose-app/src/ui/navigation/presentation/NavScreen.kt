@@ -54,7 +54,7 @@ public fun NavScreen(
         startDestination = if (loginState.user == null) startDestination else loggedInDestination,
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
-            route.item1(
+            route.item(
                 text = { label, _ -> Text(text = label) },
                 currentDestination = currentDestination,
             ) { destination ->
