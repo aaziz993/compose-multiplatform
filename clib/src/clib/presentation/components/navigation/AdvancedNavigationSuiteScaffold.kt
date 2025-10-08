@@ -76,7 +76,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
 
     NavigationSuiteScaffold(
         {
-            route.navigationChildren.forEach { child -> navigationSuiteRoute(currentDestination, child) }
+            route.routes.forEach { route -> navigationSuiteRoute(currentDestination, route) }
         },
         modifier,
         layoutType,

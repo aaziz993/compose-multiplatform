@@ -68,7 +68,7 @@ public fun AdvancedNavHost(
         popExitTransition,
         sizeTransform,
     ) {
-        route.composableChildren.forEach { composableChild ->
+        route.routes.forEach { composableChild ->
             builder(composableChild)
         }
     }

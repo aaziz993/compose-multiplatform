@@ -54,6 +54,7 @@ import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
+import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -69,6 +70,7 @@ import ui.map.MapScreen
 import ui.news.NewsScreen
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
+import ui.settings.viewmodel.SettingsAction
 import ui.settings.viewmodel.SettingsViewModel
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
@@ -81,24 +83,24 @@ public data object NavRoute : NavigationRoute() {
 
     override val deepLinks: List<String> = listOf("https://", "http://")
 
-    override val composableChildren: List<Route> =
+    override val routes: List<Route> =
         listOf(
-            Home,
+//            Home,
             News,
             Map,
             Services,
             Settings,
-            About,
+//            About,
             AuthRoute,
-            WalletRoute,
+//            WalletRoute,
         )
+
+    override fun authResource(): AuthResource? = null
 }
 
 @Serializable
 @SerialName("home")
 public data object Home : Destination, NavigationDestination<Home>() {
-
-    override val excluded: Boolean = true
 
     override val deepLinks: List<String> = listOf("main")
 
@@ -180,7 +182,19 @@ public data object Services : Destination, NavigationDestination<Services>() {
         route: Services,
         navigationAction: (NavigationAction) -> Unit,
     ) {
-        ServicesScreen(route, navigationAction)
+        val settingsViewModel: SettingsViewModel = koinViewModel()
+
+        val settingsState by settingsViewModel.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            settingsState.themeState,
+            { theme ->
+                settingsViewModel.action(SettingsAction.SetTheme(theme))
+            },
+            navigationAction,
+        ) {
+            ServicesScreen(route, navigationAction)
+        }
     }
 }
 
@@ -212,8 +226,6 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 @SerialName("about")
 public data object About : Destination, NavigationDestination<About>() {
 
-    override val excluded: Boolean = true
-
     override val deepLinks: List<String> = listOf("about")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
@@ -232,15 +244,11 @@ public data object About : Destination, NavigationDestination<About>() {
 @Serializable
 public data object AuthRoute : NavigationRoute() {
 
-    override val excluded: Boolean = true
-
     override val deepLinks: List<String> = listOf("auth")
 
-    override val composableChildren: List<NavigationDestination<*>> = listOf(Login, Profile)
+    override val routes: List<NavigationDestination<*>> = listOf(Login, Profile)
 
-    override val navigationChildren: List<NavigationDestination<*>> = composableChildren.filterNot { child ->
-        child in listOf(Login, ForgotPassword.Companion)
-    }
+    override fun authResource(): AuthResource? = null
 }
 
 @Serializable
@@ -257,6 +265,8 @@ public data object Login : Destination, NavigationDestination<Login>() {
         Icon(Icons.AutoMirrored.Filled.Login, label, modifier)
     }
 
+    override fun authResource(): AuthResource? = null
+
     @Composable
     override fun Screen(route: Login, navigationAction: (NavigationAction) -> Unit): Unit {
         val viewModel: LoginViewModel = koinViewModel()
@@ -265,6 +275,8 @@ public data object Login : Destination, NavigationDestination<Login>() {
 
         LoginScreen(route, state, viewModel::action, Services, navigationAction)
     }
+
+    override fun excludeFromNavigation(): Boolean = true
 }
 
 public data class ForgotPassword(val username: String) : Destination {
@@ -281,6 +293,8 @@ public data class ForgotPassword(val username: String) : Destination {
         @Composable
         override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit): Unit =
             ForgotPasswordScreen(route, navigationAction)
+
+        override fun excludeFromNavigation(): Boolean = true
     }
 }
 
@@ -306,11 +320,9 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 @Serializable
 public data object WalletRoute : NavigationRoute() {
 
-    override val excluded: Boolean = true
-
     override val deepLinks: List<String> = listOf("wallet")
 
-    override val composableChildren: List<NavigationDestination<*>> by lazy { listOf(Balance, Crypto, Stock) }
+    override val routes: List<NavigationDestination<*>> by lazy { listOf(Balance, Crypto, Stock) }
 }
 
 @Serializable

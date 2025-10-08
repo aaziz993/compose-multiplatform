@@ -241,12 +241,8 @@ public fun AdvancedTextField(
 
     val advancedSupportingText: (@Composable () -> Unit)? = supportingText?.let { { it.invoke(isErrorWithValidation) } }
 
-    val advancedVisualTransformation = visualTransformation ?: if (showValue) {
-        VisualTransformation.None
-    }
-    else {
-        PasswordVisualTransformation()
-    }
+    val advancedVisualTransformation = visualTransformation ?: if (showValue) VisualTransformation.None
+    else PasswordVisualTransformation()
 
     val textField: @Composable () -> Unit = if (outlined) {
         {

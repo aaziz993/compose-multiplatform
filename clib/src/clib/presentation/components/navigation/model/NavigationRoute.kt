@@ -24,6 +24,8 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import klib.data.type.auth.AuthResource
+import klib.data.type.auth.User
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -36,7 +38,12 @@ public sealed interface Route {
     public val enabled: Boolean
     public val alwaysShowLabel: Boolean
 
-    public fun excludeFromComposition(): Boolean = false
+    public fun authResource(): AuthResource? = AuthResource()
+
+    public fun authProvider(): String? = null
+    public fun authUser(): User? = null
+
+    public fun auth(): Boolean = authResource()?.validate(authProvider(), authUser()) != false
 
     context(navGraphBuilder: NavGraphBuilder)
     public fun item(
@@ -135,7 +142,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
-        if (excludeFromComposition()) return@with
+        if (!auth()) return@with
 
         val concatenatedDeepLinks = this@NavigationDestination.deepLinks.concatenateDeepLinks(deepLinks)
 
@@ -165,7 +172,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         alwaysShowLabel: Boolean,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (excludeFromComposition() || excludeFromNavigation()) return@with
+        if (excludeFromNavigation() || !auth()) return@with
 
         val selected = isSelected(currentDestination)
 
@@ -208,9 +215,7 @@ public abstract class NavigationRoute : Route {
     override val enabled: Boolean = true
     override val alwaysShowLabel: Boolean = true
 
-    public open val composableChildren: List<Route> = emptyList()
-
-    override fun excludeFromComposition(): Boolean = false
+    public open val routes: List<Route> = emptyList()
 
     context(navGraphBuilder: NavGraphBuilder)
     override fun item(
@@ -233,12 +238,12 @@ public abstract class NavigationRoute : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
-        if (excludeFromComposition()) return@with
+        if (!auth()) return@with
 
         val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
-        navigation(this@NavigationRoute::class, composableChildren.first()) {
-            composableChildren.forEach { child ->
-                child.item(
+        navigation(this@NavigationRoute::class, routes.first()) {
+            routes.forEach { route ->
+                route.item(
                     typeMap,
                     concatenatedDeepLinks,
                     enterTransition,
@@ -260,20 +265,20 @@ public abstract class NavigationRoute : Route {
         alwaysShowLabel: Boolean,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (excludeFromComposition() || excludeFromNavigation()) return@with
+        if (excludeFromNavigation() || !auth()) return@with
 
-        composableChildren.forEach { child ->
-            child.item(transform, currentDestination, enabled, alwaysShowLabel, navigateTo)
+        routes.forEach { route ->
+            route.item(transform, currentDestination, enabled, alwaysShowLabel, navigateTo)
         }
     }
 
     public fun selected(currentDestination: NavDestination?): NavigationDestination<*>? =
-        composableChildren.filterNot { route ->
-            route.excludeFromComposition() || route.excludeFromNavigation()
-        }.firstNotNullOfOrNull { child ->
-            when (child) {
-                is NavigationDestination<*> -> if (child.isSelected(currentDestination)) child else null
-                is NavigationRoute -> child.selected(currentDestination)
+        routes.filterNot { route ->
+            route.excludeFromNavigation() || !route.auth()
+        }.firstNotNullOfOrNull { route ->
+            when (route) {
+                is NavigationDestination<*> -> if (route.isSelected(currentDestination)) route else null
+                is NavigationRoute -> route.selected(currentDestination)
             }
         }
 }
