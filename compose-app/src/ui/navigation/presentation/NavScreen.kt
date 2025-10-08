@@ -37,8 +37,8 @@ import ui.navigation.presentation.viewmodel.NavViewModel
 public fun NavScreen(
     navViewModel: NavViewModel = koinViewModel(),
     loginViewModel: LoginViewModel = koinViewModel(),
-    loginDestination: NavigationDestination<*> = Login,
-    startDestination: NavigationDestination<*> = Services,
+    startDestination: NavigationDestination<*> = Login,
+    loggedInDestination: NavigationDestination<*> = Login,
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
@@ -47,8 +47,8 @@ public fun NavScreen(
 
     LaunchedEffect(loginState.user) {
         if (loginState.user == null)
-            navViewModel.action(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(loginDestination))
-        else navViewModel.action(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(startDestination))
+            navViewModel.action(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(startDestination))
+        else navViewModel.action(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(loggedInDestination))
     }
 
     AdvancedNavigationSuiteScaffold(
@@ -56,7 +56,7 @@ public fun NavScreen(
         startDestination = startDestination,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(
-                text = { label, _ -> Text(text = stringResource(Res.allStringResources[label]!!)) },
+                text = { label, _ -> Text(text = label) },
                 currentDestination = currentDestination,
             ) { destination ->
                 navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))

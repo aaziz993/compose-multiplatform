@@ -76,7 +76,7 @@ public sealed interface Route {
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     )
 
-    public fun excludeFromNavigation(): Boolean = false
+    public fun navigate(): Boolean = true
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
@@ -170,7 +170,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         currentDestination: NavDestination?,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (excludeFromNavigation() || !auth()) return@with
+        if (!navigate() || !auth()) return@with
 
         val selected = isSelected(currentDestination)
 
@@ -262,7 +262,7 @@ public abstract class NavigationRoute : Route {
         currentDestination: NavDestination?,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (excludeFromNavigation() || !auth()) return@with
+        if (!navigate() || !auth()) return@with
 
         routes.forEach { route ->
             route.item(enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
@@ -271,11 +271,19 @@ public abstract class NavigationRoute : Route {
 
     public fun selected(currentDestination: NavDestination?): NavigationDestination<*>? =
         routes.filterNot { route ->
-            route.excludeFromNavigation() || !route.auth()
+            !route.navigate() || !route.auth()
         }.firstNotNullOfOrNull { route ->
             when (route) {
                 is NavigationDestination<*> -> if (route.isSelected(currentDestination)) route else null
                 is NavigationRoute -> route.selected(currentDestination)
+            }
+        }
+
+    public fun findByLabel(label: String): NavigationDestination<*>? =
+        routes.firstNotNullOfOrNull { route ->
+            when (route) {
+                is NavigationDestination<*> -> if (route.label == label) route else null
+                is NavigationRoute -> route.findByLabel(label)
             }
         }
 }

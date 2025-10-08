@@ -79,7 +79,7 @@ import ui.wallet.stock.StockScreen
 public sealed interface Destination
 
 @Serializable
-public data object NavRoute : NavigationRoute() {
+public data object NavRoute : Destination, NavigationRoute() {
 
     override val deepLinks: List<String> = listOf("https://", "http://")
 
@@ -242,11 +242,11 @@ public data object About : Destination, NavigationDestination<About>() {
 }
 
 @Serializable
-public data object AuthRoute : NavigationRoute() {
+public data object AuthRoute : Destination, NavigationRoute() {
 
     override val deepLinks: List<String> = listOf("auth")
 
-    override val routes: List<NavigationDestination<*>> = listOf(Login, Profile)
+    override val routes: List<NavigationDestination<*>> = listOf(Login, ForgotPassword, Profile)
 
     override fun authResource(): AuthResource? = null
 }
@@ -276,7 +276,7 @@ public data object Login : Destination, NavigationDestination<Login>() {
         LoginScreen(route, state, viewModel::action, Services, navigationAction)
     }
 
-    override fun excludeFromNavigation(): Boolean = true
+//    override fun excludeFromNavigation(): Boolean = true
 }
 
 public data class ForgotPassword(val username: String) : Destination {
@@ -294,7 +294,7 @@ public data class ForgotPassword(val username: String) : Destination {
         override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit): Unit =
             ForgotPasswordScreen(route, navigationAction)
 
-        override fun excludeFromNavigation(): Boolean = true
+        override fun navigate(): Boolean = true
     }
 }
 
@@ -318,7 +318,7 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 }
 
 @Serializable
-public data object WalletRoute : NavigationRoute() {
+public data object WalletRoute : Destination, NavigationRoute() {
 
     override val deepLinks: List<String> = listOf("wallet")
 
