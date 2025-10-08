@@ -3,6 +3,7 @@
 package ui.navigation.presentation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
@@ -14,13 +15,17 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.data.location.locale.stringResource
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -50,7 +55,10 @@ public fun NavScreen(
         route = NavRoute,
         startDestination = startDestination,
         navigationSuiteRoute = { currentDestination, route ->
-            route.item({ label -> label.uppercaseFirstChar() }, currentDestination) { destination ->
+            route.item(
+                text = { label, _ -> Text(text = stringResource(Res.allStringResources[label]!!)) },
+                currentDestination = currentDestination,
+            ) { destination ->
                 navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
             }
         },

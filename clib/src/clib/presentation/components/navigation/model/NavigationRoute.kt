@@ -80,10 +80,13 @@ public sealed interface Route {
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
-        transform: NavigationDestination<*>.(String) -> String,
-        currentDestination: NavDestination?,
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
+        text: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
+            Text(label, modifier)
+        },
+        selectedText: @Composable (label: String, modifier: Modifier) -> Unit = text,
+        currentDestination: NavDestination?,
         navigateTo: (NavigationDestination<*>) -> Unit
     )
 }
@@ -104,12 +107,6 @@ public abstract class NavigationDestination<Dest : Any> : Route {
 
     protected open val modifier: Modifier = Modifier.Companion
     protected open val selectedModifier: Modifier = modifier
-    protected open val text: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
-        Text(label, modifier)
-    }
-    protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
-        Text(label, modifier)
-    }
     protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
     protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
     protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
@@ -166,17 +163,16 @@ public abstract class NavigationDestination<Dest : Any> : Route {
 
     context(navigationSuiteScope: NavigationSuiteScope)
     override fun item(
-        transform: NavigationDestination<*>.(String) -> String,
-        currentDestination: NavDestination?,
         enabled: Boolean,
         alwaysShowLabel: Boolean,
+        text: @Composable (label: String, modifier: Modifier) -> Unit,
+        selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
+        currentDestination: NavDestination?,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
         if (excludeFromNavigation() || !auth()) return@with
 
         val selected = isSelected(currentDestination)
-
-        val label = transform(this@NavigationDestination.label)
 
         val selectedItem = if (selected)
             Item(
@@ -259,16 +255,17 @@ public abstract class NavigationRoute : Route {
 
     context(navigationSuiteScope: NavigationSuiteScope)
     override fun item(
-        transform: NavigationDestination<*>.(String) -> String,
-        currentDestination: NavDestination?,
         enabled: Boolean,
         alwaysShowLabel: Boolean,
+        text: @Composable (label: String, modifier: Modifier) -> Unit,
+        selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
+        currentDestination: NavDestination?,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
         if (excludeFromNavigation() || !auth()) return@with
 
         routes.forEach { route ->
-            route.item(transform, currentDestination, enabled, alwaysShowLabel, navigateTo)
+            route.item(enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
         }
     }
 

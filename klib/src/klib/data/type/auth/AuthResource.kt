@@ -12,5 +12,6 @@ public data class AuthResource(
 
     public fun validate(roles: Set<String>): Boolean = this.roles.contains(roles, allRoles)
 
-    public fun validate(provider: String? = null, user: User?): Boolean = user?.roles?.let(::validate) == true
+    public fun validate(provider: String? = null, user: User?): Boolean =
+        provider in providers && user?.roles?.let(::validate) == true
 }
