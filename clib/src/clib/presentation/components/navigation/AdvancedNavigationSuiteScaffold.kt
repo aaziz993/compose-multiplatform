@@ -38,7 +38,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import clib.data.type.collections.toLaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
+import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
+import clib.presentation.components.navigation.model.Route
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
@@ -46,11 +48,11 @@ import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlinx.coroutines.launch
 
 @Composable
-public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSuiteScaffold(
-    route: NavigationRoute<Route, *>,
-    startDestination: NavigationRoute<Route, *>,
-    navigationSuiteRoute: NavigationSuiteScope.(currentDestination: NavDestination?, route: NavigationRoute<Route, *>) -> Unit,
-    navigator: Navigator<Route, Dest>,
+public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
+    route: NavigationRoute,
+    startDestination: NavigationDestination<Dest>,
+    navigationSuiteRoute: NavigationSuiteScope.(currentDestination: NavDestination?, route: Route) -> Unit,
+    navigator: Navigator<*>,
     modifier: Modifier = Modifier.fillMaxSize(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
@@ -69,8 +71,6 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
     content: @Composable () -> Unit
 ) {
     val adaptiveInfo = currentWindowAdaptiveInfo()
-
-
 
     var title: String by remember { mutableStateOf(startDestination.label) }
     // Dynamically set title on navigation.
@@ -126,8 +126,6 @@ public fun <Route : NavigationRoute<Route, *>, Dest : Any> AdvancedNavigationSui
             )
         }
     }
-
-
 
     @Composable
     fun NavigationSuiteScaffold(modifier: Modifier, content: @Composable () -> Unit = {}) =

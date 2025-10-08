@@ -42,7 +42,7 @@ import compose.icons.evaicons.Outline
 import compose.icons.evaicons.fill.Close
 import compose.icons.evaicons.outline.Eye
 import compose.icons.evaicons.outline.EyeOff2
-import clib.presentation.state.timePickerStateToTemporal
+import clib.presentation.state.timePickerStateToTime
 import klib.data.type.primitives.time.now
 import klib.data.type.primitives.time.parseOrNull
 import klib.data.type.primitives.time.toEpochMilliseconds
@@ -145,10 +145,10 @@ public fun AdvancedTextField(
         }
     }
 
-    val temporalIconButton: (@Composable () -> Unit)? = if (isTime && !readOnly) {
-        var showTemporalPicker by remember { mutableStateOf(false) }
+    val timeIconButton: (@Composable () -> Unit)? = if (isTime && !readOnly) {
+        var showTimePicker by remember { mutableStateOf(false) }
 
-        if (showTemporalPicker) {
+        if (showTimePicker) {
 
             var localDate: LocalDate? = null
             var localTime: LocalTime? = null
@@ -183,19 +183,19 @@ public fun AdvancedTextField(
             AdvancedTimePickerDialog(
                 onConfirm = { _, _ ->
                     onValueChange(
-                        timePickerStateToTemporal(datePickerState, timePickerState)?.toString().orEmpty(),
+                        timePickerStateToTime(datePickerState, timePickerState)?.toString().orEmpty(),
                     )
                 },
                 timePickerState = timePickerState,
                 datePickerState = datePickerState,
-                onCancel = { showTemporalPicker = false },
+                onCancel = { showTimePicker = false },
             )
         }
         {
             Icon(
                 Icons.Default.DateRange,
                 "Select date",
-                iconModifier.clickable(onClick = { showTemporalPicker = !showTemporalPicker }),
+                iconModifier.clickable(onClick = { showTimePicker = !showTimePicker }),
             )
 
         }
@@ -225,7 +225,7 @@ public fun AdvancedTextField(
                 Row(Modifier.wrapContentSize(), verticalAlignment = Alignment.CenterVertically) {
                     clearIconButton?.invoke()
                     showIconButton?.invoke(isErrorWithValidation)
-                    temporalIconButton?.invoke()
+                    timeIconButton?.invoke()
                     enumIconButton?.invoke()
                     trailingIcon?.invoke(isErrorWithValidation)
                 }

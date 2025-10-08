@@ -35,3 +35,7 @@ public data class Currency(
         public fun forCodeOrNull(code: String): Currency? = forCodeOrNull(Alpha3Letter(code))
     }
 }
+
+public fun String.toCurrency(): Currency = Currency.forCode(this)
+
+public fun String.toCurrencyOrNull(): Currency? = Currency.forCodeOrNull(this)

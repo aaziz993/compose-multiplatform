@@ -4,12 +4,13 @@ import clib.presentation.components.navigation.DefaultNavigator
 import clib.presentation.components.navigation.Navigator
 import dev.jordond.connectivity.Connectivity
 import klib.data.net.createConnectivity
+import klib.data.permission.PermissionsController
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
+import ui.navigation.presentation.Destination
 import ui.navigation.presentation.Home
-import ui.navigation.presentation.NavRoute
 
 @Module
 @ComponentScan("ui", "presentation")
@@ -23,6 +24,9 @@ public class CommonModule {
 
     @Single
     public fun provideConnectivity(): Connectivity = createConnectivity()
+
+    @Single
+    public fun providePermissionsController(): PermissionsController = PermissionsController()
 
 //    @Single
 //    public fun provideHttpClient(config: ClientConfigImpl, json: Json): HttpClient = with(config.httpClient) {
@@ -61,5 +65,5 @@ public class CommonModule {
 //    }
 
     @Single
-    public fun provideNavigator(): Navigator<NavRoute, *> = DefaultNavigator(Home)
+    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(Home)
 }

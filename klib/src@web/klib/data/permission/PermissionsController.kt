@@ -60,7 +60,7 @@ private val PERMISSIONS = listOf(
 )
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-public actual class PermissionController {
+public actual class PermissionsController {
 
     public actual suspend fun getPermissionState(permission: Permission): PermissionState =
         if (permissions()

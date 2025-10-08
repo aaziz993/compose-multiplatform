@@ -2,12 +2,11 @@ package clib.data.permission
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import clib.data.permission.PermissionControllerFactory
-import klib.data.permission.PermissionController
+import klib.data.permission.PermissionsController
 
 @Composable
 public actual fun rememberPermissionControllerFactory(): PermissionControllerFactory = remember {
     PermissionControllerFactory {
-        PermissionController()
+        PermissionsController()
     }
 }

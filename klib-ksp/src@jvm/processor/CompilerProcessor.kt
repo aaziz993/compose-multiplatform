@@ -86,7 +86,7 @@ public class CompilerProcessor(
                     classDec?.toClassData(KtorfitLogger(env.logger, loggingType))
                 }.mapNotNull { it }
 
-        generateImplClass(classDataList, env.codeGenerator, resolver, KtorfitOptions(env.options), options)
+//        generateImplClass(classDataList, env.codeGenerator, resolver, KtorfitOptions(env.options), options)
 
         return emptyList()
     }

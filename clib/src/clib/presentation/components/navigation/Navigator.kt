@@ -3,11 +3,10 @@ package clib.presentation.components.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.navigation.NavHostController
-import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 
 @Immutable
-public interface Navigator<Route : NavigationRoute<Route, *>, Dest : Any> {
+public interface Navigator<Dest : Any> {
 
     public val startDestination: Dest
 

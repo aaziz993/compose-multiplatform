@@ -4,15 +4,14 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import clib.data.permission.PermissionControllerFactory
-import klib.data.permission.PermissionController
+import klib.data.permission.PermissionsController
 
 @Composable
 public actual fun rememberPermissionControllerFactory(): PermissionControllerFactory {
     val context: Context = LocalContext.current
     return remember(context) {
         PermissionControllerFactory {
-            PermissionController(context.applicationContext)
+            PermissionsController(context.applicationContext)
         }
     }
 }

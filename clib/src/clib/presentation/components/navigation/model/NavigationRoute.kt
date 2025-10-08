@@ -26,44 +26,18 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.model.item.SelectableItem
+import clib.presentation.components.navigation.viewmodel.NavigationAction
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 import kotlinx.serialization.serializer
 
 @Immutable
-public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : Any> {
+public sealed interface Route {
 
-    public val label: String
-        get() = this::class.serializer().descriptor.serialName
-
-    public open val typeMap: Map<KType, NavType<*>> = emptyMap()
-    public open val deepLinks: List<String> = emptyList()
-    protected open val enabled: Boolean = true
-    protected open val alwaysShowLabel: Boolean = true
-
-    protected open val modifier: Modifier = Modifier.Companion
-    protected open val selectedModifier: Modifier = modifier
-    protected open val text: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
-        androidx.compose.material3.Text(label, modifier)
-    }
-    protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
-        androidx.compose.material3.Text(label, modifier)
-    }
-    protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
-    protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
-    protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
-    protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
-
-    public open val composableChildren: List<NavigationRoute<Route, *>> = emptyList()
-    public open val navigationChildren: List<NavigationRoute<Route, *>>
-        get() = composableChildren
-
-    @Composable
-    protected open fun Screen(
-        route: Dest,
-        navigateTo: (NavigationRoute<Route, *>) -> Unit,
-        navigateBack: () -> Unit
-    ): Unit = Unit
+    public val deepLinks: List<String>
+    public val hidden: Boolean
+    public val enabled: Boolean
+    public val alwaysShowLabel: Boolean
 
     context(navGraphBuilder: NavGraphBuilder)
     public fun item(
@@ -93,34 +67,78 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
             null,
-        navigateTo: (NavBackStackEntry, route: NavigationRoute<Route, *>) -> Unit,
-        navigateBack: (NavBackStackEntry) -> Unit
-    ): Unit = with(navGraphBuilder) {
-        val concatenatedTypeMap = concatenateTypeMap(typeMap)
-        val concatenatedDeepLinks = concatenateDeepLinks(deepLinks)
+        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
+    )
 
-        if (composableChildren.isNotEmpty())
-            return@with navigation(this@NavigationRoute::class, composableChildren.first()) {
-                composableChildren.forEach { child ->
-                    child.item(
-                        concatenatedTypeMap,
-                        concatenatedDeepLinks,
-                        enterTransition,
-                        exitTransition,
-                        popEnterTransition,
-                        popExitTransition,
-                        sizeTransform,
-                        navigateTo,
-                        navigateBack,
-                    )
-                }
-            }
+    context(navigationSuiteScope: NavigationSuiteScope)
+    public fun item(
+        transform: NavigationDestination<*>.(String) -> String,
+        currentDestination: NavDestination?,
+        hidden: Boolean = false,
+        enabled: Boolean = true,
+        alwaysShowLabel: Boolean = true,
+        navigateTo: (NavigationDestination<*>) -> Unit
+    )
+}
+
+public abstract class NavigationDestination<Dest : Any> : Route {
+
+    public val label: String
+        get() = this::class.serializer().descriptor.serialName
+
+    public open val typeMap: Map<KType, NavType<*>> = emptyMap()
+
+    override val hidden: Boolean = true
+    override val enabled: Boolean = true
+    override val alwaysShowLabel: Boolean = true
+
+    protected open val modifier: Modifier = Modifier.Companion
+    protected open val selectedModifier: Modifier = modifier
+    protected open val text: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
+        androidx.compose.material3.Text(label, modifier)
+    }
+    protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
+        androidx.compose.material3.Text(label, modifier)
+    }
+    protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+    protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+    protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+    protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+
+    @Composable
+    protected open fun Screen(
+        route: Dest,
+        navigationAction: (NavigationAction) -> Unit,
+    ): Unit = Unit
+
+    context(navGraphBuilder: NavGraphBuilder)
+    override fun item(
+        typeMap: Map<KType, NavType<*>>,
+        deepLinks: List<String>,
+        enterTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+        exitTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+        popEnterTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+        popExitTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+        sizeTransform:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
+        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
+    ): Unit = with(navGraphBuilder) {
+        val concatenatedDeepLinks = this@NavigationDestination.deepLinks.concatenateDeepLinks(deepLinks)
 
         composable(
-            this@NavigationRoute::class,
-            concatenatedTypeMap,
+            this@NavigationDestination::class,
+            typeMap + this@NavigationDestination.typeMap,
             concatenatedDeepLinks.map { basePath ->
-                navDeepLink(this@NavigationRoute::class, basePath) {}
+                navDeepLink(this@NavigationDestination::class, basePath) {}
             },
             enterTransition,
             exitTransition,
@@ -128,28 +146,26 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
             popExitTransition,
             sizeTransform,
         ) { backStackEntry ->
-            Screen(
-                backStackEntry.toRoute(this@NavigationRoute::class),
-                { route -> navigateTo(backStackEntry, route) },
-            ) { navigateBack(backStackEntry) }
+            Screen(backStackEntry.toRoute(this@NavigationDestination::class)) { action ->
+                backStackEntry.navigationAction(action)
+            }
         }
     }
 
     context(navigationSuiteScope: NavigationSuiteScope)
-    public fun item(
-        navController: NavController,
+    override fun item(
+        transform: NavigationDestination<*>.(String) -> String,
         currentDestination: NavDestination?,
-        transform: NavigationRoute<Route, *>.(String) -> String,
-        navigateTo: (NavigationRoute<Route, *>) -> Unit
+        hidden: Boolean,
+        enabled: Boolean,
+        alwaysShowLabel: Boolean,
+        navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (navigationChildren.isNotEmpty())
-            return@with navigationChildren.forEach { child ->
-                child.item(navController, currentDestination, transform, navigateTo)
-            }
+        if (hidden || this@NavigationDestination.hidden) return@with
 
         val selected = isSelected(currentDestination)
 
-        val label = transform(this@NavigationRoute.label)
+        val label = transform(this@NavigationDestination.label)
 
         val selectedItem = if (selected)
             Item(
@@ -167,31 +183,91 @@ public abstract class NavigationRoute<Route : NavigationRoute<Route, *>, Dest : 
 
         item(
             selected,
-            { navigateTo(this@NavigationRoute) },
+            { navigateTo(this@NavigationDestination) },
             { selectedItem.icon?.invoke(Modifier) },
             selectedItem.modifier,
-            enabled,
+            enabled && this@NavigationDestination.enabled,
             {
                 selectedItem.text?.invoke(Modifier)
             },
-            alwaysShowLabel,
+            alwaysShowLabel && this@NavigationDestination.alwaysShowLabel,
             { selectedItem.badge?.invoke(Modifier) },
         )
     }
 
-    public fun selected(currentDestination: NavDestination?): NavigationRoute<Route, *>? {
-        if (composableChildren.isNotEmpty())
-            return composableChildren.firstNotNullOfOrNull { child -> child.selected(currentDestination) }
-
-        return if (isSelected(currentDestination)) this else null
-    }
-
-    private fun concatenateTypeMap(typeMap: Map<KType, NavType<*>>) = typeMap + this.typeMap
-
-    private fun concatenateDeepLinks(deepLinks: List<String>) =
-        if (deepLinks.isEmpty()) this.deepLinks
-        else deepLinks.flatMap { basePath0 -> this.deepLinks.map { basePath1 -> "$basePath0/$basePath1" } }
-
-    private fun isSelected(currentDestination: NavDestination?): Boolean =
+    public fun isSelected(currentDestination: NavDestination?): Boolean =
         currentDestination?.hierarchy?.any { destination -> destination.hasRoute(this::class) } == true
 }
+
+public abstract class NavigationRoute : Route {
+
+    public open val composableChildren: List<Route> = emptyList()
+    public open val navigationChildren: List<Route>
+        get() = composableChildren
+
+    context(navGraphBuilder: NavGraphBuilder)
+    override fun item(
+        typeMap: Map<KType, NavType<*>>,
+        deepLinks: List<String>,
+        enterTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+        exitTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+        popEnterTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition),
+        popExitTransition:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition),
+        sizeTransform:
+        (@JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
+        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
+    ): Unit = with(navGraphBuilder) {
+        val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
+
+        navigation(this@NavigationRoute::class, composableChildren.first()) {
+            composableChildren.forEach { child ->
+                child.item(
+                    typeMap,
+                    concatenatedDeepLinks,
+                    enterTransition,
+                    exitTransition,
+                    popEnterTransition,
+                    popExitTransition,
+                    sizeTransform,
+                    navigationAction,
+                )
+            }
+        }
+    }
+
+    context(navigationSuiteScope: NavigationSuiteScope)
+    override fun item(
+        transform: NavigationDestination<*>.(String) -> String,
+        currentDestination: NavDestination?,
+        hidden: Boolean,
+        enabled: Boolean,
+        alwaysShowLabel: Boolean,
+        navigateTo: (NavigationDestination<*>) -> Unit
+    ): Unit = with(navigationSuiteScope) {
+        navigationChildren.forEach { child ->
+            child.item(transform, currentDestination, hidden, enabled, alwaysShowLabel, navigateTo)
+        }
+    }
+
+    public fun selected(currentDestination: NavDestination?): NavigationDestination<*>? =
+        composableChildren.firstNotNullOfOrNull { child ->
+            when (child) {
+                is NavigationDestination<*> -> if (child.isSelected(currentDestination)) child else null
+                is NavigationRoute -> child.selected(currentDestination)
+            }
+        }
+}
+
+private fun List<String>.concatenateDeepLinks(deepLinks: List<String>) =
+    if (deepLinks.isEmpty()) this
+    else deepLinks.flatMap { basePath0 -> map { basePath1 -> "$basePath0/$basePath1" } }
+

@@ -40,7 +40,7 @@ import compose.icons.lineawesomeicons.LessThanEqualSolid
 import compose.icons.lineawesomeicons.LessThanSolid
 import compose.icons.lineawesomeicons.MinusSolid
 import compose.icons.lineawesomeicons.NotEqualSolid
-import clib.presentation.state.timePickerStateToTemporal
+import clib.presentation.state.timePickerStateToTime
 import klib.data.type.primitives.time.now
 import klib.data.type.primitives.time.toEpochMilliseconds
 import klib.data.validator.Validator
@@ -147,7 +147,7 @@ public fun AdvancedSearchField(
                 AdvancedTimePickerDialog(
                     onConfirm = { _, _ ->
                         if (state.query.isNotEmpty()) {
-                            timePickerStateToTemporal(
+                            timePickerStateToTime(
                                 datePickerState, timePickerState,
                             )?.let { state.query = "${state.query.substringBefore("..")}..$it" }
                         }

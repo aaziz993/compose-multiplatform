@@ -20,7 +20,7 @@ public fun temporalPickerStateToLocalDateTime(
     timePickerState.localTime
 )
 
-public fun timePickerStateToTemporal(
+public fun timePickerStateToTime(
     datePickerState: DatePickerState? = null,
     timePickerState: TimePickerState? = null
 ): Any? = when {

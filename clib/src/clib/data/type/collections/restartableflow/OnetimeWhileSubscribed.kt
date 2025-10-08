@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.transformLatest
 
 // Prevent re-emitting flow from WhileSubscribed(5_000)
-public class OnetimeWhileSubscribed private constructor(
+public class OnetimeStartedWhileSubscribed internal constructor(
     private val stopTimeout: Long,
     private val replayExpiration: Long = Long.MAX_VALUE,
 ) : SharingStarted {
@@ -55,4 +55,4 @@ public class OnetimeWhileSubscribed private constructor(
 public fun SharingStarted.Companion.OnetimeWhileSubscribed(
     stopTimeoutMillis: Long = 0,
     replayExpirationMillis: Long = Long.MAX_VALUE
-): SharingStarted = OnetimeWhileSubscribed(stopTimeoutMillis, replayExpirationMillis)
+): SharingStarted = OnetimeStartedWhileSubscribed(stopTimeoutMillis, replayExpirationMillis)

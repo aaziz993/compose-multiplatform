@@ -7,18 +7,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import klib.data.permission.PermissionController
+import klib.data.permission.PermissionsController
 
 @Suppress("FunctionName")
 @Composable
-public actual fun BindEffect(permissionController: PermissionController) {
+public actual fun BindEffect(permissionsController: PermissionsController) {
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
     val context: Context = LocalContext.current
 
-    LaunchedEffect(permissionController, lifecycleOwner, context) {
+    LaunchedEffect(permissionsController, lifecycleOwner, context) {
         val activity: ComponentActivity = checkNotNull(context as? ComponentActivity) {
             "$context context is not instance of ComponentActivity"
         }
-        permissionController.bind(activity)
+        permissionsController.bind(activity)
     }
 }
