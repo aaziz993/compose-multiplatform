@@ -24,7 +24,7 @@ public suspend fun createInMemorySQLDelightDatabase(
     databaseName: String,
 ): SQLDelightDatabase = SQLDelightDatabase(createSQLDelightDriver(schema, databaseName))
 
-public suspend fun createSQLDelightCacheQueries(databaseName: String = "cache"): Cache =
+public suspend fun createSQLDelightCacheDatabase(databaseName: String = "cache"): Cache =
     Cache(createSQLDelightDriver(Cache.Schema, databaseName))
 
 public suspend fun createInMemorySQLDelightCacheDatabase(databaseName: String = "inMemoryCache"): Cache =

@@ -4,19 +4,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.filled.AccountBalance
+import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.EnhancedEncryption
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.AccountBalance
+import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CurrencyExchange
 import androidx.compose.material.icons.outlined.EnhancedEncryption
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
@@ -38,6 +42,8 @@ import ui.auth.login.presentation.viewmodel.LoginViewModel
 import ui.auth.profile.presentation.ProfileScreen
 import ui.home.HomeScreen
 import ui.map.MapScreen
+import ui.news.NewsScreen
+import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
 import ui.settings.viewmodel.SettingsViewModel
 import ui.wallet.balance.BalanceScreen
@@ -54,17 +60,21 @@ public data object NavRoute : NavigationRoute() {
     override val composableChildren: List<Route> =
         listOf(
             Home,
+            News,
             Map,
+            Services,
             Settings,
             About,
             AuthRoute,
-//            WalletRoute,
+            WalletRoute,
         )
 }
 
 @Serializable
 @SerialName("home")
 public data object Home : Destination, NavigationDestination<Home>() {
+
+    override val hidden: Boolean = true
 
     override val deepLinks: List<String> = listOf("main")
 
@@ -80,7 +90,32 @@ public data object Home : Destination, NavigationDestination<Home>() {
     override fun Screen(
         route: Home,
         navigationAction: (NavigationAction) -> Unit,
-    ): Unit = HomeScreen(route, navigationAction)
+    ) {
+        HomeScreen(route, navigationAction)
+    }
+}
+
+@Serializable
+@SerialName("news")
+public data object News : Destination, NavigationDestination<News>() {
+
+    override val deepLinks: List<String> = listOf("main")
+
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.Newspaper, label, modifier)
+    }
+
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.Newspaper, label, modifier)
+    }
+
+    @Composable
+    override fun Screen(
+        route: News,
+        navigationAction: (NavigationAction) -> Unit,
+    ) {
+        NewsScreen(route, navigationAction)
+    }
 }
 
 @Serializable
@@ -100,6 +135,29 @@ public data object Map : Destination, NavigationDestination<Map>() {
     @Composable
     override fun Screen(route: Map, navigationAction: (NavigationAction) -> Unit): Unit =
         MapScreen(route, navigationAction)
+}
+
+@Serializable
+@SerialName("services")
+public data object Services : Destination, NavigationDestination<Services>() {
+
+    override val deepLinks: List<String> = listOf("main")
+
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.Apps, label, modifier)
+    }
+
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.Apps, label, modifier)
+    }
+
+    @Composable
+    override fun Screen(
+        route: Services,
+        navigationAction: (NavigationAction) -> Unit,
+    ) {
+        ServicesScreen(route, navigationAction)
+    }
 }
 
 @Serializable
@@ -129,6 +187,8 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 @Serializable
 @SerialName("about")
 public data object About : Destination, NavigationDestination<About>() {
+
+    override val hidden: Boolean = true
 
     override val deepLinks: List<String> = listOf("about")
 
@@ -214,6 +274,8 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 
 @Serializable
 public data object WalletRoute : NavigationRoute() {
+
+    override val hidden: Boolean = true
 
     override val deepLinks: List<String> = listOf("wallet")
 

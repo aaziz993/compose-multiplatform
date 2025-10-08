@@ -39,6 +39,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import presentation.components.tooltipbox.AppTooltipBox
+import ui.auth.login.presentation.viewmodel.LoginViewModel
 import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.settings.viewmodel.SettingsAction
 import ui.settings.viewmodel.SettingsViewModel
@@ -50,6 +51,7 @@ public fun NavScreen(
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
+    val loginViewModel: LoginViewModel = koinViewModel()
     val settingsViewModel: SettingsViewModel = koinViewModel()
 
     val startDestination = Home
@@ -59,7 +61,7 @@ public fun NavScreen(
         route = NavRoute,
         startDestination = startDestination,
         navigationSuiteRoute = { currentDestination, route ->
-            route.item(navController, currentDestination, { label -> label.uppercaseFirstChar() }) { destination ->
+            route.item({ label -> label.uppercaseFirstChar() }, currentDestination) { destination ->
                 navViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
             }
         },

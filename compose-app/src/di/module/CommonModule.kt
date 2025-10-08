@@ -3,8 +3,12 @@ package di.module
 import clib.presentation.components.navigation.DefaultNavigator
 import clib.presentation.components.navigation.Navigator
 import dev.jordond.connectivity.Connectivity
+import klib.data.cache.Cache
+import klib.data.cache.SettingsCache
 import klib.data.net.createConnectivity
 import klib.data.permission.PermissionsController
+import klib.data.type.serialization.json.decodeAnyFromString
+import klib.data.type.serialization.json.encodeAnyToString
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
@@ -17,13 +21,21 @@ import ui.navigation.presentation.Home
 public class CommonModule {
 
     @Single
+    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(Home)
+
+    @Single
     public fun provideJson(): Json = Json {
         isLenient = true
         ignoreUnknownKeys = true
     }
 
     @Single
-    public fun provideConnectivity(): Connectivity = createConnectivity()
+    public fun provideCache(json: Json): Cache<String, Any> =
+        SettingsCache(
+            valueKClass = Any::class,
+            valueEncoder = { value -> json.encodeAnyToString(value) },
+            valueDecoder = { value -> json.decodeAnyFromString(value)!! },
+        )
 
     @Single
     public fun providePermissionsController(): PermissionsController = PermissionsController()
@@ -65,5 +77,5 @@ public class CommonModule {
 //    }
 
     @Single
-    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(Home)
+    public fun provideConnectivity(): Connectivity = createConnectivity()
 }

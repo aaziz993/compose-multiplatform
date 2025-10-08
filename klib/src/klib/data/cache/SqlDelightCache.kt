@@ -7,61 +7,32 @@ import kotlinx.serialization.serializer
 
 @Suppress("UNCHECKED_CAST")
 public class SqlDelightCache<K : Any, V : Any>(
-    private val keyKClass: KClass<K>,
-    private val valueKClass: KClass<V>,
+    private val keyEncoder: (K) -> String = { key -> key as String },
+    private val keyDecoder: (String) -> K = { key -> key as K },
+    private val valueEncoder: (V) -> String = { value -> value as String },
+    private val valueDecoder: (String) -> V = { value -> value as V },
     private val queries: KeyValueQueries
 ) : CoroutineCache<K, V> {
 
-    private val inKey: (key: K) -> String = if (keyKClass == String::class) {
-        { it as String }
-    }
-    else {
-        { Json.Default.encodeToString(keyKClass.serializer(), it) }
-    }
-
-    private val outKey: (key: String) -> K = if (keyKClass == String::class) {
-        { it as K }
-    }
-    else {
-        { Json.Default.decodeFromString(keyKClass.serializer(), it) }
-    }
-
-    private val toMap: suspend () -> Map<K, V> =
-        if (valueKClass == Any::class) {
-            {
-                queries.transactionWithResult {
-                    queries.selectAll().executeAsList().associate { outKey(it.key) to it.value_ as V }
-                }
-            }
-        }
-        else {
-            {
-                queries.transactionWithResult {
-                    queries.selectAll().executeAsList().associate {
-                        outKey(it.key) to
-                            it.value_?.let { value ->
-                                Json.Default.decodeFromString(valueKClass.serializer(), value)
-                            } as V
-                    }
-                }
-            }
-        }
-
     override suspend fun get(key: K): V? = queries.transactionWithResult {
-        queries.select(inKey(key)).executeAsOneOrNull()?.value_?.let { Json.Default.decodeFromString(valueKClass.serializer(), it) }
+        queries.select(keyEncoder(key)).executeAsOneOrNull()?.value_?.let(valueDecoder)
     }
 
     override suspend fun set(key: K, value: V): Unit = queries.transaction {
-        queries.insert(inKey(key), Json.Default.encodeToString(valueKClass.serializer(), value))
+        queries.insert(keyEncoder(key), valueEncoder(value))
     }
 
     override suspend fun remove(key: K): Unit = queries.transaction {
-        queries.delete(inKey(key))
+        queries.delete(keyEncoder(key))
     }
 
     override suspend fun clear(): Unit = queries.transaction {
         queries.deleteAll()
     }
 
-    override suspend fun asMap(): Map<K, V> = toMap()
+    override suspend fun asMap(): Map<K, V> = queries.transactionWithResult {
+        queries.selectAll().executeAsList().associate { (key, value) ->
+            keyDecoder(key) to value?.let(valueDecoder) as V
+        }
+    }
 }

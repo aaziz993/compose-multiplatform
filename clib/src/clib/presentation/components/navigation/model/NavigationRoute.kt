@@ -88,7 +88,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
 
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
 
-    override val hidden: Boolean = true
+    override val hidden: Boolean = false
     override val enabled: Boolean = true
     override val alwaysShowLabel: Boolean = true
 
@@ -200,6 +200,10 @@ public abstract class NavigationDestination<Dest : Any> : Route {
 }
 
 public abstract class NavigationRoute : Route {
+
+    override val hidden: Boolean = false
+    override val enabled: Boolean = true
+    override val alwaysShowLabel: Boolean = true
 
     public open val composableChildren: List<Route> = emptyList()
     public open val navigationChildren: List<Route>

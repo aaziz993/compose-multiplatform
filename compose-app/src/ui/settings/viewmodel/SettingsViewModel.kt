@@ -21,8 +21,7 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 public class SettingsViewModel(
-    private val permissionsController: PermissionsController = PermissionsController(),
-    private val cache: Cache<String, String> = SettingsCache(String::class, String::class)
+    private val permissionsController: PermissionsController,
 ) : AbstractViewModel<SettingsAction>() {
 
     public val state: RestartableStateFlow<SettingsState>
