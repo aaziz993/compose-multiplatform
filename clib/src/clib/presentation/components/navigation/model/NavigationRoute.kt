@@ -266,9 +266,7 @@ public abstract class NavigationRoute : Route {
     }
 
     public fun current(currentDestination: NavDestination?): NavigationDestination<*>? =
-        routes.filterNot { route ->
-            !route.navigate() || !route.auth()
-        }.firstNotNullOfOrNull { route ->
+        routes.filterNot { route -> !route.navigate() || !route.auth() }.firstNotNullOfOrNull { route ->
             when (route) {
                 is NavigationDestination<*> -> if (route.isSelected(currentDestination)) route else null
                 is NavigationRoute -> route.current(currentDestination)
