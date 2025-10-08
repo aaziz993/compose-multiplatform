@@ -25,7 +25,7 @@ import kotlin.reflect.KType
 public fun AdvancedNavHost(
     navController: NavHostController,
     route: NavigationRoute,
-    startDestination: NavigationDestination<*>,
+    startDestination: Route,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.TopStart,
     typeMap: Map<KType, NavType<*>> = emptyMap(),

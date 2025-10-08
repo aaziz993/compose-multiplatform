@@ -38,14 +38,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
-import clib.presentation.components.navigation.LocalAppBackButton
-import clib.presentation.components.navigation.LocalAppTitle
+import clib.presentation.components.navigation.LocalBackButton
+import clib.presentation.components.navigation.LocalTitle
 import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
@@ -276,7 +273,7 @@ public data object Login : Destination, NavigationDestination<Login>() {
         LoginScreen(route, state, viewModel::action, Services, navigationAction)
     }
 
-//    override fun excludeFromNavigation(): Boolean = true
+    override fun navigate(): Boolean = false
 }
 
 public data class ForgotPassword(val username: String) : Destination {
@@ -389,12 +386,12 @@ private fun ScreenAppBar(
     navigationAction: (NavigationAction) -> Unit,
     content: @Composable () -> Unit
 ) {
-    var isDrawerOpen by remember { mutableStateOf(true) }
+//    var isDrawerOpen by remember { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(LocalAppTitle.current) },
+                title = { Text(LocalTitle.current) },
                 navigationIcon = {
                     Row {
                         if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
@@ -412,7 +409,7 @@ private fun ScreenAppBar(
                             }
 
 
-                        if (LocalAppBackButton.current)
+                        if (LocalBackButton.current)
                             AppTooltipBox("Navigate back") {
                                 IconButton(
                                     onClick = { navigationAction(NavigationAction.NavigateBack) },

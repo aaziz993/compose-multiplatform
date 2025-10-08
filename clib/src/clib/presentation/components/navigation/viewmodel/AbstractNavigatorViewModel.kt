@@ -3,7 +3,7 @@ package clib.presentation.components.navigation.viewmodel
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.viewmodel.AbstractViewModel
 
-public abstract class AbstractNavViewModel<Dest : Any> : AbstractViewModel<NavigationAction>() {
+public abstract class AbstractNavigatorViewModel<Dest : Any> : AbstractViewModel<NavigationAction>() {
 
     protected abstract val navigator: Navigator<Dest>
 

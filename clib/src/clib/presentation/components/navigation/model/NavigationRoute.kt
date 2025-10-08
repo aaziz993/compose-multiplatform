@@ -139,8 +139,6 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
-        if (!auth()) return@with
-
         val concatenatedDeepLinks = this@NavigationDestination.deepLinks.concatenateDeepLinks(deepLinks)
 
         composable(
@@ -234,8 +232,6 @@ public abstract class NavigationRoute : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
-        if (!auth()) return@with
-
         val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
         navigation(this@NavigationRoute::class, routes.first()) {
             routes.forEach { route ->

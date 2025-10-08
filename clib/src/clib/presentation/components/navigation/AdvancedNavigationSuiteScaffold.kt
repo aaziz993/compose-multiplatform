@@ -34,7 +34,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import clib.data.type.collections.toLaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
-import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.event.alert.GlobalAlertEventController
@@ -44,34 +43,35 @@ import clib.presentation.noLocalProvidedFor
 import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlinx.coroutines.launch
 
-public val LocalAppTitle: ProvidableCompositionLocal<String> = staticCompositionLocalOf { noLocalProvidedFor("LocalTitle") }
-public val LocalAppBackButton: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { noLocalProvidedFor("LocalBackButton") }
+public val LocalDestination: ProvidableCompositionLocal<NavDestination?> = staticCompositionLocalOf { noLocalProvidedFor("LocalDestination") }
+public val LocalBackButton: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { noLocalProvidedFor("LocalBackButton") }
+public val LocalTitle: ProvidableCompositionLocal<String> = staticCompositionLocalOf { noLocalProvidedFor("LocalTitle") }
 
 @Composable
 public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     route: NavigationRoute,
-    startDestination: NavigationDestination<Dest>,
+    startDestination: Route,
+    navigator: Navigator<Dest>,
     navigationSuiteRoute: NavigationSuiteScope.(currentDestination: NavDestination?, route: Route) -> Unit,
-    navigator: Navigator<*>,
     modifier: Modifier = Modifier.fillMaxSize(),
-    navController: NavHostController = rememberNavController(),
-    onNavHostReady: suspend (NavController) -> Unit = {},
     navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
     layoutType: NavigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo()),
+    navController: NavHostController = rememberNavController(),
+    onNavHostReady: suspend (NavController) -> Unit = {},
     content: @Composable () -> Unit
 ) {
-    var title: String by remember { mutableStateOf(startDestination.label) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    var title: String by remember { mutableStateOf("") }
+    val isBackButton by remember(navBackStackEntry) {
+        derivedStateOf { navController.previousBackStackEntry != null }
+    }
+
     // Dynamically set title on navigation.
     navController.addOnDestinationChangedListener { _, destination, _ ->
         title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
-    }
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    val isBackButton by remember(navBackStackEntry) {
-        derivedStateOf { navController.previousBackStackEntry != null }
     }
 
     NavigationSuiteScaffold(
@@ -120,8 +120,9 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
         }
 
         CompositionLocalProvider(
-            LocalAppTitle provides title,
-            LocalAppBackButton provides isBackButton,
+            LocalDestination provides currentDestination,
+            LocalTitle provides title,
+            LocalBackButton provides isBackButton,
         ) {
             content()
         }
