@@ -1,6 +1,8 @@
 package ui.navigation.presentation
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.filled.AccountBalance
@@ -10,32 +12,51 @@ import androidx.compose.material.icons.filled.EnhancedEncryption
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CurrencyExchange
+import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.EnhancedEncryption
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
+import androidx.window.core.layout.WindowWidthSizeClass
+import clib.presentation.components.navigation.LocalAppTitle
 import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.theme.LocalAppTheme
+import clib.presentation.theme.model.ThemeMode
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+import presentation.components.tooltipbox.AppTooltipBox
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
 import ui.auth.login.presentation.LoginScreen
@@ -46,6 +67,7 @@ import ui.map.MapScreen
 import ui.news.NewsScreen
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
+import ui.settings.viewmodel.SettingsAction
 import ui.settings.viewmodel.SettingsViewModel
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
@@ -150,6 +172,77 @@ public data object Services : Destination, NavigationDestination<Services>() {
 
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.Apps, label, modifier)
+    }
+
+    @Composable
+    override fun ScreenScaffold(
+        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
+        content: @Composable () -> Unit
+    ) {
+        var isDrawerOpen by remember { mutableStateOf(true) }
+
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(LocalAppTitle.current) },
+                    navigationIcon = {
+                        Row {
+                            if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
+                                AppTooltipBox("Menu") {
+                                    IconButton(
+                                        onClick = {
+                                            isDrawerOpen = !isDrawerOpen
+                                        },
+                                    ) {
+                                        Icon(
+                                            imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
+                                            contentDescription = "Menu",
+                                        )
+                                    }
+                                }
+
+
+                            if (isBackButton)
+                                AppTooltipBox("Navigate back") {
+                                    IconButton(
+                                        onClick = { navViewModel.action(NavigationAction.NavigateBack) },
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                            contentDescription = "Navigate back",
+                                        )
+                                    }
+                                }
+                        }
+                    },
+                    actions = {
+                        val themeMode = LocalAppTheme.current.mode
+                        AppTooltipBox("Switch theme") {
+                            IconButton(
+                                onClick = {
+                                    when (themeMode) {
+                                        ThemeMode.SYSTEM -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.LIGHT)))
+                                        ThemeMode.LIGHT -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.DARK)))
+                                        ThemeMode.DARK -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.SYSTEM)))
+                                    }
+                                },
+                            ) {
+                                Icon(
+                                    imageVector = when (themeMode) {
+                                        ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
+                                        ThemeMode.LIGHT -> Icons.Outlined.LightMode
+                                        ThemeMode.DARK -> Icons.Outlined.DarkMode
+                                    },
+                                    contentDescription = "Switch theme",
+                                )
+                            }
+                        }
+                    },
+                )
+            },
+        ) {
+            content()
+        }
     }
 
     @Composable

@@ -1,18 +1,11 @@
+@file:Suppress("ComposeCompositionLocalUsage")
+
 package clib.presentation.components.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
@@ -22,13 +15,16 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
@@ -44,8 +40,12 @@ import clib.presentation.components.navigation.model.Route
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
+import clib.presentation.noLocalProvidedFor
 import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlinx.coroutines.launch
+
+public val LocalAppTitle: ProvidableCompositionLocal<String> = staticCompositionLocalOf { noLocalProvidedFor("LocalTitle") }
+public val LocalAppBackButton: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { noLocalProvidedFor("LocalBackButton") }
 
 @Composable
 public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
@@ -56,22 +56,12 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     modifier: Modifier = Modifier.fillMaxSize(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
-    topBarOnTop: Boolean = true,
-    topBar: @Composable (WindowAdaptiveInfo, title: String, isBackButton: Boolean) -> Unit = { _, _, _ -> },
-    bottomBar: @Composable (WindowAdaptiveInfo) -> Unit = {},
-    floatingActionButton: @Composable () -> Unit = {},
-    floatingActionButtonPosition: FabPosition = FabPosition.End,
     navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
-    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
-    layoutType: @Composable (WindowAdaptiveInfo) -> NavigationSuiteType = { adaptiveInfo ->
-        NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
-    },
+    layoutType: NavigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo()),
     content: @Composable () -> Unit
 ) {
-    val adaptiveInfo = currentWindowAdaptiveInfo()
-
     var title: String by remember { mutableStateOf(startDestination.label) }
     // Dynamically set title on navigation.
     navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -84,13 +74,20 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
         derivedStateOf { navController.previousBackStackEntry != null }
     }
 
-    val scope = rememberCoroutineScope()
+    NavigationSuiteScaffold(
+        {
+            route.navigationChildren.forEach { child -> navigationSuiteRoute(currentDestination, child) }
+        },
+        modifier,
+        layoutType,
+        navigationSuiteColors,
+        containerColor,
+        contentColor,
+    ) {
+        val scope = rememberCoroutineScope()
 
-    // Global Snackbar by GlobalSnackbarEventController
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    @Composable
-    fun Snackbar() =
+        // Global Snackbar by GlobalSnackbarEventController
+        val snackbarHostState = remember { SnackbarHostState() }
         GlobalSnackbarEventController.events.toLaunchedEffect(
             snackbarHostState,
         ) { event ->
@@ -108,15 +105,11 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
             }
         }
 
-    // Global AlertDialog by GlobalAlertEventController
-    var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
-
-    @Composable
-    fun AlertDialog() {
+        // Global AlertDialog by GlobalAlertEventController
+        var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
         GlobalAlertEventController.events.toLaunchedEffect { event ->
             alertDialogState = event
         }
-
         alertDialogState?.let {
             AlertDialog(
                 it.message,
@@ -125,52 +118,12 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
                 onCancel = { scope.launch { GlobalAlertEventController.sendEvent(null) } },
             )
         }
-    }
 
-    @Composable
-    fun NavigationSuiteScaffold(modifier: Modifier, content: @Composable () -> Unit = {}) =
-        NavigationSuiteScaffold(
-            {
-                route.navigationChildren.forEach { child -> navigationSuiteRoute(currentDestination, child) }
-            },
-            modifier,
-            layoutType(adaptiveInfo),
-            navigationSuiteColors,
-            containerColor,
-            contentColor,
-            content,
-        )
-
-    @Composable
-    fun Scaffold(content: @Composable (PaddingValues) -> Unit = {}) =
-        Scaffold(
-            modifier,
-            { topBar(adaptiveInfo, title, isBackButton) },
-            { bottomBar(adaptiveInfo) },
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-            floatingActionButton,
-            floatingActionButtonPosition,
-            containerColor,
-            contentColor,
-            contentWindowInsets,
-            content,
-        )
-
-    if (topBarOnTop)
-        Scaffold { innerPadding ->
-            NavigationSuiteScaffold(Modifier.padding(innerPadding).fillMaxSize()) {
-                Snackbar()
-                AlertDialog()
-                content()
-            }
-        }
-    else NavigationSuiteScaffold(Modifier) {
-        Scaffold { innerPadding ->
-            Snackbar()
-            AlertDialog()
-            Box(Modifier.padding(innerPadding).fillMaxSize()) {
-                content()
-            }
+        CompositionLocalProvider(
+            LocalAppTitle provides title,
+            LocalAppBackButton provides isBackButton,
+        ) {
+            content()
         }
     }
 

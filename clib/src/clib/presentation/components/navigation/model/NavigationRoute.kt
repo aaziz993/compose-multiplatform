@@ -7,9 +7,27 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.SettingsBrightness
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
@@ -21,8 +39,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.model.item.Item
+import clib.presentation.components.navigation.LocalAppTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.theme.LocalAppTheme
+import clib.presentation.theme.model.ThemeMode
 import klib.data.type.collections.takeIfNotEmpty
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
@@ -96,15 +118,21 @@ public abstract class NavigationDestination<Dest : Any> : Route {
     protected open val modifier: Modifier = Modifier.Companion
     protected open val selectedModifier: Modifier = modifier
     protected open val text: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
-        androidx.compose.material3.Text(label, modifier)
+        Text(label, modifier)
     }
     protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
-        androidx.compose.material3.Text(label, modifier)
+        Text(label, modifier)
     }
     protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
     protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
     protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
     protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
+
+    @Composable
+    protected abstract fun ScreenScaffold(
+        navigationAction: (NavigationAction) -> Unit,
+        content: @Composable () -> Unit
+    )
 
     @Composable
     protected open fun Screen(
@@ -149,8 +177,10 @@ public abstract class NavigationDestination<Dest : Any> : Route {
             popExitTransition,
             sizeTransform,
         ) { backStackEntry ->
-            Screen(backStackEntry.toRoute(this@NavigationDestination.kClass)) { action ->
-                backStackEntry.navigationAction(action)
+            ScreenScaffold({ action -> backStackEntry.navigationAction(action) }) {
+                Screen(backStackEntry.toRoute(this@NavigationDestination.kClass)) { action ->
+                    backStackEntry.navigationAction(action)
+                }
             }
         }
     }

@@ -55,7 +55,6 @@ public fun NavScreen(
     val settingsViewModel: SettingsViewModel = koinViewModel()
 
     val startDestination = Home
-    var isDrawerOpen by remember { mutableStateOf(true) }
 
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
@@ -68,64 +67,7 @@ public fun NavScreen(
         navigator = koinInject<Navigator<Destination>>(),
         navController = navController,
         onNavHostReady = onNavHostReady,
-        topBar = { adaptiveInfo, title, isBackButton ->
-            TopAppBar(
-                title = { Text(title) },
-                navigationIcon = {
-                    Row {
-                        if (adaptiveInfo.windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
-                            AppTooltipBox("Menu") {
-                                IconButton(
-                                    onClick = {
-                                        isDrawerOpen = !isDrawerOpen
-                                    },
-                                ) {
-                                    Icon(
-                                        imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
-                                        contentDescription = "Menu",
-                                    )
-                                }
-                            }
 
-
-                        if (isBackButton)
-                            AppTooltipBox("Navigate back") {
-                                IconButton(
-                                    onClick = { navViewModel.action(NavigationAction.NavigateBack) },
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = "Navigate back",
-                                    )
-                                }
-                            }
-                    }
-                },
-                actions = {
-                    val themeMode = LocalAppTheme.current.mode
-                    AppTooltipBox("Switch theme") {
-                        IconButton(
-                            onClick = {
-                                when (themeMode) {
-                                    ThemeMode.SYSTEM -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.LIGHT)))
-                                    ThemeMode.LIGHT -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.DARK)))
-                                    ThemeMode.DARK -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.SYSTEM)))
-                                }
-                            },
-                        ) {
-                            Icon(
-                                imageVector = when (themeMode) {
-                                    ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
-                                    ThemeMode.LIGHT -> Icons.Outlined.LightMode
-                                    ThemeMode.DARK -> Icons.Outlined.DarkMode
-                                },
-                                contentDescription = "Switch theme",
-                            )
-                        }
-                    }
-                },
-            )
-        },
         layoutType = { adaptiveInfo ->
             with(adaptiveInfo) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
