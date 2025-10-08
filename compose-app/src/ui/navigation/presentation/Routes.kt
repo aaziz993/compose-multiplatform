@@ -45,12 +45,15 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.presentation.components.navigation.LocalAppBackButton
 import clib.presentation.components.navigation.LocalAppTitle
 import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.LocalAppTheme
+import clib.presentation.theme.ThemeState
+import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
@@ -172,77 +175,6 @@ public data object Services : Destination, NavigationDestination<Services>() {
 
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.Apps, label, modifier)
-    }
-
-    @Composable
-    override fun ScreenScaffold(
-        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ) {
-        var isDrawerOpen by remember { mutableStateOf(true) }
-
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(LocalAppTitle.current) },
-                    navigationIcon = {
-                        Row {
-                            if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
-                                AppTooltipBox("Menu") {
-                                    IconButton(
-                                        onClick = {
-                                            isDrawerOpen = !isDrawerOpen
-                                        },
-                                    ) {
-                                        Icon(
-                                            imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
-                                            contentDescription = "Menu",
-                                        )
-                                    }
-                                }
-
-
-                            if (isBackButton)
-                                AppTooltipBox("Navigate back") {
-                                    IconButton(
-                                        onClick = { navViewModel.action(NavigationAction.NavigateBack) },
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                            contentDescription = "Navigate back",
-                                        )
-                                    }
-                                }
-                        }
-                    },
-                    actions = {
-                        val themeMode = LocalAppTheme.current.mode
-                        AppTooltipBox("Switch theme") {
-                            IconButton(
-                                onClick = {
-                                    when (themeMode) {
-                                        ThemeMode.SYSTEM -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.LIGHT)))
-                                        ThemeMode.LIGHT -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.DARK)))
-                                        ThemeMode.DARK -> settingsViewModel.action(SettingsAction.SetTheme(settingsViewModel.state.value.themeState.theme.copy(mode = ThemeMode.SYSTEM)))
-                                    }
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = when (themeMode) {
-                                        ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
-                                        ThemeMode.LIGHT -> Icons.Outlined.LightMode
-                                        ThemeMode.DARK -> Icons.Outlined.DarkMode
-                                    },
-                                    contentDescription = "Switch theme",
-                                )
-                            }
-                        }
-                    },
-                )
-            },
-        ) {
-            content()
-        }
     }
 
     @Composable
@@ -436,4 +368,77 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
     @Composable
     override fun Screen(route: Stock, navigationAction: (NavigationAction) -> Unit): Unit =
         StockScreen(route, navigationAction)
+}
+
+@Composable
+private fun ScreenAppBar(
+    themeState: ThemeState,
+    onThemeChange: (Theme) -> Unit,
+    navigationAction: (NavigationAction) -> Unit,
+    content: @Composable () -> Unit
+) {
+    var isDrawerOpen by remember { mutableStateOf(true) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(LocalAppTitle.current) },
+                navigationIcon = {
+                    Row {
+                        if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
+                            AppTooltipBox("Menu") {
+                                IconButton(
+                                    onClick = {
+                                        isDrawerOpen = !isDrawerOpen
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
+                                        contentDescription = "Menu",
+                                    )
+                                }
+                            }
+
+
+                        if (LocalAppBackButton.current)
+                            AppTooltipBox("Navigate back") {
+                                IconButton(
+                                    onClick = { navigationAction(NavigationAction.NavigateBack) },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Navigate back",
+                                    )
+                                }
+                            }
+                    }
+                },
+                actions = {
+                    val themeMode = LocalAppTheme.current.mode
+                    AppTooltipBox("Switch theme") {
+                        IconButton(
+                            onClick = {
+                                when (themeMode) {
+                                    ThemeMode.SYSTEM -> onThemeChange(themeState.theme.copy(mode = ThemeMode.LIGHT))
+                                    ThemeMode.LIGHT -> onThemeChange(themeState.theme.copy(mode = ThemeMode.DARK))
+                                    ThemeMode.DARK -> onThemeChange(themeState.theme.copy(mode = ThemeMode.SYSTEM))
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = when (themeMode) {
+                                    ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
+                                    ThemeMode.LIGHT -> Icons.Outlined.LightMode
+                                    ThemeMode.DARK -> Icons.Outlined.DarkMode
+                                },
+                                contentDescription = "Switch theme",
+                            )
+                        }
+                    }
+                },
+            )
+        },
+    ) {
+        content()
+    }
 }

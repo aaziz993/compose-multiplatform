@@ -44,6 +44,8 @@ import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.LocalAppTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.LocalAppTheme
+import clib.presentation.theme.ThemeState
+import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 import klib.data.type.collections.takeIfNotEmpty
 import kotlin.jvm.JvmSuppressWildcards
@@ -129,12 +131,6 @@ public abstract class NavigationDestination<Dest : Any> : Route {
     protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
 
     @Composable
-    protected abstract fun ScreenScaffold(
-        navigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    )
-
-    @Composable
     protected open fun Screen(
         route: Dest,
         navigationAction: (NavigationAction) -> Unit,
@@ -177,10 +173,8 @@ public abstract class NavigationDestination<Dest : Any> : Route {
             popExitTransition,
             sizeTransform,
         ) { backStackEntry ->
-            ScreenScaffold({ action -> backStackEntry.navigationAction(action) }) {
-                Screen(backStackEntry.toRoute(this@NavigationDestination.kClass)) { action ->
-                    backStackEntry.navigationAction(action)
-                }
+            Screen(backStackEntry.toRoute(this@NavigationDestination.kClass)) { action ->
+                backStackEntry.navigationAction(action)
             }
         }
     }

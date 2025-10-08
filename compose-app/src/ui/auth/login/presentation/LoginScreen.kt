@@ -38,7 +38,7 @@ public fun LoginScreen(
     action: (LoginAction) -> Unit = {},
     navigationAction: (NavigationAction) -> Unit = {},
 ) {
-    if (state.isLogin) navigationAction(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(Home))
+    if (state.user != null) navigationAction(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(Home))
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
