@@ -32,6 +32,7 @@ import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
@@ -74,7 +75,7 @@ public data object NavRoute : NavigationRoute() {
 @SerialName("home")
 public data object Home : Destination, NavigationDestination<Home>() {
 
-    override val hidden: Boolean = true
+    override val excluded: Boolean = true
 
     override val deepLinks: List<String> = listOf("main")
 
@@ -188,7 +189,7 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 @SerialName("about")
 public data object About : Destination, NavigationDestination<About>() {
 
-    override val hidden: Boolean = true
+    override val excluded: Boolean = true
 
     override val deepLinks: List<String> = listOf("about")
 
@@ -207,6 +208,8 @@ public data object About : Destination, NavigationDestination<About>() {
 
 @Serializable
 public data object AuthRoute : NavigationRoute() {
+
+    override val excluded: Boolean = true
 
     override val deepLinks: List<String> = listOf("auth")
 
@@ -245,6 +248,9 @@ public data class ForgotPassword(val username: String) : Destination {
     @SerialName("forgotpassword")
     public companion object : NavigationDestination<ForgotPassword>() {
 
+        override val kClass: KClass<ForgotPassword>
+            get() = ForgotPassword::class
+
         override val deepLinks: List<String> = listOf("forgotpassword")
 
         @Composable
@@ -275,7 +281,7 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 @Serializable
 public data object WalletRoute : NavigationRoute() {
 
-    override val hidden: Boolean = true
+    override val excluded: Boolean = true
 
     override val deepLinks: List<String> = listOf("wallet")
 
