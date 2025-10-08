@@ -281,7 +281,7 @@ public data object Login : Destination, NavigationDestination<Login>() {
         LoginScreen(route, state, viewModel::action, Services, navigationAction)
     }
 
-    override fun navigate(): Boolean = false
+    override fun isNavigateItem(): Boolean = false
 }
 
 public data class ForgotPassword(val username: String) : Destination {
@@ -290,7 +290,7 @@ public data class ForgotPassword(val username: String) : Destination {
     @SerialName("forgotpassword")
     public companion object : NavigationDestination<ForgotPassword>() {
 
-        override val kClass: KClass<ForgotPassword>
+        override val route: KClass<ForgotPassword>
             get() = ForgotPassword::class
 
         override val deepLinks: List<String> = listOf("forgotpassword")
@@ -299,7 +299,7 @@ public data class ForgotPassword(val username: String) : Destination {
         override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit): Unit =
             ForgotPasswordScreen(route, navigationAction)
 
-        override fun navigate(): Boolean = true
+        override fun isNavigateItem(): Boolean = true
     }
 }
 
@@ -391,8 +391,8 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
 private fun ScreenAppBar(
     themeState: ThemeState,
     onThemeChange: (Theme) -> Unit,
-    isDrawerOpen: Boolean,
-    onDrawerOpenChange: (Boolean) -> Unit,
+    isOpenDrawer: Boolean,
+    onOpenDrawerChange: (Boolean) -> Unit,
     navigationAction: (NavigationAction) -> Unit,
     content: @Composable () -> Unit
 ) {
@@ -408,11 +408,11 @@ private fun ScreenAppBar(
                             AppTooltipBox("Menu") {
                                 IconButton(
                                     onClick = {
-                                        onDrawerOpenChange(!isDrawerOpen)
+                                        onOpenDrawerChange(!isOpenDrawer)
                                     },
                                 ) {
                                     Icon(
-                                        imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
+                                        imageVector = if (isOpenDrawer) Icons.Filled.Menu else Icons.Outlined.Menu,
                                         contentDescription = "Menu",
                                     )
                                 }

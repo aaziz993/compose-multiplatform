@@ -57,7 +57,7 @@ import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 public fun AdvancedSearchField(
     state: SearchFieldState,
     modifier: Modifier = Modifier,
-    iconModifier: Modifier = Modifier.padding(horizontal = 2.dp),
+    iconModifier: Modifier = Modifier.padding(horizontal = 4.dp),
     enabled: Boolean = true,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable ((isError: Boolean) -> Unit)? = null,

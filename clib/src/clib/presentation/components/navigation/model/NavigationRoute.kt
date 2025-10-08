@@ -7,7 +7,6 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -34,13 +33,22 @@ import kotlinx.serialization.serializer
 @Immutable
 public sealed interface Route {
 
+    public val route: KClass<*>
+        get() = this::class
+
+    public val label: String
+        get() = route.serializer().descriptor.serialName
+
     public val deepLinks: List<String>
     public val enabled: Boolean
+        get() = true
     public val alwaysShowLabel: Boolean
+        get() = true
 
-    public fun authResource(): AuthResource? = AuthResource()
+    public fun authResource(): AuthResource? = null
 
     public fun authProvider(): String? = null
+
     public fun authUser(): User? = null
 
     public fun auth(): Boolean = authResource()?.validate(authProvider(), authUser()) != false
@@ -76,41 +84,70 @@ public sealed interface Route {
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     )
 
-    public fun navigate(): Boolean = true
+    public fun isNavigateItem(): Boolean = true
+
+    public val modifier: Modifier
+        get() = Modifier
+    public val selectedModifier: Modifier
+        get() = modifier
+    public val icon: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
+    public val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
+    public val badge: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
+    public val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
-        text: @Composable (label: String, modifier: Modifier) -> Unit = { label, modifier ->
-            Text(label, modifier)
-        },
-        selectedText: @Composable (label: String, modifier: Modifier) -> Unit = text,
+        text: @Composable (label: String, modifier: Modifier) -> Unit,
+        selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
         currentDestination: NavDestination?,
         navigateTo: (Route) -> Unit
-    )
+    ): Unit = with(navigationSuiteScope) {
+        if (!isNavigateItem() || !auth()) return@with
+
+        val selected = isSelected(currentDestination)
+
+        val selectedItem = if (selected)
+            Item(
+                selectedModifier,
+                { selectedText(label, it) },
+                { selectedIcon(label, it) },
+                { selectedBadge(label, it) },
+            )
+        else Item(
+            modifier,
+            { text(label, it) },
+            { icon(label, it) },
+            { badge(label, it) },
+        )
+
+        item(
+            selected,
+            { navigateTo(this@Route) },
+            { selectedItem.icon?.invoke(Modifier) },
+            selectedItem.modifier,
+            enabled && this@Route.enabled,
+            {
+                selectedItem.text?.invoke(Modifier)
+            },
+            alwaysShowLabel && this@Route.alwaysShowLabel,
+            { selectedItem.badge?.invoke(Modifier) },
+        )
+    }
+
+    public fun isSelected(currentDestination: NavDestination?): Boolean =
+        currentDestination?.hierarchy?.any { destination -> destination.hasRoute(route) } == true
 }
 
 @Suppress("UNCHECKED_CAST")
 public abstract class NavigationDestination<Dest : Any> : Route {
 
-    public open val kClass: KClass<Dest>
-        get() = this::class as KClass<Dest>
-
-    public val label: String
-        get() = kClass.serializer().descriptor.serialName
-
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
-
-    override val enabled: Boolean = true
-    override val alwaysShowLabel: Boolean = true
-
-    protected open val modifier: Modifier = Modifier.Companion
-    protected open val selectedModifier: Modifier = modifier
-    protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
-    protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
-    protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
-    protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit = { _, _ -> }
 
     @Composable
     protected open fun Screen(
@@ -142,10 +179,10 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         val concatenatedDeepLinks = this@NavigationDestination.deepLinks.concatenateDeepLinks(deepLinks)
 
         composable(
-            this@NavigationDestination.kClass,
+            this@NavigationDestination.route,
             typeMap + this@NavigationDestination.typeMap,
             concatenatedDeepLinks.map { basePath ->
-                navDeepLink(this@NavigationDestination.kClass, basePath) {}
+                navDeepLink(this@NavigationDestination.route, basePath) {}
             },
             enterTransition,
             exitTransition,
@@ -153,61 +190,16 @@ public abstract class NavigationDestination<Dest : Any> : Route {
             popExitTransition,
             sizeTransform,
         ) { backStackEntry ->
-            Screen(backStackEntry.toRoute(this@NavigationDestination.kClass)) { action ->
+            Screen(backStackEntry.toRoute(this@NavigationDestination.route)) { action ->
                 backStackEntry.navigationAction(action)
             }
         }
     }
-
-    context(navigationSuiteScope: NavigationSuiteScope)
-    override fun item(
-        enabled: Boolean,
-        alwaysShowLabel: Boolean,
-        text: @Composable (label: String, modifier: Modifier) -> Unit,
-        selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
-        currentDestination: NavDestination?,
-        navigateTo: (Route) -> Unit
-    ): Unit = with(navigationSuiteScope) {
-        if (!navigate() || !auth()) return@with
-
-        val selected = isSelected(currentDestination)
-
-        val selectedItem = if (selected)
-            Item(
-                selectedModifier,
-                { selectedText(label, it) },
-                { selectedIcon(label, it) },
-                { selectedBadge(label, it) },
-            )
-        else Item(
-            modifier,
-            { text(label, it) },
-            { icon(label, it) },
-            { badge(label, it) },
-        )
-
-        item(
-            selected,
-            { navigateTo(this@NavigationDestination) },
-            { selectedItem.icon?.invoke(Modifier) },
-            selectedItem.modifier,
-            enabled && this@NavigationDestination.enabled,
-            {
-                selectedItem.text?.invoke(Modifier)
-            },
-            alwaysShowLabel && this@NavigationDestination.alwaysShowLabel,
-            { selectedItem.badge?.invoke(Modifier) },
-        )
-    }
-
-    public fun isSelected(currentDestination: NavDestination?): Boolean =
-        currentDestination?.hierarchy?.any { destination -> destination.hasRoute(kClass) } == true
 }
 
 public abstract class NavigationRoute : Route {
 
-    override val enabled: Boolean = true
-    override val alwaysShowLabel: Boolean = true
+    public open val expand: Boolean = false
 
     public open val routes: List<Route> = emptyList()
 
@@ -258,27 +250,23 @@ public abstract class NavigationRoute : Route {
         currentDestination: NavDestination?,
         navigateTo: (Route) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (!navigate() || !auth()) return@with
+        if (!isNavigateItem() || !auth()) return@with
 
-        routes.forEach { route ->
-            route.item(enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
-        }
+        if (expand)
+            routes.forEach { route ->
+                route.item(enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
+            }
+        else super.item(enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
     }
 
-    public fun current(currentDestination: NavDestination?): NavigationDestination<*>? =
-        routes.filterNot { route -> !route.navigate() || !route.auth() }.firstNotNullOfOrNull { route ->
-            when (route) {
-                is NavigationDestination<*> -> if (route.isSelected(currentDestination)) route else null
-                is NavigationRoute -> route.current(currentDestination)
-            }
+    public fun current(currentDestination: NavDestination?): Route? =
+        routes.filterNot { route -> !route.isNavigateItem() || !route.auth() }.firstNotNullOfOrNull { route ->
+            if (isSelected(currentDestination)) route else (route as? NavigationRoute)?.current(currentDestination)
         }
 
-    public fun findByLabel(label: String): NavigationDestination<*>? =
+    public fun findByLabel(label: String): Route? =
         routes.firstNotNullOfOrNull { route ->
-            when (route) {
-                is NavigationDestination<*> -> if (route.label == label) route else null
-                is NavigationRoute -> route.findByLabel(label)
-            }
+            if (route.label == label) route else (route as? NavigationRoute)?.findByLabel(label)
         }
 }
 

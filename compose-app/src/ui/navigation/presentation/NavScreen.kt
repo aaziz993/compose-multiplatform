@@ -54,7 +54,7 @@ public fun NavScreen(
         startDestination = if (loginState.user == null) startDestination else loggedInDestination,
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
-            route.item(
+            route.item1(
                 text = { label, _ -> Text(text = label) },
                 currentDestination = currentDestination,
             ) { destination ->
@@ -64,9 +64,10 @@ public fun NavScreen(
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = { currentDestination ->
-            with(currentWindowAdaptiveInfo()) {
+            if (NavRoute.current(currentDestination) != Login) NavigationSuiteType.None
+            else with(currentWindowAdaptiveInfo()) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
-                    if (navState.drawerOpen && NavRoute.current(currentDestination) != Login) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
+                    if (navState.drawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
                 }
                 else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
                     currentWindowAdaptiveInfo(),

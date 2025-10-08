@@ -23,16 +23,18 @@ public class LoginViewModel : AbstractViewModel<LoginAction>() {
 
     private fun login() {
         viewModelScope.launch {
-            state.update {
-                it.copy(
-                    user = User(
-                        username = state.value.username,
-                        firstName = "John",
-                        lastName = "Doe",
-                        roles = setOf("User"),
-                    ),
-                )
-            }
+            if (state.value.username == "admin" && state.value.password == "admin")
+                state.update {
+                    it.copy(
+                        user = User(
+                            username = state.value.username,
+                            firstName = "John",
+                            lastName = "Doe",
+                            roles = setOf("User"),
+                        ),
+                    )
+                }
+            else state.update { it.copy(isError = true) }
         }
     }
 }

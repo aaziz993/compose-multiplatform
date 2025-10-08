@@ -58,7 +58,7 @@ import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 @Composable
 public fun AdvancedTextField(
     modifier: Modifier = Modifier,
-    iconModifier: Modifier = Modifier.padding(horizontal = 2.dp),
+    iconModifier: Modifier = Modifier.padding(horizontal = 4.dp),
     value: String = "",
     onValueChange: (String) -> Unit = {},
     enabled: Boolean = true,
@@ -98,21 +98,15 @@ public fun AdvancedTextField(
 
     val isUnvalidated = readOnly || isTime || isEnum || validator == null
 
-    val validation = if (isUnvalidated) {
-        emptyList()
-    }
-    else {
-        validator.validate(value)
-    }
+    val validation = if (isUnvalidated) emptyList()
+    else validator.validate(value)
 
     val isErrorWithValidation = isError || validation.isNotEmpty()
 
     val advancedOnValueChange = if (readOnly || isTime || type is TextField.Enum) {
         {}
     }
-    else {
-        onValueChange
-    }
+    else onValueChange
 
     val advancedLabel: (@Composable () -> Unit)? = label?.let { { it.invoke(isErrorWithValidation) } }
 
@@ -125,9 +119,7 @@ public fun AdvancedTextField(
             )
         }
     }
-    else {
-        null
-    }
+    else null
 
     val showIconButton: (@Composable (isError: Boolean) -> Unit)? = onShowValueChange?.let { osc ->
         {
@@ -200,9 +192,7 @@ public fun AdvancedTextField(
 
         }
     }
-    else {
-        null
-    }
+    else null
 
     var showEnumDropdown by remember { mutableStateOf(false) }
 
@@ -215,9 +205,7 @@ public fun AdvancedTextField(
             )
         }
     }
-    else {
-        null
-    }
+    else null
 
     val advancedTrailingIcon: (@Composable () -> Unit)? =
         if (!(clearIconButton == null && showIconButton == null && trailingIcon == null)) {
@@ -231,9 +219,7 @@ public fun AdvancedTextField(
                 }
             }
         }
-        else {
-            null
-        }
+        else null
 
     val advancedPrefix: (@Composable () -> Unit)? = prefix?.let { { it.invoke(isErrorWithValidation) } }
 
@@ -309,9 +295,7 @@ public fun AdvancedTextField(
             if (showValidationMessage) {
                 Column(Modifier.wrapContentSize()) {
                     textField()
-                    if (validation.isNotEmpty()) {
-                        Text(it, color = MaterialTheme.colorScheme.error)
-                    }
+                    if (validation.isNotEmpty()) Text(it, color = MaterialTheme.colorScheme.error)
                 }
                 return
             }
@@ -326,7 +310,5 @@ public fun AdvancedTextField(
             { showEnumDropdown = false },
         )
     }
-    else {
-        textField()
-    }
+    else textField()
 }

@@ -64,6 +64,7 @@ public fun LoginScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next,
             ),
+            singleLine = true,
             outlined = true,
         )
 
@@ -75,11 +76,11 @@ public fun LoginScreen(
             onValueChange = { value -> action(LoginAction.SetPassword(value)) },
             label = { Text("Password") },
             isError = state.isError,
-            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done,
             ),
+            singleLine = true,
             outlined = true,
             showValue = state.showPassword,
             onShowValueChange = { value -> action(LoginAction.ShowPassword(value)) },
