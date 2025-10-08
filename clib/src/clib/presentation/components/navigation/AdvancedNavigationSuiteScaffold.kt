@@ -57,7 +57,9 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
-    layoutType: NavigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo()),
+    layoutType: @Composable (currentDestination: NavDestination?) -> NavigationSuiteType = {
+        NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+    },
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
     content: @Composable () -> Unit
@@ -79,7 +81,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
             route.routes.forEach { route -> navigationSuiteRoute(currentDestination, route) }
         },
         modifier,
-        layoutType,
+        layoutType(currentDestination),
         navigationSuiteColors,
         containerColor,
         contentColor,

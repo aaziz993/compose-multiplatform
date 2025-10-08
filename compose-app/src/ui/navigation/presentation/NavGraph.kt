@@ -64,6 +64,8 @@ import ui.auth.login.presentation.viewmodel.LoginViewModel
 import ui.auth.profile.presentation.ProfileScreen
 import ui.home.HomeScreen
 import ui.map.MapScreen
+import ui.navigation.presentation.viewmodel.NavAction
+import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.news.NewsScreen
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
@@ -179,14 +181,20 @@ public data object Services : Destination, NavigationDestination<Services>() {
         route: Services,
         navigationAction: (NavigationAction) -> Unit,
     ) {
-        val settingsViewModel: SettingsViewModel = koinViewModel()
+        val navViewModel: NavViewModel = koinViewModel()
+        val navState by navViewModel.state.collectAsStateWithLifecycle()
 
+        val settingsViewModel: SettingsViewModel = koinViewModel()
         val settingsState by settingsViewModel.state.collectAsStateWithLifecycle()
 
         ScreenAppBar(
             settingsState.themeState,
-            { theme ->
-                settingsViewModel.action(SettingsAction.SetTheme(theme))
+            { value ->
+                settingsViewModel.action(SettingsAction.SetTheme(value))
+            },
+            navState.drawerOpen,
+            { value ->
+                navViewModel.action(NavAction.OpenDrawer(value))
             },
             navigationAction,
         ) {
@@ -383,6 +391,8 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
 private fun ScreenAppBar(
     themeState: ThemeState,
     onThemeChange: (Theme) -> Unit,
+    isDrawerOpen: Boolean,
+    onDrawerOpenChange: (Boolean) -> Unit,
     navigationAction: (NavigationAction) -> Unit,
     content: @Composable () -> Unit
 ) {
@@ -398,7 +408,7 @@ private fun ScreenAppBar(
                             AppTooltipBox("Menu") {
                                 IconButton(
                                     onClick = {
-                                        isDrawerOpen = !isDrawerOpen
+                                        onDrawerOpenChange(!isDrawerOpen)
                                     },
                                 ) {
                                     Icon(

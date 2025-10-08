@@ -18,7 +18,6 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
-import clib.presentation.components.navigation.LocalDestination
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
@@ -42,7 +41,6 @@ public fun NavScreen(
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val navState by navViewModel.state.collectAsStateWithLifecycle()
-    val currentRoute = NavRoute.selected(LocalDestination.current)
     val loginState by loginViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(loginState.user) {
@@ -65,14 +63,15 @@ public fun NavScreen(
         },
         navController = navController,
         onNavHostReady = onNavHostReady,
-
-        layoutType = with(currentWindowAdaptiveInfo()) {
-            if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
-                if (navState.drawerOpen && currentRoute != Login) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
+        layoutType = { currentDestination ->
+            with(currentWindowAdaptiveInfo()) {
+                if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
+                    if (navState.drawerOpen && NavRoute.current(currentDestination) != Login) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
+                }
+                else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
+                    currentWindowAdaptiveInfo(),
+                )
             }
-            else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
-                currentWindowAdaptiveInfo(),
-            )
         },
     ) {
         AdvancedNavHost(

@@ -87,7 +87,7 @@ public sealed interface Route {
         },
         selectedText: @Composable (label: String, modifier: Modifier) -> Unit = text,
         currentDestination: NavDestination?,
-        navigateTo: (NavigationDestination<*>) -> Unit
+        navigateTo: (Route) -> Unit
     )
 }
 
@@ -166,7 +166,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         text: @Composable (label: String, modifier: Modifier) -> Unit,
         selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
         currentDestination: NavDestination?,
-        navigateTo: (NavigationDestination<*>) -> Unit
+        navigateTo: (Route) -> Unit
     ): Unit = with(navigationSuiteScope) {
         if (!navigate() || !auth()) return@with
 
@@ -256,7 +256,7 @@ public abstract class NavigationRoute : Route {
         text: @Composable (label: String, modifier: Modifier) -> Unit,
         selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
         currentDestination: NavDestination?,
-        navigateTo: (NavigationDestination<*>) -> Unit
+        navigateTo: (Route) -> Unit
     ): Unit = with(navigationSuiteScope) {
         if (!navigate() || !auth()) return@with
 
@@ -265,13 +265,13 @@ public abstract class NavigationRoute : Route {
         }
     }
 
-    public fun selected(currentDestination: NavDestination?): NavigationDestination<*>? =
+    public fun current(currentDestination: NavDestination?): NavigationDestination<*>? =
         routes.filterNot { route ->
             !route.navigate() || !route.auth()
         }.firstNotNullOfOrNull { route ->
             when (route) {
                 is NavigationDestination<*> -> if (route.isSelected(currentDestination)) route else null
-                is NavigationRoute -> route.selected(currentDestination)
+                is NavigationRoute -> route.current(currentDestination)
             }
         }
 
