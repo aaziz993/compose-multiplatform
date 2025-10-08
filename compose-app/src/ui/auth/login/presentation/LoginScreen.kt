@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.textfield.AdvancedTextField
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -36,9 +37,10 @@ public fun LoginScreen(
     route: Login,
     state: LoginState = LoginState(),
     action: (LoginAction) -> Unit = {},
+    loggedInDestination: NavigationDestination<*> = Home,
     navigationAction: (NavigationAction) -> Unit = {},
 ) {
-    if (state.user != null) navigationAction(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(Home))
+    if (state.user != null) navigationAction(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(loggedInDestination))
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),

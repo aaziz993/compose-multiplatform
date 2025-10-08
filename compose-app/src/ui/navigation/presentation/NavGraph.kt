@@ -43,7 +43,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavBackStackEntry
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.navigation.LocalAppBackButton
 import clib.presentation.components.navigation.LocalAppTitle
@@ -70,7 +69,6 @@ import ui.map.MapScreen
 import ui.news.NewsScreen
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
-import ui.settings.viewmodel.SettingsAction
 import ui.settings.viewmodel.SettingsViewModel
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
@@ -240,7 +238,9 @@ public data object AuthRoute : NavigationRoute() {
 
     override val composableChildren: List<NavigationDestination<*>> = listOf(Login, Profile)
 
-    override val navigationChildren: List<NavigationDestination<*>> = composableChildren.filterNot { child -> child == ForgotPassword.Companion }
+    override val navigationChildren: List<NavigationDestination<*>> = composableChildren.filterNot { child ->
+        child in listOf(Login, ForgotPassword.Companion)
+    }
 }
 
 @Serializable
@@ -263,7 +263,7 @@ public data object Login : Destination, NavigationDestination<Login>() {
 
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        LoginScreen(route, state, viewModel::action, navigationAction)
+        LoginScreen(route, state, viewModel::action, Services, navigationAction)
     }
 }
 

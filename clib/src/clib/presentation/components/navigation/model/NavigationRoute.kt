@@ -7,27 +7,10 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.SettingsBrightness
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
@@ -39,15 +22,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.model.item.Item
-import clib.presentation.components.navigation.LocalAppTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
-import clib.presentation.theme.LocalAppTheme
-import clib.presentation.theme.ThemeState
-import clib.presentation.theme.model.Theme
-import clib.presentation.theme.model.ThemeMode
-import klib.data.type.collections.takeIfNotEmpty
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -57,9 +33,10 @@ import kotlinx.serialization.serializer
 public sealed interface Route {
 
     public val deepLinks: List<String>
-    public val excluded: Boolean
     public val enabled: Boolean
     public val alwaysShowLabel: Boolean
+
+    public fun excludeFromComposition(): Boolean = false
 
     context(navGraphBuilder: NavGraphBuilder)
     public fun item(
@@ -92,6 +69,8 @@ public sealed interface Route {
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     )
 
+    public fun excludeFromNavigation(): Boolean = false
+
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
         transform: NavigationDestination<*>.(String) -> String,
@@ -113,7 +92,6 @@ public abstract class NavigationDestination<Dest : Any> : Route {
 
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
 
-    override val excluded: Boolean = false
     override val enabled: Boolean = true
     override val alwaysShowLabel: Boolean = true
 
@@ -157,7 +135,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
-        if (excluded) return@with
+        if (excludeFromComposition()) return@with
 
         val concatenatedDeepLinks = this@NavigationDestination.deepLinks.concatenateDeepLinks(deepLinks)
 
@@ -187,7 +165,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         alwaysShowLabel: Boolean,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (excluded) return@with
+        if (excludeFromComposition() || excludeFromNavigation()) return@with
 
         val selected = isSelected(currentDestination)
 
@@ -227,13 +205,12 @@ public abstract class NavigationDestination<Dest : Any> : Route {
 
 public abstract class NavigationRoute : Route {
 
-    override val excluded: Boolean = false
     override val enabled: Boolean = true
     override val alwaysShowLabel: Boolean = true
 
     public open val composableChildren: List<Route> = emptyList()
-    public open val navigationChildren: List<Route>
-        get() = composableChildren
+
+    override fun excludeFromComposition(): Boolean = false
 
     context(navGraphBuilder: NavGraphBuilder)
     override fun item(
@@ -256,7 +233,7 @@ public abstract class NavigationRoute : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
-        if (excluded) return@with
+        if (excludeFromComposition()) return@with
 
         val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
         navigation(this@NavigationRoute::class, composableChildren.first()) {
@@ -283,15 +260,17 @@ public abstract class NavigationRoute : Route {
         alwaysShowLabel: Boolean,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (excluded) return@with
+        if (excludeFromComposition() || excludeFromNavigation()) return@with
 
-        navigationChildren.forEach { child ->
+        composableChildren.forEach { child ->
             child.item(transform, currentDestination, enabled, alwaysShowLabel, navigateTo)
         }
     }
 
     public fun selected(currentDestination: NavDestination?): NavigationDestination<*>? =
-        composableChildren.filterNot(Route::excluded).firstNotNullOfOrNull { child ->
+        composableChildren.filterNot { route ->
+            route.excludeFromComposition() || route.excludeFromNavigation()
+        }.firstNotNullOfOrNull { child ->
             when (child) {
                 is NavigationDestination<*> -> if (child.isSelected(currentDestination)) child else null
                 is NavigationRoute -> child.selected(currentDestination)
