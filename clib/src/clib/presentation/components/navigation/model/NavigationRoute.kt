@@ -133,6 +133,8 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
+        if (excluded) return@with
+
         val concatenatedDeepLinks = this@NavigationDestination.deepLinks.concatenateDeepLinks(deepLinks)
 
         composable(
@@ -161,6 +163,8 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         alwaysShowLabel: Boolean,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
+        if (excluded) return@with
+
         val selected = isSelected(currentDestination)
 
         val label = transform(this@NavigationDestination.label)
@@ -228,24 +232,23 @@ public abstract class NavigationRoute : Route {
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
         navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
-        if (!excluded)
-            composableChildren.filterNot(Route::excluded).takeIfNotEmpty()?.let { children ->
-                val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
-                navigation(this@NavigationRoute::class, composableChildren.first()) {
-                    children.forEach { child ->
-                        child.item(
-                            typeMap,
-                            concatenatedDeepLinks,
-                            enterTransition,
-                            exitTransition,
-                            popEnterTransition,
-                            popExitTransition,
-                            sizeTransform,
-                            navigationAction,
-                        )
-                    }
-                }
+        if (excluded) return@with
+
+        val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
+        navigation(this@NavigationRoute::class, composableChildren.first()) {
+            composableChildren.forEach { child ->
+                child.item(
+                    typeMap,
+                    concatenatedDeepLinks,
+                    enterTransition,
+                    exitTransition,
+                    popEnterTransition,
+                    popExitTransition,
+                    sizeTransform,
+                    navigationAction,
+                )
             }
+        }
     }
 
     context(navigationSuiteScope: NavigationSuiteScope)
@@ -256,10 +259,11 @@ public abstract class NavigationRoute : Route {
         alwaysShowLabel: Boolean,
         navigateTo: (NavigationDestination<*>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (!excluded)
-            navigationChildren.filterNot(Route::excluded).forEach { child ->
-                child.item(transform, currentDestination, enabled, alwaysShowLabel, navigateTo)
-            }
+        if (excluded) return@with
+
+        navigationChildren.forEach { child ->
+            child.item(transform, currentDestination, enabled, alwaysShowLabel, navigateTo)
+        }
     }
 
     public fun selected(currentDestination: NavDestination?): NavigationDestination<*>? =
