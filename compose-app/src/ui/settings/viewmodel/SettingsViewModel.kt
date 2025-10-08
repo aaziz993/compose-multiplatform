@@ -4,17 +4,12 @@ import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
-import clib.presentation.theme.ThemeState
 import clib.presentation.viewmodel.AbstractViewModel
-import klib.data.cache.Cache
-import klib.data.cache.SettingsCache
 import klib.data.permission.PermissionsController
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.isPermissionGranted
 import klib.data.permission.model.Permission
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel

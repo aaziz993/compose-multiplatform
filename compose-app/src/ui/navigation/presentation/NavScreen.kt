@@ -21,6 +21,7 @@ import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -55,7 +56,7 @@ public fun NavScreen(
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(
-                text = { label, _ -> Text(text = label) },
+                text = { label, _ -> Text(text = label.uppercaseFirstChar()) },
                 currentDestination = currentDestination,
             ) { destination ->
                 navigatorViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
@@ -64,7 +65,7 @@ public fun NavScreen(
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = { currentDestination ->
-            if (NavRoute.current(currentDestination) != Login) NavigationSuiteType.None
+            if (NavRoute.current(currentDestination) == Login) NavigationSuiteType.None
             else with(currentWindowAdaptiveInfo()) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
                     if (navState.drawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None

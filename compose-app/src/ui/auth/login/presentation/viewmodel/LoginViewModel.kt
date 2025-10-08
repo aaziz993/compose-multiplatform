@@ -15,9 +15,9 @@ public class LoginViewModel : AbstractViewModel<LoginAction>() {
         field = viewModelMutableStateFlow(LoginState())
 
     override fun action(action: LoginAction): Unit = when (action) {
-        is LoginAction.SetUsername -> state.update { it.copy(username = action.value, isError = false) }
-        is LoginAction.SetPassword -> state.update { it.copy(password = action.value, isError = false) }
-        is LoginAction.ShowPassword -> state.update { it.copy(showPassword = action.value, isError = false) }
+        is LoginAction.SetUsername -> state.update { it.copy(username = action.value, error = null) }
+        is LoginAction.SetPassword -> state.update { it.copy(password = action.value, error = null) }
+        is LoginAction.ShowPassword -> state.update { it.copy(showPassword = action.value, error = null) }
         is LoginAction.Login -> login()
     }
 
@@ -34,7 +34,7 @@ public class LoginViewModel : AbstractViewModel<LoginAction>() {
                         ),
                     )
                 }
-            else state.update { it.copy(isError = true) }
+            else state.update { it.copy(error = "Invalid username or password") }
         }
     }
 }

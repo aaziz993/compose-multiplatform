@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -85,8 +86,9 @@ public fun AdvancedTextField(
     cursor: Boolean = false,
     clearable: Boolean = !readOnly,
     outlined: Boolean = false,
+    underlineMessage: String? = null,
     validator: Validator? = null,
-    onValidation: (List<String>) -> String = { it.joinToString(", ") },
+    onValidation: (List<String>) -> String = { value -> value.joinToString(", ") },
     showValidationMessage: Boolean = true,
     showValue: Boolean = true,
     onShowValueChange: ((Boolean) -> Unit)? = null
@@ -96,12 +98,11 @@ public fun AdvancedTextField(
 
     val isEnum = type is TextField.Enum
 
-    val isUnvalidated = readOnly || isTime || isEnum || validator == null
+    val requireValidation = !(readOnly || isTime || isEnum || validator == null)
 
-    val validation = if (isUnvalidated) emptyList()
-    else validator.validate(value)
+    val validationMessages = if (requireValidation) validator.validate(value) else emptyList()
 
-    val isErrorWithValidation = isError || validation.isNotEmpty()
+    val isErrorWithValidation = isError || validationMessages.isNotEmpty()
 
     val advancedOnValueChange = if (readOnly || isTime || type is TextField.Enum) {
         {}
@@ -290,25 +291,24 @@ public fun AdvancedTextField(
     }
 
 
-    if (!isUnvalidated) {
-        onValidation(validation).let {
-            if (showValidationMessage) {
-                Column(Modifier.wrapContentSize()) {
-                    textField()
-                    if (validation.isNotEmpty()) Text(it, color = MaterialTheme.colorScheme.error)
-                }
-                return
-            }
-        }
-    }
-    if (isEnum) {
-        ListDropdown(
+    if (isEnum)
+        return ListDropdown(
             type.values,
             textField,
             onValueChange,
             showEnumDropdown,
             { showEnumDropdown = false },
         )
+
+    var message: String? = underlineMessage
+    if (validationMessages.isNotEmpty() && showValidationMessage) {
+        message = message.orEmpty() + onValidation(validationMessages)
     }
-    else textField()
+
+    message?.let {
+        Column(Modifier.wrapContentSize()) {
+            textField()
+            Text(it, color = if (isErrorWithValidation) MaterialTheme.colorScheme.error else Color.Unspecified)
+        }
+    } ?: textField()
 }

@@ -251,6 +251,8 @@ public data object AuthRoute : Destination, NavigationRoute() {
 
     override val deepLinks: List<String> = listOf("auth")
 
+    override val expand: Boolean = true
+
     override val routes: List<NavigationDestination<*>> = listOf(Login, ForgotPassword, Profile)
 
     override fun authResource(): AuthResource? = null
@@ -299,7 +301,7 @@ public data class ForgotPassword(val username: String) : Destination {
         override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit): Unit =
             ForgotPasswordScreen(route, navigationAction)
 
-        override fun isNavigateItem(): Boolean = true
+        override fun isNavigateItem(): Boolean = false
     }
 }
 

@@ -142,6 +142,9 @@ public sealed interface Route {
 
     public fun isSelected(currentDestination: NavDestination?): Boolean =
         currentDestination?.hierarchy?.any { destination -> destination.hasRoute(route) } == true
+
+    public fun isCurrent(currentDestination: NavDestination?): Boolean =
+        currentDestination?.hasRoute(route) == true
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -261,7 +264,7 @@ public abstract class NavigationRoute : Route {
 
     public fun current(currentDestination: NavDestination?): Route? =
         routes.filterNot { route -> !route.isNavigateItem() || !route.auth() }.firstNotNullOfOrNull { route ->
-            if (isSelected(currentDestination)) route else (route as? NavigationRoute)?.current(currentDestination)
+            if (isCurrent(currentDestination)) route else (route as? NavigationRoute)?.current(currentDestination)
         }
 
     public fun findByLabel(label: String): Route? =

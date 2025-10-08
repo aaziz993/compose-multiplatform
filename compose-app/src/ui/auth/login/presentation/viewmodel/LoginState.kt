@@ -7,5 +7,5 @@ public data class LoginState(
     val password: String = "",
     val showPassword: Boolean = false,
     val user: User? = null,
-    val isError: Boolean = false,
+    val error: String? = null,
 )
