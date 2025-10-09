@@ -1,4 +1,4 @@
-package clib.presentation.components.auth
+package clib.presentation.auth
 
 import androidx.compose.runtime.Composable
 import klib.data.type.auth.AuthResource

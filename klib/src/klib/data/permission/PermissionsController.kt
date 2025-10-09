@@ -8,7 +8,7 @@ public expect class PermissionsController {
 
     public suspend fun getPermissionState(permission: Permission): PermissionState
 
-    public suspend fun getPermissions(permission: Permission)
+    public suspend fun providePermission(permission: Permission)
 
     public fun openAppSettings()
 }

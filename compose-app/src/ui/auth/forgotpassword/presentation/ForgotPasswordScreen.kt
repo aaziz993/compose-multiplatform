@@ -9,9 +9,10 @@ import ui.navigation.presentation.ForgotPassword
 @Composable
 public fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
-    route: ForgotPassword = ForgotPassword(),
+    route: ForgotPassword = ForgotPassword,
     navigationAction: (NavigationAction) -> Unit = {},
 ) {
+
 }
 
 @Preview

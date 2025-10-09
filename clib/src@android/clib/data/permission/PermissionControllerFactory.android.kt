@@ -7,10 +7,10 @@ import androidx.compose.ui.platform.LocalContext
 import klib.data.permission.PermissionsController
 
 @Composable
-public actual fun rememberPermissionControllerFactory(): PermissionControllerFactory {
+public actual fun rememberPermissionsControllerFactory(): PermissionsControllerFactory {
     val context: Context = LocalContext.current
     return remember(context) {
-        PermissionControllerFactory {
+        PermissionsControllerFactory {
             PermissionsController(context.applicationContext)
         }
     }

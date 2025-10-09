@@ -2,26 +2,26 @@ package di.module
 
 import clib.presentation.components.navigation.DefaultNavigator
 import clib.presentation.components.navigation.Navigator
+import clib.presentation.theme.viewmodel.AbstractThemeViewModel
 import dev.jordond.connectivity.Connectivity
 import klib.data.cache.Cache
 import klib.data.cache.SettingsCache
 import klib.data.net.createConnectivity
-import klib.data.permission.PermissionsController
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.encodeAnyToString
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
+import ui.navigation.presentation.AuthRoute
 import ui.navigation.presentation.Destination
-import ui.navigation.presentation.Home
 
 @Module
 @ComponentScan("ui", "presentation")
 public class CommonModule {
 
     @Single
-    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(Home)
+    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(AuthRoute)
 
     @Single
     public fun provideJson(): Json = Json {

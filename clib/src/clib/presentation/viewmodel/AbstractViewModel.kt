@@ -93,13 +93,13 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         initialValue,
     )
 
-    protected fun <T : Any> viewModelStateFlow(
+    protected fun <T> viewModelStateFlow(
         initialValue: T,
         started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
         block: suspend FlowCollector<T>.(T) -> Unit
     ): RestartableStateFlow<T> = flow { block(initialValue) }.viewModelScopeFlow(initialValue, started)
 
-    protected fun <T : Any> viewModelMutableStateFlow(
+    protected fun <T> viewModelMutableStateFlow(
         initialValue: T,
         started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
         block: (suspend MutableStateFlow<T>.(T) -> T)? = null,
@@ -119,7 +119,7 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         }
     }
 
-    protected fun <T : Any> viewModelStateFlow(
+    protected fun <T> viewModelStateFlow(
         initialValue: ViewModelState<T> = idle(),
         started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
         block: suspend FlowCollector<ViewModelState<T>>.(ViewModelState<T>) -> Unit

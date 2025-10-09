@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import clib.presentation.AppEnvironment
-import clib.presentation.theme.viewmodel.ThemeViewModel
+import clib.presentation.theme.viewmodel.AbstractThemeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import presentation.theme.Shapes
 import presentation.theme.Typography
@@ -17,7 +17,7 @@ import ui.navigation.presentation.NavScreen
 
 @Composable
 public fun AppComposable(
-    themeViewModel: ThemeViewModel = koinViewModel(),
+    themeViewModel: AbstractThemeViewModel = koinViewModel(),
     onNavHostReady: suspend (NavController) -> Unit = {}
 ) {
     val theme by themeViewModel.state.collectAsStateWithLifecycle()

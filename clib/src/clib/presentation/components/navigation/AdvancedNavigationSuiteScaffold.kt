@@ -86,14 +86,14 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
         containerColor,
         contentColor,
     ) {
-        val scope = rememberCoroutineScope()
+        val coroutineScope = rememberCoroutineScope()
 
         // Global Snackbar by GlobalSnackbarEventController
         val snackbarHostState = remember { SnackbarHostState() }
         GlobalSnackbarEventController.events.ToLaunchedEffect(
             snackbarHostState,
         ) { event ->
-            scope.launch {
+            coroutineScope.launch {
                 snackbarHostState.currentSnackbarData?.dismiss()
 
                 val result = snackbarHostState.showSnackbar(
@@ -115,7 +115,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
                 event.message,
                 isError = event.isError,
                 onConfirm = event.action,
-                onCancel = { scope.launch { GlobalAlertEventController.sendEvent(null) } },
+                onCancel = { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
             )
         }
 

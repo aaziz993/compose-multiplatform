@@ -8,13 +8,13 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.presentation.auth.viewmodel.AbstractUserViewModel
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
@@ -25,7 +25,6 @@ import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import ui.auth.login.presentation.viewmodel.LoginViewModel
 import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.navigation.presentation.viewmodel.NavigatorViewModel
 
@@ -37,22 +36,15 @@ public fun NavScreen(
     navigator: Navigator<Destination> = koinInject(),
     navigatorViewModel: NavigatorViewModel = koinViewModel(),
     navViewModel: NavViewModel = koinViewModel(),
-    loginViewModel: LoginViewModel = koinViewModel(),
+    userViewModel: AbstractUserViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val navState by navViewModel.state.collectAsStateWithLifecycle()
-    val loginState by loginViewModel.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(loginState.user) {
-        if (loginState.user == null)
-            navigatorViewModel.action(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(startDestination))
-        else navigatorViewModel.action(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(loggedInDestination))
-    }
 
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
-        startDestination = if (loginState.user == null) startDestination else loggedInDestination,
+        startDestination = startDestination,
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(

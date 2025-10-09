@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
@@ -34,8 +33,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import clib.presentation.components.textfield.otp.model.OtpField
-import clib.presentation.theme.density.pxToDp
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -82,7 +81,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 public fun OtpInputField(
     otp: MutableState<String>,
     otpBoxModifier: Modifier = Modifier
-        .border(1.pxToDp(), Color.Gray)
+        .size(48.dp)
+        .border(1.dp, Color.Gray)
         .background(Color.White),
     count: Int = 5,
     otpTextType: KeyboardType = KeyboardType.Number,
@@ -266,13 +266,12 @@ private fun OtpBox(
     // val screenWidth = LocalWindowInfo.current.containerSize.width
     // If you're using this in Android
     // val screenWidth = LocalConfiguration.current.screenWidthDp.dp.dpToPx().toInt()
-    val screenWidth = LocalWindowInfo.current.containerSize.width
-    val paddingValue = 5
-    val totalBoxSize = (screenWidth / totalBoxCount) - paddingValue * totalBoxCount
+//    val screenWidth = LocalWindowInfo.current.containerSize.width
+//    val paddingValue = 5
+//    val totalBoxSize = (screenWidth / totalBoxCount) - paddingValue * totalBoxCount
 
     Box(
-        modifier = modifier
-            .size(totalBoxSize.pxToDp()),
+        modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         BasicTextField(
@@ -334,7 +333,7 @@ public fun PreviewOtpInputField(): Unit =
         otp = remember { mutableStateOf("123") },
         count = 4,
         otpBoxModifier = Modifier
-            .border(1.pxToDp(), Color.Black)
+            .border(1.dp, Color.Black)
             .background(Color.White),
         otpTextType = KeyboardType.Number,
     )

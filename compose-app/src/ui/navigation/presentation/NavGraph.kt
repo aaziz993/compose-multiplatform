@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonAddAlt
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.PersonAddAlt
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material3.Icon
@@ -52,8 +54,8 @@ import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
+import clib.presentation.theme.viewmodel.AbstractThemeViewModel
 import clib.presentation.theme.viewmodel.ThemeAction
-import clib.presentation.theme.viewmodel.ThemeViewModel
 import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
@@ -64,14 +66,16 @@ import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
 import ui.auth.login.presentation.LoginScreen
 import ui.auth.login.presentation.viewmodel.LoginViewModel
+import ui.auth.otp.OtpScreen
+import ui.auth.otp.viewmodel.OtpViewModel
 import ui.auth.profile.presentation.ProfileScreen
+import ui.auth.signup.presentation.PhoneCheckUpScreen
+import ui.auth.signup.presentation.viewmodel.PhoneCheckUpViewModel
 import ui.home.HomeScreen
 import ui.map.MapScreen
 import ui.navigation.presentation.viewmodel.NavAction
 import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.news.NewsScreen
-import ui.auth.otp.OtpScreen
-import ui.auth.otp.viewmodel.OtpViewModel
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
 import ui.wallet.balance.BalanceScreen
@@ -104,7 +108,7 @@ public data object NavRoute : Destination, NavigationRoute() {
 @SerialName("home")
 public data object Home : Destination, NavigationDestination<Home>() {
 
-    override val deepLinks: List<String> = listOf("main")
+    override val deepLinks: List<String> = listOf("home")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Home, label, modifier)
@@ -131,7 +135,7 @@ public data object Home : Destination, NavigationDestination<Home>() {
 @SerialName("news")
 public data object News : Destination, NavigationDestination<News>() {
 
-    override val deepLinks: List<String> = listOf("main")
+    override val deepLinks: List<String> = listOf("news")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Newspaper, label, modifier)
@@ -181,7 +185,7 @@ public data object Map : Destination, NavigationDestination<Map>() {
 @SerialName("services")
 public data object Services : Destination, NavigationDestination<Services>() {
 
-    override val deepLinks: List<String> = listOf("main")
+    override val deepLinks: List<String> = listOf("services")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Apps, label, modifier)
@@ -199,7 +203,7 @@ public data object Services : Destination, NavigationDestination<Services>() {
         val navViewModel: NavViewModel = koinViewModel()
         val navState by navViewModel.state.collectAsStateWithLifecycle()
 
-        val themeViewModel: ThemeViewModel = koinViewModel()
+        val themeViewModel: AbstractThemeViewModel = koinViewModel()
         val theme by themeViewModel.state.collectAsStateWithLifecycle()
 
         ScreenAppBar(
@@ -238,7 +242,7 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 
     @Composable
     override fun Screen(route: Settings, navigationAction: (NavigationAction) -> Unit) {
-        val themeViewModel: ThemeViewModel = koinViewModel()
+        val themeViewModel: AbstractThemeViewModel = koinViewModel()
 
         val theme by themeViewModel.state.collectAsStateWithLifecycle()
 
@@ -282,9 +286,43 @@ public data object AuthRoute : Destination, NavigationRoute() {
 
     override val expand: Boolean = true
 
-    override val routes: List<NavigationDestination<*>> = listOf(Login, Otp, ForgotPassword, Profile)
+    override val routes: List<NavigationDestination<*>> = listOf(PhoneCheckUp, Login, Otp, ForgotPassword, Profile)
 
     override fun authResource(): AuthResource? = null
+}
+
+@Serializable
+@SerialName("phonesignup")
+public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckUp>() {
+
+    override val deepLinks: List<String> = listOf("phonesignup")
+
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.PersonAddAlt, label, modifier)
+    }
+
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.PersonAddAlt, label, modifier)
+    }
+
+    override fun authResource(): AuthResource? = null
+
+    @Composable
+    override fun Screen(route: PhoneCheckUp, navigationAction: (NavigationAction) -> Unit) {
+        val viewModel: PhoneCheckUpViewModel = koinViewModel()
+
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        PhoneCheckUpScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            route,
+            state,
+            viewModel::action,
+            navigationAction,
+        )
+    }
+
+    override fun isNavigateItem(): Boolean = false
 }
 
 @Serializable
@@ -330,7 +368,7 @@ public data class Otp(val phone: String = "") : Destination {
         override val route: KClass<Otp>
             get() = Otp::class
 
-        override val deepLinks: List<String> = listOf("login")
+        override val deepLinks: List<String> = listOf("otp")
 
         override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
             Icon(Icons.AutoMirrored.Outlined.Login, label, modifier)
@@ -353,7 +391,6 @@ public data class Otp(val phone: String = "") : Destination {
                 route,
                 state,
                 viewModel::action,
-                Services,
                 navigationAction,
             )
         }
@@ -364,26 +401,20 @@ public data class Otp(val phone: String = "") : Destination {
 
 @Serializable
 @SerialName("forgotpassword")
-public data class ForgotPassword(val username: String = "") : Destination {
+public data object ForgotPassword : Destination, NavigationDestination<ForgotPassword>() {
 
-    public companion object : NavigationDestination<ForgotPassword>() {
+    override val deepLinks: List<String> = listOf("forgotpassword")
 
-        override val route: KClass<ForgotPassword>
-            get() = ForgotPassword::class
-
-        override val deepLinks: List<String> = listOf("forgotpassword")
-
-        @Composable
-        override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit) {
-            ForgotPasswordScreen(
-                Modifier,
-                route,
-                navigationAction,
-            )
-        }
-
-        override fun isNavigateItem(): Boolean = false
+    @Composable
+    override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit) {
+        ForgotPasswordScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
     }
+
+    override fun isNavigateItem(): Boolean = false
 }
 
 @Serializable

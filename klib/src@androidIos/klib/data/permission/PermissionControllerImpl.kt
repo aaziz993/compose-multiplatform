@@ -63,7 +63,7 @@ public abstract class PermissionControllerImpl(
         PERMISSIONS[permission]?.let { PERMISSION_STATES[permissionsController.getPermissionState(it)]!! }
             ?: PermissionState.UNSUPPORTED
 
-    public suspend fun getPermissions(permission: Permission) {
+    public suspend fun providePermission(permission: Permission) {
         PERMISSIONS[permission]?.let {
             try {
                 permissionsController.providePermission(it)

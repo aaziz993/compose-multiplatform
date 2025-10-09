@@ -15,6 +15,8 @@ public class NavViewModel(
         field = viewModelMutableStateFlow<NavState>(NavState())
 
     override fun action(action: NavAction): Unit = when (action) {
-        is NavAction.OpenDrawer -> state.update { it.copy(drawerOpen = action.value) }
+        is NavAction.OpenDrawer -> openDrawer(action.value)
     }
+
+    private fun openDrawer(value: Boolean) = state.update { it.copy(drawerOpen = value) }
 }

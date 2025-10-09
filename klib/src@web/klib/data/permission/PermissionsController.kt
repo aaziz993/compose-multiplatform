@@ -71,7 +71,7 @@ public actual class PermissionsController {
         ) PermissionState.GRANTED
         else PermissionState.NOT_DETERMINED
 
-    public actual suspend fun getPermissions(permission: Permission) {
+    public actual suspend fun providePermission(permission: Permission) {
         if (!permission
                 .toPlatformPermission()!!
                 .all { permission ->

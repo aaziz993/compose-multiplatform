@@ -8,7 +8,7 @@ public actual class PermissionsController {
     public actual suspend fun getPermissionState(permission: Permission): PermissionState =
         PermissionState.GRANTED
 
-    public actual suspend fun getPermissions(permission: Permission): Unit = Unit
+    public actual suspend fun providePermission(permission: Permission): Unit = Unit
 
     public actual fun openAppSettings(): Unit = Unit
 }

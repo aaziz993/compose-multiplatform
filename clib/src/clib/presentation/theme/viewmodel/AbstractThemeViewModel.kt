@@ -1,19 +1,19 @@
 package clib.presentation.theme.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 import clib.presentation.viewmodel.AbstractViewModel
 import kotlinx.coroutines.flow.update
 
-public class ThemeViewModel(
-    theme: Theme = Theme(),
-    override val savedStateHandle: SavedStateHandle = SavedStateHandle()
-) : AbstractViewModel<ThemeAction>() {
+public abstract class AbstractThemeViewModel : AbstractViewModel<ThemeAction>() {
+
+    protected open suspend fun initialState(): Theme = Theme()
 
     public val state: RestartableStateFlow<Theme>
-        field = viewModelMutableStateFlow(theme)
+        field = viewModelMutableStateFlow(Theme()) {
+            initialState()
+        }
 
     override fun action(action: ThemeAction): Unit = when (action) {
         is ThemeAction.SetTheme -> setTheme(action.value)

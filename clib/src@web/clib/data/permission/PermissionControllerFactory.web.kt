@@ -5,9 +5,9 @@ import androidx.compose.runtime.remember
 import klib.data.permission.PermissionsController
 
 @Composable
-public actual fun rememberPermissionControllerFactory(): PermissionControllerFactory {
+public actual fun rememberPermissionsControllerFactory(): PermissionsControllerFactory {
     return remember {
-        PermissionControllerFactory {
+        PermissionsControllerFactory {
             PermissionsController()
         }
     }

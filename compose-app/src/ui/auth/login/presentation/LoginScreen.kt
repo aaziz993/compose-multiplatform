@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,16 +20,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.textfield.AdvancedTextField
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.login
+import compose_app.generated.resources.pin_code
+import compose_app.generated.resources.reset_password
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
-import ui.navigation.presentation.ForgotPassword
-import ui.navigation.presentation.Home
 import ui.navigation.presentation.Login
-import ui.navigation.presentation.Otp
+import ui.navigation.presentation.PhoneCheckUp
 
 @Composable
 public fun LoginScreen(
@@ -46,7 +47,7 @@ public fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Login",
+            text = stringResource(Res.string.login),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -55,12 +56,12 @@ public fun LoginScreen(
 
         AdvancedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = state.username,
-            onValueChange = { value -> action(LoginAction.SetUsername(value)) },
-            label = { Text("Phone number") },
+            value = state.pinCode,
+            onValueChange = { value -> action(LoginAction.SetPinCode(value)) },
+            label = { Text(text = stringResource(Res.string.pin_code)) },
             isError = state.error != null,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.NumberPassword,
                 imeAction = ImeAction.Next,
             ),
             singleLine = true,
@@ -70,13 +71,13 @@ public fun LoginScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Forgot password?",
+            text = stringResource(Res.string.reset_password),
             color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    navigationAction(NavigationAction.TypeSafeNavigation.Navigate(ForgotPassword(state.username)))
+                    navigationAction(NavigationAction.TypeSafeNavigation.Navigate(PhoneCheckUp))
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,
@@ -86,10 +87,10 @@ public fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { navigationAction(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(Otp(state.username))) },
+            onClick = { action(LoginAction.Login) },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("Login")
+            Text(text = stringResource(Res.string.login))
         }
     }
 }

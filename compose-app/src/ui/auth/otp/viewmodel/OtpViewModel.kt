@@ -1,33 +1,76 @@
 package ui.auth.otp.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.data.type.collections.restartableflow.RestartableStateFlow
+import clib.presentation.auth.viewmodel.UserAction
 import clib.presentation.viewmodel.AbstractViewModel
+import klib.data.type.auth.User
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import ui.auth.presentation.viewmodel.UserViewModel
 
 @KoinViewModel
-public class OtpViewModel : AbstractViewModel<OtpAction>() {
+public class OtpViewModel(
+    private val duration: Duration = 60.seconds,
+    private val userViewModel: UserViewModel
+) : AbstractViewModel<OtpAction>() {
 
     public val state: MutableStateFlow<OtpState>
-        field = viewModelMutableStateFlow(OtpState())
+        field = viewModelMutableStateFlow(OtpState(timer = duration))
 
-    override fun action(action: OtpAction): Unit = when (action) {
-        is OtpAction.SetCode -> setCode(action.value)
-        is OtpAction.SendCode -> {}
-        is OtpAction.Confirm -> confirm()
+    init {
+        startTimer()
     }
 
-    private fun setCode(value: String) =
-        state.update { it.copy(code = value, error = null) }
-
-    private fun confirm() {
+    private fun startTimer() =
         viewModelScope.launch {
-            if (state.value.code == "1234") state.update { it.copy(confirmed = true) }
-            else state.update { it.copy(error = "Invalid code") }
+            flow {
+                while (true) {
+                    delay(1.seconds)
+                    emit(Unit)
+                }
+            }.collect { _ ->
+                state.update { current ->
+                    val newTimer = (current.timer - 1.seconds).coerceAtLeast(Duration.ZERO)
+                    current.copy(timer = newTimer)
+                }
+            }
         }
+
+    override fun action(action: OtpAction) {
+        when (action) {
+            is OtpAction.SetCode -> setCode(action.value)
+            is OtpAction.ResendCode -> resendCode()
+            is OtpAction.Confirm -> confirm(action.phone)
+        }
+    }
+
+    private fun setCode(value: String) = viewModelScope.launch {
+        state.update { it.copy(code = value) }
+    }
+
+    public fun resendCode() {
+        state.update { it.copy(timer = duration) }
+        startTimer()
+    }
+
+    private fun confirm(phone: String) = viewModelScope.launch {
+        if (state.value.code == "1234")
+            userViewModel.action(
+                UserAction.SetUser(
+                    User(
+                        username = "jogn.doe@gmail.com",
+                        firstName = "John",
+                        lastName = "Doe",
+                        phone = phone,
+                        roles = setOf("User"),
+                    ),
+                ),
+            )
     }
 }

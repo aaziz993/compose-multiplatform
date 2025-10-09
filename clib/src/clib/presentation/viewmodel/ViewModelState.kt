@@ -1,18 +1,20 @@
 package clib.presentation.viewmodel
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import clib.presentation.components.loading.LoadingCircle
 import clib.presentation.viewmodel.model.exception.ViewModelStateException
 
-public sealed interface  ViewModelState<T : Any> {
+@Immutable
+public sealed interface ViewModelState<T> {
 
-    public data class Idle<T : Any>(val exception: ViewModelStateException? = null) : ViewModelState<T>
+    public data class Idle<T>(val exception: ViewModelStateException? = null) : ViewModelState<T>
 
-    public data class Loading<T : Any>(val data: T) : ViewModelState<T>
+    public data class Loading<T>(val data: T) : ViewModelState<T>
 
-    public data class Success<T : Any>(val data: T) : ViewModelState<T>
+    public data class Success<T>(val data: T) : ViewModelState<T>
 
-    public data class Failure<T : Any>(val data: T, val exception: ViewModelStateException) : ViewModelState<T>
+    public data class Failure<T>(val data: T, val exception: ViewModelStateException) : ViewModelState<T>
 
     public fun toLoading(): ViewModelState<T> =
         when (this) {
@@ -126,10 +128,10 @@ public sealed interface  ViewModelState<T : Any> {
     }
 }
 
-public fun <T : Any> idle(exception: ViewModelStateException? = null): ViewModelState<T> = ViewModelState.Idle(exception)
+public fun <T> idle(exception: ViewModelStateException? = null): ViewModelState<T> = ViewModelState.Idle(exception)
 
-public fun <T : Any> loading(data: T): ViewModelState.Loading<T> = ViewModelState.Loading(data)
+public fun <T> loading(data: T): ViewModelState.Loading<T> = ViewModelState.Loading(data)
 
-public fun <T : Any> success(data: T): ViewModelState.Success<T> = ViewModelState.Success(data)
+public fun <T> success(data: T): ViewModelState.Success<T> = ViewModelState.Success(data)
 
-public fun <T : Any> failure(data: T, exception: ViewModelStateException): ViewModelState.Failure<T> = ViewModelState.Failure(data, exception)
+public fun <T> failure(data: T, exception: ViewModelStateException): ViewModelState.Failure<T> = ViewModelState.Failure(data, exception)
