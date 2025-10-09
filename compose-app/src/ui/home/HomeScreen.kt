@@ -17,7 +17,8 @@ import ui.navigation.presentation.NavRoute
 
 @Composable
 public fun HomeScreen(
-    route: Home,
+    modifier: Modifier = Modifier,
+    route: Home = Home,
     navigationAction: (NavigationAction) -> Unit = {},
 ) {
     LazyColumn(
@@ -36,4 +37,4 @@ public fun HomeScreen(
 
 @Preview
 @Composable
-public fun PreviewHomeScreen(): Unit = HomeScreen(Home)
+public fun PreviewHomeScreen(): Unit = HomeScreen()

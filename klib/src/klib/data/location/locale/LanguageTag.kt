@@ -1,8 +1,6 @@
 package klib.data.location.locale
 
 import klib.data.location.country.Country
-import klib.data.location.country.CountryRegistry
-import klib.data.type.collections.equals
 import klib.data.type.collections.iterator.nextOrNull
 import klib.data.type.primitives.string.isDigit
 import klib.data.type.primitives.string.isLetter

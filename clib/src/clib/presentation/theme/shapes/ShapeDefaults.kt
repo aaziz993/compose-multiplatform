@@ -1,4 +1,4 @@
-package clib.presentation.shapes
+package clib.presentation.theme.shapes
 
 internal object ShapeDefaults {
 

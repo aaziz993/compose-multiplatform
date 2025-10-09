@@ -7,6 +7,7 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -47,14 +48,12 @@ public fun generateCurrencyRegistry(
 
     val alpha3Class = ClassName("klib.data.iso", "Alpha3Letter")
 
-    val items = currencies.map { (code, currency) ->
+    val items = currencies.map { (alpha3, currency) ->
         CodeBlock.builder().apply {
-            add("%T(%S) to {\n", alpha3Class, code.lowercase())
-            indent()
             add("Currency(\n")
             indent()
             currency.name?.let { add("name = %S,\n", it) }
-            add("code = Alpha3Letter(%S),\n", currency.demonym)
+            add("alpha3 = %T(%S),\n", alpha3Class, alpha3)
             add("demonym = %S,\n", currency.demonym)
             currency.majorSingle?.let { add("majorSingle = %S,\n", it) }
             currency.majorPlural?.let { add("majorPlural = %S,\n", it) }
@@ -66,34 +65,32 @@ public fun generateCurrencyRegistry(
             add("ISOdigits = %L,\n", currency.ISOdigits)
             currency.decimals?.let { add("decimals = %L,\n", it) }
             currency.numToBasic?.let { add("numToBasic = %L,\n", it) }
-
             unindent()
-            add(")\n")
-            unindent()
-            add("}")
+            add(")")
         }.build()
     }
 
-    val mapSpec = PropertySpec.builder(
-        "currencies",
-        Map::class.asClassName().parameterizedBy(
-            ClassName("klib.data.iso", "Alpha3Letter"),
-            LambdaTypeName.get(returnType = ClassName("klib.data.location.currency", "Currency")),
-        ),
-    ).initializer(
-        CodeBlock.builder().apply {
-            add("mapOf(\n")
-            indent()
-            items.forEach { add("%L,\n", it) }
-            unindent()
-            add(")")
-        }.build(),
-    ).addModifiers(KModifier.PUBLIC).build()
+    val seqSpec = FunSpec.builder("getCurrencies")
+        .addModifiers(KModifier.PUBLIC)
+        .returns(
+            Sequence::class.asClassName()
+                .parameterizedBy(ClassName("klib.data.location.currency", "Currency")),
+        )
+        .addCode(
+            CodeBlock.builder().apply {
+                add("return sequence {\n")
+                indent()
+                items.forEach { add("yield(%L)\n", it) }
+                unindent()
+                add("}")
+            }.build(),
+        )
+        .build()
 
     val fileSpec = FileSpec.builder(classData)
         .addType(
             TypeSpec.objectBuilder("CurrencyRegistry")
-                .addProperty(mapSpec)
+                .addFunction(seqSpec)
                 .build(),
         )
         .build()

@@ -1,4 +1,4 @@
-package clib.presentation.shapes
+package clib.presentation.theme.shapes
 
 import androidx.compose.material3.Shapes
 import kotlinx.serialization.Serializable

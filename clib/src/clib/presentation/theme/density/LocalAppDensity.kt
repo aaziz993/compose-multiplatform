@@ -1,4 +1,4 @@
-package clib.presentation.theme
+package clib.presentation.theme.density
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidedValue
@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 
 public var customAppDensity: Density? by mutableStateOf(null)
 

@@ -4,9 +4,7 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import java.io.File
@@ -16,6 +14,7 @@ import klib.data.processing.writeToOrOverride
 import processor.CompilerOptions
 import app.softwork.serialization.csv.*
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FunSpec
 import kotlinx.serialization.decodeFromString
 import processor.generators.location.locale.model.LanguageTag
 
@@ -42,34 +41,31 @@ public fun generateLanguageTagRegistry(
 
     val items = languageTags.map { tag ->
         CodeBlock.builder().apply {
-            add("{\n")
-            indent()
-            add("LanguageTag.parse(%S)\n", tag.lang)
-            unindent()
-            add("}")
+            add("LanguageTag.parse(%S)", tag.lang)
         }.build()
     }
 
-    val listSpec = PropertySpec.builder(
-        "languageTags",
-        List::class.asClassName()
-            .parameterizedBy(
-                LambdaTypeName.get(returnType = ClassName("klib.data.location.locale", "LanguageTag")),
-            ),
-    ).initializer(
-        CodeBlock.builder().apply {
-            add("listOf(\n")
-            indent()
-            items.forEach { add("%L,\n", it) }
-            unindent()
-            add(")")
-        }.build(),
-    ).addModifiers(KModifier.PUBLIC).build()
+    val seqSpec = FunSpec.builder("getLanguageTags")
+        .addModifiers(KModifier.PUBLIC)
+        .returns(
+            Sequence::class.asClassName()
+                .parameterizedBy(ClassName("klib.data.location.locale", "LanguageTag")),
+        )
+        .addCode(
+            CodeBlock.builder().apply {
+                add("return sequence {\n")
+                indent()
+                items.forEach { add("yield(%L)\n", it) }
+                unindent()
+                add("}")
+            }.build(),
+        )
+        .build()
 
     val fileSpec = FileSpec.builder(classData.packageName, classData.name)
         .addType(
             TypeSpec.objectBuilder("LanguageTagRegistry")
-                .addProperty(listSpec)
+                .addFunction(seqSpec)
                 .build(),
         )
         .build()

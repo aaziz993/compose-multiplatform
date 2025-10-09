@@ -25,7 +25,6 @@ public class OnetimeStartedWhileSubscribed internal constructor(
         require(replayExpiration >= 0) { "replayExpiration($replayExpiration ms) cannot be negative" }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun command(subscriptionCount: StateFlow<Int>): Flow<SharingCommand> =
         combine(hasCollected, subscriptionCount) { collected, counts ->
             collected to counts

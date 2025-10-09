@@ -1,6 +1,8 @@
 package ui.navigation.presentation
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Login
@@ -39,6 +41,7 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.components.navigation.LocalBackButton
@@ -47,10 +50,10 @@ import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
-import clib.presentation.theme.LocalAppTheme
-import clib.presentation.theme.ThemeState
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
+import clib.presentation.theme.viewmodel.ThemeAction
+import clib.presentation.theme.viewmodel.ThemeViewModel
 import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
@@ -67,10 +70,10 @@ import ui.map.MapScreen
 import ui.navigation.presentation.viewmodel.NavAction
 import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.news.NewsScreen
+import ui.auth.otp.OtpScreen
+import ui.auth.otp.viewmodel.OtpViewModel
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
-import ui.settings.viewmodel.SettingsAction
-import ui.settings.viewmodel.SettingsViewModel
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
@@ -116,7 +119,11 @@ public data object Home : Destination, NavigationDestination<Home>() {
         route: Home,
         navigationAction: (NavigationAction) -> Unit,
     ) {
-        HomeScreen(route, navigationAction)
+        HomeScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
     }
 }
 
@@ -139,7 +146,11 @@ public data object News : Destination, NavigationDestination<News>() {
         route: News,
         navigationAction: (NavigationAction) -> Unit,
     ) {
-        NewsScreen(route, navigationAction)
+        NewsScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
     }
 }
 
@@ -159,7 +170,11 @@ public data object Map : Destination, NavigationDestination<Map>() {
 
     @Composable
     override fun Screen(route: Map, navigationAction: (NavigationAction) -> Unit): Unit =
-        MapScreen(route, navigationAction)
+        MapScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
 }
 
 @Serializable
@@ -184,13 +199,13 @@ public data object Services : Destination, NavigationDestination<Services>() {
         val navViewModel: NavViewModel = koinViewModel()
         val navState by navViewModel.state.collectAsStateWithLifecycle()
 
-        val settingsViewModel: SettingsViewModel = koinViewModel()
-        val settingsState by settingsViewModel.state.collectAsStateWithLifecycle()
+        val themeViewModel: ThemeViewModel = koinViewModel()
+        val theme by themeViewModel.state.collectAsStateWithLifecycle()
 
         ScreenAppBar(
-            settingsState.themeState,
+            theme,
             { value ->
-                settingsViewModel.action(SettingsAction.SetTheme(value))
+                themeViewModel.action(ThemeAction.SetTheme(value))
             },
             navState.drawerOpen,
             { value ->
@@ -198,7 +213,11 @@ public data object Services : Destination, NavigationDestination<Services>() {
             },
             navigationAction,
         ) {
-            ServicesScreen(route, navigationAction)
+            ServicesScreen(
+                Modifier,
+                route,
+                navigationAction,
+            )
         }
     }
 }
@@ -219,11 +238,17 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 
     @Composable
     override fun Screen(route: Settings, navigationAction: (NavigationAction) -> Unit) {
-        val viewModel: SettingsViewModel = koinViewModel()
+        val themeViewModel: ThemeViewModel = koinViewModel()
 
-        val state by viewModel.state.collectAsStateWithLifecycle()
+        val theme by themeViewModel.state.collectAsStateWithLifecycle()
 
-        SettingsScreen(route, state, viewModel::action, navigationAction)
+        SettingsScreen(
+            Modifier,
+            route,
+            theme,
+            themeViewModel::action,
+            navigationAction,
+        )
     }
 }
 
@@ -243,7 +268,11 @@ public data object About : Destination, NavigationDestination<About>() {
 
     @Composable
     override fun Screen(route: About, navigationAction: (NavigationAction) -> Unit): Unit =
-        AboutScreen(route, navigationAction)
+        AboutScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
 }
 
 @Serializable
@@ -253,7 +282,7 @@ public data object AuthRoute : Destination, NavigationRoute() {
 
     override val expand: Boolean = true
 
-    override val routes: List<NavigationDestination<*>> = listOf(Login, ForgotPassword, Profile)
+    override val routes: List<NavigationDestination<*>> = listOf(Login, Otp, ForgotPassword, Profile)
 
     override fun authResource(): AuthResource? = null
 }
@@ -275,21 +304,68 @@ public data object Login : Destination, NavigationDestination<Login>() {
     override fun authResource(): AuthResource? = null
 
     @Composable
-    override fun Screen(route: Login, navigationAction: (NavigationAction) -> Unit): Unit {
+    override fun Screen(route: Login, navigationAction: (NavigationAction) -> Unit) {
         val viewModel: LoginViewModel = koinViewModel()
 
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        LoginScreen(route, state, viewModel::action, Services, navigationAction)
+        LoginScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            route,
+            state,
+            viewModel::action,
+            navigationAction,
+        )
     }
 
     override fun isNavigateItem(): Boolean = false
 }
 
-public data class ForgotPassword(val username: String) : Destination {
+@Serializable
+@SerialName("otp")
+public data class Otp(val phone: String = "") : Destination {
 
-    @Serializable
-    @SerialName("forgotpassword")
+    public companion object : NavigationDestination<Otp>() {
+
+        override val route: KClass<Otp>
+            get() = Otp::class
+
+        override val deepLinks: List<String> = listOf("login")
+
+        override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+            Icon(Icons.AutoMirrored.Outlined.Login, label, modifier)
+        }
+
+        override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+            Icon(Icons.AutoMirrored.Filled.Login, label, modifier)
+        }
+
+        override fun authResource(): AuthResource? = null
+
+        @Composable
+        override fun Screen(route: Otp, navigationAction: (NavigationAction) -> Unit) {
+            val viewModel: OtpViewModel = koinViewModel()
+
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            OtpScreen(
+                Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                route,
+                state,
+                viewModel::action,
+                Services,
+                navigationAction,
+            )
+        }
+
+        override fun isNavigateItem(): Boolean = false
+    }
+}
+
+@Serializable
+@SerialName("forgotpassword")
+public data class ForgotPassword(val username: String = "") : Destination {
+
     public companion object : NavigationDestination<ForgotPassword>() {
 
         override val route: KClass<ForgotPassword>
@@ -298,8 +374,13 @@ public data class ForgotPassword(val username: String) : Destination {
         override val deepLinks: List<String> = listOf("forgotpassword")
 
         @Composable
-        override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit): Unit =
-            ForgotPasswordScreen(route, navigationAction)
+        override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit) {
+            ForgotPasswordScreen(
+                Modifier,
+                route,
+                navigationAction,
+            )
+        }
 
         override fun isNavigateItem(): Boolean = false
     }
@@ -320,8 +401,13 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
     }
 
     @Composable
-    override fun Screen(route: Profile, navigationAction: (NavigationAction) -> Unit): Unit =
-        ProfileScreen(route, navigationAction)
+    override fun Screen(route: Profile, navigationAction: (NavigationAction) -> Unit) {
+        ProfileScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
+    }
 }
 
 @Serializable
@@ -347,8 +433,13 @@ public data object Balance : Destination, NavigationDestination<Balance>() {
     }
 
     @Composable
-    override fun Screen(route: Balance, navigationAction: (NavigationAction) -> Unit): Unit =
-        BalanceScreen(route, navigationAction)
+    override fun Screen(route: Balance, navigationAction: (NavigationAction) -> Unit) {
+        BalanceScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
+    }
 }
 
 @Serializable
@@ -366,8 +457,13 @@ public data object Crypto : Destination, NavigationDestination<Crypto>() {
     }
 
     @Composable
-    override fun Screen(route: Crypto, navigationAction: (NavigationAction) -> Unit): Unit =
-        CryptoScreen(route, navigationAction)
+    override fun Screen(route: Crypto, navigationAction: (NavigationAction) -> Unit) {
+        CryptoScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
+    }
 }
 
 @Serializable
@@ -385,21 +481,24 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
     }
 
     @Composable
-    override fun Screen(route: Stock, navigationAction: (NavigationAction) -> Unit): Unit =
-        StockScreen(route, navigationAction)
+    override fun Screen(route: Stock, navigationAction: (NavigationAction) -> Unit) {
+        StockScreen(
+            Modifier,
+            route,
+            navigationAction,
+        )
+    }
 }
 
 @Composable
 private fun ScreenAppBar(
-    themeState: ThemeState,
+    theme: Theme,
     onThemeChange: (Theme) -> Unit,
     isOpenDrawer: Boolean,
     onOpenDrawerChange: (Boolean) -> Unit,
     navigationAction: (NavigationAction) -> Unit,
     content: @Composable () -> Unit
 ) {
-//    var isDrawerOpen by remember { mutableStateOf(true) }
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -435,19 +534,18 @@ private fun ScreenAppBar(
                     }
                 },
                 actions = {
-                    val themeMode = LocalAppTheme.current.mode
                     AppTooltipBox("Switch theme") {
                         IconButton(
                             onClick = {
-                                when (themeMode) {
-                                    ThemeMode.SYSTEM -> onThemeChange(themeState.theme.copy(mode = ThemeMode.LIGHT))
-                                    ThemeMode.LIGHT -> onThemeChange(themeState.theme.copy(mode = ThemeMode.DARK))
-                                    ThemeMode.DARK -> onThemeChange(themeState.theme.copy(mode = ThemeMode.SYSTEM))
+                                when (theme.mode) {
+                                    ThemeMode.SYSTEM -> onThemeChange(theme.copy(mode = ThemeMode.LIGHT))
+                                    ThemeMode.LIGHT -> onThemeChange(theme.copy(mode = ThemeMode.DARK))
+                                    ThemeMode.DARK -> onThemeChange(theme.copy(mode = ThemeMode.SYSTEM))
                                 }
                             },
                         ) {
                             Icon(
-                                imageVector = when (themeMode) {
+                                imageVector = when (theme.mode) {
                                     ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
                                     ThemeMode.LIGHT -> Icons.Outlined.LightMode
                                     ThemeMode.DARK -> Icons.Outlined.DarkMode

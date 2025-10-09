@@ -65,14 +65,13 @@ public fun NavScreen(
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = { currentDestination ->
-            if (NavRoute.current(currentDestination) == Login) NavigationSuiteType.None
+            // Check if part of auth route.
+            if (AuthRoute.find(currentDestination) != null) NavigationSuiteType.None
             else with(currentWindowAdaptiveInfo()) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
                     if (navState.drawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
                 }
-                else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
-                    currentWindowAdaptiveInfo(),
-                )
+                else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
             }
         },
     ) {

@@ -15,7 +15,6 @@ public interface RestartableStateFlow<out T> : StateFlow<T> {
     public fun restart()
 }
 
-@OptIn(ExperimentalForInheritanceCoroutinesApi::class)
 public fun <T> Flow<T>.restartableStateIn(
     started: SharingStarted,
     scope: CoroutineScope,

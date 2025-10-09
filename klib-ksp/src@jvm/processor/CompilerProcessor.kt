@@ -27,8 +27,6 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import de.jensklingenberg.ktorfit.KtorfitLogger
-import de.jensklingenberg.ktorfit.KtorfitOptions
-import de.jensklingenberg.ktorfit.KtorfitProcessor
 import de.jensklingenberg.ktorfit.KtorfitProcessor.Companion.ktorfitResolver
 import de.jensklingenberg.ktorfit.http.DELETE
 import de.jensklingenberg.ktorfit.http.GET
@@ -39,13 +37,10 @@ import de.jensklingenberg.ktorfit.http.PATCH
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.PUT
 import de.jensklingenberg.ktorfit.model.toClassData
-import java.io.File
 import klib.data.processing.Logger
-import processor.generators.ktorfit.generateImplClass
 import processor.generators.location.country.generateCountryRegistry
 import processor.generators.location.currency.generateCurrencyRegistry
 import processor.generators.location.locale.generateLanguageTagRegistry
-import processor.generators.location.locale.generateLocaleRegistry
 
 public class CompilerProcessor(
     private val env: SymbolProcessorEnvironment,
@@ -76,7 +71,6 @@ public class CompilerProcessor(
             generateCountryRegistry(logger, codeGenerator, options)
             generateLanguageTagRegistry(logger, codeGenerator, options)
             generateCurrencyRegistry(logger, codeGenerator, options)
-            generateLocaleRegistry(logger, codeGenerator, options)
         }
 
         val classDataList =

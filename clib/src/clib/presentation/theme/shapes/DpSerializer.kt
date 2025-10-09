@@ -1,4 +1,4 @@
-package clib.presentation.shapes
+package clib.presentation.theme.shapes
 
 import androidx.compose.ui.unit.Dp
 import klib.data.type.serialization.serializers.primitive.PrimitiveFloatSerializer

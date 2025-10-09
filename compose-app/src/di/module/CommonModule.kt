@@ -37,9 +37,6 @@ public class CommonModule {
             valueDecoder = { value -> json.decodeAnyFromString(value)!! },
         )
 
-    @Single
-    public fun providePermissionsController(): PermissionsController = PermissionsController()
-
 //    @Single
 //    public fun provideHttpClient(config: ClientConfigImpl, json: Json): HttpClient = with(config.httpClient) {
 //        createHttpClient {

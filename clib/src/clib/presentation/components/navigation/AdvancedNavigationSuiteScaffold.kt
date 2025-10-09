@@ -32,7 +32,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import clib.data.type.collections.toLaunchedEffect
+import clib.data.type.collections.ToLaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
@@ -90,7 +90,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
 
         // Global Snackbar by GlobalSnackbarEventController
         val snackbarHostState = remember { SnackbarHostState() }
-        GlobalSnackbarEventController.events.toLaunchedEffect(
+        GlobalSnackbarEventController.events.ToLaunchedEffect(
             snackbarHostState,
         ) { event ->
             scope.launch {
@@ -101,22 +101,20 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
                     event.action?.name,
                 )
 
-                if (result == SnackbarResult.ActionPerformed) {
-                    event.action?.action?.invoke()
-                }
+                if (result == SnackbarResult.ActionPerformed) event.action?.action?.invoke()
             }
         }
 
         // Global AlertDialog by GlobalAlertEventController
         var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
-        GlobalAlertEventController.events.toLaunchedEffect { event ->
+        GlobalAlertEventController.events.ToLaunchedEffect { event ->
             alertDialogState = event
         }
-        alertDialogState?.let {
+        alertDialogState?.let { event ->
             AlertDialog(
-                it.message,
-                isError = it.isError,
-                onConfirm = it.action,
+                event.message,
+                isError = event.isError,
+                onConfirm = event.action,
                 onCancel = { scope.launch { GlobalAlertEventController.sendEvent(null) } },
             )
         }

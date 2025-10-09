@@ -15,7 +15,7 @@ public val LocalAppTheme: ProvidableCompositionLocal<Theme> = staticCompositionL
 
 @Composable
 public fun AppTheme(
-    state: ThemeState,
+    theme: Theme,
     lightTheme: ColorScheme = lightColorScheme,
     lightThemeHighContrast: ColorScheme = lightColorSchemeHighContrast,
     darkTheme: ColorScheme = darkColorScheme,
@@ -23,16 +23,16 @@ public fun AppTheme(
     content: @Composable (ColorScheme) -> Unit,
 ) {
     val (lightColorScheme, darkColorScheme) =
-        if (state.theme.isHighContrast) lightThemeHighContrast to darkThemeHighContrast else lightTheme to darkTheme
+        if (theme.isHighContrast) lightThemeHighContrast to darkThemeHighContrast else lightTheme to darkTheme
 
-    val colorScheme = when (state.theme.mode) {
+    val colorScheme = when (theme.mode) {
         ThemeMode.SYSTEM -> systemTheme(lightColorScheme, darkColorScheme)
         ThemeMode.LIGHT -> lightColorScheme
         ThemeMode.DARK -> darkColorScheme
     }
 
     CompositionLocalProvider(
-        LocalAppTheme provides state.theme,
+        LocalAppTheme provides theme,
     ) {
         content(colorScheme)
     }

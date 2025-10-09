@@ -3,7 +3,7 @@ package klib.data.location.currency
 import klib.data.iso.Alpha3Letter
 
 public data class Currency(
-    val code: Alpha3Letter,
+    val alpha3: Alpha3Letter,
     val name: String? = null,
     val demonym: String,
     val majorSingle: String? = null,
@@ -27,7 +27,7 @@ public data class Currency(
             forCodeOrNull(code) ?: error("Invalid ISO 4217 currency code: $code")
 
         public fun forCodeOrNull(code: Alpha3Letter): Currency? =
-            CurrencyRegistry.currencies[code]?.invoke()
+            CurrencyRegistry.getCurrencies().find { currency -> currency.alpha3 == code }
 
         public fun forCode(code: String): Currency =
             forCodeOrNull(Alpha3Letter(code)) ?: error("Invalid ISO 4217 currency code: $code")

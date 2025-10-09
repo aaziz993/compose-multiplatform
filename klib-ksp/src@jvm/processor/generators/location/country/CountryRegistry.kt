@@ -7,10 +7,9 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import java.io.File
@@ -51,8 +50,6 @@ public fun generateCountryRegistry(
 
     val items = countries.map { country ->
         CodeBlock.builder().apply {
-            add("%T(%S) to {\n", alpha2Class, country.alpha2)
-            indent()
             add("Country(\n")
             indent()
             add("name = %S,\n", country.name)
@@ -67,32 +64,31 @@ public fun generateCountryRegistry(
             country.subRegionCode?.toIntOrNull()?.let { add("subRegionCode = %L,\n", it) }
             country.intermediateRegionCode?.toIntOrNull()?.let { add("intermediateRegionCode = %L,\n", it) }
             unindent()
-            add(")\n")
-            unindent()
-            add("}")
+            add(")")
         }.build()
     }
 
-    val mapSpec = PropertySpec.builder(
-        "countries",
-        Map::class.asClassName().parameterizedBy(
-            ClassName("klib.data.iso", "Alpha2Letter"),
-            LambdaTypeName.get(returnType = ClassName("klib.data.location.country", "Country")),
-        ),
-    ).initializer(
-        CodeBlock.builder().apply {
-            add("mapOf(\n")
-            indent()
-            items.forEach { add("%L,\n", it) }
-            unindent()
-            add(")")
-        }.build(),
-    ).addModifiers(KModifier.PUBLIC).build()
+    val seqSpec = FunSpec.builder("getCountries")
+        .addModifiers(KModifier.PUBLIC)
+        .returns(
+            Sequence::class.asClassName()
+                .parameterizedBy(ClassName("klib.data.location.country", "Country")),
+        )
+        .addCode(
+            CodeBlock.builder().apply {
+                add("return sequence {\n")
+                indent()
+                items.forEach { add("yield(%L)\n", it) }
+                unindent()
+                add("}")
+            }.build(),
+        )
+        .build()
 
     val fileSpec = FileSpec.builder(classData)
         .addType(
             TypeSpec.objectBuilder("CountryRegistry")
-                .addProperty(mapSpec)
+                .addFunction(seqSpec)
                 .build(),
         )
         .build()

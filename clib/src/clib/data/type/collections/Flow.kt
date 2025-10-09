@@ -29,7 +29,7 @@ public fun <T, R> StateFlow<T>.map(
 ): StateFlow<R> = mapLatest(transform).stateIn(scope, SharingStarted.Eagerly, initialValue)
 
 @Composable
-public fun <T> Flow<T>.toLaunchedEffect(
+public fun <T> Flow<T>.ToLaunchedEffect(
     vararg keys: Any?,
     onEvent: (T) -> Unit
 ) {

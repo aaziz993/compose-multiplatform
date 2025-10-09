@@ -3,7 +3,7 @@ package clib.presentation.components.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
-import clib.data.type.collections.toLaunchedEffect
+import clib.data.type.collections.ToLaunchedEffect
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,7 +40,7 @@ public data class DefaultNavigator<Dest : Any>(override val startDestination: De
         navigate(NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(route))
 
     @Composable
-    override fun HandleAction(navController: NavHostController): Unit = navigationActions.toLaunchedEffect { action ->
+    override fun HandleAction(navController: NavHostController): Unit = navigationActions.ToLaunchedEffect { action ->
         when (action) {
             NavigationAction.NavigateUp -> if (!navController.navigateUp()) navigate(startDestination)
 
