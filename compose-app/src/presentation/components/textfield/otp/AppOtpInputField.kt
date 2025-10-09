@@ -24,6 +24,7 @@ import clib.presentation.components.textfield.otp.OtpInputField
 public fun AppOtpInputField(
     otp: MutableState<String>,
     count: Int = 4,
+    enabled: Boolean = true,
     otpTextType: KeyboardType = KeyboardType.Number,
     textColor: Color = Color.Black,
     maxWidth: Dp = 300.dp,          // maximum total width
@@ -42,6 +43,7 @@ public fun AppOtpInputField(
         OtpInputField(
             otp = otp,
             count = count,
+            enabled = enabled,
             otpBoxModifier = Modifier
                 .size(boxSize)
                 .clip(RoundedCornerShape(8.dp))

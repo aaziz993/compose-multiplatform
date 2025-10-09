@@ -85,6 +85,7 @@ public fun OtpInputField(
         .border(1.dp, Color.Gray)
         .background(Color.White),
     count: Int = 5,
+    enabled: Boolean = true,
     otpTextType: KeyboardType = KeyboardType.Number,
     textColor: Color = Color.Black
 ) {
@@ -131,6 +132,7 @@ public fun OtpInputField(
             OtpBox(
                 modifier = otpBoxModifier,
                 otpValue = otpFieldsValues[index].value,
+                enabled = enabled,
                 textType = otpTextType,
                 textColor = textColor,
                 isLastItem = index == count - 1, // Check if this box is the last in the sequence.
@@ -249,6 +251,7 @@ private fun focusNextBox(
 private fun OtpBox(
     modifier: Modifier,
     otpValue: OtpField,
+    enabled: Boolean,
     isLastItem: Boolean,
     totalBoxCount: Int,
     onValueChange: (String) -> Unit,
@@ -289,6 +292,7 @@ private fun OtpBox(
                 .onGloballyPositioned {
                     onFocusSet(focusRequest)
                 },
+            enabled = enabled,
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 textAlign = TextAlign.Center,
                 color = textColor,

@@ -9,8 +9,6 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.key
 import androidx.compose.runtime.staticCompositionLocalOf
 import clib.presentation.noLocalProvidedFor
-import clib.presentation.theme.density.customAppDensity
-import clib.presentation.theme.locale.customAppLocale
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 
@@ -19,19 +17,19 @@ public val LocalAppTheme: ProvidableCompositionLocal<Theme> = staticCompositionL
 @Composable
 public fun AppTheme(
     theme: Theme,
-    lightTheme: ColorScheme = lightColorScheme,
-    lightThemeHighContrast: ColorScheme = lightColorSchemeHighContrast,
-    darkTheme: ColorScheme = darkColorScheme,
-    darkThemeHighContrast: ColorScheme = darkColorSchemeHighContrast,
+    lightColorScheme: ColorScheme = LightColors,
+    lightColorSchemeHighContrast: ColorScheme = LighColorsHighContrast,
+    darkColorScheme: ColorScheme = DarkColors,
+    darkColorSchemeHighContrast: ColorScheme = DarkColorsHighContrast,
     content: @Composable (ColorScheme) -> Unit,
 ) {
-    val (lightColorScheme, darkColorScheme) =
-        if (theme.isHighContrast) lightThemeHighContrast to darkThemeHighContrast else lightTheme to darkTheme
+    val (light, dark) =
+        if (theme.isHighContrast) lightColorSchemeHighContrast to darkColorSchemeHighContrast else lightColorScheme to darkColorScheme
 
     val colorScheme = when (theme.mode) {
-        ThemeMode.SYSTEM -> systemTheme(lightColorScheme, darkColorScheme)
-        ThemeMode.LIGHT -> lightColorScheme
-        ThemeMode.DARK -> darkColorScheme
+        ThemeMode.SYSTEM -> systemTheme(light, dark)
+        ThemeMode.LIGHT -> light
+        ThemeMode.DARK -> dark
     }
 
     CompositionLocalProvider(

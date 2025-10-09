@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.viewmodel.AbstractAuthViewModel
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
@@ -31,21 +32,19 @@ import ui.navigation.presentation.viewmodel.NavigatorViewModel
 @Suppress("ComposeModifierMissing")
 @Composable
 public fun NavScreen(
-    startDestination: Route = AuthRoute,
+    startDestination: Route = Services,
     loggedInDestination: Route = Services,
     navigator: Navigator<Destination> = koinInject(),
     navigatorViewModel: NavigatorViewModel = koinViewModel(),
     navViewModel: NavViewModel = koinViewModel(),
-    authViewModel: AbstractAuthViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val navState by navViewModel.state.collectAsStateWithLifecycle()
-    val auth by authViewModel.state.collectAsStateWithLifecycle()
 
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
-        startDestination = if (auth.user == null) startDestination else loggedInDestination,
+        startDestination = if (LocalAppAuth.current.user == null) startDestination else loggedInDestination,
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(

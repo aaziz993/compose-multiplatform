@@ -8,15 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.key
 import clib.presentation.auth.LocalAppAuth
+import clib.presentation.locale.LocalAppLocale
+import clib.presentation.locale.customAppLocale
 import clib.presentation.theme.AppTheme
-import clib.presentation.theme.darkColorScheme
-import clib.presentation.theme.darkColorSchemeHighContrast
+import clib.presentation.theme.DarkColors
+import clib.presentation.theme.DarkColorsHighContrast
 import clib.presentation.theme.density.LocalAppDensity
 import clib.presentation.theme.density.customAppDensity
-import clib.presentation.theme.lightColorScheme
-import clib.presentation.theme.lightColorSchemeHighContrast
-import clib.presentation.theme.locale.LocalAppLocale
-import clib.presentation.theme.locale.customAppLocale
+import clib.presentation.theme.LightColors
+import clib.presentation.theme.LighColorsHighContrast
 import clib.presentation.theme.model.Theme
 import klib.data.location.locale.Locale
 import klib.data.type.auth.model.Auth
@@ -26,19 +26,19 @@ public fun AppEnvironment(
     theme: Theme = Theme(),
     locale: Locale? = null,
     auth: Auth = Auth(),
-    lightTheme: ColorScheme = lightColorScheme,
-    lightThemeHighContrast: ColorScheme = lightColorSchemeHighContrast,
-    darkTheme: ColorScheme = darkColorScheme,
-    darkThemeHighContrast: ColorScheme = darkColorSchemeHighContrast,
+    lightColorScheme: ColorScheme = LightColors,
+    lightColorSchemeHighContrast: ColorScheme = LighColorsHighContrast,
+    darkColorScheme: ColorScheme = DarkColors,
+    darkColorSchemeHighContrast: ColorScheme = DarkColorsHighContrast,
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = MaterialTheme.typography,
     content: @Composable () -> Unit
 ): Unit = AppTheme(
     theme,
-    lightTheme,
-    lightThemeHighContrast,
-    darkTheme,
-    darkThemeHighContrast,
+    lightColorScheme,
+    lightColorSchemeHighContrast,
+    darkColorScheme,
+    darkColorSchemeHighContrast,
 ) { colorScheme ->
     MaterialTheme(
         colorScheme = colorScheme,
@@ -52,7 +52,7 @@ public fun AppEnvironment(
             LocalAppDensity provides customAppDensity,
             LocalAppAuth provides auth,
         ) {
-            key(customAppLocale, customAppDensity, auth) {
+            key(resolvedLocale, customAppDensity, auth) {
                 content()
             }
         }

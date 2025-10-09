@@ -7,10 +7,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-public val lightColorScheme: ColorScheme = lightColorScheme()
-public val lightColorSchemeHighContrast: ColorScheme = lightColorScheme.lightHighContrast()
+public val LightColors: ColorScheme = lightColorScheme()
+public val LighColorsHighContrast: ColorScheme = LightColors.lightColorsHighContrast()
 
-public fun ColorScheme.lightHighContrast(): ColorScheme = copy(
+public fun ColorScheme.lightColorsHighContrast(): ColorScheme = copy(
     primary = Color.Black,
     onPrimary = Color.White,
     primaryContainer = Color.Black,
@@ -23,10 +23,10 @@ public fun ColorScheme.lightHighContrast(): ColorScheme = copy(
     outlineVariant = Color.Black,
 )
 
-public val darkColorScheme: ColorScheme = darkColorScheme()
-public val darkColorSchemeHighContrast: ColorScheme = darkColorScheme.darkHighContrast()
+public val DarkColors: ColorScheme = darkColorScheme()
+public val DarkColorsHighContrast: ColorScheme = DarkColors.darkColorsHighContrast()
 
-public fun ColorScheme.darkHighContrast(): ColorScheme = copy(
+public fun ColorScheme.darkColorsHighContrast(): ColorScheme = copy(
     primary = Color.White,
     onPrimary = Color.Black,
     primaryContainer = Color.White,
@@ -41,7 +41,7 @@ public fun ColorScheme.darkHighContrast(): ColorScheme = copy(
 
 @Composable
 public fun systemTheme(
-    lightTheme: ColorScheme = lightColorScheme,
-    darkTheme: ColorScheme = darkColorScheme
-): ColorScheme = if (isSystemInDarkTheme()) darkTheme else lightTheme
+    lightColorScheme: ColorScheme = LightColors,
+    darkColorScheme: ColorScheme = DarkColors
+): ColorScheme = if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
 

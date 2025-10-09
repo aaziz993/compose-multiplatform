@@ -5,14 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import clib.presentation.AppEnvironment
+import clib.presentation.theme.DarkColors
+import clib.presentation.theme.LightColors
 import org.koin.compose.viewmodel.koinViewModel
 import presentation.locale.viewmodel.LocaleViewModel
+import presentation.theme.DarkColorsHighContrast
+import presentation.theme.LightColorsHighContrast
 import presentation.theme.Shapes
 import presentation.theme.Typography
-import presentation.theme.darkColorScheme
-import presentation.theme.darkColorSchemeHighContrast
-import presentation.theme.lightColorScheme
-import presentation.theme.lightColorSchemeHighContrast
 import presentation.theme.viewmodel.ThemeViewModel
 import ui.auth.presentation.viewmodel.AuthViewModel
 import ui.navigation.presentation.NavScreen
@@ -32,10 +32,10 @@ public fun AppComposable(
         theme,
         locale,
         auth,
-        lightColorScheme,
-        lightColorSchemeHighContrast,
-        darkColorScheme,
-        darkColorSchemeHighContrast,
+        LightColors,
+        LightColorsHighContrast,
+        DarkColors,
+        DarkColorsHighContrast,
         Shapes,
         Typography,
     ) {

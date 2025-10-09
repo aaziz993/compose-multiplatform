@@ -1,4 +1,4 @@
-package clib.presentation.theme.locale.viewmodel
+package clib.presentation.locale.viewmodel
 
 import klib.data.location.locale.Locale
 

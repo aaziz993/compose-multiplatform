@@ -1,4 +1,4 @@
-package clib.presentation.theme.locale.viewmodel
+package clib.presentation.locale.viewmodel
 
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.viewmodel.AbstractViewModel

@@ -62,7 +62,10 @@ public fun OtpScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        AppOtpInputField(otp = otpValue)
+        AppOtpInputField(
+            otp = otpValue,
+            enabled = state.duration > Duration.ZERO,
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
