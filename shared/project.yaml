@@ -11,7 +11,7 @@ imports:
   - ../properties/kotlin/targets/native/native-common.yaml
   - ../properties/android-ios.yaml
   - ../properties/android-ios-web.yaml
-  - ../properties/jvm-android-ios.yaml
+  - ../properties/jvm-android-apple.yaml
   - ../properties/kotlin/targets/web/web.yaml
   - ../properties/kotlin/targets/jvm-web.yaml
   - ../properties/publish.yaml

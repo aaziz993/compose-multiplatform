@@ -1,9 +1,0 @@
-script:
-  - kotlin:
-      sourceSets:
-        - named: |
-            ("jvmAndroidIosMain") { sourceSet ->
-              sourceSet.dependencies {
-                implementation(libs["maplibre.compose"])
-              }
-            }

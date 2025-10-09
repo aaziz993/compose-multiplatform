@@ -34,13 +34,13 @@ script:
             group("mingw") {
               withMingw()
             }
-            group("jvmAndroidIos") {
+            group("jvmAndroidApple") {
               group("jvmAndroid")
-              group("ios")
+              group("apple")
             }
-            group("jvmWebIos") {
+            group("jvmWebApple") {
               group("jvmWeb")
-              group("ios")
+              group("apple")
             }
             group("jvmWeb") {
               withJvm()

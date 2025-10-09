@@ -65,7 +65,7 @@ public inline fun <E> MutableCollection<E>.removeFirst(predicate: (E) -> Boolean
     throw NoSuchElementException()
 }
 
-public fun <E> MutableCollection<E>.updateSymmetric(other: Iterable<E>): Pair<List<E>, List<E>> =
+public fun <E> MutableCollection<E>.updateSymmetric(other: Iterable<E>): Pair<Set<E>, Set<E>> =
     symmetricMinus(other).also { (left, right) ->
         removeAll(left)
         addAll(right)

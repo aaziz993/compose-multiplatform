@@ -156,9 +156,9 @@ public inline fun <E, R : Any> Iterable<E>.firstNotThrowOf(transform: (E) -> R?)
     throw throwable!!
 }
 
-public infix fun <E> Iterable<E>.symmetricMinus(other: Iterable<E>): Pair<List<E>, List<E>> {
-    val left = this - other.toSet()
-    val right = other - this.toSet()
+public infix fun <E> Iterable<E>.symmetricMinus(other: Iterable<E>): Pair<Set<E>, Set<E>> {
+    val left = this.toSet() - other.toSet()
+    val right = other.toSet() - this.toSet()
     return left to right
 }
 

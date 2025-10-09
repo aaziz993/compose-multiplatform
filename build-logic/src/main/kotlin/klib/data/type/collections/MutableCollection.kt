@@ -8,6 +8,10 @@ import klib.data.type.collections.list.put
 import klib.data.type.collections.map.asMutableMap
 import klib.data.type.functions.Equator
 import klib.data.type.primitives.toInt
+import kotlin.IllegalArgumentException
+import kotlin.NoSuchElementException
+import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 import kotlin.collections.getOrPut
 import kotlin.collections.set
 
@@ -31,6 +35,11 @@ public infix fun <E> MutableCollection<E>.updateAll(elements: Iterable<E>): Bool
 
 public infix fun <E> MutableCollection<E>.tryUpdateAll(elements: Iterable<E>?): Boolean? =
     elements?.let(::updateAll)
+
+public fun <T> MutableCollection<T>.replaceWith(src: Collection<T>) {
+    clear()
+    addAll(src)
+}
 
 public inline fun <E> MutableCollection<E>.removeFirstOrNull(predicate: (E) -> Boolean): E? {
     val iterator = iterator()
@@ -60,7 +69,7 @@ public inline fun <E> MutableCollection<E>.removeFirst(predicate: (E) -> Boolean
     throw NoSuchElementException()
 }
 
-public fun <E> MutableCollection<E>.updateSymmetric(other: Iterable<E>): Pair<List<E>, List<E>> =
+public fun <E> MutableCollection<E>.updateSymmetric(other: Iterable<E>): Pair<Set<E>, Set<E>> =
     symmetricMinus(other).also { (left, right) ->
         removeAll(left)
         addAll(right)

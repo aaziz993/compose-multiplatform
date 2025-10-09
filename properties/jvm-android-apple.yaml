@@ -2,7 +2,7 @@ script:
   - kotlin:
       sourceSets:
         - named: |
-            ("jvmAndroidIosMain") { sourceSet ->
+            ("jvmAndroidAppleMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["kstore.file"])
                 implementation(libs["androidx.room.runtime.ktx"])
@@ -11,7 +11,7 @@ script:
               }
             }
         - named: |
-            ("jvmAndroidIosTest") { sourceSet ->
+            ("jvmAndroidAppleTest") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["androidx.room.testing"])
               }

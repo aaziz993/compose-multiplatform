@@ -1,0 +1,48 @@
+package clib.presentation.components.map
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.SwingPanel
+import clib.data.location.toGeoPosition
+import clib.data.location.toLocation
+import clib.presentation.components.map.model.JxMapView
+import clib.presentation.components.map.model.MapViewConfig
+import clib.presentation.components.map.model.MapViewLocalization
+import clib.presentation.components.map.model.Marker
+import clib.presentation.components.map.model.SwingWaypoint
+import clib.presentation.components.map.model.toSwingWaypoint
+import klib.data.location.Location
+
+@Composable
+public actual fun MapView(
+    modifier: Modifier,
+    config: MapViewConfig,
+    markers: List<Marker>?,
+    onMarkerClick: ((Location, href: String?) -> Boolean)?,
+    routes: List<List<Location>>?,
+    onSelect: ((removed: Set<Location>, added: Set<Location>) -> Unit)?,
+    localization: MapViewLocalization,
+): Unit = SwingPanel(
+    modifier = modifier,
+    factory = {
+        JxMapView(
+            initialCenter = config.initialCenter?.toGeoPosition(),
+            initialZoom = config.initialZoom,
+            zoomable = config.zoomable,
+            movable = config.movable,
+            tilePicker = config.tilePicker,
+            googleApiKey = config.googleApiKey,
+            markers = markers?.map(Marker::toSwingWaypoint)?.toSet(),
+            routes = routes?.map { path ->
+                path.map { it.toGeoPosition() }
+            },
+            onSelect = { removed, added ->
+                onSelect?.invoke(
+                    removed.map(SwingWaypoint::toLocation).toSet(),
+                    added.map(SwingWaypoint::toLocation).toSet(),
+                )
+            },
+            localization = localization,
+        )
+    },
+)

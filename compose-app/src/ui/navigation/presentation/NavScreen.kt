@@ -2,6 +2,10 @@
 
 package ui.navigation.presentation
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -9,6 +13,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -73,9 +78,12 @@ public fun NavScreen(
         },
     ) {
         AdvancedNavHost(
-            navController,
-            NavRoute,
-            startDestination,
+            navController = navController,
+            route = NavRoute,
+            startDestination = startDestination,
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .verticalScroll(rememberScrollState()),
         ) { route ->
             route.item { action -> navigatorViewModel.action(action) }
         }

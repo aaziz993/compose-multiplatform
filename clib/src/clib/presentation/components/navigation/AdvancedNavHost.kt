@@ -54,21 +54,20 @@ public fun AdvancedNavHost(
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
         null,
     builder: NavGraphBuilder.(Route) -> Unit
-): Unit =
-    NavHost(
-        navController,
-        startDestination,
-        modifier,
-        contentAlignment,
-        route::class,
-        typeMap,
-        enterTransition,
-        exitTransition,
-        popEnterTransition,
-        popExitTransition,
-        sizeTransform,
-    ) {
-        route.routes.forEach { composableChild ->
-            builder(composableChild)
-        }
+): Unit = NavHost(
+    navController,
+    startDestination,
+    modifier,
+    contentAlignment,
+    route::class,
+    typeMap,
+    enterTransition,
+    exitTransition,
+    popEnterTransition,
+    popExitTransition,
+    sizeTransform,
+) {
+    route.routes.forEach { composableChild ->
+        builder(composableChild)
     }
+}
