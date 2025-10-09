@@ -17,10 +17,12 @@ import clib.presentation.theme.darkColorSchemeHighContrast
 import clib.presentation.theme.lightColorScheme
 import clib.presentation.theme.lightColorSchemeHighContrast
 import clib.presentation.theme.model.Theme
+import klib.data.location.locale.Locale
 
 @Composable
 public fun AppEnvironment(
     theme: Theme,
+    locale: Locale? = null,
     lightTheme: ColorScheme = lightColorScheme,
     lightThemeHighContrast: ColorScheme = lightColorSchemeHighContrast,
     darkTheme: ColorScheme = darkColorScheme,
@@ -40,8 +42,10 @@ public fun AppEnvironment(
         shapes = shapes,
         typography = typography,
     ) {
+        val resolvedLocale = locale ?: customAppLocale
+
         CompositionLocalProvider(
-            LocalAppLocale provides customAppLocale,
+            LocalAppLocale provides resolvedLocale,
             LocalAppDensity provides customAppDensity,
         ) {
             key(customAppLocale, customAppDensity) {
