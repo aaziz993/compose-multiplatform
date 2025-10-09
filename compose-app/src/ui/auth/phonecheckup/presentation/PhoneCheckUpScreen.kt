@@ -1,24 +1,30 @@
-package ui.auth.signup.presentation
+package ui.auth.phonecheckup.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.phone
+import compose_app.generated.resources.pin_code
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.auth.signup.presentation.viewmodel.PhoneCheckUpAction
-import ui.auth.signup.presentation.viewmodel.PhoneCheckUpState
+import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpAction
+import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpState
 import ui.navigation.presentation.Otp
 import ui.navigation.presentation.PhoneCheckUp
 
@@ -35,6 +41,14 @@ public fun PhoneCheckUpScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Text(
+            text = stringResource(Res.string.phone),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+        )
+
         AdvancedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.phone,

@@ -68,9 +68,11 @@ import ui.auth.login.presentation.LoginScreen
 import ui.auth.login.presentation.viewmodel.LoginViewModel
 import ui.auth.otp.OtpScreen
 import ui.auth.otp.viewmodel.OtpViewModel
+import ui.auth.pincode.PinCodeScreen
+import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
-import ui.auth.signup.presentation.PhoneCheckUpScreen
-import ui.auth.signup.presentation.viewmodel.PhoneCheckUpViewModel
+import ui.auth.phonecheckup.presentation.PhoneCheckUpScreen
+import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpViewModel
 import ui.home.HomeScreen
 import ui.map.MapScreen
 import ui.navigation.presentation.viewmodel.NavAction
@@ -108,8 +110,6 @@ public data object NavRoute : Destination, NavigationRoute() {
 @SerialName("home")
 public data object Home : Destination, NavigationDestination<Home>() {
 
-    override val deepLinks: List<String> = listOf("home")
-
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Home, label, modifier)
     }
@@ -134,8 +134,6 @@ public data object Home : Destination, NavigationDestination<Home>() {
 @Serializable
 @SerialName("news")
 public data object News : Destination, NavigationDestination<News>() {
-
-    override val deepLinks: List<String> = listOf("news")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Newspaper, label, modifier)
@@ -162,8 +160,6 @@ public data object News : Destination, NavigationDestination<News>() {
 @SerialName("map")
 public data object Map : Destination, NavigationDestination<Map>() {
 
-    override val deepLinks: List<String> = listOf("map")
-
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Map, label, modifier)
     }
@@ -184,8 +180,6 @@ public data object Map : Destination, NavigationDestination<Map>() {
 @Serializable
 @SerialName("services")
 public data object Services : Destination, NavigationDestination<Services>() {
-
-    override val deepLinks: List<String> = listOf("services")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Apps, label, modifier)
@@ -230,8 +224,6 @@ public data object Services : Destination, NavigationDestination<Services>() {
 @SerialName("settings")
 public data object Settings : Destination, NavigationDestination<Settings>() {
 
-    override val deepLinks: List<String> = listOf("settings")
-
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Settings, label, modifier)
     }
@@ -260,8 +252,6 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 @SerialName("about")
 public data object About : Destination, NavigationDestination<About>() {
 
-    override val deepLinks: List<String> = listOf("about")
-
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Info, label, modifier)
     }
@@ -280,9 +270,8 @@ public data object About : Destination, NavigationDestination<About>() {
 }
 
 @Serializable
+@SerialName("auth")
 public data object AuthRoute : Destination, NavigationRoute() {
-
-    override val deepLinks: List<String> = listOf("auth")
 
     override val expand: Boolean = true
 
@@ -292,7 +281,7 @@ public data object AuthRoute : Destination, NavigationRoute() {
 }
 
 @Serializable
-@SerialName("phonesignup")
+@SerialName("phonecheckup")
 public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckUp>() {
 
     override val deepLinks: List<String> = listOf("phonesignup")
@@ -326,10 +315,40 @@ public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckU
 }
 
 @Serializable
+@SerialName("pincode")
+public data object PinCode : Destination, NavigationDestination<PinCode>() {
+
+    override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Outlined.PersonAddAlt, label, modifier)
+    }
+
+    override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
+        Icon(Icons.Filled.PersonAddAlt, label, modifier)
+    }
+
+    override fun authResource(): AuthResource? = null
+
+    @Composable
+    override fun Screen(route: PinCode, navigationAction: (NavigationAction) -> Unit) {
+        val viewModel: PinCodeViewModel = koinViewModel()
+
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        PinCodeScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            route,
+            state,
+            viewModel::action,
+            navigationAction,
+        )
+    }
+
+    override fun isNavigateItem(): Boolean = false
+}
+
+@Serializable
 @SerialName("login")
 public data object Login : Destination, NavigationDestination<Login>() {
-
-    override val deepLinks: List<String> = listOf("login")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.AutoMirrored.Outlined.Login, label, modifier)
@@ -403,8 +422,6 @@ public data class Otp(val phone: String = "") : Destination {
 @SerialName("forgotpassword")
 public data object ForgotPassword : Destination, NavigationDestination<ForgotPassword>() {
 
-    override val deepLinks: List<String> = listOf("forgotpassword")
-
     @Composable
     override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit) {
         ForgotPasswordScreen(
@@ -420,8 +437,6 @@ public data object ForgotPassword : Destination, NavigationDestination<ForgotPas
 @Serializable
 @SerialName("profile")
 public data object Profile : Destination, NavigationDestination<Profile>() {
-
-    override val deepLinks: List<String> = listOf("profile")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Person, label, modifier)
@@ -442,9 +457,8 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 }
 
 @Serializable
+@SerialName("wallet")
 public data object WalletRoute : Destination, NavigationRoute() {
-
-    override val deepLinks: List<String> = listOf("wallet")
 
     override val routes: List<NavigationDestination<*>> by lazy { listOf(Balance, Crypto, Stock) }
 }
@@ -452,8 +466,6 @@ public data object WalletRoute : Destination, NavigationRoute() {
 @Serializable
 @SerialName("balance")
 public data object Balance : Destination, NavigationDestination<Balance>() {
-
-    override val deepLinks: List<String> = listOf("balance")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.AccountBalance, label, modifier)
@@ -477,8 +489,6 @@ public data object Balance : Destination, NavigationDestination<Balance>() {
 @SerialName("crypto")
 public data object Crypto : Destination, NavigationDestination<Crypto>() {
 
-    override val deepLinks: List<String> = listOf("crypto")
-
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.EnhancedEncryption, label, modifier)
     }
@@ -500,8 +510,6 @@ public data object Crypto : Destination, NavigationDestination<Crypto>() {
 @Serializable
 @SerialName("stock")
 public data object Stock : Destination, NavigationDestination<Stock>() {
-
-    override val deepLinks: List<String> = listOf("stock")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.CurrencyExchange, label, modifier)

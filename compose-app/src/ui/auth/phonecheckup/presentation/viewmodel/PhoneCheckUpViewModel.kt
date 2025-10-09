@@ -1,4 +1,4 @@
-package ui.auth.signup.presentation.viewmodel
+package ui.auth.phonecheckup.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow

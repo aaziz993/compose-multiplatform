@@ -40,6 +40,8 @@ public sealed interface Route {
         get() = route.serializer().descriptor.serialName
 
     public val deepLinks: List<String>
+        get() = listOf(label)
+
     public val enabled: Boolean
         get() = true
     public val alwaysShowLabel: Boolean
