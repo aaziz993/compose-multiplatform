@@ -80,7 +80,7 @@ public expect val Locale.Companion.current: Locale
 
 public expect fun Locale.Companion.setCurrent(locale: Locale?)
 
-public fun String.toLocale(): Locale = Locale.forLanguage(this)
+public fun String.toLocale(): Locale = Locale.forLanguageTag(this)
 
-public fun String.toLocaleOrNull(): Locale? = Locale.forLanguageOrNull(this)
+public fun String.toLocaleOrNull(): Locale? = Locale.forLanguageTagOrNull(this)
 

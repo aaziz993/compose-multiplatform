@@ -15,14 +15,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.auth.LocalAppAuth
-import clib.presentation.auth.viewmodel.AbstractAuthViewModel
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -48,7 +50,10 @@ public fun NavScreen(
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(
-                text = { label, _ -> Text(text = label.uppercaseFirstChar()) },
+                text = { label, _ ->
+                    Res.allStringResources[label]?.let { stringResource -> Text(text = stringResource(stringResource)) }
+                        ?: Text(text = label.uppercaseFirstChar())
+                },
                 currentDestination = currentDestination,
             ) { destination ->
                 navigatorViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))

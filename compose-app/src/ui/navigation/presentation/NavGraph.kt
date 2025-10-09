@@ -62,6 +62,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 import presentation.components.tooltipbox.AppTooltipBox
+import presentation.theme.viewmodel.ThemeViewModel
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
 import ui.auth.login.presentation.LoginScreen
@@ -197,7 +198,7 @@ public data object Services : Destination, NavigationDestination<Services>() {
         val navViewModel: NavViewModel = koinViewModel()
         val navState by navViewModel.state.collectAsStateWithLifecycle()
 
-        val themeViewModel: AbstractThemeViewModel = koinViewModel()
+        val themeViewModel: ThemeViewModel = koinViewModel()
         val theme by themeViewModel.state.collectAsStateWithLifecycle()
 
         ScreenAppBar(
@@ -234,7 +235,7 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 
     @Composable
     override fun Screen(route: Settings, navigationAction: (NavigationAction) -> Unit) {
-        val themeViewModel: AbstractThemeViewModel = koinViewModel()
+        val themeViewModel: ThemeViewModel = koinViewModel()
 
         val theme by themeViewModel.state.collectAsStateWithLifecycle()
 
