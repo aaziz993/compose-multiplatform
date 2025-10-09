@@ -24,7 +24,7 @@ import androidx.navigation.toRoute
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.type.auth.AuthResource
-import klib.data.type.auth.User
+import klib.data.type.auth.model.User
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType

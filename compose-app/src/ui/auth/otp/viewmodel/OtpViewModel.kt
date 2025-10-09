@@ -1,9 +1,9 @@
 package ui.auth.otp.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.presentation.auth.viewmodel.UserAction
+import clib.presentation.auth.viewmodel.AuthAction
 import clib.presentation.viewmodel.AbstractViewModel
-import klib.data.type.auth.User
+import klib.data.type.auth.model.User
 import klib.data.type.primitives.time.CountDownTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
-import ui.auth.presentation.viewmodel.UserViewModel
+import ui.auth.presentation.viewmodel.AuthViewModel
 
 @KoinViewModel
 public class OtpViewModel(
     private val duration: Duration = 60.seconds,
-    private val userViewModel: UserViewModel
+    private val authViewModel: AuthViewModel
 ) : AbstractViewModel<OtpAction>() {
 
     public val state: MutableStateFlow<OtpState>
@@ -32,15 +32,15 @@ public class OtpViewModel(
         countDownTimer?.cancel()
 
         countDownTimer = CountDownTimer(
-                initial = duration,
-                interval = 1.seconds,
-                onTick = { remaining ->
-                    state.update { it.copy(duration = remaining) }
-                },
-                onFinish = {
-                    state.update { it.copy(duration = Duration.ZERO) }
-                },
-                viewModelScope,
+            initial = duration,
+            interval = 1.seconds,
+            onTick = { remaining ->
+                state.update { it.copy(duration = remaining) }
+            },
+            onFinish = {
+                state.update { it.copy(duration = Duration.ZERO) }
+            },
+            viewModelScope,
         ).also(CountDownTimer::start)
     }
 
@@ -63,8 +63,8 @@ public class OtpViewModel(
 
     private fun confirm(phone: String) = viewModelScope.launch {
         if (state.value.code == "1234")
-            userViewModel.action(
-                UserAction.SetUser(
+            authViewModel.action(
+                AuthAction.SetUser(
                     User(
                         username = "jogn.doe@gmail.com",
                         firstName = "John",

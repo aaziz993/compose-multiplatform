@@ -1,6 +1,6 @@
 @file:SuppressLint("LocalContextConfigurationRead")
 
-package clib.data.location.locale
+package clib.presentation.theme.locale
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration

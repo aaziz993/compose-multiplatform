@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
-import clib.presentation.auth.viewmodel.AbstractUserViewModel
+import clib.presentation.auth.viewmodel.AbstractAuthViewModel
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
@@ -36,15 +36,16 @@ public fun NavScreen(
     navigator: Navigator<Destination> = koinInject(),
     navigatorViewModel: NavigatorViewModel = koinViewModel(),
     navViewModel: NavViewModel = koinViewModel(),
-    userViewModel: AbstractUserViewModel = koinViewModel(),
+    authViewModel: AbstractAuthViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val navState by navViewModel.state.collectAsStateWithLifecycle()
+    val auth by authViewModel.state.collectAsStateWithLifecycle()
 
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
-        startDestination = startDestination,
+        startDestination = if (auth.user == null) startDestination else loggedInDestination,
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(

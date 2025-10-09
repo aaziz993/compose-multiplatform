@@ -1,4 +1,4 @@
-package clib.data.location.locale
+package clib.presentation.theme.locale
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidedValue

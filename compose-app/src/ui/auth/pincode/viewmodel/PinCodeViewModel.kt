@@ -1,18 +1,11 @@
 package ui.auth.pincode.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.presentation.auth.viewmodel.UserAction
 import clib.presentation.viewmodel.AbstractViewModel
-import klib.data.type.auth.User
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
-import ui.auth.presentation.viewmodel.UserViewModel
 
 @KoinViewModel
 public class PinCodeViewModel : AbstractViewModel<PinCodeAction>() {

@@ -1,15 +1,21 @@
+@file:Suppress("ComposeCompositionLocalUsage")
+
 package clib.presentation.auth
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.staticCompositionLocalOf
+import clib.presentation.noLocalProvidedFor
 import klib.data.type.auth.AuthResource
-import klib.data.type.auth.User
+import klib.data.type.auth.model.Auth
+
+public val LocalAppAuth: ProvidableCompositionLocal<Auth> = staticCompositionLocalOf { noLocalProvidedFor("LocalUser") }
 
 @Composable
 public inline fun AuthComposable(
-    auth: AuthResource?,
-    provider: String?,
-    user: User?,
+    authResource: AuthResource?,
     content: @Composable () -> Unit
 ) {
-    if (auth?.validate(provider, user) != false) content()
+    val auth = LocalAppAuth.current
+    if (authResource?.validate(auth.provider, auth.user) != false) content()
 }

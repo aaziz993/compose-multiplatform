@@ -1,10 +1,10 @@
 package ui.auth.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import clib.presentation.auth.viewmodel.AbstractUserViewModel
+import clib.presentation.auth.viewmodel.AbstractAuthViewModel
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-public class UserViewModel(
+public class AuthViewModel(
     override val savedStateHandle: SavedStateHandle = SavedStateHandle(),
-) : AbstractUserViewModel()
+) : AbstractAuthViewModel()
