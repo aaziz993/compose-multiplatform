@@ -67,13 +67,13 @@ public fun OtpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = if (state.timer == Duration.ZERO) stringResource(Res.string.resend_code)
-            else stringResource(Res.string.resend_code_in, state.timer.toHumanReadable()),
-            color = if (state.timer == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
+            text = if (state.duration == Duration.ZERO) stringResource(Res.string.resend_code)
+            else stringResource(Res.string.resend_code_in, state.duration.toHumanReadable()),
+            color = if (state.duration == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .clickable(enabled = state.timer == Duration.ZERO) {
+                .clickable(enabled = state.duration == Duration.ZERO) {
                     action(OtpAction.ResendCode)
                 }
                 .padding(vertical = 8.dp),

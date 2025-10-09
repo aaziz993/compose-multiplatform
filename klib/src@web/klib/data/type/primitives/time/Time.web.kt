@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalWasmJsInterop::class)
 
-package klib.data.type.primitive
+package klib.data.type.primitives.time
 
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.js.JsModule

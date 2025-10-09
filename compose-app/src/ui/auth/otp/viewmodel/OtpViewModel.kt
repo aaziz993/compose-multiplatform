@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import clib.presentation.auth.viewmodel.UserAction
 import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.type.auth.User
+import klib.data.type.primitives.time.CountDownTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
@@ -21,26 +22,29 @@ public class OtpViewModel(
 ) : AbstractViewModel<OtpAction>() {
 
     public val state: MutableStateFlow<OtpState>
-        field = viewModelMutableStateFlow(OtpState(timer = duration))
+        field = viewModelMutableStateFlow(OtpState(duration = duration))
+
+    private var countDownTimer: CountDownTimer? = null
 
     init {
         startTimer()
     }
 
-    private fun startTimer() =
-        viewModelScope.launch {
-            flow {
-                while (true) {
-                    delay(1.seconds)
-                    emit(Unit)
-                }
-            }.collect { _ ->
-                state.update { current ->
-                    val newTimer = (current.timer - 1.seconds).coerceAtLeast(Duration.ZERO)
-                    current.copy(timer = newTimer)
-                }
-            }
-        }
+    private fun startTimer() {
+        countDownTimer?.cancel()
+
+        countDownTimer = CountDownTimer(
+                initial = duration,
+                interval = 1.seconds,
+                onTick = { remaining ->
+                    state.update { it.copy(duration = remaining) }
+                },
+                onFinish = {
+                    state.update { it.copy(duration = Duration.ZERO) }
+                },
+                viewModelScope,
+        ).also(CountDownTimer::start)
+    }
 
     override fun action(action: OtpAction) {
         when (action) {
@@ -55,7 +59,7 @@ public class OtpViewModel(
     }
 
     public fun resendCode() {
-        state.update { it.copy(timer = duration) }
+        state.update { it.copy(duration = duration) }
         startTimer()
     }
 

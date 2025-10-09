@@ -236,24 +236,24 @@ public sealed interface StringOperand {
 @Serializable
 public sealed class StringVariable : ComparableVariable(), StringOperand
 
-public sealed interface TemporalOperand {
+public sealed interface TimeOperand {
 
     public val time: Time
-        get() = TemporalExpression.time(this)
+        get() = TimeExpression.time(this)
 
     public val date: Date
-        get() = TemporalExpression.date(this)
+        get() = TimeExpression.date(this)
 
     public val dateTime: DateTime
-        get() = TemporalExpression.dateTime(this)
+        get() = TimeExpression.dateTime(this)
 
-    public infix fun format(format: StringOperand): TemporalFormat = TemporalExpression.format(this, format)
+    public infix fun format(format: StringOperand): TemporalFormat = TimeExpression.format(this, format)
 
-    public infix fun format(format: String): TemporalFormat = TemporalExpression.format(this, format.v)
+    public infix fun format(format: String): TemporalFormat = TimeExpression.format(this, format.v)
 }
 
 @Serializable
-public sealed class TemporalVariable : ComparableVariable(), TemporalOperand
+public sealed class TemporalVariable : ComparableVariable(), TimeOperand
 
 @Serializable
 public sealed class CollectionVariable : Variable()
@@ -453,47 +453,47 @@ public data class Square(override val arguments: List<Variable>) : ArithmeticExp
 
 @Suppress("UNCHECKED_CAST")
 @Serializable
-public sealed class TemporalExpression : TemporalVariable(), Expression {
+public sealed class TimeExpression : TemporalVariable(), Expression {
 
-    public companion object {
+    public companion object Companion {
 
         public val now: Now = Now
 
-        public fun time(variable: TemporalOperand): Time = Time(listOf(variable) as List<Variable>)
+        public fun time(variable: TimeOperand): Time = Time(listOf(variable) as List<Variable>)
 
-        public fun date(variable: TemporalOperand): Date = Date(listOf(variable) as List<Variable>)
+        public fun date(variable: TimeOperand): Date = Date(listOf(variable) as List<Variable>)
 
-        public fun dateTime(variable: TemporalOperand): DateTime = DateTime(listOf(variable) as List<Variable>)
+        public fun dateTime(variable: TimeOperand): DateTime = DateTime(listOf(variable) as List<Variable>)
 
-        public fun dateTimeOffset(variable: TemporalOperand): DateTimeOffset =
+        public fun dateTimeOffset(variable: TimeOperand): DateTimeOffset =
             DateTimeOffset(listOf(variable) as List<Variable>)
 
-        public fun format(variable: TemporalOperand, format: StringOperand): TemporalFormat =
+        public fun format(variable: TimeOperand, format: StringOperand): TemporalFormat =
             TemporalFormat(listOf(variable, format) as List<Variable>)
     }
 }
 
 @Serializable
-public data object Now : TemporalExpression() {
+public data object Now : TimeExpression() {
 
     override val arguments: List<Variable> = emptyList()
 }
 
 @Serializable
-public data class Time(override val arguments: List<Variable>) : TemporalExpression()
+public data class Time(override val arguments: List<Variable>) : TimeExpression()
 
 @Serializable
-public data class Date(override val arguments: List<Variable>) : TemporalExpression()
+public data class Date(override val arguments: List<Variable>) : TimeExpression()
 
 @Serializable
-public data class DateTime(override val arguments: List<Variable>) : TemporalExpression()
+public data class DateTime(override val arguments: List<Variable>) : TimeExpression()
 
 @Serializable
-public data class DateTimeOffset(override val arguments: List<Variable>) : TemporalExpression()
+public data class DateTimeOffset(override val arguments: List<Variable>) : TimeExpression()
 
 @Serializable
 public data class TemporalFormat(override val arguments: List<Variable>) :
-    TemporalExpression()
+    TimeExpression()
 
 @Suppress("UNCHECKED_CAST")
 @Serializable
@@ -799,7 +799,7 @@ public data class UUIDCollection(override val value: Collection<Uuid?>) : Collec
 @Serializable
 public data object NullValue : Variable(), Value<Nothing?>, ComparableOperand, BooleanOperand, NumberOperand,
     StringOperand,
-    TemporalOperand {
+    TimeOperand {
 
     override val value: Nothing?
         get() = null
@@ -811,7 +811,7 @@ public data class GenericComparableValue<T>(val value: T) : ComparableVariable()
 @Serializable
 public data class Field(override val value: String) : Variable(),
     Value<String>, ComparableOperand, BooleanOperand, NumberOperand,
-    StringOperand, TemporalOperand
+    StringOperand, TimeOperand
 
 @Serializable
 public data class Projection(val value: String, val alias: String? = null, val distinct: Boolean = false) : Variable() {
