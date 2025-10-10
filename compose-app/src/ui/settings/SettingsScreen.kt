@@ -25,7 +25,7 @@ import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.model.Theme
-import clib.presentation.theme.viewmodel.ThemeAction
+import clib.presentation.theme.stateholder.ThemeAction
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsSwitch
 import klib.data.permission.model.Permission

@@ -8,7 +8,10 @@ import clib.presentation.components.navigation.viewmodel.NavigationAction
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-public data class DefaultNavigator<Dest : Any>(override val startDestination: Dest) : Navigator<Dest> {
+public class DefaultNavigator<Dest : Any>(
+    override val startDestination: Dest,
+    private val builder: NavOptionsBuilder.() -> Unit = {}
+) : Navigator<Dest> {
 
     private val navigationActions =
         MutableSharedFlow<NavigationAction>(replay = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
@@ -48,11 +51,17 @@ public data class DefaultNavigator<Dest : Any>(override val startDestination: De
 
             is NavigationAction.Navigation.Navigate -> navController.navigate(
                 action.route,
-            ) { action.block(this, navController) }
+            ) {
+                builder()
+                action.block(this, navController)
+            }
 
             is NavigationAction.TypeSafeNavigation.Navigate<*> -> navController.navigate(
                 action.route,
-            ) { action.block(this, navController) }
+            ) {
+                builder()
+                action.block(this, navController)
+            }
 
             is NavigationAction.Navigation.NavigateBackTo -> navController.navigateBackTo(
                 action.route,

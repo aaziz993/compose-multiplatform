@@ -39,8 +39,7 @@ import ui.navigation.presentation.viewmodel.NavigatorViewModel
 @Suppress("ComposeModifierMissing")
 @Composable
 public fun NavScreen(
-    startDestination: Route = Services,
-    loggedInDestination: Route = Services,
+    startDestination: Route = Home,
     navigator: Navigator<Destination> = koinInject(),
     navigatorViewModel: NavigatorViewModel = koinViewModel(),
     navViewModel: NavViewModel = koinViewModel(),
@@ -51,7 +50,7 @@ public fun NavScreen(
 
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
-        startDestination = if (LocalAppAuth.current.user == null) startDestination else loggedInDestination,
+        startDestination = startDestination,
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(
@@ -64,6 +63,7 @@ public fun NavScreen(
                 navigatorViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
             }
         },
+        modifier = Modifier.fillMaxSize(),
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = { currentDestination ->
@@ -78,12 +78,10 @@ public fun NavScreen(
         },
     ) {
         AdvancedNavHost(
-            navController = navController,
-            route = NavRoute,
-            startDestination = startDestination,
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .verticalScroll(rememberScrollState()),
+                navController = navController,
+                route = NavRoute,
+                startDestination = startDestination,
+                modifier = Modifier,
         ) { route ->
             route.item { action -> navigatorViewModel.action(action) }
         }

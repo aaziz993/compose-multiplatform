@@ -1,21 +1,17 @@
-package clib.presentation.theme.viewmodel
+package clib.presentation.theme.stateholder
 
-import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
-import clib.presentation.viewmodel.AbstractViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-public abstract class AbstractThemeViewModel : AbstractViewModel<ThemeAction>() {
+public class ThemeStateHolder(theme: Theme = Theme()) {
 
-    protected open suspend fun initialState(): Theme = Theme()
+    public val state: StateFlow<Theme>
+        field = MutableStateFlow(theme)
 
-    public val state: RestartableStateFlow<Theme>
-        field = viewModelMutableStateFlow(Theme()) {
-            initialState()
-        }
-
-    override fun action(action: ThemeAction): Unit = when (action) {
+    public fun action(action: ThemeAction): Unit = when (action) {
         is ThemeAction.SetTheme -> setTheme(action.value)
         is ThemeAction.SetMode -> setMode(action.value)
         is ThemeAction.SetHighContrast -> setHighContrast(action.value)

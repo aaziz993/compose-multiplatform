@@ -1,4 +1,4 @@
-package clib.presentation.theme.viewmodel
+package clib.presentation.theme.stateholder
 
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode

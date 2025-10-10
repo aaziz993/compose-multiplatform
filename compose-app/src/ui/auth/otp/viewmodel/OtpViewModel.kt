@@ -1,7 +1,8 @@
 package ui.auth.otp.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.presentation.auth.viewmodel.AuthAction
+import clib.presentation.auth.stateholder.AuthAction
+import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.type.auth.model.User
 import klib.data.type.primitives.time.CountDownTimer
@@ -11,12 +12,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
-import ui.auth.presentation.viewmodel.AuthViewModel
 
 @KoinViewModel
 public class OtpViewModel(
     private val duration: Duration = 60.seconds,
-    private val authViewModel: AuthViewModel
+    private val authStateHolder: AuthStateHolder
 ) : AbstractViewModel<OtpAction>() {
 
     public val state: MutableStateFlow<OtpState>
@@ -63,7 +63,7 @@ public class OtpViewModel(
 
     private fun confirm(phone: String) = viewModelScope.launch {
         if (state.value.code == "1234")
-            authViewModel.action(
+            authStateHolder.action(
                 AuthAction.SetUser(
                     User(
                         username = "jogn.doe@gmail.com",

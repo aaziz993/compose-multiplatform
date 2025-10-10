@@ -5,28 +5,31 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import clib.presentation.AppEnvironment
+import clib.presentation.auth.stateholder.AuthStateHolder
+import clib.presentation.auth.LocalAppAuth
+import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.DarkColors
 import clib.presentation.theme.LightColors
-import org.koin.compose.viewmodel.koinViewModel
-import presentation.locale.viewmodel.LocaleViewModel
+import clib.presentation.theme.stateholder.ThemeStateHolder
+import org.koin.compose.koinInject
 import presentation.theme.DarkColorsHighContrast
 import presentation.theme.LightColorsHighContrast
 import presentation.theme.Shapes
 import presentation.theme.Typography
-import presentation.theme.viewmodel.ThemeViewModel
-import ui.auth.presentation.viewmodel.AuthViewModel
 import ui.navigation.presentation.NavScreen
+import ui.navigation.presentation.News
+import ui.navigation.presentation.PhoneCheckUp
 
 @Composable
 public fun AppComposable(
-    themeViewModel: ThemeViewModel = koinViewModel(),
-    localeViewModel: LocaleViewModel = koinViewModel(),
-    authViewModel: AuthViewModel = koinViewModel(),
+    themeStateHolder: ThemeStateHolder = koinInject(),
+    localeStateHolder: LocaleStateHolder = koinInject(),
+    authStateHolder: AuthStateHolder = koinInject(),
     onNavHostReady: suspend (NavController) -> Unit = {}
 ) {
-    val theme by themeViewModel.state.collectAsStateWithLifecycle()
-    val locale by localeViewModel.state.collectAsStateWithLifecycle()
-    val auth by authViewModel.state.collectAsStateWithLifecycle()
+    val theme by themeStateHolder.state.collectAsStateWithLifecycle()
+    val locale by localeStateHolder.state.collectAsStateWithLifecycle()
+    val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
     AppEnvironment(
         theme,
@@ -39,6 +42,9 @@ public fun AppComposable(
         Shapes,
         Typography,
     ) {
-        NavScreen(onNavHostReady = onNavHostReady)
+        NavScreen(
+            startDestination = if (LocalAppAuth.current.user == null) PhoneCheckUp else News,
+            onNavHostReady = onNavHostReady,
+        )
     }
 }

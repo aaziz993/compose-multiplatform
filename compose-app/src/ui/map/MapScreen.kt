@@ -1,5 +1,6 @@
 package ui.map
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import clib.presentation.components.map.MapView
@@ -22,7 +23,7 @@ public fun MapScreen(
     route: Map = Map,
     navigationAction: (NavigationAction) -> Unit = {},
 ) {
-    // Example data — replace with your actual viewmodel-driven markers/routes
+    val center = LocationImpl(48.8566, 2.3522)
     val markers = listOf(
         Marker(LocationImpl(48.8566, 2.3522, description = "Paris")),
         Marker(LocationImpl(51.5074, -0.1278, description = "London")),
@@ -30,6 +31,7 @@ public fun MapScreen(
     )
 
     MapView(
+        modifier = Modifier.fillMaxSize(),
         config = MapViewConfig(
             initialCenter = LocationImpl(48.8566, 2.3522),
             initialZoom = 4,
