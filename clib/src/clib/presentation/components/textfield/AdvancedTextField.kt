@@ -212,10 +212,10 @@ public fun AdvancedTextField(
         if (!(clearIconButton == null && showIconButton == null && trailingIcon == null)) {
             {
                 Row(Modifier.wrapContentSize(), verticalAlignment = Alignment.CenterVertically) {
-                    clearIconButton?.invoke()
                     showIconButton?.invoke(isErrorWithValidation)
                     timeIconButton?.invoke()
                     enumIconButton?.invoke()
+                    clearIconButton?.invoke()
                     trailingIcon?.invoke(isErrorWithValidation)
                 }
             }

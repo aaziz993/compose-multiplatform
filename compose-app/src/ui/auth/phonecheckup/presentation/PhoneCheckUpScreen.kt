@@ -65,10 +65,10 @@ public fun PhoneCheckUpScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        var country by remember { mutableStateOf(Country.getCountries().first()) }
+        var country by remember { mutableStateOf(Country.forCode("TJ")) }
 
         if (!LocalInspectionMode.current)
-            country = Locale.current.country()!!
+            Locale.current.country()?.let { country = it }
 
 
         CountryCodePickerTextField(

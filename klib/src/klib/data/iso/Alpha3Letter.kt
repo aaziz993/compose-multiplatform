@@ -5,7 +5,7 @@ import kotlin.jvm.JvmInline
 import kotlinx.serialization.*
 
 /**
- * An ISO 3166-1 alpha-2 country code, for example `US` or `DE`.
+ * An ISO 3166-1 alpha-3 country code, for example `USA` or `DEU`.
  *
  * References:
  * - [https://www.iso.org/iso-3166-country-codes.html]

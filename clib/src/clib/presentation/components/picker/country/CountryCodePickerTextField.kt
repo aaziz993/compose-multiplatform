@@ -54,7 +54,7 @@ public fun CountryCodePickerTextField(
     }
 
     var isNumberValid: Boolean by rememberSaveable(country, value) {
-        mutableStateOf(CountryPickerValidator.validatePhoneNumber(value, country.dial!!))
+        mutableStateOf(CountryPickerValidator.validatePhoneNumber(value, country.dial.orEmpty()))
     }
 
 
@@ -62,9 +62,9 @@ public fun CountryCodePickerTextField(
         value = value,
         onValueChange = {
             isNumberValid = CountryPickerValidator.validatePhoneNumber(
-                number = it, countryDial = country.dial!!,
+                number = it, countryDial = country.dial.orEmpty(),
             )
-            onValueChange(country.dial!!, it, isNumberValid)
+            onValueChange(country.dial.orEmpty(), it, isNumberValid)
         },
         modifier = modifier,
         textStyle = textStyle,
@@ -79,9 +79,9 @@ public fun CountryCodePickerTextField(
                 onCountrySelected = {
                     country = it
                     isNumberValid = CountryPickerValidator.validatePhoneNumber(
-                        number = value, countryDial = it.dial!!,
+                        number = value, countryDial = it.dial.orEmpty(),
                     )
-                    onValueChange(it.dial!!, value, isNumberValid)
+                    onValueChange(it.dial.orEmpty(), value, isNumberValid)
                 },
                 view = view,
                 picker = picker,
@@ -94,7 +94,7 @@ public fun CountryCodePickerTextField(
         },
         trailingIcon = trailingIcon,
         isError = !isNumberValid && value.isNotEmpty() && showError,
-        visualTransformation = CountryPickerTransformer(country.toString()),
+        visualTransformation = CountryPickerTransformer,
         enabled = enabled,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

@@ -9,67 +9,58 @@ import klib.data.location.locale.current
 import klib.data.validator.ValidatorRule
 
 /**
- * Multiplatform phone input transformer.
- * Does lightweight formatting of digits and "+" prefix.
- * Cursor is assumed to be at the end.
+ * Multiplatform phone transformer simulating Android PhoneNumberUtil.AsYouTypeFormatter
+ * Groups digits according to simple country rules (US-style default)
  */
 public class CountryPickerTransformer(
     countryIso: String = Locale.current.country()!!.toString()
 ) : VisualTransformation {
 
     override fun filter(text: AnnotatedString): TransformedText {
-        val transformation = reformat(text, text.length) // cursor at end
+        val rawDigits = text.text.filter { it.isDigit() || it == '+' }
+
+        // Example US-style grouping: +X (XXX) XXX-XXXX
+        val formatted = buildString {
+            var index = 0
+            rawDigits.forEach { c ->
+                when {
+                    index == 0 && c == '+' -> append(c) // keep plus
+                    index == 1 -> append('(').append(c)
+                    index in 2..4 -> append(c)
+                    index == 5 -> append(c).append(") ")
+                    index in 6..8 -> append(c)
+                    index == 9 -> append(c).append('-')
+                    else -> append(c)
+                }
+                index++
+            }
+        }
+
+        // Compute offset mapping
+        val originalToTransformed = IntArray(rawDigits.length) { 0 }
+        val transformedToOriginal = IntArray(formatted.length) { 0 }
+
+        var origIndex = 0
+        for (i in formatted.indices) {
+            if (formatted[i].isDigit() || formatted[i] == '+') {
+                transformedToOriginal[i] = origIndex
+                originalToTransformed[origIndex] = i
+                origIndex++
+            }
+            else {
+                transformedToOriginal[i] = origIndex.coerceAtMost(rawDigits.length)
+            }
+        }
 
         return TransformedText(
-            AnnotatedString(transformation.formatted.orEmpty()),
+            AnnotatedString(formatted),
             object : OffsetMapping {
-                override fun originalToTransformed(offset: Int): Int {
-                    return transformation.originalToTransformed[offset.coerceIn(transformation.originalToTransformed.indices)]
-                }
+                override fun originalToTransformed(offset: Int): Int =
+                    offset.coerceIn(originalToTransformed.indices).let { originalToTransformed[it] }
 
-                override fun transformedToOriginal(offset: Int): Int {
-                    return transformation.transformedToOriginal[offset.coerceIn(transformation.transformedToOriginal.indices)]
-                }
+                override fun transformedToOriginal(offset: Int): Int =
+                    offset.coerceIn(transformedToOriginal.indices).let { transformedToOriginal[it] }
             },
         )
     }
-
-    private fun reformat(s: CharSequence, cursor: Int): Transformation {
-        val rawDigits = s.filter { !ValidatorRule.isDelimitedPhoneSeparator(it) }
-
-        // Basic grouping logic for readability (3-digit groups)
-        val formatted = buildString {
-            rawDigits.forEachIndexed { index, c ->
-                append(c)
-                if (index > 0 && index % 3 == 2 && index != rawDigits.lastIndex) append(' ')
-            }
-        }
-
-        // Mapping offsets
-        val originalToTransformed = mutableListOf<Int>()
-        val transformedToOriginal = mutableListOf<Int>()
-        var specialCharsCount = 0
-
-        formatted.forEachIndexed { index, char ->
-            if (!ValidatorRule.isDelimitedPhoneSeparator(char)) {
-                specialCharsCount++
-                transformedToOriginal.add(index - specialCharsCount)
-            }
-            else {
-                originalToTransformed.add(index)
-                transformedToOriginal.add(index - specialCharsCount)
-            }
-        }
-
-        originalToTransformed.add(originalToTransformed.maxOrNull()?.plus(1) ?: 0)
-        transformedToOriginal.add(transformedToOriginal.maxOrNull()?.plus(1) ?: 0)
-
-        return Transformation(formatted, originalToTransformed, transformedToOriginal)
-    }
-
-    private data class Transformation(
-        val formatted: String?,
-        val originalToTransformed: List<Int>,
-        val transformedToOriginal: List<Int>
-    )
 }

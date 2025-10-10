@@ -184,7 +184,7 @@ internal fun CountryUI(
 
         if (showCountryDial) {
             Text(
-                text = country.dial!!, style = countryTextStyle,
+                text = country.dial.orEmpty(), style = countryTextStyle,
             )
         }
 
@@ -241,7 +241,7 @@ internal fun CountryView(
 
         if (showCountryCode) {
             Text(
-                text = country.dial!!,
+                text = country.dial.orEmpty(),
                 modifier = Modifier.padding(end = 5.dp),
                 style = textStyle,
             )
