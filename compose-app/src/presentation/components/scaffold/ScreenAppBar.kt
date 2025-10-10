@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.auth.LocalAppAuth
 import clib.presentation.components.image.avatar.Avatar
+import clib.presentation.components.image.avatar.Avatart
 import clib.presentation.components.navigation.LocalBackButton
 import clib.presentation.components.navigation.LocalTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
@@ -108,7 +109,7 @@ public fun ScreenAppBar(
                     }
                     AppTooltipBox("Profile") {
                         val user = LocalAppAuth.current.user!!
-                        Avatar(user.firstName.orEmpty(), user.lastName.orEmpty(), imageSource = user.image) {
+                        Avatart(user) {
                             navigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
                         }
                     }

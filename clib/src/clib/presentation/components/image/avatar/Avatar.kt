@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import klib.data.type.auth.model.User
 import kotlin.math.absoluteValue
 
 @Composable
@@ -76,3 +77,23 @@ internal fun InitialsAvatar(
         )
     }
 }
+
+@Composable
+public fun Avatart(
+    user: User,
+    modifier: Modifier = Modifier,
+    contentDescription: String = "",
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall,
+    localization: AvatarLocalization = AvatarLocalization(),
+    action: (@Composable BoxScope.() -> Unit)? = null
+): Unit = Avatar(
+    user.firstName.orEmpty(),
+    user.lastName.orEmpty(),
+    modifier,
+    user.image,
+    contentDescription,
+    textStyle,
+    localization,
+    action,
+)
+

@@ -31,16 +31,6 @@
     <string name="resend_code_in">Resend in %1$s</string>
     <string name="resend_code">Resend code</string>
     <string name="invalid_pin_code">Invalid pin code</string>
-    <string name="get_camera_permission">Get camera permission</string>">
-    <string name="microphone">Microphone</string>">
-    <string name="get_microphone_permission">Get microphone permission</string>">
-    <string name="location">Location</string>">
-    <string name="get_location_permission">Get location permission</string>">
-    <string name="user">User</string>">
-    <string name="verify">Verify</string>">
-    <string name="theme">Theme</string>">
-    <string name="high_contrast">High contrast</string>">
-    <string name="enable_high_contrast">Enable high contrast</string>">
     <string name="back">Back</string>
     <string name="dark_mode">Dark mode</string>
     <string name="language">Language</string>
@@ -120,4 +110,16 @@
     <string name="at_format">Date format</string>
     <string name="vehicle_license_plate_image">Vehicle license plate image</string>
     <string name="mapper">Mapper</string>
+
+
+    <string name="get_camera_permission">Get camera permission</string>
+    <string name="microphone">Microphone</string>
+    <string name="get_microphone_permission">Get microphone permission</string>
+    <string name="location">Location</string>
+    <string name="get_location_permission">Get location permission</string>
+    <string name="user">User</string>
+    <string name="verify">Verify</string>
+    <string name="theme">Theme</string>
+    <string name="high_contrast">High contrast</string>
+    <string name="enable_high_contrast">Enable high contrast</string>
 </resources>

@@ -446,9 +446,14 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 
     @Composable
     override fun Screen(route: Profile, navigationAction: (NavigationAction) -> Unit) {
+        val authStateHolder: AuthStateHolder = koinInject()
+        val auth by authStateHolder.state.collectAsStateWithLifecycle()
+
         ProfileScreen(
             Modifier,
             route,
+            auth,
+            authStateHolder::action,
             navigationAction,
         )
     }
