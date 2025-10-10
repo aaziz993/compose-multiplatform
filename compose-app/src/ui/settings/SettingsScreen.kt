@@ -32,6 +32,7 @@ import clib.presentation.theme.stateholder.ThemeAction
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsSwitch
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.camera
 import compose_app.generated.resources.sign_out
 import klib.data.permission.model.Permission
 import klib.data.type.auth.model.Auth
@@ -80,8 +81,8 @@ public fun SettingsScreen(
             ) {
                 SettingsSwitch(
                     state = theme.isHighContrast,
-                    title = { Text(text = "Theme") },
-                    subtitle = { Text(text = "High contrast") },
+                    title = { Text(text = stringResource(Res.string.high_contrast)) },
+                    subtitle = { Text(text = stringResource(Res.string.enable_high_contrast)) },
                     modifier = Modifier,
                     enabled = true,
                     icon = { Icon(Icons.Outlined.Accessibility, "") },
@@ -91,13 +92,13 @@ public fun SettingsScreen(
             SettingsGroup(
                 modifier = Modifier,
                 enabled = true,
-                title = { Text(text = "Permissions") },
+                title = { Text(text = stringResource(Res.string.permissions)) },
                 contentPadding = PaddingValues(16.dp),
             ) {
                 SettingsSwitch(
                     state = Permission.CAMERA in permissions,
-                    title = { Text(text = "Camera") },
-                    subtitle = { Text(text = "Get camera permission") },
+                    title = { Text(text = stringResource(Res.string.camera)) },
+                    subtitle = { Text(text = stringResource(Res.string.get_camera_permission)) },
                     modifier = Modifier,
                     enabled = true,
                     icon = { Icon(Icons.Outlined.CameraAlt, "") },
@@ -110,8 +111,8 @@ public fun SettingsScreen(
 
                 SettingsSwitch(
                     state = Permission.RECORD_AUDIO in permissions,
-                    title = { Text(text = "Microphone") },
-                    subtitle = { Text(text = "Get microphone permission") },
+                    title = { Text(text = stringResource(Res.string.microphone)) },
+                    subtitle = { Text(text = stringResource(Res.string.get_microphone_permission)) },
                     modifier = Modifier,
                     enabled = true,
                     icon = { Icon(Icons.Outlined.Mic, "") },
@@ -124,8 +125,8 @@ public fun SettingsScreen(
 
                 SettingsSwitch(
                     state = Permission.LOCATION in permissions,
-                    title = { Text(text = "Geolocation") },
-                    subtitle = { Text(text = "Get geolocation permission") },
+                    title = { Text(text = stringResource(Res.string.location)) },
+                    subtitle = { Text(text = stringResource(Res.string.get_location_permission)) },
                     modifier = Modifier,
                     enabled = true,
                     icon = { Icon(Icons.Outlined.LocationOn, "") },
@@ -137,13 +138,29 @@ public fun SettingsScreen(
                 )
             }
 
-            Button(
-                onClick = {
-                    authAction(AuthAction.SetAuth(Auth()))
-                },
-                modifier = Modifier.fillMaxWidth(),
+            SettingsGroup(
+                modifier = Modifier,
+                enabled = true,
+                title = { Text(text = "User") },
+                contentPadding = PaddingValues(16.dp),
             ) {
-                Text(text = stringResource(Res.string.sign_out))
+                Button(
+                    onClick = {
+                        authAction(AuthAction.SetAuth(Auth()))
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(text = stringResource(Res.string.verify))
+                }
+
+                Button(
+                    onClick = {
+                        authAction(AuthAction.SetAuth(Auth()))
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(text = stringResource(Res.string.sign_out))
+                }
             }
         }
     }
