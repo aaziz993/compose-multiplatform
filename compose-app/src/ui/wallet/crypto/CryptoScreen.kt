@@ -12,7 +12,7 @@ import ui.navigation.presentation.NavRoute
 public fun CryptoScreen(
     modifier: Modifier = Modifier,
     route: Crypto = Crypto,
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
 }
 

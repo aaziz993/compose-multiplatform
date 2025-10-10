@@ -40,8 +40,8 @@ public fun ProfileScreen(
     modifier: Modifier = Modifier,
     route: Profile = Profile,
     auth: Auth = Auth(),
-    authAction: (AuthAction) -> Unit = {},
-    navigationAction: (NavigationAction) -> Unit = {},
+    onAuthAction: (AuthAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
 
     Column(

@@ -12,7 +12,7 @@ import ui.navigation.presentation.NavRoute
 public fun BalanceScreen(
     modifier: Modifier = Modifier,
     route: Balance = Balance,
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
 }
 

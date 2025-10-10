@@ -38,7 +38,6 @@ import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
-import clib.presentation.theme.stateholder.ThemeAction
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
@@ -108,12 +107,12 @@ public data object Home : Destination, NavigationDestination<Home>() {
     @Composable
     override fun Screen(
         route: Home,
-        navigationAction: (NavigationAction) -> Unit,
+        onNavigationAction: (NavigationAction) -> Unit,
     ) {
         HomeScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
     }
 }
@@ -142,12 +141,12 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
     @Composable
     override fun Screen(
         route: Articles,
-        navigationAction: (NavigationAction) -> Unit,
+        onNavigationAction: (NavigationAction) -> Unit,
     ) {
         ArticlesScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
     }
 }
@@ -165,11 +164,11 @@ public data object Map : Destination, NavigationDestination<Map>() {
     }
 
     @Composable
-    override fun Screen(route: Map, navigationAction: (NavigationAction) -> Unit): Unit =
+    override fun Screen(route: Map, onNavigationAction: (NavigationAction) -> Unit): Unit =
         MapScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
 }
 
@@ -188,7 +187,7 @@ public data object Services : Destination, NavigationDestination<Services>() {
     @Composable
     override fun Screen(
         route: Services,
-        navigationAction: (NavigationAction) -> Unit,
+        onNavigationAction: (NavigationAction) -> Unit,
     ) {
         val navViewModel: NavViewModel = koinViewModel()
         val navState by navViewModel.state.collectAsStateWithLifecycle()
@@ -208,12 +207,12 @@ public data object Services : Destination, NavigationDestination<Services>() {
             { value ->
                 navViewModel.action(NavAction.OpenDrawer(value))
             },
-            navigationAction,
+            onNavigationAction,
         ) {
             ServicesScreen(
                 Modifier,
                 route,
-                navigationAction,
+                onNavigationAction,
             )
         }
     }
@@ -232,7 +231,7 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
     }
 
     @Composable
-    override fun Screen(route: Settings, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Settings, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
         val theme by themeStateHolder.state.collectAsStateWithLifecycle()
 
@@ -246,7 +245,7 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
             themeStateHolder::action,
             auth,
             authStateHolder::action,
-            navigationAction,
+            onNavigationAction,
         )
     }
 }
@@ -264,11 +263,11 @@ public data object About : Destination, NavigationDestination<About>() {
     }
 
     @Composable
-    override fun Screen(route: About, navigationAction: (NavigationAction) -> Unit): Unit =
+    override fun Screen(route: About, onNavigationAction: (NavigationAction) -> Unit): Unit =
         AboutScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
 }
 
@@ -300,7 +299,7 @@ public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckU
     override fun authResource(): AuthResource? = null
 
     @Composable
-    override fun Screen(route: PhoneCheckUp, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: PhoneCheckUp, onNavigationAction: (NavigationAction) -> Unit) {
         val viewModel: PhoneCheckUpViewModel = koinViewModel()
 
         val state by viewModel.state.collectAsStateWithLifecycle()
@@ -310,7 +309,7 @@ public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckU
             route,
             state,
             viewModel::action,
-            navigationAction,
+            onNavigationAction,
         )
     }
 
@@ -332,7 +331,7 @@ public data object PinCode : Destination, NavigationDestination<PinCode>() {
     override fun authResource(): AuthResource? = null
 
     @Composable
-    override fun Screen(route: PinCode, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: PinCode, onNavigationAction: (NavigationAction) -> Unit) {
         val viewModel: PinCodeViewModel = koinViewModel()
 
         val state by viewModel.state.collectAsStateWithLifecycle()
@@ -342,7 +341,7 @@ public data object PinCode : Destination, NavigationDestination<PinCode>() {
             route,
             state,
             viewModel::action,
-            navigationAction,
+            onNavigationAction,
         )
     }
 
@@ -364,7 +363,7 @@ public data object Login : Destination, NavigationDestination<Login>() {
     override fun authResource(): AuthResource? = null
 
     @Composable
-    override fun Screen(route: Login, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Login, onNavigationAction: (NavigationAction) -> Unit) {
         val viewModel: LoginViewModel = koinViewModel()
 
         val state by viewModel.state.collectAsStateWithLifecycle()
@@ -374,7 +373,7 @@ public data object Login : Destination, NavigationDestination<Login>() {
             route,
             state,
             viewModel::action,
-            navigationAction,
+            onNavigationAction,
         )
     }
 
@@ -403,7 +402,7 @@ public data class Otp(val phone: String = "") : Destination {
         override fun authResource(): AuthResource? = null
 
         @Composable
-        override fun Screen(route: Otp, navigationAction: (NavigationAction) -> Unit) {
+        override fun Screen(route: Otp, onNavigationAction: (NavigationAction) -> Unit) {
             val viewModel: OtpViewModel = koinViewModel()
 
             val state by viewModel.state.collectAsStateWithLifecycle()
@@ -413,7 +412,7 @@ public data class Otp(val phone: String = "") : Destination {
                 route,
                 state,
                 viewModel::action,
-                navigationAction,
+                onNavigationAction,
             )
         }
 
@@ -426,11 +425,11 @@ public data class Otp(val phone: String = "") : Destination {
 public data object ForgotPassword : Destination, NavigationDestination<ForgotPassword>() {
 
     @Composable
-    override fun Screen(route: ForgotPassword, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: ForgotPassword, onNavigationAction: (NavigationAction) -> Unit) {
         ForgotPasswordScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
     }
 
@@ -442,11 +441,11 @@ public data object ForgotPassword : Destination, NavigationDestination<ForgotPas
 public data object Unverified : Destination, NavigationDestination<Unverified>() {
 
     @Composable
-    override fun Screen(route: Unverified, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Unverified, onNavigationAction: (NavigationAction) -> Unit) {
         UnverifiedScreen(
             Modifier.fillMaxSize(),
             route,
-            navigationAction,
+            onNavigationAction,
         )
     }
 
@@ -458,7 +457,7 @@ public data object Unverified : Destination, NavigationDestination<Unverified>()
 public data object Verification : Destination, NavigationDestination<Verification>() {
 
     @Composable
-    override fun Screen(route: Verification, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Verification, onNavigationAction: (NavigationAction) -> Unit) {
         val authStateHolder: AuthStateHolder = koinInject()
         val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
@@ -467,7 +466,7 @@ public data object Verification : Destination, NavigationDestination<Verificatio
             route,
             auth,
             authStateHolder::action,
-            navigationAction,
+            onNavigationAction,
         )
     }
 
@@ -487,7 +486,7 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
     }
 
     @Composable
-    override fun Screen(route: Profile, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Profile, onNavigationAction: (NavigationAction) -> Unit) {
         val authStateHolder: AuthStateHolder = koinInject()
         val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
@@ -496,7 +495,7 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
             route,
             auth,
             authStateHolder::action,
-            navigationAction,
+            onNavigationAction,
         )
     }
 }
@@ -521,11 +520,11 @@ public data object Balance : Destination, NavigationDestination<Balance>() {
     }
 
     @Composable
-    override fun Screen(route: Balance, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Balance, onNavigationAction: (NavigationAction) -> Unit) {
         BalanceScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
     }
 }
@@ -543,11 +542,11 @@ public data object Crypto : Destination, NavigationDestination<Crypto>() {
     }
 
     @Composable
-    override fun Screen(route: Crypto, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Crypto, onNavigationAction: (NavigationAction) -> Unit) {
         CryptoScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
     }
 }
@@ -565,11 +564,11 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
     }
 
     @Composable
-    override fun Screen(route: Stock, navigationAction: (NavigationAction) -> Unit) {
+    override fun Screen(route: Stock, onNavigationAction: (NavigationAction) -> Unit) {
         StockScreen(
             Modifier,
             route,
-            navigationAction,
+            onNavigationAction,
         )
     }
 }

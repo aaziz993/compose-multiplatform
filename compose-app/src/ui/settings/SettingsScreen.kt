@@ -58,10 +58,10 @@ public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
     theme: Theme = Theme(),
-    themeAction: (ThemeAction) -> Unit = {},
+    onThemeAction: (ThemeAction) -> Unit = {},
     auth: Auth = Auth(),
-    authAction: (AuthAction) -> Unit = {},
-    navigationAction: (NavigationAction) -> Unit = {},
+    onAuthAction: (AuthAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -98,7 +98,7 @@ public fun SettingsScreen(
                     modifier = Modifier,
                     enabled = true,
                     icon = { Icon(Icons.Outlined.Accessibility, "") },
-                    onCheckedChange = { newState: Boolean -> themeAction(ThemeAction.SetTheme(theme.copy(isHighContrast = newState))) },
+                    onCheckedChange = { newState: Boolean -> onThemeAction(ThemeAction.SetTheme(theme.copy(isHighContrast = newState))) },
                 )
             }
             SettingsGroup(
@@ -159,7 +159,7 @@ public fun SettingsScreen(
                 if (!auth.user!!.roles.contains("VerifiedUser"))
                     Button(
                         onClick = {
-                            navigationAction(NavigationAction.TypeSafeNavigation.Navigate(Verification))
+                            onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Verification))
                         },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
@@ -168,7 +168,7 @@ public fun SettingsScreen(
 
                 Button(
                     onClick = {
-                        authAction(AuthAction.SetAuth(Auth()))
+                        onAuthAction(AuthAction.SetAuth(Auth()))
                     },
                     modifier = Modifier.fillMaxWidth(),
                 ) {

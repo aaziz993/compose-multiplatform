@@ -47,7 +47,7 @@ public fun PhoneCheckUpScreen(
     route: PhoneCheckUp = PhoneCheckUp,
     state: PhoneCheckUpState = PhoneCheckUpState(),
     action: (PhoneCheckUpAction) -> Unit = {},
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -97,7 +97,7 @@ public fun PhoneCheckUpScreen(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    navigationAction(
+                    onNavigationAction(
                         NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(Otp(state.phone)),
                     )
                 },

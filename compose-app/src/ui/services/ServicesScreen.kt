@@ -11,7 +11,7 @@ import ui.navigation.presentation.Services
 public fun ServicesScreen(
     modifier: Modifier = Modifier,
     route: Services = Services,
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
 }
 

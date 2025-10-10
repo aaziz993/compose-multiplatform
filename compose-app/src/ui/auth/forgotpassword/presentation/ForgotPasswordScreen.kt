@@ -10,7 +10,7 @@ import ui.navigation.presentation.ForgotPassword
 public fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
     route: ForgotPassword = ForgotPassword,
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
 
 }

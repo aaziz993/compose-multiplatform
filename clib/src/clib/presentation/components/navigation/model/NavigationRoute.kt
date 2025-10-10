@@ -83,7 +83,7 @@ public sealed interface Route {
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
             null,
-        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
+        onNavigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     )
 
     public fun isNavigateItem(): Boolean = true
@@ -157,7 +157,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
     @Composable
     protected open fun Screen(
         route: Dest,
-        navigationAction: (NavigationAction) -> Unit,
+        onNavigationAction: (NavigationAction) -> Unit,
     ): Unit = Unit
 
     context(navGraphBuilder: NavGraphBuilder)
@@ -179,7 +179,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
         sizeTransform:
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
-        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
+        onNavigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
         val concatenatedDeepLinks = this@NavigationDestination.deepLinks.concatenateDeepLinks(deepLinks)
 
@@ -196,7 +196,7 @@ public abstract class NavigationDestination<Dest : Any> : Route {
             sizeTransform,
         ) { backStackEntry ->
             Screen(backStackEntry.toRoute(this@NavigationDestination.route)) { action ->
-                backStackEntry.navigationAction(action)
+                backStackEntry.onNavigationAction(action)
             }
         }
     }
@@ -227,7 +227,7 @@ public abstract class NavigationRoute : Route {
         sizeTransform:
         (@JvmSuppressWildcards
         AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)?,
-        navigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
+        onNavigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
         val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
         navigation(this@NavigationRoute::class, routes.first()) {
@@ -240,7 +240,7 @@ public abstract class NavigationRoute : Route {
                     popEnterTransition,
                     popExitTransition,
                     sizeTransform,
-                    navigationAction,
+                    onNavigationAction,
                 )
             }
         }

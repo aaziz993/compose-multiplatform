@@ -19,7 +19,7 @@ import ui.navigation.presentation.NavRoute
 public fun HomeScreen(
     modifier: Modifier = Modifier,
     route: Home = Home,
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),

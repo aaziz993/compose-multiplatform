@@ -40,8 +40,8 @@ public fun VerificationScreen(
     modifier: Modifier = Modifier,
     route: Verification = Verification,
     auth: Auth = Auth(),
-    authAction: (AuthAction) -> Unit = {},
-    navigationAction: (NavigationAction) -> Unit = {},
+    onAuthAction: (AuthAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
 

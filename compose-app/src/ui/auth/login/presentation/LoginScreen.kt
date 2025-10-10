@@ -39,7 +39,7 @@ public fun LoginScreen(
     route: Login = Login,
     state: LoginState = LoginState(),
     action: (LoginAction) -> Unit = {},
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -77,7 +77,7 @@ public fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    navigationAction(NavigationAction.TypeSafeNavigation.Navigate(PhoneCheckUp))
+                    onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(PhoneCheckUp))
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

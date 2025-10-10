@@ -4,7 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -18,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -39,12 +42,12 @@ import ui.navigation.presentation.Profile
 @Composable
 public fun ScreenAppBar(
     theme: Theme,
-    themeAction: (ThemeAction) -> Unit,
+    onThemeAction: (ThemeAction) -> Unit,
     auth: Auth,
-    authAction: (AuthAction) -> Unit,
+    onAuthAction: (AuthAction) -> Unit,
     isOpenDrawer: Boolean,
     onOpenDrawerChange: (Boolean) -> Unit,
-    navigationAction: (NavigationAction) -> Unit,
+    onNavigationAction: (NavigationAction) -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
@@ -73,7 +76,7 @@ public fun ScreenAppBar(
                         if (LocalBackButton.current)
                             AppTooltipBox("Navigate back") {
                                 IconButton(
-                                    onClick = { navigationAction(NavigationAction.NavigateBack) },
+                                    onClick = { onNavigationAction(NavigationAction.NavigateBack) },
                                 ) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -100,9 +103,9 @@ public fun ScreenAppBar(
                         IconButton(
                             onClick = {
                                 when (theme.mode) {
-                                    ThemeMode.SYSTEM -> onThemeChange(theme.copy(mode = ThemeMode.LIGHT))
-                                    ThemeMode.LIGHT -> onThemeChange(theme.copy(mode = ThemeMode.DARK))
-                                    ThemeMode.DARK -> onThemeChange(theme.copy(mode = ThemeMode.SYSTEM))
+                                    ThemeMode.SYSTEM -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.LIGHT)))
+                                    ThemeMode.LIGHT -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.DARK)))
+                                    ThemeMode.DARK -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.SYSTEM)))
                                 }
                             },
                         ) {
@@ -121,11 +124,11 @@ public fun ScreenAppBar(
                         Avatar(
                             user = user,
                             modifier = Modifier
-                                .padding(end = 8.dp)
-                                .fillMaxHeight()
+                                .height(TopAppBarDefaults.TopAppBarExpandedHeight)
                                 .aspectRatio(1f)
+                                .padding(end = 8.dp)
                                 .clickable {
-                                    navigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
+                                    onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
                                 },
                         )
                     }

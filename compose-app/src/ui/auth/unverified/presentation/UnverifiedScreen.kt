@@ -28,7 +28,7 @@ import ui.navigation.presentation.Verification
 public fun UnverifiedScreen(
     modifier: Modifier = Modifier,
     route: Unverified = Unverified,
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     Surface(
         modifier = modifier,
@@ -70,7 +70,7 @@ public fun UnverifiedScreen(
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.85f),
                     ),
                     modifier = Modifier.clickable {
-                        navigationAction(NavigationAction.TypeSafeNavigation.Navigate(Verification))
+                        onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Verification))
                     },
                 )
             }

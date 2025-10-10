@@ -41,7 +41,7 @@ public fun OtpScreen(
     route: Otp = Otp(),
     state: OtpState = OtpState(),
     action: (OtpAction) -> Unit = {},
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val otpValue = remember(state.code) { mutableStateOf(state.code) }
 

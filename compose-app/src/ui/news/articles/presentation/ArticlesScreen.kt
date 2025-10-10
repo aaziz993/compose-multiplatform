@@ -38,7 +38,7 @@ import ui.news.articles.presentation.viewmodel.ArticleViewModel
 public fun ArticlesScreen(
     modifier: Modifier = Modifier,
     route: Articles = Articles,
-    navigationAction: (NavigationAction) -> Unit = {},
+    onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val viewModel = koinViewModel<ArticleViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
