@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
@@ -228,14 +229,18 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
     @Composable
     override fun Screen(route: Settings, navigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
-
         val theme by themeStateHolder.state.collectAsStateWithLifecycle()
+
+        val authStateHolder: AuthStateHolder = koinInject()
+        val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
         SettingsScreen(
             Modifier,
             route,
             theme,
             themeStateHolder::action,
+            auth,
+            authStateHolder::action,
             navigationAction,
         )
     }
