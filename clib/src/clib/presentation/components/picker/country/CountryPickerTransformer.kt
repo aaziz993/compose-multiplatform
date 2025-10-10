@@ -4,17 +4,12 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
-import klib.data.location.locale.Locale
-import klib.data.location.locale.current
-import klib.data.validator.ValidatorRule
 
 /**
  * Multiplatform phone transformer simulating Android PhoneNumberUtil.AsYouTypeFormatter
  * Groups digits according to simple country rules (US-style default)
  */
-public class CountryPickerTransformer(
-    countryIso: String = Locale.current.country()!!.toString()
-) : VisualTransformation {
+public object CountryPickerTransformer: VisualTransformation {
 
     override fun filter(text: AnnotatedString): TransformedText {
         val rawDigits = text.text.filter { it.isDigit() || it == '+' }

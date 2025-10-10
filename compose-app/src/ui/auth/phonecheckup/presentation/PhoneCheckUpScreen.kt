@@ -95,6 +95,17 @@ public fun PhoneCheckUpScreen(
                 }
             },
             showError = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done,
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    navigationAction(
+                        NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(Otp(state.phone)),
+                    )
+                },
+            ),
             shape = RoundedCornerShape(10.dp),
             showSheet = true,
         )
