@@ -3,19 +3,14 @@ package ui.map
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import clib.presentation.components.map.MapView
+import clib.presentation.components.map.Map
 import clib.presentation.components.map.model.MapViewConfig
 import clib.presentation.components.map.model.MapViewLocalization
 import clib.presentation.components.map.model.Marker
-import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.viewmodel.NavigationAction
-import compose_app.generated.resources.Res
-import compose_app.generated.resources.select_tile
 import klib.data.location.LocationImpl
-import kotlin.String
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Map
-import ui.navigation.presentation.NavRoute
 
 @Composable
 public fun MapScreen(
@@ -30,7 +25,7 @@ public fun MapScreen(
         Marker(LocationImpl(40.7128, -74.0060, description = "New York")),
     )
 
-    MapView(
+    Map(
         modifier = Modifier.fillMaxSize(),
         config = MapViewConfig(
             initialCenter = LocationImpl(48.8566, 2.3522),

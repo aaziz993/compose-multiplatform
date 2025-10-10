@@ -59,6 +59,7 @@ import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
 import ui.auth.unverified.presentation.UnverifiedScreen
 import ui.auth.verification.presentation.VerificationScreen
+import ui.auth.verification.presentation.viewmodel.VerificationViewModel
 import ui.home.HomeScreen
 import ui.map.MapScreen
 import ui.navigation.presentation.viewmodel.NavAction
@@ -443,7 +444,7 @@ public data object Unverified : Destination, NavigationDestination<Unverified>()
     @Composable
     override fun Screen(route: Unverified, onNavigationAction: (NavigationAction) -> Unit) {
         UnverifiedScreen(
-            Modifier.fillMaxSize(),
+            Modifier.fillMaxSize().padding(16.dp),
             route,
             onNavigationAction,
         )
@@ -461,11 +462,16 @@ public data object Verification : Destination, NavigationDestination<Verificatio
         val authStateHolder: AuthStateHolder = koinInject()
         val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
+        val verificationViewModel: VerificationViewModel = koinViewModel()
+        val state by verificationViewModel.state.collectAsStateWithLifecycle()
+
         VerificationScreen(
-            Modifier,
+            Modifier.fillMaxSize().padding(16.dp),
             route,
             auth,
             authStateHolder::action,
+            state,
+            verificationViewModel::action,
             onNavigationAction,
         )
     }

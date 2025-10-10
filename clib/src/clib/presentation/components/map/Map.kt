@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-public expect fun MapView(
+public expect fun Map(
     modifier: Modifier = Modifier,
     config: MapViewConfig = MapViewConfig(),
     markers: List<Marker>? = null,

@@ -14,7 +14,7 @@ import clib.presentation.components.map.model.toSwingWaypoint
 import klib.data.location.Location
 
 @Composable
-public actual fun MapView(
+public actual fun Map(
     modifier: Modifier,
     config: MapViewConfig,
     markers: List<Marker>?,

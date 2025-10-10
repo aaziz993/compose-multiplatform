@@ -38,7 +38,7 @@ public class OtpViewModel(
                 state.update { it.copy(duration = remaining) }
             },
             onFinish = {
-                state.update { it.copy(duration = Duration.ZERO) }
+                state.update { it.copy(code = "", duration = Duration.ZERO) }
             },
             viewModelScope,
         ).also(CountDownTimer::start)

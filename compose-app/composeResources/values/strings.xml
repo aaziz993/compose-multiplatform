@@ -111,6 +111,9 @@
     <string name="vehicle_license_plate_image">Vehicle license plate image</string>
     <string name="mapper">Mapper</string>
 
+    <string name="back_content_description">Back content description</string>
+    <string name="share_content_description">Share content description</string>
+    <string name="read_more_at">Read more at</string>
     <string name="verify_offer">Please verify to use paid services</string>
     <string name="upload_id">Upload ID</string>
     <string name="unverified_description">Your account is not verified yet.</string>

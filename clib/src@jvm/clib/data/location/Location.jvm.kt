@@ -15,6 +15,6 @@ public fun Location.toSwingWaypoint(
 ): SwingWaypoint = SwingWaypoint(toGeoPosition(), identifier, description, size, offset, image, onHyperLinkClick)
 
 public fun SwingWaypoint.toLocation(): Location =
-    LocationImpl(position.latitude, position.longitude, 0.0, id, description)
+    LocationImpl(position.longitude, position.latitude, 0.0, id, description)
 
 public fun Location.toGeoPosition(): GeoPosition = GeoPosition(latitude, longitude)

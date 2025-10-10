@@ -937,6 +937,7 @@ compass-geolocation-browser = { module = "dev.jordond.compass:geolocation-browse
 compass-permissions-mobile = { module = "dev.jordond.compass:permissions-mobile", version.ref = "compass" }
 # map for jvm, android, ios and web.
 maplibre-compose = { module = "org.maplibre.compose:maplibre-compose", version.ref = "maplibre-compose" }
+maplibre-compose-material3 = { module = "org.maplibre.compose:maplibre-compose-material3", version.ref = "maplibre-compose" }
 # map for Js, Jvm and Android.
 worldwind = { module = "earth.worldwind:worldwind", version.ref = "worldwind" }
 # jvm map.
@@ -1359,6 +1360,12 @@ compass-mobile = [
     "compass-geolocation-mobile",
     "compass-autocomplete-mobile",
     "compass-permissions-mobile",
+]
+
+# map for jvm, android, ios and web.
+maplibre-compose = [
+    "maplibre-compose",
+    "maplibre-compose-material3",
 ]
 
 ##Metrics.

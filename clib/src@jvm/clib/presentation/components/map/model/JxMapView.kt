@@ -52,9 +52,8 @@ public class JxMapView(
         initialCenter?.let { addressLocation = it }
 
         // Event listeners
-        if (zoomable) {
+        if (zoomable)
             addMouseWheelListener(ZoomMouseWheelListenerCursor(this))
-        }
 
         if (movable) {
             PanMouseInputListener(this).let {

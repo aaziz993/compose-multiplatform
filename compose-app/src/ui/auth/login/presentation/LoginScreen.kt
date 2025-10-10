@@ -38,7 +38,7 @@ public fun LoginScreen(
     modifier: Modifier = Modifier,
     route: Login = Login,
     state: LoginState = LoginState(),
-    action: (LoginAction) -> Unit = {},
+    onAction: (LoginAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     Column(
@@ -57,7 +57,7 @@ public fun LoginScreen(
         AdvancedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.pinCode,
-            onValueChange = { value -> action(LoginAction.SetPinCode(value)) },
+            onValueChange = { value -> onAction(LoginAction.SetPinCode(value)) },
             label = { Text(text = stringResource(Res.string.pin_code)) },
             isError = state.error != null,
             keyboardOptions = KeyboardOptions(
@@ -87,7 +87,7 @@ public fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { action(LoginAction.Login) },
+            onClick = { onAction(LoginAction.Login) },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(Res.string.login))

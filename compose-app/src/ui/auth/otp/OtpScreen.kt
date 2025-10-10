@@ -40,14 +40,14 @@ public fun OtpScreen(
     modifier: Modifier = Modifier,
     route: Otp = Otp(),
     state: OtpState = OtpState(),
-    action: (OtpAction) -> Unit = {},
+    onAction: (OtpAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val otpValue = remember(state.code) { mutableStateOf(state.code) }
 
     LaunchedEffect(otpValue.value) {
-        if (otpValue.value != state.code) action(OtpAction.SetCode(otpValue.value))
-        if (otpValue.value.length == OTP_CODE_LENGTH) action(OtpAction.Confirm(route.phone))
+        if (otpValue.value != state.code) onAction(OtpAction.SetCode(otpValue.value))
+        if (otpValue.value.length == OTP_CODE_LENGTH) onAction(OtpAction.Confirm(route.phone))
     }
 
     Column(
@@ -78,7 +78,7 @@ public fun OtpScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable(enabled = state.duration == Duration.ZERO) {
-                    action(OtpAction.ResendCode)
+                    onAction(OtpAction.ResendCode)
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

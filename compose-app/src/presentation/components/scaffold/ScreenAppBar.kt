@@ -126,7 +126,7 @@ public fun ScreenAppBar(
                             modifier = Modifier
                                 .height(TopAppBarDefaults.TopAppBarExpandedHeight)
                                 .aspectRatio(1f)
-                                .padding(end = 8.dp)
+                                .padding(end = 10.dp)
                                 .clickable {
                                     onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
                                 },

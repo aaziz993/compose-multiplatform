@@ -35,19 +35,19 @@ public fun PinCodeScreen(
     modifier: Modifier = Modifier,
     route: PinCode = PinCode,
     state: PinCodeState = PinCodeState(),
-    action: (PinCodeAction) -> Unit = {},
+    onAction: (PinCodeAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val pinCode = remember(state.pinCode) { mutableStateOf(state.pinCode) }
 
     LaunchedEffect(pinCode.value) {
-        if (pinCode.value != state.pinCode) action(PinCodeAction.SetPinCode(pinCode.value))
+        if (pinCode.value != state.pinCode) onAction(PinCodeAction.SetPinCode(pinCode.value))
     }
 
     val repeatPinCode = remember(state.repeatPinCode) { mutableStateOf(state.repeatPinCode) }
 
     LaunchedEffect(repeatPinCode.value) {
-        if (repeatPinCode.value != state.repeatPinCode) action(PinCodeAction.RepeatPinCode(repeatPinCode.value))
+        if (repeatPinCode.value != state.repeatPinCode) onAction(PinCodeAction.RepeatPinCode(repeatPinCode.value))
     }
 
     Column(
@@ -80,7 +80,7 @@ public fun PinCodeScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { action(PinCodeAction.Confirm) },
+            onClick = { onAction(PinCodeAction.Confirm) },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(Res.string.confirm))

@@ -1,12 +1,16 @@
 package presentation.components.app
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.stateholder.AuthStateHolder
+import clib.presentation.components.navigation.model.Route
 import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.DarkColors
 import clib.presentation.theme.LightColors
@@ -31,6 +35,8 @@ public fun AppComposable(
     val locale by localeStateHolder.state.collectAsStateWithLifecycle()
     val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
+    val startDestination: Route = remember(auth.user) { if (auth.user == null) AuthRoute else News }
+
     AppEnvironment(
         theme,
         locale,
@@ -43,7 +49,7 @@ public fun AppComposable(
         Typography,
     ) {
         NavScreen(
-            startDestination = if (LocalAppAuth.current.user == null) AuthRoute else News,
+            startDestination = startDestination,
             onNavHostReady = onNavHostReady,
         )
     }

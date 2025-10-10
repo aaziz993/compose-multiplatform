@@ -46,7 +46,7 @@ public fun PhoneCheckUpScreen(
     modifier: Modifier = Modifier,
     route: PhoneCheckUp = PhoneCheckUp,
     state: PhoneCheckUpState = PhoneCheckUpState(),
-    action: (PhoneCheckUpAction) -> Unit = {},
+    onAction: (PhoneCheckUpAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     Column(
@@ -70,7 +70,7 @@ public fun PhoneCheckUpScreen(
         CountryCodePickerTextField(
             value = state.phone,
             onValueChange = { _, value, _ ->
-                action(PhoneCheckUpAction.SetPhone(value))
+                onAction(PhoneCheckUpAction.SetPhone(value))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,7 +84,7 @@ public fun PhoneCheckUpScreen(
                 )
             },
             trailingIcon = {
-                IconButton(onClick = { action(PhoneCheckUpAction.SetPhone("")) }) {
+                IconButton(onClick = { onAction(PhoneCheckUpAction.SetPhone("")) }) {
                     Icon(
                         imageVector = Icons.Default.Clear, contentDescription = "Clear",
                     )

@@ -53,12 +53,15 @@ public fun ProfileScreen(
 
         with(auth.user!!) {
 
-            Avatar(auth.user!!) {
+            Avatar(
+                user = auth.user!!,
+                modifier = Modifier.size(48.dp),
+            ) {
                 IconButton(
                     onClick = {},
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .offset(4.dp, 4.dp)
+                        .offset(20.dp, 5.dp)
                         .size(24.dp),
                 ) {
                     Icon(
