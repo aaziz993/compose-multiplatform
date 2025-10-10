@@ -26,15 +26,23 @@ public fun generateCountryRegistry(
     codeGenerator: CodeGenerator,
     options: CompilerOptions
 ) {
-    val file = File(options.kspResourcesDir).resolve("iso/country/countries.json")
-    if (!file.exists()) {
-        logger.error("Countries file not found at '$file'")
+    val jsonFile = File(options.kspResourcesDir).resolve("iso/country/countries.json")
+    if (!jsonFile.exists()) {
+        logger.error("Countries file not found at '$jsonFile'")
+        return
+    }
+
+    val csvFile = File(options.kspResourcesDir).resolve("iso/country/country-codes.csv")
+    if (!csvFile.exists()) {
+        logger.error("Countries file not found at '$csvFile'")
         return
     }
 
     logger.info("Generating Country.Companion.getCountries() extension...")
 
-    val countries: List<Country> = Json.decodeFromString(file.readText())
+    val countries: List<Country> = Json.decodeFromString(jsonFile.readText())
+
+    val countryDialMap = csvFile.loadCountryDialMap()
 
     val classData = ClassData(
         name = "CountryExt",
@@ -64,6 +72,7 @@ public fun generateCountryRegistry(
             country.regionCode?.toIntOrNull()?.let { add("regionCode = %L,\n", it) }
             country.subRegionCode?.toIntOrNull()?.let { add("subRegionCode = %L,\n", it) }
             country.intermediateRegionCode?.toIntOrNull()?.let { add("intermediateRegionCode = %L,\n", it) }
+            countryDialMap[country.alpha2]?.let { dial -> add("dial = %S,\n", "+$dial") }
             unindent()
             add(")")
         }.build()
@@ -93,4 +102,22 @@ public fun generateCountryRegistry(
 
 
     fileSpec.writeToOrOverride(codeGenerator, aggregating = false)
+}
+
+private fun File.loadCountryDialMap(): Map<String, String> {
+    val lines = readLines()
+    val header = lines.first().split(",")
+    val alpha2Index = header.indexOf("ISO3166-1-Alpha-2")
+    val dialIndex = header.indexOf("Dial")
+
+    require(alpha2Index >= 0 && dialIndex >= 0) {
+        "CSV must contain 'ISO3166-1-Alpha-2' and 'Dial' columns"
+    }
+
+    return lines.drop(1).mapNotNull { line ->
+        val cols = line.split(",")
+        val alpha2 = cols.getOrNull(alpha2Index)?.trim().orEmpty()
+        val dial = cols.getOrNull(dialIndex)?.trim().orEmpty()
+        if (alpha2.isNotEmpty() && dial.isNotEmpty()) alpha2 to dial else null
+    }.toMap()
 }

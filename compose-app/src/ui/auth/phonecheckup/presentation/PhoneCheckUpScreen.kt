@@ -29,12 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
-import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.phone
-import compose_app.generated.resources.pin_code
 import klib.data.location.country.Country
-import klib.data.location.country.getCountries
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.stringResource
@@ -69,7 +66,6 @@ public fun PhoneCheckUpScreen(
 
         if (!LocalInspectionMode.current)
             Locale.current.country()?.let { country = it }
-
 
         CountryCodePickerTextField(
             value = state.phone,

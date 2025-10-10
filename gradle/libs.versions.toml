@@ -198,6 +198,8 @@ highlights = "1.1.0"
 fuzzywuzzy-kotlin = "0.9.0"
 # country, locale and currency.
 fluid = "0.13.0"
+# libphonenumber-kotlin.
+libphonenumber = "0.1.6"
 # bytebuffer.
 buffer = "1.4.2"
 # a collection of all the things that are missing from Kotlin STL, popular KMP libraries & platform SDKs. The library is meant to be a drop-in dependency - no need to study anything - just add and enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
@@ -579,6 +581,8 @@ highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
 fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = "fluid" }
 fluid-i18n = { module = "io.fluidsonic.i18n:fluid-i18n", version.ref = "fluid" }
 fluid-currency = { module = "io.fluidsonic.currency:fluid-currency", version.ref = "fluid" }
+# libphonenumber-kotlin.
+libphonenumber = { module = "io.github.luca992.libphonenumber-kotlin:libphonenumber", version.ref = "libphonenumber" }
 # bytebuffer.
 buffer = { module = "com.ditchoom:buffer", version.ref = "buffer" }
 # a collection of all the things that are missing from Kotlin STL, popular KMP libraries & platform SDKs. The library is meant to be a drop-in dependency - no need to study anything - just add and enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.

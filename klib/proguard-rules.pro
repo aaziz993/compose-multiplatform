@@ -19,6 +19,8 @@
     @androidx.compose.runtime.Composable <methods>;
 }
 
+-keepresourcefiles assets/io/michaelrocks/libphonenumber/android/**
+
 # Keep Compose runtime classes required for reflection
 -keep class androidx.compose.runtime.** { *; }
 -keep class androidx.compose.ui.** { *; }

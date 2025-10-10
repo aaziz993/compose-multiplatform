@@ -21,6 +21,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.picker.country.mode.CountryPicker
 import clib.presentation.components.picker.country.mode.CountryView
+import io.michaelrocks.libphonenumber.kotlin.PhoneNumberUtil
+import io.michaelrocks.libphonenumber.kotlin.metadata.defaultMetadataLoader
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -53,15 +55,25 @@ public fun CountryCodePickerTextField(
         mutableStateOf(selectedCountry)
     }
 
+    val phoneNumberUtil: PhoneNumberUtil by remember {
+        mutableStateOf(PhoneNumberUtil.createInstance(defaultMetadataLoader()))
+    }
+
+    val validatePhoneNumber = CountryPickerValidator(phoneNumberUtil)
+
     var isNumberValid: Boolean by rememberSaveable(country, value) {
-        mutableStateOf(CountryPickerValidator.validatePhoneNumber(value, country.dial.orEmpty()))
+        mutableStateOf(
+            validatePhoneNumber(
+                number = value, countryDial = country.dial.orEmpty(),
+            ),
+        )
     }
 
 
     OutlinedTextField(
         value = value,
         onValueChange = {
-            isNumberValid = CountryPickerValidator.validatePhoneNumber(
+            isNumberValid = validatePhoneNumber(
                 number = it, countryDial = country.dial.orEmpty(),
             )
             onValueChange(country.dial.orEmpty(), it, isNumberValid)
@@ -78,7 +90,7 @@ public fun CountryCodePickerTextField(
                 countries = countries,
                 onCountrySelected = {
                     country = it
-                    isNumberValid = CountryPickerValidator.validatePhoneNumber(
+                    isNumberValid = validatePhoneNumber(
                         number = value, countryDial = it.dial.orEmpty(),
                     )
                     onValueChange(it.dial.orEmpty(), value, isNumberValid)
@@ -94,7 +106,7 @@ public fun CountryCodePickerTextField(
         },
         trailingIcon = trailingIcon,
         isError = !isNumberValid && value.isNotEmpty() && showError,
-        visualTransformation = CountryPickerTransformer,
+        visualTransformation = CountryPickerTransformer(phoneNumberUtil, country.toString()),
         enabled = enabled,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

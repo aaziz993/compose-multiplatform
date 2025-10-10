@@ -35,6 +35,7 @@ script:
                 implementation(libs["haze"])
                 implementation(libs.bundles("compose.settings.ui"))
                 implementation(libs["androidx.paging.compose"])
+                implementation(libs["libphonenumber"])
                 implementation(libs["connectivity.compose"])
                 implementation(libs["compose.colorpicker"])
                 implementation(libs.bundles("compose.icons"))

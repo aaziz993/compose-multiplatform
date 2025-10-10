@@ -1,11 +1,19 @@
 package clib.presentation.components.picker.country
 
-import klib.data.validator.Validator
+import io.michaelrocks.libphonenumber.kotlin.PhoneNumberUtil
 
-public object CountryPickerValidator {
+public class CountryPickerValidator(private val phoneNumberUtil: PhoneNumberUtil) {
 
-    public fun validatePhoneNumber(number: String, countryDial: String): Boolean =
-        Validator.delimitedPhone(startsWithPlus = false).validate("$countryDial$number").isEmpty()
+    public operator fun invoke(number: String, countryDial: String): Boolean {
+        val fullNumber = "$countryDial$number"
+        return try {
+            val phoneNumber = phoneNumberUtil.parse(fullNumber, null)
+            phoneNumberUtil.isValidNumber(phoneNumber)
+        }
+        catch (_: Exception) {
+            false
+        }
+    }
 }
 
 
