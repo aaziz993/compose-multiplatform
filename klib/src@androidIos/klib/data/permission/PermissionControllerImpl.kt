@@ -63,6 +63,7 @@ public abstract class PermissionControllerImpl(
         PERMISSIONS[permission]?.let { PERMISSION_STATES[permissionsController.getPermissionState(it)]!! }
             ?: PermissionState.UNSUPPORTED
 
+    @Throws(PermissionDeniedAlwaysException::class, PermissionDeniedException::class, PermissionRequestCanceledException::class)
     public suspend fun providePermission(permission: Permission) {
         PERMISSIONS[permission]?.let {
             try {

@@ -3,6 +3,7 @@
 package klib.data.permission
 
 import js.objects.unsafeJso
+import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.type.await
 import kotlin.OptIn
 import kotlin.Suppress
@@ -15,6 +16,7 @@ import kotlin.js.*
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.to
 import klib.data.permission.exception.PermissionDeniedException
+import klib.data.permission.exception.PermissionRequestCanceledException
 import klib.data.permission.model.Permission
 import klib.data.permission.model.PermissionState
 import web.navigator.navigator
@@ -71,6 +73,7 @@ public actual class PermissionsController {
         ) PermissionState.GRANTED
         else PermissionState.NOT_DETERMINED
 
+    @Throws(PermissionDeniedAlwaysException::class, PermissionDeniedException::class, PermissionRequestCanceledException::class)
     public actual suspend fun providePermission(permission: Permission) {
         if (!permission
                 .toPlatformPermission()!!

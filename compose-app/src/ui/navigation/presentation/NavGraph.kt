@@ -58,6 +58,8 @@ import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpViewModel
 import ui.auth.pincode.PinCodeScreen
 import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
+import ui.auth.unverified.presentation.UnverifiedScreen
+import ui.auth.verification.presentation.VerificationScreen
 import ui.home.HomeScreen
 import ui.map.MapScreen
 import ui.navigation.presentation.viewmodel.NavAction
@@ -194,11 +196,14 @@ public data object Services : Destination, NavigationDestination<Services>() {
         val themeStateHolder: ThemeStateHolder = koinInject()
         val theme by themeStateHolder.state.collectAsStateWithLifecycle()
 
+        val authStateHolder: AuthStateHolder = koinInject()
+        val auth by authStateHolder.state.collectAsStateWithLifecycle()
+
         ScreenAppBar(
             theme,
-            { value ->
-                themeStateHolder.action(ThemeAction.SetTheme(value))
-            },
+            themeStateHolder::action,
+            auth,
+            authStateHolder::action,
             navState.drawerOpen,
             { value ->
                 navViewModel.action(NavAction.OpenDrawer(value))
@@ -273,7 +278,7 @@ public data object AuthRoute : Destination, NavigationRoute() {
 
     override val expand: Boolean = true
 
-    override val routes: List<NavigationDestination<*>> = listOf(PhoneCheckUp, Login, Otp, ForgotPassword, Profile)
+    override val routes: List<NavigationDestination<*>> = listOf(PhoneCheckUp, Otp, Unverified, Verification, Login, ForgotPassword, Profile)
 
     override fun authResource(): AuthResource? = null
 }
@@ -425,6 +430,43 @@ public data object ForgotPassword : Destination, NavigationDestination<ForgotPas
         ForgotPasswordScreen(
             Modifier,
             route,
+            navigationAction,
+        )
+    }
+
+    override fun isNavigateItem(): Boolean = false
+}
+
+@Serializable
+@SerialName("unverified")
+public data object Unverified : Destination, NavigationDestination<Unverified>() {
+
+    @Composable
+    override fun Screen(route: Unverified, navigationAction: (NavigationAction) -> Unit) {
+        UnverifiedScreen(
+            Modifier.fillMaxSize(),
+            route,
+            navigationAction,
+        )
+    }
+
+    override fun isNavigateItem(): Boolean = false
+}
+
+@Serializable
+@SerialName("verification")
+public data object Verification : Destination, NavigationDestination<Verification>() {
+
+    @Composable
+    override fun Screen(route: Verification, navigationAction: (NavigationAction) -> Unit) {
+        val authStateHolder: AuthStateHolder = koinInject()
+        val auth by authStateHolder.state.collectAsStateWithLifecycle()
+
+        VerificationScreen(
+            Modifier,
+            route,
+            auth,
+            authStateHolder::action,
             navigationAction,
         )
     }

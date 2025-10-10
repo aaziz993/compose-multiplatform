@@ -63,8 +63,7 @@ public fun NavScreen(
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = { currentDestination ->
-            // Check if part of auth route.
-            if (AuthRoute.find(currentDestination) != null) NavigationSuiteType.None
+            if (NavRoute.find(currentDestination) in listOf(PhoneCheckUp, Otp, Login)) NavigationSuiteType.None
             else with(currentWindowAdaptiveInfo()) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
                     if (navState.drawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
@@ -74,10 +73,10 @@ public fun NavScreen(
         },
     ) {
         AdvancedNavHost(
-                navController = navController,
-                route = NavRoute,
-                startDestination = startDestination,
-                modifier = Modifier,
+            navController = navController,
+            route = NavRoute,
+            startDestination = startDestination,
+            modifier = Modifier,
         ) { route ->
             route.item { action -> navigatorViewModel.action(action) }
         }

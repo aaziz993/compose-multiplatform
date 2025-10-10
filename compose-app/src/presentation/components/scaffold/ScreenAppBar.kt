@@ -1,6 +1,10 @@
 package presentation.components.scaffold
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -17,22 +21,27 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.auth.LocalAppAuth
+import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.image.avatar.Avatart
 import clib.presentation.components.navigation.LocalBackButton
 import clib.presentation.components.navigation.LocalTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
+import clib.presentation.theme.stateholder.ThemeAction
+import klib.data.type.auth.model.Auth
 import presentation.components.tooltipbox.AppTooltipBox
 import ui.navigation.presentation.Profile
 
 @Composable
 public fun ScreenAppBar(
     theme: Theme,
-    onThemeChange: (Theme) -> Unit,
+    themeAction: (ThemeAction) -> Unit,
+    auth: Auth,
+    authAction: (AuthAction) -> Unit,
     isOpenDrawer: Boolean,
     onOpenDrawerChange: (Boolean) -> Unit,
     navigationAction: (NavigationAction) -> Unit,
@@ -109,9 +118,16 @@ public fun ScreenAppBar(
                     }
                     AppTooltipBox("Profile") {
                         val user = LocalAppAuth.current.user!!
-                        Avatart(user) {
-                            navigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
-                        }
+                        Avatar(
+                            user = user,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .fillMaxHeight()
+                                .aspectRatio(1f)
+                                .clickable {
+                                    navigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
+                                },
+                        )
                     }
                 },
             )

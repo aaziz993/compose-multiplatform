@@ -8,12 +8,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import clib.presentation.auth.stateholder.AuthAction
-import clib.presentation.components.image.avatar.Avatart
+import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.type.auth.model.Auth
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -47,7 +53,21 @@ public fun ProfileScreen(
 
         with(auth.user!!) {
 
-            Avatart(auth.user!!)
+            Avatar(auth.user!!) {
+                IconButton(
+                    onClick = {},
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset(4.dp, 4.dp)
+                        .size(24.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Edit,
+                        contentDescription = "Edit avatar",
+                        modifier = Modifier.size(14.dp),
+                    )
+                }
+            }
 
             Spacer(Modifier.height(16.dp))
 

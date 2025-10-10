@@ -27,7 +27,7 @@ public fun Avatar(
     contentDescription: String = "",
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     localization: AvatarLocalization = AvatarLocalization(),
-    action: (@Composable BoxScope.() -> Unit)? = null
+    content: (@Composable BoxScope.() -> Unit)? = null
 ): Unit =
     Box {
         if (imageSource == null) InitialsAvatar(
@@ -41,7 +41,7 @@ public fun Avatar(
             contentDescription,
             modifier,
         )
-        action?.invoke(this)
+        content?.invoke(this)
     }
 
 @Composable
@@ -79,13 +79,13 @@ internal fun InitialsAvatar(
 }
 
 @Composable
-public fun Avatart(
+public fun Avatar(
     user: User,
     modifier: Modifier = Modifier,
     contentDescription: String = "",
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     localization: AvatarLocalization = AvatarLocalization(),
-    action: (@Composable BoxScope.() -> Unit)? = null
+    content: (@Composable BoxScope.() -> Unit)? = null
 ): Unit = Avatar(
     user.firstName.orEmpty(),
     user.lastName.orEmpty(),
@@ -94,6 +94,6 @@ public fun Avatart(
     contentDescription,
     textStyle,
     localization,
-    action,
+    content,
 )
 

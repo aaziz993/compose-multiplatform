@@ -111,7 +111,11 @@
     <string name="vehicle_license_plate_image">Vehicle license plate image</string>
     <string name="mapper">Mapper</string>
 
-
+    <string name="verify_offer">Please verify to use paid services</string>
+    <string name="upload_id">Upload ID</string>
+    <string name="unverified_description">Your account is not verified yet.</string>
+    <string name="general">General</string>
+    <string name="permissions">Permissions</string>
     <string name="get_camera_permission">Get camera permission</string>
     <string name="microphone">Microphone</string>
     <string name="get_microphone_permission">Get microphone permission</string>
