@@ -6,5 +6,6 @@ script:
             sourceSet.dependencies {
               implementation(libs["permissions.compose"])
               implementation(libs["connectivity.compose.device"])
+              implementation(libs["maplibre.compose"])
             }
           }

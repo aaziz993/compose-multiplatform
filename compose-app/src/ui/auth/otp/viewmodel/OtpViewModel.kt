@@ -52,7 +52,7 @@ public class OtpViewModel(
         }
     }
 
-    private fun setCode(value: String) = viewModelScope.launch {
+    private fun setCode(value: String) {
         state.update { it.copy(code = value) }
     }
 

@@ -21,6 +21,9 @@ public value class Alpha2Letter(public val value: String) {
         }
     }
 
+    public fun getEmojiFlag(): String = value.uppercase().map { char -> char.code + 0x1F1A5 }
+        .joinToString("") { it.toChar().toString() }
+
     override fun toString(): String = value
 
     public companion object Companion {

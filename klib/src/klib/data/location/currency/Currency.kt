@@ -18,7 +18,7 @@ public data class Currency(
     val numToBasic: Int? = null,
 ) {
 
-    override fun toString(): String = demonym.toString()
+    override fun toString(): String = alpha3.toString()
 
     public companion object {
 
@@ -27,7 +27,7 @@ public data class Currency(
             forCodeOrNull(code) ?: error("Invalid ISO 4217 currency code: $code")
 
         public fun forCodeOrNull(code: Alpha3Letter): Currency? =
-            CurrencyRegistry.getCurrencies().find { currency -> currency.alpha3 == code }
+            Currency.getCurrencies().find { currency -> currency.alpha3 == code }
 
         public fun forCode(code: String): Currency =
             forCodeOrNull(Alpha3Letter(code)) ?: error("Invalid ISO 4217 currency code: $code")

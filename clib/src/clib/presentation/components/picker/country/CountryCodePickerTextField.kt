@@ -1,0 +1,114 @@
+package clib.presentation.components.picker.country
+
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import clib.presentation.components.picker.country.mode.CountryPicker
+import clib.presentation.components.picker.country.mode.CountryView
+import klib.data.location.country.Country
+import klib.data.location.country.getCountries
+import org.jetbrains.compose.ui.tooling.preview.Preview
+
+@Composable
+public fun CountryCodePickerTextField(
+    value: String,
+    onValueChange: (countryCode: String, value: String, isValid: Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    selectedCountry: Country = Country.getCountries().first(),
+    countries: List<Country> = Country.getCountries().toList(),
+    enabled: Boolean = true,
+    textStyle: TextStyle = LocalTextStyle.current,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    showError: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    shape: Shape = RoundedCornerShape(10.dp),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    view: CountryView = CountryView(),
+    picker: CountryPicker = CountryPicker(),
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    showSheet: Boolean = false,
+    itemPadding: Int = 10
+) {
+
+    var country by remember {
+        mutableStateOf(selectedCountry)
+    }
+
+    var isNumberValid: Boolean by rememberSaveable(country, value) {
+        mutableStateOf(CountryPickerValidator.validatePhoneNumber(value, country.dial!!))
+    }
+
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = {
+            isNumberValid = CountryPickerValidator.validatePhoneNumber(
+                number = it, countryDial = country.dial!!,
+            )
+            onValueChange(country.dial!!, it, isNumberValid)
+        },
+        modifier = modifier,
+        textStyle = textStyle,
+        singleLine = true,
+        shape = shape,
+        label = label,
+        placeholder = placeholder,
+        leadingIcon = {
+            CountryCodePicker(
+                selectedCountry = country,
+                countries = countries,
+                onCountrySelected = {
+                    country = it
+                    isNumberValid = CountryPickerValidator.validatePhoneNumber(
+                        number = value, countryDial = it.dial!!,
+                    )
+                    onValueChange(it.dial!!, value, isNumberValid)
+                },
+                view = view,
+                picker = picker,
+                backgroundColor = backgroundColor,
+                textStyle = textStyle,
+                showSheet = showSheet,
+                itemPadding = itemPadding,
+            )
+
+        },
+        trailingIcon = trailingIcon,
+        isError = !isNumberValid && value.isNotEmpty() && showError,
+        visualTransformation = CountryPickerTransformer(country.toString()),
+        enabled = enabled,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        colors = colors,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+public fun CountryCodePickerTextFieldPreview() {
+    var value by remember { mutableStateOf("") }
+
+    CountryCodePickerTextField(
+        onValueChange = { _, number, _ -> value = number },
+        value = value,
+    )
+}

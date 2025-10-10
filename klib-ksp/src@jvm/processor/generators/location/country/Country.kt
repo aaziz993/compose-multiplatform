@@ -32,12 +32,12 @@ public fun generateCountryRegistry(
         return
     }
 
-    logger.info("Generating CountryRegistry...")
+    logger.info("Generating Country.Companion.getCountries() extension...")
 
     val countries: List<Country> = Json.decodeFromString(file.readText())
 
     val classData = ClassData(
-        name = "CountryRegistry",
+        name = "CountryExt",
         packageName = "klib.data.location.country",
         imports = setOf(
             "klib.data.iso.Alpha2Letter",
@@ -45,12 +45,13 @@ public fun generateCountryRegistry(
         ),
     )
 
+    val countryClass = ClassName("klib.data.location.country", "Country")
     val alpha2Class = ClassName("klib.data.iso", "Alpha2Letter")
     val alpha3Class = ClassName("klib.data.iso", "Alpha3Letter")
 
     val items = countries.map { country ->
         CodeBlock.builder().apply {
-            add("Country(\n")
+            add("%T(\n", countryClass)
             indent()
             add("name = %S,\n", country.name)
             add("alpha2 = %T(%S),\n", alpha2Class, country.alpha2)
@@ -70,6 +71,7 @@ public fun generateCountryRegistry(
 
     val seqSpec = FunSpec.builder("getCountries")
         .addModifiers(KModifier.PUBLIC)
+        .receiver(countryClass.nestedClass("Companion"))
         .returns(
             Sequence::class.asClassName()
                 .parameterizedBy(ClassName("klib.data.location.country", "Country")),
@@ -86,11 +88,7 @@ public fun generateCountryRegistry(
         .build()
 
     val fileSpec = FileSpec.builder(classData)
-        .addType(
-            TypeSpec.objectBuilder("CountryRegistry")
-                .addFunction(seqSpec)
-                .build(),
-        )
+        .addFunction(seqSpec)
         .build()
 
 

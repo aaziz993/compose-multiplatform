@@ -22,28 +22,24 @@ public fun Avatar(
     firstName: String,
     lastName: String,
     modifier: Modifier = Modifier,
-    source: Any? = null,
+    imageSource: Any? = null,
     contentDescription: String = "",
     textStyle: TextStyle = MaterialTheme.typography.titleSmall,
-    action: (@Composable BoxScope.() -> Unit)? = null,
-    localization: AvatarLocalization = AvatarLocalization()
+    localization: AvatarLocalization = AvatarLocalization(),
+    action: (@Composable BoxScope.() -> Unit)? = null
 ): Unit =
     Box {
-        if (source == null) {
-            InitialsAvatar(
-                firstName,
-                lastName,
-                textStyle,
-                modifier,
-            )
-        }
-        else {
-            AdvancedImage(
-                source,
-                contentDescription,
-                modifier,
-            )
-        }
+        if (imageSource == null) InitialsAvatar(
+            firstName,
+            lastName,
+            textStyle,
+            modifier,
+        )
+        else AdvancedImage(
+            imageSource,
+            contentDescription,
+            modifier,
+        )
         action?.invoke(this)
     }
 

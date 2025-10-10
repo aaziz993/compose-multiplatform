@@ -30,6 +30,7 @@ public data class Validator(
 
         public fun numericPhone(
             required: Boolean = true,
+            startsWithPlus: Boolean = true,
             emptyMessage: String = "Value is empty",
             lengthMessage: String = "Value length is invalid",
             prefixMessage: String = "Value prefix is not plus",
@@ -37,10 +38,10 @@ public data class Validator(
             lettersMessage: String = "Value has letters",
             patternMessage: String = "Value is invalid",
         ): Validator = Validator(
-            rules = listOf(
+            rules = listOfNotNull(
                 ValidatorRule.nonEmpty(emptyMessage),
                 ValidatorRule.numericPhoneLength(lengthMessage),
-                ValidatorRule.startsWith("+", message = prefixMessage),
+                if (startsWithPlus) ValidatorRule.startsWith("+", message = prefixMessage) else null,
                 ValidatorRule.containsDigit(digitsMessage),
                 ValidatorRule.nonLetters(lettersMessage),
                 ValidatorRule.numericPhonePattern(patternMessage),
@@ -50,6 +51,7 @@ public data class Validator(
 
         public fun delimitedPhone(
             required: Boolean = true,
+            startsWithPlus: Boolean = true,
             emptyMessage: String = "Value is empty",
             lengthMessage: String = "Value length is invalid",
             prefixMessage: String = "Value prefix is not plus",
@@ -57,10 +59,10 @@ public data class Validator(
             lettersMessage: String = "Value has letters",
             patternMessage: String = "Value is invalid",
         ): Validator = Validator(
-            rules = listOf(
+            rules = listOfNotNull(
                 ValidatorRule.nonEmpty(emptyMessage),
                 ValidatorRule.delimitedPhoneLength(lengthMessage),
-                ValidatorRule.startsWith("+", message = prefixMessage),
+                if (startsWithPlus) ValidatorRule.startsWith("+", message = prefixMessage) else null,
                 ValidatorRule.containsDigit(digitsMessage),
                 ValidatorRule.nonLetters(lettersMessage),
                 ValidatorRule.delimitedPhonePattern(patternMessage),

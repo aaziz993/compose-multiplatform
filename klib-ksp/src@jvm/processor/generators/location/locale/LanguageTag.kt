@@ -30,23 +30,26 @@ public fun generateLanguageTagRegistry(
         return
     }
 
-    logger.info("Generating LanguageTagRegistry...")
+    logger.info("Generating LanguageTag.Companion.getLanguageTags() extension...")
 
     val languageTags: List<LanguageTag> = CSVFormat.decodeFromString(file.readText())
 
     val classData = ClassData(
-        name = "LanguageTagRegistry",
+        name = "LanguageTagExt",
         packageName = "klib.data.location.locale",
     )
 
+    val languageTagClass = ClassName("klib.data.location.locale", "LanguageTag")
+
     val items = languageTags.map { tag ->
         CodeBlock.builder().apply {
-            add("LanguageTag.parse(%S)", tag.lang)
+            add("%T.parse(%S)", languageTagClass, tag.lang)
         }.build()
     }
 
     val seqSpec = FunSpec.builder("getLanguageTags")
         .addModifiers(KModifier.PUBLIC)
+        .receiver(languageTagClass.nestedClass("Companion"))
         .returns(
             Sequence::class.asClassName()
                 .parameterizedBy(ClassName("klib.data.location.locale", "LanguageTag")),
@@ -63,11 +66,7 @@ public fun generateLanguageTagRegistry(
         .build()
 
     val fileSpec = FileSpec.builder(classData.packageName, classData.name)
-        .addType(
-            TypeSpec.objectBuilder("LanguageTagRegistry")
-                .addFunction(seqSpec)
-                .build(),
-        )
+        .addFunction(seqSpec)
         .build()
 
 

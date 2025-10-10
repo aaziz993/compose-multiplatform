@@ -5,8 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import clib.presentation.AppEnvironment
-import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.auth.LocalAppAuth
+import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.DarkColors
 import clib.presentation.theme.LightColors
@@ -16,9 +16,9 @@ import presentation.theme.DarkColorsHighContrast
 import presentation.theme.LightColorsHighContrast
 import presentation.theme.Shapes
 import presentation.theme.Typography
+import ui.navigation.presentation.AuthRoute
 import ui.navigation.presentation.NavScreen
 import ui.navigation.presentation.News
-import ui.navigation.presentation.PhoneCheckUp
 
 @Composable
 public fun AppComposable(
@@ -43,7 +43,7 @@ public fun AppComposable(
         Typography,
     ) {
         NavScreen(
-            startDestination = if (LocalAppAuth.current.user == null) PhoneCheckUp else News,
+            startDestination = if (LocalAppAuth.current.user == null) AuthRoute else News,
             onNavHostReady = onNavHostReady,
         )
     }

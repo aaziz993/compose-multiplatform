@@ -164,6 +164,8 @@ public data class ValidatorRule(
             message = message,
         )
 
+        public fun isDelimitedPhoneSeparator(value: Char): Boolean = !value.isDigit() && value != '+'
+
         public fun delimitedPhoneLength(message: String): ValidatorRule = DELIMITED_PHONE_NUMBER.let {
             lengthInRange(
                 it.first,

@@ -16,13 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.presentation.auth.LocalAppAuth
+import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.LocalBackButton
 import clib.presentation.components.navigation.LocalTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 import presentation.components.tooltipbox.AppTooltipBox
+import ui.navigation.presentation.Profile
 
 @Composable
 public fun ScreenAppBar(
@@ -31,9 +35,11 @@ public fun ScreenAppBar(
     isOpenDrawer: Boolean,
     onOpenDrawerChange: (Boolean) -> Unit,
     navigationAction: (NavigationAction) -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text(LocalTitle.current) },
@@ -98,6 +104,12 @@ public fun ScreenAppBar(
                                 },
                                 contentDescription = "Switch theme",
                             )
+                        }
+                    }
+                    AppTooltipBox("Profile") {
+                        val user = LocalAppAuth.current.user!!
+                        Avatar(user.firstName.orEmpty(), user.lastName.orEmpty(), imageSource = user.image) {
+                            navigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
                         }
                     }
                 },

@@ -425,6 +425,7 @@ circuit = "0.30.0"
 compass = "2.4.0"
 # map for jvm, android, ios and web.
 maplibre-compose = "0.11.1"
+pod-maplibre = "6.17.1"
 # jvm, android and js map.
 worldwind = "1.9.0"
 # jvm map.

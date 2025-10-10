@@ -15,6 +15,7 @@ public data class Country(
     val regionCode: Int? = null,
     val subRegionCode: Int? = null,
     val intermediateRegionCode: Int? = null,
+    val dial: String? = null,
 ) {
 
     override fun toString(): String = alpha2.toString()
@@ -26,7 +27,7 @@ public data class Country(
             forCodeOrNull(code) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
         public fun forCodeOrNull(code: Alpha2Letter): Country? =
-            CountryRegistry.getCountries().find { country -> country.alpha2 == code }
+            Country.getCountries().find { country -> country.alpha2 == code }
 
         public fun forCode(code: String): Country =
             forCodeOrNull(Alpha2Letter.parse(code))
@@ -37,9 +38,9 @@ public data class Country(
     }
 }
 
-public fun klib.data.iso.Alpha2Letter.toCountry(): Country = Country.forCode(this)
+public fun Alpha2Letter.toCountry(): Country = Country.forCode(this)
 
-public fun klib.data.iso.Alpha2Letter.toCountryOrNull(): Country? = Country.forCodeOrNull(this)
+public fun Alpha2Letter.toCountryOrNull(): Country? = Country.forCodeOrNull(this)
 
 public fun String.toCountry(): Country = Country.forCode(this)
 

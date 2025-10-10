@@ -30,6 +30,7 @@ import kotlin.time.Duration
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import presentation.components.textfield.otp.AppOtpInputField
+import ui.auth.otp.viewmodel.OTP_CODE_LENGTH
 import ui.auth.otp.viewmodel.OtpAction
 import ui.auth.otp.viewmodel.OtpState
 import ui.navigation.presentation.Otp
@@ -46,7 +47,7 @@ public fun OtpScreen(
 
     LaunchedEffect(otpValue.value) {
         if (otpValue.value != state.code) action(OtpAction.SetCode(otpValue.value))
-        if (otpValue.value.length == 4) action(OtpAction.Confirm(route.phone))
+        if (otpValue.value.length == OTP_CODE_LENGTH) action(OtpAction.Confirm(route.phone))
     }
 
     Column(
