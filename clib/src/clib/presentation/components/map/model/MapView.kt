@@ -4,7 +4,7 @@ import klib.data.location.LocationImpl
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class MapViewConfig(
+public data class MapView(
     val initialZoom: Int? = null,
     val initialCenter: LocationImpl? = null,
     val zoomable: Boolean = true,

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><!--
+   Info.plist
+   apple-app
+
+   Created by Aziz Atoev on 11/10/25.
+   Copyright (c) 2025 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+    <dict>
+        <!-- App Identity -->
+        <key>CFBundleName</key>
+        <string>compose-multiplatform</string>
+        <key>CFBundleDisplayName</key>
+        <string>Compose Multiplatform</string>
+        <key>CFBundleIdentifier</key>
+        <string>io.github.aaziz993</string>
+        <key>CFBundleVersion</key>
+        <string>1</string>
+        <key>CFBundleShortVersionString</key>
+        <string>1.0</string>
+
+        <!-- Launch -->
+        <key>UILaunchStoryboardName</key>
+        <string>LaunchScreen</string>
+
+        <!-- Localization -->
+        <key>CFBundleDevelopmentRegion</key>
+        <string>en</string>
+        <key>CFBundleExecutable</key>
+        <string>$(EXECUTABLE_NAME)</string>
+
+    </dict>
+</plist>

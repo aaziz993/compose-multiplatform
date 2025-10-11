@@ -4,21 +4,25 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import clib.data.location.toPosition
-import clib.presentation.components.map.model.MapViewConfig
-import clib.presentation.components.map.model.MapViewLocalization
+import clib.presentation.components.map.model.MapLocalization
+import clib.presentation.components.map.model.MapView
 import clib.presentation.components.map.model.Marker
 import clib.presentation.components.map.model.toFeature
 import io.github.dellisd.spatialk.geojson.FeatureCollection
 import io.github.dellisd.spatialk.geojson.LineString
 import io.github.dellisd.spatialk.geojson.Position
 import klib.data.location.Location
+import klib.data.type.collections.symmetricMinus
 import klib.data.type.collections.takeIfNotEmpty
-import kotlinx.serialization.json.jsonPrimitive
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
 import org.maplibre.compose.expressions.dsl.const
@@ -33,28 +37,22 @@ import org.maplibre.compose.sources.rememberGeoJsonSource
 import org.maplibre.compose.style.BaseStyle
 import org.maplibre.compose.style.rememberStyleState
 import org.maplibre.compose.util.ClickResult
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import klib.data.type.collections.symmetricMinus
-import klib.data.type.collections.updateSymmetric
 
 @Composable
 public actual fun Map(
     modifier: Modifier,
-    config: MapViewConfig,
+    view: MapView,
     markers: List<Marker>?,
-    onMarkerClick: ((Location, String?) -> Boolean)?,
+    onMarkerClick: ((Location, href: String?) -> Boolean)?,
     routes: List<List<Location>>?,
-    onSelect: ((Set<Location>, Set<Location>) -> Unit)?,
-    localization: MapViewLocalization
+    onSelect: ((removed: Set<Location>, added: Set<Location>) -> Unit)?,
+    localization: MapLocalization,
 ) {
 
     val cameraState = rememberCameraState(
         CameraPosition(
-            target = config.initialCenter?.toPosition() ?: Position(0.0, 0.0),
-            zoom = config.initialZoom?.toDouble() ?: 5.0,
+            target = view.initialCenter?.toPosition() ?: Position(0.0, 0.0),
+            zoom = view.initialZoom?.toDouble() ?: 5.0,
         ),
     )
     val styleState = rememberStyleState()

@@ -15,6 +15,8 @@ script:
             "androidx.compose.material3.ExperimentalMaterial3Api",
             "kotlin.js.ExperimentalWasmJsInterop",
             "org.jetbrains.compose.resources.InternalResourceApi",
+            "dev.chrisbanes.haze.ExperimentalHazeApi",
+            "dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi",
           )
       sourceSets:
         - named: |
@@ -32,11 +34,12 @@ script:
                 implementation(libs.bundles("androidx.lifecycle"))
                 implementation(libs.bundles("androidx.navigation"))
                 implementation(libs.bundles("material3.adaptive"))
-                implementation(libs["haze"])
+                implementation(libs.bundles("haze"))
                 implementation(libs.bundles("compose.settings.ui"))
                 implementation(libs["androidx.paging.compose"])
                 implementation(libs["libphonenumber"])
                 implementation(libs["connectivity.compose"])
+                // implementation(libs["material.kolor"])
                 implementation(libs["compose.colorpicker"])
                 implementation(libs.bundles("compose.icons"))
                 implementation(libs.bundles("coil.compose"))

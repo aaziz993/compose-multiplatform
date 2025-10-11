@@ -16,12 +16,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.presentation.auth.LocalAppAuth
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.components.navigation.model.Route
-import clib.presentation.components.navigation.viewmodel.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
@@ -30,19 +30,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import ui.navigation.presentation.viewmodel.NavViewModel
-import ui.navigation.presentation.viewmodel.NavigatorViewModel
 
 @Suppress("ComposeModifierMissing")
 @Composable
 public fun NavScreen(
     startDestination: Route = Home,
-    navigator: Navigator<Destination> = koinInject(),
-    navigatorViewModel: NavigatorViewModel = koinViewModel(),
+    navigator: Navigator<Route> = koinInject(),
     navViewModel: NavViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val navState by navViewModel.state.collectAsStateWithLifecycle()
+
+    val auth = LocalAppAuth.current
 
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
@@ -50,13 +50,14 @@ public fun NavScreen(
         navigator = navigator,
         navigationSuiteRoute = { currentDestination, route ->
             route.item(
+                auth = auth,
                 text = { label, _ ->
                     Res.allStringResources[label]?.let { stringResource -> Text(text = stringResource(stringResource)) }
                         ?: Text(text = label.uppercaseFirstChar())
                 },
                 currentDestination = currentDestination,
             ) { destination ->
-                navigatorViewModel.action(NavigationAction.TypeSafeNavigation.Navigate(destination))
+                navigator.navigate(destination)
             }
         },
         modifier = Modifier.fillMaxSize(),
@@ -66,7 +67,7 @@ public fun NavScreen(
             if (NavRoute.find(currentDestination) in listOf(PhoneCheckUp, Otp, Login)) NavigationSuiteType.None
             else with(currentWindowAdaptiveInfo()) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
-                    if (navState.drawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
+                    if (navState.isDrawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
                 }
                 else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
             }
@@ -78,7 +79,7 @@ public fun NavScreen(
             startDestination = startDestination,
             modifier = Modifier,
         ) { route ->
-            route.item { action -> navigatorViewModel.action(action) }
+            route.item { action -> navigator.navigate(action) }
         }
     }
 

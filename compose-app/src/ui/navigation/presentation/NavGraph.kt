@@ -62,7 +62,6 @@ import ui.auth.verification.presentation.VerificationScreen
 import ui.auth.verification.presentation.viewmodel.VerificationViewModel
 import ui.home.HomeScreen
 import ui.map.MapScreen
-import ui.navigation.presentation.viewmodel.NavAction
 import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.news.articles.presentation.ArticlesScreen
 import ui.services.ServicesScreen
@@ -144,11 +143,24 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
         route: Articles,
         onNavigationAction: (NavigationAction) -> Unit,
     ) {
-        ArticlesScreen(
-            Modifier,
-            route,
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val navViewModel: NavViewModel = koinViewModel()
+        val navState by navViewModel.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            navState,
+            navViewModel::action,
             onNavigationAction,
-        )
+        ) {
+            ArticlesScreen(
+                Modifier,
+                route,
+                onNavigationAction,
+            )
+        }
     }
 }
 
@@ -190,24 +202,16 @@ public data object Services : Destination, NavigationDestination<Services>() {
         route: Services,
         onNavigationAction: (NavigationAction) -> Unit,
     ) {
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
         val navViewModel: NavViewModel = koinViewModel()
         val navState by navViewModel.state.collectAsStateWithLifecycle()
 
-        val themeStateHolder: ThemeStateHolder = koinInject()
-        val theme by themeStateHolder.state.collectAsStateWithLifecycle()
-
-        val authStateHolder: AuthStateHolder = koinInject()
-        val auth by authStateHolder.state.collectAsStateWithLifecycle()
-
         ScreenAppBar(
-            theme,
             themeStateHolder::action,
-            auth,
             authStateHolder::action,
-            navState.drawerOpen,
-            { value ->
-                navViewModel.action(NavAction.OpenDrawer(value))
-            },
+            navState,
+            navViewModel::action,
             onNavigationAction,
         ) {
             ServicesScreen(
@@ -234,17 +238,12 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
     @Composable
     override fun Screen(route: Settings, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
-        val theme by themeStateHolder.state.collectAsStateWithLifecycle()
-
         val authStateHolder: AuthStateHolder = koinInject()
-        val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
         SettingsScreen(
             Modifier,
             route,
-            theme,
             themeStateHolder::action,
-            auth,
             authStateHolder::action,
             onNavigationAction,
         )

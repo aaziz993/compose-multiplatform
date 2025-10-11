@@ -26,8 +26,10 @@ import arrow.optics.cons
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
+import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.stateholder.ThemeAction
 import com.alorma.compose.settings.ui.SettingsGroup
@@ -57,9 +59,7 @@ import ui.navigation.presentation.Verification
 public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
-    theme: Theme = Theme(),
     onThemeAction: (ThemeAction) -> Unit = {},
-    auth: Auth = Auth(),
     onAuthAction: (AuthAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
@@ -91,6 +91,7 @@ public fun SettingsScreen(
                 title = { Text(text = stringResource(Res.string.general)) },
                 contentPadding = PaddingValues(16.dp),
             ) {
+                val theme = LocalAppTheme.current
                 SettingsSwitch(
                     state = theme.isHighContrast,
                     title = { Text(text = stringResource(Res.string.high_contrast)) },
@@ -156,7 +157,7 @@ public fun SettingsScreen(
                 title = { Text(text = "User") },
                 contentPadding = PaddingValues(16.dp),
             ) {
-                if (!auth.user!!.roles.contains("VerifiedUser"))
+                if (!LocalAppAuth.current.user!!.roles.contains("VerifiedUser"))
                     Button(
                         onClick = {
                             onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Verification))

@@ -34,7 +34,7 @@ public class JxMapView(
     markers: Set<SwingWaypoint>? = null,
     routes: List<List<GeoPosition>>? = null,
     onSelect: ((Set<SwingWaypoint>, Set<SwingWaypoint>) -> Unit)? = null,
-    localization: MapViewLocalization = MapViewLocalization(),
+    localization: MapLocalization = MapLocalization(),
 ) : JXMapViewer() {
 
     private val factories = listOf(

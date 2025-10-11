@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -82,12 +83,13 @@ public fun VerificationScreen(
                 ?: Text("No document selected", color = Color.Gray)
         }
 
-        // Select from file
+        Spacer(modifier = Modifier.height(32.dp))
+
         Button(
             onClick = {
                 coroutineScope.launch {
                     // Call your multiplatform file picker here
-//                     selectedImage = FilePicker.pickFile()
+                    // FilePicker.pickFile()
                     onAction(VerificationAction.SetIdImage(""))
                 }
             },

@@ -29,7 +29,7 @@ script:
       cocoapods:
         # We don't need a podspec for a module dependency.
         - noPodspec: ()
-        - pod: ("MapLibre", libs.versions("pod.maplibre").requiredVersion)
+#        - pod: ("MapLibre", libs.versions("pod.maplibre").requiredVersion)
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->

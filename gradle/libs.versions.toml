@@ -397,6 +397,10 @@ compose = "1.9.0"
 material3 = "1.9.0-beta06"
 compose-hotReload = "1.0.0-beta09"
 materialExtendedIcon = "1.7.0-rc01"
+# a Compose Multiplatform library for creating dynamic Material Design 3 color palettes from any color.
+material-kolor = "3.0.0"
+# a Compose Multiplatform library for generating color palettes from images, including the dominant color. You can use this library in combination with MaterialKolor to generate dynamic Material themes based on images.
+kmpalette = "3.1.0"
 # colorr picker.
 colorpicker = "1.1.2"
 # icons.
@@ -408,6 +412,7 @@ squircle-shape = "4.0.0"
 # adaptive ui.
 material3-adaptive = "1.1.2"
 androidx-material = "1.13.0"
+# haze is a library providing a 'glassmorphism' style blur for Compose.
 haze = "1.6.10"
 # setting ui.
 compose-settings = "2.13.0"
@@ -870,6 +875,15 @@ kotlin-wrappers-catalog = { module = "org.jetbrains.kotlin-wrappers:kotlin-wrapp
 seskar = { module = "io.github.turansky.seskar:seskar-core", version.ref = "seskar" }
 
 ##Compose multiplatform.
+# a Compose Multiplatform library for creating dynamic Material Design 3 color palettes from any color.
+material-kolor = { module = "com.materialkolor:material-kolor", version.ref = "material-kolor" }
+# a Compose Multiplatform library for generating color palettes from images, including the dominant color. You can use this library in combination with MaterialKolor to generate dynamic Material themes based on images.
+kmpalette-core = { module = "com.kmpalette:kmpalette-core", version.ref = "kmpalette" }
+# optional source libraries
+kmpalette-extensions-base64 = { module = "com.kmpalette:extensions-base64", version.ref = "kmpalette" }
+kmpalette-extensions-bytearray = { module = "com.kmpalette:extensions-bytearray", version.ref = "kmpalette" }
+kmpalette-extensions-network = { module = "com.kmpalette:extensions-network", version.ref = "kmpalette" }
+kmpalette-extensions-file = { module = "com.kmpalette:extensions-file", version.ref = "kmpalette" }
 # color picker.
 compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpicker" }
 # icons.
@@ -900,6 +914,7 @@ material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive
 material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
 # haze is a library providing a 'glassmorphism' style blur for Compose.
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
 # settings ui.
 compose-settings-ui = { module = "com.github.alorma.compose-settings:ui-tiles", version.ref = "compose-settings" }
 compose-settings-ui-extended = { module = "com.github.alorma.compose-settings:ui-tiles-extended", version.ref = "compose-settings" }
@@ -1294,6 +1309,14 @@ kctfork = [
     "kctfork-ksp"
 ]
 ##Compose.
+# a Compose Multiplatform library for generating color palettes from images, including the dominant color. You can use this library in combination with MaterialKolor to generate dynamic Material themes based on images.
+kmpallete = [
+    "kmpalette-core",
+    "kmpalette-extensions-base64",
+    "kmpalette-extensions-bytearray",
+    "kmpalette-extensions-network",
+    "kmpalette-extensions-file",
+]
 # compose icons.
 compose-icons = [
     "compose-icons-css-gg",
@@ -1321,6 +1344,11 @@ material3-adaptive = [
     "material3-adaptive",
     "material3-adaptive-layout",
     "material3-adaptive-navigation"
+]
+# haze is a library providing a 'glassmorphism' style blur for Compose.
+haze = [
+    "haze",
+    "haze-materials"
 ]
 # setting ui.
 compose-settings-ui = [

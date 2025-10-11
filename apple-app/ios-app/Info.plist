@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><!--
+   Info.plist
+   apple-app
+
+   Created by Aziz Atoev on 11/10/25.
+   Copyright (c) 2025 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+    <dict>
+        <!-- Include shared plist -->
+        <key>LSApplicationQueriesSchemes</key>
+        <array />
+
+        <!-- Camera -->
+        <key>NSCameraUsageDescription</key>
+        <string>Required to capture photos and videos for user identity verification and core app features.</string>
+        <key>UIRequiredDeviceCapabilities</key>
+        <array>
+            <string>camera</string>
+        </array>
+
+        <!-- Microphone -->
+        <key>NSMicrophoneUsageDescription</key>
+        <string>Required to record audio for voice messages and video features.</string>
+
+        <!-- Photo Library -->
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>Required to select photos and videos to upload for app content or identity verification.</string>
+
+        <!-- Location (foreground only) -->
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>Required to provide location-based services in the app.</string>
+
+        <!-- Motion sensors -->
+        <key>NSMotionUsageDescription</key>
+        <string>Required to track user activity and motion data for health and fitness features.</string>
+
+        <!-- Notifications -->
+        <key>NSUserNotificationUsageDescription</key>
+        <string>Required to send important updates and alerts to the user.</string>
+    </dict>
+</plist>

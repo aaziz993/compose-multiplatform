@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import clib.presentation.components.map.Map
-import clib.presentation.components.map.model.MapViewConfig
-import clib.presentation.components.map.model.MapViewLocalization
+import clib.presentation.components.map.model.MapView
+import clib.presentation.components.map.model.MapLocalization
 import clib.presentation.components.map.model.Marker
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.location.LocationImpl
@@ -18,17 +18,17 @@ public fun MapScreen(
     route: Map = Map,
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
-    val center = LocationImpl(48.8566, 2.3522)
+    val center = LocationImpl(2.3522, 48.8566)
     val markers = listOf(
-        Marker(LocationImpl(48.8566, 2.3522, description = "Paris")),
-        Marker(LocationImpl(51.5074, -0.1278, description = "London")),
-        Marker(LocationImpl(40.7128, -74.0060, description = "New York")),
+        Marker(LocationImpl(2.3522, 48.8566, description = "Paris")),
+        Marker(LocationImpl(-0.1278, 51.5074, description = "London")),
+        Marker(LocationImpl(-74.0060, 40.7128, description = "New York")),
     )
 
     Map(
         modifier = Modifier.fillMaxSize(),
-        config = MapViewConfig(
-            initialCenter = LocationImpl(48.8566, 2.3522),
+        config = MapView(
+            initialCenter = center,
             initialZoom = 4,
             movable = true,
             zoomable = true,
@@ -42,7 +42,7 @@ public fun MapScreen(
             println("Selection changed: added=$added removed=$removed")
         },
         routes = null,
-        localization = MapViewLocalization(
+        localization = MapLocalization(
             selectTile = "SelectTile",
             virtualEarthMap = "VirtualEarth Map",
             openStreetMap = "OpenStreet Map",

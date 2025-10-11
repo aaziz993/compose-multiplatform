@@ -8,7 +8,9 @@ import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 public class VerificationViewModel(
     private val authStateHolder: AuthStateHolder,
     override val savedStateHandle: SavedStateHandle = SavedStateHandle(),

@@ -24,6 +24,7 @@ import androidx.navigation.toRoute
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.type.auth.AuthResource
+import klib.data.type.auth.model.Auth
 import klib.data.type.auth.model.User
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
@@ -49,11 +50,7 @@ public sealed interface Route {
 
     public fun authResource(): AuthResource? = null
 
-    public fun authProvider(): String? = null
-
-    public fun authUser(): User? = null
-
-    public fun auth(): Boolean = authResource()?.validate(authProvider(), authUser()) != false
+    public fun auth(auth: Auth): Boolean = authResource()?.validate(auth.provider, auth.user) != false
 
     context(navGraphBuilder: NavGraphBuilder)
     public fun item(
@@ -103,6 +100,7 @@ public sealed interface Route {
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
+        auth: Auth = Auth(),
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
         text: @Composable (label: String, modifier: Modifier) -> Unit,
@@ -110,7 +108,7 @@ public sealed interface Route {
         currentDestination: NavDestination?,
         navigateTo: (Route) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (!isNavigateItem() || !auth()) return@with
+        if (!isNavigateItem() || !auth(auth)) return@with
 
         val selected = isSelected(currentDestination)
 
@@ -248,6 +246,7 @@ public abstract class NavigationRoute : Route {
 
     context(navigationSuiteScope: NavigationSuiteScope)
     override fun item(
+        auth: Auth,
         enabled: Boolean,
         alwaysShowLabel: Boolean,
         text: @Composable (label: String, modifier: Modifier) -> Unit,
@@ -255,13 +254,13 @@ public abstract class NavigationRoute : Route {
         currentDestination: NavDestination?,
         navigateTo: (Route) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (!isNavigateItem() || !auth()) return@with
+        if (!isNavigateItem() || !auth(auth)) return@with
 
         if (expand)
             routes.forEach { route ->
-                route.item(enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
+                route.item(auth, enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
             }
-        else super.item(enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
+        else super.item(auth, enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
     }
 
     public fun find(destination: NavDestination?): Route? =
