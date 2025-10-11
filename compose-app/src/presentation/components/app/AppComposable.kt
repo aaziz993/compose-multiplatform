@@ -21,6 +21,7 @@ import presentation.theme.LightColorsHighContrast
 import presentation.theme.Shapes
 import presentation.theme.Typography
 import ui.navigation.presentation.AuthRoute
+import ui.navigation.presentation.Destination
 import ui.navigation.presentation.NavScreen
 import ui.navigation.presentation.News
 
@@ -35,7 +36,7 @@ public fun AppComposable(
     val locale by localeStateHolder.state.collectAsStateWithLifecycle()
     val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
-    val startDestination: Route = remember(auth.user) { if (auth.user == null) AuthRoute else News }
+    val startDestination: Destination = remember(auth.user) { if (auth.user == null) AuthRoute else News }
 
     AppEnvironment(
         theme,

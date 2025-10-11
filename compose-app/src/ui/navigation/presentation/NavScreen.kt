@@ -21,7 +21,6 @@ import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
-import clib.presentation.components.navigation.model.Route
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
@@ -34,8 +33,8 @@ import ui.navigation.presentation.viewmodel.NavViewModel
 @Suppress("ComposeModifierMissing")
 @Composable
 public fun NavScreen(
-    startDestination: Route = Home,
-    navigator: Navigator<Route> = koinInject(),
+    startDestination: Destination = Home,
+    navigator: Navigator<Destination> = koinInject(),
     navViewModel: NavViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
@@ -57,7 +56,7 @@ public fun NavScreen(
                 },
                 currentDestination = currentDestination,
             ) { destination ->
-                navigator.navigate(destination)
+                navigator.navigate(destination as Destination)
             }
         },
         modifier = Modifier.fillMaxSize(),

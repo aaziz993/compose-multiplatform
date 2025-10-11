@@ -50,7 +50,7 @@ public val LocalTitle: ProvidableCompositionLocal<String> = staticCompositionLoc
 @Composable
 public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     route: NavigationRoute,
-    startDestination: Route,
+    startDestination: Dest,
     navigator: Navigator<Dest>,
     navigationSuiteRoute: NavigationSuiteScope.(currentDestination: NavDestination?, route: Route) -> Unit,
     modifier: Modifier = Modifier,

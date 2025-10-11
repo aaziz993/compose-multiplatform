@@ -27,7 +27,7 @@ public fun MapScreen(
 
     Map(
         modifier = Modifier.fillMaxSize(),
-        config = MapView(
+        view = MapView(
             initialCenter = center,
             initialZoom = 4,
             movable = true,

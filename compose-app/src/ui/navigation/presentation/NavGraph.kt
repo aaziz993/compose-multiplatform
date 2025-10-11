@@ -154,6 +154,7 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
             navState,
             navViewModel::action,
             onNavigationAction,
+            modifier = Modifier.fillMaxSize(),
         ) {
             ArticlesScreen(
                 Modifier,
@@ -213,6 +214,7 @@ public data object Services : Destination, NavigationDestination<Services>() {
             navState,
             navViewModel::action,
             onNavigationAction,
+            modifier = Modifier.fillMaxSize(),
         ) {
             ServicesScreen(
                 Modifier,
@@ -459,15 +461,12 @@ public data object Verification : Destination, NavigationDestination<Verificatio
     @Composable
     override fun Screen(route: Verification, onNavigationAction: (NavigationAction) -> Unit) {
         val authStateHolder: AuthStateHolder = koinInject()
-        val auth by authStateHolder.state.collectAsStateWithLifecycle()
-
         val verificationViewModel: VerificationViewModel = koinViewModel()
         val state by verificationViewModel.state.collectAsStateWithLifecycle()
 
         VerificationScreen(
             Modifier.fillMaxSize().padding(16.dp),
             route,
-            auth,
             authStateHolder::action,
             state,
             verificationViewModel::action,
@@ -493,12 +492,10 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
     @Composable
     override fun Screen(route: Profile, onNavigationAction: (NavigationAction) -> Unit) {
         val authStateHolder: AuthStateHolder = koinInject()
-        val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
         ProfileScreen(
             Modifier,
             route,
-            auth,
             authStateHolder::action,
             onNavigationAction,
         )

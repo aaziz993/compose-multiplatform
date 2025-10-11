@@ -46,7 +46,6 @@ import ui.navigation.presentation.Verification
 public fun VerificationScreen(
     modifier: Modifier = Modifier,
     route: Verification = Verification,
-    auth: Auth = Auth(),
     onAuthAction: (AuthAction) -> Unit = {},
     state: VerificationState = VerificationState(),
     onAction: (VerificationAction) -> Unit = {},

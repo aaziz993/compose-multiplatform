@@ -24,6 +24,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -33,6 +34,7 @@ import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.LocalBackButton
 import clib.presentation.components.navigation.LocalTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.easedVerticalGradient
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.ThemeMode
 import clib.presentation.theme.stateholder.ThemeAction
@@ -80,16 +82,13 @@ public fun ScreenAppBar(
 
                 when (mode) {
                     ScaffoldMode.Default -> Unit
-                    ScaffoldMode.Progressive -> {
+                    ScaffoldMode.Progressive ->
                         progressive = HazeProgressive.verticalGradient(
                             startIntensity = 1f,
                             endIntensity = 0f,
                         )
-                    }
 
-                    ScaffoldMode.Mask -> {
-                        mask = Brush.easedVerticalGradient(EaseIn)
-                    }
+                    ScaffoldMode.Mask -> mask = Brush.easedVerticalGradient(EaseIn)
                 }
             }.then(modifier),
         topBar = {

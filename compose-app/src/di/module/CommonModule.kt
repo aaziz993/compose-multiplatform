@@ -3,7 +3,6 @@ package di.module
 import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.components.navigation.DefaultNavigator
 import clib.presentation.components.navigation.Navigator
-import clib.presentation.components.navigation.model.Route
 import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import dev.jordond.connectivity.Connectivity
@@ -33,7 +32,7 @@ public class CommonModule {
     public fun provideAuthStateHolder(): AuthStateHolder = AuthStateHolder()
 
     @Single
-    public fun provideNavigator(): Navigator<Route> = DefaultNavigator(AuthRoute) {
+    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(AuthRoute) {
 
     }
 

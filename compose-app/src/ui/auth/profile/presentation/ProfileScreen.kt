@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.viewmodel.NavigationAction
@@ -39,7 +40,6 @@ import ui.navigation.presentation.Profile
 public fun ProfileScreen(
     modifier: Modifier = Modifier,
     route: Profile = Profile,
-    auth: Auth = Auth(),
     onAuthAction: (AuthAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
@@ -51,10 +51,10 @@ public fun ProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        with(auth.user!!) {
+        with(LocalAppAuth.current.user!!) {
 
             Avatar(
-                user = auth.user!!,
+                user = this,
                 modifier = Modifier.size(48.dp),
             ) {
                 IconButton(
@@ -75,7 +75,7 @@ public fun ProfileScreen(
             Spacer(Modifier.height(16.dp))
 
 
-            auth.user?.username?.let {
+            username?.let {
                 Text(
                     text = "@$it",
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),

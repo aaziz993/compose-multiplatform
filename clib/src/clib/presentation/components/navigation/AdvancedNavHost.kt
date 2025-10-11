@@ -22,10 +22,10 @@ import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
 @Composable
-public fun AdvancedNavHost(
+public fun <Dest : Any> AdvancedNavHost(
     navController: NavHostController,
     route: NavigationRoute,
-    startDestination: Route,
+    startDestination: Dest,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.TopStart,
     typeMap: Map<KType, NavType<*>> = emptyMap(),
