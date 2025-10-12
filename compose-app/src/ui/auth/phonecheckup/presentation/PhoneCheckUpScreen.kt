@@ -67,9 +67,9 @@ public fun PhoneCheckUpScreen(
             Locale.current.country()?.let { country = it }
 
         CountryCodePickerTextField(
-            value = state.phone,
-            onValueChange = { _, value, _ ->
-                onAction(PhoneCheckUpAction.SetPhone(value))
+            value = state.number,
+            onValueChange = { countryCode, value, isValid ->
+                onAction(PhoneCheckUpAction.SetPhone(countryCode, value, isValid))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,7 +83,7 @@ public fun PhoneCheckUpScreen(
                 )
             },
             trailingIcon = {
-                IconButton(onClick = { onAction(PhoneCheckUpAction.SetPhone("")) }) {
+                IconButton(onClick = { onAction(PhoneCheckUpAction.SetPhone()) }) {
                     Icon(
                         imageVector = Icons.Default.Clear, contentDescription = "Clear",
                     )

@@ -39,23 +39,22 @@ import clib.presentation.easedVerticalGradient
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.ThemeMode
 import clib.presentation.theme.stateholder.ThemeAction
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.navigate_back
+import compose_app.generated.resources.profile
+import compose_app.generated.resources.sos
+import compose_app.generated.resources.theme
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
 import dev.chrisbanes.haze.HazeProgressive
 import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
+import org.jetbrains.compose.resources.stringResource
+import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
 import ui.navigation.presentation.Profile
 
-public enum class ScaffoldMode {
-    Default,
-    Progressive,
-    Mask,
-}
-
-@OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
 public fun ScreenAppBar(
     onThemeAction: (ThemeAction) -> Unit,
@@ -65,7 +64,7 @@ public fun ScreenAppBar(
     onNavigationAction: (NavigationAction) -> Unit,
     modifier: Modifier = Modifier,
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
-    mode: ScaffoldMode = ScaffoldMode.Default,
+    mode: ScreenAppBarMode = ScreenAppBarMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
     content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
@@ -80,14 +79,14 @@ public fun ScreenAppBar(
                 this.inputScale = inputScale
 
                 when (mode) {
-                    ScaffoldMode.Default -> Unit
-                    ScaffoldMode.Progressive ->
+                    ScreenAppBarMode.Default -> Unit
+                    ScreenAppBarMode.Progressive ->
                         progressive = HazeProgressive.verticalGradient(
                             startIntensity = 1f,
                             endIntensity = 0f,
                         )
 
-                    ScaffoldMode.Mask -> mask = Brush.easedVerticalGradient(EaseIn)
+                    ScreenAppBarMode.Mask -> mask = Brush.easedVerticalGradient(EaseIn)
                 }
             },
         topBar = {
@@ -109,20 +108,20 @@ public fun ScreenAppBar(
 
 
                         if (LocalHasPreviousDestination.current)
-                            AppTooltipBox("Navigate back") {
+                            AppTooltipBox(stringResource(Res.string.navigate_back)) {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.NavigateBack) },
                                 ) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = "Navigate back",
+                                        contentDescription = stringResource(Res.string.navigate_back),
                                     )
                                 }
                             }
                     }
                 },
                 actions = {
-                    AppTooltipBox("SOS") {
+                    AppTooltipBox(stringResource(Res.string.sos)) {
                         IconButton(
                             onClick = {
 
@@ -130,13 +129,14 @@ public fun ScreenAppBar(
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Sos,
-                                contentDescription = "SOS",
+                                contentDescription = stringResource(Res.string.sos),
                             )
                         }
                     }
 
                     val theme = LocalAppTheme.current
-                    AppTooltipBox("Switch theme") {
+
+                    AppTooltipBox(stringResource(Res.string.theme)) {
                         IconButton(
                             onClick = {
                                 when (theme.mode) {
@@ -152,11 +152,33 @@ public fun ScreenAppBar(
                                     ThemeMode.LIGHT -> Icons.Outlined.LightMode
                                     ThemeMode.DARK -> Icons.Outlined.DarkMode
                                 },
-                                contentDescription = "Switch theme",
+                                contentDescription = stringResource(Res.string.theme),
                             )
                         }
                     }
-                    AppTooltipBox("Profile") {
+
+                    AppTooltipBox(stringResource(Res.string.theme)) {
+                        IconButton(
+                            onClick = {
+                                when (theme.mode) {
+                                    ThemeMode.SYSTEM -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.LIGHT)))
+                                    ThemeMode.LIGHT -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.DARK)))
+                                    ThemeMode.DARK -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.SYSTEM)))
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = when (theme.mode) {
+                                    ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
+                                    ThemeMode.LIGHT -> Icons.Outlined.LightMode
+                                    ThemeMode.DARK -> Icons.Outlined.DarkMode
+                                },
+                                contentDescription = stringResource(Res.string.theme),
+                            )
+                        }
+                    }
+
+                    AppTooltipBox(stringResource(Res.string.profile)) {
                         val user = LocalAppAuth.current.user!!
                         Avatar(
                             user = user,

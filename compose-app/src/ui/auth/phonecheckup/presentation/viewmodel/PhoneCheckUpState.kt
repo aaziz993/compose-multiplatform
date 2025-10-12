@@ -1,5 +1,7 @@
 package ui.auth.phonecheckup.presentation.viewmodel
 
 public data class PhoneCheckUpState(
-    val phone: String = "",
+    val countryCode: String = "",
+    val number: String = "",
+    val isValid: Boolean = false,
 )

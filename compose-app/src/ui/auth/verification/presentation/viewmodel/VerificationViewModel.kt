@@ -32,7 +32,7 @@ public class VerificationViewModel(
         viewModelScope.launch {
             val user = authStateHolder.state.value.user!!
             authStateHolder.action(
-                AuthAction.SetUser(user.copy(roles = user.roles + "VerifiedUser")),
+                AuthAction.SetUser(user.copy(roles = user.roles + "Verified")),
             )
         }
     }

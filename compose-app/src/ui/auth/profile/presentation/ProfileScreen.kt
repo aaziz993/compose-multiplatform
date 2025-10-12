@@ -17,10 +17,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +35,8 @@ import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.viewmodel.NavigationAction
-import klib.data.type.auth.model.Auth
+import clib.presentation.components.picker.country.CountryCodePickerTextField
+import clib.presentation.components.textfield.AdvancedTextField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Profile
 
@@ -42,89 +46,97 @@ public fun ProfileScreen(
     route: Profile = Profile,
     onAuthAction: (AuthAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
+): Unit = Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-
-        with(LocalAppAuth.current.user!!) {
-
-            Avatar(
-                user = this,
-                modifier = Modifier.size(48.dp),
+    with(LocalAppAuth.current.user!!) {
+        Avatar(
+            user = this,
+            modifier = Modifier.size(48.dp),
+        ) {
+            IconButton(
+                onClick = {},
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(20.dp, 5.dp)
+                    .size(24.dp),
             ) {
-                IconButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .offset(20.dp, 5.dp)
-                        .size(24.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Edit,
-                        contentDescription = "Edit avatar",
-                        modifier = Modifier.size(14.dp),
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = "Edit avatar",
+                    modifier = Modifier.size(14.dp),
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        AdvancedTextField(
+            value = username.orEmpty(),
+            onValueChange = { },
+            label = { Text("Username") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        AdvancedTextField(
+            value = email.orEmpty(),
+            onValueChange = { },
+            label = { Text("Email") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        CountryCodePickerTextField(
+            value = phone.orEmpty(),
+            onValueChange = { _, _, _ -> },
+            label = { Text("Phone") },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        if (roles.isNotEmpty()) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                roles.forEach { role ->
+                    AssistChip(
+                        onClick = {},
+                        label = { Text(role) },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            labelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ),
                     )
                 }
             }
+        }
 
-            Spacer(Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
-
-            username?.let {
-                Text(
-                    text = "@$it",
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                )
-            }
-
-            Spacer(Modifier.height(16.dp))
-
-            // Contact info
-            ContactInfoItem(label = "Email", value = email)
-            ContactInfoItem(label = "Phone", value = phone)
-
-            Spacer(Modifier.height(20.dp))
-
-            // Roles
-            if (roles.isNotEmpty()) {
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    roles.forEach { role ->
-                        AssistChip(
-                            onClick = {},
-                            label = { Text(role) },
-                            colors = AssistChipDefaults.assistChipColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                labelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            ),
-                        )
-                    }
-                }
-            }
-
-            Spacer(Modifier.height(24.dp))
-
-            if (attributes.isNotEmpty()) {
-                ElevatedCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                ) {
-                    Column(Modifier.padding(16.dp)) {
-                        Text(
-                            text = "Attributes",
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium),
-                            modifier = Modifier.padding(bottom = 8.dp),
-                        )
-
-                        attributes.forEach { (key, values) ->
-                            AttributeItem(key, values.joinToString(", "))
+        if (attributes.isNotEmpty()) {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(4.dp),
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        "Attributes",
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium),
+                    )
+                    attributes.forEach { (key, values) ->
+                        Column {
+                            Text(
+                                key,
+                                style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                            )
+                            Text(values.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
                         }
                     }
                 }
@@ -136,38 +148,3 @@ public fun ProfileScreen(
 @Preview
 @Composable
 public fun PreviewProfileScreen(): Unit = ProfileScreen()
-
-@Composable
-private fun ContactInfoItem(label: String, value: String?) {
-    if (!value.isNullOrBlank()) {
-        Row(
-            modifier = Modifier.padding(vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "$label:",
-                modifier = Modifier.width(80.dp),
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyMedium,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
-
-@Composable
-private fun AttributeItem(label: String, value: String) {
-    Column(Modifier.padding(vertical = 4.dp)) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-    }
-}

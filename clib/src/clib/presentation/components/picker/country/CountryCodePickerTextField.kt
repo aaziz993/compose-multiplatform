@@ -25,6 +25,7 @@ import io.michaelrocks.libphonenumber.kotlin.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.kotlin.metadata.defaultMetadataLoader
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
+import klib.data.type.collections.get
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -32,7 +33,10 @@ public fun CountryCodePickerTextField(
     value: String,
     onValueChange: (countryCode: String, value: String, isValid: Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    selectedCountry: Country = Country.getCountries().first(),
+    selectedCountry: Country =
+        Country.getCountries().firstOrNull { country ->
+            country.dial?.let(value::startsWith) ?: false
+        } ?: Country.getCountries().first(),
     countries: List<Country> = Country.getCountries().toList(),
     enabled: Boolean = true,
     textStyle: TextStyle = LocalTextStyle.current,

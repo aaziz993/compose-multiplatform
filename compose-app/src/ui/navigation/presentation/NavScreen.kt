@@ -31,13 +31,13 @@ import org.koin.core.qualifier.named
 @Composable
 public fun NavScreen(
     modifier: Modifier = Modifier,
-    drawerStateHolder: BooleanStateHolder = koinInject(named("drawer")),
     startDestination: Destination = AuthRoute,
     navigator: Navigator<Destination> = koinInject(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val auth = LocalAppAuth.current
+    val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
     val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
     AdvancedNavigationSuiteScaffold(

@@ -1,5 +1,6 @@
 package ui.navigation.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -110,11 +111,32 @@ public data object Home : Destination, NavigationDestination<Home>() {
         route: Home,
         onNavigationAction: (NavigationAction) -> Unit,
     ) {
-        HomeScreen(
-            Modifier,
-            route,
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                HomeScreen(
+                    Modifier,
+                    route,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 }
 
@@ -180,12 +202,28 @@ public data object Map : Destination, NavigationDestination<Map>() {
     }
 
     @Composable
-    override fun Screen(route: Map, onNavigationAction: (NavigationAction) -> Unit): Unit =
-        MapScreen(
-            Modifier,
-            route,
+    override fun Screen(route: Map, onNavigationAction: (NavigationAction) -> Unit) {
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) {
+            MapScreen(
+                Modifier,
+                route,
+                onNavigationAction,
+            )
+        }
+    }
 }
 
 @Serializable
@@ -217,12 +255,18 @@ public data object Services : Destination, NavigationDestination<Services>() {
             drawerStateHolder::toggle,
             onNavigationAction,
             modifier = Modifier.fillMaxSize(),
-        ) {
-            ServicesScreen(
-                Modifier,
-                route,
-                onNavigationAction,
-            )
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                ServicesScreen(
+                    Modifier,
+                    route,
+                    onNavigationAction,
+                )
+            }
         }
     }
 }
@@ -243,14 +287,32 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
     override fun Screen(route: Settings, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
         val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
-        SettingsScreen(
-            Modifier,
-            route,
+        ScreenAppBar(
             themeStateHolder::action,
             authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                SettingsScreen(
+                    Modifier,
+                    route,
+                    themeStateHolder::action,
+                    authStateHolder::action,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 }
 
@@ -267,12 +329,34 @@ public data object About : Destination, NavigationDestination<About>() {
     }
 
     @Composable
-    override fun Screen(route: About, onNavigationAction: (NavigationAction) -> Unit): Unit =
-        AboutScreen(
-            Modifier,
-            route,
+    override fun Screen(route: About, onNavigationAction: (NavigationAction) -> Unit) {
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                AboutScreen(
+                    Modifier,
+                    route,
+                    onNavigationAction,
+                )
+            }
+        }
+    }
 }
 
 @Serializable
@@ -336,17 +420,36 @@ public data object PinCode : Destination, NavigationDestination<PinCode>() {
 
     @Composable
     override fun Screen(route: PinCode, onNavigationAction: (NavigationAction) -> Unit) {
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
         val viewModel: PinCodeViewModel = koinViewModel()
-
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        PinCodeScreen(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp),
-            route,
-            state,
-            viewModel::action,
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                PinCodeScreen(
+                    Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                    route,
+                    state,
+                    viewModel::action,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 
     override fun isNavigateItem(): Boolean = false
@@ -446,11 +549,32 @@ public data object Unverified : Destination, NavigationDestination<Unverified>()
 
     @Composable
     override fun Screen(route: Unverified, onNavigationAction: (NavigationAction) -> Unit) {
-        UnverifiedScreen(
-            Modifier.fillMaxSize().padding(16.dp),
-            route,
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                UnverifiedScreen(
+                    Modifier.fillMaxSize().padding(16.dp),
+                    route,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 
     override fun isNavigateItem(): Boolean = false
@@ -462,18 +586,37 @@ public data object Verification : Destination, NavigationDestination<Verificatio
 
     @Composable
     override fun Screen(route: Verification, onNavigationAction: (NavigationAction) -> Unit) {
+        val themeStateHolder: ThemeStateHolder = koinInject()
         val authStateHolder: AuthStateHolder = koinInject()
-        val verificationViewModel: VerificationViewModel = koinViewModel()
-        val state by verificationViewModel.state.collectAsStateWithLifecycle()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+        val viewModel: VerificationViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
 
-        VerificationScreen(
-            Modifier.fillMaxSize().padding(16.dp),
-            route,
+        ScreenAppBar(
+            themeStateHolder::action,
             authStateHolder::action,
-            state,
-            verificationViewModel::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                VerificationScreen(
+                    Modifier.fillMaxSize().padding(16.dp),
+                    route,
+                    authStateHolder::action,
+                    state,
+                    viewModel::action,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 
     override fun isNavigateItem(): Boolean = false
@@ -493,14 +636,33 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 
     @Composable
     override fun Screen(route: Profile, onNavigationAction: (NavigationAction) -> Unit) {
+        val themeStateHolder: ThemeStateHolder = koinInject()
         val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
-        ProfileScreen(
-            Modifier,
-            route,
+        ScreenAppBar(
+            themeStateHolder::action,
             authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                ProfileScreen(
+                    Modifier.fillMaxSize().padding(16.dp),
+                    route,
+                    authStateHolder::action,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 }
 
@@ -525,11 +687,32 @@ public data object Balance : Destination, NavigationDestination<Balance>() {
 
     @Composable
     override fun Screen(route: Balance, onNavigationAction: (NavigationAction) -> Unit) {
-        BalanceScreen(
-            Modifier,
-            route,
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                BalanceScreen(
+                    Modifier,
+                    route,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 }
 
@@ -547,11 +730,32 @@ public data object Crypto : Destination, NavigationDestination<Crypto>() {
 
     @Composable
     override fun Screen(route: Crypto, onNavigationAction: (NavigationAction) -> Unit) {
-        CryptoScreen(
-            Modifier,
-            route,
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                CryptoScreen(
+                    Modifier,
+                    route,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 }
 
@@ -569,10 +773,31 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
 
     @Composable
     override fun Screen(route: Stock, onNavigationAction: (NavigationAction) -> Unit) {
-        StockScreen(
-            Modifier,
-            route,
+        val themeStateHolder: ThemeStateHolder = koinInject()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
+
+        ScreenAppBar(
+            themeStateHolder::action,
+            authStateHolder::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
-        )
+            modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                StockScreen(
+                    Modifier,
+                    route,
+                    onNavigationAction,
+                )
+            }
+        }
     }
 }

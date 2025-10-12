@@ -23,15 +23,17 @@ public class PhoneCheckUpViewModel(
         field = MutableStateFlow(PhoneCheckUpState())
 
     override fun action(action: PhoneCheckUpAction): Unit = when (action) {
-        is PhoneCheckUpAction.SetPhone -> setPhone(action.value)
+        is PhoneCheckUpAction.SetPhone -> setPhone(action.countryCode, action.number, action.isValid)
         PhoneCheckUpAction.Confirm -> confirm()
     }
 
-    private fun setPhone(value: String) = state.update { it.copy(phone = value) }
+    private fun setPhone(countryCode: String, number: String, isValid: Boolean) =
+        state.update { it.copy(countryCode = countryCode, number = number, isValid = isValid) }
 
     private fun confirm() {
         viewModelScope.launch(StandardDispatchers.io) {
-            navigator.navigate(Otp(state.value.phone))
+            if (state.value.isValid)
+                navigator.navigate(Otp("${state.value.countryCode}${state.value.number}"))
         }
     }
 }
