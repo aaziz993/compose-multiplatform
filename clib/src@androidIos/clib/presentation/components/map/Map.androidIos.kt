@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import io.github.dellisd.spatialk.geojson.Position
 import klib.data.location.Location
 import klib.data.type.collections.symmetricMinus
 import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.collections.updateSymmetric
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
 import org.maplibre.compose.expressions.dsl.const
@@ -57,7 +59,7 @@ public actual fun Map(
     )
     val styleState = rememberStyleState()
 
-    var selectedMarkers by remember { mutableStateOf<Set<Marker>>(emptySet()) }
+    val selectedMarkers = remember { mutableStateSetOf<Marker>() }
 
     Box(Modifier.fillMaxSize()) {
         MaplibreMap(
@@ -88,8 +90,9 @@ public actual fun Map(
                     onLongClick = { features ->
                         if (onSelect == null) ClickResult.Pass
                         else {
-                            val (left, right) = selectedMarkers symmetricMinus features.map { feature -> markers.single { marker -> marker.location.identifier == feature.id } }.toSet()
-                            selectedMarkers = selectedMarkers - left + right
+                            val (left, right) = selectedMarkers.updateSymmetric(
+                                features.map { feature -> markers.single { marker -> marker.location.identifier == feature.id } }.toSet(),
+                            )
                             onSelect(left.map(Marker::location).toSet(), right.map(Marker::location).toSet())
                             ClickResult.Consume
                         }
