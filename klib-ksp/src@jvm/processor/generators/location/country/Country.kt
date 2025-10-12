@@ -119,7 +119,7 @@ private fun File.loadCountryDialMap(): Map<String, Pair<String, List<String>>> {
     }
 
     return lines.drop(1).mapNotNull { line ->
-        val columns = line.split(",")
+        val columns = parseCsvLine(line)
         val alpha2 = columns.getOrNull(alpha2Index)?.trim().orEmpty()
         val dial = columns.getOrNull(dialIndex)?.trim().orEmpty()
         val languages = columns.getOrNull(languagesIndex)
@@ -129,4 +129,11 @@ private fun File.loadCountryDialMap(): Map<String, Pair<String, List<String>>> {
             ?.filter(String::isNotEmpty).orEmpty()
         if (alpha2.isEmpty() && dial.isEmpty() && languages.isEmpty()) null else alpha2 to (dial to languages)
     }.toMap()
+}
+
+private fun parseCsvLine(line: String): List<String> {
+    val regex = Regex("""(?<=^|,)(?:"([^"]*)"|([^",]*))""")
+    return regex.findAll(line).map { match ->
+        match.groups[1]?.value ?: match.groups[2]?.value ?: ""
+    }.toList()
 }

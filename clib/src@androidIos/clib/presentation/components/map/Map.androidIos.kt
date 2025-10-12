@@ -90,9 +90,16 @@ public actual fun Map(
                     onLongClick = { features ->
                         if (onSelect == null) ClickResult.Pass
                         else {
-                            val (left, right) = selectedMarkers.updateSymmetric(
-                                features.map { feature -> markers.single { marker -> marker.location.identifier == feature.id } }.toSet(),
-                            )
+                            val (left, right) = features.map { feature -> markers.single { marker -> marker.location.identifier == feature.id } }.partition { marker ->
+                                if (marker in selectedMarkers) {
+                                    selectedMarkers -= marker
+                                    true
+                                }
+                                else {
+                                    selectedMarkers += marker
+                                    false
+                                }
+                            }
                             onSelect(left.map(Marker::location).toSet(), right.map(Marker::location).toSet())
                             ClickResult.Consume
                         }

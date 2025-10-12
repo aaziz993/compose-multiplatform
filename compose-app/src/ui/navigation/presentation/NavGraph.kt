@@ -223,12 +223,18 @@ public data object Map : Destination, NavigationDestination<Map>() {
             onNavigationAction,
             modifier = Modifier.fillMaxSize(),
             blurEnabled = true,
-        ) {
-            MapScreen(
-                Modifier,
-                route,
-                onNavigationAction,
-            )
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                MapScreen(
+                    Modifier,
+                    route,
+                    onNavigationAction,
+                )
+            }
         }
     }
 }

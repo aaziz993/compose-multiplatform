@@ -3,6 +3,7 @@ package clib.presentation.components.map
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
+import androidx.compose.ui.graphics.Color
 import clib.data.location.toGeoPosition
 import clib.data.location.toLocation
 import clib.presentation.components.map.model.JxMapView
@@ -24,6 +25,7 @@ public actual fun Map(
     localization: MapLocalization,
 ): Unit = SwingPanel(
     modifier = modifier,
+    background = Color.Transparent,
     factory = {
         JxMapView(
             initialCenter = view.initialCenter?.toGeoPosition(),
