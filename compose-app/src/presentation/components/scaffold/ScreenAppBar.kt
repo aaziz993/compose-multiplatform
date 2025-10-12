@@ -24,18 +24,26 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.data.location.country.flag
 import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.LocalHasPreviousDestination
 import clib.presentation.components.navigation.LocalTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.easedVerticalGradient
+import clib.presentation.locale.stateholder.LocaleAction
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.ThemeMode
 import clib.presentation.theme.stateholder.ThemeAction
@@ -50,6 +58,11 @@ import dev.chrisbanes.haze.HazeProgressive
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
+import klib.data.location.country.Country
+import klib.data.location.locale.Locale
+import klib.data.location.locale.current
+import org.jetbrains.compose.resources.imageResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
@@ -58,6 +71,7 @@ import ui.navigation.presentation.Profile
 @Composable
 public fun ScreenAppBar(
     onThemeAction: (ThemeAction) -> Unit,
+    onLocaleAction: (LocaleAction) -> Unit,
     onAuthAction: (AuthAction) -> Unit,
     isDrawerOpen: Boolean,
     toggleDrawer: () -> Unit,
@@ -157,24 +171,30 @@ public fun ScreenAppBar(
                         }
                     }
 
+                    var isCountryPickerDialogOpen by remember { mutableStateOf(false) }
+
+                    if (isCountryPickerDialogOpen)
+                        CountryPickerDialog(
+                            onItemClicked = {
+
+                            },
+                            onDismissRequest = {
+                                isCountryPickerDialogOpen = false
+                            },
+                        )
+
+                    var country by remember { mutableStateOf(Country.forCode("TJ")) }
+
+                    if (!LocalInspectionMode.current)
+                        Locale.current.country()?.let { country = it }
+
                     AppTooltipBox(stringResource(Res.string.theme)) {
                         IconButton(
                             onClick = {
-                                when (theme.mode) {
-                                    ThemeMode.SYSTEM -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.LIGHT)))
-                                    ThemeMode.LIGHT -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.DARK)))
-                                    ThemeMode.DARK -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.SYSTEM)))
-                                }
+                                isCountryPickerDialogOpen = true
                             },
                         ) {
-                            Icon(
-                                imageVector = when (theme.mode) {
-                                    ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
-                                    ThemeMode.LIGHT -> Icons.Outlined.LightMode
-                                    ThemeMode.DARK -> Icons.Outlined.DarkMode
-                                },
-                                contentDescription = stringResource(Res.string.theme),
-                            )
+                            Text(text = country.alpha2.getEmojiFlag())
                         }
                     }
 

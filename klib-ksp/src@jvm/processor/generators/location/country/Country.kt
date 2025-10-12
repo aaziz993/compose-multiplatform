@@ -10,7 +10,6 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import java.io.File
 import klib.data.processing.Logger
@@ -104,20 +103,22 @@ public fun generateCountryRegistry(
     fileSpec.writeToOrOverride(codeGenerator, aggregating = false)
 }
 
-private fun File.loadCountryDialMap(): Map<String, String> {
+private fun File.loadCountryDialMap(): Map<String, Pair<String, List<String>>> {
     val lines = readLines()
     val header = lines.first().split(",")
     val alpha2Index = header.indexOf("ISO3166-1-Alpha-2")
     val dialIndex = header.indexOf("Dial")
+    val languagesIndex = header.indexOf("Languages")
 
-    require(alpha2Index >= 0 && dialIndex >= 0) {
+    require(alpha2Index >= 0 && dialIndex >= 0 && languagesIndex >= 0) {
         "CSV must contain 'ISO3166-1-Alpha-2' and 'Dial' columns"
     }
 
     return lines.drop(1).mapNotNull { line ->
-        val cols = line.split(",")
-        val alpha2 = cols.getOrNull(alpha2Index)?.trim().orEmpty()
-        val dial = cols.getOrNull(dialIndex)?.trim().orEmpty()
-        if (alpha2.isNotEmpty() && dial.isNotEmpty()) alpha2 to dial else null
+        val columns = line.split(",")
+        val alpha2 = columns.getOrNull(alpha2Index)?.trim().orEmpty()
+        val dial = columns.getOrNull(dialIndex)?.trim().orEmpty()
+        val languages = columns.getOrNull(languagesIndex)?.trim()?.split(",").orEmpty()
+        if (alpha2.isNotEmpty() && dial.isNotEmpty() && languages.isEmpty()) alpha2 to (dial to languages) else null
     }.toMap()
 }

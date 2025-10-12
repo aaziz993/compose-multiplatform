@@ -16,6 +16,7 @@ public data class Country(
     val subRegionCode: Int? = null,
     val intermediateRegionCode: Int? = null,
     val dial: String? = null,
+    val languages: Set<String> = emptySet(),
 ) {
 
     override fun toString(): String = alpha2.toString()

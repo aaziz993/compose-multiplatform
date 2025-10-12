@@ -1,5 +1,6 @@
 package ui.settings
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import clib.data.permission.BindEffect
@@ -60,6 +62,10 @@ public fun SettingsScreen(
     onThemeAction: (ThemeAction) -> Unit = {},
     onAuthAction: (AuthAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
+): Unit = Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -71,110 +77,72 @@ public fun SettingsScreen(
 
     BindEffect(permissionController)
 
-    Scaffold(
-        modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-    ) { padding ->
-        val scrollState = rememberScrollState()
-        Column(
-            modifier =
-                Modifier
-                    .consumeWindowInsets(padding)
-                    .verticalScroll(scrollState)
-                    .padding(top = padding.calculateTopPadding()),
-        ) {
-            SettingsGroup(
-                modifier = Modifier,
-                enabled = true,
-                title = { Text(text = stringResource(Res.string.general)) },
-                contentPadding = PaddingValues(16.dp),
-            ) {
-                val theme = LocalAppTheme.current
-                SettingsSwitch(
-                    state = theme.isHighContrast,
-                    title = { Text(text = stringResource(Res.string.high_contrast)) },
-                    subtitle = { Text(text = stringResource(Res.string.enable_high_contrast)) },
-                    modifier = Modifier,
-                    enabled = true,
-                    icon = { Icon(Icons.Outlined.Accessibility, "") },
-                    onCheckedChange = { newState: Boolean -> onThemeAction(ThemeAction.SetTheme(theme.copy(isHighContrast = newState))) },
-                )
-            }
-            SettingsGroup(
-                modifier = Modifier,
-                enabled = true,
-                title = { Text(text = stringResource(Res.string.permissions)) },
-                contentPadding = PaddingValues(16.dp),
-            ) {
-                SettingsSwitch(
-                    state = Permission.CAMERA in permissions,
-                    title = { Text(text = stringResource(Res.string.camera)) },
-                    subtitle = { Text(text = stringResource(Res.string.get_camera_permission)) },
-                    modifier = Modifier,
-                    enabled = true,
-                    icon = { Icon(Icons.Outlined.CameraAlt, "") },
-                    onCheckedChange = { newState: Boolean ->
-                        coroutineScope.launch {
-                            permissionController.providePermission(Permission.CAMERA)
-                        }
-                    },
-                )
+    val scrollState = rememberScrollState()
 
-                SettingsSwitch(
-                    state = Permission.RECORD_AUDIO in permissions,
-                    title = { Text(text = stringResource(Res.string.microphone)) },
-                    subtitle = { Text(text = stringResource(Res.string.get_microphone_permission)) },
-                    modifier = Modifier,
-                    enabled = true,
-                    icon = { Icon(Icons.Outlined.Mic, "") },
-                    onCheckedChange = { newState: Boolean ->
-                        coroutineScope.launch {
-                            permissionController.providePermission(Permission.RECORD_AUDIO)
-                        }
-                    },
-                )
-
-                SettingsSwitch(
-                    state = Permission.LOCATION in permissions,
-                    title = { Text(text = stringResource(Res.string.location)) },
-                    subtitle = { Text(text = stringResource(Res.string.get_location_permission)) },
-                    modifier = Modifier,
-                    enabled = true,
-                    icon = { Icon(Icons.Outlined.LocationOn, "") },
-                    onCheckedChange = { newState: Boolean ->
-                        coroutineScope.launch {
-                            permissionController.providePermission(Permission.LOCATION)
-                        }
-                    },
-                )
-            }
-
-            SettingsGroup(
-                modifier = Modifier,
-                enabled = true,
-                title = { Text(text = "User") },
-                contentPadding = PaddingValues(16.dp),
-            ) {
-                if (LocalAppAuth.current.user?.roles?.contains("Verified") == false)
-                    Button(
-                        onClick = {
-                            onNavigationAction(NavigationAction.TypeNavigation.Navigate(Verification))
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(text = stringResource(Res.string.verify))
-                    }
-
-                Button(
-                    onClick = {
-                        onAuthAction(AuthAction.SetAuth(Auth()))
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(text = stringResource(Res.string.sign_out))
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.general)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        val theme = LocalAppTheme.current
+        SettingsSwitch(
+            state = theme.isHighContrast,
+            title = { Text(text = stringResource(Res.string.high_contrast)) },
+            subtitle = { Text(text = stringResource(Res.string.enable_high_contrast)) },
+            modifier = Modifier,
+            enabled = true,
+            icon = { Icon(Icons.Outlined.Accessibility, "") },
+            onCheckedChange = { newState: Boolean -> onThemeAction(ThemeAction.SetTheme(theme.copy(isHighContrast = newState))) },
+        )
+    }
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.permissions)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        SettingsSwitch(
+            state = Permission.CAMERA in permissions,
+            title = { Text(text = stringResource(Res.string.camera)) },
+            subtitle = { Text(text = stringResource(Res.string.get_camera_permission)) },
+            modifier = Modifier,
+            enabled = true,
+            icon = { Icon(Icons.Outlined.CameraAlt, "") },
+            onCheckedChange = { newState: Boolean ->
+                coroutineScope.launch {
+                    permissionController.providePermission(Permission.CAMERA)
                 }
-            }
-        }
+            },
+        )
+
+        SettingsSwitch(
+            state = Permission.RECORD_AUDIO in permissions,
+            title = { Text(text = stringResource(Res.string.microphone)) },
+            subtitle = { Text(text = stringResource(Res.string.get_microphone_permission)) },
+            modifier = Modifier,
+            enabled = true,
+            icon = { Icon(Icons.Outlined.Mic, "") },
+            onCheckedChange = { newState: Boolean ->
+                coroutineScope.launch {
+                    permissionController.providePermission(Permission.RECORD_AUDIO)
+                }
+            },
+        )
+
+        SettingsSwitch(
+            state = Permission.LOCATION in permissions,
+            title = { Text(text = stringResource(Res.string.location)) },
+            subtitle = { Text(text = stringResource(Res.string.get_location_permission)) },
+            modifier = Modifier,
+            enabled = true,
+            icon = { Icon(Icons.Outlined.LocationOn, "") },
+            onCheckedChange = { newState: Boolean ->
+                coroutineScope.launch {
+                    permissionController.providePermission(Permission.LOCATION)
+                }
+            },
+        )
     }
 }
 

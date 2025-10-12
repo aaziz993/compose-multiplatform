@@ -7,5 +7,4 @@ import klib.data.location.country.Country
 import org.jetbrains.compose.resources.DrawableResource
 
 public val Country.flag: DrawableResource
-    get() = Res.allDrawableResources["flag_${toString().lowercase()}"]
-        ?: Res.drawable.image_load_error
+    get() = Res.allDrawableResources["flag_${toString().lowercase()}"] ?: Res.drawable.image_load_error
