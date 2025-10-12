@@ -35,7 +35,7 @@ public class CommonModule {
 
     @Named("drawer")
     @Single
-    public fun provideDrawerStateHolder(): BooleanStateHolder = BooleanStateHolder(false)
+    public fun provideDrawerStateHolder(): BooleanStateHolder = BooleanStateHolder(true)
 
     @Single
     public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(AuthRoute) { navController ->
