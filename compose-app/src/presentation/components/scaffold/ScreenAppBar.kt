@@ -199,17 +199,18 @@ public fun ScreenAppBar(
                     }
 
                     AppTooltipBox(stringResource(Res.string.profile)) {
-                        val user = LocalAppAuth.current.user!!
-                        Avatar(
-                            user = user,
-                            modifier = Modifier
-                                .height(TopAppBarDefaults.TopAppBarExpandedHeight)
-                                .aspectRatio(1f)
-                                .padding(end = 20.dp)
-                                .clickable {
-                                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(Profile))
-                                },
-                        )
+                        LocalAppAuth.current.user?.let { user ->
+                            Avatar(
+                                user = user,
+                                modifier = Modifier
+                                    .height(TopAppBarDefaults.TopAppBarExpandedHeight)
+                                    .aspectRatio(1f)
+                                    .padding(end = 20.dp)
+                                    .clickable {
+                                        onNavigationAction(NavigationAction.TypeNavigation.Navigate(Profile))
+                                    },
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
