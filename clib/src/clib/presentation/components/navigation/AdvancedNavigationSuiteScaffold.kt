@@ -15,6 +15,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.derivedStateOf
@@ -27,6 +28,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -70,10 +72,6 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     }
 
     var title: String by remember { mutableStateOf("") }
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        // Dynamically set title on navigation.
-        title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
-    }
 
     NavigationSuiteScaffold(
         {
@@ -124,6 +122,19 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
             LocalHasPreviousDestination provides hasPreviousBackStackEntry,
         ) {
             content()
+        }
+    }
+
+    // Dynamically set title on navigation.
+    val listener = OnDestinationChangedListener { _, destination, _ ->
+        title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
+    }
+
+    navController.addOnDestinationChangedListener(listener)
+
+    DisposableEffect(navController) {
+        onDispose {
+            navController.removeOnDestinationChangedListener(listener)
         }
     }
 

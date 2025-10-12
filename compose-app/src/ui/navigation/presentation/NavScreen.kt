@@ -2,14 +2,15 @@
 
 package ui.navigation.presentation
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -18,26 +19,26 @@ import clib.presentation.auth.LocalAppAuth
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
+import clib.presentation.stateholders.BooleanStateHolder
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
-import ui.navigation.presentation.viewmodel.NavAction
-import ui.navigation.presentation.viewmodel.NavState
+import org.koin.core.qualifier.named
 
 @Composable
 public fun NavScreen(
     modifier: Modifier = Modifier,
-    navigator: Navigator<Destination> = koinInject(),
+    drawerStateHolder: BooleanStateHolder = koinInject(named("drawer")),
     startDestination: Destination = AuthRoute,
-    state: NavState = NavState(),
-    onAction: (NavAction) -> Unit = {},
+    navigator: Navigator<Destination> = koinInject(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val auth = LocalAppAuth.current
+    val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
@@ -62,7 +63,7 @@ public fun NavScreen(
             if (NavRoute.find(currentDestination) in listOf(PhoneCheckUp, Otp, Login)) NavigationSuiteType.None
             else with(currentWindowAdaptiveInfo()) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
-                    if (state.isDrawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
+                    if (isDrawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
                 }
                 else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
             }

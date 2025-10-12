@@ -65,19 +65,20 @@ public fun OtpScreen(
 
         AppOtpInputField(
             otp = otpValue,
-            enabled = state.duration > Duration.ZERO,
+            count = OTP_CODE_LENGTH,
+            enabled = state.countdown > Duration.ZERO,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = if (state.duration == Duration.ZERO) stringResource(Res.string.resend_code)
-            else stringResource(Res.string.resend_code_in, state.duration.toHumanReadable()),
-            color = if (state.duration == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
+            text = if (state.countdown == Duration.ZERO) stringResource(Res.string.resend_code)
+            else stringResource(Res.string.resend_code_in, state.countdown.toHumanReadable()),
+            color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .clickable(enabled = state.duration == Duration.ZERO) {
+                .clickable(enabled = state.countdown == Duration.ZERO) {
                     onAction(OtpAction.ResendCode)
                 }
                 .padding(vertical = 8.dp),

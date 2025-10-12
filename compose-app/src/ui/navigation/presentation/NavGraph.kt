@@ -38,6 +38,7 @@ import clib.presentation.components.navigation.model.NavigationDestination
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.stateholders.BooleanStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
@@ -45,6 +46,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.qualifier.named
 import presentation.components.scaffold.ScreenAppBar
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
@@ -62,7 +64,6 @@ import ui.auth.verification.presentation.VerificationScreen
 import ui.auth.verification.presentation.viewmodel.VerificationViewModel
 import ui.home.HomeScreen
 import ui.map.MapScreen
-import ui.navigation.presentation.viewmodel.NavViewModel
 import ui.news.articles.presentation.ArticlesScreen
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
@@ -77,7 +78,7 @@ public data object NavRoute : Destination, NavigationRoute<Destination>() {
 
     override val deepLinks: List<String> = listOf("https://", "http://")
 
-    override val routes: List<Route<out Destination>> =
+    override val routes: List<Route<Destination>> =
         listOf(
 //            Home,
             News,
@@ -123,7 +124,7 @@ public data object News : Destination, NavigationRoute<Destination>() {
 
     override val expand: Boolean = true
 
-    override val routes: List<Route<out Destination>> = listOf(Articles)
+    override val routes: List<Route<Destination>> = listOf(Articles)
 }
 
 @Serializable
@@ -145,14 +146,14 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
     ) {
         val themeStateHolder: ThemeStateHolder = koinInject()
         val authStateHolder: AuthStateHolder = koinInject()
-        val navViewModel: NavViewModel = koinViewModel()
-        val navState by navViewModel.state.collectAsStateWithLifecycle()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
         ScreenAppBar(
             themeStateHolder::action,
             authStateHolder::action,
-            navState,
-            navViewModel::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
             modifier = Modifier.fillMaxSize(),
             blurEnabled = true,
@@ -206,14 +207,14 @@ public data object Services : Destination, NavigationDestination<Services>() {
     ) {
         val themeStateHolder: ThemeStateHolder = koinInject()
         val authStateHolder: AuthStateHolder = koinInject()
-        val navViewModel: NavViewModel = koinViewModel()
-        val navState by navViewModel.state.collectAsStateWithLifecycle()
+        val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+        val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
         ScreenAppBar(
             themeStateHolder::action,
             authStateHolder::action,
-            navState,
-            navViewModel::action,
+            isDrawerOpen,
+            drawerStateHolder::toggle,
             onNavigationAction,
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -280,7 +281,7 @@ public data object AuthRoute : Destination, NavigationRoute<Destination>() {
 
     override val expand: Boolean = true
 
-    override val routes: List<Route<out Destination>> = listOf(PhoneCheckUp, Otp, Unverified, Verification, PinCode, Login, ForgotPassword, Profile)
+    override val routes: List<Route<Destination>> = listOf(PhoneCheckUp, Otp, Unverified, Verification, PinCode, Login, ForgotPassword, Profile)
 
     override fun authResource(): AuthResource? = null
 }
@@ -507,7 +508,7 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 @SerialName("wallet")
 public data object WalletRoute : Destination, NavigationRoute<Destination>() {
 
-    override val routes: List<Route<Destination>> = emptyList() //listOf(Balance, Crypto, Stock)
+    override val routes: List<Route<Destination>> = listOf(Balance as Route<Destination>, Crypto, Stock)
 }
 
 @Serializable

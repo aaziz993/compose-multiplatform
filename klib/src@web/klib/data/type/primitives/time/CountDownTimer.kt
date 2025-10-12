@@ -12,7 +12,6 @@ public actual class CountDownTimer actual constructor(
     private val interval: Duration,
     private val onTick: (Duration) -> Unit,
     private val onFinish: () -> Unit,
-    private val scope: CoroutineScope,
 ) {
 
     private var job: Job? = null
@@ -20,7 +19,7 @@ public actual class CountDownTimer actual constructor(
     public actual fun start() {
         job?.cancel()
         val targetTime = Date.now() + initial.inWholeMilliseconds
-        job = scope.launch {
+        job = CoroutineScope(Dispatchers.Default).launch {
             while (true) {
                 val remaining = (targetTime - Date.now()).toLong()
                 if (remaining <= 0) break

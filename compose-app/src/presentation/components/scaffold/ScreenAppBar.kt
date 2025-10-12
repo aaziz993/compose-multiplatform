@@ -48,8 +48,6 @@ import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import presentation.components.tooltipbox.AppTooltipBox
 import ui.navigation.presentation.Profile
-import ui.navigation.presentation.viewmodel.NavAction
-import ui.navigation.presentation.viewmodel.NavState
 
 public enum class ScaffoldMode {
     Default,
@@ -62,8 +60,8 @@ public enum class ScaffoldMode {
 public fun ScreenAppBar(
     onThemeAction: (ThemeAction) -> Unit,
     onAuthAction: (AuthAction) -> Unit,
-    navState: NavState,
-    onNavAction: (NavAction) -> Unit,
+    isDrawerOpen: Boolean,
+    toggleDrawer: () -> Unit,
     onNavigationAction: (NavigationAction) -> Unit,
     modifier: Modifier = Modifier,
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
@@ -100,12 +98,10 @@ public fun ScreenAppBar(
                         if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
                             AppTooltipBox("Menu") {
                                 IconButton(
-                                    onClick = {
-                                        onNavAction(NavAction.ToggleDrawer)
-                                    },
+                                    onClick = toggleDrawer,
                                 ) {
                                     Icon(
-                                        imageVector = if (navState.isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
+                                        imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
                                         contentDescription = "Menu",
                                     )
                                 }

@@ -27,6 +27,7 @@ script:
           (
             "kotlinx.cinterop.ExperimentalForeignApi",
             "androidx.paging.ExperimentalPagingApi",
+            "org.koin.core.annotation.KoinInternalApi",
           )
   # Api documentation engine for Kotlin.
   - dokka:

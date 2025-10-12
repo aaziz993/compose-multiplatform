@@ -9,20 +9,18 @@ import klib.data.type.auth.model.User
 import klib.data.type.primitives.time.CountDownTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
-public val OTP_DURATION: Duration = 60.seconds
-
 @KoinViewModel
 public class OtpViewModel(
-    private val duration: Duration = OTP_DURATION,
     private val authStateHolder: AuthStateHolder
 ) : AbstractViewModel<OtpAction>() {
 
     public val state: RestartableStateFlow<OtpState>
-        field = viewModelMutableStateFlow(OtpState(duration = duration))
+        field = viewModelMutableStateFlow(OtpState())
 
     private var countDownTimer: CountDownTimer? = null
 
@@ -34,16 +32,22 @@ public class OtpViewModel(
         countDownTimer?.cancel()
 
         countDownTimer = CountDownTimer(
-            initial = duration,
+            initial = state.value.countdown,
             interval = 1.seconds,
             onTick = { remaining ->
-                state.update { it.copy(duration = remaining) }
+                state.update { it.copy(countdown = remaining) }
             },
             onFinish = {
-                state.update { it.copy(code = "", duration = Duration.ZERO) }
+                state.update { it.copy(code = "", countdown = Duration.ZERO) }
             },
-            viewModelScope,
-        ).also(CountDownTimer::start)
+        ).also { timer ->
+            // Automatically cancel when viewModelScope is canceled.
+            viewModelScope.coroutineContext[Job]?.invokeOnCompletion {
+                timer.cancel()
+            }
+
+            timer.start()
+        }
     }
 
     override fun action(action: OtpAction) {
@@ -54,27 +58,27 @@ public class OtpViewModel(
         }
     }
 
-    private fun setCode(value: String) {
-        state.update { it.copy(code = value) }
-    }
+    private fun setCode(value: String): Unit = state.update { it.copy(code = value) }
 
     public fun resendCode() {
-        state.update { it.copy(duration = duration) }
+        state.update { OtpState() }
         startTimer()
     }
 
-    private fun confirm(phone: String) = viewModelScope.launch {
-        if (state.value.code == "1234")
-            authStateHolder.action(
-                AuthAction.SetUser(
-                    User(
-                        username = "jogn.doe@gmail.com",
-                        firstName = "John",
-                        lastName = "Doe",
-                        phone = phone,
-                        roles = setOf("User"),
+    private fun confirm(phone: String) {
+        viewModelScope.launch {
+            if (state.value.code == "1234")
+                authStateHolder.action(
+                    AuthAction.SetUser(
+                        User(
+                            username = "jogn.doe@gmail.com",
+                            firstName = "John",
+                            lastName = "Doe",
+                            phone = phone,
+                            roles = setOf("User"),
+                        ),
                     ),
-                ),
-            )
+                )
+        }
     }
 }

@@ -155,7 +155,7 @@ public fun SettingsScreen(
                 title = { Text(text = "User") },
                 contentPadding = PaddingValues(16.dp),
             ) {
-                if (!LocalAppAuth.current.user!!.roles.contains("VerifiedUser"))
+                if (LocalAppAuth.current.user?.roles?.contains("Verified") == false)
                     Button(
                         onClick = {
                             onNavigationAction(NavigationAction.TypeNavigation.Navigate(Verification))

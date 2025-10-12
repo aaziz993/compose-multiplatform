@@ -9,14 +9,13 @@ public actual class CountDownTimer actual constructor(
     private val interval: Duration,
     private val onTick: (Duration) -> Unit,
     private val onFinish: () -> Unit,
-    private val scope: CoroutineScope,
 ) {
 
     private var job: Job? = null
 
     public actual fun start() {
         job?.cancel()
-        job = scope.launch {
+        job = CoroutineScope(Dispatchers.Default).launch {
             var remaining = initial
             while (remaining > Duration.ZERO) {
                 onTick(remaining)

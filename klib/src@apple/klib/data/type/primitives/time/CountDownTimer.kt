@@ -7,7 +7,6 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ObjCAction
-import kotlinx.coroutines.CoroutineScope
 import platform.Foundation.NSDate
 import platform.Foundation.NSTimer
 import platform.Foundation.timeIntervalSince1970
@@ -17,7 +16,6 @@ public actual class CountDownTimer actual constructor(
     private val interval: Duration,
     private val onTick: (Duration) -> Unit,
     private val onFinish: () -> Unit,
-    private val scope: CoroutineScope,
 ) {
 
     private var iosTimer: NSTimer? = null
