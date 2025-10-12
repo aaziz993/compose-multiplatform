@@ -17,24 +17,20 @@ import org.koin.core.scope.Scope
 @Composable
 public fun AutoConnectKoinScope(
     navController: NavController,
+    lastKnownNavGraphRoute: String? = null,
     rootScope: Scope = getKoin().scopeRegistry.rootScope,
     content: @Composable () -> Unit
 ) {
-    var lastKnownNavGraphRoute by remember { mutableStateOf<String?>(null) }
-
     val koin = getKoin()
 
     // Holds the currently injected Koin Scope.
     var scopeToInject by remember {
-        val lastKnownNavGraphRoute = lastKnownNavGraphRoute
         mutableStateOf(
             value = if (lastKnownNavGraphRoute == null) rootScope
-            else {
-                koin.getOrCreateScope(
-                    scopeId = lastKnownNavGraphRoute,
-                    qualifier = named(lastKnownNavGraphRoute),
-                )
-            },
+            else koin.getOrCreateScope(
+                scopeId = lastKnownNavGraphRoute,
+                qualifier = named(lastKnownNavGraphRoute),
+            ),
         )
     }
 
@@ -60,8 +56,6 @@ public fun AutoConnectKoinScope(
                 )
                 scopeToInject = scopeForCurrentNavGraphRoute
             }
-
-            lastKnownNavGraphRoute = currentNavGraphRoute
         }
 
         navController.addOnDestinationChangedListener(listener)

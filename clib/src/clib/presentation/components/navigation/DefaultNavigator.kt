@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 public class DefaultNavigator<Dest : Any>(
     override val startDestination: Dest,
-    private val builder: NavOptionsBuilder.() -> Unit = {}
+    private val builder: NavOptionsBuilder.(navController: NavHostController) -> Unit = {}
 ) : Navigator<Dest> {
 
     private val navigationActions =
@@ -52,14 +52,14 @@ public class DefaultNavigator<Dest : Any>(
             is NavigationAction.Navigation.Navigate -> navController.navigate(
                 action.route,
             ) {
-                builder()
+                builder(navController)
                 action.block(this, navController)
             }
 
             is NavigationAction.TypeNavigation.Navigate<*> -> navController.navigate(
                 action.route,
             ) {
-                builder()
+                builder(navController)
                 action.block(this, navController)
             }
 
