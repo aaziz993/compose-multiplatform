@@ -1,22 +1,33 @@
 package clib.data.type.collections.restartableflow
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 
-public class RestartableMutableStateFlow<T>(
-    private val stateFlow: RestartableStateFlow<T>,
-    private val mutableStateFlow: MutableStateFlow<T>,
-) : RestartableStateFlow<T> by stateFlow, MutableStateFlow<T> by mutableStateFlow {
+public interface RestartableMutableStateFlow<T> : RestartableStateFlow<T>, MutableStateFlow<T>
 
-    override var value: T
-        get() = stateFlow.value
-        set(value) {
-            mutableStateFlow.value = value
-        }
+public fun <T> Flow<T>.restartableStateIn(
+    mutableStateFlow: MutableStateFlow<T>,
+    started: SharingStarted,
+    scope: CoroutineScope,
+    initialValue: T,
+): RestartableMutableStateFlow<T> {
+    val restartableStateFlow = restartableStateIn(started, scope, initialValue)
 
-    override val replayCache: List<T>
-        get() = stateFlow.replayCache
+    return object : RestartableMutableStateFlow<T>, MutableStateFlow<T> by mutableStateFlow,
+        RestartableStateFlow<T> by restartableStateFlow {
+        override var value: T
+            get() = mutableStateFlow.value
+            set(value) {
+                mutableStateFlow.value = value
+            }
 
-    override suspend fun collect(collector: FlowCollector<T>): Nothing =
-        stateFlow.collect(collector)
+        override val replayCache: List<T>
+            get() = restartableStateFlow.replayCache
+
+        override suspend fun collect(collector: FlowCollector<T>): Nothing =
+            restartableStateFlow.collect(collector)
+    }
 }

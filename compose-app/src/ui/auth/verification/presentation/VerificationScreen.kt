@@ -109,7 +109,7 @@ public fun VerificationScreen(
 
         Button(
             onClick = {
-                onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Services))
+                onNavigationAction(NavigationAction.TypeNavigation.Navigate(Services))
             },
             modifier = Modifier.fillMaxWidth(),
         ) {

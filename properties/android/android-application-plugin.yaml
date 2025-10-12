@@ -183,6 +183,8 @@ script:
               "META-INF/versions/**",         // OSGI or multi-version module info
               "kotlin/**",                     // Kotlin built-ins and metadata
             ))
+      androidResources:
+        generateLocaleConfig: true
       buildFeatures:
         buildConfig: true
         viewBinding: true

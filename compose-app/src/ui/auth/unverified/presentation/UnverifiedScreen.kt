@@ -74,7 +74,7 @@ public fun UnverifiedScreen(
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.85f),
                     ),
                     modifier = Modifier.clickable {
-                        onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Verification))
+                        onNavigationAction(NavigationAction.TypeNavigation.Navigate(Verification))
                     },
                 )
             }

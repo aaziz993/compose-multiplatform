@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 public val LightColors: ColorScheme = lightColorScheme()
-public val LighColorsHighContrast: ColorScheme = LightColors.lightColorsHighContrast()
+public val LightColorsHighContrast: ColorScheme = LightColors.lightColorsHighContrast()
 
 public fun ColorScheme.lightColorsHighContrast(): ColorScheme = copy(
     primary = Color.Black,

@@ -7,6 +7,7 @@ import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import clib.generated.resources.Res
 import klib.data.location.locale.Locale
 import org.jetbrains.compose.resources.ResourceItem
 import org.jetbrains.compose.resources.StringResource
@@ -20,12 +21,3 @@ public expect object LocalAppLocale {
     @Composable
     public infix fun provides(value: Locale?): ProvidedValue<*>
 }
-
-@Composable
-public fun stringResource(res: String): StringResource = StringResource(
-    "string:$res",
-    res,
-    setOf(
-        ResourceItem(setOf(), "values${LocalAppLocale.current}/strings.xml", -1, -1),
-    ),
-)

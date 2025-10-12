@@ -53,7 +53,7 @@ public sealed interface NavigationAction {
         public data class NavigateAndClearTop(override val route: String) : Navigation()
     }
 
-    public sealed class TypeSafeNavigation<out T> : NavigationAction {
+    public sealed class TypeNavigation<out T> : NavigationAction {
 
         public abstract val route: T
 
@@ -69,7 +69,7 @@ public sealed interface NavigationAction {
                 // Restore state when re-selecting a previously selected item
                 restoreState = true
             }
-        ) : TypeSafeNavigation<T>()
+        ) : TypeNavigation<T>()
 
         /**
          * Navigate back to specific route inclusive or exclusive
@@ -78,16 +78,16 @@ public sealed interface NavigationAction {
             override val route: T,
             public val inclusive: Boolean = false,
             public val saveState: Boolean = false
-        ) : TypeSafeNavigation<T>()
+        ) : TypeNavigation<T>()
 
         /**
          * Navigate to route and remove current view from nav stack
          */
-        public data class NavigateAndClearCurrent<out T : Any>(override val route: T) : TypeSafeNavigation<T>()
+        public data class NavigateAndClearCurrent<out T : Any>(override val route: T) : TypeNavigation<T>()
 
         /**
          * Navigate to route and remove all previous routes making current one as a top
          */
-        public data class NavigateAndClearTop<out T : Any>(override val route: T) : TypeSafeNavigation<T>()
+        public data class NavigateAndClearTop<out T : Any>(override val route: T) : TypeNavigation<T>()
     }
 }

@@ -38,7 +38,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpAction
 import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpState
-import ui.navigation.presentation.Otp
 import ui.navigation.presentation.PhoneCheckUp
 
 @Composable
@@ -97,9 +96,7 @@ public fun PhoneCheckUpScreen(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    onNavigationAction(
-                        NavigationAction.TypeSafeNavigation.NavigateAndClearCurrent(Otp(state.phone)),
-                    )
+                    onAction(PhoneCheckUpAction.Confirm)
                 },
             ),
             shape = RoundedCornerShape(10.dp),

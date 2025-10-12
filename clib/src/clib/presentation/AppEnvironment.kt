@@ -16,7 +16,7 @@ import clib.presentation.theme.DarkColorsHighContrast
 import clib.presentation.theme.density.LocalAppDensity
 import clib.presentation.theme.density.customAppDensity
 import clib.presentation.theme.LightColors
-import clib.presentation.theme.LighColorsHighContrast
+import clib.presentation.theme.LightColorsHighContrast
 import clib.presentation.theme.model.Theme
 import klib.data.location.locale.Locale
 import klib.data.type.auth.model.Auth
@@ -27,7 +27,7 @@ public fun AppEnvironment(
     locale: Locale? = null,
     auth: Auth = Auth(),
     lightColorScheme: ColorScheme = LightColors,
-    lightColorSchemeHighContrast: ColorScheme = LighColorsHighContrast,
+    lightColorSchemeHighContrast: ColorScheme = LightColorsHighContrast,
     darkColorScheme: ColorScheme = DarkColors,
     darkColorSchemeHighContrast: ColorScheme = DarkColorsHighContrast,
     shapes: Shapes = MaterialTheme.shapes,
@@ -45,14 +45,14 @@ public fun AppEnvironment(
         shapes = shapes,
         typography = typography,
     ) {
-        val resolvedLocale = locale ?: customAppLocale
+        val currentLocale = locale ?: customAppLocale
 
         CompositionLocalProvider(
-            LocalAppLocale provides resolvedLocale,
+            LocalAppLocale provides currentLocale,
             LocalAppDensity provides customAppDensity,
             LocalAppAuth provides auth,
         ) {
-            key(resolvedLocale, customAppDensity, auth) {
+            key(currentLocale, customAppDensity, auth) {
                 content()
             }
         }

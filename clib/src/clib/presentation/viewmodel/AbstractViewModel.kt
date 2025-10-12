@@ -93,6 +93,17 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         initialValue,
     )
 
+    protected fun <T> Flow<T>.viewModelScopeMutableStateFlow(
+        mutableStateFlow: MutableStateFlow<T>,
+        initialValue: T,
+        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
+    ): RestartableMutableStateFlow<T> = restartableStateIn(
+        mutableStateFlow,
+        started,
+        viewModelScope,
+        initialValue,
+    )
+
     protected fun <T> viewModelStateFlow(
         initialValue: T,
         started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
@@ -112,14 +123,12 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
     ): RestartableMutableStateFlow<T> {
         val mutableStateFlow = MutableStateFlow(initialValue)
 
-        val stateFlow = (if (block == null) mutableStateFlow
+        return (if (block == null) mutableStateFlow
         else mutableStateFlow.onStart {
             mutableStateFlow.update {
                 mutableStateFlow.block(it)
             }
-        }).viewModelScopeStateFlow(initialValue, started)
-
-        return RestartableMutableStateFlow(stateFlow, mutableStateFlow)
+        }).viewModelScopeMutableStateFlow(mutableStateFlow, initialValue, started)
     }
 
     protected fun <T : Any> viewModelMutableStateFlow(

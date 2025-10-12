@@ -507,8 +507,7 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 @SerialName("wallet")
 public data object WalletRoute : Destination, NavigationRoute<Destination>() {
 
-    override val routes: List<Route<Destination>> = emptyList()
-//        listOf(Balance, Crypto, Stock)
+    override val routes: List<Route<Destination>> = emptyList() //listOf(Balance, Crypto, Stock)
 }
 
 @Serializable

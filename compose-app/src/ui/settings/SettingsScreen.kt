@@ -158,7 +158,7 @@ public fun SettingsScreen(
                 if (!LocalAppAuth.current.user!!.roles.contains("VerifiedUser"))
                     Button(
                         onClick = {
-                            onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Verification))
+                            onNavigationAction(NavigationAction.TypeNavigation.Navigate(Verification))
                         },
                         modifier = Modifier.fillMaxWidth(),
                     ) {

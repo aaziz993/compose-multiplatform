@@ -29,17 +29,12 @@ public actual object LocalAppLocale {
         Locale.setCurrent(newLocale)
 
         val context = LocalContext.current
-        val resources = context.resources
-        val configuration = resources.configuration
-
-        val newContext = context.createConfigurationContext(
-            configuration.apply {
-                setLocale(newLocale.toJavaLocale())
-            },
-        )
+        val configuration = Configuration(context.resources.configuration).apply {
+            setLocale(newLocale.toJavaLocale())
+        }
 
         val localizedContext = remember(newLocale) {
-            newContext
+            context.createConfigurationContext(configuration)
         }
 
         return LocalConfiguration.provides(configuration).plus(

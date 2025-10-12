@@ -32,7 +32,7 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.navigation.LocalBackButton
+import clib.presentation.components.navigation.LocalHasPreviousDestination
 import clib.presentation.components.navigation.LocalTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.easedVerticalGradient
@@ -112,7 +112,7 @@ public fun ScreenAppBar(
                             }
 
 
-                        if (LocalBackButton.current)
+                        if (LocalHasPreviousDestination.current)
                             AppTooltipBox("Navigate back") {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.NavigateBack) },
@@ -169,7 +169,7 @@ public fun ScreenAppBar(
                                 .aspectRatio(1f)
                                 .padding(end = 20.dp)
                                 .clickable {
-                                    onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(Profile))
+                                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(Profile))
                                 },
                         )
                     }

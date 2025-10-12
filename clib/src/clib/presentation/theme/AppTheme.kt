@@ -18,7 +18,7 @@ public val LocalAppTheme: ProvidableCompositionLocal<Theme> = staticCompositionL
 public fun AppTheme(
     theme: Theme,
     lightColorScheme: ColorScheme = LightColors,
-    lightColorSchemeHighContrast: ColorScheme = LighColorsHighContrast,
+    lightColorSchemeHighContrast: ColorScheme = LightColorsHighContrast,
     darkColorScheme: ColorScheme = DarkColors,
     darkColorSchemeHighContrast: ColorScheme = DarkColorsHighContrast,
     content: @Composable (ColorScheme) -> Unit,

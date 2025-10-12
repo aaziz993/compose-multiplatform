@@ -77,7 +77,7 @@ public fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    onNavigationAction(NavigationAction.TypeSafeNavigation.Navigate(PhoneCheckUp))
+                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(PhoneCheckUp))
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

@@ -13,9 +13,9 @@ import dev.jordond.connectivity.Connectivity.Status
 @Composable
 public fun ConnectivityGlobalSnackbar(
     connectivity: Connectivity,
-    localization: ConnectivityLocalization = ConnectivityLocalization(),
     connectedAction: SnackbarAction? = null,
     disconnectedAction: SnackbarAction? = null,
+    localization: ConnectivityLocalization = ConnectivityLocalization(),
 ) {
     LaunchedEffect(connectivity) {
         var lastStatus: Status? = null
@@ -41,6 +41,6 @@ public fun ConnectivityGlobalSnackbar(
     }
 
     DisposableEffect(Unit) {
-        onDispose { connectivity.stop() }
+        onDispose(connectivity::stop)
     }
 }

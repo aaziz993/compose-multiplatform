@@ -1,6 +1,7 @@
 package ui.auth.otp.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
@@ -8,18 +9,19 @@ import klib.data.type.auth.model.User
 import klib.data.type.primitives.time.CountDownTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
+public val OTP_DURATION: Duration = 60.seconds
+
 @KoinViewModel
 public class OtpViewModel(
-    private val duration: Duration = 60.seconds,
+    private val duration: Duration = OTP_DURATION,
     private val authStateHolder: AuthStateHolder
 ) : AbstractViewModel<OtpAction>() {
 
-    public val state: MutableStateFlow<OtpState>
+    public val state: RestartableStateFlow<OtpState>
         field = viewModelMutableStateFlow(OtpState(duration = duration))
 
     private var countDownTimer: CountDownTimer? = null
