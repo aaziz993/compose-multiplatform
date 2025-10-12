@@ -48,7 +48,8 @@ public fun generateCountryRegistry(
         packageName = "klib.data.location.country",
         imports = setOf(
             "klib.data.iso.Alpha2Letter",
-            "klib.data.iso.Alpha3Letter",
+            "klib.data.iso.Alpha2Letter",
+            "klib.data.location.locale.toLocale",
         ),
     )
 
@@ -73,7 +74,7 @@ public fun generateCountryRegistry(
             country.intermediateRegionCode?.toIntOrNull()?.let { add("intermediateRegionCode = %L,\n", it) }
             countryDialMap[country.alpha2]?.let { (dial, languages) ->
                 add("dial = %S,\n", "+$dial")
-                add("languages = setOf(%L),\n", languages.joinToString(", ") { "\"$it\"" })
+                add("locales = setOf(%L),\n", languages.joinToString(", ") { "\"$it\".toLocale()" })
             }
             unindent()
             add(")")
@@ -121,7 +122,11 @@ private fun File.loadCountryDialMap(): Map<String, Pair<String, List<String>>> {
         val columns = line.split(",")
         val alpha2 = columns.getOrNull(alpha2Index)?.trim().orEmpty()
         val dial = columns.getOrNull(dialIndex)?.trim().orEmpty()
-        val languages = columns.getOrNull(languagesIndex)?.trim()?.trim('"')?.split(",").orEmpty()
+        val languages = columns.getOrNull(languagesIndex)
+            ?.trim()
+            ?.trim('"')
+            ?.split(",")
+            ?.filter(String::isNotEmpty).orEmpty()
         if (alpha2.isEmpty() && dial.isEmpty() && languages.isEmpty()) null else alpha2 to (dial to languages)
     }.toMap()
 }

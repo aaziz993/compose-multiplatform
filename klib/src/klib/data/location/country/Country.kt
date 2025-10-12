@@ -2,6 +2,7 @@ package klib.data.location.country
 
 import klib.data.iso.Alpha2Letter
 import klib.data.iso.Alpha3Letter
+import klib.data.location.locale.Locale
 
 public data class Country(
     val name: String,
@@ -16,7 +17,7 @@ public data class Country(
     val subRegionCode: Int? = null,
     val intermediateRegionCode: Int? = null,
     val dial: String? = null,
-    val languages: Set<String> = emptySet(),
+    val locales: Set<Locale> = emptySet(),
 ) {
 
     override fun toString(): String = alpha2.toString()
@@ -37,11 +38,12 @@ public data class Country(
         public fun forCodeOrNull(code: String): Country? =
             Alpha2Letter.parseOrNull(code)?.let(::forCodeOrNull)
 
-        public fun forLanguageOrNull(language: String): Country? =
-            Country.getCountries().find { country -> language in country.languages }
+        public fun forLocaleOrNull(locale: Locale): Country? =
+            Country.getCountries().find { country -> locale in country.locales }
+                ?: Country.getCountries().find { country -> country.locales.any { it.language == locale.language } }
 
-        public fun forLanguage(language: String): Country =
-            forLanguageOrNull(language) ?: error("Invalid language: $language")
+        public fun forLocale(locale: Locale): Country =
+            forLocaleOrNull(locale) ?: error("Invalid locale: $locale")
     }
 }
 

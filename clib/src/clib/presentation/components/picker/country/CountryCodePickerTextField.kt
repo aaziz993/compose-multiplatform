@@ -33,10 +33,7 @@ public fun CountryCodePickerTextField(
     value: String,
     onValueChange: (countryCode: String, value: String, isValid: Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    selectedCountry: Country =
-        Country.getCountries().firstOrNull { country ->
-            country.dial?.let(value::startsWith) ?: false
-        } ?: Country.getCountries().first(),
+    selectedCountry: Country = Country.getCountries().first(),
     countries: List<Country> = Country.getCountries().toList(),
     enabled: Boolean = true,
     textStyle: TextStyle = LocalTextStyle.current,
