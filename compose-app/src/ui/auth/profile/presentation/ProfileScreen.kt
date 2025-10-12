@@ -60,12 +60,7 @@ public fun ProfileScreen(
         Avatar(
             user = this,
             modifier = Modifier.size(80.dp)
-                .clip(CircleShape)
-                .border(
-                    0.dp,
-                    MaterialTheme.colorScheme.outlineVariant,
-                    CircleShape,
-                ),
+                .clip(CircleShape),
         ) {
             IconButton(
                 onClick = {},

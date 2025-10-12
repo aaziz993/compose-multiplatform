@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.outlined.Sos
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -210,28 +212,18 @@ public fun ScreenAppBar(
 
                     AppTooltipBox(stringResource(Res.string.profile)) {
                         LocalAppAuth.current.user?.let { user ->
-                            Avatar(
-                                user = user,
-                                modifier = Modifier
-                                    .size(TopAppBarDefaults.TopAppBarExpandedHeight)
-                                    .padding(end = 16.dp)
-                                    .clip(CircleShape)
-                                    .border(
-                                        width = 1.5.dp,
-                                        color = MaterialTheme.colorScheme.outlineVariant,
-                                        shape = CircleShape,
-                                    )
-                                    .clickable(
-                                        interactionSource = remember { MutableInteractionSource() },
-                                        indication = ripple(
-                                            bounded = true,
-                                            radius = TopAppBarDefaults.TopAppBarExpandedHeight / 2,
-                                            color = MaterialTheme.colorScheme.primary,
-                                        ),
-                                    ) {
-                                        onNavigationAction(NavigationAction.TypeNavigation.Navigate(Profile))
-                                    },
-                            )
+                            IconButton(
+                                onClick = {
+                                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(Profile))
+                                },
+                            ) {
+                                Avatar(
+                                    user = user,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape)
+                                )
+                            }
                         }
                     }
                 },
