@@ -23,7 +23,8 @@ public data class Locale(
 
     public fun toLanguageTag(): LanguageTag = languageTag
 
-    public fun country(): Country? = languageTag.region?.let(Country::forCodeOrNull)
+    public fun country(): Country? =
+        languageTag.region?.let(Country::forCodeOrNull) ?: language?.let(Country::forLanguageOrNull)
 
     override fun toString(): String = languageTag.toString()
 

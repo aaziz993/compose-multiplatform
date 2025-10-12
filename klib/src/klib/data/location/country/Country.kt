@@ -27,15 +27,21 @@ public data class Country(
         public fun forCode(code: Alpha2Letter): Country =
             forCodeOrNull(code) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
-        public fun forCodeOrNull(code: Alpha2Letter): Country? =
-            Country.getCountries().find { country -> country.alpha2 == code }
-
         public fun forCode(code: String): Country =
             forCodeOrNull(Alpha2Letter.parse(code))
                 ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
+        public fun forCodeOrNull(code: Alpha2Letter): Country? =
+            Country.getCountries().find { country -> country.alpha2 == code }
+
         public fun forCodeOrNull(code: String): Country? =
             Alpha2Letter.parseOrNull(code)?.let(::forCodeOrNull)
+
+        public fun forLanguageOrNull(language: String): Country? =
+            Country.getCountries().find { country -> language in country.languages }
+
+        public fun forLanguage(language: String): Country =
+            forLanguageOrNull(language) ?: error("Invalid language: $language")
     }
 }
 

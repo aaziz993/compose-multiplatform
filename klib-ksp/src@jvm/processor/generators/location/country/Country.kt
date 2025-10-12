@@ -121,7 +121,7 @@ private fun File.loadCountryDialMap(): Map<String, Pair<String, List<String>>> {
         val columns = line.split(",")
         val alpha2 = columns.getOrNull(alpha2Index)?.trim().orEmpty()
         val dial = columns.getOrNull(dialIndex)?.trim().orEmpty()
-        val languages = columns.getOrNull(languagesIndex)?.trim()?.split(",").orEmpty()
+        val languages = columns.getOrNull(languagesIndex)?.trim()?.trim('"')?.split(",").orEmpty()
         if (alpha2.isEmpty() && dial.isEmpty() && languages.isEmpty()) null else alpha2 to (dial to languages)
     }.toMap()
 }

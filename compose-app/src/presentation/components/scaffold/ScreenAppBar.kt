@@ -48,6 +48,7 @@ import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.ThemeMode
 import clib.presentation.theme.stateholder.ThemeAction
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.language
 import compose_app.generated.resources.navigate_back
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.sos
@@ -188,7 +189,7 @@ public fun ScreenAppBar(
                     if (!LocalInspectionMode.current)
                         Locale.current.country()?.let { country = it }
 
-                    AppTooltipBox(stringResource(Res.string.theme)) {
+                    AppTooltipBox(stringResource(Res.string.language)) {
                         IconButton(
                             onClick = {
                                 isCountryPickerDialogOpen = true
