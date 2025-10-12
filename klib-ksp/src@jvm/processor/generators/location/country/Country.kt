@@ -71,7 +71,10 @@ public fun generateCountryRegistry(
             country.regionCode?.toIntOrNull()?.let { add("regionCode = %L,\n", it) }
             country.subRegionCode?.toIntOrNull()?.let { add("subRegionCode = %L,\n", it) }
             country.intermediateRegionCode?.toIntOrNull()?.let { add("intermediateRegionCode = %L,\n", it) }
-            countryDialMap[country.alpha2]?.let { dial -> add("dial = %S,\n", "+$dial") }
+            countryDialMap[country.alpha2]?.let { (dial, languages) ->
+                add("dial = %S,\n", "+$dial")
+                add("languages = setOf(%L),\n", languages.joinToString(", ") { "\"$it\"" })
+            }
             unindent()
             add(")")
         }.build()
@@ -119,6 +122,6 @@ private fun File.loadCountryDialMap(): Map<String, Pair<String, List<String>>> {
         val alpha2 = columns.getOrNull(alpha2Index)?.trim().orEmpty()
         val dial = columns.getOrNull(dialIndex)?.trim().orEmpty()
         val languages = columns.getOrNull(languagesIndex)?.trim()?.split(",").orEmpty()
-        if (alpha2.isNotEmpty() && dial.isNotEmpty() && languages.isEmpty()) alpha2 to (dial to languages) else null
+        if (alpha2.isEmpty() && dial.isEmpty() && languages.isEmpty()) null else alpha2 to (dial to languages)
     }.toMap()
 }
