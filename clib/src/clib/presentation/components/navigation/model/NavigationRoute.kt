@@ -7,6 +7,7 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -25,6 +26,7 @@ import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
+import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -89,6 +91,10 @@ public sealed interface Route<out Dest : Any> {
         get() = Modifier
     public val selectedModifier: Modifier
         get() = modifier
+    public val text: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { text, modifier -> Text(text = text, modifier = modifier) }
+    public val selectedText: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = text
     public val icon: @Composable (label: String, modifier: Modifier) -> Unit
         get() = { _, _ -> }
     public val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit
@@ -103,8 +109,7 @@ public sealed interface Route<out Dest : Any> {
         auth: Auth = Auth(),
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
-        text: @Composable (label: String, modifier: Modifier) -> Unit,
-        selectedText: @Composable (label: String, modifier: Modifier) -> Unit = text,
+        transform: @Composable (label: String) -> String = { it.uppercaseFirstChar() },
         destination: NavDestination?,
         navigateTo: (Route<Dest>) -> Unit
     ): Unit = with(navigationSuiteScope) {
@@ -115,15 +120,15 @@ public sealed interface Route<out Dest : Any> {
         val selectedItem = if (selected)
             Item(
                 selectedModifier,
-                { selectedText(label, it) },
-                { selectedIcon(label, it) },
-                { selectedBadge(label, it) },
+                { selectedText(transform(label), it) },
+                { selectedIcon(transform(label), it) },
+                { selectedBadge(transform(label), it) },
             )
         else Item(
             modifier,
-            { text(label, it) },
-            { icon(label, it) },
-            { badge(label, it) },
+            { text(transform(label), it) },
+            { icon(transform(label), it) },
+            { badge(transform(label), it) },
         )
 
         item(
@@ -249,8 +254,7 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest> {
         auth: Auth,
         enabled: Boolean,
         alwaysShowLabel: Boolean,
-        text: @Composable (label: String, modifier: Modifier) -> Unit,
-        selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
+        transform: @Composable (label: String) -> String,
         destination: NavDestination?,
         navigateTo: (Route<Dest>) -> Unit
     ): Unit = with(navigationSuiteScope) {
@@ -258,9 +262,9 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest> {
 
         if (expand)
             routes.forEach { route ->
-                route.item(auth, enabled, alwaysShowLabel, text, selectedText, destination, navigateTo)
+                route.item(auth, enabled, alwaysShowLabel, transform, destination, navigateTo)
             }
-        else super.item(auth, enabled, alwaysShowLabel, text, selectedText, destination, navigateTo)
+        else super.item(auth, enabled, alwaysShowLabel, transform, destination, navigateTo)
     }
 
     public fun find(destination: NavDestination?): Route<Dest>? =

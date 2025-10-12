@@ -8,7 +8,13 @@ import clib.presentation.components.map.model.MapView
 import clib.presentation.components.map.model.MapLocalization
 import clib.presentation.components.map.model.Marker
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.google_map
+import compose_app.generated.resources.open_street_map
+import compose_app.generated.resources.select_tile
+import compose_app.generated.resources.virtual_earth_map
 import klib.data.location.LocationImpl
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Map
 
@@ -43,10 +49,10 @@ public fun MapScreen(
         },
         routes = null,
         localization = MapLocalization(
-            selectTile = "SelectTile",
-            virtualEarthMap = "VirtualEarth Map",
-            openStreetMap = "OpenStreet Map",
-            googleMap = "Google Map",
+            selectTile = stringResource(Res.string.select_tile),
+            virtualEarthMap = stringResource(Res.string.virtual_earth_map),
+            openStreetMap = stringResource(Res.string.open_street_map),
+            googleMap = stringResource(Res.string.google_map),
         ),
     )
 }
