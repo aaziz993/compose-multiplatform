@@ -49,10 +49,10 @@ public val LocalTitle: ProvidableCompositionLocal<String> = staticCompositionLoc
 
 @Composable
 public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
-    route: NavigationRoute,
+    route: NavigationRoute<Dest>,
     startDestination: Dest,
     navigator: Navigator<Dest>,
-    navigationSuiteRoute: NavigationSuiteScope.(currentDestination: NavDestination?, route: Route) -> Unit,
+    navigationSuiteRoute: NavigationSuiteScope.(currentDestination: NavDestination?, route: Route<out Dest>) -> Unit,
     modifier: Modifier = Modifier,
     navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
     containerColor: Color = MaterialTheme.colorScheme.background,

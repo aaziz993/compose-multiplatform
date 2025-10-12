@@ -31,11 +31,12 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlinx.serialization.serializer
 
+@Suppress("UNCHECKED_CAST")
 @Immutable
-public sealed interface Route {
+public sealed interface Route<out Dest : Any> {
 
-    public val route: KClass<*>
-        get() = this::class
+    public val route: KClass<out Dest>
+        get() = this::class as KClass<out Dest>
 
     public val label: String
         get() = route.serializer().descriptor.serialName
@@ -106,7 +107,7 @@ public sealed interface Route {
         text: @Composable (label: String, modifier: Modifier) -> Unit,
         selectedText: @Composable (label: String, modifier: Modifier) -> Unit = text,
         currentDestination: NavDestination?,
-        navigateTo: (Route) -> Unit
+        navigateTo: (Route<Dest>) -> Unit
     ): Unit = with(navigationSuiteScope) {
         if (!isNavigateItem() || !auth(auth)) return@with
 
@@ -148,7 +149,7 @@ public sealed interface Route {
 }
 
 @Suppress("UNCHECKED_CAST")
-public abstract class NavigationDestination<Dest : Any> : Route {
+public abstract class NavigationDestination<Dest : Any> : Route<Dest> {
 
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
 
@@ -200,11 +201,11 @@ public abstract class NavigationDestination<Dest : Any> : Route {
     }
 }
 
-public abstract class NavigationRoute : Route {
+public abstract class NavigationRoute<Dest : Any> : Route<Dest> {
 
     public open val expand: Boolean = false
 
-    public open val routes: List<Route> = emptyList()
+    public open val routes: List<Route<Dest>> = emptyList()
 
     context(navGraphBuilder: NavGraphBuilder)
     override fun item(
@@ -252,7 +253,7 @@ public abstract class NavigationRoute : Route {
         text: @Composable (label: String, modifier: Modifier) -> Unit,
         selectedText: @Composable (label: String, modifier: Modifier) -> Unit,
         currentDestination: NavDestination?,
-        navigateTo: (Route) -> Unit
+        navigateTo: (Route<Dest>) -> Unit
     ): Unit = with(navigationSuiteScope) {
         if (!isNavigateItem() || !auth(auth)) return@with
 
@@ -263,12 +264,12 @@ public abstract class NavigationRoute : Route {
         else super.item(auth, enabled, alwaysShowLabel, text, selectedText, currentDestination, navigateTo)
     }
 
-    public fun find(destination: NavDestination?): Route? =
+    public fun find(destination: NavDestination?): Route<Dest>? =
         routes.firstNotNullOfOrNull { route ->
             if (route.isDestination(destination)) route else (route as? NavigationRoute)?.find(destination)
         }
 
-    public fun findByLabel(label: String): Route? =
+    public fun findByLabel(label: String): Route<Dest>? =
         routes.firstNotNullOfOrNull { route ->
             if (route.label == label) route else (route as? NavigationRoute)?.findByLabel(label)
         }

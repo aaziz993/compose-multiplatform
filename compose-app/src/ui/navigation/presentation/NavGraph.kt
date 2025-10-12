@@ -73,11 +73,11 @@ import ui.wallet.stock.StockScreen
 public sealed interface Destination
 
 @Serializable
-public data object NavRoute : Destination, NavigationRoute() {
+public data object NavRoute : Destination, NavigationRoute<Destination>() {
 
     override val deepLinks: List<String> = listOf("https://", "http://")
 
-    override val routes: List<Route> =
+    override val routes: List<Route<out Destination>> =
         listOf(
 //            Home,
             News,
@@ -119,11 +119,11 @@ public data object Home : Destination, NavigationDestination<Home>() {
 
 @Serializable
 @SerialName("news")
-public data object News : Destination, NavigationRoute() {
+public data object News : Destination, NavigationRoute<Destination>() {
 
     override val expand: Boolean = true
 
-    override val routes: List<NavigationDestination<*>> = listOf(Articles)
+    override val routes: List<Route<out Destination>> = listOf(Articles)
 }
 
 @Serializable
@@ -155,6 +155,7 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
             navViewModel::action,
             onNavigationAction,
             modifier = Modifier.fillMaxSize(),
+            blurEnabled = true,
         ) {
             ArticlesScreen(
                 Modifier,
@@ -275,11 +276,11 @@ public data object About : Destination, NavigationDestination<About>() {
 
 @Serializable
 @SerialName("auth")
-public data object AuthRoute : Destination, NavigationRoute() {
+public data object AuthRoute : Destination, NavigationRoute<Destination>() {
 
     override val expand: Boolean = true
 
-    override val routes: List<NavigationDestination<*>> = listOf(PhoneCheckUp, Otp, Unverified, Verification, Login, ForgotPassword, Profile)
+    override val routes: List<Route<out Destination>> = listOf(PhoneCheckUp, Otp, Unverified, Verification, PinCode, Login, ForgotPassword, Profile)
 
     override fun authResource(): AuthResource? = null
 }
@@ -504,9 +505,10 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 
 @Serializable
 @SerialName("wallet")
-public data object WalletRoute : Destination, NavigationRoute() {
+public data object WalletRoute : Destination, NavigationRoute<Destination>() {
 
-    override val routes: List<NavigationDestination<*>> by lazy { listOf(Balance, Crypto, Stock) }
+    override val routes: List<Route<Destination>> = emptyList()
+//        listOf(Balance, Crypto, Stock)
 }
 
 @Serializable

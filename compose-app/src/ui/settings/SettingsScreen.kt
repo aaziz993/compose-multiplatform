@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import arrow.optics.cons
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
@@ -30,7 +29,6 @@ import clib.presentation.auth.LocalAppAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.theme.LocalAppTheme
-import clib.presentation.theme.model.Theme
 import clib.presentation.theme.stateholder.ThemeAction
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsSwitch

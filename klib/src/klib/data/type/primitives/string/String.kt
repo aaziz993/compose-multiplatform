@@ -150,12 +150,11 @@ public fun String.surroundIfNotEmpty(prefix: String, suffix: String): String =
 
 public fun String.removeWhiteSpaces(): String = this.replace("\\s".toRegex(), "")
 
-private val STRING_FORMAT_REGEX: Regex = "%(\\d+)\\$[ds]".toRegex()
+private val STRING_FORMAT_REGEX = Regex("""%(\d+)\$[ds]""")
 
-public fun String.format(vararg args: Any?): String =
-    STRING_FORMAT_REGEX.replace(this) { matchResult ->
-        args.getOrNull(matchResult.groupValues[1].toInt() - 1)?.toString().orEmpty()
-    }
+public fun String.format(vararg args: Any?): String = STRING_FORMAT_REGEX.replace(this) { matchResult ->
+    args[matchResult.groupValues[1].toInt() - 1].toString()
+}
 
 public fun String.escapePattern(): String = Regex.escape(this)
 

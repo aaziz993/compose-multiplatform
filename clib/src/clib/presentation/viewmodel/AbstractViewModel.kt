@@ -84,7 +84,7 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
     protected val <T> Flow<T>.launch: Job
         get() = launchIn(viewModelScope)
 
-    protected fun <T> Flow<T>.viewModelScopeFlow(
+    protected fun <T> Flow<T>.viewModelScopeStateFlow(
         initialValue: T,
         started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
     ): RestartableStateFlow<T> = restartableStateIn(
@@ -97,7 +97,13 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         initialValue: T,
         started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
         block: suspend FlowCollector<T>.(T) -> Unit
-    ): RestartableStateFlow<T> = flow { block(initialValue) }.viewModelScopeFlow(initialValue, started)
+    ): RestartableStateFlow<T> = flow { block(initialValue) }.viewModelScopeStateFlow(initialValue, started)
+
+    protected fun <T> viewModelStateFlow(
+        initialValue: ViewModelState<T> = idle(),
+        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
+        block: suspend FlowCollector<ViewModelState<T>>.(ViewModelState<T>) -> Unit
+    ): RestartableStateFlow<ViewModelState<T>> = viewModelStateFlow<ViewModelState<T>>(initialValue, started, block)
 
     protected fun <T> viewModelMutableStateFlow(
         initialValue: T,
@@ -106,44 +112,21 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
     ): RestartableMutableStateFlow<T> {
         val mutableStateFlow = MutableStateFlow(initialValue)
 
-        val restartableStateFlow = if (block == null) {
-            mutableStateFlow
-        }
-        else {
-            mutableStateFlow.onStart { mutableStateFlow.update { mutableStateFlow.block(it) } }
-        }.viewModelScopeFlow(initialValue, started)
+        val stateFlow = (if (block == null) mutableStateFlow
+        else mutableStateFlow.onStart {
+            mutableStateFlow.update {
+                mutableStateFlow.block(it)
+            }
+        }).viewModelScopeStateFlow(initialValue, started)
 
-        return object : RestartableMutableStateFlow<T>, MutableStateFlow<T> by mutableStateFlow {
-
-            override fun restart() = restartableStateFlow.restart()
-        }
+        return RestartableMutableStateFlow(stateFlow, mutableStateFlow)
     }
-
-    protected fun <T> viewModelStateFlow(
-        initialValue: ViewModelState<T> = idle(),
-        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
-        block: suspend FlowCollector<ViewModelState<T>>.(ViewModelState<T>) -> Unit
-    ): RestartableStateFlow<ViewModelState<T>> = flow { block(initialValue) }.viewModelScopeFlow(initialValue, started)
 
     protected fun <T : Any> viewModelMutableStateFlow(
         initialValue: ViewModelState<T> = idle(),
         started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
         block: (suspend MutableStateFlow<ViewModelState<T>>.(ViewModelState<T>) -> ViewModelState<T>)? = null,
-    ): RestartableMutableStateFlow<ViewModelState<T>> {
-        val mutableStateFlow = MutableStateFlow(initialValue)
-
-        val restartableStateFlow = if (block == null) {
-            mutableStateFlow
-        }
-        else {
-            mutableStateFlow.onStart { mutableStateFlow.update { mutableStateFlow.block(it) } }
-        }.viewModelScopeFlow(initialValue, started)
-
-        return object : RestartableMutableStateFlow<ViewModelState<T>>, MutableStateFlow<ViewModelState<T>> by mutableStateFlow {
-
-            override fun restart() = restartableStateFlow.restart()
-        }
-    }
+    ): RestartableMutableStateFlow<ViewModelState<T>> = viewModelMutableStateFlow<ViewModelState<T>>(initialValue, started, block)
 
     protected fun <Value : Any> CRUDRepository<Value>.viewModelPagingFlow(
         sort: List<Order>? = null,

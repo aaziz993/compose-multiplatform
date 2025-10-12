@@ -24,7 +24,7 @@ import kotlin.reflect.KType
 @Composable
 public fun <Dest : Any> AdvancedNavHost(
     navController: NavHostController,
-    route: NavigationRoute,
+    route: NavigationRoute<Dest>,
     startDestination: Dest,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.TopStart,
@@ -53,7 +53,7 @@ public fun <Dest : Any> AdvancedNavHost(
     (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
         null,
-    builder: NavGraphBuilder.(Route) -> Unit
+    builder: NavGraphBuilder.(Route<out Dest>) -> Unit
 ): Unit = NavHost(
     navController,
     startDestination,

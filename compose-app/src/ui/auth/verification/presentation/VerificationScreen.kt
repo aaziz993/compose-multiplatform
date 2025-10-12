@@ -33,7 +33,6 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.confirm
 import compose_app.generated.resources.upload_id
-import klib.data.type.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.tooltipbox.AppTooltipBox

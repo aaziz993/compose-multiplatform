@@ -2,6 +2,7 @@ package presentation.components.scaffold
 
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
@@ -68,7 +69,7 @@ public fun ScreenAppBar(
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScaffoldMode = ScaffoldMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
-    content: @Composable () -> Unit
+    content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
 
     val hazeState = rememberHazeState(blurEnabled = blurEnabled)
@@ -76,7 +77,7 @@ public fun ScreenAppBar(
     val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
 
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .hazeEffect(state = hazeState, style = style) {
                 this.inputScale = inputScale
 
@@ -90,7 +91,7 @@ public fun ScreenAppBar(
 
                     ScaffoldMode.Mask -> mask = Brush.easedVerticalGradient(EaseIn)
                 }
-            }.then(modifier),
+            },
         topBar = {
             TopAppBar(
                 title = { Text(LocalTitle.current) },
@@ -180,6 +181,6 @@ public fun ScreenAppBar(
             )
         },
     ) { innerPadding ->
-        content()
+        content(innerPadding)
     }
 }

@@ -24,7 +24,7 @@ public class LoginViewModel(
         is LoginAction.Login -> login()
     }
 
-    private fun setPinCode(value: String) = state.update { it.copy(pinCode = value, error = null) }
+    private fun setPinCode(value: String) = state.update<LoginState> { it.copy(pinCode = value, error = null) }
 
     private fun showPinCode(value: Boolean) = state.update { it.copy(showPinCode = value, error = null) }
 
