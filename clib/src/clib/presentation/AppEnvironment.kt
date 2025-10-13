@@ -45,16 +45,12 @@ public fun AppEnvironment(
         shapes = shapes,
         typography = typography,
     ) {
-        val currentLocale = locale ?: customAppLocale
-
         CompositionLocalProvider(
-            LocalAppLocale provides currentLocale,
+            LocalAppLocale provides locale,
             LocalAppDensity provides customAppDensity,
             LocalAuth provides auth,
         ) {
-            key(currentLocale, customAppDensity, auth) {
-                content()
-            }
+            content()
         }
     }
 }

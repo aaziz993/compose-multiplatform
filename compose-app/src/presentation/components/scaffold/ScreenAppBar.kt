@@ -191,8 +191,10 @@ public fun ScreenAppBar(
                     if (isCountryPickerDialogOpen)
                         CountryPickerDialog(
                             onItemClicked = { country ->
-                                country.locales().firstOrNull()?.let(Locale::setCurrent)
-                                isCountryPickerDialogOpen = false
+                                country.locales().firstOrNull()?.let { locale ->
+                                    onLocaleAction(LocaleAction.SetLocale(locale))
+                                    isCountryPickerDialogOpen = false
+                                }
                             },
                             onDismissRequest = {
                                 isCountryPickerDialogOpen = false
