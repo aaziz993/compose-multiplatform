@@ -205,6 +205,9 @@ public fun ScreenAppBar(
                             Image(
                                 bitmap = imageResource(country.alpha2.flag),
                                 contentDescription = stringResource(Res.string.country_flag),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape),
                             )
                         }
                     }
