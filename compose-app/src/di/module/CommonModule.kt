@@ -38,14 +38,7 @@ public class CommonModule {
     public fun provideDrawerStateHolder(): BooleanStateHolder = BooleanStateHolder(true)
 
     @Single
-    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(AuthRoute) { navController ->
-        // Pop up to the start destination of the graph to
-        // avoid building up a large stack of destinations
-        // on the back stack as users select items
-//        popUpTo(navController.graph.startDestinationRoute!!) {
-//            saveState = true
-//        }
-    }
+    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(AuthRoute)
 
     @Single
     public fun provideJson(): Json = Json {

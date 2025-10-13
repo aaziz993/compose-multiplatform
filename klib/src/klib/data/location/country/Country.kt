@@ -17,20 +17,15 @@ public data class Country(
     val subRegionCode: Int? = null,
     val intermediateRegionCode: Int? = null,
     val dial: String? = null,
-    val locales: Set<Locale> = emptySet(),
 ) {
+
+    public fun locales(): Set<Locale> =
+        Locale.forRegion(alpha2.toString()) + Locale.forRegion(alpha3.toString())
 
     override fun toString(): String = alpha2.toString()
 
+    // https://www.iso.org/obp/ui/
     public companion object {
-
-        // https://www.iso.org/obp/ui/
-        public fun forCode(code: Alpha2Letter): Country =
-            forCodeOrNull(code) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
-
-        public fun forCode(code: String): Country =
-            forCodeOrNull(Alpha2Letter.parse(code))
-                ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
         public fun forCodeOrNull(code: Alpha2Letter): Country? =
             Country.getCountries().find { country -> country.alpha2 == code }
@@ -38,19 +33,19 @@ public data class Country(
         public fun forCodeOrNull(code: String): Country? =
             Alpha2Letter.parseOrNull(code)?.let(::forCodeOrNull)
 
-        public fun forLocaleOrNull(locale: Locale): Country? =
-            Country.getCountries().find { country -> locale in country.locales }
-                ?: Country.getCountries().find { country -> country.locales.any { it.language == locale.language } }
+        public fun forCode(code: Alpha2Letter): Country =
+            forCodeOrNull(code) ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
 
-        public fun forLocale(locale: Locale): Country =
-            forLocaleOrNull(locale) ?: error("Invalid locale: $locale")
+        public fun forCode(code: String): Country =
+            forCodeOrNull(Alpha2Letter.parse(code))
+                ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
     }
 }
 
-public fun Alpha2Letter.toCountry(): Country = Country.forCode(this)
-
 public fun Alpha2Letter.toCountryOrNull(): Country? = Country.forCodeOrNull(this)
 
-public fun String.toCountry(): Country = Country.forCode(this)
-
 public fun String.toCountryOrNull(): Country? = Country.forCodeOrNull(this)
+
+public fun Alpha2Letter.toCountry(): Country = Country.forCode(this)
+
+public fun String.toCountry(): Country = Country.forCode(this)

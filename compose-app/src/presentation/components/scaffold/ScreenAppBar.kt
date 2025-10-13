@@ -191,7 +191,7 @@ public fun ScreenAppBar(
                     if (isCountryPickerDialogOpen)
                         CountryPickerDialog(
                             onItemClicked = { country ->
-                                country.locales.firstOrNull()?.let(Locale::setCurrent)
+                                country.locales().firstOrNull()?.let(Locale::setCurrent)
                                 isCountryPickerDialogOpen = false
                             },
                             onDismissRequest = {
@@ -199,8 +199,9 @@ public fun ScreenAppBar(
                             },
                         )
 
-                    val country = (if (!LocalInspectionMode.current) LocalAppLocale.current.country() else null)
-                        ?: Country.forCode("TJ")
+                    val country = (if (!LocalInspectionMode.current)
+                        LocalAppLocale.current.countries().firstOrNull()
+                    else null) ?: Country.forCode("TJ")
 
                     AppTooltipBox(stringResource(Res.string.language)) {
                         IconButton(
