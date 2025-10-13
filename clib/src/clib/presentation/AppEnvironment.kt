@@ -7,7 +7,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.key
-import clib.presentation.auth.LocalAppAuth
+import clib.presentation.auth.LocalAuth
 import clib.presentation.locale.LocalAppLocale
 import clib.presentation.locale.customAppLocale
 import clib.presentation.theme.AppTheme
@@ -50,7 +50,7 @@ public fun AppEnvironment(
         CompositionLocalProvider(
             LocalAppLocale provides currentLocale,
             LocalAppDensity provides customAppDensity,
-            LocalAppAuth provides auth,
+            LocalAuth provides auth,
         ) {
             key(currentLocale, customAppDensity, auth) {
                 content()

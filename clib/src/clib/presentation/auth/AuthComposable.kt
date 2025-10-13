@@ -9,13 +9,12 @@ import clib.presentation.noLocalProvidedFor
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
 
-public val LocalAppAuth: ProvidableCompositionLocal<Auth> = staticCompositionLocalOf { noLocalProvidedFor("LocalUser") }
+public val LocalAuth: ProvidableCompositionLocal<Auth> = staticCompositionLocalOf { noLocalProvidedFor("LocalAuth") }
 
 @Composable
 public inline fun AuthComposable(
     authResource: AuthResource?,
     content: @Composable () -> Unit
-) {
-    val auth = LocalAppAuth.current
+): Unit = LocalAuth.current.let { auth ->
     if (authResource?.validate(auth.provider, auth.user) != false) content()
 }

@@ -113,9 +113,9 @@ public sealed interface Route<out Dest : Any> {
         destination: NavDestination?,
         navigateTo: (Route<Dest>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (!isNavigateItem() || !auth(auth)) return@with
+        if (!canNavigateItem(auth)) return@with
 
-        val selected = isSelected(destination)
+        val selected = hasDestination(destination)
 
         val selectedItem = if (selected)
             Item(
@@ -145,7 +145,9 @@ public sealed interface Route<out Dest : Any> {
         )
     }
 
-    public fun isSelected(destination: NavDestination?): Boolean =
+    public fun canNavigateItem(auth: Auth = Auth()): Boolean = isNavigateItem() && auth(auth)
+
+    public fun hasDestination(destination: NavDestination?): Boolean =
         destination?.hierarchy?.any { destination -> destination.hasRoute(route) } == true
 
     public fun isDestination(destination: NavDestination?): Boolean =
@@ -205,7 +207,7 @@ public abstract class NavigationDestination<Dest : Any> : Route<Dest> {
     }
 }
 
-public abstract class NavigationRoute<Dest : Any> : Route<Dest> {
+public abstract class NavigationRoute<Dest : Any> : Route<Dest>, Sequence<Route<Dest>> {
 
     public open val expand: Boolean = false
 
@@ -233,6 +235,7 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest> {
         onNavigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     ): Unit = with(navGraphBuilder) {
         val concatenatedDeepLinks = this@NavigationRoute.deepLinks.concatenateDeepLinks(deepLinks)
+
         navigation(this@NavigationRoute::class, routes.first()) {
             routes.forEach { route ->
                 route.item(
@@ -258,7 +261,7 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest> {
         destination: NavDestination?,
         navigateTo: (Route<Dest>) -> Unit
     ): Unit = with(navigationSuiteScope) {
-        if (!isNavigateItem() || !auth(auth)) return@with
+        if (!canNavigateItem(auth)) return@with
 
         if (expand)
             routes.forEach { route ->
@@ -268,14 +271,18 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest> {
     }
 
     public fun find(destination: NavDestination?): Route<Dest>? =
-        routes.firstNotNullOfOrNull { route ->
-            if (route.isDestination(destination)) route else (route as? NavigationRoute)?.find(destination)
+        firstNotNullOfOrNull { route ->
+            if (route.isDestination(destination)) route else null
         }
 
     public fun findByLabel(label: String): Route<Dest>? =
-        routes.firstNotNullOfOrNull { route ->
-            if (route.label == label) route else (route as? NavigationRoute)?.findByLabel(label)
+        firstNotNullOfOrNull { route ->
+            if (route.label == label) route else null
         }
+
+    override fun iterator(): Iterator<Route<Dest>> = routes.flatMap { route ->
+        route as? NavigationRoute ?: listOf(route)
+    }.iterator()
 }
 
 private fun List<String>.concatenateDeepLinks(deepLinks: List<String>) =

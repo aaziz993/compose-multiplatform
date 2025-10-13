@@ -13,7 +13,7 @@ import kotlinx.serialization.*
  */
 @JvmInline
 @Serializable
-public value class Alpha3Letter(public val value: String) {
+public value class Alpha3Letter(private val value: String) {
 
     init {
         require(isValidFormat(value)) {

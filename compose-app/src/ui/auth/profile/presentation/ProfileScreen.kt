@@ -1,6 +1,5 @@
 package ui.auth.profile.presentation
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -30,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import clib.presentation.auth.LocalAppAuth
+import clib.presentation.auth.LocalAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.viewmodel.NavigationAction
@@ -56,9 +55,9 @@ public fun ProfileScreen(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    with(LocalAppAuth.current.user!!) {
+    LocalAuth.current.user?.let { user->
         Avatar(
-            user = this,
+            user = user,
             modifier = Modifier.size(80.dp)
                 .clip(CircleShape),
         ) {
@@ -80,7 +79,7 @@ public fun ProfileScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         AdvancedTextField(
-            value = username.orEmpty(),
+            value = user.username.orEmpty(),
             onValueChange = { },
             label = { Text("Username") },
             singleLine = true,
@@ -90,7 +89,7 @@ public fun ProfileScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         AdvancedTextField(
-            value = email.orEmpty(),
+            value = user.email.orEmpty(),
             onValueChange = { },
             label = { Text("Email") },
             singleLine = true,
@@ -100,7 +99,7 @@ public fun ProfileScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         CountryCodePickerTextField(
-            value = phone.orEmpty(),
+            value = user.phone.orEmpty(),
             onValueChange = { _, _, _ -> },
             label = { Text("Phone") },
             modifier = Modifier.fillMaxWidth(),
@@ -108,9 +107,9 @@ public fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        if (roles.isNotEmpty()) {
+        if (user.roles.isNotEmpty()) {
             FlowRow {
-                roles.forEach { role ->
+                user.roles.forEach { role ->
                     AssistChip(
                         onClick = {},
                         label = { Text(role, style = MaterialTheme.typography.labelSmall) },
@@ -128,7 +127,7 @@ public fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        if (attributes.isNotEmpty()) {
+        if (user.attributes.isNotEmpty()) {
             Card(
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
@@ -139,7 +138,7 @@ public fun ProfileScreen(
                         "Attributes",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium),
                     )
-                    attributes.forEach { (key, values) ->
+                    user.attributes.forEach { (key, values) ->
                         Column {
                             Text(
                                 key,
@@ -152,7 +151,7 @@ public fun ProfileScreen(
             }
         }
 
-        if (LocalAppAuth.current.user?.roles?.contains("Verified") == false)
+        if (LocalAuth.current.user?.roles?.contains("Verified") == false)
             Button(
                 onClick = {
                     onNavigationAction(NavigationAction.TypeNavigation.Navigate(Verification))

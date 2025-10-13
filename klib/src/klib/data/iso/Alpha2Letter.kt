@@ -13,21 +13,13 @@ import kotlinx.serialization.*
  */
 @JvmInline
 @Serializable
-public value class Alpha2Letter(public val value: String) {
+public value class Alpha2Letter(private val value: String) {
 
     init {
         require(isValidFormat(value)) {
             "Invalid ISO alpha-2 code format: $value"
         }
     }
-
-    public fun getEmojiFlag(): String =
-        value.uppercase().map { char ->
-            val codePoint = 0x1F1E6 + (char.code - 'A'.code)
-            val highSurrogate = ((codePoint shr 10) + 0xD800 - (0x10000 shr 10)).toChar()
-            val lowSurrogate = ((codePoint and 0x3FF) + 0xDC00).toChar()
-            "$highSurrogate$lowSurrogate"
-        }.joinToString("")
 
     override fun toString(): String = value
 

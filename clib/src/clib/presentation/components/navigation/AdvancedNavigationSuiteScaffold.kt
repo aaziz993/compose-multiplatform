@@ -41,12 +41,11 @@ import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.noLocalProvidedFor
-import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlinx.coroutines.launch
 
 public val LocalDestination: ProvidableCompositionLocal<NavDestination?> = staticCompositionLocalOf { noLocalProvidedFor("LocalDestination") }
 public val LocalHasPreviousDestination: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { noLocalProvidedFor("LocalHasPreviousDestination") }
-public val LocalTitle: ProvidableCompositionLocal<String> = staticCompositionLocalOf { noLocalProvidedFor("LocalTitle") }
+public val LocalDestinationTitle: ProvidableCompositionLocal<String> = staticCompositionLocalOf { noLocalProvidedFor("LocalDestinationTitle") }
 
 @Composable
 public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
@@ -118,7 +117,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
 
         CompositionLocalProvider(
             LocalDestination provides destination,
-            LocalTitle provides title,
+            LocalDestinationTitle provides title,
             LocalHasPreviousDestination provides hasPreviousBackStackEntry,
         ) {
             content()
@@ -127,7 +126,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
 
     // Dynamically set title on navigation.
     val listener = OnDestinationChangedListener { _, destination, _ ->
-        title = destination.route!!.substringAfterLast(".").uppercaseFirstChar()
+        title = route.find(destination)!!.label
     }
 
     navController.addOnDestinationChangedListener(listener)

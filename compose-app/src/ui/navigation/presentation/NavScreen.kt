@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
-import clib.presentation.auth.LocalAppAuth
+import clib.presentation.auth.LocalAuth
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
@@ -35,7 +35,7 @@ public fun NavScreen(
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
-    val auth = LocalAppAuth.current
+    val auth = LocalAuth.current
     val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
     val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 

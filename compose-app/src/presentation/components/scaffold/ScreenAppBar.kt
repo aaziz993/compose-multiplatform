@@ -1,19 +1,10 @@
 package presentation.components.scaffold
 
 import androidx.compose.animation.core.EaseIn
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -22,17 +13,14 @@ import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material.icons.outlined.Sos
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,14 +31,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.location.country.flag
-import clib.presentation.auth.LocalAppAuth
+import clib.presentation.auth.LocalAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.LocalHasPreviousDestination
-import clib.presentation.components.navigation.LocalTitle
+import clib.presentation.components.navigation.LocalDestinationTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.easedVerticalGradient
@@ -59,7 +46,9 @@ import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.ThemeMode
 import clib.presentation.theme.stateholder.ThemeAction
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.allStringResources
 import compose_app.generated.resources.language
+import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate_back
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.sos
@@ -73,11 +62,12 @@ import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
+import ui.navigation.presentation.AuthRoute
+import ui.navigation.presentation.NavRoute
 import ui.navigation.presentation.Profile
 
 @Composable
@@ -117,17 +107,26 @@ public fun ScreenAppBar(
             },
         topBar = {
             TopAppBar(
-                title = { Text(LocalTitle.current) },
+                title = {
+                    Text(
+                        text = Res.allStringResources[LocalDestinationTitle.current]?.let { stringResource ->
+                            stringResource(stringResource)
+                        } ?: LocalDestinationTitle.current,
+                    )
+                },
                 navigationIcon = {
                     Row {
-                        if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
-                            AppTooltipBox("Menu") {
+                        val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).any { route ->
+                            route.canNavigateItem(LocalAuth.current)
+                        }
+                        if (hasNavigationItems && currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
+                            AppTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
                                     onClick = toggleDrawer,
                                 ) {
                                     Icon(
                                         imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
-                                        contentDescription = "Menu",
+                                        contentDescription = stringResource(Res.string.menu),
                                     )
                                 }
                             }
@@ -206,12 +205,12 @@ public fun ScreenAppBar(
                                 isCountryPickerDialogOpen = true
                             },
                         ) {
-                            Text(text = country.alpha2.getEmojiFlag())
+                            Icon(painter = painterResource(country.alpha2.flag), contentDescription = "Country flag")
                         }
                     }
 
                     AppTooltipBox(stringResource(Res.string.profile)) {
-                        LocalAppAuth.current.user?.let { user ->
+                        LocalAuth.current.user?.let { user ->
                             IconButton(
                                 onClick = {
                                     onNavigationAction(NavigationAction.TypeNavigation.Navigate(Profile))
@@ -221,7 +220,7 @@ public fun ScreenAppBar(
                                     user = user,
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .clip(CircleShape)
+                                        .clip(CircleShape),
                                 )
                             }
                         }

@@ -111,6 +111,9 @@
     <string name="vehicle_license_plate_image">Vehicle license plate image</string>
     <string name="mapper">Mapper</string>
 
+    <string name="articles">Articles</string>
+    <string name="services">Services</string>
+    <string name="menu">Menu</string>
     <string name="navigate_back">Navigate Back</string>
     <string name="sos">SOS</string>
     <string name="back_content_description">Back content description</string>
