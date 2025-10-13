@@ -73,7 +73,9 @@ public fun NavScreen(
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = {
-            val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).toList().any { route ->
+            val hasNavigationItems = NavRoute.filterNot { route ->
+                route == AuthRoute || AuthRoute.contains(route)
+            }.toList().any { route ->
                 route.canNavigateItem(LocalAuth.current)
             }
             if (hasNavigationItems)

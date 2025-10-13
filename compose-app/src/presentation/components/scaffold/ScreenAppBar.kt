@@ -131,7 +131,9 @@ public fun ScreenAppBar(
                 },
                 navigationIcon = {
                     Row {
-                        val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).toList().any { route ->
+                        val hasNavigationItems = NavRoute.filterNot { route ->
+                            route == AuthRoute || AuthRoute.contains(route)
+                        }.toList().any { route ->
                             route.canNavigateItem(LocalAuth.current)
                         }
                         if (hasNavigationItems && currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
