@@ -26,6 +26,7 @@ import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
+import klib.data.type.collections.iterator
 import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
@@ -280,8 +281,13 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest>, Sequence<Route<
             if (route.label == label) route else null
         }
 
-    override fun iterator(): Iterator<Route<Dest>> = routes.flatMap { route ->
-        route as? NavigationRoute ?: listOf(route)
+    override fun iterator(): Iterator<Route<Dest>> = sequence {
+        val (childRoutes, childDestinations) = routes.partition { route -> route is NavigationRoute }
+        yieldAll(childDestinations)
+
+        childRoutes.forEach { route ->
+            yieldAll((route as NavigationRoute<Dest>).iterator())
+        }
     }.iterator()
 }
 

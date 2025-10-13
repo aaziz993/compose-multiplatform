@@ -59,8 +59,7 @@ public fun NavScreen(
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = { currentDestination ->
-            if (NavRoute.find(currentDestination) in listOf(PhoneCheckUp, Otp, Login)) NavigationSuiteType.None
-            else with(currentWindowAdaptiveInfo()) {
+            with(currentWindowAdaptiveInfo()) {
                 if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
                     if (isDrawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
                 }

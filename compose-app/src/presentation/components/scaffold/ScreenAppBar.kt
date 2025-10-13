@@ -116,7 +116,7 @@ public fun ScreenAppBar(
                 },
                 navigationIcon = {
                     Row {
-                        val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).any { route ->
+                        val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).toList().any { route ->
                             route.canNavigateItem(LocalAuth.current)
                         }
                         if (hasNavigationItems && currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
@@ -130,7 +130,6 @@ public fun ScreenAppBar(
                                     )
                                 }
                             }
-
 
                         if (LocalHasPreviousDestination.current)
                             AppTooltipBox(stringResource(Res.string.navigate_back)) {

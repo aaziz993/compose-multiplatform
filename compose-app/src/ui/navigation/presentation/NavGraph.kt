@@ -107,6 +107,8 @@ public data object Home : Destination, NavigationDestination<Home>() {
         Icon(Icons.Filled.Home, label, modifier)
     }
 
+    override fun authResource(): AuthResource? = AuthResource()
+
     @Composable
     override fun Screen(
         route: Home,
@@ -150,6 +152,8 @@ public data object News : Destination, NavigationRoute<Destination>() {
     override val expand: Boolean = true
 
     override val routes: List<Route<Destination>> = listOf(Articles)
+
+    override fun authResource(): AuthResource? = AuthResource()
 }
 
 @Serializable
@@ -163,6 +167,8 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.Newspaper, label, modifier)
     }
+
+    override fun authResource(): AuthResource? = AuthResource()
 
     @Composable
     override fun Screen(
@@ -205,6 +211,8 @@ public data object Map : Destination, NavigationDestination<Map>() {
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.Map, label, modifier)
     }
+
+    override fun authResource(): AuthResource? = AuthResource()
 
     @Composable
     override fun Screen(route: Map, onNavigationAction: (NavigationAction) -> Unit) {
@@ -250,6 +258,8 @@ public data object Services : Destination, NavigationDestination<Services>() {
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.Apps, label, modifier)
     }
+
+    override fun authResource(): AuthResource? = AuthResource()
 
     @Composable
     override fun Screen(
@@ -298,6 +308,8 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
         Icon(Icons.Filled.Settings, label, modifier)
     }
 
+    override fun authResource(): AuthResource? = AuthResource()
+
     @Composable
     override fun Screen(route: Settings, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
@@ -345,6 +357,8 @@ public data object About : Destination, NavigationDestination<About>() {
         Icon(Icons.Filled.Info, label, modifier)
     }
 
+    override fun authResource(): AuthResource? = AuthResource()
+
     @Composable
     override fun Screen(route: About, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
@@ -385,8 +399,6 @@ public data object AuthRoute : Destination, NavigationRoute<Destination>() {
     override val expand: Boolean = true
 
     override val routes: List<Route<Destination>> = listOf(PhoneCheckUp, Otp, Unverified, Verification, PinCode, Login, ForgotPassword, Profile)
-
-    override fun authResource(): AuthResource? = null
 }
 
 @Serializable
@@ -402,8 +414,6 @@ public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckU
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.PersonAddAlt, label, modifier)
     }
-
-    override fun authResource(): AuthResource? = null
 
     @Composable
     override fun Screen(route: PhoneCheckUp, onNavigationAction: (NavigationAction) -> Unit) {
@@ -463,8 +473,6 @@ public data class Otp(val phone: String = "") : Destination {
             Icon(Icons.AutoMirrored.Filled.Login, label, modifier)
         }
 
-        override fun authResource(): AuthResource? = null
-
         @Composable
         override fun Screen(route: Otp, onNavigationAction: (NavigationAction) -> Unit) {
             val themeStateHolder: ThemeStateHolder = koinInject()
@@ -517,8 +525,6 @@ public data object PinCode : Destination, NavigationDestination<PinCode>() {
         Icon(Icons.Filled.PersonAddAlt, label, modifier)
     }
 
-    override fun authResource(): AuthResource? = null
-
     @Composable
     override fun Screen(route: PinCode, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
@@ -569,8 +575,6 @@ public data object Login : Destination, NavigationDestination<Login>() {
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.AutoMirrored.Filled.Login, label, modifier)
     }
-
-    override fun authResource(): AuthResource? = null
 
     @Composable
     override fun Screen(route: Login, onNavigationAction: (NavigationAction) -> Unit) {
@@ -654,6 +658,8 @@ public data object ForgotPassword : Destination, NavigationDestination<ForgotPas
 @SerialName("unverified")
 public data object Unverified : Destination, NavigationDestination<Unverified>() {
 
+    override fun authResource(): AuthResource? = AuthResource()
+
     @Composable
     override fun Screen(route: Unverified, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
@@ -692,6 +698,8 @@ public data object Unverified : Destination, NavigationDestination<Unverified>()
 @Serializable
 @SerialName("verification")
 public data object Verification : Destination, NavigationDestination<Verification>() {
+
+    override fun authResource(): AuthResource? = AuthResource()
 
     @Composable
     override fun Screen(route: Verification, onNavigationAction: (NavigationAction) -> Unit) {
@@ -736,6 +744,8 @@ public data object Verification : Destination, NavigationDestination<Verificatio
 @Serializable
 @SerialName("profile")
 public data object Profile : Destination, NavigationDestination<Profile>() {
+
+    override fun authResource(): AuthResource? = AuthResource()
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Person, label, modifier)
@@ -784,6 +794,8 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 public data object WalletRoute : Destination, NavigationRoute<Destination>() {
 
     override val routes: List<Route<Destination>> = listOf(Balance as Route<Destination>, Crypto, Stock)
+
+    override fun authResource(): AuthResource? = AuthResource()
 }
 
 @Serializable
@@ -797,6 +809,8 @@ public data object Balance : Destination, NavigationDestination<Balance>() {
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.AccountBalance, label, modifier)
     }
+
+    override fun authResource(): AuthResource? = AuthResource()
 
     @Composable
     override fun Screen(route: Balance, onNavigationAction: (NavigationAction) -> Unit) {
@@ -843,6 +857,8 @@ public data object Crypto : Destination, NavigationDestination<Crypto>() {
         Icon(Icons.Filled.EnhancedEncryption, label, modifier)
     }
 
+    override fun authResource(): AuthResource? = AuthResource()
+
     @Composable
     override fun Screen(route: Crypto, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
@@ -887,6 +903,8 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
     override val selectedIcon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Filled.CurrencyExchange, label, modifier)
     }
+
+    override fun authResource(): AuthResource? = AuthResource()
 
     @Composable
     override fun Screen(route: Stock, onNavigationAction: (NavigationAction) -> Unit) {
