@@ -2,10 +2,12 @@ package presentation.components.scaffold
 
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -31,7 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.location.country.flag
 import clib.presentation.auth.LocalAuth
@@ -64,6 +68,7 @@ import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
+import klib.data.location.locale.setCurrent
 import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
@@ -183,7 +188,8 @@ public fun ScreenAppBar(
 
                     if (isCountryPickerDialogOpen)
                         CountryPickerDialog(
-                            onItemClicked = {
+                            onItemClicked = { country ->
+                                country.locales.firstOrNull()?.let(Locale::setCurrent)
                                 isCountryPickerDialogOpen = false
                             },
                             onDismissRequest = {
@@ -207,7 +213,7 @@ public fun ScreenAppBar(
                                 contentDescription = stringResource(Res.string.country_flag),
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .clip(CircleShape),
+                                    .clip(RoundedCornerShape(8.dp)),
                             )
                         }
                     }
