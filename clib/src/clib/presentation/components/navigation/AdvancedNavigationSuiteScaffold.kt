@@ -2,6 +2,7 @@
 
 package clib.presentation.components.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
@@ -53,7 +54,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     },
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
-    content: @Composable () -> Unit
+    content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val destination = navBackStackEntry?.destination
@@ -62,28 +63,30 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     }
     var destinationTitle: String by remember { mutableStateOf("") }
 
-    NavigationSuiteScaffold(
-        {
-            route.routes.forEach { route -> navigationSuiteRoute(destination, route) }
-        },
-        modifier,
-        layoutType(destination),
-        navigationSuiteColors,
-        containerColor,
-        contentColor,
-    ) {
-        CompositionLocalProvider(
-            LocalDestination provides destination,
-            LocalDestinationTitle provides destinationTitle,
-            LocalHasPreviousDestination provides hasPreviousDestination,
+    route.single { route -> route.isDestination(LocalDestination.current) }.ScreenAppBar { innerPadding ->
+        NavigationSuiteScaffold(
+            {
+                route.routes.forEach { route -> navigationSuiteRoute(destination, route) }
+            },
+            modifier,
+            layoutType(destination),
+            navigationSuiteColors,
+            containerColor,
+            contentColor,
         ) {
-            content()
+            CompositionLocalProvider(
+                LocalDestination provides destination,
+                LocalDestinationTitle provides destinationTitle,
+                LocalHasPreviousDestination provides hasPreviousDestination,
+            ) {
+                content(innerPadding)
+            }
         }
     }
 
     // Dynamically set title on navigation.
     val listener = OnDestinationChangedListener { _, destination, _ ->
-        destinationTitle = route.find(destination)!!.label
+        destinationTitle = route.single { route -> route.isDestination(destination) }.label
     }
 
     navController.addOnDestinationChangedListener(listener)

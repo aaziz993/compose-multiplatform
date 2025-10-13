@@ -6,6 +6,11 @@ imports:
 description: Source generator.
 script:
   - kotlin:
+      compilerOptions:
+        optIn.addAll: |
+          (
+            "com.google.devtools.ksp.KspExperimental",
+          )
       sourceSets:
         - named: |
             ("jvmMain") { sourceSet ->

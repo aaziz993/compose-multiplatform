@@ -403,7 +403,7 @@ public data object AuthRoute : Destination, NavigationRoute<Destination>() {
 
 @Serializable
 @SerialName("phonecheckup")
-public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckUp>() {
+public data object PhoneCheckUp : NavigationDestination<PhoneCheckUp>(), Destination {
 
     override val deepLinks: List<String> = listOf("phonesignup")
 

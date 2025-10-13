@@ -2,6 +2,7 @@
 
 package ui.navigation.presentation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -26,6 +27,7 @@ import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.dialog.alert.AlertDialog
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
+import clib.presentation.components.navigation.LocalDestination
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
@@ -71,7 +73,7 @@ public fun NavScreen(
         modifier = modifier,
         navController = navController,
         onNavHostReady = onNavHostReady,
-        layoutType = { currentDestination ->
+        layoutType = {
             val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).toList().any { route ->
                 route.canNavigateItem(LocalAuth.current)
             }
@@ -84,7 +86,7 @@ public fun NavScreen(
                 }
             else NavigationSuiteType.None
         },
-    ) {
+    ) { innerPadding ->
         val coroutineScope = rememberCoroutineScope()
 
         // Global Snackbar by GlobalSnackbarEventController
@@ -122,7 +124,7 @@ public fun NavScreen(
             navController = navController,
             route = NavRoute,
             startDestination = startDestination,
-            modifier = Modifier,
+            modifier = Modifier.padding(innerPadding),
         ) { route ->
             route.item { action -> navigator.navigate(action) }
         }

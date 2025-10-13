@@ -23,12 +23,7 @@ public data class Locale(
 
     public fun toLanguageTag(): LanguageTag = languageTag
 
-    public fun countries(): Set<Country> = setOfNotNull(languageTag.region?.let(Country::forCodeOrNull)) +
-        LanguageTag.getLanguageTags().filter { tag ->
-            tag.language == language && tag.region != null
-        }.mapNotNull { tag ->
-            Country.forCodeOrNull(tag.region!!)
-        }.toSet()
+    public fun country(): Country? = languageTag.country()
 
     override fun toString(): String = languageTag.toString()
 

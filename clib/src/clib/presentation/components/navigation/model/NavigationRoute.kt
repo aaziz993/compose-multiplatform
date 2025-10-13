@@ -7,11 +7,13 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -36,28 +38,29 @@ import kotlinx.serialization.serializer
 
 @Suppress("UNCHECKED_CAST")
 @Immutable
-public sealed interface Route<out Dest : Any> {
+public sealed class Route<out Dest : Any> {
 
-    public val route: KClass<out Dest>
+    protected open val route: KClass<out Dest>
         get() = this::class as KClass<out Dest>
 
-    public val label: String
+    public open val label: String
         get() = route.serializer().descriptor.serialName
 
-    public val deepLinks: List<String>
+    protected open val deepLinks: List<String>
         get() = listOf(label)
 
-    public val enabled: Boolean
+    protected open val enabled: Boolean
         get() = true
-    public val alwaysShowLabel: Boolean
+    protected open val alwaysShowLabel: Boolean
         get() = true
 
-    public fun authResource(): AuthResource? = null
+    protected open fun authResource(): AuthResource? = null
 
-    public fun auth(auth: Auth): Boolean = authResource()?.validate(auth.provider, auth.user) != false
+    protected fun auth(auth: Auth): Boolean =
+        authResource()?.validate(auth.provider, auth.user) != false
 
     context(navGraphBuilder: NavGraphBuilder)
-    public fun item(
+    public abstract fun item(
         typeMap: Map<KType, NavType<*>> = emptyMap(),
         deepLinks: List<String> = emptyList(),
         enterTransition:
@@ -87,27 +90,31 @@ public sealed interface Route<out Dest : Any> {
         onNavigationAction: NavBackStackEntry.(NavigationAction) -> Unit,
     )
 
-    public fun isNavigateItem(): Boolean = true
+    public open fun isNavigateItem(): Boolean = true
 
-    public val modifier: Modifier
+    protected open val modifier: Modifier
         get() = Modifier
-    public val selectedModifier: Modifier
+    protected open val selectedModifier: Modifier
         get() = modifier
-    public val text: @Composable (label: String, modifier: Modifier) -> Unit
+    protected open val text: @Composable (label: String, modifier: Modifier) -> Unit
         get() = { text, modifier -> Text(text = text, modifier = modifier) }
-    public val selectedText: @Composable (label: String, modifier: Modifier) -> Unit
+    protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit
         get() = text
-    public val icon: @Composable (label: String, modifier: Modifier) -> Unit
+    protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit
         get() = { _, _ -> }
-    public val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit
+    protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit
         get() = { _, _ -> }
-    public val badge: @Composable (label: String, modifier: Modifier) -> Unit
+    protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit
         get() = { _, _ -> }
-    public val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit
+    protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit
         get() = { _, _ -> }
+
+    @Composable
+    public open fun ScreenAppBar(block: @Composable (innerPadding: PaddingValues) -> Unit): Unit =
+        block(PaddingValues(0.dp))
 
     context(navigationSuiteScope: NavigationSuiteScope)
-    public fun item(
+    public open fun item(
         auth: Auth = Auth(),
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
@@ -157,7 +164,7 @@ public sealed interface Route<out Dest : Any> {
 }
 
 @Suppress("UNCHECKED_CAST")
-public abstract class NavigationDestination<Dest : Any> : Route<Dest> {
+public abstract class NavigationDestination<Dest : Any> : Route<Dest>() {
 
     public open val typeMap: Map<KType, NavType<*>> = emptyMap()
 
@@ -209,7 +216,7 @@ public abstract class NavigationDestination<Dest : Any> : Route<Dest> {
     }
 }
 
-public abstract class NavigationRoute<Dest : Any> : Route<Dest>, Sequence<Route<Dest>> {
+public abstract class NavigationRoute<Dest : Any> : Route<Dest>(), Sequence<Route<Dest>> {
 
     public open val expand: Boolean = false
 
@@ -271,16 +278,6 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest>, Sequence<Route<
             }
         else super.item(auth, enabled, alwaysShowLabel, transform, destination, navigateTo)
     }
-
-    public fun find(destination: NavDestination?): Route<Dest>? =
-        firstNotNullOfOrNull { route ->
-            if (route.isDestination(destination)) route else null
-        }
-
-    public fun findByLabel(label: String): Route<Dest>? =
-        firstNotNullOfOrNull { route ->
-            if (route.label == label) route else null
-        }
 
     override fun iterator(): Iterator<Route<Dest>> = sequence {
         val (childRoutes, childDestinations) = routes.partition { route -> route is NavigationRoute }

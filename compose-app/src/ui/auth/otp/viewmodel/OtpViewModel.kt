@@ -21,8 +21,8 @@ public class OtpViewModel(
     private val authStateHolder: AuthStateHolder
 ) : AbstractViewModel<OtpAction>() {
 
-    public val state: StateFlow<OtpState>
-        field = MutableStateFlow(OtpState())
+    public val state: RestartableStateFlow<OtpState>
+        field = viewModelMutableStateFlow(OtpState())
 
     private var countDownTimer: CountDownTimer? = null
 

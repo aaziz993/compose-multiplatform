@@ -214,7 +214,7 @@ public fun ScreenAppBar(
                         )
 
                     val country = (if (!LocalInspectionMode.current)
-                        LocalAppLocale.current.countries().firstOrNull()
+                        LocalAppLocale.current.country()
                     else null) ?: Country.forCode("TJ")
 
                     AppTooltipBox(stringResource(Res.string.language)) {

@@ -53,7 +53,7 @@ public fun <Dest : Any> AdvancedNavHost(
     (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
         null,
-    builder: NavGraphBuilder.(Route<out Dest>) -> Unit
+    builder: NavGraphBuilder.(Route<Dest>) -> Unit
 ): Unit = NavHost(
     navController,
     startDestination,

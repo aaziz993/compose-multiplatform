@@ -1,6 +1,5 @@
 package processor.generators.ktorfit
 
-import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
@@ -14,7 +13,6 @@ import processor.CompilerOptions
 /**
  * Generate the Impl class for every interface used for Ktorfit
  */
-@OptIn(KspExperimental::class)
 public fun generateImplClass(
     classDataList: List<ClassData>,
     codeGenerator: CodeGenerator,
@@ -53,7 +51,7 @@ public fun generateImplClass(
                 }
             }
 
-            fileSource.writeToOrOverride(codeGenerator, Dependencies(false, ksFile))
+//            fileSource.writeToOrOverride(codeGenerator, Dependencies(false, ksFile))
         }
     }
 }

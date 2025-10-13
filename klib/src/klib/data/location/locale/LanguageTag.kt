@@ -24,11 +24,14 @@ public data class LanguageTag(
     public val variants: List<String>,
 ) {
 
+    public val defaultRegion: String?
+        get() = language?.let(LANGUAGE_DEFAULT_REGION::get)
+
     public fun forPrivateUse(privateUse: String): LanguageTag = copy(language = null, privateUse = privateUse)
 
     public fun forLanguage(language: String): LanguageTag = copy(language = language, privateUse = null)
 
-    public fun country(): Country = Country.forCode(region ?: "")
+    public fun country(): Country? = (region ?: defaultRegion)?.let(Country::forCodeOrNull)
 
     override fun toString(): String = buildString {
         if (language != null) {
@@ -69,6 +72,77 @@ public data class LanguageTag(
     }
 
     public companion object {
+
+        public val LANGUAGE_DEFAULT_REGION: Map<String, String> = mapOf(
+            "af" to "ZA", // Afrikaans → South Africa
+            "am" to "ET", // Amharic → Ethiopia
+            "ar" to "SA", // Arabic → Saudi Arabia
+            "az" to "AZ", // Azerbaijani → Azerbaijan
+            "be" to "BY", // Belarusian → Belarus
+            "bg" to "BG", // Bulgarian → Bulgaria
+            "bn" to "BD", // Bengali → Bangladesh
+            "ca" to "ES", // Catalan → Spain
+            "cs" to "CZ", // Czech → Czech Republic
+            "cy" to "GB", // Welsh → United Kingdom
+            "da" to "DK", // Danish → Denmark
+            "de" to "DE", // German → Germany
+            "el" to "GR", // Greek → Greece
+            "en" to "US", // English → United States
+            "es" to "ES", // Spanish → Spain
+            "et" to "EE", // Estonian → Estonia
+            "eu" to "ES", // Basque → Spain
+            "fa" to "IR", // Persian → Iran
+            "fi" to "FI", // Finnish → Finland
+            "fr" to "FR", // French → France
+            "ga" to "IE", // Irish → Ireland
+            "gl" to "ES", // Galician → Spain
+            "gu" to "IN", // Gujarati → India
+            "he" to "IL", // Hebrew → Israel
+            "hi" to "IN", // Hindi → India
+            "hr" to "HR", // Croatian → Croatia
+            "hu" to "HU", // Hungarian → Hungary
+            "hy" to "AM", // Armenian → Armenia
+            "id" to "ID", // Indonesian → Indonesia
+            "is" to "IS", // Icelandic → Iceland
+            "it" to "IT", // Italian → Italy
+            "ja" to "JP", // Japanese → Japan
+            "ka" to "GE", // Georgian → Georgia
+            "kk" to "KZ", // Kazakh → Kazakhstan
+            "km" to "KH", // Khmer → Cambodia
+            "kn" to "IN", // Kannada → India
+            "ko" to "KR", // Korean → South Korea
+            "ky" to "KG", // Kyrgyz → Kyrgyzstan
+            "lt" to "LT", // Lithuanian → Lithuania
+            "lv" to "LV", // Latvian → Latvia
+            "mk" to "MK", // Macedonian → North Macedonia
+            "ml" to "IN", // Malayalam → India
+            "mn" to "MN", // Mongolian → Mongolia
+            "mr" to "IN", // Marathi → India
+            "ms" to "MY", // Malay → Malaysia
+            "nb" to "NO", // Norwegian Bokmål → Norway
+            "ne" to "NP", // Nepali → Nepal
+            "nl" to "NL", // Dutch → Netherlands
+            "pa" to "IN", // Punjabi → India
+            "pl" to "PL", // Polish → Poland
+            "pt" to "PT", // Portuguese → Portugal
+            "ro" to "RO", // Romanian → Romania
+            "ru" to "RU", // Russian → Russia
+            "si" to "LK", // Sinhala → Sri Lanka
+            "sk" to "SK", // Slovak → Slovakia
+            "sl" to "SI", // Slovenian → Slovenia
+            "sq" to "AL", // Albanian → Albania
+            "sr" to "RS", // Serbian → Serbia
+            "sv" to "SE", // Swedish → Sweden
+            "ta" to "IN", // Tamil → India
+            "te" to "IN", // Telugu → India
+            "th" to "TH", // Thai → Thailand
+            "tr" to "TR", // Turkish → Turkey
+            "uk" to "UA", // Ukrainian → Ukraine
+            "ur" to "PK", // Urdu → Pakistan
+            "vi" to "VN", // Vietnamese → Vietnam
+            "zh" to "CN", // Chinese → China
+            "zu" to "ZA",  // Zulu → South Africa
+        )
 
         public const val PRIVATE_USE_PREFIX: Char = 'x'
         public const val SEPARATOR: Char = '-'
