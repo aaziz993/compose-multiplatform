@@ -1,6 +1,7 @@
 package presentation.components.scaffold
 
 import androidx.compose.animation.core.EaseIn
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,6 +64,7 @@ import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
+import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
@@ -141,18 +143,19 @@ public fun ScreenAppBar(
                     }
                 },
                 actions = {
-                    AppTooltipBox(stringResource(Res.string.sos)) {
-                        IconButton(
-                            onClick = {
+                    if (LocalAuth.current.user != null)
+                        AppTooltipBox(stringResource(Res.string.sos)) {
+                            IconButton(
+                                onClick = {
 
-                            },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Sos,
-                                contentDescription = stringResource(Res.string.sos),
-                            )
+                                },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Sos,
+                                    contentDescription = stringResource(Res.string.sos),
+                                )
+                            }
                         }
-                    }
 
                     val theme = LocalAppTheme.current
 
@@ -182,7 +185,7 @@ public fun ScreenAppBar(
                     if (isCountryPickerDialogOpen)
                         CountryPickerDialog(
                             onItemClicked = {
-
+                                isCountryPickerDialogOpen = false
                             },
                             onDismissRequest = {
                                 isCountryPickerDialogOpen = false
@@ -200,7 +203,7 @@ public fun ScreenAppBar(
                                 isCountryPickerDialogOpen = true
                             },
                         ) {
-                            Icon(painter = painterResource(country.alpha2.flag), contentDescription = "Country flag")
+                            Image(bitmap = imageResource(country.alpha2.flag), contentDescription = stringResource(Res.string.country_flag))
                         }
                     }
 
