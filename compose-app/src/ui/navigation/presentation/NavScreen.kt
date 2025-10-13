@@ -3,25 +3,37 @@
 package ui.navigation.presentation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
+import clib.data.type.collections.ToLaunchedEffect
 import clib.presentation.auth.LocalAuth
+import clib.presentation.components.dialog.alert.AlertDialog
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
 import clib.presentation.components.navigation.Navigator
+import clib.presentation.event.alert.GlobalAlertEventController
+import clib.presentation.event.alert.model.AlertEvent
+import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.stateholders.BooleanStateHolder
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -67,6 +79,39 @@ public fun NavScreen(
             }
         },
     ) {
+        val coroutineScope = rememberCoroutineScope()
+
+        // Global Snackbar by GlobalSnackbarEventController
+        val snackbarHostState = remember { SnackbarHostState() }
+        GlobalSnackbarEventController.events.ToLaunchedEffect(
+            snackbarHostState,
+        ) { event ->
+            coroutineScope.launch {
+                snackbarHostState.currentSnackbarData?.dismiss()
+
+                val result = snackbarHostState.showSnackbar(
+                    event.message,
+                    event.action?.name,
+                )
+
+                if (result == SnackbarResult.ActionPerformed) event.action?.action?.invoke()
+            }
+        }
+
+        // Global AlertDialog by GlobalAlertEventController
+        var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
+        GlobalAlertEventController.events.ToLaunchedEffect { event ->
+            alertDialogState = event
+        }
+        alertDialogState?.let { event ->
+            AlertDialog(
+                event.message,
+                isError = event.isError,
+                onConfirm = event.action,
+                onCancel = { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
+            )
+        }
+
         AdvancedNavHost(
             navController = navController,
             route = NavRoute,

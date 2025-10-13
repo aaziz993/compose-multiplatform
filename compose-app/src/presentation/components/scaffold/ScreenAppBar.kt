@@ -36,7 +36,8 @@ import clib.data.location.country.flag
 import clib.presentation.auth.LocalAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.navigation.LocalHasPreviousDestination
+import clib.presentation.components.navigation.LocalDestination
+import clib.presentation.components.navigation.LocalPreviousDestination
 import clib.presentation.components.navigation.LocalDestinationTitle
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
@@ -66,8 +67,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
-import ui.navigation.presentation.AuthRoute
-import ui.navigation.presentation.NavRoute
 import ui.navigation.presentation.Profile
 
 @Composable
@@ -116,10 +115,7 @@ public fun ScreenAppBar(
                 },
                 navigationIcon = {
                     Row {
-                        val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).toList().any { route ->
-                            route.canNavigateItem(LocalAuth.current)
-                        }
-                        if (hasNavigationItems && currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
+                        if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
                             AppTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
                                     onClick = toggleDrawer,
@@ -131,7 +127,7 @@ public fun ScreenAppBar(
                                 }
                             }
 
-                        if (LocalHasPreviousDestination.current)
+                        if (LocalPreviousDestination.current != null)
                             AppTooltipBox(stringResource(Res.string.navigate_back)) {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.NavigateBack) },

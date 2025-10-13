@@ -3,8 +3,6 @@
 package clib.presentation.components.navigation
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
@@ -22,7 +20,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
@@ -33,18 +30,12 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import clib.data.type.collections.ToLaunchedEffect
-import clib.presentation.components.dialog.alert.AlertDialog
 import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
-import clib.presentation.event.alert.GlobalAlertEventController
-import clib.presentation.event.alert.model.AlertEvent
-import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.noLocalProvidedFor
-import kotlinx.coroutines.launch
 
 public val LocalDestination: ProvidableCompositionLocal<NavDestination?> = staticCompositionLocalOf { noLocalProvidedFor("LocalDestination") }
-public val LocalHasPreviousDestination: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { noLocalProvidedFor("LocalHasPreviousDestination") }
+public val LocalPreviousDestination: ProvidableCompositionLocal<NavDestination?> = staticCompositionLocalOf { noLocalProvidedFor("LocalHasPreviousDestination") }
 public val LocalDestinationTitle: ProvidableCompositionLocal<String> = staticCompositionLocalOf { noLocalProvidedFor("LocalDestinationTitle") }
 
 @Composable
@@ -66,8 +57,8 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val destination = navBackStackEntry?.destination
-    val hasPreviousBackStackEntry by remember(navBackStackEntry) {
-        derivedStateOf { navController.previousBackStackEntry != null }
+    val previousDestination by remember {
+        derivedStateOf { navController.previousBackStackEntry?.destination }
     }
 
     var title: String by remember { mutableStateOf("") }
@@ -82,43 +73,10 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
         containerColor,
         contentColor,
     ) {
-        val coroutineScope = rememberCoroutineScope()
-
-        // Global Snackbar by GlobalSnackbarEventController
-        val snackbarHostState = remember { SnackbarHostState() }
-        GlobalSnackbarEventController.events.ToLaunchedEffect(
-            snackbarHostState,
-        ) { event ->
-            coroutineScope.launch {
-                snackbarHostState.currentSnackbarData?.dismiss()
-
-                val result = snackbarHostState.showSnackbar(
-                    event.message,
-                    event.action?.name,
-                )
-
-                if (result == SnackbarResult.ActionPerformed) event.action?.action?.invoke()
-            }
-        }
-
-        // Global AlertDialog by GlobalAlertEventController
-        var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
-        GlobalAlertEventController.events.ToLaunchedEffect { event ->
-            alertDialogState = event
-        }
-        alertDialogState?.let { event ->
-            AlertDialog(
-                event.message,
-                isError = event.isError,
-                onConfirm = event.action,
-                onCancel = { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
-            )
-        }
-
         CompositionLocalProvider(
             LocalDestination provides destination,
             LocalDestinationTitle provides title,
-            LocalHasPreviousDestination provides hasPreviousBackStackEntry,
+            LocalPreviousDestination provides previousDestination,
         ) {
             content()
         }
