@@ -29,9 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
+import clib.presentation.components.picker.country.mode.CountryPicker
 import clib.presentation.locale.LocalAppLocale
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.language
 import compose_app.generated.resources.phone
+import compose_app.generated.resources.search
 import klib.data.location.country.Country
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -99,6 +102,10 @@ public fun PhoneCheckUpScreen(
             ),
             shape = RoundedCornerShape(10.dp),
             showSheet = true,
+            picker = CountryPicker(
+                headerTitle = stringResource(Res.string.language),
+                searchHint = stringResource(Res.string.search),
+            ),
         )
     }
 }

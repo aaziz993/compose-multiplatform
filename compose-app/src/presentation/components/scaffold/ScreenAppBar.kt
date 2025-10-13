@@ -52,6 +52,7 @@ import clib.presentation.components.navigation.LocalDestinationTitle
 import clib.presentation.components.navigation.LocalHasPreviousDestination
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
+import clib.presentation.components.picker.country.mode.CountryPicker
 import clib.presentation.easedVerticalGradient
 import clib.presentation.locale.LocalAppLocale
 import clib.presentation.locale.stateholder.LocaleAction
@@ -65,6 +66,7 @@ import compose_app.generated.resources.language
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate_back
 import compose_app.generated.resources.profile
+import compose_app.generated.resources.search
 import compose_app.generated.resources.sos
 import compose_app.generated.resources.theme
 import dev.chrisbanes.haze.HazeDefaults
@@ -213,6 +215,10 @@ public fun ScreenAppBar(
                                 isCountryPickerDialogOpen = false
                             },
                             countries = Country.getCountries().filter { country -> country.locales().isNotEmpty() }.toList(),
+                            picker = CountryPicker(
+                                headerTitle = stringResource(Res.string.language),
+                                searchHint = stringResource(Res.string.search),
+                            ),
                         )
 
                     val country = (if (!LocalInspectionMode.current)
