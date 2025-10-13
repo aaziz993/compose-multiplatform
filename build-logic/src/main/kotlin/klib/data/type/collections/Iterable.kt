@@ -113,8 +113,8 @@ public fun <E> Iterable<E>.containsNone(other: Iterable<E>, equator: Equator<E>)
 public fun <E> Iterable<E>.contains(other: Iterable<E>, all: Boolean?): Boolean =
     when (all) {
         null -> containsNone(other)
-        false -> containsAny(other)
         true -> all(other::contains)
+        false -> containsAny(other)
     }
 
 public fun <E> Iterable<E>.contains(
@@ -124,8 +124,8 @@ public fun <E> Iterable<E>.contains(
 ): Boolean =
     when (all) {
         null -> containsNone(other, equator)
-        false -> containsAny(other, equator)
         true -> containsAll(other, equator)
+        false -> containsAny(other, equator)
     }
 
 public fun <E> Iterable<E>.equals(other: Iterable<E>, equator: Equator<E>): Boolean {
