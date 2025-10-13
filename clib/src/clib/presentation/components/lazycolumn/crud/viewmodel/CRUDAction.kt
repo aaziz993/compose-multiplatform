@@ -14,7 +14,7 @@ public sealed interface CRUDAction<out T:Any> {
 
     public data class NewFrom<T : Any>(val item: EntityItem<T>) : CRUDAction<T>
 
-    public data class EditOrUnEdit<T : Any>(val item: EntityItem<T>) : CRUDAction<T>
+    public data class ToggleEdit<T : Any>(val item: EntityItem<T>) : CRUDAction<T>
 
     public data class SelectOrUnselect<T : Any>(val item: EntityItem<T>) : CRUDAction<T>
 

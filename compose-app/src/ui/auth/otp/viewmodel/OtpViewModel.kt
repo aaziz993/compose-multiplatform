@@ -32,8 +32,7 @@ public class OtpViewModel(
         countDownTimer?.cancel()
 
         countDownTimer = CountDownTimer(
-            initial = state.value.countdown,
-            interval = 1.seconds,
+            initial = OTP_DURATION,
             onTick = { remaining ->
                 state.update { it.copy(countdown = remaining) }
             },

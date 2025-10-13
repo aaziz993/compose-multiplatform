@@ -58,7 +58,7 @@ public class CRUDViewModel<T : Any>(
 
             is CRUDAction.NewFrom<T> -> pager.newFrom(action.item)
 
-            is CRUDAction.EditOrUnEdit -> pager.editOrUnEdit(action.item)
+            is CRUDAction.ToggleEdit -> pager.editOrUnEdit(action.item)
 
             is CRUDAction.SelectOrUnselect -> pager.selectOrUnselect(action.item)
 
@@ -87,13 +87,7 @@ public class CRUDViewModel<T : Any>(
 
             is CRUDAction.Save -> viewModelScope.launch {
                 val entity = pager.createEntity(action.item)
-
-                if (action.item.isNew) {
-                    repository.insert(entity)
-                }
-                else {
-                    repository.update(entity)
-                }
+                if (action.item.isNew) repository.insert(entity) else repository.update(entity)
             }
 
             is CRUDAction.Delete -> viewModelScope.launch {

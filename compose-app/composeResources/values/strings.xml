@@ -28,7 +28,7 @@
     <string name="pin_code">Pin code</string>
     <string name="repeat_pin_code">Repeat pin code</string>
     <string name="enter_code_sent_to">Enter code sent to %1$s</string>
-    <string name="resend_code_in">Resend in %1$s</string>
+    <string name="resend_code_in">Resend code in %1$s</string>
     <string name="resend_code">Resend code</string>
     <string name="invalid_pin_code">Invalid pin code</string>
     <string name="back">Back</string>

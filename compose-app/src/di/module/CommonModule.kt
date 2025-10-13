@@ -42,9 +42,9 @@ public class CommonModule {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items
-        popUpTo(navController.graph.startDestinationRoute!!) {
-            saveState = true
-        }
+//        popUpTo(navController.graph.startDestinationRoute!!) {
+//            saveState = true
+//        }
     }
 
     @Single
