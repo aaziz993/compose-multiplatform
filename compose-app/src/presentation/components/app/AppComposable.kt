@@ -49,7 +49,7 @@ public fun AppComposable(
 
     var currentDestination: Destination? by remember { mutableStateOf(null) }
 
-    if (currentDestination != null)
+    currentDestination?.let { destination ->
         AppEnvironment(
             theme,
             locale,
@@ -63,12 +63,13 @@ public fun AppComposable(
         ) {
             NavScreen(
                 modifier = modifier,
-                startDestination = currentDestination as Destination,
+                startDestination = destination,
                 navigator = navigator,
                 navController = navController,
                 onNavHostReady = onNavHostReady,
             )
         }
+    }
 
     LaunchedEffect(auth.user) {
         currentDestination = if (auth.user == null) startDestination else loggedInDestination

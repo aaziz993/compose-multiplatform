@@ -46,6 +46,7 @@ import clib.presentation.components.navigation.LocalPreviousDestination
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.easedVerticalGradient
+import clib.presentation.locale.LocalAppLocale
 import clib.presentation.locale.stateholder.LocaleAction
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.model.ThemeMode
@@ -197,10 +198,8 @@ public fun ScreenAppBar(
                             },
                         )
 
-                    var country by remember { mutableStateOf(Country.forCode("TJ")) }
-
-                    if (!LocalInspectionMode.current)
-                        Locale.current.country()?.let { country = it }
+                    val country = (if (!LocalInspectionMode.current) LocalAppLocale.current.country() else null)
+                        ?: Country.forCode("TJ")
 
                     AppTooltipBox(stringResource(Res.string.language)) {
                         IconButton(

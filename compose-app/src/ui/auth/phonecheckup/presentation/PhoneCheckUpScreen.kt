@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
+import clib.presentation.locale.LocalAppLocale
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.phone
 import klib.data.location.country.Country
@@ -61,10 +62,8 @@ public fun PhoneCheckUpScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        var country by remember { mutableStateOf(Country.forCode("TJ")) }
-
-        if (!LocalInspectionMode.current)
-            Locale.current.country()?.let { country = it }
+        val country = (if (!LocalInspectionMode.current) LocalAppLocale.current.country() else null)
+            ?: Country.forCode("TJ")
 
         CountryCodePickerTextField(
             value = state.number,
