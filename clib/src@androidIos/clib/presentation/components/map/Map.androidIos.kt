@@ -4,17 +4,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import clib.data.location.toPosition
-import clib.presentation.components.map.model.MapLocalization
 import clib.presentation.components.map.model.MapView
 import clib.presentation.components.map.model.Marker
 import clib.presentation.components.map.model.toFeature
@@ -22,9 +18,7 @@ import io.github.dellisd.spatialk.geojson.FeatureCollection
 import io.github.dellisd.spatialk.geojson.LineString
 import io.github.dellisd.spatialk.geojson.Position
 import klib.data.location.Location
-import klib.data.type.collections.symmetricMinus
 import klib.data.type.collections.takeIfNotEmpty
-import klib.data.type.collections.updateSymmetric
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
 import org.maplibre.compose.expressions.dsl.const
@@ -43,12 +37,11 @@ import org.maplibre.compose.util.ClickResult
 @Composable
 public actual fun Map(
     modifier: Modifier,
-    view: MapView,
     markers: List<Marker>?,
     onMarkerClick: ((Location, href: String?) -> Boolean)?,
     routes: List<List<Location>>?,
     onSelect: ((removed: Set<Location>, added: Set<Location>) -> Unit)?,
-    localization: MapLocalization,
+    view: MapView,
 ) {
 
     val cameraState = rememberCameraState(

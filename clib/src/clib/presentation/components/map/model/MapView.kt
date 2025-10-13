@@ -11,4 +11,8 @@ public data class MapView(
     val movable: Boolean = true,
     val tilePicker: Boolean = true,
     val googleApiKey: String? = null,
+    val selectTile: String = "SelectTile",
+    val virtualEarthMapTile: String = "VirtualEarth Map",
+    val openStreetMapTile: String = "OpenStreet Map",
+    val googleMapTile: String = "Google Map"
 )

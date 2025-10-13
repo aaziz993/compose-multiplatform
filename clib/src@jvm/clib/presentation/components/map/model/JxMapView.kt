@@ -1,5 +1,6 @@
 package clib.presentation.components.map.model
 
+import clib.data.location.toGeoPosition
 import java.awt.GridLayout
 import java.awt.Rectangle
 import java.awt.geom.Point2D
@@ -25,22 +26,16 @@ import org.jxmapviewer.viewer.TileFactory
 import org.jxmapviewer.viewer.TileFactoryInfo
 
 public class JxMapView(
-    initialCenter: GeoPosition? = null,
-    initialZoom: Int? = null,
-    zoomable: Boolean = true,
-    movable: Boolean = true,
-    tilePicker: Boolean = true,
-    googleApiKey: String? = null,
     markers: Set<SwingWaypoint>? = null,
     routes: List<List<GeoPosition>>? = null,
     onSelect: ((Set<SwingWaypoint>, Set<SwingWaypoint>) -> Unit)? = null,
-    localization: MapLocalization = MapLocalization(),
+    view: MapView = MapView(),
 ) : JXMapViewer() {
 
     private val factories = listOf(
-        localization.virtualEarthMap to VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP).toCachedDefaultTileFactory(),
-        localization.openStreetMap to OSMTileFactoryInfo().toCachedDefaultTileFactory(),
-        localization.googleMap to googleApiKey?.let { GoogleMapsTileFactoryInfo(it).toCachedDefaultTileFactory() },
+        view.virtualEarthMapTile to VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP).toCachedDefaultTileFactory(),
+        view.openStreetMapTile to OSMTileFactoryInfo().toCachedDefaultTileFactory(),
+        view.googleMapTile to view.googleApiKey?.let { GoogleMapsTileFactoryInfo(it).toCachedDefaultTileFactory() },
     ).filterNot { it.second == null }
 
     private val selectedMarkers = mutableListOf<SwingWaypoint>()
@@ -48,14 +43,14 @@ public class JxMapView(
     init {
         tileFactory = factories[0].second
 
-        initialZoom?.let { zoom = it }
-        initialCenter?.let { addressLocation = it }
+        view.initialZoom?.let { zoom = it }
+        view.initialCenter?.let { addressLocation = it.toGeoPosition() }
 
         // Event listeners
-        if (zoomable)
+        if (view.zoomable)
             addMouseWheelListener(ZoomMouseWheelListenerCursor(this))
 
-        if (movable) {
+        if (view.movable) {
             PanMouseInputListener(this).let {
                 addMouseListener(it)
                 addMouseMotionListener(it)
@@ -96,16 +91,16 @@ public class JxMapView(
 
         val tileLicenseLabel = JLabel(tileFactory.toLicenseText())
 
-        if (tilePicker) {
+        if (view.tilePicker) {
             add(
                 JPanel().apply {
                     layout = GridLayout()
-                    add(JLabel(localization.selectTile))
+                    add(JLabel(view.selectTile))
                     add(
                         JComboBox(factories.map { it.first }.toTypedArray()).apply {
                             addItemListener {
                                 tileFactory = factories[selectedIndex].second
-                                initialZoom?.let { zoom = it }
+                                view.initialZoom?.let { zoom = it }
                                 tileLicenseLabel.setText(tileFactory.toLicenseText())
                             }
                         },
