@@ -72,12 +72,17 @@ public fun NavScreen(
         navController = navController,
         onNavHostReady = onNavHostReady,
         layoutType = { currentDestination ->
-            with(currentWindowAdaptiveInfo()) {
-                if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
-                    if (isDrawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
-                }
-                else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+            val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).toList().any { route ->
+                route.canNavigateItem(LocalAuth.current)
             }
+            if (hasNavigationItems)
+                with(currentWindowAdaptiveInfo()) {
+                    if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
+                        if (isDrawerOpen) NavigationSuiteType.NavigationDrawer else NavigationSuiteType.None
+                    }
+                    else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+                }
+            else NavigationSuiteType.None
         },
     ) {
         val coroutineScope = rememberCoroutineScope()

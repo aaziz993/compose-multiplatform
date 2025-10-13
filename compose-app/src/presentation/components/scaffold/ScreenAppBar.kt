@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,8 @@ import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material.icons.outlined.Sos
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -74,6 +77,8 @@ import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
+import ui.navigation.presentation.AuthRoute
+import ui.navigation.presentation.NavRoute
 import ui.navigation.presentation.Profile
 
 @Composable
@@ -122,7 +127,10 @@ public fun ScreenAppBar(
                 },
                 navigationIcon = {
                     Row {
-                        if (currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
+                        val hasNavigationItems = NavRoute.filterNot(AuthRoute::contains).toList().any { route ->
+                            route.canNavigateItem(LocalAuth.current)
+                        }
+                        if (hasNavigationItems && currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
                             AppTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
                                     onClick = toggleDrawer,
@@ -206,13 +214,12 @@ public fun ScreenAppBar(
                             onClick = {
                                 isCountryPickerDialogOpen = true
                             },
+                            modifier = Modifier
+                                .clip(RectangleShape),
                         ) {
                             Image(
                                 bitmap = imageResource(country.alpha2.flag),
                                 contentDescription = stringResource(Res.string.country_flag),
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(RoundedCornerShape(8.dp)),
                             )
                         }
                     }
