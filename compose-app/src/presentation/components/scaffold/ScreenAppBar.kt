@@ -4,8 +4,12 @@ import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -70,6 +74,7 @@ import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
+import klib.data.location.country.getCountries
 import klib.data.location.locale.Locale
 import klib.data.location.locale.setCurrent
 import org.jetbrains.compose.resources.imageResource
@@ -205,20 +210,20 @@ public fun ScreenAppBar(
                             onDismissRequest = {
                                 isCountryPickerDialogOpen = false
                             },
+                            countries = Country.getCountries().filter { country -> country.locales().isNotEmpty() }.toList(),
                         )
 
-                    var country by remember { mutableStateOf(Country.forCode("TJ")) }
-
-                    if (!LocalInspectionMode.current)
-                        LocalAppLocale.current.countries().firstOrNull()?.let { country = it }
+                    val country = (if (!LocalInspectionMode.current)
+                        LocalAppLocale.current.countries().firstOrNull()
+                    else null) ?: Country.forCode("TJ")
 
                     AppTooltipBox(stringResource(Res.string.language)) {
                         Button(
                             onClick = {
                                 isCountryPickerDialogOpen = true
                             },
-                            modifier = Modifier.size(38.dp),
-                            shape = RoundedCornerShape(5.dp),
+                            modifier = Modifier.height(48.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent,
                                 contentColor = Color.Unspecified,
@@ -231,8 +236,9 @@ public fun ScreenAppBar(
                                 bitmap = imageResource(country.alpha2.flag),
                                 contentDescription = stringResource(Res.string.country_flag),
                                 modifier = Modifier
-                                    .fillMaxSize(),
-                                contentScale = ContentScale.FillBounds,
+                                    .fillMaxHeight()
+                                    .wrapContentWidth(),
+                                contentScale = ContentScale.Fit,
                             )
                         }
                     }
