@@ -108,7 +108,7 @@ public sealed interface Route<out Dest : Any> {
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
-        auth: Auth = LocalAuth.current,
+        auth: Auth = Auth(),
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
         transform: @Composable (label: String) -> String = { it.uppercaseFirstChar() },

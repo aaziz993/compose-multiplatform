@@ -37,9 +37,8 @@ import clib.data.location.country.flag
 import clib.presentation.auth.LocalAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.navigation.LocalDestination
-import clib.presentation.components.navigation.LocalPreviousDestination
 import clib.presentation.components.navigation.LocalDestinationTitle
+import clib.presentation.components.navigation.LocalPreviousDestination
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.easedVerticalGradient
@@ -49,6 +48,7 @@ import clib.presentation.theme.model.ThemeMode
 import clib.presentation.theme.stateholder.ThemeAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
+import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.language
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate_back
@@ -65,7 +65,6 @@ import klib.data.location.country.Country
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.imageResource
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
@@ -203,7 +202,10 @@ public fun ScreenAppBar(
                                 isCountryPickerDialogOpen = true
                             },
                         ) {
-                            Image(bitmap = imageResource(country.alpha2.flag), contentDescription = stringResource(Res.string.country_flag))
+                            Image(
+                                bitmap = imageResource(country.alpha2.flag),
+                                contentDescription = stringResource(Res.string.country_flag),
+                            )
                         }
                     }
 

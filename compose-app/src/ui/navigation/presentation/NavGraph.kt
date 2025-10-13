@@ -913,7 +913,7 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
         val authStateHolder: AuthStateHolder = koinInject()
         val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
         val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
-A
+
         ScreenAppBar(
             themeStateHolder::action,
             localeStateHolder::action,

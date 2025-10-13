@@ -73,6 +73,4 @@ public fun AppComposable(
     LaunchedEffect(auth.user) {
         currentDestination = if (auth.user == null) startDestination else loggedInDestination
     }
-
-    ConnectivityGlobalSnackbar(koinInject())
 }

@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.type.collections.ToLaunchedEffect
 import clib.presentation.auth.LocalAuth
+import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.dialog.alert.AlertDialog
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
@@ -57,6 +58,7 @@ public fun NavScreen(
         navigator = navigator,
         navigationSuiteRoute = { destination, route ->
             route.item(
+                auth = auth,
                 transform = { label ->
                     Res.allStringResources[label]?.let { stringResource -> stringResource(stringResource) }
                         ?: label.uppercaseFirstChar()
@@ -119,6 +121,8 @@ public fun NavScreen(
         ) { route ->
             route.item { action -> navigator.navigate(action) }
         }
+
+        ConnectivityGlobalSnackbar(koinInject())
     }
 }
 
