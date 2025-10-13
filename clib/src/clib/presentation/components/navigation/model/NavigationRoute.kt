@@ -24,12 +24,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import clib.presentation.auth.LocalAuth
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
-import klib.data.type.collections.iterator
 import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
@@ -54,10 +52,26 @@ public sealed class Route<out Dest : Any> {
     protected open val alwaysShowLabel: Boolean
         get() = true
 
-    protected open fun authResource(): AuthResource? = null
+    protected open val modifier: Modifier
+        get() = Modifier
+    protected open val selectedModifier: Modifier
+        get() = modifier
+    protected open val text: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { text, modifier -> Text(text = text, modifier = modifier) }
+    protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = text
+    protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
+    protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
+    protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
+    protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit
+        get() = { _, _ -> }
 
-    protected fun auth(auth: Auth): Boolean =
-        authResource()?.validate(auth.provider, auth.user) != false
+    @Composable
+    public open fun AppBar(block: @Composable (innerPadding: PaddingValues) -> Unit): Unit =
+        block(PaddingValues(0.dp))
 
     context(navGraphBuilder: NavGraphBuilder)
     public abstract fun item(
@@ -92,26 +106,10 @@ public sealed class Route<out Dest : Any> {
 
     public open fun isNavigateItem(): Boolean = true
 
-    protected open val modifier: Modifier
-        get() = Modifier
-    protected open val selectedModifier: Modifier
-        get() = modifier
-    protected open val text: @Composable (label: String, modifier: Modifier) -> Unit
-        get() = { text, modifier -> Text(text = text, modifier = modifier) }
-    protected open val selectedText: @Composable (label: String, modifier: Modifier) -> Unit
-        get() = text
-    protected open val icon: @Composable (label: String, modifier: Modifier) -> Unit
-        get() = { _, _ -> }
-    protected open val selectedIcon: @Composable (label: String, modifier: Modifier) -> Unit
-        get() = { _, _ -> }
-    protected open val badge: @Composable (label: String, modifier: Modifier) -> Unit
-        get() = { _, _ -> }
-    protected open val selectedBadge: @Composable (label: String, modifier: Modifier) -> Unit
-        get() = { _, _ -> }
+    protected open fun authResource(): AuthResource? = null
 
-    @Composable
-    public open fun ScreenAppBar(block: @Composable (innerPadding: PaddingValues) -> Unit): Unit =
-        block(PaddingValues(0.dp))
+    protected fun auth(auth: Auth): Boolean =
+        authResource()?.validate(auth.provider, auth.user) != false
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public open fun item(

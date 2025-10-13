@@ -27,7 +27,6 @@ import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.dialog.alert.AlertDialog
 import clib.presentation.components.navigation.AdvancedNavHost
 import clib.presentation.components.navigation.AdvancedNavigationSuiteScaffold
-import clib.presentation.components.navigation.LocalDestination
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent

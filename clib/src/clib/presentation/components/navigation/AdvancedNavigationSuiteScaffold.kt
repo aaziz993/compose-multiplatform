@@ -63,7 +63,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     }
     var destinationTitle: String by remember { mutableStateOf("") }
 
-    route.single { route -> route.isDestination(LocalDestination.current) }.ScreenAppBar { innerPadding ->
+    route.single { route -> route.isDestination(destination) }.AppBar { innerPadding ->
         NavigationSuiteScaffold(
             {
                 route.routes.forEach { route -> navigationSuiteRoute(destination, route) }
