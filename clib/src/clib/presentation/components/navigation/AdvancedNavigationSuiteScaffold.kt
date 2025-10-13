@@ -43,7 +43,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     route: NavigationRoute<Dest>,
     startDestination: Dest,
     navigator: Navigator<Dest>,
-    navigationSuiteRoute: NavigationSuiteScope.(destination: NavDestination?, route: Route<out Dest>) -> Unit,
+    navigationSuiteRoute: NavigationSuiteScope.(destination: NavDestination?, route: Route<Dest>) -> Unit,
     modifier: Modifier = Modifier,
     navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
     containerColor: Color = MaterialTheme.colorScheme.background,
@@ -60,8 +60,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     val previousDestination by remember {
         derivedStateOf { navController.previousBackStackEntry?.destination }
     }
-
-    var title: String by remember { mutableStateOf("") }
+    var destinationTitle: String by remember { mutableStateOf("") }
 
     NavigationSuiteScaffold(
         {
@@ -75,7 +74,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     ) {
         CompositionLocalProvider(
             LocalDestination provides destination,
-            LocalDestinationTitle provides title,
+            LocalDestinationTitle provides destinationTitle,
             LocalPreviousDestination provides previousDestination,
         ) {
             content()
@@ -84,7 +83,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
 
     // Dynamically set title on navigation.
     val listener = OnDestinationChangedListener { _, destination, _ ->
-        title = route.find(destination)!!.label
+        destinationTitle = route.find(destination)!!.label
     }
 
     navController.addOnDestinationChangedListener(listener)
