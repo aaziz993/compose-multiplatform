@@ -38,7 +38,7 @@ import kotlinx.serialization.serializer
 @Immutable
 public sealed class Route<out Dest : Any> {
 
-    protected open val route: KClass<out Dest>
+    public open val route: KClass<out Dest>
         get() = this::class as KClass<out Dest>
 
     public open val label: String
@@ -70,8 +70,7 @@ public sealed class Route<out Dest : Any> {
         get() = { _, _ -> }
 
     @Composable
-    public open fun AppBar(block: @Composable (innerPadding: PaddingValues) -> Unit): Unit =
-        block(PaddingValues(0.dp))
+    public open fun AppBar(block: @Composable () -> Unit): Unit = block()
 
     context(navGraphBuilder: NavGraphBuilder)
     public abstract fun item(

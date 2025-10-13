@@ -3,6 +3,7 @@
 package clib.presentation.components.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
@@ -54,7 +55,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     },
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
-    content: @Composable (innerPadding: PaddingValues) -> Unit
+    content: @Composable () -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val destination = navBackStackEntry?.destination
@@ -63,7 +64,8 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     }
     var destinationTitle: String by remember { mutableStateOf("") }
 
-    route.single { route -> route.isDestination(destination) }.AppBar { innerPadding ->
+    (route.find { route -> route.isDestination(destination) }
+        ?: route.find { route -> route.route == startDestination })!!.AppBar {
         NavigationSuiteScaffold(
             {
                 route.routes.forEach { route -> navigationSuiteRoute(destination, route) }
@@ -79,7 +81,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
                 LocalDestinationTitle provides destinationTitle,
                 LocalHasPreviousDestination provides hasPreviousDestination,
             ) {
-                content(innerPadding)
+                content()
             }
         }
     }

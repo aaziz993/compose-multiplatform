@@ -85,7 +85,7 @@ public fun NavScreen(
                 }
             else NavigationSuiteType.None
         },
-    ) { innerPadding ->
+    ) {
         val coroutineScope = rememberCoroutineScope()
 
         // Global Snackbar by GlobalSnackbarEventController
@@ -123,7 +123,6 @@ public fun NavScreen(
             navController = navController,
             route = NavRoute,
             startDestination = startDestination,
-            modifier = Modifier.padding(innerPadding),
         ) { route ->
             route.item { action -> navigator.navigate(action) }
         }
