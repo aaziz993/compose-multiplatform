@@ -111,6 +111,9 @@
     <string name="vehicle_license_plate_image">Vehicle license plate image</string>
     <string name="mapper">Mapper</string>
 
+    <string name="phonecheckup">Phone checkup</string>
+    <string name="verification">Verification</string>
+    <string name="unverified">Unverified</string>
     <string name="country_flag">Country flag</string>
     <string name="articles">Articles</string>
     <string name="services">Services</string>
