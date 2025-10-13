@@ -2,8 +2,6 @@
 
 package clib.presentation.components.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
@@ -65,7 +63,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     var destinationTitle: String by remember { mutableStateOf("") }
 
     (route.find { route -> route.isDestination(destination) }
-        ?: route.find { route -> route.route == startDestination })!!.AppBar {
+        ?: route.find { route -> route.route == startDestination::class })!!.AppBar {
         NavigationSuiteScaffold(
             {
                 route.routes.forEach { route -> navigationSuiteRoute(destination, route) }

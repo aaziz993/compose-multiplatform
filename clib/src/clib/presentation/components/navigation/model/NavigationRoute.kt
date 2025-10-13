@@ -281,6 +281,7 @@ public abstract class NavigationRoute<Dest : Any> : Route<Dest>(), Sequence<Rout
         yieldAll(childDestinations)
 
         childRoutes.forEach { route ->
+            yield(route)
             yieldAll((route as NavigationRoute<Dest>).iterator())
         }
     }.iterator()
