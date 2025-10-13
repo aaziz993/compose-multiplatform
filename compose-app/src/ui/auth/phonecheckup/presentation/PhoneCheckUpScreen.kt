@@ -60,9 +60,7 @@ public fun PhoneCheckUpScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        var country by remember {
-            mutableStateOf(Country.forCode("TJ"))
-        }
+        var country by remember { mutableStateOf(Country.forCode("TJ")) }
 
         if (!LocalInspectionMode.current)
             LocalAppLocale.current.countries().firstOrNull()?.let { country = it }

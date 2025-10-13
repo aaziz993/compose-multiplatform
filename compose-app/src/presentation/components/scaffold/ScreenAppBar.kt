@@ -5,7 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -14,6 +16,8 @@ import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material.icons.outlined.Sos
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +36,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.location.country.flag
 import clib.presentation.auth.LocalAuth
@@ -201,24 +207,32 @@ public fun ScreenAppBar(
                             },
                         )
 
-                    var country by remember {
-                        mutableStateOf(Country.forCode("TJ"))
-                    }
+                    var country by remember { mutableStateOf(Country.forCode("TJ")) }
 
                     if (!LocalInspectionMode.current)
                         LocalAppLocale.current.countries().firstOrNull()?.let { country = it }
 
                     AppTooltipBox(stringResource(Res.string.language)) {
-                        IconButton(
+                        Button(
                             onClick = {
                                 isCountryPickerDialogOpen = true
                             },
-                            modifier = Modifier
-                                .clip(RectangleShape),
+                            modifier = Modifier.size(38.dp),
+                            shape = RoundedCornerShape(5.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Transparent,
+                                contentColor = Color.Unspecified,
+                                disabledContainerColor = Color.Transparent,
+                            ),
+                            elevation = null,
+                            contentPadding = PaddingValues(0.dp),
                         ) {
                             Image(
                                 bitmap = imageResource(country.alpha2.flag),
                                 contentDescription = stringResource(Res.string.country_flag),
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                contentScale = ContentScale.FillBounds,
                             )
                         }
                     }
