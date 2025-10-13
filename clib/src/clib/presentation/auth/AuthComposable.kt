@@ -14,7 +14,8 @@ public val LocalAuth: ProvidableCompositionLocal<Auth> = staticCompositionLocalO
 @Composable
 public inline fun AuthComposable(
     authResource: AuthResource?,
+    auth: Auth = LocalAuth.current,
     content: @Composable () -> Unit
-): Unit = LocalAuth.current.let { auth ->
+) {
     if (authResource?.validate(auth.provider, auth.user) != false) content()
 }

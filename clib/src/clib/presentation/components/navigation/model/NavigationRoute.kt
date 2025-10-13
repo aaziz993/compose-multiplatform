@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import clib.presentation.auth.LocalAuth
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import klib.data.type.auth.AuthResource
@@ -107,7 +108,7 @@ public sealed interface Route<out Dest : Any> {
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public fun item(
-        auth: Auth = Auth(),
+        auth: Auth = LocalAuth.current,
         enabled: Boolean = true,
         alwaysShowLabel: Boolean = true,
         transform: @Composable (label: String) -> String = { it.uppercaseFirstChar() },

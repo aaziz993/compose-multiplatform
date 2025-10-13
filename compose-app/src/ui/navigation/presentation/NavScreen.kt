@@ -57,7 +57,6 @@ public fun NavScreen(
         navigator = navigator,
         navigationSuiteRoute = { destination, route ->
             route.item(
-                auth = auth,
                 transform = { label ->
                     Res.allStringResources[label]?.let { stringResource -> stringResource(stringResource) }
                         ?: label.uppercaseFirstChar()

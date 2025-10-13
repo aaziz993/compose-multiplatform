@@ -793,7 +793,7 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 @SerialName("wallet")
 public data object WalletRoute : Destination, NavigationRoute<Destination>() {
 
-    override val routes: List<Route<Destination>> = listOf(Balance as Route<Destination>, Crypto, Stock)
+    override val routes: List<Route<Destination>> = listOf<Route<Destination>>(Balance, Crypto, Stock)
 
     override fun authResource(): AuthResource? = AuthResource()
 }
@@ -913,7 +913,7 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
         val authStateHolder: AuthStateHolder = koinInject()
         val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
         val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
-
+A
         ScreenAppBar(
             themeStateHolder::action,
             localeStateHolder::action,
