@@ -35,7 +35,7 @@ import clib.presentation.components.navigation.model.Route
 import clib.presentation.noLocalProvidedFor
 
 public val LocalDestination: ProvidableCompositionLocal<NavDestination?> = staticCompositionLocalOf { noLocalProvidedFor("LocalDestination") }
-public val LocalPreviousDestination: ProvidableCompositionLocal<NavDestination?> = staticCompositionLocalOf { noLocalProvidedFor("LocalHasPreviousDestination") }
+public val LocalHasPreviousDestination: ProvidableCompositionLocal<Boolean> = staticCompositionLocalOf { noLocalProvidedFor("LocalHasPreviousDestination") }
 public val LocalDestinationTitle: ProvidableCompositionLocal<String> = staticCompositionLocalOf { noLocalProvidedFor("LocalDestinationTitle") }
 
 @Composable
@@ -57,8 +57,8 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val destination = navBackStackEntry?.destination
-    val previousDestination by remember {
-        derivedStateOf { navController.previousBackStackEntry?.destination }
+    val hasPreviousDestination by remember(navBackStackEntry) {
+        derivedStateOf { navController.previousBackStackEntry != null }
     }
     var destinationTitle: String by remember { mutableStateOf("") }
 
@@ -75,7 +75,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
         CompositionLocalProvider(
             LocalDestination provides destination,
             LocalDestinationTitle provides destinationTitle,
-            LocalPreviousDestination provides previousDestination,
+            LocalHasPreviousDestination provides hasPreviousDestination,
         ) {
             content()
         }

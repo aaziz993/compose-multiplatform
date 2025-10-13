@@ -24,18 +24,8 @@ public abstract class AbstractPagingSource<Key : Any, Value : Any>(
 
             LoadResult.Page(
                 data,
-                if (disablePrepend) {
-                    null
-                }
-                else {
-                    loadKey?.let(::getPrevKey)
-                },
-                if (data.size < pageSize) {
-                    null
-                }
-                else {
-                    getNextKey(loadKey)
-                },
+                if (disablePrepend) null else loadKey?.let(::getPrevKey),
+                if (data.size < pageSize) null else getNextKey(loadKey),
             )
         }
         catch (e: Exception) {

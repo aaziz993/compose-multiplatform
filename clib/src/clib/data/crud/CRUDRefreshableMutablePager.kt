@@ -42,6 +42,7 @@ public class CRUDRefreshableMutablePager<Value : Any>(
     remoteMediator,
     cacheCoroutineScope,
 ) {
+
     public val selectedNewEntities: List<Value>
         get() = mutations.value.selected.news.map(::createEntity)
 
@@ -119,11 +120,7 @@ public class CRUDRefreshableMutablePager<Value : Any>(
 
     private fun mutate(item: EntityItem<Value>, block: EntityItem<Value>.() -> EntityItem<Value>) = mutations.update { items ->
         val mutated = item.block()
-        if (items.any { it.id == item.id }) {
-            (items - item).letIf({ mutated.isMutated }) { items + it }
-        }
-        else {
-            items + mutated
-        }
+        if (items.any { it.id == item.id }) (items - item).letIf({ mutated.isMutated }) { items + it }
+        else items + mutated
     }
 }

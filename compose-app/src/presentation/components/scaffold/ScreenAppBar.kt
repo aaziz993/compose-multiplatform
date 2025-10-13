@@ -2,13 +2,10 @@ package presentation.components.scaffold
 
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -17,8 +14,6 @@ import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material.icons.outlined.Sos
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,14 +33,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.location.country.flag
 import clib.presentation.auth.LocalAuth
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.navigation.LocalDestinationTitle
-import clib.presentation.components.navigation.LocalPreviousDestination
+import clib.presentation.components.navigation.LocalHasPreviousDestination
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.easedVerticalGradient
@@ -71,7 +65,6 @@ import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
 import klib.data.location.locale.Locale
-import klib.data.location.locale.current
 import klib.data.location.locale.setCurrent
 import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.stringResource
@@ -142,7 +135,7 @@ public fun ScreenAppBar(
                                 }
                             }
 
-                        if (LocalPreviousDestination.current != null)
+                        if (LocalHasPreviousDestination.current)
                             AppTooltipBox(stringResource(Res.string.navigate_back)) {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.NavigateBack) },

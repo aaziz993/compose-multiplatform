@@ -17,7 +17,6 @@ public abstract class AbstractMutablePager<Key : Any, Value : Any, Mutation : An
     initialKey: Key?,
     remoteMediator: RemoteMediator<Key, Value>?,
     cacheCoroutineScope: CoroutineScope?,
-
 ) : AbstractPager<Key, Value>(
     config,
     initialKey,
