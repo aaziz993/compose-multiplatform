@@ -48,9 +48,7 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
-    layoutType: @Composable (destination: NavDestination?) -> NavigationSuiteType = {
-        NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
-    },
+    layoutType: NavigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo()),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
     content: @Composable () -> Unit
@@ -62,22 +60,24 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     }
     var destinationTitle: String by remember { mutableStateOf("") }
 
-    (route.find { route -> route.isDestination(destination) }
-        ?: route.find { route -> route.route == startDestination::class })!!.AppBar {
-        NavigationSuiteScaffold(
-            {
-                route.routes.forEach { route -> navigationSuiteRoute(destination, route) }
-            },
-            modifier,
-            layoutType(destination),
-            navigationSuiteColors,
-            containerColor,
-            contentColor,
+    CompositionLocalProvider(
+        LocalDestination provides destination,
+        LocalHasPreviousDestination provides hasPreviousDestination,
+        LocalDestinationTitle provides destinationTitle,
+    ) {
+        (route.find { route -> route.isDestination(destination) }
+            ?: route.find { route -> route.route == startDestination::class })!!.AppBar(
+            navigator::navigate,
         ) {
-            CompositionLocalProvider(
-                LocalDestination provides destination,
-                LocalDestinationTitle provides destinationTitle,
-                LocalHasPreviousDestination provides hasPreviousDestination,
+            NavigationSuiteScaffold(
+                {
+                    route.routes.forEach { route -> navigationSuiteRoute(destination, route) }
+                },
+                modifier,
+                layoutType,
+                navigationSuiteColors,
+                containerColor,
+                contentColor,
             ) {
                 content()
             }

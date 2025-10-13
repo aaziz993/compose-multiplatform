@@ -2,7 +2,6 @@
 
 package ui.navigation.presentation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -53,6 +52,12 @@ public fun NavScreen(
     val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
     val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
+    val hasNavigationItems = NavRoute.filterNot { route ->
+        route == AuthRoute || AuthRoute.contains(route)
+    }.toList().any { route ->
+        route.canNavigateItem(LocalAuth.current)
+    }
+
     AdvancedNavigationSuiteScaffold(
         route = NavRoute,
         startDestination = startDestination,
@@ -72,12 +77,7 @@ public fun NavScreen(
         modifier = modifier,
         navController = navController,
         onNavHostReady = onNavHostReady,
-        layoutType = {
-            val hasNavigationItems = NavRoute.filterNot { route ->
-                route == AuthRoute || AuthRoute.contains(route)
-            }.toList().any { route ->
-                route.canNavigateItem(LocalAuth.current)
-            }
+        layoutType =
             if (hasNavigationItems)
                 with(currentWindowAdaptiveInfo()) {
                     if (windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED) {
@@ -85,8 +85,7 @@ public fun NavScreen(
                     }
                     else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
                 }
-            else NavigationSuiteType.None
-        },
+            else NavigationSuiteType.None,
     ) {
         val coroutineScope = rememberCoroutineScope()
 

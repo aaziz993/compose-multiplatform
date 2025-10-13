@@ -7,13 +7,11 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -70,7 +68,10 @@ public sealed class Route<out Dest : Any> {
         get() = { _, _ -> }
 
     @Composable
-    public open fun AppBar(block: @Composable () -> Unit): Unit = block()
+    public open fun AppBar(
+        onNavigationAction: (NavigationAction) -> Unit,
+        content: @Composable () -> Unit
+    ): Unit = content()
 
     context(navGraphBuilder: NavGraphBuilder)
     public abstract fun item(

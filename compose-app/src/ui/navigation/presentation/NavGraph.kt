@@ -259,12 +259,10 @@ public data object Services : Destination, NavigationDestination<Services>() {
         Icon(Icons.Filled.Apps, label, modifier)
     }
 
-    override fun authResource(): AuthResource? = AuthResource()
-
     @Composable
-    override fun Screen(
-        route: Services,
+    override fun AppBar(
         onNavigationAction: (NavigationAction) -> Unit,
+        content: @Composable () -> Unit
     ) {
         val themeStateHolder: ThemeStateHolder = koinInject()
         val localeStateHolder: LocaleStateHolder = koinInject()
@@ -286,14 +284,24 @@ public data object Services : Destination, NavigationDestination<Services>() {
                     .fillMaxSize()
                     .padding(innerPadding),
             ) {
-                ServicesScreen(
-                    Modifier,
-                    route,
-                    onNavigationAction,
-                )
+                content()
             }
         }
     }
+
+    @Composable
+    override fun Screen(
+        route: Services,
+        onNavigationAction: (NavigationAction) -> Unit,
+    ) {
+        ServicesScreen(
+            Modifier,
+            route,
+            onNavigationAction,
+        )
+    }
+
+    override fun authResource(): AuthResource? = AuthResource()
 }
 
 @Serializable
