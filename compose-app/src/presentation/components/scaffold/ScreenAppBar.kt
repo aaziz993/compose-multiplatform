@@ -201,9 +201,12 @@ public fun ScreenAppBar(
                             },
                         )
 
-                    val country = (if (!LocalInspectionMode.current)
-                        LocalAppLocale.current.countries().firstOrNull()
-                    else null) ?: Country.forCode("TJ")
+                    var country by remember {
+                        mutableStateOf(Country.forCode("TJ"))
+                    }
+
+                    if (!LocalInspectionMode.current)
+                        LocalAppLocale.current.countries().firstOrNull()?.let { country = it }
 
                     AppTooltipBox(stringResource(Res.string.language)) {
                         IconButton(
