@@ -1,19 +1,25 @@
 package klib.data.crud.http
 
-import klib.data.crud.http.model.HttpCrud
 import de.jensklingenberg.ktorfit.http.Body
+import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.PUT
-import de.jensklingenberg.ktorfit.http.ReqBuilder
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
+import io.ktor.client.statement.HttpStatement
+import klib.data.crud.http.model.HttpCrud
 
 internal interface CRUDApi {
 
+    @GET("transaction/begin")
+    suspend fun beginTransaction(): String
+
     @Headers("Content-Type: application/json")
-    @POST("transaction")
-    suspend fun transaction(@ReqBuilder ext: HttpRequestBuilder.() -> Unit): HttpStatement
+    @POST("transaction/commit")
+    suspend fun commitTransaction(@Body transactionId: String)
+
+    @Headers("Content-Type: application/json")
+    @POST("transaction/rollback")
+    suspend fun rollbackTransaction(@Body transactionId: String)
 
     @Headers("Content-Type: application/json")
     @PUT("insert")
