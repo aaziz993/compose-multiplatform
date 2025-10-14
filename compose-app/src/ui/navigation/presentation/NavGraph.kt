@@ -42,7 +42,6 @@ import clib.presentation.components.navigation.model.NavigationRoute
 import clib.presentation.components.navigation.model.Route
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.locale.stateholder.LocaleStateHolder
-import clib.presentation.stateholders.BooleanStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
@@ -50,7 +49,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.qualifier.named
 import presentation.components.scaffold.AppBar
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen

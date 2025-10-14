@@ -213,7 +213,9 @@ public fun AppBar(
                                 .toList()
                                 .map { country ->
                                     country.copy(
-                                        name = stringResource(country.name, Res.allStringResources),
+                                        name = stringResource(country.toString(), Res.allStringResources) {
+                                            country.name
+                                        },
                                     )
                                 },
                             picker = CountryPicker(

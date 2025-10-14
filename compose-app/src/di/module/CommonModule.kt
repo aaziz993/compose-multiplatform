@@ -4,7 +4,6 @@ import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.components.navigation.DefaultNavigator
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.locale.stateholder.LocaleStateHolder
-import clib.presentation.stateholders.BooleanStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import dev.jordond.connectivity.Connectivity
 import klib.data.cache.Cache
@@ -15,7 +14,6 @@ import klib.data.type.serialization.json.encodeAnyToString
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
-import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import ui.navigation.presentation.AuthRoute
 import ui.navigation.presentation.Destination

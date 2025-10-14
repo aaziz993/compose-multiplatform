@@ -72,9 +72,13 @@ public fun PhoneScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            selectedCountry = country.copy(name = stringResource(country.name, Res.allStringResources)),
+            selectedCountry = country.copy(
+                name = stringResource(country.toString(), Res.allStringResources) {
+                    country.name
+                },
+            ),
             countries = Country.getCountries().toList().map { country ->
-                country.copy(name = stringResource(country.name, Res.allStringResources))
+                country.copy(name = stringResource(country.toString(), Res.allStringResources) { country.name })
             },
             enabled = true,
             textStyle = MaterialTheme.typography.bodyMedium,

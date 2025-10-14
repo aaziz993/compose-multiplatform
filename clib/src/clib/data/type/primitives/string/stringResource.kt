@@ -6,5 +6,9 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-public fun stringResource(value: String, resources: Map<String, StringResource>): String =
-    resources[value.lowercase().toSnakeCase()]?.let { stringResource -> stringResource(stringResource) } ?: value
+public fun stringResource(
+    value: String,
+    resources: Map<String, StringResource>,
+    defaultValue: () -> String = { value }
+): String = resources[value.lowercase().toSnakeCase()]?.let { stringResource -> stringResource(stringResource) }
+    ?: defaultValue()
