@@ -25,12 +25,11 @@ import kotlinx.serialization.json.Json
 
 @Suppress("UNCHECKED_CAST")
 public suspend fun <T> HttpResponse.decodeFromAny(format: StringFormat = Json.Default): T =
-    takeIf { response -> response.status != HttpStatusCode.NoContent }?.let { response ->
-        format.decodeFromString(PolymorphicSerializer(Any::class), response.bodyAsText())
-    } as T
+    (if (status == HttpStatusCode.NoContent) Unit
+    else format.decodeFromString(PolymorphicSerializer(Any::class), bodyAsText())) as T
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> HttpResponse.bodyAsFlow(typeInfo: TypeInfo, charset: Charset = Charsets.UTF_8): Flow<T> = flow {
+public fun <T> HttpResponse.bodyAsFlow(typeInfo: TypeInfo, charset: Charset = Charsets.UTF_8): Flow<T> = flow {
     val channel = bodyAsChannel()
 
     val contentType = headers[HttpHeaders.ContentType]?.let(ContentType::parse)
@@ -48,10 +47,10 @@ public fun <T : Any> HttpResponse.bodyAsFlow(typeInfo: TypeInfo, charset: Charse
         )
 }
 
-public inline fun <reified T : Any> HttpResponse.bodyAsFlow(charset: Charset = Charsets.UTF_8): Flow<T> =
+public inline fun <reified T> HttpResponse.bodyAsFlow(charset: Charset = Charsets.UTF_8): Flow<T> =
     bodyAsFlow(typeInfo<T>(), charset)
 
-public fun HttpResponse.bodyAsFlow(decoder: (String) -> Any? = Json.Default::decodeAnyFromString): Flow<Any?> = flow {
+public fun HttpResponse.bodyAsAnyFlow(decoder: (String) -> Any? = Json.Default::decodeAnyFromString): Flow<Any?> = flow {
     val channel = bodyAsChannel()
 
     while (!channel.isClosedForRead)

@@ -1,4 +1,4 @@
-package klib.data.crud.http
+package klib.data.crud.http.client
 
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET

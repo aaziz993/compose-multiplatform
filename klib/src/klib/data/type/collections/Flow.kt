@@ -2,7 +2,6 @@ package klib.data.type.collections
 
 import io.ktor.util.cio.use
 import io.ktor.utils.io.ByteWriteChannel
-import klib.data.net.http.client.writeByteArrayWithLength
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

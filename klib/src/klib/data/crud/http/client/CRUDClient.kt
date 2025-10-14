@@ -1,6 +1,6 @@
 @file:OptIn(InternalAPI::class)
 
-package klib.data.crud.http
+package klib.data.crud.http.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -11,10 +11,12 @@ import klib.data.AggregateExpression
 import klib.data.BooleanVariable
 import klib.data.Variable
 import klib.data.crud.CRUDRepository
+import klib.data.crud.http.createCRUDApi
 import klib.data.crud.http.model.HttpCrud
 import klib.data.crud.model.query.LimitOffset
 import klib.data.crud.model.query.Order
 import klib.data.net.http.client.KtorfitClient
+import klib.data.net.http.client.bodyAsAnyFlow
 import klib.data.net.http.client.bodyAsFlow
 import klib.data.net.http.client.decodeFromAny
 import klib.data.transaction.Transaction
@@ -117,7 +119,7 @@ public open class CRUDClient<T : Any>(
                     predicate,
                     limitOffset,
                 ),
-            ).execute().bodyAsFlow() as Flow<List<Any?>>,
+            ).execute().bodyAsAnyFlow() as Flow<List<Any?>>,
         )
     }
 

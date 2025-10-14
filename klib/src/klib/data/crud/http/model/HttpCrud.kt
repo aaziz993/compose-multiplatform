@@ -43,7 +43,7 @@ public sealed class HttpCrud {
     @Serializable
     public data class FindProjections(
         override val transactionId: String? = null,
-        val projections: List<Variable>? = null,
+        val projections: List<Variable>,
         val sort: List<Order>? = null,
         val predicate: BooleanVariable? = null,
         val limitOffset: LimitOffset? = null,

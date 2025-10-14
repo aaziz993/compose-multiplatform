@@ -47,7 +47,7 @@ public fun <T> HttpRequestBuilder.setBody(
     client: HttpClient,
     flow: Flow<T>,
     typeInfo: TypeInfo,
-    contentType: ContentType,
+    contentType: ContentType = ContentType.Application.Json,
     status: HttpStatusCode? = null,
     contentLength: Long? = null,
     charset: Charset = Charsets.UTF_8
@@ -70,24 +70,18 @@ public fun <T> HttpRequestBuilder.setBody(
 public inline fun <reified T> HttpRequestBuilder.setBody(
     client: HttpClient,
     flow: Flow<T>,
-    contentType: ContentType,
+    contentType: ContentType = ContentType.Application.Json,
     status: HttpStatusCode? = null,
     contentLength: Long? = null,
     charset: Charset = Charsets.UTF_8
 ): ChannelWriterContent = setBody(client, flow, typeInfo<T>(), contentType, status, contentLength, charset)
 
-public fun HttpRequestBuilder.setBodyAny(
+public fun HttpRequestBuilder.setAnyBody(
     flow: Flow<Any?>,
-    contentType: ContentType,
+    encoder: (Any?) -> String = Json.Default::encodeAnyToString,
+    contentType: ContentType = ContentType.Application.Json,
     status: HttpStatusCode? = null,
     contentLength: Long? = null,
-    encoder: (Any?) -> String = Json.Default::encodeAnyToString,
-): ChannelWriterContent {
-    val byteFlow: Flow<String> = flow.map { value ->
-        encoder(value)
-    }
-
-    return setBody(byteFlow, contentType, status, contentLength)
-}
+): ChannelWriterContent = setBody(flow.map(encoder), contentType, status, contentLength)
 
 

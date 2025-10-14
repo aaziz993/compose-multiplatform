@@ -27,7 +27,7 @@ public fun <TBuilder : Any, TPlugin : Any> HttpClientConfig<*>.installConfigAwar
 }
 
 @Suppress("UnusedReceiverParameter", "UNCHECKED_CAST")
-public fun <TConfig : Any, TPlugin : Any> HttpClient.pluginConfig(plugin: HttpClientPlugin<TConfig, TPlugin>): TConfig? =
+public fun <TConfig : Any> HttpClient.pluginConfig(plugin: HttpClientPlugin<TConfig, *>): TConfig? =
     PLUGIN_CONFIGURATIONS[plugin.key] as TConfig?
 
 public fun HttpClient.converters(contentType: ContentType): List<ContentConverter>? =
