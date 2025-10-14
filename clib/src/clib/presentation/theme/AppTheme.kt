@@ -35,8 +35,6 @@ public fun AppTheme(
     CompositionLocalProvider(
         LocalAppTheme provides theme,
     ) {
-        key(theme) {
-            content(colorScheme)
-        }
+        content(colorScheme)
     }
 }

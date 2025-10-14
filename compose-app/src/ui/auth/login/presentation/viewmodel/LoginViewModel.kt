@@ -1,11 +1,13 @@
 package ui.auth.login.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import clib.data.type.collections.restartableflow.RestartableMutableStateFlow
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.type.auth.model.User
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
@@ -16,7 +18,7 @@ public class LoginViewModel(
 ) : AbstractViewModel<LoginAction>() {
 
     public val state: RestartableStateFlow<LoginState>
-        field = viewModelMutableStateFlow(LoginState())
+        field = MutableStateFlow(LoginState()).onStartStateIn { it }
 
     override fun action(action: LoginAction): Unit = when (action) {
         is LoginAction.SetPinCode -> setPinCode(action.value)
@@ -24,7 +26,7 @@ public class LoginViewModel(
         is LoginAction.Login -> login()
     }
 
-    private fun setPinCode(value: String) = state.update<LoginState> { it.copy(pinCode = value, error = null) }
+    private fun setPinCode(value: String) = state.update { it.copy(pinCode = value, error = null) }
 
     private fun showPinCode(value: Boolean) = state.update { it.copy(showPinCode = value, error = null) }
 

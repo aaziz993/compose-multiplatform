@@ -1,6 +1,7 @@
 package ui.auth.pincode.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.viewmodel.AbstractViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -10,8 +11,8 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 public class PinCodeViewModel : AbstractViewModel<PinCodeAction>() {
 
-    public val state: MutableStateFlow<PinCodeState>
-        field = viewModelMutableStateFlow(PinCodeState())
+    public val state: RestartableStateFlow<PinCodeState>
+        field = MutableStateFlow(PinCodeState()).onStartStateIn { it }
 
     override fun action(action: PinCodeAction) {
         when (action) {

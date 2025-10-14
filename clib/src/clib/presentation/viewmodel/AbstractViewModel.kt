@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -70,74 +69,47 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
     public suspend fun <T : Any> ViewModelState<T>.mapRaise(block: suspend Raise<Throwable>.() -> T): ViewModelState<T> =
         mapEither { either { block() } }
 
-    public abstract fun action(action: T)
-
     protected fun <T, R> StateFlow<T>.map(transform: (data: T) -> R): StateFlow<R> =
         map(scope = viewModelScope, transform)
 
     protected fun <T, R> StateFlow<T>.map(initialValue: R, transform: suspend (data: T) -> R): StateFlow<R> =
         map(viewModelScope, initialValue, transform)
 
-    protected val <T : Any> Flow<PagingData<T>>.cached: Flow<PagingData<T>>
-        get() = cachedIn(viewModelScope)
+    protected fun <T : Any> Flow<PagingData<T>>.cachedIn(): Flow<PagingData<T>> = cachedIn(viewModelScope)
 
     protected val <T> Flow<T>.launch: Job
         get() = launchIn(viewModelScope)
 
-    protected fun <T> Flow<T>.viewModelScopeStateFlow(
+    protected fun <T> Flow<T>.stateIn(
         initialValue: T,
-        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
+        started: SharingStarted = SharingStarted.WhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
     ): RestartableStateFlow<T> = restartableStateIn(
-        started,
         viewModelScope,
+        started,
         initialValue,
     )
 
-    protected fun <T> Flow<T>.viewModelScopeMutableStateFlow(
-        mutableStateFlow: MutableStateFlow<T>,
-        initialValue: T,
-        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
-    ): RestartableMutableStateFlow<T> = restartableStateIn(
-        mutableStateFlow,
-        started,
-        viewModelScope,
-        initialValue,
-    )
-
-    protected fun <T> viewModelStateFlow(
-        initialValue: T,
-        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
-        block: suspend FlowCollector<T>.(T) -> Unit
-    ): RestartableStateFlow<T> = flow { block(initialValue) }.viewModelScopeStateFlow(initialValue, started)
-
-    protected fun <T> viewModelStateFlow(
-        initialValue: ViewModelState<T> = idle(),
-        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
-        block: suspend FlowCollector<ViewModelState<T>>.(ViewModelState<T>) -> Unit
-    ): RestartableStateFlow<ViewModelState<T>> = viewModelStateFlow<ViewModelState<T>>(initialValue, started, block)
-
-    protected fun <T> viewModelMutableStateFlow(
-        initialValue: T,
-        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
-        block: (suspend MutableStateFlow<T>.(T) -> T)? = null,
+    protected fun <T> MutableStateFlow<T>.onStartStateIn(
+        started: SharingStarted = SharingStarted.WhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
+        block: suspend (T) -> T,
     ): RestartableMutableStateFlow<T> {
-        val mutableStateFlow = MutableStateFlow(initialValue)
+        val stateFlow = onStart { update { value -> block(value) } }.stateIn(value, started)
 
-        return (if (block == null) mutableStateFlow
-        else mutableStateFlow.onStart {
-            mutableStateFlow.update {
-                mutableStateFlow.block(it)
-            }
-        }).viewModelScopeMutableStateFlow(mutableStateFlow, initialValue, started)
+        return object : RestartableMutableStateFlow<T>, RestartableStateFlow<T> by stateFlow, MutableStateFlow<T> by this {
+            override var value: T
+                get() = this@onStartStateIn.value
+                set(value) {
+                    this@onStartStateIn.value = value
+                }
+
+            override val replayCache: List<T>
+                get() = stateFlow.replayCache
+
+            override suspend fun collect(collector: FlowCollector<T>): Nothing = stateFlow.collect(collector)
+        }
     }
 
-    protected fun <T : Any> viewModelMutableStateFlow(
-        initialValue: ViewModelState<T> = idle(),
-        started: SharingStarted = SharingStarted.OnetimeWhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
-        block: (suspend MutableStateFlow<ViewModelState<T>>.(ViewModelState<T>) -> ViewModelState<T>)? = null,
-    ): RestartableMutableStateFlow<ViewModelState<T>> = viewModelMutableStateFlow<ViewModelState<T>>(initialValue, started, block)
-
-    protected fun <Value : Any> CRUDRepository<Value>.viewModelPagingFlow(
+    protected fun <Value : Any> CRUDRepository<Value>.pager(
         sort: List<Order>? = null,
         predicate: BooleanVariable? = null,
         config: PagingConfig = PagingConfig(10),
@@ -147,7 +119,17 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         disablePrepend: Boolean = false,
     ): CRUDRefreshablePager<Value> = pager(sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset, disablePrepend)
 
-    protected fun <Value : Any> CRUDRepository<Value>.viewModelMutablePager(
+    protected fun CRUDRepository<*>.pager(
+        projections: List<Variable>,
+        sort: List<Order>? = null,
+        predicate: BooleanVariable? = null,
+        config: PagingConfig = PagingConfig(10),
+        initialKey: Long? = null,
+        remoteMediator: RemoteMediator<Long, List<Any?>>? = null,
+        firstItemOffset: Long = 0,
+    ): CRUDProjectionRefreshablePager = pager(projections, sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset)
+
+    protected fun <Value : Any> CRUDRepository<Value>.mutablePager(
         sort: List<Order>? = null,
         predicate: BooleanVariable? = null,
         properties: List<EntityProperty>,
@@ -172,13 +154,5 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         disablePrepend,
     )
 
-    protected fun CRUDRepository<*>.viewModelPagingFlow(
-        projections: List<Variable>,
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
-        config: PagingConfig = PagingConfig(10),
-        initialKey: Long? = null,
-        remoteMediator: RemoteMediator<Long, List<Any?>>? = null,
-        firstItemOffset: Long = 0,
-    ): CRUDProjectionRefreshablePager = pager(projections, sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset)
+    public abstract fun action(action: T)
 }

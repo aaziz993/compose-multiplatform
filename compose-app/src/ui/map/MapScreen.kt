@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import clib.presentation.components.map.Map
 import clib.presentation.components.map.model.MapView
-import clib.presentation.components.map.model.MapLocalization
 import clib.presentation.components.map.model.Marker
 import clib.presentation.components.navigation.viewmodel.NavigationAction
 import compose_app.generated.resources.Res
@@ -33,12 +32,6 @@ public fun MapScreen(
 
     Map(
         modifier = Modifier.fillMaxSize(),
-        view = MapView(
-            initialCenter = center,
-            initialZoom = 4,
-            movable = true,
-            zoomable = true,
-        ),
         markers = markers,
         onMarkerClick = { location, href ->
             // Navigate somewhere when a marker is clicked
@@ -48,11 +41,15 @@ public fun MapScreen(
             println("Selection changed: added=$added removed=$removed")
         },
         routes = null,
-        localization = MapLocalization(
+        view = MapView(
+            initialCenter = center,
+            initialZoom = 4,
+            movable = true,
+            zoomable = true,
             selectTile = stringResource(Res.string.select_tile),
-            virtualEarthMap = stringResource(Res.string.virtual_earth_map),
-            openStreetMap = stringResource(Res.string.open_street_map),
-            googleMap = stringResource(Res.string.google_map),
+            virtualEarthMapTile = stringResource(Res.string.virtual_earth_map),
+            openStreetMapTile = stringResource(Res.string.open_street_map),
+            googleMapTile = stringResource(Res.string.google_map),
         ),
     )
 }

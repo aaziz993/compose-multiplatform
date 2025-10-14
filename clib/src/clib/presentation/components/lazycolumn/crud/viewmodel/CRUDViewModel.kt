@@ -36,7 +36,7 @@ public class CRUDViewModel<T : Any>(
 ) : AbstractViewModel<CRUDAction<T>>() {
 
     public val pager: AbstractCRUDMutablePager<T>
-        field = repository.viewModelMutablePager(
+        field = repository.mutablePager(
             sort,
             predicate,
             properties,

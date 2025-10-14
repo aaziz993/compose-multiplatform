@@ -8,10 +8,8 @@ import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.type.auth.model.User
 import klib.data.type.primitives.time.CountDownTimer
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
@@ -22,7 +20,7 @@ public class OtpViewModel(
 ) : AbstractViewModel<OtpAction>() {
 
     public val state: RestartableStateFlow<OtpState>
-        field = viewModelMutableStateFlow(OtpState())
+        field = MutableStateFlow(OtpState()).onStartStateIn { it }
 
     private var countDownTimer: CountDownTimer? = null
 

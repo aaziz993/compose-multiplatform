@@ -6,6 +6,7 @@ import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.auth.stateholder.AuthStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
@@ -17,7 +18,7 @@ public class VerificationViewModel(
 ) : AbstractViewModel<VerificationAction>() {
 
     public val state: RestartableStateFlow<VerificationState>
-        field = viewModelMutableStateFlow(VerificationState())
+        field = MutableStateFlow(VerificationState()).onStartStateIn { it }
 
     override fun action(action: VerificationAction): Unit = when (action) {
         is VerificationAction.SetIdImage -> setIdImage(action.value)

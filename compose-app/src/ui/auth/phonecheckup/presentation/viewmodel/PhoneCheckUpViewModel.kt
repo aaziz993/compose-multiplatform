@@ -5,9 +5,7 @@ import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.components.navigation.Navigator
 import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.coroutines.StandardDispatchers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
@@ -19,8 +17,8 @@ public class PhoneCheckUpViewModel(
     private val navigator: Navigator<Destination>
 ) : AbstractViewModel<PhoneCheckUpAction>() {
 
-    public val state: StateFlow<PhoneCheckUpState>
-        field = MutableStateFlow(PhoneCheckUpState())
+    public val state: RestartableStateFlow<PhoneCheckUpState>
+        field = MutableStateFlow(PhoneCheckUpState()).onStartStateIn { it }
 
     override fun action(action: PhoneCheckUpAction): Unit = when (action) {
         is PhoneCheckUpAction.SetPhone -> setPhone(action.countryCode, action.number, action.isValid)

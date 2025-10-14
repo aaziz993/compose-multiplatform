@@ -10,6 +10,6 @@ public fun KoinApplication.koinConfiguration() {
 
     modules(
         CommonModule().module,
-        PlatformModule().module,
+//        PlatformModule().module,
     )
 }

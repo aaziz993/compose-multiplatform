@@ -16,8 +16,8 @@ public interface RestartableStateFlow<out T> : StateFlow<T> {
 }
 
 public fun <T> Flow<T>.restartableStateIn(
-    started: SharingStarted,
     scope: CoroutineScope,
+    started: SharingStarted,
     initialValue: T
 ): RestartableStateFlow<T> {
     val sharingRestartable = started.makeRestartable()

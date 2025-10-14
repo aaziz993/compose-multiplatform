@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package clib.presentation
 
 import androidx.compose.material3.ColorScheme
@@ -20,6 +22,7 @@ import clib.presentation.theme.LightColorsHighContrast
 import clib.presentation.theme.model.Theme
 import klib.data.location.locale.Locale
 import klib.data.type.auth.model.Auth
+import androidx.compose.material3.MotionScheme
 
 @Composable
 public fun AppEnvironment(
@@ -42,6 +45,7 @@ public fun AppEnvironment(
 ) { colorScheme ->
     MaterialTheme(
         colorScheme = colorScheme,
+        motionScheme = MotionScheme.expressive(),
         shapes = shapes,
         typography = typography,
     ) {
