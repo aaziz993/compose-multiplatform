@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import clib.data.type.collections.ToLaunchedEffect
+import clib.data.type.primitives.string.stringResource
 import clib.presentation.auth.LocalAuth
 import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
 import clib.presentation.components.dialog.alert.AlertDialog
@@ -34,10 +35,8 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
-import clib.data.type.primitives.string.stringResource
 
 @Composable
 public fun NavScreen(
