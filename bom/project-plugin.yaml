@@ -7,7 +7,7 @@ script:
       }
   - dependencies:
       constraints:
-        - api: (project(":klib-ksp"))
+        - api: (project(":lib-ksp"))
         - api: (project(":klib"))
         - api: (project(":clib"))
         - api: (project(":shared"))
