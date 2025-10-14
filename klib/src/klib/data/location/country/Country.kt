@@ -42,6 +42,8 @@ public data class Country(
     }
 }
 
+public expect val Country.Companion.current: Country?
+
 public fun Alpha2Letter.toCountryOrNull(): Country? = Country.forCodeOrNull(this)
 
 public fun String.toCountryOrNull(): Country? = Country.forCodeOrNull(this)

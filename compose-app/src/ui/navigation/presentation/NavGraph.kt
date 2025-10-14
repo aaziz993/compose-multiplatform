@@ -49,7 +49,7 @@ import kotlinx.serialization.Serializable
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.qualifier.named
-import presentation.components.scaffold.ScreenAppBar
+import presentation.components.scaffold.AppBar
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
 import ui.auth.login.presentation.LoginScreen
@@ -679,7 +679,7 @@ private fun AppAppBar(
     val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
     val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
-    ScreenAppBar(
+    AppBar(
         themeStateHolder::action,
         localeStateHolder::action,
         authStateHolder::action,

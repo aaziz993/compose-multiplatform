@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
@@ -77,9 +74,8 @@ import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
-import klib.data.location.locale.Locale
-import klib.data.location.locale.setCurrent
 import org.jetbrains.compose.resources.imageResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
@@ -88,7 +84,7 @@ import ui.navigation.presentation.NavRoute
 import ui.navigation.presentation.Profile
 
 @Composable
-public fun ScreenAppBar(
+public fun AppBar(
     onThemeAction: (ThemeAction) -> Unit,
     onLocaleAction: (LocaleAction) -> Unit,
     onAuthAction: (AuthAction) -> Unit,
@@ -241,7 +237,7 @@ public fun ScreenAppBar(
                             contentPadding = PaddingValues(0.dp),
                         ) {
                             Image(
-                                bitmap = imageResource(country.alpha2.flag),
+                                painter = painterResource(country.alpha2.flag),
                                 contentDescription = stringResource(Res.string.country_flag),
                                 modifier = Modifier
                                     .fillMaxHeight()
