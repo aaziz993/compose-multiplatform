@@ -74,7 +74,6 @@ import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
-import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
@@ -82,6 +81,7 @@ import presentation.components.tooltipbox.AppTooltipBox
 import ui.navigation.presentation.AuthRoute
 import ui.navigation.presentation.NavRoute
 import ui.navigation.presentation.Profile
+import clib.data.type.primitives.string.stringResource
 
 @Composable
 public fun AppBar(
@@ -122,9 +122,7 @@ public fun AppBar(
             TopAppBar(
                 title = {
                     Text(
-                        text = Res.allStringResources[LocalDestinationTitle.current]?.let { stringResource ->
-                            stringResource(stringResource)
-                        } ?: LocalDestinationTitle.current,
+                        text = stringResource(LocalDestinationTitle.current, Res.allStringResources),
                     )
                 },
                 navigationIcon = {
@@ -210,7 +208,14 @@ public fun AppBar(
                             onDismissRequest = {
                                 isCountryPickerDialogOpen = false
                             },
-                            countries = Country.getCountries().filter { country -> country.locales().isNotEmpty() }.toList(),
+                            countries = Country.getCountries()
+                                .filter { country -> country.locales().isNotEmpty() }
+                                .toList()
+                                .map { country ->
+                                    country.copy(
+                                        name = stringResource(country.name, Res.allStringResources),
+                                    )
+                                },
                             picker = CountryPicker(
                                 headerTitle = stringResource(Res.string.language),
                                 searchHint = stringResource(Res.string.search),

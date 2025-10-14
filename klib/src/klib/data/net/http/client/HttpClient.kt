@@ -9,7 +9,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.serialization.ContentConverter
 import io.ktor.util.AttributeKey
-import io.ktor.utils.io.InternalAPI
 import klib.data.net.http.client.model.Pin
 
 private val PLUGIN_CONFIGURATIONS: MutableMap<AttributeKey<*>, Any> = mutableMapOf()
@@ -36,6 +35,11 @@ public fun HttpClient.converters(contentType: ContentType): List<ContentConverte
         ?.registrations
         ?.filter { registration -> registration.contentTypeMatcher.contains(contentType) }
         ?.map { registration -> registration.converter }
+
+public fun HttpClient.converter(contentType: ContentType): ContentConverter =
+    converters(contentType)?.firstOrNull()
+        ?: error("No suitable converter for $contentType")
+
 
 
 

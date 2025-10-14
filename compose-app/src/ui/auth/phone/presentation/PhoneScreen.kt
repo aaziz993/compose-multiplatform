@@ -27,6 +27,7 @@ import clib.presentation.components.navigation.viewmodel.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
 import clib.presentation.components.picker.country.mode.CountryPicker
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.allStringResources
 import compose_app.generated.resources.language
 import compose_app.generated.resources.phone
 import compose_app.generated.resources.search
@@ -37,6 +38,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.auth.phone.presentation.viewmodel.PhoneAction
 import ui.auth.phone.presentation.viewmodel.PhoneState
 import ui.navigation.presentation.Phone
+import clib.data.type.primitives.string.stringResource
+import klib.data.location.country.getCountries
 
 @Composable
 public fun PhoneScreen(
@@ -69,7 +72,10 @@ public fun PhoneScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            selectedCountry = country,
+            selectedCountry = country.copy(name = stringResource(country.name, Res.allStringResources)),
+            countries = Country.getCountries().toList().map { country ->
+                country.copy(name = stringResource(country.name, Res.allStringResources))
+            },
             enabled = true,
             textStyle = MaterialTheme.typography.bodyMedium,
             label = {

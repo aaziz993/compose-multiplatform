@@ -25,7 +25,7 @@ public interface CRUDRepository<T : Any> {
     public suspend fun update(vararg entities: T): List<Boolean> = update(entities.toList())
 
     public suspend fun update(
-        propertyValues: List<Map<String, Any?>>,
+        projections: List<Map<String, Any?>>,
         predicate: BooleanVariable? = null,
     ): Long
 

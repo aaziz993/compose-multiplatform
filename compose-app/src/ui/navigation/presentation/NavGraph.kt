@@ -680,7 +680,7 @@ private fun AppAppBar(
     val themeStateHolder: ThemeStateHolder = koinInject()
     val localeStateHolder: LocaleStateHolder = koinInject()
     val authStateHolder: AuthStateHolder = koinInject()
-    val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+    val drawerStateHolder: DrawerStateHolder = koinInject()
     val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
     AppBar(

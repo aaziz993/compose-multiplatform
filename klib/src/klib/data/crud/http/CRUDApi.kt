@@ -1,6 +1,6 @@
 package klib.data.crud.http
 
-import klib.data.crud.http.model.HttpOperation
+import klib.data.crud.http.model.HttpCrud
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
@@ -11,39 +11,39 @@ import io.ktor.client.statement.*
 
 internal interface CRUDApi {
 
-    @Headers("Content-Type: application/stream+json")
+    @Headers("Content-Type: application/json")
     @POST("transaction")
     suspend fun transaction(@ReqBuilder ext: HttpRequestBuilder.() -> Unit)
 
     @Headers("Content-Type: application/json")
     @PUT("insert")
-    suspend fun insert(@Body operation: HttpOperation.Insert<*>)
+    suspend fun insert(@Body crud: HttpCrud.Insert<*>)
 
     @Headers("Content-Type: application/json")
     @PUT("insertAndReturn")
-    suspend fun insertAndReturn(@Body operation: HttpOperation.InsertAndReturn<*>): HttpStatement
+    suspend fun insertAndReturn(@Body crud: HttpCrud.InsertAndReturn<*>): HttpStatement
 
     @Headers("Content-Type: application/json")
     @POST("update")
-    suspend fun update(@Body operation: HttpOperation.Update<*>): List<Boolean>
+    suspend fun update(@Body crud: HttpCrud.Update<*>): List<Boolean>
 
     @Headers("Content-Type: application/json")
     @POST("updateUntyped")
-    suspend fun update(@Body operation: HttpOperation.UpdateUntyped): Long
+    suspend fun update(@Body crud: HttpCrud.UpdateProjection): Long
 
     @Headers("Content-Type: application/json")
     @PUT("upsert")
-    suspend fun upsert(@Body operation: HttpOperation.Upsert<*>): HttpStatement
+    suspend fun upsert(@Body crud: HttpCrud.Upsert<*>): HttpStatement
 
     @Headers("Content-Type: application/json")
     @POST("find")
-    suspend fun find(@Body operation: HttpOperation.Find): HttpStatement
+    suspend fun find(@Body crud: HttpCrud.Find): HttpStatement
 
     @Headers("Content-Type: application/json")
     @POST("delete")
-    suspend fun delete(@Body operation: HttpOperation.Delete): Long
+    suspend fun delete(@Body crud: HttpCrud.Delete): Long
 
     @Headers("Content-Type: application/json")
     @POST("aggregate")
-    suspend fun aggregate(@Body operation: HttpOperation.Aggregate): HttpStatement
+    suspend fun aggregate(@Body crud: HttpCrud.Aggregate): HttpStatement
 }

@@ -28,7 +28,7 @@ public fun MutableSharedFlow<*>.onHasSubscriptionChange(
 
 public suspend inline fun Flow<ByteArray>.writeToChannel(channel: ByteWriteChannel): Unit = try {
     collect { value ->
-        channel.writeByteArray(value)
+        channel.writeByteArrayWithLength(value)
         channel.flush()
     }
 }

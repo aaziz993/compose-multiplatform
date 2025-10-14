@@ -30,7 +30,6 @@ import clib.presentation.components.navigation.Navigator
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
-import clib.presentation.stateholders.BooleanStateHolder
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
 import klib.data.type.primitives.string.uppercaseFirstChar
@@ -38,7 +37,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
-import org.koin.core.qualifier.named
+import clib.data.type.primitives.string.stringResource
 
 @Composable
 public fun NavScreen(
@@ -49,7 +48,7 @@ public fun NavScreen(
     onNavHostReady: suspend (NavController) -> Unit = {},
 ) {
     val auth = LocalAuth.current
-    val drawerStateHolder: BooleanStateHolder = koinInject(named("drawer"))
+    val drawerStateHolder: DrawerStateHolder = koinInject()
     val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
     val hasNavigationItems = NavRoute.filterNot { route ->
@@ -66,8 +65,7 @@ public fun NavScreen(
             route.item(
                 auth = auth,
                 transform = { label ->
-                    Res.allStringResources[label]?.let { stringResource -> stringResource(stringResource) }
-                        ?: label.uppercaseFirstChar()
+                    stringResource(label.uppercaseFirstChar(), Res.allStringResources)
                 },
                 destination = destination,
             ) { destination ->

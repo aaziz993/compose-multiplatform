@@ -14,6 +14,7 @@ import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.readByteArray
 import io.ktor.utils.io.readRemaining
+import klib.data.type.collections.readByteArrayWithLength
 import klib.data.type.primitives.toLong
 import klib.data.type.serialization.json.decodeAnyFromString
 import kotlinx.coroutines.flow.Flow
@@ -28,15 +29,16 @@ public fun <T : Any> HttpResponse.bodyAsFlow(typeInfo: TypeInfo, charset: Charse
     val contentType = headers[HttpHeaders.ContentType]?.let(ContentType::parse)
         ?: error("Missing header ${HttpHeaders.ContentType}")
 
-    val converter = call.client.converters(contentType.withoutParameters())?.firstOrNull()
-        ?: error("No suitable converter for $contentType")
+    val converter = call.client.converter(contentType)
 
-    while (!channel.isClosedForRead) {
-        val lengthBytes = channel.readByteArray(Long.SIZE_BYTES)
-        val itemSource = channel.readRemaining(lengthBytes.toLong())
-
-        emit(converter.deserialize(charset, typeInfo, ByteReadChannel(itemSource)) as T)
-    }
+    while (!channel.isClosedForRead)
+        emit(
+            converter.deserialize(
+                charset,
+                typeInfo,
+                ByteReadChannel(channel.readByteArrayWithLength()),
+            ) as T,
+        )
 }
 
 public inline fun <reified T : Any> HttpResponse.bodyAsFlow(charset: Charset = Charsets.UTF_8): Flow<T> =
@@ -45,11 +47,6 @@ public inline fun <reified T : Any> HttpResponse.bodyAsFlow(charset: Charset = C
 public fun HttpResponse.bodyAsFlow(): Flow<Any?> = flow {
     val channel = bodyAsChannel()
 
-
-    while (!channel.isClosedForRead) {
-        val lengthBytes = channel.readByteArray(Long.SIZE_BYTES)
-        val itemSource = channel.readRemaining(lengthBytes.toLong())
-
-        emit(Json.Default.decodeAnyFromString(itemSource.readString()))
-    }
+    while (!channel.isClosedForRead)
+        emit(Json.Default.decodeAnyFromString(channel.readByteArrayWithLength().readString()))
 }

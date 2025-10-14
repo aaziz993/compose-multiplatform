@@ -11,7 +11,6 @@ import io.ktor.util.reflect.typeInfo
 import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
 import klib.data.type.collections.writeToChannel
-import klib.data.type.primitives.toByteArray
 import klib.data.type.serialization.json.encodeAnyToString
 import kotlin.jvm.JvmName
 import kotlinx.coroutines.flow.Flow
@@ -51,8 +50,7 @@ public fun <T> HttpRequestBuilder.setBody(
     contentType: ContentType,
     charset: Charset = Charsets.UTF_8
 ): ChannelWriterContent {
-    val converter = client.converters(contentType.withoutParameters())?.firstOrNull()
-        ?: error("No suitable converter for $contentType")
+    val converter = client.converter(contentType)
 
     val byteFlow: Flow<ByteArray> = flow.map { value ->
         val outgoing = converter.serialize(contentType, charset, typeInfo, value)
@@ -61,10 +59,7 @@ public fun <T> HttpRequestBuilder.setBody(
             "Converter must return ByteArrayContent for streaming"
         }
 
-        val bytes = outgoing.bytes()
-        val lengthBytes = bytes.size.toLong().toByteArray(Long.SIZE_BYTES)
-
-        lengthBytes + bytes
+        outgoing.bytes()
     }
 
     return setBody(byteFlow, contentType = contentType)
@@ -81,12 +76,8 @@ public fun HttpRequestBuilder.setBodyAny(
     flow: Flow<Any?>,
     contentType: ContentType
 ): ChannelWriterContent {
-    val byteFlow: Flow<ByteArray> = flow.map { value ->
-
-        val bytes = Json.Default.encodeAnyToString(value).encodeToByteArray()
-        val lengthBytes = bytes.size.toLong().toByteArray(Long.SIZE_BYTES)
-
-        lengthBytes + bytes
+    val byteFlow: Flow<String> = flow.map { value ->
+        Json.Default.encodeAnyToString(value)
     }
 
     return setBody(byteFlow, contentType = contentType)
