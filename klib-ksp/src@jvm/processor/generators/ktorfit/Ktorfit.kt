@@ -51,7 +51,7 @@ public fun generateImplClass(
                 }
             }
 
-//            fileSource.writeToOrOverride(codeGenerator, Dependencies(false, ksFile))
+            fileSource.writeToOrOverride(codeGenerator, Dependencies(false, ksFile))
         }
     }
 }
