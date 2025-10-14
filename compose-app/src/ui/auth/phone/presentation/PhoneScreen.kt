@@ -1,4 +1,4 @@
-package ui.auth.phonecheckup.presentation
+package ui.auth.phone.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,16 +34,16 @@ import klib.data.location.country.Country
 import klib.data.location.country.current
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpAction
-import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpState
-import ui.navigation.presentation.PhoneCheckUp
+import ui.auth.phone.presentation.viewmodel.PhoneAction
+import ui.auth.phone.presentation.viewmodel.PhoneState
+import ui.navigation.presentation.Phone
 
 @Composable
-public fun PhoneCheckUpScreen(
+public fun PhoneScreen(
     modifier: Modifier = Modifier,
-    route: PhoneCheckUp = PhoneCheckUp,
-    state: PhoneCheckUpState = PhoneCheckUpState(),
-    onAction: (PhoneCheckUpAction) -> Unit = {},
+    route: Phone = Phone,
+    state: PhoneState = PhoneState(),
+    onAction: (PhoneAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     Column(
@@ -64,7 +64,7 @@ public fun PhoneCheckUpScreen(
         CountryCodePickerTextField(
             value = state.number,
             onValueChange = { countryCode, value, isValid ->
-                onAction(PhoneCheckUpAction.SetPhone(countryCode, value, isValid))
+                onAction(PhoneAction.SetPhone(countryCode, value, isValid))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,7 +78,7 @@ public fun PhoneCheckUpScreen(
                 )
             },
             trailingIcon = {
-                IconButton(onClick = { onAction(PhoneCheckUpAction.SetPhone()) }) {
+                IconButton(onClick = { onAction(PhoneAction.SetPhone()) }) {
                     Icon(
                         imageVector = Icons.Default.Clear, contentDescription = "Clear",
                     )
@@ -91,7 +91,7 @@ public fun PhoneCheckUpScreen(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    onAction(PhoneCheckUpAction.Confirm)
+                    onAction(PhoneAction.Confirm)
                 },
             ),
             shape = RoundedCornerShape(10.dp),
@@ -106,4 +106,4 @@ public fun PhoneCheckUpScreen(
 
 @Preview
 @Composable
-public fun PreviewPhoneConfirmScreen(): Unit = PhoneCheckUpScreen()
+public fun PreviewPhoneScreen(): Unit = PhoneScreen()

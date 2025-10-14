@@ -3,6 +3,8 @@ package ui.navigation.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.outlined.Login
@@ -56,8 +58,8 @@ import ui.auth.login.presentation.LoginScreen
 import ui.auth.login.presentation.viewmodel.LoginViewModel
 import ui.auth.otp.OtpScreen
 import ui.auth.otp.viewmodel.OtpViewModel
-import ui.auth.phonecheckup.presentation.PhoneCheckUpScreen
-import ui.auth.phonecheckup.presentation.viewmodel.PhoneCheckUpViewModel
+import ui.auth.phone.presentation.PhoneScreen
+import ui.auth.phone.presentation.viewmodel.PhoneViewModel
 import ui.auth.pincode.PinCodeScreen
 import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
@@ -257,9 +259,10 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
     override fun Screen(route: Settings, onNavigationAction: (NavigationAction) -> Unit) {
         val themeStateHolder: ThemeStateHolder = koinInject()
         val authStateHolder: AuthStateHolder = koinInject()
+        val scrollState = rememberScrollState()
 
         SettingsScreen(
-            Modifier,
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             themeStateHolder::action,
             authStateHolder::action,
@@ -306,14 +309,14 @@ public data object AuthRoute : Destination, NavigationRoute<Destination>() {
 
     override val expand: Boolean = true
 
-    override val routes: List<Route<Destination>> = listOf(PhoneCheckUp, Otp, Unverified, Verification, PinCode, Login, ForgotPassword, Profile)
+    override val routes: List<Route<Destination>> = listOf(Phone, Otp, Unverified, Verification, PinCode, Login, ForgotPassword, Profile)
 }
 
 @Serializable
-@SerialName("phonecheckup")
-public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckUp>() {
+@SerialName("phone")
+public data object Phone : Destination, NavigationDestination<Phone>() {
 
-    override val deepLinks: List<String> = listOf("phonesignup")
+    override val deepLinks: List<String> = listOf("phone")
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.PersonAddAlt, label, modifier)
@@ -330,11 +333,11 @@ public data object PhoneCheckUp : Destination, NavigationDestination<PhoneCheckU
     ): Unit = AppAppBar(onNavigationAction, content)
 
     @Composable
-    override fun Screen(route: PhoneCheckUp, onNavigationAction: (NavigationAction) -> Unit) {
-        val viewModel: PhoneCheckUpViewModel = koinViewModel()
+    override fun Screen(route: Phone, onNavigationAction: (NavigationAction) -> Unit) {
+        val viewModel: PhoneViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        PhoneCheckUpScreen(
+        PhoneScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
             route,
             state,
@@ -557,9 +560,10 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
     @Composable
     override fun Screen(route: Profile, onNavigationAction: (NavigationAction) -> Unit) {
         val authStateHolder: AuthStateHolder = koinInject()
+        val scrollState = rememberScrollState()
 
         ProfileScreen(
-            Modifier.fillMaxSize().padding(16.dp),
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             authStateHolder::action,
             onNavigationAction,

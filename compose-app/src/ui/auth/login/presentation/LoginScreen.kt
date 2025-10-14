@@ -31,7 +31,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Login
-import ui.navigation.presentation.PhoneCheckUp
+import ui.navigation.presentation.Phone
 
 @Composable
 public fun LoginScreen(
@@ -77,7 +77,7 @@ public fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(PhoneCheckUp))
+                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(Phone))
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

@@ -22,6 +22,8 @@ import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.auth.stateholder.AuthAction
 import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.event.snackbar.GlobalSnackbarEventController
+import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.stateholder.ThemeAction
 import com.alorma.compose.settings.ui.SettingsGroup
@@ -37,6 +39,8 @@ import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permissions
+import klib.data.permission.exception.PermissionDeniedAlwaysException
+import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -58,14 +62,12 @@ public fun SettingsScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val permissionFactory = rememberPermissionsControllerFactory()
-    val permissionController = remember(permissionFactory) {
+    val permissionsController = remember(permissionFactory) {
         permissionFactory.createPermissionsController()
     }
-    val permissions = rememberPermissions(permissionController)
+    val permissions = rememberPermissions(permissionsController)
 
-    BindEffect(permissionController)
-
-    val scrollState = rememberScrollState()
+    BindEffect(permissionsController)
 
     SettingsGroup(
         modifier = Modifier,
@@ -99,7 +101,17 @@ public fun SettingsScreen(
             icon = { Icon(Icons.Outlined.CameraAlt, "") },
             onCheckedChange = { newState: Boolean ->
                 coroutineScope.launch {
-                    permissionController.providePermission(Permission.CAMERA)
+                    permissionsController.providePermission(Permission.CAMERA)
+
+                    try {
+                        permissionsController.providePermission(Permission.GALLERY)
+                    }
+                    catch (deniedAlways: PermissionDeniedAlwaysException) {
+                        GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
+                    }
+                    catch (denied: PermissionDeniedException) {
+                        GlobalSnackbarEventController.sendEvent(SnackbarEvent(denied.message.orEmpty()))
+                    }
                 }
             },
         )
@@ -113,7 +125,7 @@ public fun SettingsScreen(
             icon = { Icon(Icons.Outlined.Mic, "") },
             onCheckedChange = { newState: Boolean ->
                 coroutineScope.launch {
-                    permissionController.providePermission(Permission.RECORD_AUDIO)
+                    permissionsController.providePermission(Permission.RECORD_AUDIO)
                 }
             },
         )
@@ -127,7 +139,7 @@ public fun SettingsScreen(
             icon = { Icon(Icons.Outlined.LocationOn, "") },
             onCheckedChange = { newState: Boolean ->
                 coroutineScope.launch {
-                    permissionController.providePermission(Permission.LOCATION)
+                    permissionsController.providePermission(Permission.LOCATION)
                 }
             },
         )

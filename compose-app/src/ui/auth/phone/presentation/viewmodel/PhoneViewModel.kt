@@ -1,4 +1,4 @@
-package ui.auth.phonecheckup.presentation.viewmodel
+package ui.auth.phone.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
@@ -13,16 +13,16 @@ import ui.navigation.presentation.Destination
 import ui.navigation.presentation.Otp
 
 @KoinViewModel
-public class PhoneCheckUpViewModel(
+public class PhoneViewModel(
     private val navigator: Navigator<Destination>
-) : AbstractViewModel<PhoneCheckUpAction>() {
+) : AbstractViewModel<PhoneAction>() {
 
-    public val state: RestartableStateFlow<PhoneCheckUpState>
-        field = MutableStateFlow(PhoneCheckUpState()).onStartStateIn { it }
+    public val state: RestartableStateFlow<PhoneState>
+        field = MutableStateFlow(PhoneState()).onStartStateIn { it }
 
-    override fun action(action: PhoneCheckUpAction): Unit = when (action) {
-        is PhoneCheckUpAction.SetPhone -> setPhone(action.countryCode, action.number, action.isValid)
-        PhoneCheckUpAction.Confirm -> confirm()
+    override fun action(action: PhoneAction): Unit = when (action) {
+        is PhoneAction.SetPhone -> setPhone(action.countryCode, action.number, action.isValid)
+        PhoneAction.Confirm -> confirm()
     }
 
     private fun setPhone(countryCode: String, number: String, isValid: Boolean) =
