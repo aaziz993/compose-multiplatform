@@ -25,12 +25,12 @@ bom-minor = "0"
 bom-patch = "0"
 bom-preRelase = "alpha" # optional
 #bom-buildMetadata = "" # optional
-# klib-ksp.
-klib-ksp-major = "1"
-klib-ksp-minor = "0"
-klib-ksp-patch = "0"
-klib-ksp-preRelase = "alpha" # optional
-#klib-ksp-buildMetadata = "" # optional
+# lib-ksp.
+lib-ksp-major = "1"
+lib-ksp-minor = "0"
+lib-ksp-patch = "0"
+lib-ksp-preRelase = "alpha" # optional
+#lib-ksp-buildMetadata = "" # optional
 # kmp-lib.
 klib-major = "1"
 klib-minor = "0"

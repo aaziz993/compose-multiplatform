@@ -7,6 +7,7 @@ import de.jensklingenberg.ktorfit.KtorfitOptions
 import de.jensklingenberg.ktorfit.model.ClassData
 import de.jensklingenberg.ktorfit.poetspec.createFileSpec
 import de.jensklingenberg.ktorfit.poetspec.getImplClassSpec
+import java.io.OutputStreamWriter
 import klib.data.processing.writeToOrOverride
 import processor.CompilerOptions
 

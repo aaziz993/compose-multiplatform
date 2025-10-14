@@ -5,8 +5,8 @@ import gradle.api.kotlin.mpp.kotlin
 import klib.data.type.primitives.string.uppercaseFirstChar
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.the
 
 private const val KSP_COMMON_MAIN_METADATA = "kspCommonMainMetadata"
@@ -22,15 +22,10 @@ public val Project.kspConfigurations: List<Configuration>
         }
     }
 
-@Suppress("UnusedReceiverParameter")
 context(project: Project)
-public fun KspExtension.dependencies(vararg dependencyNotations: Any): Unit =
+public fun DependencyHandler.ksp(dependencyNotation: Any): Unit =
     project.pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-        project.dependencies {
-            project.kspConfigurations.forEach { configuration ->
-                dependencyNotations.forEach { dependencyNotation ->
-                    add(configuration.name, dependencyNotation)
-                }
-            }
+        project.kspConfigurations.forEach { configuration ->
+            add(configuration.name, dependencyNotation)
         }
     }

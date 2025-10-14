@@ -129,13 +129,13 @@ script:
       # room
       - arg: ("room.incremental", "true")
       - arg: ("room.expandProjection", "true")
-      - dependencies: |
-          (
-            libs["arrow.optics.ksp.plugin"],
-            libs["androidx.room.compiler"],
-            // libs["ktorfit.ksp"],
-            // Use import org.koin.ksp.generated.* in project.
-            libs["koin.ksp.compiler"],
-          )
   - powerAssert:
       includeKotlinSourceSets: ()
+  - dependencies:
+      - ksp: (libs["arrow.optics.ksp.plugin"])
+      - ksp: (libs["androidx.room.compiler"])
+      # Supports only kotlin source sets default layout.
+      # - ksp: (libs["ktorfit.ksp"])
+      # Use import org.koin.ksp.generated.* in project.
+      - ksp: (libs["koin.ksp.compiler"])
+      - add: ("kspCommonMainMetadata", dependencies.project(":lib-ksp"))

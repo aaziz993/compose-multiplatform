@@ -69,7 +69,7 @@ public class CompilerProcessor(
                 ""
             }
 
-        if (moduleName.contains(commonMainModuleName)) {
+        if (moduleName == "klib_$commonMainModuleName") {
             generateCountryRegistry(logger, codeGenerator, options)
             generateLanguageTagRegistry(logger, codeGenerator, options)
             generateCurrencyRegistry(logger, codeGenerator, options)
@@ -80,9 +80,9 @@ public class CompilerProcessor(
                 .groupBy { it.closestClassDeclaration() }
                 .map { (classDec) ->
                     classDec?.toClassData(KtorfitLogger(env.logger, loggingType))
-                }.mapNotNull { it }
+                }.filterNotNull()
 
-        generateImplClass(classDataList, env.codeGenerator, resolver, KtorfitOptions(env.options), options)
+        generateImplClass(classDataList, codeGenerator, resolver, KtorfitOptions(env.options), options)
 
         return emptyList()
     }

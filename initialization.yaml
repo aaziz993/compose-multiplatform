@@ -133,7 +133,7 @@ script:
   - include: |
       (
         ":bom",
-        ":klib-ksp",
+        ":lib-ksp",
         ":klib",
         ":clib",
         ":shared",
