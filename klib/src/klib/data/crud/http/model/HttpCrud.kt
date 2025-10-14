@@ -21,7 +21,7 @@ public sealed class HttpCrud {
     public data class Update<out T : Any>(val values: List<T>) : HttpCrud()
 
     @Serializable
-    public data class UpdateProjection(
+    public data class UpdateProjections(
         val values: List<SerializableNullableAnyMap>,
         val predicate: BooleanVariable?
     ) : HttpCrud()
@@ -31,10 +31,17 @@ public sealed class HttpCrud {
 
     @Serializable
     public data class Find(
-        val projections: List<Variable>?,
-        val sort: List<Order>?,
-        val predicate: BooleanVariable?,
-        val limitOffset: LimitOffset?
+        val sort: List<Order>? = null,
+        val predicate: BooleanVariable? = null,
+        val limitOffset: LimitOffset? = null,
+    ) : HttpCrud()
+
+    @Serializable
+    public data class FindProjections(
+        val projections: List<Variable>? = null,
+        val sort: List<Order>? = null,
+        val predicate: BooleanVariable? = null,
+        val limitOffset: LimitOffset? = null,
     ) : HttpCrud()
 
     @Serializable

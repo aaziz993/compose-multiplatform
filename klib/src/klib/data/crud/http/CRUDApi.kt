@@ -13,7 +13,7 @@ internal interface CRUDApi {
 
     @Headers("Content-Type: application/json")
     @POST("transaction")
-    suspend fun transaction(@ReqBuilder ext: HttpRequestBuilder.() -> Unit)
+    suspend fun transaction(@ReqBuilder ext: HttpRequestBuilder.() -> Unit): HttpStatement
 
     @Headers("Content-Type: application/json")
     @PUT("insert")
@@ -28,8 +28,8 @@ internal interface CRUDApi {
     suspend fun update(@Body crud: HttpCrud.Update<*>): List<Boolean>
 
     @Headers("Content-Type: application/json")
-    @POST("updateUntyped")
-    suspend fun update(@Body crud: HttpCrud.UpdateProjection): Long
+    @POST("updateProjections")
+    suspend fun updateProjections(@Body crud: HttpCrud.UpdateProjections): Long
 
     @Headers("Content-Type: application/json")
     @PUT("upsert")
@@ -38,6 +38,10 @@ internal interface CRUDApi {
     @Headers("Content-Type: application/json")
     @POST("find")
     suspend fun find(@Body crud: HttpCrud.Find): HttpStatement
+
+    @Headers("Content-Type: application/json")
+    @POST("find")
+    suspend fun findProjections(@Body crud: HttpCrud.FindProjections): HttpStatement
 
     @Headers("Content-Type: application/json")
     @POST("delete")
