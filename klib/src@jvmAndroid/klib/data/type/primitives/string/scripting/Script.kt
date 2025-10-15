@@ -47,9 +47,7 @@ import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
-import kotlin.reflect.full.declaredMemberExtensionFunctions
 import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.full.memberFunctions
 import kotlin.script.experimental.api.ResultValue
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.ScriptEvaluationConfiguration
@@ -112,16 +110,12 @@ public abstract class Script {
         script.flatten().joinToString("\n") { (path, value) ->
             val referencePath = path.filter { (source, _) -> source !is List<*> }.map { (_, key) -> key!!.toString() }
             val reference = referencePath.joinToString(".")
-
-            val cacheKey = "$reference:$value"
-            cacheKeys.add(cacheKey)
+            val cacheKey = "$reference:$value".also(cacheKeys::add)
 
             cache[cacheKey] ?: "$reference${
                 if (reference in DECLARATION_KEYWORDS) " $value"
                 else tryAssign(referencePath.toTypedArray(), value)
-            }".also { operation ->
-                cache[cacheKey] = operation
-            }
+            }".also { operation -> cache[cacheKey] = operation }
         }.also {
             (cache.asMap().keys - cacheKeys).forEach(cache::remove)
         }
@@ -197,15 +191,6 @@ public abstract class Script {
                                     return@deepRunOnPenultimate operation
                                 }
                         }
-
-                    // Check for function.
-                    if (receiver.memberFunctions(memberName).any { function ->
-                            function.visibility == KVisibility.PUBLIC
-                        } || receiver.declaredMemberExtensionFunctions(memberName).any { function ->
-                            function.visibility == KVisibility.PUBLIC
-                        } || receiver.packageExtensions(memberName, packages).any { method ->
-                            Modifier.isPublic(method.modifiers)
-                        }) return@deepRunOnPenultimate value
 
                     val getterName = memberName.toGetterName()
 

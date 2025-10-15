@@ -5,8 +5,8 @@ config:
 script:
   - kotlin:
       targets:
-        - withType<KotlinNativeTarget>: |
-            {
+        - withType: |
+            <KotlinNativeTarget> {
               compilerOptions {
                 optIn.addAll(
                   "kotlin.experimental.ExperimentalObjCName",
@@ -29,8 +29,8 @@ script:
                 test(listOf(NativeBuildType.RELEASE))
               }
             }
-        - withType<KotlinNativeTargetWithTests<*>>: |
-            {
+        - withType: |
+            <KotlinNativeTargetWithTests<*>> {
               testRuns.register("releaseTest") { testRun ->
                   testRun.setExecutionSourceFrom(binaries.getTest(NativeBuildType.RELEASE))
               }

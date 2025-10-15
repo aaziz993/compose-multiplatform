@@ -3,8 +3,8 @@ imports:
 script:
   - kotlin:
       targets:
-        - withType<KotlinJvmTarget>: |
-            {
+        - withType: |
+            <KotlinJvmTarget> {
               binaries {
                 executable {
                   mainClass /= "ApplicationKt"

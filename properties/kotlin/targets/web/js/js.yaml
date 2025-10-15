@@ -17,8 +17,8 @@ script:
           }
         }
       targets:
-        - withType<KotlinJsTargetDsl>: |
-            {
+        - withType: |
+            <KotlinJsTargetDsl> {
               compilerOptions {
                 optIn.addAll(
                   "kotlin.js.ExperimentalJsExport",

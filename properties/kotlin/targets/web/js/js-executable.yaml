@@ -3,7 +3,7 @@ imports:
 script:
   - kotlin:
       targets:
-        - withType<KotlinJsTargetDsl>: |
-            {
+        - withType: |
+            <KotlinJsTargetDsl> {
               binaries.executable()
             }

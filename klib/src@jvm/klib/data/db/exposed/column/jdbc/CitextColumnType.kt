@@ -1,4 +1,4 @@
-package klib.data.db.exposed.column
+package klib.data.db.exposed.column.jdbc
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table

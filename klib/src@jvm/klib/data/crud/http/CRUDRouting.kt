@@ -24,33 +24,32 @@ public inline fun <reified T : Any> Routing.CrudRoutes(
     repository: CRUDRepository<T>,
 ) {
     route(baseUrl) {
-//        post("transaction") {
-//
-//            call..filterNotNull().collect {
-//                with(Json.Default.decodeFromString<HttpOperation>(it)) {
-//                    when (this) {
-//                        is HttpCrud.Insert<*> -> repository.insert(values as List<T>)
-//                        is HttpCrud.InsertAndReturn<*> -> repository.insertAndReturn(values as List<T>)
-//                        is HttpCrud.Update<*> -> repository.update(values as List<T>)
-//                        is HttpCrud.UpdateUntyped -> repository.update(propertyValues, predicate)
-//
-//                        is HttpCrud.Upsert<*> -> repository.upsert(values as List<T>)
-//                        else -> Unit
-//                    }
-//                }
-//            }
-//        }
+        post("transaction") {
+            call.filterNotNull().collect {
+                with(Json.Default.decodeFromString<HttpCrud>(it)) {
+                    when (this) {
+                        is HttpCrud.Insert<*> -> repository.insert(values as List<T>)
+                        is HttpCrud.InsertAndReturn<*> -> repository.insertAndReturn(values as List<T>)
+                        is HttpCrud.Update<*> -> repository.update(values as List<T>)
+                        is HttpCrud.UpdateUntyped -> repository.update(propertyValues, predicate)
+                        is HttpCrud.Upsert<*> -> repository.upsert(values as List<T>)
+
+                        else -> Unit
+                    }
+                }
+            }
+        }
 
         put("insert") {
             with(call.receive<HttpCrud.Insert<T>>()) {
                 repository.insert(values)
-                call.respond(HttpStatusCode.OK, "Successful")
+                call.respond(HttpStatusCode.Created, "Successful")
             }
         }
 
         put("insertAndReturn") {
             with(call.receive<HttpCrud.InsertAndReturn<T>>()) {
-                call.respond(HttpStatusCode.OK, repository.insertAndReturn(values))
+                call.respond(HttpStatusCode.Created, repository.insertAndReturn(values))
             }
         }
 

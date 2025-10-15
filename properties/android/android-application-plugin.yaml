@@ -9,8 +9,8 @@ script:
   - kotlin:
       androidTarget: ()
       targets:
-        - withType<KotlinAndroidTarget>: |
-            {
+        - withType: |
+            <KotlinAndroidTarget> {
               @OptIn(ExperimentalKotlinGradlePluginApi::class)
               compilerOptions {
                 jvmTarget /= libs.versions("android.jvm.target").requiredVersion.toJvmTarget()

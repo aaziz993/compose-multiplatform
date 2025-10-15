@@ -69,7 +69,7 @@ public abstract class GradleScript : Script() {
                 String.serializer(),
                 String.serializer(),
             ),
-            assignOperation = ::tryAssignOperation,
+            assignOperation = ::tryAssign,
         ) {
             compilationImplicitReceivers = listOf(T::class)
             evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
@@ -93,7 +93,7 @@ public abstract class GradleScript : Script() {
             logger.lifecycle(properties.toString())
         }
 
-        internal fun tryAssignOperation(valueClass: KClass<*>, value: Any?): String? =
+        internal fun tryAssign(valueClass: KClass<*>, value: Any?): String? =
             when {
                 valueClass.isSubclassOf(Property::class) ||
                     valueClass.isSubclassOf(HasMultipleValues::class) ||

@@ -12,8 +12,8 @@ config:
 script:
   - kotlin:
       targets:
-        - withType<KotlinJsTargetDsl>: |
-            {
+        - withType: |
+            <KotlinJsTargetDsl> {
               outputModuleName.set(project.pathUnderscore)
               browser {
                 val rootDirPath = project.rootDir.path
@@ -63,27 +63,27 @@ script:
               }
             }
   # TODO remove if https://youtrack.jetbrains.com/issue/KT-55701 provides a better
-  - rootProject.plugins.withType<YarnPlugin>: |
-      {
+  - rootProject.plugins.withType: |
+      <YarnPlugin> {
         rootProject.yarn.yarnLockMismatchReport = YarnLockMismatchReport.WARNING // NONE | FAIL
         rootProject.yarn.reportNewYarnLock = true
         rootProject.yarn.yarnLockAutoReplace = true
       }
   # TODO Remove when it's fixed https://github.com/antelle/argon2-browser/issues/81
-  - rootProject.plugins.withType<NodeJsRootPlugin>: |
-      {
+  - rootProject.plugins.withType: |
+      <NodeJsRootPlugin> {
         rootProject.nodeJsEnv.version /= "24.7.0"
       }
   - tasks:
-      - withType<KotlinNpmInstallTask>: |
-          {
+      - withType: |
+          <KotlinNpmInstallTask> {
             args.addAll(listOf(
               "--ignore-engines",
               "--ignore-scripts",
             ))
           }
-      - withType<Kotlin2JsCompile>: |
-          {
+      - withType: |
+          <Kotlin2JsCompile> {
             compilerOptions {
                 target /= "es2015"
                 freeCompilerArgs.addAll(

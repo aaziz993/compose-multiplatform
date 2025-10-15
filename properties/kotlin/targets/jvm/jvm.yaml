@@ -20,14 +20,14 @@ script:
           }
         }
       targets:
-        - withType<KotlinJvmTarget>: |
-            {
+        - withType: |
+            <KotlinJvmTarget> {
               compilerOptions {
                 jvmTarget /= libs.versions("jvm.target").requiredVersion.toJvmTarget()
                 freeCompilerArgs.addAll(
                    "-Xno-param-assertions",
                    "-Xno-call-assertions",
-                   "-Xno-receiver-assertions"
+                   "-Xno-receiver-assertions",
                 )
                 optIn.addAll(
                   "-Xjvm-default=all",
@@ -48,7 +48,7 @@ script:
                 implementation(libs.bundles("r2dbc"))
                 implementation(libs.bundles("kotysa"))
                 implementation(libs.bundles("exposed"))
-                // implementation(libs["dataframe"])
+                implementation(libs["dataframe"])
                 implementation(libs["kandy"])
                 implementation(libs.bundles("ktor.server"))
                 implementation(libs("ktor")["server.rateLimit"])
@@ -121,8 +121,8 @@ script:
               }
             }
   - tasks:
-      - withType<KotlinJvmTest>: |
-          {
+      - withType: |
+          <KotlinJvmTest> {
             maxHeapSize = "2g"
 
             useJUnitPlatform()

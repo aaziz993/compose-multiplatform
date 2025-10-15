@@ -3,7 +3,7 @@ imports:
 script:
   - kotlin:
       targets:
-        - withType<KotlinWasmJsTargetDsl>: |
-            {
+        - withType: |
+            <KotlinWasmJsTargetDsl> {
               binaries.library()
             }

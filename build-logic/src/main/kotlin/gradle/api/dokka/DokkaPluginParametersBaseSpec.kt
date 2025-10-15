@@ -1,3 +1,5 @@
+package gradle.api.dokka
+
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec

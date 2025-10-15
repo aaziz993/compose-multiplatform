@@ -52,7 +52,7 @@ script:
             "-Xrender-internal-diagnostic-names",
           )
   - tasks:
-      - withType<KotlinCompile>: |
-          {
+      - withType: |
+          <KotlinCompile> {
             compilerOptions.jvmTarget /= libs.versions("jvm.target").requiredVersion.toJvmTarget()
           }

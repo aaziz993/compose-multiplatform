@@ -1,9 +1,9 @@
 package klib.data.db.exposed
 
-import ai.tech.core.data.crud.AbstractCRUDRepository
-import ai.tech.core.data.crud.CRUDRepository
-import ai.tech.core.data.crud.model.query.LimitOffset
-import ai.tech.core.data.crud.model.query.Order
+import klib.data.crud.AbstractCRUDRepository
+import klib.data.crud.CRUDRepository
+import klib.data.crud.model.query.LimitOffset
+import klib.data.crud.model.query.Order
 import klib.data.AggregateExpression
 import klib.data.And
 import klib.data.Avg
@@ -29,11 +29,13 @@ import klib.data.Projection
 import klib.data.Sum
 import klib.data.Value
 import klib.data.Variable
-import ai.tech.core.data.transaction.model.javaSqlTransactionIsolation
+import klib.data.transaction.model.javaSqlTransactionIsolation
 import klib.data.type.reflection.memberProperty
 import ai.tech.core.misc.type.serializablePropertyValues
 import ai.tech.core.misc.type.serialization.decodeFromAny
+import klib.data.transaction.Transaction
 import klib.data.transaction.model.TransactionIsolation
+import klib.data.transaction.model.r2dbcTransactionIsolation
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -56,17 +58,13 @@ import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.avg
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.batchUpsert
-import org.jetbrains.exposed.sql.count
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.max
-import org.jetbrains.exposed.sql.min
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import org.jetbrains.exposed.sql.sum
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transactionManager
 import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 import org.slf4j.LoggerFactory
 
 public open class ExposedCRUDRepository<T : Any>(
@@ -151,7 +149,7 @@ public open class ExposedCRUDRepository<T : Any>(
     // By default, a nested transaction block shares the transaction resources of its parent transaction block, so any effect on the child affects the parent
     // Since Exposed 0.16.1 it is possible to use nested transactions as separate transactions by setting useNestedTransactions = true on the desired Database instance.
     final override suspend fun <R> transactional(block: suspend CRUDRepository<T>.(Transaction) -> R): R =
-        newSuspendedTransaction(coroutineContext, database, transactionIsolation?.javaSqlTransactionIsolation) {
+        suspendTransaction(transactionIsolation?.r2dbcTransactionIsolation, true, database) {
             this@ExposedCRUDRepository.statementCount?.let { statementCount = it }
             this@ExposedCRUDRepository.duration?.let { duration = it }
             this@ExposedCRUDRepository.warnLongQueriesDuration?.let { warnLongQueriesDuration = it }

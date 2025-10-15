@@ -96,7 +96,7 @@ script:
       }
 
   - signing:
-      isRequired: (!(version as Version).isPreRelease)
+      isRequired: '!(version as Version).isPreRelease'
       useGpg: ()
       # Sign all publications.
       sign: (publishing.publications)

@@ -5,8 +5,8 @@ script:
   - plugins:
       - id: (libs.plugins("shadow").pluginId)
   - tasks:
-      - withType<ShadowJar>: |
-          {
+      - withType: |
+          <ShadowJar> {
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             mergeServiceFiles()
           }

@@ -10,7 +10,7 @@ script:
       reportsDir: '"build/reports"'
       kotlinCompilerVersion: libs.versions("kotlin").requiredVersion
       targets:
-        - withType<JvmBenchmarkTarget>: |
-            {
+        - withType: |
+            <JvmBenchmarkTarget> {
               jmhVersion = "1.37"
             }
