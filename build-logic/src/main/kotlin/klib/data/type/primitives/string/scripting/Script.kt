@@ -168,7 +168,7 @@ public abstract class Script {
                     },
                 ) {
                     if (size < path.size)
-                        error(" $value")
+                        return@deepRunOnPenultimate " $value"
 
                     val receiver = last().first
 

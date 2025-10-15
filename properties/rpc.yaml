@@ -2,6 +2,7 @@
 config:
   imports:
     - kotlinx.rpc.RpcStrictMode
+    - gradle.api.rpc.*
 script:
   - plugins:
       - id: (libs.plugins("kotlinx.rpc").pluginId)

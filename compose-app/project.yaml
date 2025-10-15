@@ -80,7 +80,7 @@ script:
             copyright: '"© ${settings.settingsScript.year} - ${settings.settingsScript.developer.name}. All rights reserved."'
             vendor: '"Example vendor"'
             licenseFile: (file("LICENSE.txt"))
-            appResourcesRootDir: project.layout.projectDirectory.dir("resources")
+            appResourcesRootDir: layout.projectDirectory.dir("resources")
           buildTypes:
             release:
               proguard:
