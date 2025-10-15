@@ -115,7 +115,7 @@ public abstract class Script {
 
     public operator fun invoke(transform: (compiled: String) -> String = { it }): Unit =
         transform(compiled)(config).run {
-            if (this is Throwable) throw this else Unit
+            if (this is Throwable) throw this
         }
 
     override fun toString(): String = buildStringAnsi {

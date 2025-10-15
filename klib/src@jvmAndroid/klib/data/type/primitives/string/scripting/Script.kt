@@ -16,7 +16,6 @@ import klib.data.type.collections.deepSubstitute
 import klib.data.type.collections.flatten
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.asList
-import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.collections.set
@@ -115,7 +114,7 @@ public abstract class Script {
 
     public operator fun invoke(transform: (compiled: String) -> String = { it }): Unit =
         transform(compiled)(config).run {
-            if (this is Throwable) throw this else Unit
+            if (this is Throwable) throw this
         }
 
     override fun toString(): String = buildStringAnsi {

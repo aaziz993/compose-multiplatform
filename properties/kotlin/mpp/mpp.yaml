@@ -4,17 +4,17 @@ imports:
   - ../../licensee.yaml
   - ../../buildconfig.yaml
   - ../../spotless.yaml
-  - ../../sonar.yaml
-  - ../../apivalidation.yaml
-  - ../../allopen.yaml
-  - ../../noarg.yaml
+#  - ../../sonar.yaml
+#  - ../../apivalidation.yaml
+#  - ../../allopen.yaml
+#  - ../../noarg.yaml
   - ../../serialization.yaml
-  - ../../benchmark.yaml
-  - ../../sqldelight.yaml
-  - ../../room.yaml
-  - ../../ktorfit.yaml
-  #  - ../../rpc.yaml
-  - ../../apollo.yaml
+#  - ../../benchmark.yaml
+#  - ../../sqldelight.yaml
+#  - ../../room.yaml
+#  - ../../ktorfit.yaml
+#  - ../../rpc.yaml
+#  - ../../apollo.yaml
   - mpp-plugin.yaml
   - ../kotlin.yaml
 config:
