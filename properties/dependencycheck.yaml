@@ -5,6 +5,9 @@ config:
 script:
   - plugins:
       - id: (libs.plugins("dependencycheck").pluginId)
-  - dependencyCheck:
+  - dependencycheck:
       outputDirectory: layout.projectDirectory.dir("build/reports")
-      format: '"ALL"'
+      formats: |
+        listOf(
+          "ALL",
+        )

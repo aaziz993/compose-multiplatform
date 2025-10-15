@@ -21,13 +21,6 @@ import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
-public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
-    Property::class,
-    HasMultipleValues::class,
-    MapProperty::class,
-    ConfigurableFileCollection::class,
-)
-
 public val IMPORTS: Array<String> = arrayOf(
     "gradle.api.*",
     "gradle.api.artifacts.*",
@@ -76,8 +69,7 @@ public abstract class GradleScript : Script() {
                 String.serializer(),
                 String.serializer(),
             ),
-            explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
-            implicitOperation = ::tryAssignProperty,
+            assignOperation = ::tryAssignOperation,
         ) {
             compilationImplicitReceivers = listOf(T::class)
             evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
@@ -101,7 +93,7 @@ public abstract class GradleScript : Script() {
             logger.lifecycle(properties.toString())
         }
 
-        internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
+        internal fun tryAssignOperation(valueClass: KClass<*>, value: Any?): String? =
             when {
                 valueClass.isSubclassOf(Property::class) ||
                     valueClass.isSubclassOf(HasMultipleValues::class) ||

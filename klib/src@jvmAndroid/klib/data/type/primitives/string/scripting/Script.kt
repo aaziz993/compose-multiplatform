@@ -47,7 +47,9 @@ import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
+import kotlin.reflect.full.declaredMemberExtensionFunctions
 import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.memberFunctions
 import kotlin.script.experimental.api.ResultValue
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.ScriptEvaluationConfiguration
@@ -64,15 +66,29 @@ import kotlinx.serialization.serializer
 public const val SCRIPT_KEY: String = "script"
 
 public val DECLARATION_KEYWORDS: Set<String> = setOf(
-    "val", "var", "fun", "class", "interface", "object", "enum", "annotation", "typealias",
-    "abstract", "data", "sealed", "open", "private", "public", "internal",
-    "inline", "tailrec", "suspend", "operator", "infix", "const", "lateinit",
-)
-
-public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
-    Array::class,
-    MutableCollection::class,
-    MutableMap::class,
+    "val",
+    "var",
+    "fun",
+    "class",
+    "interface",
+    "object",
+    "enum",
+    "annotation",
+    "typealias",
+    "abstract",
+    "data",
+    "sealed",
+    "open",
+    "private",
+    "public",
+    "internal",
+    "inline",
+    "tailrec",
+    "suspend",
+    "operator",
+    "infix",
+    "const",
+    "lateinit",
 )
 
 @Serializable
@@ -88,10 +104,7 @@ public abstract class Script {
     public var cache: Cache<String, String> = emptyCache()
 
     @Transient
-    public var explicitOperationReceivers: Set<KClass<*>> = emptySet()
-
-    @Transient
-    public var implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null }
+    public var assignOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null }
 
     public val compiled: String by lazy {
         val cacheKeys = mutableSetOf<String>()
@@ -106,7 +119,9 @@ public abstract class Script {
             cache[cacheKey] ?: "$reference${
                 if (reference in DECLARATION_KEYWORDS) " $value"
                 else tryAssign(referencePath.toTypedArray(), value)
-            }".also { operation -> cache[cacheKey] = operation }
+            }".also { operation ->
+                cache[cacheKey] = operation
+            }
         }.also {
             (cache.asMap().keys - cacheKeys).forEach(cache::remove)
         }
@@ -159,53 +174,68 @@ public abstract class Script {
                             ?: kClass.declaredMemberExtensionProperty(memberName)
                             ?: kClass.memberFunction(getterName)
                             ?: kClass.declaredMemberExtensionFunction(getterName))
-                            ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
+                            ?.takeIf { member -> member.visibility == KVisibility.PUBLIC }
                             ?.returnType?.classifierOrUpperBound()
-                            ?: kClass.packageExtensions(getterName, packages).singleOrNull { method ->
+                            ?: kClass.packageExtensions(getterName, packages).find { method ->
                                 Modifier.isPublic(method.modifiers)
                             }?.returnType?.kotlin
                     },
                 ) {
-                    if (size < path.size)
-                        return@deepRunOnPenultimate " $value"
+                    if (size < path.size) return@deepRunOnPenultimate null
 
-                    val receiver = last().first
-
-                    if (receiver !is KClass<*> || explicitOperationReceivers.any(receiver::isSubclassOf))
-                        return@deepRunOnPenultimate null
-
+                    val receiver = last().first as KClass<*>
                     val memberName = last().second
 
-                    val getterName = memberName.toGetterName()
-                    val setterName = memberName.toSetterName()
-
-                    (receiver.memberProperty(memberName) ?: receiver.declaredMemberExtensionProperty(memberName))
+                    // Check for property.
+                    (receiver.memberProperty(memberName)
+                        ?: receiver.declaredMemberExtensionProperty(memberName))
                         ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
                         ?.let { property ->
-                            return@deepRunOnPenultimate if (property is KMutableProperty<*>) " = $value"
-                            else implicitOperation(property.returnType.classifierOrUpperBound()!!, value)
+                            if (property is KMutableProperty<*>) return@deepRunOnPenultimate " = $value"
+                            else assignOperation(property.returnType.classifierOrUpperBound()!!, value)
+                                ?.let { operation ->
+                                    return@deepRunOnPenultimate operation
+                                }
                         }
 
-                    if (receiver.memberFunctions(setterName).any { setter ->
-                            setter.visibility == KVisibility.PUBLIC
-                        } ||
-                        receiver.declaredMemberExtensionFunctions(setterName).any { setter ->
-                            setter.visibility == KVisibility.PUBLIC
-                        } ||
-                        receiver.packageExtensions(setterName, packages).any { method ->
+                    // Check for function.
+                    if (receiver.memberFunctions(memberName).any { function ->
+                            function.visibility == KVisibility.PUBLIC
+                        } || receiver.declaredMemberExtensionFunctions(memberName).any { function ->
+                            function.visibility == KVisibility.PUBLIC
+                        } || receiver.packageExtensions(memberName, packages).any { method ->
                             Modifier.isPublic(method.modifiers)
-                        }) {
-                        return@deepRunOnPenultimate " = $value"
-                    }
+                        }) return@deepRunOnPenultimate value
 
+                    val getterName = memberName.toGetterName()
+
+                    // Check for property getter function.
                     ((receiver.memberFunction(getterName)
-                        ?: receiver.declaredMemberExtensionFunction(getterName))?.takeIf { property ->
-                        property.visibility == KVisibility.PUBLIC
-                    }?.returnType?.classifierOrUpperBound()
-                        ?: receiver.packageExtensions(getterName, packages).singleOrNull { property ->
-                            Modifier.isPublic(property.modifiers)
+                        ?: receiver.declaredMemberExtensionFunction(getterName))
+                        ?.takeIf { member -> member.visibility == KVisibility.PUBLIC }
+                        ?.returnType?.classifierOrUpperBound()
+                        ?: receiver.packageExtensions(getterName, packages).find { method ->
+                            Modifier.isPublic(method.modifiers)
                         }?.returnType?.kotlin)
-                        ?.let { kClass -> implicitOperation(kClass, value) }
+                        ?.let { kClass ->
+                            if (kClass.isSubclassOf(KMutableProperty::class))
+                                return@deepRunOnPenultimate " = $value"
+                            else assignOperation(kClass, value)?.let { operation ->
+                                return@deepRunOnPenultimate operation
+                            }
+                        }
+
+                    val setterName = memberName.toSetterName()
+
+                    // Check for property setter function.
+                    if (receiver.memberFunctions(setterName).any { function ->
+                            function.visibility == KVisibility.PUBLIC
+                        } || receiver.declaredMemberExtensionFunctions(setterName).any { function ->
+                            function.visibility == KVisibility.PUBLIC
+                        } || receiver.packageExtensions(setterName, packages).any { method ->
+                            Modifier.isPublic(method.modifiers)
+                        }) " = $value"
+                    else null
                 }
             } ?: value
     }
@@ -235,8 +265,7 @@ public abstract class Script {
                 String.serializer(),
                 String.serializer(),
             ),
-            explicitOperationReceivers: Set<KClass<*>> = emptySet(),
-            noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
+            noinline assignOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
             config: ScriptConfig.() -> Unit = { },
         ): T {
             val fileTree = mutableMapOf<String, List<String>>()
@@ -287,8 +316,7 @@ public abstract class Script {
                 },
             ).apply {
                 this.cache = cache
-                this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
-                this.implicitOperation = implicitOperation
+                this.assignOperation = assignOperation
                 this.config.config()
             }
         }
