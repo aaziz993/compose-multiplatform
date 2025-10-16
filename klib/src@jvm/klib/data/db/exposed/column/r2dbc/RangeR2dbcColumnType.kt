@@ -1,6 +1,6 @@
 package klib.data.db.exposed.column.r2dbc
 
-import org.jetbrains.exposed.sql.ColumnType
+import org.jetbrains.exposed.v1.core.ColumnType
 
 public abstract class RangeR2dbcColumnType<T : Comparable<T>, R : ClosedRange<T>>(
     public val subType: ColumnType<T>,

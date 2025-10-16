@@ -13,7 +13,20 @@ import kotlinx.serialization.Transient
 import kotlin.invoke
 
 @Serializable
-public sealed class Variable
+public sealed class Variable {
+
+    public operator fun <T : Any> invoke(
+        value: (Value<*>) -> T,
+        evaluate: (Expression, arguments: List<T>) -> T,
+    ): T = DeepRecursiveFunction<Variable, T> { variable ->
+        when (variable) {
+            is Value<*> -> value(variable)
+            is Expression -> evaluate(variable, variable.arguments.map { argument -> callRecursive(argument) })
+
+            else -> error("Unsupported variable $variable")
+        }
+    }(this)
+}
 
 public sealed interface ComparableOperand {
 
@@ -72,8 +85,7 @@ public sealed interface BooleanOperand {
 
     public fun xor(vararg values: Boolean): XOr = xor(*values.map { it.v }.toTypedArray())
 
-    public val not: Not
-        get() = LogicExpression.not(this)
+    public fun not(): Not = LogicExpression.not(this)
 }
 
 @Serializable
@@ -105,8 +117,7 @@ public sealed interface NumberOperand {
 
     public infix fun pow(power: Number): Pow = pow(power.v)
 
-    public val square: Square
-        get() = ArithmeticExpression.square(this)
+    public fun square(): Square = ArithmeticExpression.square(this)
 }
 
 @Serializable
@@ -133,24 +144,27 @@ public sealed interface StringOperand {
     public fun eqPattern(pattern: String, ignoreCase: Boolean, matchAll: Boolean): EqualsPattern =
         eqPattern(pattern.v, ignoreCase.v, matchAll.v)
 
-    public val ascii: Ascii
-        get() = StringExpression.ascii(this)
+    public fun like(pattern: StringOperand): Like = StringExpression.like(this, pattern)
 
-    public val len: Length get() = StringExpression.len(this)
+    public fun like(pattern: String): Like = like(pattern.v)
 
-    public val lower: Lower get() = StringExpression.lower(this)
+    public fun ascii(): Ascii = StringExpression.ascii(this)
 
-    public val upper: Upper get() = StringExpression.upper(this)
+    public fun length(): Length = StringExpression.length(this)
 
-    public fun substr(
+    public fun lowercase(): Lowercase = StringExpression.lowercase(this)
+
+    public fun uppercase(): Uppercase = StringExpression.uppercase(this)
+
+    public fun substring(
         startIndex: NumberOperand,
         endIndex: NumberOperand? = null
-    ): SubString = StringExpression.substr(this, startIndex, endIndex)
+    ): Substring = StringExpression.substring(this, startIndex, endIndex)
 
-    public fun substr(
+    public fun substring(
         startIndex: Int,
         endIndex: Int? = null
-    ): SubString = substr(startIndex.v, endIndex?.v)
+    ): Substring = substring(startIndex.v, endIndex?.v)
 
     public fun replace(variable: StringOperand, replacement: StringOperand, ignoreCase: BooleanOperand): Replace =
         StringExpression.replace(this, variable, replacement, ignoreCase)
@@ -168,8 +182,7 @@ public sealed interface StringOperand {
     public fun replacePattern(pattern: String, replacement: String, ignoreCase: Boolean): ReplacePattern =
         replacePattern(pattern.v, replacement.v, ignoreCase.v)
 
-    public val reverse: Reverse
-        get() = StringExpression.reverse(this)
+    public fun reverse(): Reverse = StringExpression.reverse(this)
 
     public fun trim(vararg charVariables: CharVariable): Trim =
         StringExpression.trim(this, *charVariables)
@@ -238,14 +251,11 @@ public sealed class StringVariable : ComparableVariable(), StringOperand
 
 public sealed interface TimeOperand {
 
-    public val time: Time
-        get() = TimeExpression.time(this)
+    public fun time(): Time = TimeExpression.time(this)
 
-    public val date: Date
-        get() = TimeExpression.date(this)
+    public fun date(): Date = TimeExpression.date(this)
 
-    public val dateTime: DateTime
-        get() = TimeExpression.dateTime(this)
+    public fun dateTime(): DateTime = TimeExpression.dateTime(this)
 
     public infix fun format(format: StringOperand): TemporalFormat = TimeExpression.format(this, format)
 
@@ -261,25 +271,6 @@ public sealed class CollectionVariable : Variable()
 public sealed interface Expression {
 
     public val arguments: List<Variable>
-
-    public val isSimple: Boolean
-        get() = arguments.all { it is Value<*> }
-
-    public fun map(
-        complexTransform: (Expression, args: List<Any?>) -> Any?,
-        simpleTransform: (Expression) -> Any?
-    ): Any? =
-        DeepRecursiveFunction<Any, Any?> { value ->
-            if (value is Expression) {
-                if (value.isSimple) {
-                    return@DeepRecursiveFunction simpleTransform(value)
-                }
-
-                return@DeepRecursiveFunction complexTransform(value, value.arguments.map { arg -> callRecursive(arg) })
-            }
-
-            value
-        }(this)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -514,22 +505,26 @@ public sealed class StringExpression : StringVariable(), Expression {
             right: StringOperand,
             ignoreCase: BooleanOperand,
             matchAll: BooleanOperand
-        ): EqualsPattern =
-            EqualsPattern(listOf(left, right, ignoreCase, matchAll) as List<Variable>)
+        ): EqualsPattern = EqualsPattern(listOf(left, right, ignoreCase, matchAll) as List<Variable>)
+
+        public fun like(
+            left: StringOperand,
+            right: StringOperand,
+        ): Like = Like(listOf(left, right) as List<Variable>)
 
         public fun ascii(variable: StringOperand): Ascii = Ascii(listOf(variable) as List<Variable>)
 
-        public fun len(variable: StringOperand): Length = Length(listOf(variable) as List<Variable>)
+        public fun length(variable: StringOperand): Length = Length(listOf(variable) as List<Variable>)
 
-        public fun lower(variable: StringOperand): Lower = Lower(listOf(variable) as List<Variable>)
+        public fun lowercase(variable: StringOperand): Lowercase = Lowercase(listOf(variable) as List<Variable>)
 
-        public fun upper(variable: StringOperand): Upper = Upper(listOf(variable) as List<Variable>)
+        public fun uppercase(variable: StringOperand): Uppercase = Uppercase(listOf(variable) as List<Variable>)
 
-        public fun substr(
+        public fun substring(
             variable: StringOperand,
             startIndex: NumberOperand,
             endIndex: NumberOperand? = null
-        ): SubString = SubString(listOfNotNull(variable, startIndex, endIndex) as List<Variable>)
+        ): Substring = Substring(listOfNotNull(variable, startIndex, endIndex) as List<Variable>)
 
         public fun replace(
             variable: StringOperand,
@@ -602,19 +597,22 @@ public sealed class StringExpression : StringVariable(), Expression {
 public data class EqualsPattern(override val arguments: List<Variable>) : LogicExpression()
 
 @Serializable
+public data class Like(override val arguments: List<Variable>) : LogicExpression()
+
+@Serializable
 public data class Ascii(override val arguments: List<Variable>) : StringExpression()
 
 @Serializable
 public data class Length(override val arguments: List<Variable>) : StringExpression()
 
 @Serializable
-public data class Lower(override val arguments: List<Variable>) : StringExpression()
+public data class Lowercase(override val arguments: List<Variable>) : StringExpression()
 
 @Serializable
-public data class Upper(override val arguments: List<Variable>) : StringExpression()
+public data class Uppercase(override val arguments: List<Variable>) : StringExpression()
 
 @Serializable
-public data class SubString(override val arguments: List<Variable>) : StringExpression()
+public data class Substring(override val arguments: List<Variable>) : StringExpression()
 
 @Serializable
 public data class Replace(override val arguments: List<Variable>) : StringExpression()
@@ -801,8 +799,7 @@ public data object NullValue : Variable(), Value<Nothing?>, ComparableOperand, B
     StringOperand,
     TimeOperand {
 
-    override val value: Nothing?
-        get() = null
+    override val value: Nothing? = null
 }
 
 @Serializable
@@ -1024,8 +1021,7 @@ public fun Boolean.orExp(vararg values: Boolean): Or = v.or(*values)
 
 public fun Boolean.xorExp(vararg values: Boolean): XOr = v.xor(*values)
 
-public val Boolean.notExp: Not
-    get() = v.not
+public fun Boolean.notExp(): Not = v.not()
 
 public fun Number.addExp(vararg values: Number): Add = v.add(*values)
 
@@ -1039,8 +1035,7 @@ public infix fun Number.modExp(divisor: Number): Mod = v.mod(divisor)
 
 public infix fun Number.powExp(power: Number): Pow = v.pow(power)
 
-public val Number.squareExp: Square
-    get() = v.square
+public fun Number.squareExp(): Square = v.square()
 
 public fun String.eqExp(other: String, ignoreCase: Boolean = false, matchAll: Boolean = false): Equals =
     v.eq(other, ignoreCase, matchAll)
@@ -1048,19 +1043,15 @@ public fun String.eqExp(other: String, ignoreCase: Boolean = false, matchAll: Bo
 public fun String.eqPatternExp(pattern: String, ignoreCase: Boolean = false, matchAll: Boolean = false): EqualsPattern =
     v.eqPattern(pattern, ignoreCase, matchAll)
 
-public val String.asciiExp: Ascii
-    get() = v.ascii
+public fun String.asciiExp(): Ascii = v.ascii()
 
-public val String.lenExp: Length
-    get() = v.len
+public fun String.lengthExp(): Length = v.length()
 
-public val String.lowerExp: Lower
-    get() = v.lower
+public fun String.lowercaseExp(): Lowercase = v.lowercase()
 
-public val String.upperExp: Upper
-    get() = v.upper
+public fun String.uppercaseExp(): Uppercase = v.uppercase()
 
-public fun String.substrExp(startIndex: Int, endIndex: Int? = null): SubString = v.substr(startIndex, endIndex)
+public fun String.substringExp(startIndex: Int, endIndex: Int? = null): Substring = v.substring(startIndex, endIndex)
 
 public fun String.replaceExp(value: String, replacement: String, ignoreCase: Boolean): Replace =
     v.replace(value, replacement, ignoreCase)
@@ -1068,8 +1059,7 @@ public fun String.replaceExp(value: String, replacement: String, ignoreCase: Boo
 public fun String.replacePatternExp(pattern: String, replacement: String, ignoreCase: Boolean): ReplacePattern =
     v.replacePattern(pattern, replacement, ignoreCase)
 
-public val String.reverseExp: Reverse
-    get() = v.reverse
+public fun String.reverseExp(): Reverse = v.reverse()
 
 public fun String.trimExp(vararg chars: Char): Trim = v.trim(*chars)
 
@@ -1097,13 +1087,10 @@ public fun String.splitExp(separator: String, ignoreCase: Boolean): Split = v.sp
 public fun String.splitPatternExp(separator: String, ignoreCase: Boolean): SplitPattern =
     v.splitPattern(separator, ignoreCase)
 
-public val LocalTime.timeExp: Time
-    get() = v.time
+public fun LocalTime.timeExp(): Time = v.time()
 
-public val LocalDate.dateExp: Date
-    get() = v.date
+public fun LocalDate.dateExp(): Date = v.date()
 
-public val LocalDateTime.dateTimeExp: DateTime
-    get() = v.dateTime
+public fun LocalDateTime.dateTimeExp(): DateTime = v.dateTime()
 
 public infix fun LocalDateTime.formatExp(format: String): TemporalFormat = v.format(format)

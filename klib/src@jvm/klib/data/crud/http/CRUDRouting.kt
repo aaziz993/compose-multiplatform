@@ -12,38 +12,18 @@ import klib.data.crud.CRUDRepository
 import klib.data.crud.http.model.HttpCrud
 import klib.data.net.http.server.respondAnyFlow
 import klib.data.net.http.server.respondFlow
-import kotlinx.serialization.InternalSerializationApi
-import kotlinx.serialization.PolymorphicSerializer
-import kotlinx.serialization.json.Json
+import klib.data.net.http.server.respondPolymorphic
 
-@OptIn(InternalSerializationApi::class)
-@Suppress("FunctionName", "UNCHECKED_CAST")
-public inline fun <reified T : Any> Routing.CrudRoutes(
+public inline fun <reified T : Any> Routing.crudRoutes(
     baseUrl: String,
     typeInfo: TypeInfo,
     repository: CRUDRepository<T>,
 ) {
     route(baseUrl) {
-        post("transaction") {
-            call.filterNotNull().collect {
-                with(Json.Default.decodeFromString<HttpCrud>(it)) {
-                    when (this) {
-                        is HttpCrud.Insert<*> -> repository.insert(values as List<T>)
-                        is HttpCrud.InsertAndReturn<*> -> repository.insertAndReturn(values as List<T>)
-                        is HttpCrud.Update<*> -> repository.update(values as List<T>)
-                        is HttpCrud.UpdateUntyped -> repository.update(propertyValues, predicate)
-                        is HttpCrud.Upsert<*> -> repository.upsert(values as List<T>)
-
-                        else -> Unit
-                    }
-                }
-            }
-        }
-
         put("insert") {
             with(call.receive<HttpCrud.Insert<T>>()) {
                 repository.insert(values)
-                call.respond(HttpStatusCode.Created, "Successful")
+                call.respond(HttpStatusCode.Created)
             }
         }
 
@@ -59,8 +39,8 @@ public inline fun <reified T : Any> Routing.CrudRoutes(
             }
         }
 
-        post("updateProjections") {
-            with(call.receive<HttpCrud.UpdateProjections>()) {
+        post("updateProperties") {
+            with(call.receive<HttpCrud.UpdateProperties>()) {
                 call.respond(HttpStatusCode.OK, repository.update(values, predicate))
             }
         }
@@ -79,25 +59,28 @@ public inline fun <reified T : Any> Routing.CrudRoutes(
 
         post("find") {
             with(call.receive<HttpCrud.Find>()) {
-                call.respondFlow(status = HttpStatusCode.OK, typeInfo = typeInfo, flow = repository.find(sort, predicate, limitOffset))
+                call.respondFlow(
+                    status = HttpStatusCode.OK,
+                    typeInfo = typeInfo,
+                    flow = repository.find(sort, predicate, limitOffset),
+                )
             }
         }
 
-        post("findProjections") {
-            with(call.receive<HttpCrud.FindProjections>()) {
-                call.respondAnyFlow(status = HttpStatusCode.OK, flow = repository.find(projections, sort, predicate, limitOffset))
+        post("findProperties") {
+            with(call.receive<HttpCrud.FindProperties>()) {
+                call.respondAnyFlow(
+                    status = HttpStatusCode.OK,
+                    flow = repository.find(projections, sort, predicate, limitOffset),
+                )
             }
         }
 
         post("aggregate") {
             with(call.receive<HttpCrud.Aggregate>()) {
-                repository.aggregate(aggregate, predicate)?.let { value ->
-                    call.respond(
-                        HttpStatusCode.OK,
-                        Json.Default.encodeToString(PolymorphicSerializer(Any::class), value),
-                    )
-                } ?: call.respond(HttpStatusCode.NoContent)
+                call.respondPolymorphic(repository.aggregate(aggregate, predicate))
             }
         }
     }
 }
+

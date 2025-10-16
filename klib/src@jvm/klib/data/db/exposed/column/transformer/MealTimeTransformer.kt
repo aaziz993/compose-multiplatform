@@ -2,9 +2,9 @@ package klib.data.db.exposed.column.transformer
 
 import klib.data.db.exposed.column.transformer.model.Meal
 import kotlinx.datetime.LocalTime
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.ColumnTransformer
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.ColumnTransformer
+import org.jetbrains.exposed.v1.core.Table
 
 public object MealTimeTransformer : ColumnTransformer<LocalTime, Meal> {
 

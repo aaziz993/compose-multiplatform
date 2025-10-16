@@ -1,8 +1,8 @@
 package klib.data.db.exposed.column.r2dbc
 
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.VarCharColumnType
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.core.VarCharColumnType
 
 public class CitextR2dbcColumnType(colLength: Int) : VarCharColumnType(colLength) {
     override fun sqlType(): String = "CITEXT"

@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 public fun MutableSharedFlow<*>.onHasSubscriptionChange(
-    coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default),
     change: (Boolean) -> Unit,
+    coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default),
 ): Job = subscriptionCount
     .map { count -> count > 0 }
     .distinctUntilChanged()

@@ -11,38 +11,36 @@ import kotlinx.serialization.Serializable
 @Serializable
 public sealed class HttpCrud {
 
-    public abstract val transactionId: String?
+    @Serializable
+    public data class Insert<out T : Any>(val values: List<T>) : HttpCrud()
 
     @Serializable
-    public data class Insert<out T : Any>(override val transactionId: String? = null, val values: List<T>) : HttpCrud()
+    public data class InsertAndReturn<out T : Any>(val values: List<T>) : HttpCrud()
 
     @Serializable
-    public data class InsertAndReturn<out T : Any>(override val transactionId: String? = null, val values: List<T>) : HttpCrud()
+    public data class Update<out T : Any>(val values: List<T>) : HttpCrud()
 
     @Serializable
-    public data class Update<out T : Any>(override val transactionId: String? = null, val values: List<T>) : HttpCrud()
+    public data class UpdateProperties(
 
-    @Serializable
-    public data class UpdateProjections(
-        override val transactionId: String? = null,
         val values: List<SerializableNullableAnyMap>,
         val predicate: BooleanVariable? = null,
     ) : HttpCrud()
 
     @Serializable
-    public data class Upsert<out T : Any>(override val transactionId: String? = null, val values: List<T>) : HttpCrud()
+    public data class Upsert<out T : Any>(val values: List<T>) : HttpCrud()
 
     @Serializable
     public data class Find(
-        override val transactionId: String? = null,
+
         val sort: List<Order>? = null,
         val predicate: BooleanVariable? = null,
         val limitOffset: LimitOffset? = null,
     ) : HttpCrud()
 
     @Serializable
-    public data class FindProjections(
-        override val transactionId: String? = null,
+    public data class FindProperties(
+
         val projections: List<Variable>,
         val sort: List<Order>? = null,
         val predicate: BooleanVariable? = null,
@@ -51,13 +49,13 @@ public sealed class HttpCrud {
 
     @Serializable
     public data class Delete(
-        override val transactionId: String? = null,
+
         val predicate: BooleanVariable? = null
     ) : HttpCrud()
 
     @Serializable
     public data class Aggregate(
-        override val transactionId: String? = null,
+
         val aggregate: AggregateExpression<*>,
         val predicate: BooleanVariable? = null,
     ) : HttpCrud()

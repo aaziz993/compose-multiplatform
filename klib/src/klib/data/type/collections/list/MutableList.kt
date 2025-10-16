@@ -22,11 +22,19 @@ public fun <E> Any.asMutableListOrNull(): MutableList<E>? = this as? MutableList
 
 public fun <E> Any.asMutableList(): MutableList<E> = asMutableListOrNull()!!
 
+public inline fun <T> MutableList<T>.whileIndexed(
+    action: MutableList<T>.(index: Int, item: T) -> Unit
+) {
+    var index = 0
+    while (index < size) action(index, this[index++])
+}
+
 public inline fun <E> MutableList<E>.updateAt(index: Int, replacement: E.() -> E): Boolean =
     if (index in indices) {
         this[index] = this[index].replacement()
         true
-    } else false
+    }
+    else false
 
 public inline fun <E> MutableList<E>.updateFirst(replacement: E.() -> E): MutableList<E> = apply {
     if (isNotEmpty())
@@ -80,7 +88,8 @@ public infix fun <E> MutableList<E>.updateLastOf(elements: Iterable<E>): List<In
 public fun <E> MutableList<E>.add(element: E, equator: Equator<E>, merger: Merger<E>): Boolean =
     if (updateFirst({ o1 -> equator.equate(o1, element) }) {
             merger.merge(this, element)
-        } == -1) add(element) else false
+        } == -1) add(element)
+    else false
 
 @Suppress("UNCHECKED_CAST")
 public fun <E> MutableList<E>.add(element: E, merger: Merger<E>): Boolean =
@@ -93,7 +102,8 @@ public fun <E> MutableList<E>.put(index: Int, element: E, set: Boolean = true): 
     if (index in indices && set) {
         set(index, element)
         element
-    } else {
+    }
+    else {
         add(index.coerceIn(0, size), element)
         null
     }

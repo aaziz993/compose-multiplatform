@@ -209,7 +209,7 @@ arrow = "2.1.2"
 # flow extensions.
 flow-ext = "1.0.0"
 # data type-safe pipeline.
-dataframe = "1727"
+dataframe = "1.0.0-Beta3"
 # kandy is an open-source plotting library for Kotlin that provides a powerful and flexible DSL for creating graphs and utilizes various popular engines.
 kandy = "0.8.1"
 # compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.

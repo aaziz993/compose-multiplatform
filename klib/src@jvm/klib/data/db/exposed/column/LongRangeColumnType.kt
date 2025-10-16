@@ -1,8 +1,8 @@
 package klib.data.db.exposed.column
 
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.LongColumnType
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.LongColumnType
+import org.jetbrains.exposed.v1.core.Table
 
 public class LongRangeColumnType : RangeColumnType<Long, LongRange>(LongColumnType()) {
     override fun sqlType(): String = "INT8RANGE"

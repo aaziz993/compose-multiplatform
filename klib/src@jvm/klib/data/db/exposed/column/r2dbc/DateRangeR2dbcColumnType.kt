@@ -4,9 +4,9 @@ import klib.data.type.primitives.time.model.DateRange
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.KotlinLocalDateColumnType
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.core.kotlin.datetime.KotlinLocalDateColumnType
 
 public class DateRangeColumnType : RangeR2dbcColumnType<LocalDate, DateRange>(KotlinLocalDateColumnType()) {
 

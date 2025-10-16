@@ -2,9 +2,9 @@ package klib.data.db.exposed.column
 
 import klib.data.type.primitives.time.model.DateTimeRange
 import kotlinx.datetime.LocalDateTime
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.KotlinLocalDateTimeColumnType
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.core.kotlin.datetime.KotlinLocalDateTimeColumnType
 
 public class DateTimeRangeColumnType : RangeColumnType<LocalDateTime, DateTimeRange>(KotlinLocalDateTimeColumnType()) {
 

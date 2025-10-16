@@ -1,8 +1,8 @@
 package klib.data.db.exposed.column
 
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.IntegerColumnType
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.IntegerColumnType
+import org.jetbrains.exposed.v1.core.Table
 
 public class IntRangeColumnType : RangeColumnType<Int, IntRange>(IntegerColumnType()) {
     override fun sqlType(): String = "INT4RANGE"

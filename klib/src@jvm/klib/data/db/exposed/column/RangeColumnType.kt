@@ -1,12 +1,12 @@
 package klib.data.db.exposed.column
 
-import org.jetbrains.exposed.sql.ColumnType
-import org.jetbrains.exposed.sql.ComparisonOp
-import org.jetbrains.exposed.sql.CustomFunction
-import org.jetbrains.exposed.sql.Expression
-import org.jetbrains.exposed.sql.ExpressionWithColumnType
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.wrap
-import org.jetbrains.exposed.sql.statements.api.PreparedStatementApi
+import org.jetbrains.exposed.v1.core.ColumnType
+import org.jetbrains.exposed.v1.core.ComparisonOp
+import org.jetbrains.exposed.v1.core.CustomFunction
+import org.jetbrains.exposed.v1.core.Expression
+import org.jetbrains.exposed.v1.core.ExpressionWithColumnType
+import org.jetbrains.exposed.v1.core.statements.api.PreparedStatementApi
+import org.jetbrains.exposed.v1.core.wrap
 import org.postgresql.util.PGobject
 
 public abstract class RangeColumnType<T : Comparable<T>, R : ClosedRange<T>>(

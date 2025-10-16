@@ -18,92 +18,53 @@ import klib.data.crud.model.query.Order
 import klib.data.net.http.client.KtorfitClient
 import klib.data.net.http.client.bodyAsAnyFlow
 import klib.data.net.http.client.bodyAsFlow
-import klib.data.net.http.client.decodeFromAny
+import klib.data.net.http.client.bodyAsPolymorphic
 import klib.data.transaction.Transaction
-import klib.data.transaction.TransactionContext
-import klib.data.transaction.currentTransactionId
-import kotlin.concurrent.atomics.AtomicBoolean
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.InternalSerializationApi
 
-public open class CRUDClient<T : Any>(
-    public val typeInfo: TypeInfo,
+public class CRUDClient<T : Any>(
     baseUrl: String,
     httpClient: HttpClient,
+    private val typeInfo: TypeInfo,
 ) : KtorfitClient(baseUrl, httpClient), CRUDRepository<T> {
 
     private val api: CRUDApi = ktorfit.createCRUDApi()
 
     @Suppress("UNCHECKED_CAST")
     override suspend fun <R> transactional(block: suspend CRUDRepository<T>.(Transaction) -> R): R {
-        val transactionId = api.beginTransaction()
-        val context = TransactionContext(transactionId)
-        val completed = AtomicBoolean(false)
-
-        return try {
-            withContext(context) {
-                block(
-                    object : Transaction {
-                        override suspend fun commit() {
-                            if (completed.compareAndSet(expectedValue = false, newValue = true))
-                                api.commitTransaction(transactionId)
-                        }
-
-                        override suspend fun rollback() {
-                            if (completed.compareAndSet(expectedValue = false, newValue = true))
-                                api.rollbackTransaction(transactionId)
-                        }
-                    },
-                )
-            }.also {
-                if (completed.compareAndSet(expectedValue = false, newValue = true))
-                    api.commitTransaction(transactionId)
-            }
-        }
-        catch (e: Throwable) {
-            if (completed.compareAndSet(expectedValue = false, newValue = true))
-                api.rollbackTransaction(transactionId)
-            throw e
-        }
+        error("Remote transaction is not supported")
     }
 
     override suspend fun insert(entities: List<T>): Unit =
-        api.insert(HttpCrud.Insert(currentTransactionId(), entities))
+        api.insert(HttpCrud.Insert(entities))
 
     override suspend fun insertAndReturn(entities: List<T>): List<T> =
-        api.insertAndReturn(HttpCrud.InsertAndReturn(currentTransactionId(), entities))
+        api.insertAndReturn(HttpCrud.InsertAndReturn(entities))
             .execute(HttpResponse::body)
 
     override suspend fun update(entities: List<T>): List<Boolean> =
-        api.update(HttpCrud.Update(currentTransactionId(), entities))
+        api.update(HttpCrud.Update(entities))
 
-    override suspend fun update(projections: List<Map<String, Any?>>, predicate: BooleanVariable?): Long =
-        api.updateProjections(
-            HttpCrud.UpdateProjections(
-                currentTransactionId(),
-                projections,
-                predicate,
-            ),
+    override suspend fun update(properties: List<Map<String, Any?>>, predicate: BooleanVariable?): Long =
+        api.updateProperties(
+            HttpCrud.UpdateProperties(properties, predicate),
         )
 
     override suspend fun upsert(entities: List<T>): List<T> =
-        api.upsert(HttpCrud.Upsert(currentTransactionId(), entities))
+        api.upsert(HttpCrud.Upsert(entities))
             .execute(HttpResponse::body)
 
     override fun find(sort: List<Order>?, predicate: BooleanVariable?, limitOffset: LimitOffset?): Flow<T> =
         flow {
             emitAll(
-                api.find(
-                    HttpCrud.Find(currentTransactionId(), sort, predicate, limitOffset),
-                ).execute().bodyAsFlow(typeInfo),
+                api.find(HttpCrud.Find(sort, predicate, limitOffset))
+                    .execute().bodyAsFlow(typeInfo = typeInfo),
             )
         }
 
     @Suppress("UNCHECKED_CAST")
-    @OptIn(InternalSerializationApi::class)
     override fun find(
         projections: List<Variable>,
         sort: List<Order>?,
@@ -111,9 +72,8 @@ public open class CRUDClient<T : Any>(
         limitOffset: LimitOffset?,
     ): Flow<List<Any?>> = flow {
         emitAll(
-            api.findProjections(
-                HttpCrud.FindProjections(
-                    currentTransactionId(),
+            api.findProperties(
+                HttpCrud.FindProperties(
                     projections,
                     sort,
                     predicate,
@@ -124,9 +84,8 @@ public open class CRUDClient<T : Any>(
     }
 
     override suspend fun delete(predicate: BooleanVariable?): Long =
-        api.delete(HttpCrud.Delete(currentTransactionId(), predicate))
+        api.delete(HttpCrud.Delete(predicate))
 
     override suspend fun <T> aggregate(aggregate: AggregateExpression<T>, predicate: BooleanVariable?): T =
-        api.aggregate(HttpCrud.Aggregate(currentTransactionId(), aggregate, predicate))
-            .execute().decodeFromAny()
+        api.aggregate(HttpCrud.Aggregate(aggregate, predicate)).execute().bodyAsPolymorphic { null }
 }

@@ -3,14 +3,18 @@
 package klib.data.db.exposed.column
 
 import java.nio.ByteBuffer
-import java.sql.ResultSet
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.ColumnType
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.vendors.MariaDBDialect
-import org.jetbrains.exposed.sql.vendors.currentDialect
+import kotlin.uuid.toJavaUuid
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.ColumnType
+import org.jetbrains.exposed.v1.core.InternalApi
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.core.statements.api.RowApi
+import org.jetbrains.exposed.v1.core.transactions.CoreTransactionManager
+import org.jetbrains.exposed.v1.core.vendors.H2Dialect
+import org.jetbrains.exposed.v1.core.vendors.MariaDBDialect
+import org.jetbrains.exposed.v1.core.vendors.currentDialect
 
 @OptIn(ExperimentalUuidApi::class)
 public class KotlinUuidColumnType : ColumnType<Uuid>() {
@@ -25,13 +29,20 @@ public class KotlinUuidColumnType : ColumnType<Uuid>() {
         else -> error("Unexpected value of type Uuid: $value of ${value::class.qualifiedName}")
     }
 
-    override fun notNullValueToDB(value: Uuid): Any = ByteBuffer.allocate(16).putLong(value.mostSignificantBits).putLong(value.leastSignificantBits).array()
+    override fun notNullValueToDB(value: Uuid): Any {
+        return ((currentDialect as? H2Dialect)?.originalDataTypeProvider ?: currentDialect.dataTypeProvider)
+            .uuidToDB(value.toJavaUuid())
+    }
 
     override fun nonNullValueToString(value: Uuid): String = "'$value'"
 
-    override fun readObject(rs: ResultSet, index: Int): Any? = when (currentDialect) {
-        is MariaDBDialect -> rs.getBytes(index)
-        else -> super.readObject(rs, index)
+    override fun readObject(rs: RowApi, index: Int): Any? {
+        @OptIn(InternalApi::class)
+        val db = CoreTransactionManager.currentTransaction().db
+        if (currentDialect is MariaDBDialect && !db.version.covers(10)) {
+            return rs.getObject(index, java.sql.Array::class.java)
+        }
+        return super.readObject(rs, index)
     }
 
     public companion object {
@@ -41,5 +52,4 @@ public class KotlinUuidColumnType : ColumnType<Uuid>() {
     }
 }
 
-@OptIn(ExperimentalUuidApi::class)
 public fun Table.kotlinUuid(name: String): Column<Uuid> = registerColumn(name, KotlinUuidColumnType())

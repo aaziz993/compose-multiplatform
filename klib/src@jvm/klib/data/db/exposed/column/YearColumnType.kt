@@ -1,12 +1,12 @@
 package klib.data.db.exposed.column
 
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.IDateColumnType
-import org.jetbrains.exposed.sql.StringColumnType
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.IDateColumnType
+import org.jetbrains.exposed.v1.core.StringColumnType
+import org.jetbrains.exposed.v1.core.Table
 import java.sql.Date
-import org.jetbrains.exposed.sql.Function
-import org.jetbrains.exposed.sql.QueryBuilder
+import org.jetbrains.exposed.v1.core.Function
+import org.jetbrains.exposed.v1.core.QueryBuilder
 
 public class YearColumnType : StringColumnType(), IDateColumnType {
     override fun sqlType(): String = "YEAR"

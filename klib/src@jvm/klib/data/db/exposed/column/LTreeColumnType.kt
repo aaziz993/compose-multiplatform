@@ -1,9 +1,9 @@
 package klib.data.db.exposed.column
 
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.StringColumnType
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.statements.api.PreparedStatementApi
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.StringColumnType
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.core.statements.api.PreparedStatementApi
 import org.postgresql.util.PGobject
 
 public class LTreeColumnType : StringColumnType() {

@@ -1,29 +1,19 @@
 package klib.data.crud.http.client
 
 import de.jensklingenberg.ktorfit.http.Body
-import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.PUT
+import de.jensklingenberg.ktorfit.http.ReqBuilder
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.statement.HttpStatement
 import klib.data.crud.http.model.HttpCrud
 
 internal interface CRUDApi {
 
-    @GET("transaction/begin")
-    suspend fun beginTransaction(): String
-
-    @Headers("Content-Type: application/json")
-    @POST("transaction/commit")
-    suspend fun commitTransaction(@Body transactionId: String)
-
-    @Headers("Content-Type: application/json")
-    @POST("transaction/rollback")
-    suspend fun rollbackTransaction(@Body transactionId: String)
-
     @Headers("Content-Type: application/json")
     @PUT("insert")
-    suspend fun insert(@Body crud: HttpCrud.Insert<*>)
+    suspend fun insert(@Body crud: HttpCrud)
 
     @Headers("Content-Type: application/json")
     @PUT("insertAndReturn")
@@ -35,7 +25,7 @@ internal interface CRUDApi {
 
     @Headers("Content-Type: application/json")
     @POST("updateProjections")
-    suspend fun updateProjections(@Body crud: HttpCrud.UpdateProjections): Long
+    suspend fun updateProperties(@Body crud: HttpCrud.UpdateProperties): Long
 
     @Headers("Content-Type: application/json")
     @PUT("upsert")
@@ -47,7 +37,7 @@ internal interface CRUDApi {
 
     @Headers("Content-Type: application/json")
     @POST("find")
-    suspend fun findProjections(@Body crud: HttpCrud.FindProjections): HttpStatement
+    suspend fun findProperties(@Body crud: HttpCrud.FindProperties): HttpStatement
 
     @Headers("Content-Type: application/json")
     @POST("delete")
