@@ -6,7 +6,7 @@ import klib.data.type.serialization.coders.tree.serialize
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.KSerializer
 
-public abstract class AbstractCRUDRepository<T : Any> : CRUDRepository<T> {
+public abstract class AbstractEntityRepository<T : Any> {
 
     public abstract val kSerializer: KSerializer<T>
     public abstract val createdAtProperty: String?

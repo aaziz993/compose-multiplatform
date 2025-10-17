@@ -1,7 +1,7 @@
 package klib.data.graph
 
 import klib.data.BooleanVariable
-import klib.data.crud.CRUDRepository
+import klib.data.crud.CoroutineCRUDRepository
 import klib.data.f
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -11,7 +11,7 @@ public abstract class Edge<E : Edge<E, ID, V, VID>, ID : Comparable<ID>, V : Ver
     public val toVertexId: VID,
 ) : GraphEntity<E, ID>(id) {
 
-    public suspend fun CRUDRepository<V>.fromVertex(predicate: BooleanVariable? = null): V? = find(
+    public suspend fun CoroutineCRUDRepository<V>.fromVertex(predicate: BooleanVariable? = null): V? = find(
         predicate = "id".f.eq(fromVertexId).let {
             if (predicate == null) {
                 it
@@ -24,7 +24,7 @@ public abstract class Edge<E : Edge<E, ID, V, VID>, ID : Comparable<ID>, V : Ver
 
     public suspend fun Graph<V, VID, E, ID>.fromVertex(predicate: BooleanVariable? = null): V? = verticesRepository.fromVertex(predicate)
 
-    public suspend fun CRUDRepository<V>.toVertex(predicate: BooleanVariable? = null): V? = find(
+    public suspend fun CoroutineCRUDRepository<V>.toVertex(predicate: BooleanVariable? = null): V? = find(
         predicate = "id".f.eq(toVertexId).let {
             if (predicate == null) {
                 it

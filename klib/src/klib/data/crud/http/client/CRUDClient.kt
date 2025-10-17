@@ -10,7 +10,7 @@ import io.ktor.utils.io.InternalAPI
 import klib.data.AggregateExpression
 import klib.data.BooleanVariable
 import klib.data.Variable
-import klib.data.crud.CRUDRepository
+import klib.data.crud.CoroutineCRUDRepository
 import klib.data.crud.http.createCRUDApi
 import klib.data.crud.http.model.HttpCrud
 import klib.data.crud.model.query.LimitOffset
@@ -19,7 +19,7 @@ import klib.data.net.http.client.KtorfitClient
 import klib.data.net.http.client.bodyAsAnyFlow
 import klib.data.net.http.client.bodyAsFlow
 import klib.data.net.http.client.bodyAsPolymorphic
-import klib.data.transaction.Transaction
+import klib.data.transaction.CoroutineTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -28,12 +28,12 @@ public class CRUDClient<T : Any>(
     baseUrl: String,
     httpClient: HttpClient,
     private val typeInfo: TypeInfo,
-) : KtorfitClient(baseUrl, httpClient), CRUDRepository<T> {
+) : KtorfitClient(baseUrl, httpClient), CoroutineCRUDRepository<T> {
 
     private val api: CRUDApi = ktorfit.createCRUDApi()
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun <R> transactional(block: suspend CRUDRepository<T>.(Transaction) -> R): R {
+    override suspend fun <R> transactional(block: suspend CoroutineCRUDRepository<T>.(CoroutineTransaction) -> R): R {
         error("Remote transaction is not supported")
     }
 

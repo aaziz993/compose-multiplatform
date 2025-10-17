@@ -1,6 +1,6 @@
 package klib.data.graph
 
-import klib.data.crud.CRUDRepository
+import klib.data.crud.CoroutineCRUDRepository
 import klib.data.crud.model.entity.Entity
 import klib.data.f
 
@@ -9,9 +9,9 @@ public abstract class GraphEntity<T : GraphEntity<T, ID>, ID : Comparable<ID>>(
 ): Entity<ID> {
 
     @Suppress("UNCHECKED_CAST")
-    public suspend fun CRUDRepository<T>.save(): Unit = insert(listOf(this as T))
+    public suspend fun CoroutineCRUDRepository<T>.save(): Unit = insert(listOf(this as T))
 
-    public suspend fun CRUDRepository<T>.delete(): Boolean = delete("id".f eq id!!) > 0L
+    public suspend fun CoroutineCRUDRepository<T>.delete(): Boolean = delete("id".f eq id!!) > 0L
 
     override fun equals(other: Any?): Boolean =
         this === other || (other is GraphEntity<*, *> && this::class == other::class && id == other.id)

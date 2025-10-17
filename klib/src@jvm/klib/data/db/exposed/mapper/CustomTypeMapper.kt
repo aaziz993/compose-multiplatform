@@ -4,9 +4,9 @@ import io.r2dbc.postgresql.codec.PostgresTypes
 import io.r2dbc.postgresql.codec.PostgresqlObjectId
 import io.r2dbc.spi.Parameters
 import io.r2dbc.spi.Statement
-import klib.data.db.exposed.column.IntRangeColumnType
-import klib.data.db.exposed.column.r2dbc.CitextR2dbcColumnType
-import klib.data.db.exposed.column.r2dbc.RangeR2dbcColumnType
+import klib.data.db.exposed.jdbc.column.IntRangeColumnType
+import klib.data.db.exposed.r2dbc.column.CitextR2dbcColumnType
+import klib.data.db.exposed.r2dbc.column.RangeR2dbcColumnType
 import kotlin.reflect.KClass
 import org.jetbrains.exposed.v1.core.IColumnType
 import org.jetbrains.exposed.v1.core.vendors.DatabaseDialect

@@ -1,4 +1,4 @@
-package klib.data.db.exposed.column.r2dbc
+package klib.data.db.exposed.r2dbc.column
 
 import org.jetbrains.exposed.v1.core.Column
 import org.jetbrains.exposed.v1.core.IntegerColumnType
@@ -8,9 +8,8 @@ public class IntRangeR2dbcColumnType : RangeR2dbcColumnType<Int, IntRange>(Integ
 
     override fun sqlType(): String = "INT4RANGE"
 
-    override fun List<String>.toRange(): IntRange {
-        return IntRange(first().toInt(), last().toInt() - 1)
-    }
+    override fun List<String>.toRange(): IntRange =
+        IntRange(first().toInt(), last().toInt() - 1)
 }
 
 public fun Table.intRange(name: String): Column<IntRange> = registerColumn(name, IntRangeR2dbcColumnType())

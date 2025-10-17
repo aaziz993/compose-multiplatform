@@ -8,7 +8,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.util.reflect.TypeInfo
-import klib.data.crud.CRUDRepository
+import klib.data.crud.CoroutineCRUDRepository
 import klib.data.crud.http.model.HttpCrud
 import klib.data.net.http.server.respondAnyFlow
 import klib.data.net.http.server.respondFlow
@@ -17,7 +17,7 @@ import klib.data.net.http.server.respondPolymorphic
 public inline fun <reified T : Any> Routing.crudRoutes(
     baseUrl: String,
     typeInfo: TypeInfo,
-    repository: CRUDRepository<T>,
+    repository: CoroutineCRUDRepository<T>,
 ) {
     route(baseUrl) {
         put("insert") {

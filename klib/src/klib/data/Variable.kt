@@ -11,6 +11,7 @@ import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlin.invoke
+import kotlin.time.Duration
 
 @Serializable
 public sealed class Variable {
@@ -768,6 +769,13 @@ public data class BigDecimalCollection(override val value: Collection<BigDecimal
     Value<Collection<BigDecimalSerial?>>
 
 @Serializable
+public data class DurationValue(override val value: Duration) : TemporalVariable(), Value<Duration>
+
+@Serializable
+public data class DurationCollection(override val value: Collection<Duration?>) : CollectionVariable(),
+    Value<Collection<Duration?>>
+
+@Serializable
 public data class LocalTimeValue(override val value: LocalTime) : TemporalVariable(), Value<LocalTime>
 
 @Serializable
@@ -789,10 +797,10 @@ public data class LocalDateTimeCollection(override val value: Collection<LocalDa
     Value<Collection<LocalDateTime?>>
 
 @Serializable
-public data class UUIDValue(override val value: Uuid) : ComparableVariable(), Value<Uuid>
+public data class UuidValue(override val value: Uuid) : ComparableVariable(), Value<Uuid>
 
 @Serializable
-public data class UUIDCollection(override val value: Collection<Uuid?>) : CollectionVariable(), Value<Collection<Uuid?>>
+public data class UuidCollection(override val value: Collection<Uuid?>) : CollectionVariable(), Value<Collection<Uuid?>>
 
 @Serializable
 public data object NullValue : Variable(), Value<Nothing?>, ComparableOperand, BooleanOperand, NumberOperand,
@@ -847,6 +855,7 @@ public val <T>  T.v: ComparableOperand
         is Number -> v
         is Char -> v
         is String -> v
+        is Duration -> v
         is LocalTime -> v
         is LocalDate -> v
         is LocalDateTime -> v
@@ -870,6 +879,7 @@ public inline val <reified T> Collection<T>.v: CollectionVariable
         String::class -> (this as Collection<Boolean?>).v
         BigInteger::class -> (this as Collection<BigInteger?>).v
         BigDecimal::class -> (this as Collection<BigDecimal?>).v
+        Duration::class -> (this as Collection<Duration?>).v
         LocalTime::class -> (this as Collection<LocalTime?>).v
         LocalDate::class -> (this as Collection<LocalDate?>).v
         LocalDateTime::class -> (this as Collection<LocalDateTime?>).v
@@ -986,11 +996,17 @@ public val LocalDateTime.v: LocalDateTimeValue
 public val Collection<LocalDateTime?>.v: LocalDateTimeCollection
     get() = LocalDateTimeCollection(this)
 
-public val Uuid.v: UUIDValue
-    get() = UUIDValue(this)
+public val Duration.v: DurationValue
+    get() = DurationValue(this)
 
-public val Collection<Uuid?>.v: UUIDCollection
-    get() = UUIDCollection(this)
+public val Collection<Duration?>.v: DurationCollection
+    get() = DurationCollection(this)
+
+public val Uuid.v: UuidValue
+    get() = UuidValue(this)
+
+public val Collection<Uuid?>.v: UuidCollection
+    get() = UuidCollection(this)
 
 public val String.f: Field
     get() = Field(this)

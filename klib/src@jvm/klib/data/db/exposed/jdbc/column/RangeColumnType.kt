@@ -1,4 +1,4 @@
-package klib.data.db.exposed.column
+package klib.data.db.exposed.jdbc.column
 
 import org.jetbrains.exposed.v1.core.ColumnType
 import org.jetbrains.exposed.v1.core.ComparisonOp

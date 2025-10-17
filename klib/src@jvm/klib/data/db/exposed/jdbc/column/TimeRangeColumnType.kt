@@ -1,10 +1,10 @@
-package klib.data.db.exposed.column
+package klib.data.db.exposed.jdbc.column
 
 import klib.data.type.primitives.time.model.TimeRange
 import kotlinx.datetime.LocalTime
 import org.jetbrains.exposed.v1.core.Column
 import org.jetbrains.exposed.v1.core.Table
-import org.jetbrains.exposed.v1.core.kotlin.datetime.KotlinLocalTimeColumnType
+import org.jetbrains.exposed.v1.datetime.KotlinLocalTimeColumnType
 
 public class TimeRangeColumnType : RangeColumnType<LocalTime, TimeRange>(KotlinLocalTimeColumnType()) {
 

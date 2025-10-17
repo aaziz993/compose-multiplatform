@@ -1,4 +1,4 @@
-package klib.data.db.exposed.column.r2dbc
+package klib.data.db.exposed.r2dbc.column
 
 import org.jetbrains.exposed.v1.core.ColumnType
 

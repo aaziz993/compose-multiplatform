@@ -1,4 +1,4 @@
-package klib.data.db.exposed.transformer
+package klib.data.db.exposed.column
 
 import kotlin.reflect.KClass
 import org.jetbrains.exposed.v1.core.Column

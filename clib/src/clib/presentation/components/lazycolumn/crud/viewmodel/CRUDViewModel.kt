@@ -8,7 +8,7 @@ import androidx.paging.RemoteMediator
 import clib.data.crud.AbstractCRUDMutablePager
 import clib.data.crud.model.EntityProperty
 import clib.presentation.viewmodel.AbstractViewModel
-import klib.data.crud.CRUDRepository
+import klib.data.crud.CoroutineCRUDRepository
 import klib.data.crud.model.query.Order
 import klib.data.BooleanVariable
 import kotlin.Any
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagingApi::class)
 public class CRUDViewModel<T : Any>(
-    private val repository: CRUDRepository<T>,
+    private val repository: CoroutineCRUDRepository<T>,
     sort: List<Order>? = null,
     predicate: BooleanVariable? = null,
     properties: List<EntityProperty>,
