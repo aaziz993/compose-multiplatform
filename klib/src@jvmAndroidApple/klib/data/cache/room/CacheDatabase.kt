@@ -16,7 +16,7 @@ public abstract class CacheDatabase : RoomDatabase() {
 }
 
 // The Room compiler generates the `actual` implementations.
-@Suppress("NO_ACTUAL_FOR_EXPECT")
+@Suppress("KotlinNoActualForExpect")
 public expect object CacheDatabaseConstructor : RoomDatabaseConstructor<CacheDatabase> {
 
     override fun initialize(): CacheDatabase

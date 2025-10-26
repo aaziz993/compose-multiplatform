@@ -2,8 +2,8 @@ package clib.data.crud.model
 
 import clib.presentation.components.textfield.search.model.SearchFieldCompare
 import clib.presentation.components.textfield.search.model.SearchFieldState
-import klib.data.BooleanVariable
-import klib.data.f
+import klib.data.query.BooleanOperand
+import klib.data.query.f
 import klib.data.type.reflection.kClass
 import klib.data.type.reflection.parsePrimitiveOrNull
 import klib.data.type.serialization.primitiveType
@@ -20,25 +20,21 @@ public data class ExposedProperty(
     override val validator: Validator?
 ) : EntityProperty {
 
-    override fun predicate(state: SearchFieldState): BooleanVariable? = when {
+    override fun predicate(state: SearchFieldState): BooleanOperand? = when {
         descriptor.primitiveTypeOrNull == typeOf<String>() -> {
-            if (state.compareMatch == SearchFieldCompare.NOT_EQUALS) {
+            if (state.compareMatch == SearchFieldCompare.NOT_EQUALS)
                 name.f.neq(state.query)
-            }
-            else if (state.regexMatch) {
-                name.f.eqPattern(
+            else if (state.regexMatch)
+                name.f.regexp(
                     state.query,
                     state.ignoreCase,
                     state.matchAll,
                 )
-            }
-            else {
-                name.f.eq(
-                    state.query,
-                    state.ignoreCase,
-                    state.matchAll,
-                )
-            }
+            else name.f.eq(
+                state.query,
+                state.ignoreCase,
+                state.matchAll,
+            )
         }
 
         else -> {

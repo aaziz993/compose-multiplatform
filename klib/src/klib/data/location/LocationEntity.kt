@@ -1,6 +1,8 @@
 package klib.data.location
 
-import klib.data.crud.model.entity.EntityWithMetadata
+import klib.data.entity.EntityWithMetadata
+import klib.data.entity.annotation.CreatedAt
+import klib.data.entity.annotation.UpdatedAt
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -13,7 +15,9 @@ public data class LocationEntity(
     override val description: String? = null,
     override val id: Long? = null,
     override val createdBy: String? = null,
+    @CreatedAt
     override val createdAt: LocalDateTime? = null,
     override val updatedBy: String? = null,
+    @UpdatedAt
     override val updatedAt: LocalDateTime? = null,
 ) : Location, EntityWithMetadata<Long, LocalDateTime, LocalDateTime>

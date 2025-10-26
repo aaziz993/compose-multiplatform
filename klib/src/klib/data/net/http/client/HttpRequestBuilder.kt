@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
-@JvmName("setBodyByteArray")
+@JvmName("setBodyByteArrayFlow")
 @Suppress("UnusedReceiverParameter")
 public fun HttpRequestBuilder.setBody(
     flow: Flow<ByteArray>,
@@ -31,6 +31,7 @@ public fun HttpRequestBuilder.setBody(
     contentLength,
 )
 
+@JvmName("setBodyStringFlow")
 public fun HttpRequestBuilder.setBody(
     flow: Flow<String>,
     contentType: ContentType? = null,

@@ -5,25 +5,31 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
-import klib.data.crud.CoroutineCRUDRepository
-import klib.data.crud.model.query.Order
-import klib.data.BooleanVariable
-import klib.data.Variable
+import klib.data.crud.CoroutineCrudRepository
+import klib.data.query.Order
+import klib.data.query.BooleanOperand
+import klib.data.query.Variable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.toList
 
 @OptIn(ExperimentalPagingApi::class)
-public fun <Value : Any> CoroutineCRUDRepository<Value>.pagingSource(
-    sort: List<Order>? = null,
-    predicate: BooleanVariable? = null,
+public fun <Value : Any> CoroutineCrudRepository<Value>.pagingSource(
+    predicate: BooleanOperand? = null,
+    orderBy: List<Order> = emptyList(),
     firstItemOffset: Long = 0,
     disablePrepend: Boolean = false,
-): PagingSource<Long, Value> = CRUDPagingSource({ find(sort, predicate, it).toList() }, firstItemOffset, disablePrepend)
+): PagingSource<Long, Value> = CRUDPagingSource(
+    { limitOffset ->
+        find(predicate, orderBy, limitOffset).toList()
+    },
+    firstItemOffset,
+    disablePrepend,
+)
 
 @OptIn(ExperimentalPagingApi::class)
-public fun <Value : Any> CoroutineCRUDRepository<Value>.pager(
-    sort: List<Order>? = null,
-    predicate: BooleanVariable? = null,
+public fun <Value : Any> CoroutineCrudRepository<Value>.pager(
+    predicate: BooleanOperand? = null,
+    orderBy: List<Order> = emptyList(),
     config: PagingConfig,
     initialKey: Long? = null,
     remoteMediator: RemoteMediator<Long, Value>? = null,
@@ -31,8 +37,8 @@ public fun <Value : Any> CoroutineCRUDRepository<Value>.pager(
     firstItemOffset: Long = 0,
     disablePrepend: Boolean = false,
 ): CRUDRefreshablePager<Value> = CRUDRefreshablePager(
-    sort,
     predicate,
+    orderBy,
     config,
     initialKey,
     remoteMediator,
@@ -40,9 +46,9 @@ public fun <Value : Any> CoroutineCRUDRepository<Value>.pager(
 ) { sort, predicate -> pagingSource(sort, predicate, firstItemOffset, disablePrepend) }
 
 @OptIn(ExperimentalPagingApi::class)
-public fun <Value : Any> CoroutineCRUDRepository<Value>.mutablePager(
-    sort: List<Order>? = null,
-    predicate: BooleanVariable? = null,
+public fun <Value : Any> CoroutineCrudRepository<Value>.mutablePager(
+    predicate: BooleanOperand? = null,
+    orderBy: List<Order> = emptyList(),
     properties: List<EntityProperty>,
     getEntityValues: (Value) -> List<String>,
     createEntity: (Map<String, String>) -> Value,
@@ -53,8 +59,8 @@ public fun <Value : Any> CoroutineCRUDRepository<Value>.mutablePager(
     firstItemOffset: Long = 0,
     disablePrepend: Boolean = false,
 ): CRUDRefreshableMutablePager<Value> = CRUDRefreshableMutablePager(
-    sort,
     predicate,
+    orderBy,
     properties,
     getEntityValues,
     createEntity,
@@ -65,19 +71,25 @@ public fun <Value : Any> CoroutineCRUDRepository<Value>.mutablePager(
 ) { sort, predicate -> pagingSource(sort, predicate, firstItemOffset, disablePrepend) }
 
 @OptIn(ExperimentalPagingApi::class)
-public fun CoroutineCRUDRepository<*>.pagingSource(
-    projections: List<Variable>,
-    sort: List<Order>? = null,
-    predicate: BooleanVariable? = null,
+public fun CoroutineCrudRepository<*>.pagingSource(
+    properties: List<Variable>,
+    predicate: BooleanOperand? = null,
+    orderBy: List<Order> = emptyList(),
     firstItemOffset: Long = 0,
     disablePrepend: Boolean = false,
-): PagingSource<Long, List<Any?>> = CRUDPagingSource({ find(projections, sort, predicate, it).toList() }, firstItemOffset, disablePrepend)
+): PagingSource<Long, List<Any?>> = CRUDPagingSource(
+    { limitOffset ->
+        find(properties, predicate, orderBy, limitOffset).toList()
+    },
+    firstItemOffset,
+    disablePrepend,
+)
 
 @OptIn(ExperimentalPagingApi::class)
-public fun CoroutineCRUDRepository<*>.pager(
-    projections: List<Variable>,
-    sort: List<Order>? = null,
-    predicate: BooleanVariable? = null,
+public fun CoroutineCrudRepository<*>.pager(
+    properties: List<Variable>,
+    predicate: BooleanOperand? = null,
+    orderBy: List<Order> = emptyList(),
     config: PagingConfig,
     initialKey: Long? = null,
     remoteMediator: RemoteMediator<Long, List<Any?>>? = null,
@@ -85,11 +97,13 @@ public fun CoroutineCRUDRepository<*>.pager(
     firstItemOffset: Long = 0,
     disablePrepend: Boolean = false,
 ): CRUDProjectionRefreshablePager = CRUDProjectionRefreshablePager(
-    projections,
-    sort,
+    properties,
     predicate,
+    orderBy,
     config,
     initialKey,
     remoteMediator,
     cacheCoroutineScope,
-) { projections, sort, predicate -> pagingSource(projections, sort, predicate, firstItemOffset, disablePrepend) }
+) { properties, predicate, orderBy ->
+    pagingSource(properties, predicate, orderBy, firstItemOffset, disablePrepend)
+}

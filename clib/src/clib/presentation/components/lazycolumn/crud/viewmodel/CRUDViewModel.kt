@@ -8,9 +8,9 @@ import androidx.paging.RemoteMediator
 import clib.data.crud.AbstractCRUDMutablePager
 import clib.data.crud.model.EntityProperty
 import clib.presentation.viewmodel.AbstractViewModel
-import klib.data.crud.CoroutineCRUDRepository
-import klib.data.crud.model.query.Order
-import klib.data.BooleanVariable
+import klib.data.crud.CoroutineCrudRepository
+import klib.data.query.BooleanOperand
+import klib.data.query.Order
 import kotlin.Any
 import kotlin.Long
 import kotlin.OptIn
@@ -22,9 +22,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagingApi::class)
 public class CRUDViewModel<T : Any>(
-    private val repository: CoroutineCRUDRepository<T>,
-    sort: List<Order>? = null,
-    predicate: BooleanVariable? = null,
+    private val repository: CoroutineCrudRepository<T>,
+    predicate: BooleanOperand? = null,
+    orderBy: List<Order> = emptyList(),
     properties: List<EntityProperty>,
     getEntityValues: (T) -> List<String>,
     createEntity: (Map<String, String>) -> T,
@@ -37,8 +37,8 @@ public class CRUDViewModel<T : Any>(
 
     public val pager: AbstractCRUDMutablePager<T>
         field = repository.mutablePager(
-            sort,
             predicate,
+            orderBy,
             properties,
             getEntityValues,
             createEntity,
@@ -78,7 +78,7 @@ public class CRUDViewModel<T : Any>(
 
             CRUDAction.SaveSelected -> viewModelScope.launch {
                 repository.insert(pager.selectedNewEntities)
-                repository.update(pager.selectedNewEntities)
+//                repository.update(pager.selectedNewEntities)
             }
 
             CRUDAction.DeleteSelected -> viewModelScope.launch {

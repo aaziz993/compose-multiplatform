@@ -216,6 +216,16 @@ public infix fun <E : Comparable<E>> Iterable<E>.topKFrequent(k: Int): PriorityQ
 
 public infix fun <E : Comparable<E>> Iterable<E>.findKthLargest(k: Int): E = topKElements(k).poll()
 
+public fun <E> Iterable<E>.pair(): Pair<E, E> {
+    val iterator = iterator()
+    if (!iterator.hasNext()) error("Expected exactly 2 elements, but got 0")
+    val first = iterator.next()
+    if (!iterator.hasNext()) error("Expected exactly 2 elements, but got 1")
+    val second = iterator.next()
+    if (iterator.hasNext()) error("Expected exactly 2 elements, but got more")
+    return first to second
+}
+
 public fun Iterable<Boolean>.all(): Boolean = all { it }
 
 public fun Iterable<Boolean>.ifAll(action: () -> Unit): Boolean? = all().ifTrue(action)

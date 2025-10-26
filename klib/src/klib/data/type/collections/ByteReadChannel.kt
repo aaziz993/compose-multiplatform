@@ -20,7 +20,7 @@ public suspend fun ByteReadChannel.readByteArrayWithLength(): Source {
     return readRemaining(lengthBytes.toLong())
 }
 
-public fun <T> ByteReadChannel.asFlow(decoder: suspend (Source) -> T) = flow {
+public fun <T> ByteReadChannel.asFlow(decoder: suspend (Source) -> T): Flow<T> = flow {
     while (!isClosedForRead)
         emit(decoder(readByteArrayWithLength()))
 }

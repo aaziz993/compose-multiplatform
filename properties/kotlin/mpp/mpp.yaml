@@ -28,6 +28,8 @@ script:
             "kotlinx.cinterop.ExperimentalForeignApi",
             "androidx.paging.ExperimentalPagingApi",
             "org.koin.core.annotation.KoinInternalApi",
+            "org.jetbrains.exposed.v1.core.ExperimentalKeywordApi",
+            "org.mobilenativefoundation.store.core5.ExperimentalStoreApi",
           )
   # Api documentation engine for Kotlin.
   - dokka:

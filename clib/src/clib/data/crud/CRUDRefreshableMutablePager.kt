@@ -13,19 +13,19 @@ import clib.data.crud.model.news
 import clib.data.crud.model.selected
 import clib.data.crud.model.selectedExists
 import com.benasher44.uuid.uuid4
-import klib.data.crud.model.query.Order
-import klib.data.BooleanVariable
+import klib.data.query.Order
+import klib.data.query.BooleanOperand
 import klib.data.type.collections.replaceAt
 import klib.data.type.collections.replaceFirst
-import klib.data.f
+import klib.data.query.f
 import klib.data.type.letIf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.update
 
 @OptIn(ExperimentalPagingApi::class)
 public class CRUDRefreshableMutablePager<Value : Any>(
-    private var sort: List<Order>? = null,
-    private var predicate: BooleanVariable? = null,
+    private var predicate: BooleanOperand? = null,
+    private var orderBy: List<Order> = emptyList(),
     properties: List<EntityProperty>,
     getEntityValues: (Value) -> List<String>,
     private val createEntity: (Map<String, String>) -> Value,
@@ -33,7 +33,7 @@ public class CRUDRefreshableMutablePager<Value : Any>(
     initialKey: Long? = null,
     remoteMediator: RemoteMediator<Long, Value>? = null,
     cacheCoroutineScope: CoroutineScope? = null,
-    private val pagingSourceFactory: (sort: List<Order>?, predicate: BooleanVariable?) -> PagingSource<Long, Value>,
+    private val pagingSourceFactory: (predicate: BooleanOperand?, orderBy: List<Order>) -> PagingSource<Long, Value>,
 ) : AbstractCRUDMutablePager<Value>(
     properties,
     getEntityValues,
@@ -49,10 +49,10 @@ public class CRUDRefreshableMutablePager<Value : Any>(
     public val selectedEditEntities: List<Value>
         get() = mutations.value.selected.news.map(::createEntity)
 
-    public val selectedIdPredicate: BooleanVariable?
+    public val selectedIdPredicate: BooleanOperand?
         get() = mutations.value.selectedExists.ifEmpty { null }?.map { idPredicate(it.id) }?.reduce { acc, v -> acc.and(v) }
 
-    override fun createPagingSource(): PagingSource<Long, Value> = pagingSourceFactory(sort, predicate)
+    override fun createPagingSource(): PagingSource<Long, Value> = pagingSourceFactory(predicate, orderBy)
 
     private fun createEntity(): Value = createEntity(emptyMap())
 
@@ -60,7 +60,7 @@ public class CRUDRefreshableMutablePager<Value : Any>(
 
     public fun createEntity(item: EntityItem<Value>): Value = createEntity(item.values)
 
-    public fun idPredicate(id: Any): BooleanVariable = idName.f eq id
+    public fun idPredicate(id: Any): BooleanOperand = idName.f eq id
 
     public fun new(): Unit = mutations.update { it + createEntity().let { EntityItem(it, uuid4(), getEntityValues(it), Modification.NEW) } }
 
@@ -110,11 +110,11 @@ public class CRUDRefreshableMutablePager<Value : Any>(
     public override fun refresh(): Unit = super.refresh()
 
     public fun find(
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
     ) {
-        this.sort = sort
         this.predicate = predicate
+        this.orderBy = orderBy
         refresh()
     }
 

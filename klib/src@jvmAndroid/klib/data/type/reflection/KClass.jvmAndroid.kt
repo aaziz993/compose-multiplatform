@@ -27,8 +27,24 @@ import kotlin.reflect.full.staticFunctions
 import kotlin.reflect.full.staticProperties
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
+import org.reflections.scanners.Scanners.SubTypes
+import org.reflections.scanners.Scanners.TypesAnnotated
 import org.reflections.util.ConfigurationBuilder
 import org.reflections.util.FilterBuilder
+
+public inline fun <T : Any> KClass<T>.subtypes(
+    block: ConfigurationBuilder.() -> Unit = {}
+): List<KClass<T>> = Reflections(
+    ConfigurationBuilder().apply(block)
+        .addScanners(SubTypes),
+).getSubTypesOf(java).mapNotNull { clazz -> clazz.kotlin as KClass<T> }
+
+public fun <T : Annotation> KClass<T>.annotatedTypes(
+    block: ConfigurationBuilder.() -> Unit
+): List<KClass<*>> = Reflections(
+    ConfigurationBuilder().apply(block)
+        .addScanners(TypesAnnotated),
+).getTypesAnnotatedWith(java).map { clazz -> clazz.kotlin }
 
 //////////////////////////////////////////////////////////GENERIC///////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")

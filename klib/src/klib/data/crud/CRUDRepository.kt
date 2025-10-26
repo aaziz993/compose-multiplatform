@@ -1,54 +1,59 @@
 package klib.data.crud
 
-import klib.data.AggregateExpression
-import klib.data.BooleanVariable
-import klib.data.Variable
-import klib.data.crud.model.query.LimitOffset
-import klib.data.crud.model.query.Order
+import klib.data.query.AggregateExpression
+import klib.data.query.BooleanOperand
+import klib.data.query.LimitOffset
+import klib.data.query.Order
+import klib.data.query.Variable
 import klib.data.transaction.Transaction
 
-public interface CRUDRepository<T : Any> {
+public interface CrudRepository<T : Any> {
 
-    public fun <R> transactional(block: CRUDRepository<T>.(Transaction) -> R): R
-
-    public fun insertAndReturn(entities: List<T>): List<T>
-
-    public fun insertAndReturn(vararg entities: T): List<T> = insertAndReturn(entities.toList())
-
-    public fun insert(entities: List<T>)
-
-    public fun insert(vararg entities: T): Unit = insert(entities.toList())
-
-    public fun update(entities: List<T>): List<Boolean>
-
-    public fun update(vararg entities: T): List<Boolean> = update(entities.toList())
-
-    public fun update(
-        properties: List<Map<String, Any?>>,
-        predicate: BooleanVariable? = null,
-    ): Long
-
-    public fun upsert(entities: List<T>): List<T>
-
-    public fun upsert(vararg entities: T): List<T> = upsert(entities.toList())
+    public fun <R> transactional(block: CrudRepository<T>.(Transaction) -> R): R
 
     public fun find(
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
         limitOffset: LimitOffset? = null
-    ): Iterable<T>
+    ): Sequence<T>
 
     public fun find(
-        projections: List<Variable>,
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+        properties: List<Variable>,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
         limitOffset: LimitOffset? = null
-    ): Iterable<List<Any?>>
+    ): Sequence<List<Any?>>
 
-    public fun delete(predicate: BooleanVariable? = null): Long
+    public fun observe(
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
+        limitOffset: LimitOffset? = null
+    ): Sequence<T> = emptySequence()
 
-    public fun <T> aggregate(
+    public fun observe(
+        properties: List<Variable>,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
+        limitOffset: LimitOffset? = null
+    ): Sequence<List<Any?>> = emptySequence()
+
+    public fun <T : Any> aggregate(
         aggregate: AggregateExpression<T>,
-        predicate: BooleanVariable? = null,
-    ): T
+        predicate: BooleanOperand? = null,
+    ): T?
+
+    public fun insert(entities: List<T>): List<T>
+
+    public fun insert(vararg entities: T): List<T> = insert(entities.toList())
+
+    public fun update(properties: Map<String, Any?>, predicate: BooleanOperand? = null): Long
+
+    public suspend fun update(entity: T): Boolean
+
+    public fun upsert(entities: List<T>, predicate: BooleanOperand? = null): List<T>
+
+    public fun upsert(vararg entities: T, predicate: BooleanOperand? = null): List<T> =
+        upsert(entities.toList(), predicate)
+
+    public fun delete(predicate: BooleanOperand? = null): Long
 }

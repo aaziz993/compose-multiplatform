@@ -22,10 +22,10 @@ import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.data.type.collections.restartableflow.restartableStateIn
 import clib.presentation.viewmodel.ViewModelState.Success
 import clib.presentation.viewmodel.model.exception.ViewModelStateException
-import klib.data.BooleanVariable
-import klib.data.Variable
-import klib.data.crud.CoroutineCRUDRepository
-import klib.data.crud.model.query.Order
+import klib.data.query.Variable
+import klib.data.crud.CoroutineCrudRepository
+import klib.data.query.BooleanOperand
+import klib.data.query.Order
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -108,29 +108,47 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         }
     }
 
-    protected fun <Value : Any> CoroutineCRUDRepository<Value>.pager(
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+    protected fun <Value : Any> CoroutineCrudRepository<Value>.pager(
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
         config: PagingConfig = PagingConfig(10),
         initialKey: Long? = null,
         remoteMediator: RemoteMediator<Long, Value>? = null,
         firstItemOffset: Long = 0,
         disablePrepend: Boolean = false,
-    ): CRUDRefreshablePager<Value> = pager(sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset, disablePrepend)
+    ): CRUDRefreshablePager<Value> = pager(
+        predicate,
+        orderBy,
+        config,
+        initialKey,
+        remoteMediator,
+        viewModelScope,
+        firstItemOffset,
+        disablePrepend,
+    )
 
-    protected fun CoroutineCRUDRepository<*>.pager(
-        projections: List<Variable>,
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+    protected fun CoroutineCrudRepository<*>.pager(
+        properties: List<Variable>,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
         config: PagingConfig = PagingConfig(10),
         initialKey: Long? = null,
         remoteMediator: RemoteMediator<Long, List<Any?>>? = null,
         firstItemOffset: Long = 0,
-    ): CRUDProjectionRefreshablePager = pager(projections, sort, predicate, config, initialKey, remoteMediator, viewModelScope, firstItemOffset)
+    ): CRUDProjectionRefreshablePager = pager(
+        properties,
+        predicate,
+        orderBy,
+        config,
+        initialKey,
+        remoteMediator,
+        viewModelScope,
+        firstItemOffset,
+    )
 
-    protected fun <Value : Any> CoroutineCRUDRepository<Value>.mutablePager(
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+    protected fun <Value : Any> CoroutineCrudRepository<Value>.mutablePager(
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
         properties: List<EntityProperty>,
         getEntityValues: (Value) -> List<String>,
         createEntity: (Map<String, String>) -> Value,
@@ -140,8 +158,8 @@ public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent 
         firstItemOffset: Long = 0,
         disablePrepend: Boolean = false,
     ): CRUDRefreshableMutablePager<Value> = mutablePager(
-        sort,
         predicate,
+        orderBy,
         properties,
         getEntityValues,
         createEntity,

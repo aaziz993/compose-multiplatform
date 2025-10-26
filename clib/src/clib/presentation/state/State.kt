@@ -5,7 +5,7 @@ import androidx.compose.runtime.SnapshotMutationPolicy
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.structuralEqualityPolicy
-import klib.data.TimeExpression.Companion.now
+import klib.data.query.TimeExpression.Companion.now
 import klib.data.type.primitives.time.nowEpochMillis
 
 public fun <T> mutableStateOf(

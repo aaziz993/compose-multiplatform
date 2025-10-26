@@ -1,7 +1,7 @@
 package clib.presentation.components.lazycolumn.crud.model
 
 import clib.presentation.components.textfield.search.model.SearchFieldStateData
-import klib.data.crud.model.query.Order
+import klib.data.query.Order
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.serialization.Serializable

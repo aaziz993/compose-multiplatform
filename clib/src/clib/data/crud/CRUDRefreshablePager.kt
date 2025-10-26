@@ -5,19 +5,19 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
 import clib.data.paging.AbstractRefreshablePager
-import klib.data.crud.model.query.Order
-import klib.data.BooleanVariable
+import klib.data.query.BooleanOperand
+import klib.data.query.Order
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalPagingApi::class)
-public class CRUDRefreshablePager<Value : Any> (
-    private var sort: List<Order>? = null,
-    private var predicate: BooleanVariable? = null,
+public class CRUDRefreshablePager<Value : Any>(
+    private var predicate: BooleanOperand? = null,
+    private var orderBy: List<Order> = emptyList(),
     config: PagingConfig,
     initialKey: Long? = null,
     remoteMediator: RemoteMediator<Long, Value>? = null,
     cacheCoroutineScope: CoroutineScope? = null,
-    private val pagingSourceFactory: (sort: List<Order>?, predicate: BooleanVariable?) -> PagingSource<Long, Value>
+    private val pagingSourceFactory: (predicate: BooleanOperand?, orderBy: List<Order>) -> PagingSource<Long, Value>
 ) : AbstractRefreshablePager<Long, Value>(
     config,
     initialKey,
@@ -25,14 +25,14 @@ public class CRUDRefreshablePager<Value : Any> (
     cacheCoroutineScope,
 ) {
 
-    override fun createPagingSource(): PagingSource<Long, Value> = pagingSourceFactory(sort, predicate)
+    override fun createPagingSource(): PagingSource<Long, Value> = pagingSourceFactory(predicate, orderBy)
 
     public fun refresh(
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
     ) {
-        this.sort = sort
         this.predicate = predicate
+        this.orderBy = orderBy
         refresh()
     }
 }

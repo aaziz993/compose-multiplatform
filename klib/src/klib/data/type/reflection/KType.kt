@@ -2,6 +2,7 @@ package klib.data.type.reflection
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
+import klib.data.type.collections.bimap.biMapOf
 import klib.data.type.primitives.BIG_DECIMAL_DEFAULT
 import klib.data.type.primitives.BIG_INTEGER_DEFAULT
 import klib.data.type.primitives.BOOLEAN_DEFAULT
@@ -32,11 +33,45 @@ import kotlinx.datetime.LocalTime
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.KTypeParameter
+import kotlin.reflect.typeOf
 import kotlin.time.Duration
+import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 public val KType.kClass: KClass<*>
     get() = classifier as KClass<*>
+
+private val PRIMITIVE_KTYPES = biMapOf(
+    typeOf<Boolean>() to typeOf<Boolean?>(),
+    typeOf<UByte>() to typeOf<UByte?>(),
+    typeOf<UShort>() to typeOf<UShort?>(),
+    typeOf<UInt>() to typeOf<UInt?>(),
+    typeOf<ULong>() to typeOf<ULong?>(),
+    typeOf<Byte>() to typeOf<Byte?>(),
+    typeOf<Short>() to typeOf<Short?>(),
+    typeOf<Int>() to typeOf<Int?>(),
+    typeOf<Long>() to typeOf<Long?>(),
+    typeOf<Float>() to typeOf<Float?>(),
+    typeOf<Double>() to typeOf<Double?>(),
+    typeOf<BigInteger>() to typeOf<BigInteger?>(),
+    typeOf<BigDecimal>() to typeOf<BigDecimal?>(),
+    typeOf<Char>() to typeOf<Char?>(),
+    typeOf<String>() to typeOf<String?>(),
+    typeOf<Duration>() to typeOf<Duration?>(),
+    typeOf<Instant>() to typeOf<Instant?>(),
+    typeOf<LocalTime>() to typeOf<LocalTime?>(),
+    typeOf<LocalDate>() to typeOf<LocalDate?>(),
+    typeOf<LocalDateTime>() to typeOf<LocalDateTime?>(),
+    typeOf<Uuid>() to typeOf<Uuid?>(),
+)
+
+public fun KType.withNullability(nullable: Boolean): KType =
+    if (nullable) {
+        if (isMarkedNullable) this else PRIMITIVE_KTYPES[this]
+    }
+    else {
+        if (isMarkedNullable) PRIMITIVE_KTYPES.inverse[this] else this
+    } ?: error("Only primitive types supported")
 
 public fun KType.primitiveDefault(
     booleanDefault: Boolean = BOOLEAN_DEFAULT,

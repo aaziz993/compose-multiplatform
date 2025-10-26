@@ -4,16 +4,16 @@ import clib.data.crud.model.EntityRemoteKeys
 import clib.data.crud.model.EntityRemoteKeysImpl
 import clib.data.paging.AbstractRemoteMediator
 import clib.data.paging.model.RemoteKeys
-import klib.data.crud.CoroutineCRUDRepository
-import klib.data.crud.model.query.LimitOffset
-import klib.data.f
+import klib.data.crud.CoroutineCrudRepository
+import klib.data.query.LimitOffset
+import klib.data.query.f
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 
 public class CRUDRemoteMediator<Value : Any, ID : Any>(
-    private val remoteRepository: CoroutineCRUDRepository<Value>,
-    private val localRepository: CoroutineCRUDRepository<Value>,
-    private val keysRepository: CoroutineCRUDRepository<EntityRemoteKeys<ID>>,
+    private val remoteRepository: CoroutineCrudRepository<Value>,
+    private val localRepository: CoroutineCrudRepository<Value>,
+    private val keysRepository: CoroutineCrudRepository<EntityRemoteKeys<ID>>,
     private val getEntityId: (Value) -> ID,
     public val firstItemOffset: Int = 0,
     cacheTimeout: Int?,

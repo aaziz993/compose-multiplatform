@@ -10,6 +10,11 @@ import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.js.js
 import web.workers.Worker
 
+public actual fun createSQLDelightDriver(
+    schema: SqlSchema<QueryResult.Value<Unit>>,
+    databaseName: String
+): SqlDriver = createDefaultWebWorkerDriver().also(schema::create)
+
 public actual suspend fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
     databaseName: String
@@ -19,6 +24,3 @@ public actual suspend fun createInMemorySQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
     databaseName: String
 ): SqlDriver = createSQLDelightDriver(schema, databaseName)
-
-private fun jsWorker(): Worker =
-    js("""new Worker(new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url))""")

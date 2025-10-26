@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 public object BigIntegerSerializer :
     PrimitiveStringSerializer<BigInteger>(
-        "om.ionspin.kotlin.bignum.integer.BigInteger",
+        "com.ionspin.kotlin.bignum.integer.BigInteger",
         BigInteger::toString,
         BigInteger::parseString,
     )

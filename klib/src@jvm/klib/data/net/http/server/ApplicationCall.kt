@@ -15,12 +15,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
+@JvmName("respondByteArrayFlow")
 public suspend fun ApplicationCall.respondFlow(
     contentType: ContentType? = null,
     status: HttpStatusCode? = null,
     flow: Flow<ByteArray>,
 ): Unit = respondOutputStream(contentType, status, flow::writeToOutputStream)
 
+@JvmName("respondStringFlow")
 public suspend fun ApplicationCall.respondFlow(
     contentType: ContentType? = null,
     status: HttpStatusCode? = null,

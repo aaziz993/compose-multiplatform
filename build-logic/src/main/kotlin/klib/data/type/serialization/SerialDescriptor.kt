@@ -7,6 +7,7 @@ import klib.data.type.collections.deepMinusKeys
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.primitives.time.now
 import klib.data.type.reflection.callMember
 import klib.data.type.reflection.isFloatNumber
 import klib.data.type.reflection.isIntNumber
@@ -19,13 +20,18 @@ import klib.data.type.validator.Validator
 import klib.data.type.validator.ValidatorRule
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
+import kotlin.reflect.full.withNullability
 import kotlin.reflect.typeOf
+import kotlin.time.Clock
+import kotlin.time.Duration
+import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -34,57 +40,53 @@ import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.descriptors.elementNames
+import kotlinx.serialization.descriptors.nonNullOriginal
 import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.serializer
 
+@OptIn(ExperimentalUuidApi::class)
 private val PRIMITIVE_SERIAL_TYPES = mapOf(
     Boolean.serializer().descriptor.serialName to typeOf<Boolean>(),
-    Boolean.serializer().nullable.descriptor.serialName to typeOf<Boolean?>(),
     UByte.serializer().descriptor.serialName to typeOf<UByte>(),
-    UByte.serializer().nullable.descriptor.serialName to typeOf<UByte?>(),
     UShort.serializer().descriptor.serialName to typeOf<UShort>(),
-    UShort.serializer().nullable.descriptor.serialName to typeOf<UShort?>(),
     UInt.serializer().descriptor.serialName to typeOf<UInt>(),
-    UInt.serializer().nullable.descriptor.serialName to typeOf<UInt?>(),
     ULong.serializer().descriptor.serialName to typeOf<ULong>(),
-    ULong.serializer().nullable.descriptor.serialName to typeOf<ULong?>(),
     Byte.serializer().descriptor.serialName to typeOf<Byte>(),
-    Byte.serializer().nullable.descriptor.serialName to typeOf<Byte?>(),
     Short.serializer().descriptor.serialName to typeOf<Short>(),
-    Short.serializer().nullable.descriptor.serialName to typeOf<Short?>(),
     Int.serializer().descriptor.serialName to typeOf<Int>(),
-    Int.serializer().nullable.descriptor.serialName to typeOf<Int?>(),
     Long.serializer().descriptor.serialName to typeOf<Long>(),
-    Long.serializer().nullable.descriptor.serialName to typeOf<Long?>(),
     Float.serializer().descriptor.serialName to typeOf<Float>(),
-    Float.serializer().nullable.descriptor.serialName to typeOf<Float?>(),
     Double.serializer().descriptor.serialName to typeOf<Double>(),
-    Double.serializer().nullable.descriptor.serialName to typeOf<Double?>(),
     BigIntegerSerializer.descriptor.serialName to typeOf<BigInteger>(),
-    BigIntegerSerializer.nullable.descriptor.serialName to typeOf<BigInteger?>(),
     BigDecimalSerializer.descriptor.serialName to typeOf<BigDecimal>(),
-    BigDecimalSerializer.nullable.descriptor.serialName to typeOf<BigDecimal?>(),
     Char.serializer().descriptor.serialName to typeOf<Char>(),
-    Char.serializer().nullable.descriptor.serialName to typeOf<Char?>(),
     String.serializer().descriptor.serialName to typeOf<String>(),
-    String.serializer().nullable.descriptor.serialName to typeOf<String?>(),
+    Duration.serializer().descriptor.serialName to typeOf<Duration>(),
+    Instant.serializer().descriptor.serialName to typeOf<Instant>(),
     LocalTime.serializer().descriptor.serialName to typeOf<LocalTime>(),
-    LocalTime.serializer().nullable.descriptor.serialName to typeOf<LocalTime?>(),
     LocalDate.serializer().descriptor.serialName to typeOf<LocalDate>(),
-    LocalDate.serializer().nullable.descriptor.serialName to typeOf<LocalDate?>(),
     LocalDateTime.serializer().descriptor.serialName to typeOf<LocalDateTime>(),
-    LocalDateTime.serializer().nullable.descriptor.serialName to typeOf<LocalDateTime?>(),
     Uuid.serializer().descriptor.serialName to typeOf<Uuid>(),
-    Uuid.serializer().nullable.descriptor.serialName to typeOf<Uuid?>(),
 )
 
 public val SerialDescriptor.primitiveTypeOrNull: KType?
-    get() = PRIMITIVE_SERIAL_TYPES[serialName]
+    get() = PRIMITIVE_SERIAL_TYPES[nonNullOriginal.serialName]?.withNullability(isNullable)
 
 public val SerialDescriptor.primitiveType: KType
     get() = primitiveTypeOrNull!!
 
 public val SerialDescriptor.isEnum: Boolean
     get() = kind == SerialKind.ENUM
+
+public fun SerialDescriptor.now(timeZone: TimeZone): Any =
+    when (nonNullOriginal) {
+        Instant::class.serializer().descriptor -> Clock.System.now()
+        LocalTime::class.serializer().descriptor -> LocalTime.now(timeZone)
+        LocalDate::class.serializer().descriptor -> LocalDate.now(timeZone)
+        LocalDateTime::class.serializer().descriptor -> LocalDateTime.now(timeZone)
+
+        else -> error("Invalid time type: $serialName")
+    }
 
 @Suppress("UNCHECKED_CAST")
 public val SerialDescriptor.typeParameterDescriptors: Array<SerialDescriptor>
@@ -108,11 +110,17 @@ public inline fun <reified T : Annotation> SerialDescriptor.getAnnotation(): T? 
 public val SerialDescriptor.kClass: KClass<*>
     get() = Class.forName(serialName).kotlin
 
+public val SerialDescriptor.elementIndices: IntRange
+    get() = 0 until elementsCount
+
 public inline fun <reified T : Annotation> SerialDescriptor.hasElementAnnotation(index: Int): Boolean =
     getElementAnnotations(index).filterIsInstance<T>().isNotEmpty()
 
 public inline fun <reified T : Annotation> SerialDescriptor.getElementAnnotation(index: Int): T? =
     getElementAnnotations(index).filterIsInstance<T>().takeIfNotEmpty()?.single()
+
+public inline fun <reified T : Annotation> SerialDescriptor.getElementAnnotations0(index: Int): List<T> =
+    getElementAnnotations(index).filterIsInstance<T>()
 
 public fun SerialDescriptor.getElementIndexOrNull(name: String): Int? =
     getElementIndex(name).let { index ->
@@ -205,5 +213,5 @@ public fun <T : Any> SerialDescriptor.unknownKeysOf(value: T): T =
 
                 else -> emptyList()
             }
-        }
+        },
     )

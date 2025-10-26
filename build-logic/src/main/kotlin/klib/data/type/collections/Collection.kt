@@ -2,16 +2,37 @@ package klib.data.type.collections
 
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
+import klib.data.type.collections.list.whileIndexed
 import klib.data.type.collections.map.asMap
 import klib.data.type.primitives.string.tokenization.substitution.substitute
 import klib.data.type.primitives.toInt
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
+import kotlin.collections.map
+import kotlin.collections.toMutableList
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
+
+public fun <E : Any> Collection<E>.sortedByReferences(references: E.(Collection<E>) -> Collection<E>): List<E> {
+    val (independents, dependants) = map { element ->
+        element to element.references(this).toMutableList()
+    }.partition { (_, references) -> references.isEmpty() }
+        .let { it.first.map(Pair<E, *>::first).toMutableList() to it.second }
+
+    independents.whileIndexed { _, entity ->
+        dependants.forEach { (dependant, references) ->
+            if (references.remove(entity) && references.isEmpty())
+                independents.add(dependant)
+        }
+    }
+
+    check(independents.size == size) { "Circular dependency detected!" }
+
+    return independents
+}
 
 public val Any.entriesOrNull: Collection<Map.Entry<Any?, Any?>>?
     get() = when (this) {

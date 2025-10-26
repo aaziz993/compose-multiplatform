@@ -1,55 +1,64 @@
 package klib.data.crud
 
-import klib.data.crud.model.query.LimitOffset
-import klib.data.crud.model.query.Order
+import klib.data.query.AggregateExpression
+import klib.data.query.BooleanOperand
+import klib.data.query.LimitOffset
+import klib.data.query.Order
+import klib.data.query.Variable
 import klib.data.transaction.CoroutineTransaction
-import klib.data.AggregateExpression
-import klib.data.BooleanVariable
-import klib.data.Variable
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
-public interface CoroutineCRUDRepository<T : Any> {
+public interface CoroutineCrudRepository<T : Any> {
 
-    public suspend fun <R> transactional(block: suspend CoroutineCRUDRepository<T>.(CoroutineTransaction) -> R): R
-
-    public suspend fun insertAndReturn(entities: List<T>): List<T>
-
-    public suspend fun insertAndReturn(vararg entities: T): List<T> = insertAndReturn(entities.toList())
-
-    public suspend fun insert(entities: List<T>)
-
-    public suspend fun insert(vararg entities: T): Unit = insert(entities.toList())
-
-    public suspend fun update(entities: List<T>): List<Boolean>
-
-    public suspend fun update(vararg entities: T): List<Boolean> = update(entities.toList())
-
-    public suspend fun update(
-        properties: List<Map<String, Any?>>,
-        predicate: BooleanVariable? = null,
-    ): Long
-
-    public suspend fun upsert(entities: List<T>): List<T>
-
-    public suspend fun upsert(vararg entities: T): List<T> = upsert(entities.toList())
+    public suspend fun <R> transactional(block: suspend CoroutineCrudRepository<T>.(CoroutineTransaction) -> R): R
 
     public fun find(
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
         limitOffset: LimitOffset? = null
     ): Flow<T>
 
     public fun find(
-        projections: List<Variable>,
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+        properties: List<Variable>,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
         limitOffset: LimitOffset? = null
     ): Flow<List<Any?>>
 
-    public suspend fun delete(predicate: BooleanVariable? = null): Long
+    public fun observe(
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
+        limitOffset: LimitOffset? = null
+    ): Flow<T> = emptyFlow()
 
-    public suspend fun <T> aggregate(
+    public fun observe(
+        properties: List<Variable>,
+        predicate: BooleanOperand? = null,
+        orderBy: List<Order> = emptyList(),
+        limitOffset: LimitOffset? = null
+    ): Flow<List<Any?>> = emptyFlow()
+
+    public suspend fun <T : Any> aggregate(
         aggregate: AggregateExpression<T>,
-        predicate: BooleanVariable? = null,
-    ): T
+        predicate: BooleanOperand? = null,
+    ): T?
+
+    public suspend fun insert(entities: List<T>): List<T>
+
+    public suspend fun insert(vararg entities: T): List<T> = insert(entities.toList())
+
+    public suspend fun update(
+        properties: Map<String, Any?>,
+        predicate: BooleanOperand? = null
+    ): Long
+
+    public suspend fun update(entity: T): Boolean
+
+    public suspend fun upsert(entities: List<T>, predicate: BooleanOperand? = null): List<T>
+
+    public suspend fun upsert(vararg entities: T, predicate: BooleanOperand? = null): List<T> =
+        upsert(entities.toList(), predicate)
+
+    public suspend fun delete(predicate: BooleanOperand? = null): Long
 }

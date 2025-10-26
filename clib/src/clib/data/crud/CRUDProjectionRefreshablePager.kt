@@ -5,21 +5,21 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
 import clib.data.paging.AbstractRefreshablePager
-import klib.data.crud.model.query.Order
-import klib.data.BooleanVariable
-import klib.data.Variable
+import klib.data.query.BooleanOperand
+import klib.data.query.Order
+import klib.data.query.Variable
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalPagingApi::class)
 public class CRUDProjectionRefreshablePager(
     private var projections: List<Variable>,
-    private var sort: List<Order>? = null,
-    private var predicate: BooleanVariable? = null,
+    private var predicate: BooleanOperand? = null,
+    private var orderBy: List<Order> = emptyList(),
     config: PagingConfig,
     initialKey: Long? = null,
     remoteMediator: RemoteMediator<Long, List<Any?>>? = null,
     cacheCoroutineScope: CoroutineScope? = null,
-    private val pagingSourceFactory: (projections: List<Variable>, sort: List<Order>?, predicate: BooleanVariable?) -> PagingSource<Long, List<Any?>>
+    private val pagingSourceFactory: (properties: List<Variable>, predicate: BooleanOperand?, orderBy: List<Order>) -> PagingSource<Long, List<Any?>>
 ) : AbstractRefreshablePager<Long, List<Any?>>(
     config,
     initialKey,
@@ -27,15 +27,15 @@ public class CRUDProjectionRefreshablePager(
     cacheCoroutineScope,
 ) {
 
-    override fun createPagingSource(): PagingSource<Long, List<Any?>> = pagingSourceFactory(projections, sort, predicate)
+    override fun createPagingSource(): PagingSource<Long, List<Any?>> = pagingSourceFactory(projections, predicate, orderBy)
 
     public fun refresh(
         projections: List<Variable>,
-        sort: List<Order>? = null,
-        predicate: BooleanVariable? = null,
+        orderBy: List<Order> = emptyList(),
+        predicate: BooleanOperand? = null,
     ) {
         this.projections = projections
-        this.sort = sort
+        this.orderBy = orderBy
         this.predicate = predicate
         refresh()
     }

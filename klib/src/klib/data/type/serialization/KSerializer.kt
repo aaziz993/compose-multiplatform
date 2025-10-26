@@ -34,6 +34,9 @@ public fun KSerializer<*>.childSerializer(index: Int): KSerializer<*> {
     return elementDecoder.elementDeserializer
 }
 
+public fun KSerializer<*>.childSerializer(name: String): KSerializer<*>? =
+    descriptor.getElementIndexOrNull(name)?.let(::childSerializer)
+
 private class ElementDecoder(private val index: Int) : AbstractDecoder() {
 
     override val serializersModule: SerializersModule = EmptySerializersModule()

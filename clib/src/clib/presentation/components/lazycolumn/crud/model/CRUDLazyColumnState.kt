@@ -12,8 +12,10 @@ import androidx.compose.runtime.toMutableStateList
 import clib.data.crud.model.EntityProperty
 import clib.presentation.components.textfield.search.model.SearchFieldState
 import clib.presentation.components.textfield.search.model.rememberSearchFieldState
-import klib.data.crud.model.query.LimitOffset
-import klib.data.crud.model.query.Order
+import klib.data.query.Field
+import klib.data.query.LimitOffset
+import klib.data.query.Order
+import klib.data.query.f
 import klib.data.type.collections.removeFirst
 import klib.data.type.collections.replaceFirst
 import klib.data.type.collections.replaceWith
@@ -74,13 +76,13 @@ public class CRUDLazyColumnState(
     public var limitOffset: LimitOffset by mutableStateOf(limitOffset)
 
     public fun getIndexedOrder(property: EntityProperty): IndexedValue<Order>? =
-        sort.withIndex().find { (_, order) -> order.name == property.name }
+        sort.withIndex().find { (_, order) -> (order.variable as Field).value == property.name }
 
     public fun order(property: EntityProperty) {
         val order = getIndexedOrder(property)?.value
 
         when {
-            order == null -> Order(property.name).let {
+            order == null -> Order(property.name.f).let {
                 if (isMultiSort) {
                     sort += it
                 }
@@ -89,9 +91,9 @@ public class CRUDLazyColumnState(
                 }
             }
 
-            order.ascending -> sort.replaceFirst({ it.name == property.name }) { Order(name, false) }
+            order.ascending -> sort.replaceFirst({ (it.variable as Field).value == property.name }) { Order(variable, false) }
 
-            else -> sort.removeFirst { it.name == property.name }
+            else -> sort.removeFirst { (it.variable as Field).value == property.name }
         }
     }
 

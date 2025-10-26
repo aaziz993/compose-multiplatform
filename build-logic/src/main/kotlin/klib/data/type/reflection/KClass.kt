@@ -12,15 +12,15 @@ import klib.data.type.primitives.BIG_INTEGER_DEFAULT
 import klib.data.type.primitives.BOOLEAN_DEFAULT
 import klib.data.type.primitives.BYTE_DEFAULT
 import klib.data.type.primitives.CHAR_DEFAULT
-import klib.data.type.primitives.DATE_PERIOD_DEFAULT
-import klib.data.type.primitives.DATE_TIME_PERIOD_DEFAULT
+import klib.data.type.primitives.time.DATE_PERIOD_DEFAULT
+import klib.data.type.primitives.time.DATE_TIME_PERIOD_DEFAULT
 import klib.data.type.primitives.DOUBLE_DEFAULT
-import klib.data.type.primitives.DURATION_DEFAULT
+import klib.data.type.primitives.time.DURATION_DEFAULT
 import klib.data.type.primitives.FLOAT_DEFAULT
 import klib.data.type.primitives.INT_DEFAULT
-import klib.data.type.primitives.LOCAL_DATE_DEFAULT
-import klib.data.type.primitives.LOCAL_DATE_TIME_DEFAULT
-import klib.data.type.primitives.LOCAL_TIME_DEFAULT
+import klib.data.type.primitives.time.LOCAL_DATE_DEFAULT
+import klib.data.type.primitives.time.LOCAL_DATE_TIME_DEFAULT
+import klib.data.type.primitives.time.LOCAL_TIME_DEFAULT
 import klib.data.type.primitives.LONG_DEFAULT
 import klib.data.type.primitives.SHORT_DEFAULT
 import klib.data.type.primitives.STRING_DEFAULT
@@ -30,6 +30,7 @@ import klib.data.type.primitives.U_INT_DEFAULT
 import klib.data.type.primitives.U_LONG_DEFAULT
 import klib.data.type.primitives.U_SHORT_DEFAULT
 import klib.data.type.primitives.parseOrNull
+import klib.data.type.primitives.time.parseOrNull
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -61,8 +62,22 @@ import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.DateTimeFormat
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
+import org.reflections.scanners.Scanners.TypesAnnotated
 import org.reflections.util.ConfigurationBuilder
 import org.reflections.util.FilterBuilder
+
+public inline fun <T : Any> KClass<T>.subtypes(
+    block: ConfigurationBuilder.() -> Unit = {}
+): List<KClass<T>> = Reflections(
+    ConfigurationBuilder().apply(block),
+).getSubTypesOf(java).mapNotNull { clazz -> clazz.kotlin as KClass<T> }
+
+public fun <T : Annotation> KClass<T>.annotatedTypes(
+    block: ConfigurationBuilder.() -> Unit
+): List<KClass<*>> = Reflections(
+    ConfigurationBuilder().apply(block)
+        .addScanners(TypesAnnotated),
+).getTypesAnnotatedWith(java).map { clazz -> clazz.kotlin }
 
 //////////////////////////////////////////////////////////GENERIC///////////////////////////////////////////////////////
 public val KClass<*>.isUIntNumber: Boolean

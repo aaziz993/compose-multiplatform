@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 public data class Cache(
     @PrimaryKey(autoGenerate = true)
     public val id: Long = 0,
-    public val key: String,
-    public val value: String,
+    public val key: String?,
+    public val value: String?,
 )
