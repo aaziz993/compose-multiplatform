@@ -5,7 +5,7 @@ import klib.data.db.KeyValue
 import klib.data.db.KeyValueQueries
 
 @Suppress("UNCHECKED_CAST")
-public class SqlDelightCache<K, V>(
+public class SqlDelightCoroutineCache<K, V>(
     private val keyEncoder: (K) -> String? = { key -> key as String },
     private val keyDecoder: (String?) -> K = { key -> key as K },
     private val valueEncoder: (V) -> String? = { value -> value as String },

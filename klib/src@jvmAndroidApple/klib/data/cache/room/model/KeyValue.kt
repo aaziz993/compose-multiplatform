@@ -4,12 +4,10 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(
-    indices = [Index(value = ["key"], unique = true)],
-)
+@Entity(indices = [Index(value = ["key"], unique = true)])
 public data class KeyValue(
     @PrimaryKey(autoGenerate = true)
-    public val id: Long = 0,
-    public val key: String?,
-    public val value: String?,
+    val id: Long = 0L,
+    val key: String?,
+    val value: String?,
 )

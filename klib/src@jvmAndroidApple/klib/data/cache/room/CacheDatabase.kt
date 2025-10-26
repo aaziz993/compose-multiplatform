@@ -5,8 +5,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.sqlite.execSQL
 import klib.data.cache.room.model.KeyValue
+import klib.data.coroutines.StandardDispatchers
 import klib.data.db.room.createInMemoryRoomDatabaseBuilder
 import klib.data.db.room.createRoomDatabaseBuilder
 
@@ -46,8 +48,12 @@ public expect object CacheDatabaseConstructor : RoomDatabaseConstructor<CacheDat
 
 public fun createRoomCacheDatabaseBuilder(databaseName: String): RoomDatabase.Builder<CacheDatabase> =
     createRoomDatabaseBuilder<CacheDatabase>(databaseName)
-//        .addCallback(CacheDatabase.callback)
+        .setDriver(BundledSQLiteDriver())
+        .setQueryCoroutineContext(StandardDispatchers.io)
+        .addCallback(CacheDatabase.callback)
 
 public fun createInMemoryRoomCacheDatabaseBuilder(): RoomDatabase.Builder<CacheDatabase> =
     createInMemoryRoomDatabaseBuilder<CacheDatabase>()
-//        .addCallback(CacheDatabase.callback)
+        .setDriver(BundledSQLiteDriver())
+        .setQueryCoroutineContext(StandardDispatchers.io)
+        .addCallback(CacheDatabase.callback)
