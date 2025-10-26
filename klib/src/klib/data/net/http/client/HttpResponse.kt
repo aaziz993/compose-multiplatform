@@ -1,5 +1,3 @@
-@file:OptIn(InternalAPI::class)
-
 package klib.data.net.http.client
 
 import io.ktor.client.statement.HttpResponse
@@ -10,7 +8,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
-import io.ktor.utils.io.InternalAPI
 import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
 import klib.data.type.collections.readChannelAsAnyFlow

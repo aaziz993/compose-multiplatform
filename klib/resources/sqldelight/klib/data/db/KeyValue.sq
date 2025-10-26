@@ -1,25 +1,34 @@
-CREATE TABLE IF NOT EXISTS KeyValue (key TEXT, value TEXT);
+CREATE TABLE IF NOT EXISTS KeyValue (
+  key TEXT UNIQUE,
+  value TEXT
+);
 
-insert:
-INSERT INTO KeyValue(key,value) VALUES(?, ?);
+selectByKeyNotNull:
+SELECT * FROM KeyValue WHERE key = ?;
 
-select:
-SELECT KeyValue.* FROM KeyValue WHERE key = ?;
+selectKeyIsNull:
+SELECT * FROM KeyValue WHERE key IS NULL;
 
 selectAll:
-SELECT KeyValue.* FROM KeyValue;
+SELECT * FROM KeyValue;
 
-delete:
-DELETE FROM KeyValue WHERE key = ?;
-
-deleteLike:
-DELETE FROM KeyValue WHERE key LIKE ?;
-
-deleteAll:
-DELETE FROM KeyValue;
-
-exists:
+existsByKeyNotNull:
 SELECT EXISTS(SELECT 1 FROM KeyValue WHERE key=? LIMIT 1);
+
+existsKeyIsNull:
+SELECT EXISTS(SELECT 1 FROM KeyValue WHERE key IS NULL LIMIT 1);
 
 count:
 SELECT COUNT(*) FROM KeyValue;
+
+insertOrReplace:
+INSERT OR REPLACE INTO KeyValue(key, value) VALUES(?, ?);
+
+deleteByKeyNotNull:
+DELETE FROM KeyValue WHERE key = ?;
+
+deleteKeyIsNull:
+DELETE FROM KeyValue WHERE key IS NULL;
+
+deleteAll:
+DELETE FROM KeyValue;

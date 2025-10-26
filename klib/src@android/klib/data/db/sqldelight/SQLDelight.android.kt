@@ -18,8 +18,12 @@ public actual suspend fun createSQLDelightDriver(
     databaseName: String
 ): SqlDriver = createSQLDelightDriver(schema.synchronous(), databaseName)
 
+public actual fun createInMemorySQLDelightDriver(
+    schema: SqlSchema<QueryResult.Value<Unit>>,
+    databaseName: String
+): SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also(schema::create)
+
 public actual suspend fun createInMemorySQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
     databaseName: String
-): SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-    .also { schema.create(it).await() }
+): SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also { schema.create(it).await() }

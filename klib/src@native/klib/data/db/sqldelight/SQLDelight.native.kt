@@ -17,7 +17,12 @@ public actual suspend fun createSQLDelightDriver(
     databaseName: String
 ): SqlDriver = createSQLDelightDriver(schema.synchronous(), "$databaseName.db")
 
+public actual fun createInMemorySQLDelightDriver(
+    schema: SqlSchema<QueryResult.Value<Unit>>,
+    databaseName: String
+): SqlDriver = inMemoryDriver(schema)
+
 public actual suspend fun createInMemorySQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
     databaseName: String
-): SqlDriver = inMemoryDriver(schema.synchronous())
+): SqlDriver = createInMemorySQLDelightDriver(schema.synchronous(), databaseName)

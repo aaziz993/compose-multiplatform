@@ -1,18 +1,40 @@
 package klib.data.cache.room
 
-import klib.data.cache.room.model.Cache
 import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.execSQL
+import klib.data.cache.room.model.KeyValue
 import klib.data.db.room.createInMemoryRoomDatabaseBuilder
 import klib.data.db.room.createRoomDatabaseBuilder
 
-@Database(entities = [Cache::class], version = 1)
+@Database(entities = [KeyValue::class], version = 1)
 @ConstructedBy(CacheDatabaseConstructor::class)
 public abstract class CacheDatabase : RoomDatabase() {
 
-    public abstract fun getDao(): CacheDao
+    public abstract fun getDao(): KeyValueDao
+
+    public companion object {
+
+        public val callback: Callback = object : Callback() {
+            override fun onCreate(connection: SQLiteConnection) {
+                super.onCreate(connection)
+                // Enforce "only one NULL key" rule.
+                connection.execSQL(
+                    """
+                    CREATE TRIGGER IF NOT EXISTS unique_null_key
+                    BEFORE INSERT ON KeyValue
+                    WHEN NEW.key IS NULL
+                    BEGIN
+                        DELETE FROM KeyValue WHERE key IS NULL;
+                    END;
+                    """.trimIndent(),
+                )
+            }
+        }
+    }
 }
 
 // The Room compiler generates the `actual` implementations.
@@ -23,7 +45,9 @@ public expect object CacheDatabaseConstructor : RoomDatabaseConstructor<CacheDat
 }
 
 public fun createRoomCacheDatabaseBuilder(databaseName: String): RoomDatabase.Builder<CacheDatabase> =
-    createRoomDatabaseBuilder(databaseName)
+    createRoomDatabaseBuilder<CacheDatabase>(databaseName)
+//        .addCallback(CacheDatabase.callback)
 
 public fun createInMemoryRoomCacheDatabaseBuilder(): RoomDatabase.Builder<CacheDatabase> =
-    createInMemoryRoomDatabaseBuilder()
+    createInMemoryRoomDatabaseBuilder<CacheDatabase>()
+//        .addCallback(CacheDatabase.callback)
