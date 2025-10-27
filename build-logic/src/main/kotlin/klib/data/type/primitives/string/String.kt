@@ -30,6 +30,10 @@ import kotlinx.io.writeString
 public val String.Companion.DEFAULT: String
     get() = ""
 
+public fun String.takeUnlessEmpty(): String? = takeUnless(String::isEmpty)
+
+public fun String.takeUnlessBlank(): String? = takeUnless(String::isBlank)
+
 public fun String.emptyIf(block: (value: String) -> Boolean): String = if (block(this)) "" else this
 
 public val ESCAPES: BiMap<Char, Char> = biMapOf(

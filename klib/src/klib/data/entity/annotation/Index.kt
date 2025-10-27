@@ -8,5 +8,5 @@ public annotation class Index(
     val indexName: String = "",
     val indexType: String = "",
     val isUnique: Boolean = false,
-    val columns: Array<String> = [],
+    val properties: Array<String> = [],
 )

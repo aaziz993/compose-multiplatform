@@ -14,7 +14,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
+public fun <T : Collection<E>, E> T.takeUnlessEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
 public fun <E : Any> Collection<E>.sortedByReferences(references: E.(Collection<E>) -> Collection<E>): List<E> {
     val (independents, dependants) = map { element ->

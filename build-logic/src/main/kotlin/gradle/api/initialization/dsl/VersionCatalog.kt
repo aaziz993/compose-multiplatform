@@ -2,7 +2,7 @@ package gradle.api.initialization.dsl
 
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
-import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.collections.takeUnlessEmpty
 import klib.data.type.functions.tryInvoke
 import klib.data.type.serialization.serializers.any.AnySerializer
 import kotlinx.serialization.KSerializer
@@ -160,7 +160,7 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
                 ::setBranch tryInvoke version["branch"] as String?
                 ::prefer tryInvoke (version["prefer"] as String?)?.takeIf(String::isNotBlank)
                 ::strictly tryInvoke (version["strictly"] as String?)?.takeIf(String::isNotBlank)
-                ::reject tryInvoke version["reject"]?.asList<String>()?.takeIfNotEmpty()?.toTypedArray()
+                ::reject tryInvoke version["reject"]?.asList<String>()?.takeUnlessEmpty()?.toTypedArray()
             }
         }
     }

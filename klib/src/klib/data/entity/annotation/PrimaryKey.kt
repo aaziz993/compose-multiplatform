@@ -6,5 +6,5 @@ import kotlinx.serialization.SerialInfo
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 public annotation class PrimaryKey(
     val name: String = "",
-    val columns: Array<String> = [],
+    val properties: Array<String> = [],
 )

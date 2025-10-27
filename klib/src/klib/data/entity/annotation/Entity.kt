@@ -20,7 +20,7 @@ public fun KClass<*>.getEntityProperties(): BiMap<String, String> =
             !descriptor.hasElementAnnotation<Transient>(index)
         }.associate { index ->
             descriptor.getElementName(index).let { elementName ->
-                elementName to (descriptor.getElementAnnotation<Column>(index)?.name
+                elementName to (descriptor.getElementAnnotation<Property>(index)?.name
                     ?: elementName)
             }
         }.toBiMap()
@@ -30,7 +30,7 @@ public fun KClass<*>.getEntityGeneratedProperties(): List<String> =
     annotatedProperties<AutoIncrement>() + annotatedProperties<DatabaseGenerated>()
 
 public fun KClass<*>.getEntityIdProperties(): List<String> =
-    serializer().descriptor.getAnnotation<PrimaryKey>()?.columns?.toList()
+    serializer().descriptor.getAnnotation<PrimaryKey>()?.properties?.toList()
         ?: listOfNotNull(annotatedProperties<PrimaryKey>().firstOrNull())
 
 public fun KClass<*>.getEntityCreatedAtProperty(): String? =
@@ -43,7 +43,7 @@ private inline fun <reified T : Annotation> KClass<*>.annotatedProperties(): Lis
     serializer().descriptor.let { descriptor ->
         descriptor.elementIndices.filter { index -> descriptor.hasElementAnnotation<T>(index) }
             .map { index ->
-                descriptor.getElementAnnotation<Column>(index)?.name
+                descriptor.getElementAnnotation<Property>(index)?.name
                     ?: descriptor.getElementName(index)
             }
     }

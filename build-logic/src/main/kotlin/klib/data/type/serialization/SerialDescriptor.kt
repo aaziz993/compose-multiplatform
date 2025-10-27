@@ -6,7 +6,7 @@ import klib.data.type.collections.anyInstance
 import klib.data.type.collections.deepMinusKeys
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
-import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.collections.takeUnlessEmpty
 import klib.data.type.primitives.time.now
 import klib.data.type.reflection.callMember
 import klib.data.type.reflection.isFloatNumber
@@ -117,7 +117,7 @@ public inline fun <reified T : Annotation> SerialDescriptor.hasElementAnnotation
     getElementAnnotations(index).filterIsInstance<T>().isNotEmpty()
 
 public inline fun <reified T : Annotation> SerialDescriptor.getElementAnnotation(index: Int): T? =
-    getElementAnnotations(index).filterIsInstance<T>().takeIfNotEmpty()?.single()
+    getElementAnnotations(index).filterIsInstance<T>().takeUnlessEmpty()?.single()
 
 public inline fun <reified T : Annotation> SerialDescriptor.getElementAnnotations0(index: Int): List<T> =
     getElementAnnotations(index).filterIsInstance<T>()
@@ -156,7 +156,7 @@ public fun SerialDescriptor.validator(
     uIntPatternMessage: String = "value_is_not_unsigned_integer",
     intPatternMessage: String = "value_is_not_integer",
     floatPatternMessage: String = "value_is_not_float",
-): Validator? = validatorRules(uIntPatternMessage, intPatternMessage, floatPatternMessage).takeIfNotEmpty()
+): Validator? = validatorRules(uIntPatternMessage, intPatternMessage, floatPatternMessage).takeUnlessEmpty()
     ?.let { Validator(type, it + additionalRules, !isNullable) }
 
 public fun SerialDescriptor.buildPolymorphicDescriptor(classDiscriminator: String): SerialDescriptor =

@@ -7,7 +7,7 @@ import kotlinx.serialization.SerialInfo
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 public annotation class FkReference(
     val name: String = "",
-    val column: String = "",
-    val targetTable: String,
-    val targetColumn: String
+    val property: String = "",
+    val targetEntity: String,
+    val targetProperty: String
 )

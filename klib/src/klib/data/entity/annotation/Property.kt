@@ -5,4 +5,4 @@ import kotlinx.serialization.SerialInfo
 
 @SerialInfo
 @Target(AnnotationTarget.PROPERTY)
-public annotation class Column(val name: String)
+public annotation class Property(val name: String)

@@ -1,6 +1,6 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.collections.takeUnlessEmpty
 import klib.data.type.primitives.string.case.toCamelCase
 import klib.data.type.primitives.string.tokenization.combinators.asJust
 import klib.data.type.primitives.string.tokenization.combinators.leftAssociative
@@ -458,7 +458,7 @@ public object ProgramGrammar : Grammar<Program>() {
                 Function(
                     "main",
                     listOf(),
-                    program.filterIsInstance<Statement>().takeIfNotEmpty()
+                    program.filterIsInstance<Statement>().takeUnlessEmpty()
                         ?.let { statements -> chainOf(*statements.toTypedArray()).scoped() }
                         ?: Skip
                 ),
