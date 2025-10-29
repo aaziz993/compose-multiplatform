@@ -18,6 +18,7 @@ script:
                 implementation(libs["kotlinx.uuid.core"])
                 implementation(libs.bundles("fleeksoft.charset"))
                 // implementation(libs.bundles("diglol"))
+                implementation(libs["kotlin.codepoints"])
                 implementation(libs["highlights"])
                 implementation(libs.bundles("kmputils"))
                 implementation(libs.bundles("kotlinx.serialization"))

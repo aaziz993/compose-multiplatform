@@ -4,4 +4,4 @@ import kotlinx.serialization.SerialInfo
 
 @SerialInfo
 @Target(AnnotationTarget.PROPERTY)
-public annotation class AutoIncrement
+public annotation class AutoIncrement(val seqName: String = "")

@@ -188,6 +188,8 @@ kotlinx-uuid-core = "0.1.6"
 fleeksoft = "0.0.5"
 # hex, base32, base45 and base64 encoding and id generator.
 diglol = "0.3.0"
+# library that adds basic support for Unicode code points.
+kotlin-codepoints = "0.11.0"
 # convert strings between various case formats.
 kasechange = "1.4.1"
 # a nice parser combinator library for Kotlin JVM, JS, and Multiplatform projects.
@@ -572,6 +574,8 @@ fleeksoft-charset = { module = "com.fleeksoft.charset:charset", version.ref = "f
 fleeksoft-charset-ext = { module = "com.fleeksoft.charset:charset-ext", version.ref = "fleeksoft" }
 # hex, base32, base45 and base64 encoding.
 encoding = { module = "com.diglol.encoding:encoding", version.ref = "diglol" }
+# library that adds basic support for Unicode code points.
+kotlin-codepoints = { module = "de.cketti.unicode:kotlin-codepoints-deluxe", version.ref = "kotlin-codepoints" }
 # id generator.
 id = { module = "com.diglol.id:id", version.ref = "diglol" }
 # convert strings between various case formats.
