@@ -4,4 +4,4 @@ import kotlinx.serialization.SerialInfo
 
 @SerialInfo
 @Target(AnnotationTarget.PROPERTY)
-public annotation class Default(val value: String)
+public annotation class TransientProperty

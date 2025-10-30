@@ -28,7 +28,6 @@ import kotlin.collections.contains
 import kotlin.reflect.KClass
 import kotlin.reflect.full.withNullability
 import kotlin.reflect.typeOf
-import kotlin.text.isEmpty
 import kotlin.time.Duration
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
@@ -116,7 +115,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
     val properties = mutableMapOf<String, C>()
 
     descriptor.elementIndices.filterNot { index ->
-        descriptor.hasElementAnnotation<Transient>(index)
+        descriptor.hasElementAnnotation<TransientProperty>(index)
     }.forEach { index ->
         val elementDescriptor = descriptor.getElementDescriptor(index)
         val property = descriptor.getElementAnnotation<Property>(index)

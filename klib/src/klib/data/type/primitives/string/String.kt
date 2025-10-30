@@ -126,10 +126,6 @@ public fun Appendable.appendCodePoint(cp: Int) {
     }
 }
 
-public fun String.singleQuote(): String = "'$this'"
-
-public fun String.doubleQuote(): String = "\"$this\""
-
 public fun String.uppercaseFirstChar(): String = replaceFirstChar(Char::uppercase)
 
 public fun String.lowercaseFirstChar(): String = replaceFirstChar(Char::lowercase)
@@ -143,14 +139,34 @@ public fun String.addPrefix(prefix: String): String =
 public fun String.addSuffix(suffix: String): String =
     "$this$suffix"
 
+public fun String.surround(prefix: String, suffix: String): String =
+    "$prefix$this$suffix"
+
+public fun String.surround(value: String): String = surround(value, value)
+
+public fun String.singleQuote(): String = surround("'")
+
+public fun String.doubleQuote(): String = surround("\"")
+
 public fun String.addPrefixIfNotEmpty(prefix: String): String =
-    ifNotEmpty { "$prefix$it" }
+    if (isEmpty()) this else addPrefix(prefix)
 
 public fun String.addSuffixIfNotEmpty(suffix: String): String =
-    ifNotEmpty { "$it$suffix" }
+    if (isEmpty()) this else addSuffix(suffix)
 
 public fun String.surroundIfNotEmpty(prefix: String, suffix: String): String =
-    ifNotEmpty { "$prefix$it$suffix" }
+    if (isEmpty()) this else surroundIfNotEmpty(prefix, suffix)
+
+public fun String.singleQuoteIfNotEmpty(): String =
+    if (isEmpty()) this else singleQuote()
+
+public fun String.doubleQuoteIfNotEmpty(): String =
+    if (isEmpty()) this else doubleQuote()
+
+public fun String.isSurrounded(vararg values: String): Boolean =
+    values.any { values ->
+        startsWith(values) && endsWith(values)
+    }
 
 public fun String.removeWhiteSpaces(): String = this.replace("\\s".toRegex(), "")
 

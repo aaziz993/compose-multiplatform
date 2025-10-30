@@ -3,5 +3,5 @@ package klib.data.entity.annotation
 import kotlinx.serialization.SerialInfo
 
 @SerialInfo
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.PROPERTY)
 public annotation class DatabaseGenerated

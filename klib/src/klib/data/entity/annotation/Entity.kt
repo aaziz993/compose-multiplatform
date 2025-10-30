@@ -22,11 +22,8 @@ import klib.data.type.serialization.hasElementAnnotation
 import klib.data.type.serialization.isEnum
 import klib.data.type.serialization.primitiveTypeOrNull
 import klib.data.type.tuples.Tuple3
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlin.reflect.KClass
 import kotlin.reflect.typeOf
-import kotlin.text.isEmpty
 import kotlin.time.Duration
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
@@ -40,12 +37,19 @@ import kotlinx.serialization.serializer
 
 @SerialInfo
 @Target(AnnotationTarget.CLASS)
-public annotation class Entity(val name: String = "")
+public annotation class Entity(
+    val name: String = "",
+    val implicitProperties: Boolean = true,
+)
 
 public fun KClass<*>.getEntityProperties(): BiMap<String, String> =
     serializer().descriptor.let { descriptor ->
+        val entityAnnotation = descriptor.getAnnotation<Entity>()
+            ?: error("Missing Entity annotation on '$qualifiedName'")
         descriptor.elementIndices.filter { index ->
-            !descriptor.hasElementAnnotation<Transient>(index)
+            !descriptor.hasElementAnnotation<TransientProperty>(index) &&
+                (descriptor.hasElementAnnotation<Property>(index) ||
+                    entityAnnotation.implicitProperties)
         }.associate { index ->
             descriptor.getElementName(index).let { elementName ->
                 elementName to (descriptor.getElementAnnotation<Property>(index)?.name
@@ -70,134 +74,72 @@ public fun KClass<*>.getEntityUpdatedAtProperty(): String? =
 @Suppress("UNCHECKED_CAST")
 public inline fun <T : Any, C : Any> KClass<*>.toTable(
     table: (name: String) -> T,
-    boolean: T.(propertyName: String, defaultValue: Boolean?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    uByte: T.(propertyName: String, defaultValue: UByte?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    uShort: T.(propertyName: String, defaultValue: UShort?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    uInt: T.(propertyName: String, defaultValue: UInt?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    uLong: T.(propertyName: String, defaultValue: ULong?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    byte: T.(propertyName: String, defaultValue: Byte?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    short: T.(propertyName: String, defaultValue: Short?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    int: T.(propertyName: String, defaultValue: Int?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    long: T.(propertyName: String, defaultValue: Long?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    float: T.(propertyName: String, defaultValue: Float?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    double: T.(propertyName: String, defaultValue: Double?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
+    boolean: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uByte: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uShort: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uInt: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uLong: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    byte: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    short: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    int: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    long: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    float: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    double: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
     decimal: T.(
         propertyName: String,
         precision: Long,
         scale: Long,
-        defaultValue: BigDecimal?
-    ) -> C = { _, _, _, _ ->
-        throw UnsupportedOperationException()
-    },
+    ) -> C = { _, _, _ -> throw UnsupportedOperationException() },
     char: T.(
         propertyName: String,
         length: Int,
         collate: String?,
-        defaultValue: String?
-    ) -> C = { _, _, _, _ ->
-        throw UnsupportedOperationException()
-    },
+    ) -> C = { _, _, _ -> throw UnsupportedOperationException() },
     varchar: T.(
         propertyName: String,
         length: Int,
         collate: String?,
-        defaultValue: String?
-    ) -> C = { _, _, _, _ ->
-        throw UnsupportedOperationException()
-    },
+    ) -> C = { _, _, _ -> throw UnsupportedOperationException() },
     text: T.(
         propertyName: String,
         collate: String?,
         eagerLoading: Boolean,
-        defaultValue: String?
-    ) -> C = { _, _, _, _ ->
-        throw UnsupportedOperationException()
-    },
-    duration: T.(propertyName: String, defaultValue: Duration?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    instant: T.(propertyName: String, defaultValue: Instant?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    time: T.(propertyName: String, defaultValue: LocalTime?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    date: T.(propertyName: String, defaultValue: LocalDate?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    datetime: T.(propertyName: String, defaultValue: LocalDateTime?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    uuid: T.(propertyName: String, defaultValue: Uuid?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
+    ) -> C = { _, _, _ -> throw UnsupportedOperationException() },
+    duration: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    instant: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    time: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    date: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    datetime: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uuid: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
     enum: T.(
         propertyName: String,
         length: Int?,
-        propertyDescriptor: SerialDescriptor
-    ) -> C = { _, _, _ ->
+        propertyDescriptor: SerialDescriptor,
+        defaultValue: String?,
+    ) -> C = { _, _, _, _ ->
         throw UnsupportedOperationException()
     },
-    uByteArray: T.(propertyName: String, defaultValue: List<UByte>?) -> C = { _, _ ->
+    uByteArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uShortArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uIntArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    uLongArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    binary: T.(propertyName: String, length: Int?) -> C = { _, _ ->
         throw UnsupportedOperationException()
     },
-    uShortArray: T.(propertyName: String, defaultValue: List<UShort>?) -> C = { _, _ ->
+    blob: T.(propertyName: String, useObjectIdentifier: Boolean) -> C = { _, _ ->
         throw UnsupportedOperationException()
     },
-    uIntArray: T.(propertyName: String, defaultValue: List<UInt>?) -> C = { _, _ ->
+    shortArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    intArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    longArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
+    json: T.(propertyName: String, KSerializer<Any>) -> C = { _, _ ->
         throw UnsupportedOperationException()
     },
-    uLongArray: T.(propertyName: String, defaultValue: List<ULong>?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    binary: T.(propertyName: String, length: Int?, defaultValue: ByteArray?) -> C = { _, _, _ ->
-        throw UnsupportedOperationException()
-    },
-    blob: T.(
-        propertyName: String,
-        useObjectIdentifier: Boolean,
-        defaultValue: ByteArray?
-    ) -> C = { _, _, _ ->
-        throw UnsupportedOperationException()
-    },
-    shortArray: T.(propertyName: String, defaultValue: List<Short>?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    intArray: T.(propertyName: String, defaultValue: List<Int>?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    longArray: T.(propertyName: String, defaultValue: List<Long>?) -> C = { _, _ ->
-        throw UnsupportedOperationException()
-    },
-    json: T.(propertyName: String, KSerializer<Any>, defaultValue: String?) -> C = { _, _, _ ->
-        throw UnsupportedOperationException()
-    },
-    jsonb: T.(propertyName: String, KSerializer<Any>, defaultValue: String?) -> C = { _, _, _ ->
+    jsonb: T.(propertyName: String, KSerializer<Any>) -> C = { _, _ ->
         throw UnsupportedOperationException()
     },
     nullable: T.(property: C) -> C = { throw UnsupportedOperationException() },
+    defaultValue: T.(property: C, value: Any?) -> C = { _, _ -> throw UnsupportedOperationException() },
     autoIncrement: T.(property: C, seqName: String?) -> C = { _, _ -> throw UnsupportedOperationException() },
     databaseGenerated: T.(property: C) -> C = { throw UnsupportedOperationException() },
     index: T.(
@@ -220,197 +162,193 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
         throw UnsupportedOperationException()
     },
 ): Pair<T, Map<String, C>> {
-    val serializer = serializer()
-    val descriptor = serializer().descriptor
-
-    val entity = table(
-        descriptor.getAnnotation<Entity>()?.name?.takeUnless(String::isEmpty)
-            ?: descriptor.serialName.toSnakeCase(),
-    )
-
+    val entitySerializer = serializer()
+    val entityDescriptor = serializer().descriptor
+    val entityAnnotation = entityDescriptor.getAnnotation<Entity>()
+        ?: error("Missing Entity annotation")
+    val entity =
+        table(entityAnnotation.name.takeUnlessEmpty() ?: entityDescriptor.serialName.toSnakeCase())
     val properties = mutableMapOf<String, C>()
 
-    descriptor.elementIndices.filterNot { index ->
-        descriptor.hasElementAnnotation<Transient>(index)
+    entityDescriptor.elementIndices.filter { index ->
+        !entityDescriptor.hasElementAnnotation<TransientProperty>(index) &&
+            (entityDescriptor.hasElementAnnotation<Property>(index) ||
+                entityAnnotation.implicitProperties)
     }.forEach { index ->
-        val elementDescriptor = descriptor.getElementDescriptor(index)
-        val property = descriptor.getElementAnnotation<Property>(index)
-        val propertyName = property?.name ?: descriptor.getElementName(index)
-        val defaultValue = descriptor.getElementAnnotation<Default>(index)?.value
+        val elementDescriptor = entityDescriptor.getElementDescriptor(index)
+        val childSerializer = entitySerializer.childSerializer(index) as KSerializer<Any>
+        val propertyAnnotation = entityDescriptor.getElementAnnotation<Property>(index)
+        val propertyName =
+            propertyAnnotation?.name?.takeUnlessEmpty() ?: entityDescriptor.getElementName(index)
+        val defaultValue = entityDescriptor.getAnnotation<DefaultValue>()?.value
 
-        properties += propertyName to if (descriptor.hasElementAnnotation<Json>(index))
+        var (property, default) = if (entityDescriptor.hasElementAnnotation<Json>(index))
             entity.json(
                 propertyName,
-                serializer.childSerializer(index) as KSerializer<Any>,
-                defaultValue,
-            )
-        else if (descriptor.hasElementAnnotation<Jsonb>(index))
+                childSerializer,
+            ) to defaultValue?.let {
+                kotlinx.serialization.json.Json.Default.decodeFromString(childSerializer, it)
+            }
+        else if (entityDescriptor.hasElementAnnotation<Jsonb>(index))
             entity.jsonb(
                 propertyName,
-                serializer.childSerializer(index) as KSerializer<Any>,
-                defaultValue,
-            )
+                entitySerializer.childSerializer(index) as KSerializer<Any>,
+            ) to defaultValue?.let {
+                kotlinx.serialization.json.Json.Default.decodeFromString(childSerializer, it)
+            }
         else if (elementDescriptor.isEnum) entity.enum(
             propertyName,
-            descriptor.getElementAnnotation<Enum>(index)?.length,
+            entityDescriptor.getElementAnnotation<Enum>(index)?.length,
             elementDescriptor,
-        )
+            defaultValue,
+        ) to null
         else when (elementDescriptor.primitiveTypeOrNull?.withNullability(false)) {
-            typeOf<Boolean>() -> entity.boolean(propertyName, defaultValue?.toBoolean())
-            typeOf<UByte>() -> entity.uByte(propertyName, defaultValue?.toUByte())
-            typeOf<UShort>() -> entity.uShort(propertyName, defaultValue?.toUShort())
-            typeOf<UInt>() -> entity.uInt(propertyName, defaultValue?.toUInt())
-            typeOf<ULong>() -> entity.uLong(propertyName, defaultValue?.toULong())
-            typeOf<Byte>() -> entity.byte(propertyName, defaultValue?.toByte())
-            typeOf<Short>() -> entity.short(propertyName, defaultValue?.toShort())
-            typeOf<Int>() -> entity.int(propertyName, defaultValue?.toInt())
-            typeOf<Long>() -> entity.long(propertyName, defaultValue?.toLong())
-            typeOf<Float>() -> entity.float(propertyName, defaultValue?.toFloat())
-            typeOf<Double>() -> entity.double(propertyName, defaultValue?.toDouble())
-            typeOf<BigDecimal>() ->
-                descriptor.getElementAnnotation<Decimal>(index)?.let { annotation ->
-                    entity.decimal(
-                        propertyName,
-                        annotation.precision,
-                        annotation.scale,
-                        defaultValue?.toBigDecimal(),
-                    )
-                } ?: error("Missing decimal annotation for column '$propertyName'")
+            typeOf<Boolean>() -> entity.boolean(propertyName) to defaultValue?.toBoolean()
+
+            typeOf<UByte>() -> entity.uByte(propertyName) to defaultValue?.toUByte()
+            typeOf<UShort>() -> entity.uShort(propertyName) to defaultValue?.toUShort()
+            typeOf<UInt>() -> entity.uInt(propertyName) to defaultValue?.toUInt()
+            typeOf<ULong>() -> entity.uLong(propertyName) to defaultValue?.toULong()
+            typeOf<Byte>() -> entity.byte(propertyName) to defaultValue?.toByte()
+            typeOf<Short>() -> entity.short(propertyName) to defaultValue?.toShort()
+            typeOf<Int>() -> entity.int(propertyName) to defaultValue?.toInt()
+            typeOf<Long>() -> entity.long(propertyName) to defaultValue?.toLong()
+            typeOf<Float>() -> entity.float(propertyName) to defaultValue?.toFloat()
+            typeOf<Double>() -> entity.double(propertyName) to defaultValue?.toDouble()
+            typeOf<BigDecimal>() -> {
+                val (precision, scale) = entityDescriptor.getElementAnnotation<Decimal>(index)
+                    ?.let { annotation ->
+                        annotation.precision to annotation.scale
+                    } ?: (16L to 20L)
+
+                entity.decimal(propertyName, precision, scale) to defaultValue?.toBigDecimal()
+            }
 
             typeOf<String>() ->
-                descriptor.getElementAnnotation<Char>(index)?.let { annotation ->
+                (entityDescriptor.getElementAnnotation<Char>(index)?.let { annotation ->
                     entity.char(
                         propertyName,
                         annotation.length,
-                        annotation.collate.takeUnless(String::isEmpty),
-                        defaultValue,
+                        annotation.collate.takeUnlessEmpty(),
                     )
-                } ?: descriptor.getElementAnnotation<Varchar>(index)?.let { annotation ->
+                } ?: entityDescriptor.getElementAnnotation<Varchar>(index)?.let { annotation ->
                     entity.varchar(
                         propertyName,
                         annotation.length,
-                        annotation.collate.takeUnless(String::isEmpty),
-                        defaultValue,
+                        annotation.collate.takeUnlessEmpty(),
                     )
-                } ?: descriptor.getElementAnnotation<Text>(index)?.let { annotation ->
+                } ?: entityDescriptor.getElementAnnotation<Text>(index)?.let { annotation ->
                     entity.text(
                         propertyName,
                         annotation.collate,
                         annotation.eagerLoading,
-                        defaultValue,
                     )
-                } ?: error("Missing string annotation for column '$propertyName'")
+                } ?: entity.varchar(
+                    propertyName,
+                    255,
+                    null,
+                )) to defaultValue
 
-            typeOf<Duration>() -> entity.duration(
-                propertyName,
-                defaultValue?.toDuration(),
-            )
+            typeOf<Duration>() -> entity.duration(propertyName) to defaultValue?.toDuration()
+            typeOf<Instant>() -> entity.instant(propertyName) to defaultValue?.toInstant()
+            typeOf<LocalTime>() -> entity.time(propertyName) to defaultValue?.toLocalTime()
+            typeOf<LocalDate>() -> entity.date(propertyName) to defaultValue?.toLocalDate()
+            typeOf<LocalDateTime>() -> entity.datetime(propertyName) to
+                defaultValue?.toLocalDateTime()
 
-            typeOf<Instant>() -> entity.instant(propertyName, defaultValue?.toInstant())
-            typeOf<LocalTime>() -> entity.time(propertyName, defaultValue?.toLocalTime())
-            typeOf<LocalDate>() -> entity.date(propertyName, defaultValue?.toLocalDate())
-            typeOf<LocalDateTime>() -> entity.datetime(
-                propertyName,
-                defaultValue?.toLocalDateTime(),
-            )
-
-            typeOf<Uuid>() -> entity.uuid(propertyName, defaultValue?.toUuid())
+            typeOf<Uuid>() -> entity.uuid(propertyName) to defaultValue?.toUuid()
 
             else -> when (elementDescriptor.serialName) {
-                UByteArray::class.serializer().descriptor.serialName -> entity.uByteArray(
-                    propertyName,
-                    defaultValue?.split(",")?.map(String::toUByte),
-                )
+                UByteArray::class.serializer().descriptor.serialName ->
+                    entity.uByteArray(propertyName) to
+                        defaultValue?.split(",")?.map(String::toUByte)
 
-                UShortArray::class.serializer().descriptor.serialName -> entity.uShortArray(
-                    propertyName,
-                    defaultValue?.split(",")?.map(String::toUShort),
-                )
+                UShortArray::class.serializer().descriptor.serialName ->
+                    entity.uShortArray(propertyName) to
+                        defaultValue?.split(",")?.map(String::toUShort)
 
-                UIntArray::class.serializer().descriptor.serialName -> entity.uIntArray(
-                    propertyName,
-                    defaultValue?.split(",")?.map(String::toUInt),
-                )
+                UIntArray::class.serializer().descriptor.serialName ->
+                    entity.uIntArray(propertyName) to
+                        defaultValue?.split(",")?.map(String::toUInt)
 
-                ULongArray::class.serializer().descriptor.serialName -> entity.uLongArray(
-                    propertyName,
-                    defaultValue?.split(",")?.map(String::toULong),
-                )
+                ULongArray::class.serializer().descriptor.serialName ->
+                    entity.uLongArray(propertyName) to
+                        defaultValue?.split(",")?.map(String::toULong)
 
                 ByteArray::class.serializer().descriptor.serialName ->
-                    descriptor.getElementAnnotation<Binary>(index)?.let { annotation ->
+                    (entityDescriptor.getElementAnnotation<Binary>(index)?.let { annotation ->
                         entity.binary(
-                            propertyName,
-                            annotation.length,
-                            defaultValue?.encodeToByteArray(),
+                                propertyName,
+                                annotation.length.takeIf { length -> length > -1 },
                         )
-                    } ?: descriptor.getElementAnnotation<Blob>(index)?.let { annotation ->
-                        entity.blob(
-                            propertyName,
-                            annotation.useObjectIdentifier,
-                            defaultValue?.encodeToByteArray(),
-                        )
-                    } ?: error("Missing bytearray column annotation")
+                    } ?: entityDescriptor.getElementAnnotation<Blob>(index)?.let { annotation ->
+                        entity.blob(propertyName, annotation.useObjectIdentifier)
+                    } ?: entity.binary(propertyName, null)) to defaultValue?.encodeToByteArray()
 
-                ShortArray::class.serializer().descriptor.serialName -> entity.shortArray(
-                    propertyName,
-                    defaultValue?.split(",")?.map(String::toShort),
-                )
+                ShortArray::class.serializer().descriptor.serialName ->
+                    entity.shortArray(propertyName) to
+                        defaultValue?.split(",")?.map(String::toShort)
 
-                IntArray::class.serializer().descriptor.serialName -> entity.intArray(
-                    propertyName,
-                    defaultValue?.split(",")?.map(String::toInt),
-                )
+                IntArray::class.serializer().descriptor.serialName ->
+                    entity.intArray(propertyName) to
+                        defaultValue?.split(",")?.map(String::toInt)
 
-                LongArray::class.serializer().descriptor.serialName -> entity.longArray(
-                    propertyName,
-                    defaultValue?.split(",")?.map(String::toLong),
-                )
+                LongArray::class.serializer().descriptor.serialName ->
+                    entity.longArray(propertyName) to
+                        defaultValue?.split(",")?.map(String::toLong)
 
                 else -> entity.json(
                     propertyName,
-                    serializer.childSerializer(index) as KSerializer<Any>,
-                    defaultValue,
-                )
+                    entitySerializer.childSerializer(index) as KSerializer<Any>,
+                ) to defaultValue?.let {
+                    kotlinx.serialization.json.Json.Default.decodeFromString(childSerializer, it)
+                }
             }
         }
 
         if (elementDescriptor.isNullable &&
-            descriptor.getAnnotation<PrimaryKey>()?.properties?.contains(propertyName) != true &&
-            !descriptor.hasElementAnnotation<PrimaryKey>(index) &&
-            !descriptor.hasElementAnnotation<AutoIncrement>(index) &&
-            !descriptor.hasElementAnnotation<DatabaseGenerated>(index)
-        ) entity.nullable(properties[propertyName]!!)
+            entityDescriptor.getAnnotation<PrimaryKey>()?.properties?.contains(propertyName) != true &&
+            !entityDescriptor.hasElementAnnotation<PrimaryKey>(index) &&
+            !entityDescriptor.hasElementAnnotation<AutoIncrement>(index)
+        ) property = entity.nullable(properties[propertyName]!!)
 
-        descriptor.getElementAnnotation<AutoIncrement>(index)?.let { annotation ->
-            entity.autoIncrement(properties[propertyName]!!, annotation.seqName.takeUnlessEmpty())
+        entityDescriptor.getElementAnnotation<AutoIncrement>(index)?.let { annotation ->
+            property = entity.autoIncrement(
+                    properties[propertyName]!!,
+                    annotation.seqName.takeUnlessEmpty(),
+            )
         }
 
-        descriptor.getElementAnnotation<DatabaseGenerated>(index)?.let { annotation ->
-            entity.databaseGenerated(properties[propertyName]!!)
+        if (!elementDescriptor.isEnum && defaultValue != null)
+            property = entity.defaultValue(property, default)
+
+        entityDescriptor.getElementAnnotation<DatabaseGenerated>(index)?.let { annotation ->
+            property = entity.databaseGenerated(properties[propertyName]!!)
         }
 
-        descriptor.getElementAnnotation<Index>(index)?.let { annotation ->
+        properties += propertyName to property
+
+        entityDescriptor.getElementAnnotation<Index>(index)?.let { annotation ->
             entity.index(
-                annotation.indexName.takeUnless(String::isEmpty),
-                annotation.indexType.takeUnless(String::isEmpty),
+                annotation.indexName.takeUnlessEmpty(),
+                annotation.indexType.takeUnlessEmpty(),
                 annotation.isUnique,
                 listOf(properties[propertyName]!!),
             )
         }
 
-        descriptor.getElementAnnotation<PrimaryKey>(index)?.let { annotation ->
+        entityDescriptor.getElementAnnotation<PrimaryKey>(index)?.let { annotation ->
             entity.primaryKey(
-                annotation.name.takeUnless(String::isEmpty),
+                annotation.name.takeUnlessEmpty(),
                 listOf(properties[propertyName]!!),
             )
         }
 
-        descriptor.getElementAnnotation<FkReference>(index)?.let { annotation ->
-            val foreignKey = descriptor.getElementAnnotation<ForeignKey>(index)
+        entityDescriptor.getElementAnnotation<FkReference>(index)?.let { annotation ->
+            val foreignKey = entityDescriptor.getElementAnnotation<ForeignKey>(index)
 
             entity.foreignKey(
-                (foreignKey?.name ?: annotation.name).takeUnless(String::isEmpty),
+                (foreignKey?.name ?: annotation.name).takeUnlessEmpty(),
                 listOf(
                     Tuple3(
                         properties[propertyName]!!,
@@ -418,36 +356,36 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
                         annotation.targetProperty,
                     ),
                 ),
-                foreignKey?.onUpdate?.takeUnless(String::isEmpty),
-                foreignKey?.onDelete?.takeUnless(String::isEmpty),
+                foreignKey?.onUpdate?.takeUnlessEmpty(),
+                foreignKey?.onDelete?.takeUnlessEmpty(),
             )
         }
     }
 
-    descriptor.getAnnotations<Index>().forEach { annotation ->
+    entityDescriptor.getAnnotations<Index>().forEach { annotation ->
         entity.index(
-            annotation.indexName.takeUnless(String::isEmpty),
-            annotation.indexType.takeUnless(String::isEmpty),
+            annotation.indexName.takeUnlessEmpty(),
+            annotation.indexType.takeUnlessEmpty(),
             annotation.isUnique,
             annotation.properties.map { propertyName -> properties[propertyName]!! },
         )
     }
 
-    descriptor.getAnnotation<PrimaryKey>()?.let { annotation ->
+    entityDescriptor.getAnnotation<PrimaryKey>()?.let { annotation ->
         entity.primaryKey(
-            annotation.name.takeUnless(String::isEmpty),
+            annotation.name.takeUnlessEmpty(),
             annotation.properties.map { propertyName -> properties[propertyName]!! },
         )
     }
 
-    descriptor.getAnnotations<FkReference>()
+    entityDescriptor.getAnnotations<FkReference>()
         .groupBy(FkReference::name)
         .forEach { (name, annotations) ->
-            val foreignKey = descriptor.getAnnotations<ForeignKey>()
+            val foreignKey = entityDescriptor.getAnnotations<ForeignKey>()
                 .find { annotation -> annotation.name == name }
 
             entity.foreignKey(
-                name.takeUnless(String::isEmpty),
+                name.takeUnlessEmpty(),
                 annotations.map { annotation ->
                     Tuple3(
                         properties[annotation.property]!!,
@@ -455,8 +393,8 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
                         annotation.targetProperty,
                     )
                 },
-                foreignKey?.onUpdate?.takeUnless(String::isEmpty),
-                foreignKey?.onDelete?.takeUnless(String::isEmpty),
+                foreignKey?.onUpdate?.takeUnlessEmpty(),
+                foreignKey?.onDelete?.takeUnlessEmpty(),
             )
         }
 
