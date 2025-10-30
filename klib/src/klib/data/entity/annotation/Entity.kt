@@ -183,7 +183,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
             propertyAnnotation?.name?.takeUnlessEmpty() ?: entityDescriptor.getElementName(index)
         val nullable =
             !entityDescriptor.hasElementAnnotation<NotNull>(index) && elementDescriptor.isNullable
-        val defaultValue = entityDescriptor.getAnnotation<DefaultValue>()?.value
+        val defaultValue = entityDescriptor.getAnnotation<DefaultValue>()?.value?.takeUnlessEmpty()
 
         var (property, default) = if (entityDescriptor.hasElementAnnotation<Json>(index))
             entity.json(
@@ -282,8 +282,9 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
                 ByteArray::class.serializer().descriptor.serialName ->
                     (entityDescriptor.getElementAnnotation<Binary>(index)?.let { annotation ->
                         entity.binary(
-                            propertyName,
-                            annotation.length.takeIf { length -> length > -1 })
+                                propertyName,
+                                annotation.length.takeIf { length -> length > -1 },
+                        )
                     } ?: entityDescriptor.getElementAnnotation<Blob>(index)?.let { annotation ->
                         entity.blob(propertyName, annotation.useObjectIdentifier)
                     } ?: entity.binary(propertyName, null)) to defaultValue?.encodeToByteArray()
@@ -316,15 +317,15 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
             !entityDescriptor.hasElementAnnotation<AutoIncrement>(index)
         ) property = entity.nullable(properties[propertyName]!!)
 
+        if (!elementDescriptor.isEnum && entityDescriptor.hasElementAnnotation<DefaultValue>(index))
+            property = entity.defaultValue(property, default)
+
         entityDescriptor.getElementAnnotation<AutoIncrement>(index)?.let { annotation ->
             property = entity.autoIncrement(
-                properties[propertyName]!!,
-                annotation.seqName.takeUnlessEmpty()
+                    properties[propertyName]!!,
+                    annotation.seqName.takeUnlessEmpty(),
             )
         }
-
-        if (!elementDescriptor.isEnum && defaultValue != null)
-            property = entity.defaultValue(property, default)
 
         entityDescriptor.getElementAnnotation<DatabaseGenerated>(index)?.let { annotation ->
             property = entity.databaseGenerated(properties[propertyName]!!)
