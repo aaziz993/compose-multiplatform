@@ -115,8 +115,9 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
         propertyName: String,
         length: Int?,
         propertyDescriptor: SerialDescriptor,
+        nullable: Boolean,
         defaultValue: String?,
-    ) -> C = { _, _, _, _ ->
+    ) -> C = { _, _, _, _, _ ->
         throw UnsupportedOperationException()
     },
     uByteArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
@@ -165,7 +166,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
     val entitySerializer = serializer()
     val entityDescriptor = serializer().descriptor
     val entityAnnotation = entityDescriptor.getAnnotation<Entity>()
-        ?: error("Missing Entity annotation")
+        ?: error("Missing Entity annotation on '$qualifiedName'")
     val entity =
         table(entityAnnotation.name.takeUnlessEmpty() ?: entityDescriptor.serialName.toSnakeCase())
     val properties = mutableMapOf<String, C>()
@@ -180,6 +181,8 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
         val propertyAnnotation = entityDescriptor.getElementAnnotation<Property>(index)
         val propertyName =
             propertyAnnotation?.name?.takeUnlessEmpty() ?: entityDescriptor.getElementName(index)
+        val nullable =
+            !entityDescriptor.hasElementAnnotation<NotNull>(index) && elementDescriptor.isNullable
         val defaultValue = entityDescriptor.getAnnotation<DefaultValue>()?.value
 
         var (property, default) = if (entityDescriptor.hasElementAnnotation<Json>(index))
@@ -200,6 +203,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
             propertyName,
             entityDescriptor.getElementAnnotation<Enum>(index)?.length,
             elementDescriptor,
+            nullable,
             defaultValue,
         ) to null
         else when (elementDescriptor.primitiveTypeOrNull?.withNullability(false)) {
@@ -278,9 +282,8 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
                 ByteArray::class.serializer().descriptor.serialName ->
                     (entityDescriptor.getElementAnnotation<Binary>(index)?.let { annotation ->
                         entity.binary(
-                                propertyName,
-                                annotation.length.takeIf { length -> length > -1 },
-                        )
+                            propertyName,
+                            annotation.length.takeIf { length -> length > -1 })
                     } ?: entityDescriptor.getElementAnnotation<Blob>(index)?.let { annotation ->
                         entity.blob(propertyName, annotation.useObjectIdentifier)
                     } ?: entity.binary(propertyName, null)) to defaultValue?.encodeToByteArray()
@@ -306,7 +309,8 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
             }
         }
 
-        if (elementDescriptor.isNullable &&
+        if (nullable &&
+            !elementDescriptor.isEnum &&
             entityDescriptor.getAnnotation<PrimaryKey>()?.properties?.contains(propertyName) != true &&
             !entityDescriptor.hasElementAnnotation<PrimaryKey>(index) &&
             !entityDescriptor.hasElementAnnotation<AutoIncrement>(index)
@@ -314,8 +318,8 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
 
         entityDescriptor.getElementAnnotation<AutoIncrement>(index)?.let { annotation ->
             property = entity.autoIncrement(
-                    properties[propertyName]!!,
-                    annotation.seqName.takeUnlessEmpty(),
+                properties[propertyName]!!,
+                annotation.seqName.takeUnlessEmpty()
             )
         }
 
