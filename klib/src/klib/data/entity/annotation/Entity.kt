@@ -115,11 +115,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
         propertyName: String,
         length: Int?,
         propertyDescriptor: SerialDescriptor,
-        nullable: Boolean,
-        defaultValue: String?,
-    ) -> C = { _, _, _, _, _ ->
-        throw UnsupportedOperationException()
-    },
+    ) -> C = { _, _, _ -> throw UnsupportedOperationException() },
     uByteArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
     uShortArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
     uIntArray: T.(propertyName: String) -> C = { throw UnsupportedOperationException() },
@@ -140,8 +136,15 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
         throw UnsupportedOperationException()
     },
     nullable: T.(property: C) -> C = { throw UnsupportedOperationException() },
-    defaultValue: T.(property: C, value: Any?) -> C = { _, _ -> throw UnsupportedOperationException() },
-    autoIncrement: T.(property: C, seqName: String?) -> C = { _, _ -> throw UnsupportedOperationException() },
+    enumDefaultValue: (propertyDescriptor: SerialDescriptor, value: String?) -> Any? = { _, _ ->
+        throw UnsupportedOperationException()
+    },
+    defaultValue: T.(property: C, value: Any?) -> C = { _, _ ->
+        throw UnsupportedOperationException()
+    },
+    autoIncrement: T.(property: C, seqName: String?) -> C = { _, _ ->
+        throw UnsupportedOperationException()
+    },
     databaseGenerated: T.(property: C) -> C = { throw UnsupportedOperationException() },
     index: T.(
         indexName: String?,
@@ -203,9 +206,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
             propertyName,
             entityDescriptor.getElementAnnotation<Enum>(index)?.length,
             elementDescriptor,
-            nullable,
-            defaultValue,
-        ) to null
+        ) to defaultValue?.let { enumDefaultValue(elementDescriptor, it) }
         else when (elementDescriptor.primitiveTypeOrNull?.withNullability(false)) {
             typeOf<Boolean>() -> entity.boolean(propertyName) to defaultValue?.toBoolean()
 
@@ -282,8 +283,8 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
                 ByteArray::class.serializer().descriptor.serialName ->
                     (entityDescriptor.getElementAnnotation<Binary>(index)?.let { annotation ->
                         entity.binary(
-                                propertyName,
-                                annotation.length.takeIf { length -> length > -1 },
+                            propertyName,
+                            annotation.length.takeIf { length -> length > -1 },
                         )
                     } ?: entityDescriptor.getElementAnnotation<Blob>(index)?.let { annotation ->
                         entity.blob(propertyName, annotation.useObjectIdentifier)
@@ -311,19 +312,18 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
         }
 
         if (nullable &&
-            !elementDescriptor.isEnum &&
             entityDescriptor.getAnnotation<PrimaryKey>()?.properties?.contains(propertyName) != true &&
             !entityDescriptor.hasElementAnnotation<PrimaryKey>(index) &&
             !entityDescriptor.hasElementAnnotation<AutoIncrement>(index)
         ) property = entity.nullable(properties[propertyName]!!)
 
-        if (!elementDescriptor.isEnum && entityDescriptor.hasElementAnnotation<DefaultValue>(index))
+        if (defaultValue != null)
             property = entity.defaultValue(property, default)
 
         entityDescriptor.getElementAnnotation<AutoIncrement>(index)?.let { annotation ->
             property = entity.autoIncrement(
-                    properties[propertyName]!!,
-                    annotation.seqName.takeUnlessEmpty(),
+                properties[propertyName]!!,
+                annotation.seqName.takeUnlessEmpty(),
             )
         }
 
