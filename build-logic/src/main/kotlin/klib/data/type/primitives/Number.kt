@@ -576,6 +576,9 @@ public val BigInteger.Companion.DEFAULT: BigInteger
 
 public fun BigInteger.Companion.parseOrNull(s: String): BigInteger? = s.runCatching { parseString(this) }.getOrNull()
 
+public fun String.toBigInteger(): BigInteger = BigInteger.parseString(this)
+public fun String.toBigIntegerOrNull(): BigInteger? = BigInteger.parseOrNull(this)
+
 public fun BigInteger.normalize(maxValue: BigInteger): BigDecimal =
     BigDecimal.fromBigInteger(this).divide(BigDecimal.fromBigInteger(maxValue))
 
@@ -592,9 +595,10 @@ public val BigDecimal.Companion.DEFAULT: BigDecimal
 
 public fun BigDecimal.Companion.parseOrNull(s: String): BigDecimal? = s.runCatching { parseString(this) }.getOrNull()
 
-/////////////////////////////////////////////////////NUMBER/////////////////////////////////////////////////////////////
-public fun String.toBigInteger(): BigInteger = BigInteger.parseString(this)
+public fun String.toBigDecimal(): BigDecimal = BigDecimal.parseString(this)
+public fun String.toBigDecimalOrNull(): BigDecimal? = BigDecimal.parseOrNull(this)
 
+/////////////////////////////////////////////////////NUMBER/////////////////////////////////////////////////////////////
 public fun Number.toBigInteger(): BigInteger = toString().toBigInteger()
 
 public fun Any.toBigInteger(): BigInteger = when (this) {
@@ -605,8 +609,6 @@ public fun Any.toBigInteger(): BigInteger = when (this) {
     is Long -> BigInteger(this)
     else -> BigInteger.parseString(toString())
 }
-
-public fun String.toBigDecimal(): BigDecimal = BigDecimal.parseString(this)
 
 public fun Number.toBigDecimal(): BigDecimal = toString().toBigDecimal()
 
