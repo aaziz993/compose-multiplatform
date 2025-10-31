@@ -188,7 +188,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
             !entityDescriptor.hasElementAnnotation<NotNull>(index) && elementDescriptor.isNullable
         val defaultValue = entityDescriptor.getAnnotation<DefaultValue>()?.value?.takeUnlessEmpty()
 
-        var (property, default) = if (entityDescriptor.hasElementAnnotation<Json>(index))
+        val (property, default) = if (entityDescriptor.hasElementAnnotation<Json>(index))
             entity.json(
                 propertyName,
                 childSerializer,
@@ -245,14 +245,10 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
                 } ?: entityDescriptor.getElementAnnotation<Text>(index)?.let { annotation ->
                     entity.text(
                         propertyName,
-                        annotation.collate,
+                        annotation.collate.takeUnlessEmpty(),
                         annotation.eagerLoading,
                     )
-                } ?: entity.varchar(
-                    propertyName,
-                    255,
-                    null,
-                )) to defaultValue
+                } ?: entity.varchar(propertyName, 255, null)) to defaultValue
 
             typeOf<Duration>() -> entity.duration(propertyName) to defaultValue?.toDuration()
             typeOf<Instant>() -> entity.instant(propertyName) to defaultValue?.toInstant()
@@ -283,8 +279,8 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
                 ByteArray::class.serializer().descriptor.serialName ->
                     (entityDescriptor.getElementAnnotation<Binary>(index)?.let { annotation ->
                         entity.binary(
-                            propertyName,
-                            annotation.length.takeIf { length -> length > -1 },
+                                propertyName,
+                                annotation.length.takeIf { length -> length > -1 },
                         )
                     } ?: entityDescriptor.getElementAnnotation<Blob>(index)?.let { annotation ->
                         entity.blob(propertyName, annotation.useObjectIdentifier)
@@ -311,27 +307,27 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
             }
         }
 
+        properties += propertyName to property
+
         if (nullable &&
             entityDescriptor.getAnnotation<PrimaryKey>()?.properties?.contains(propertyName) != true &&
             !entityDescriptor.hasElementAnnotation<PrimaryKey>(index) &&
             !entityDescriptor.hasElementAnnotation<AutoIncrement>(index)
-        ) property = entity.nullable(properties[propertyName]!!)
+        ) properties += propertyName to entity.nullable(properties[propertyName]!!)
 
         if (defaultValue != null)
-            property = entity.defaultValue(property, default)
+            properties += propertyName to entity.defaultValue(properties[propertyName]!!, default)
 
         entityDescriptor.getElementAnnotation<AutoIncrement>(index)?.let { annotation ->
-            property = entity.autoIncrement(
-                properties[propertyName]!!,
-                annotation.seqName.takeUnlessEmpty(),
+            properties += propertyName to entity.autoIncrement(
+                    properties[propertyName]!!,
+                    annotation.seqName.takeUnlessEmpty(),
             )
         }
 
         entityDescriptor.getElementAnnotation<DatabaseGenerated>(index)?.let { annotation ->
-            property = entity.databaseGenerated(properties[propertyName]!!)
+            properties += propertyName to entity.databaseGenerated(properties[propertyName]!!)
         }
-
-        properties += propertyName to property
 
         entityDescriptor.getElementAnnotation<Index>(index)?.let { annotation ->
             entity.index(
