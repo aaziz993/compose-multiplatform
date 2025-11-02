@@ -2,6 +2,7 @@ package klib.data.cache.room
 
 import klib.data.cache.CoroutineCache
 import klib.data.cache.room.model.KeyValue
+import klib.data.db.room.KlibDatabase
 
 @Suppress("UNCHECKED_CAST")
 public class RoomCache<K, V>(
@@ -9,7 +10,7 @@ public class RoomCache<K, V>(
     private val keyDecoder: (String?) -> K = { key -> key as K },
     private val valueEncoder: (V) -> String? = { value -> value as String? },
     private val valueDecoder: (String?) -> V = { value -> value as V },
-    database: CacheDatabase
+    database: KlibDatabase
 ) : CoroutineCache<K, V> {
 
     private val dao = database.getDao()

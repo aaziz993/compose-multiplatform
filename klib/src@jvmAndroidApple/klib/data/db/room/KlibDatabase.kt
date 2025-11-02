@@ -1,4 +1,4 @@
-package klib.data.cache.room
+package klib.data.db.room
 
 import androidx.room.ConstructedBy
 import androidx.room.Database
@@ -7,18 +7,17 @@ import androidx.room.RoomDatabaseConstructor
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.sqlite.execSQL
+import klib.data.cache.room.KeyValueDao
 import klib.data.cache.room.model.KeyValue
 import klib.data.coroutines.StandardDispatchers
-import klib.data.db.room.createInMemoryRoomDatabaseBuilder
-import klib.data.db.room.createRoomDatabaseBuilder
 
 @Database(entities = [KeyValue::class], version = 1)
-@ConstructedBy(CacheDatabaseConstructor::class)
-public abstract class CacheDatabase : RoomDatabase() {
+@ConstructedBy(KlibDatabaseConstructor::class)
+public abstract class KlibDatabase : RoomDatabase() {
 
     public abstract fun getDao(): KeyValueDao
 
-    public companion object {
+    public companion object Companion {
 
         public val callback: Callback = object : Callback() {
             override fun onCreate(connection: SQLiteConnection) {
@@ -41,19 +40,19 @@ public abstract class CacheDatabase : RoomDatabase() {
 
 // The Room compiler generates the `actual` implementations.
 @Suppress("KotlinNoActualForExpect")
-public expect object CacheDatabaseConstructor : RoomDatabaseConstructor<CacheDatabase> {
+public expect object KlibDatabaseConstructor : RoomDatabaseConstructor<KlibDatabase> {
 
-    override fun initialize(): CacheDatabase
+    override fun initialize(): KlibDatabase
 }
 
-public fun createRoomCacheDatabaseBuilder(databaseName: String): RoomDatabase.Builder<CacheDatabase> =
-    createRoomDatabaseBuilder<CacheDatabase>(databaseName)
+public fun createRoomKlibDatabaseBuilder(databaseName: String): RoomDatabase.Builder<KlibDatabase> =
+    createRoomDatabaseBuilder<KlibDatabase>(databaseName)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(StandardDispatchers.io)
-        .addCallback(CacheDatabase.callback)
+        .addCallback(KlibDatabase.callback)
 
-public fun createInMemoryRoomCacheDatabaseBuilder(): RoomDatabase.Builder<CacheDatabase> =
-    createInMemoryRoomDatabaseBuilder<CacheDatabase>()
+public fun createInMemoryRoomKlibDatabaseBuilder(): RoomDatabase.Builder<KlibDatabase> =
+    createInMemoryRoomDatabaseBuilder<KlibDatabase>()
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(StandardDispatchers.io)
-        .addCallback(CacheDatabase.callback)
+        .addCallback(KlibDatabase.callback)

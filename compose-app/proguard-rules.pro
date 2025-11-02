@@ -11,6 +11,9 @@
 -keep class kotlinx.serialization.** { *; }
 -keepclassmembers class kotlinx.serialization.** { *; }
 
+# Room.
+-keep class * extends androidx.room.RoomDatabase { <init>(); }
+
 # ===================================================
 # 2. Jetpack Compose / UI
 # ===================================================
