@@ -45,8 +45,8 @@ public expect object KlibDatabaseConstructor : RoomDatabaseConstructor<KlibDatab
     override fun initialize(): KlibDatabase
 }
 
-public fun createRoomKlibDatabaseBuilder(databaseName: String): RoomDatabase.Builder<KlibDatabase> =
-    createRoomDatabaseBuilder<KlibDatabase>(databaseName)
+public fun createRoomKlibDatabaseBuilder(): RoomDatabase.Builder<KlibDatabase> =
+    createRoomDatabaseBuilder<KlibDatabase>("KlibDatabase")
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(StandardDispatchers.io)
         .addCallback(KlibDatabase.callback)

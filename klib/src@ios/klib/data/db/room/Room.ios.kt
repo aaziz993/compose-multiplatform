@@ -2,12 +2,14 @@ package klib.data.db.room
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.util.findDatabaseConstructorAndInitDatabaseImpl
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSUserDomainMask
 
 public actual inline fun <reified T : RoomDatabase> createRoomDatabaseBuilder(
-    databaseName: String
+    databaseName: String,
+    noinline factory: (() -> T)?,
 ): RoomDatabase.Builder<T> = Room.databaseBuilder(
     requireNotNull(
         NSFileManager.defaultManager.URLForDirectory(
@@ -18,7 +20,10 @@ public actual inline fun <reified T : RoomDatabase> createRoomDatabaseBuilder(
             error = null,
         )?.path,
     ) + "/$databaseName",
+    factory ?: { findDatabaseConstructorAndInitDatabaseImpl(T::class) },
 )
 
-public actual inline fun <reified T : RoomDatabase> createInMemoryRoomDatabaseBuilder(): RoomDatabase.Builder<T> =
-    Room.inMemoryDatabaseBuilder()
+public actual inline fun <reified T : RoomDatabase> createInMemoryRoomDatabaseBuilder(
+    noinline factory: (() -> T)?,
+): RoomDatabase.Builder<T> =
+    Room.inMemoryDatabaseBuilder(factory ?: { findDatabaseConstructorAndInitDatabaseImpl(T::class) })
