@@ -3,6 +3,7 @@ package klib.data.type.collections
 import klib.data.type.collections.list.add
 import klib.data.type.collections.list.updateFirst
 import klib.data.type.collections.list.updateLast
+import klib.data.type.collections.list.whileIndexed
 import klib.data.type.collections.map.with
 import klib.data.type.functions.Equator
 import klib.data.type.functions.Merger
@@ -229,6 +230,24 @@ public fun <E> Iterable<E>.pair(): Pair<E, E> {
 public fun Iterable<Boolean>.all(): Boolean = all { it }
 
 public fun Iterable<Boolean>.ifAll(action: () -> Unit): Boolean? = all().ifTrue(action)
+
+public fun <E : Any> Iterable<E>.sortedByReferences(references: E.(Iterable<E>) -> Collection<E>): List<E> {
+    val (independents, dependants) = map { element ->
+        element to element.references(this).toMutableList()
+    }.partition { (_, references) -> references.isEmpty() }
+        .let { it.first.map(Pair<E, *>::first).toMutableList() to it.second }
+
+    independents.whileIndexed { _, entity ->
+        dependants.forEach { (dependant, references) ->
+            if (references.remove(entity) && references.isEmpty())
+                independents.add(dependant)
+        }
+    }
+
+    check(independents.size == size) { "Circular dependency detected!" }
+
+    return independents
+}
 
 @Suppress("UNCHECKED_CAST")
 public inline fun <K, V : Any> Iterable<K>.associateWithNotNull(valueSelector: (K) -> V?): Map<K, V> =
