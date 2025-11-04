@@ -231,7 +231,7 @@ public fun Iterable<Boolean>.all(): Boolean = all { it }
 
 public fun Iterable<Boolean>.ifAll(action: () -> Unit): Boolean? = all().ifTrue(action)
 
-public fun <E : Any> Iterable<E>.sortedByReferences(references: E.(Iterable<E>) -> Collection<E>): List<E> {
+public fun <E : Any> Iterable<E>.sortedByReferences(references: E.(Iterable<E>) -> Iterable<E>): List<E> {
     val (independents, dependants) = map { element ->
         element to element.references(this).toMutableList()
     }.partition { (_, references) -> references.isEmpty() }
