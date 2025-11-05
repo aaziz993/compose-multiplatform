@@ -8,6 +8,8 @@ import app.cash.sqldelight.db.SqlSchema
 import app.cash.sqldelight.driver.worker.createDefaultWebWorkerDriver
 import kotlin.js.ExperimentalWasmJsInterop
 
+public actual fun deleteSqlDelightDatabase(databaseName: String) {}
+
 public actual fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.Value<Unit>>,
     databaseName: String
@@ -16,7 +18,7 @@ public actual fun createSQLDelightDriver(
 public actual suspend fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
     databaseName: String
-): SqlDriver = createDefaultWebWorkerDriver().also { schema.create(it).await() }
+): SqlDriver = createDefaultWebWorkerDriver().also { driver -> schema.create(driver).await() }
 
 public actual fun createInMemorySQLDelightDriver(
     schema: SqlSchema<QueryResult.Value<Unit>>,

@@ -4,7 +4,16 @@ import android.annotation.SuppressLint
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.util.findAndInstantiateDatabaseImpl
+import java.io.File
 import splitties.init.appCtx
+
+public actual fun deleteRoomDatabase(databaseName: String) {
+    val dbFile = appCtx.getDatabasePath(databaseName)
+    if (dbFile.exists()) dbFile.delete()
+
+    // Remove journal files if needed.
+    listOf("-shm", "-wal").map { suffix -> File(dbFile.path + suffix) }.forEach(File::delete)
+}
 
 @SuppressLint("RestrictedApi")
 public actual inline fun <reified T : RoomDatabase> createRoomDatabaseBuilder(

@@ -7,6 +7,20 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSUserDomainMask
 
+public actual fun deleteRoomDatabase(databaseName: String) {
+    val documentsPath = NSFileManager.defaultManager.URLForDirectory(
+        directory = NSDocumentDirectory,
+        inDomain = NSUserDomainMask,
+        appropriateForURL = null,
+        create = false,
+        error = null,
+    )?.path ?: return
+
+    val dbFile = "$documentsPath/$databaseName"
+    val fm = NSFileManager.defaultManager
+    if (fm.fileExistsAtPath(dbFile)) fm.removeItemAtPath(dbFile, null)
+}
+
 public actual inline fun <reified T : RoomDatabase> createRoomDatabaseBuilder(
     databaseName: String,
     noinline factory: (() -> T)?,

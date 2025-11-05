@@ -4,6 +4,8 @@ import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
 
+public expect fun deleteSqlDelightDatabase(databaseName: String)
+
 public expect fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.Value<Unit>>,
     databaseName: String
@@ -33,7 +35,6 @@ public fun createInMemorySQLDelightDatabase(
     schema: SqlSchema<QueryResult.Value<Unit>>,
     databaseName: String,
 ): SQLDelightDatabase = SQLDelightDatabase(createSQLDelightDriver(schema, databaseName))
-
 
 public suspend fun createSQLDelightDatabase(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,

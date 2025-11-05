@@ -6,12 +6,17 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import java.io.File
 import splitties.init.appCtx
+
+public actual fun deleteSqlDelightDatabase(databaseName: String) {
+    appCtx.deleteDatabase(databaseName)
+}
 
 public actual fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.Value<Unit>>,
     databaseName: String
-): SqlDriver = AndroidSqliteDriver(schema, appCtx, "$databaseName.db")
+): SqlDriver = AndroidSqliteDriver(schema, appCtx, databaseName)
 
 public actual suspend fun createSQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
@@ -26,4 +31,4 @@ public actual fun createInMemorySQLDelightDriver(
 public actual suspend fun createInMemorySQLDelightDriver(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
     databaseName: String
-): SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also { schema.create(it).await() }
+): SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also { driver -> schema.create(driver).await() }

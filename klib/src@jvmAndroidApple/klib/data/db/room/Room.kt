@@ -2,6 +2,8 @@ package klib.data.db.room
 
 import androidx.room.RoomDatabase
 
+public expect fun deleteRoomDatabase(databaseName: String)
+
 public expect inline fun <reified T : RoomDatabase> createRoomDatabaseBuilder(
     databaseName: String,
     noinline factory: (() -> T)? = null,

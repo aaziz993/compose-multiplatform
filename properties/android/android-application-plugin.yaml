@@ -192,7 +192,7 @@ script:
       testOptions:
         unitTests:
           isIncludeAndroidResources: true
-          # On Android unit tests will complain about not supplying default values or not being mocked. You will want to include the following.
+          # On Android unit tests will complain about not supplying default values or not being mocked. You will want to include the following. See https://github.com/DiamondEdge1/KmLogging
           isReturnDefaultValues: true
 
   - dependencies:
