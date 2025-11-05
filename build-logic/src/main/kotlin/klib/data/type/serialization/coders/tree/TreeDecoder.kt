@@ -121,11 +121,12 @@ public open class TreeDecoder(
             else value
         }
 
-        override fun decodeSerializableValueMark(): Boolean = !decodeComputeValueMark()
+        override fun decodeSerializableValueMark(): Boolean = !decodeComputeValueMark() &&
+            configuration.serializableValueMark(descriptor, decodeElementIndex())
 
         private fun decodeComputeValueMark(): Boolean =
             descriptor.hasElementAnnotation<SerialScript>(decodeElementIndex()) ||
-                    descriptor.hasElementAnnotation<SerialScript>(decodeElementIndex())
+                descriptor.hasElementAnnotation<SerialScript>(decodeElementIndex())
 
         final override fun decodeNotNullMark(): Boolean = configuration.decodeNotNullMark(decodeNullableValue())
 

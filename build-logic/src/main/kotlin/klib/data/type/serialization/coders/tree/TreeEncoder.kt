@@ -30,6 +30,8 @@ public open class TreeEncoder(
         this.value = value
     }
 
+    protected open fun encodeSerializableValueMark(): Boolean = true
+
     final override fun encodeValue(value: Any): Unit = encodeNullableValue(value)
 
     final override fun encodeNull(): Unit = encodeNullableValue(null)
@@ -38,8 +40,11 @@ public open class TreeEncoder(
         encodeValue(enumDescriptor.getElementName(index))
 
     final override fun <T> encodeSerializableValue(serializer: SerializationStrategy<T>, value: T) {
-        if (!encodePolymorphically(serializer, value, configuration.classDiscriminator))
-            super.encodeSerializableValue(serializer, value)
+        if (encodeSerializableValueMark()) {
+            if (!encodePolymorphically(serializer, value, configuration.classDiscriminator))
+                super.encodeSerializableValue(serializer, value)
+        }
+        else encodeNullableValue(value)
     }
 
     final override fun beginCollection(descriptor: SerialDescriptor, collectionSize: Int): CompositeEncoder =
@@ -60,6 +65,8 @@ public open class TreeEncoder(
         protected val values: ArrayList<Any?> = ArrayList(collectionSize)
 
         protected var index = 0
+
+        override fun encodeSerializableValueMark(): Boolean = configuration.serializableValueMark(descriptor, index)
 
         final override fun endStructure(descriptor: SerialDescriptor) =
             this@TreeEncoder.encodeValue(value!!)
@@ -108,7 +115,7 @@ public open class TreeEncoder(
         descriptor,
         (0 until descriptor.elementsCount).count { index ->
             !(descriptor.hasElementAnnotation<TypeSerial>(index) ||
-                    descriptor.hasElementAnnotation<SerialContext>(index))
+                descriptor.hasElementAnnotation<SerialContext>(index))
         } * 2,
     ) {
 

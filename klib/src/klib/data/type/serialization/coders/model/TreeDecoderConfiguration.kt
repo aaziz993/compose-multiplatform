@@ -9,6 +9,7 @@ public open class TreeDecoderConfiguration(
     public var decodeEnumsCaseInsensitive: Boolean = false,
     public var ignoreUnknownKeys: (SerialDescriptor) -> Boolean = { true },
     public var decodeNotNullMark: (value: Any?) -> Boolean = { value -> value != null },
+    override var serializableValueMark: (SerialDescriptor, index: Int) -> Boolean = { _, _ -> true },
     override var classDiscriminator: (SerialDescriptor) -> String = { descriptor -> descriptor.classDiscriminator },
     override var filterElement: (SerialDescriptor, Int, Any?) -> Boolean = { _, _, _ -> true },
     override var transformElement: (SerialDescriptor, Int, Any?) -> Any? = { _, index, element -> element },
