@@ -92,7 +92,7 @@ script:
       createHooks: (true)
   - dependencyResolutionManagement:
       repositories:
-        # For the Android plugin and dependencies
+        # For the Android plugin and dependencies.
         - google: |
             { repository ->
               repository.mavenContent { mavenContent ->
@@ -102,15 +102,17 @@ script:
               }
             }
         - mavenCentral: ()
-        # For other Gradle plugins
+        # For other Gradle plugins.
         - gradlePluginPortal: ()
-        # For dev versions of kotlin
+        # For dev versions of kotlin.
         - maven: ("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
-        # For dev versions of compose plugin and dependencies
+        # For dev versions of compose.
+        - maven: ("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        # For dev versions of compose plugin and dependencies.
         - jetbrainsCompose: ()
-        # For compose experimental builds
+        # For compose experimental builds.
         - maven: ("https://packages.jetbrains.team/maven/p/firework/dev")
-        # Sonatype OSS Snapshot Repository
+        # Sonatype OSS Snapshot Repository.
         - maven: ("https://oss.sonatype.org/content/repositories/snapshots")
         - maven: ("https://repo.gradle.org/gradle/libs-releases")
         - maven: ("https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases")
@@ -125,7 +127,7 @@ script:
   - buildCache:
       - local:
           isEnabled: CI == null # Default is if not CI.
-      # Develocity build cache configured by default
+      # Develocity build cache configured by default.
       - remote: |
           (develocity.buildCache) { buildCache ->
             buildCache.isPush = CI != null

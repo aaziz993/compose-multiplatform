@@ -32,7 +32,7 @@ script:
                 implementation(composeLibs.material3AdaptiveNavigationSuite)
                 implementation(composeLibs.materialIconsExtended)
                 implementation(libs.bundles("androidx.lifecycle"))
-                implementation(libs.bundles("androidx.navigation"))
+                implementation(libs.bundles("nav3"))
                 implementation(libs.bundles("material3.adaptive"))
                 implementation(libs.bundles("haze"))
                 implementation(libs.bundles("compose.settings.ui"))

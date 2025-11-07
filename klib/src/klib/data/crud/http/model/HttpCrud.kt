@@ -44,8 +44,8 @@ public sealed class HttpCrud {
     public data class Delete(val predicate: Variable? = null) : HttpCrud()
 
     @Serializable
-    public data class Aggregate(
-        val aggregate: AggregateExpression<Nothing>,
+    public data class Aggregate<T>(
+        val aggregate: AggregateExpression<T>,
         val predicate: Variable? = null,
     ) : HttpCrud()
 
