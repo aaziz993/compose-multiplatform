@@ -26,12 +26,3 @@ script:
       cocoapods:
         # We don't need a podspec for a module dependency.
         - noPodspec: ()
-  # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
-  - sqldelight:
-      databases:
-        - create: |
-            ("KlibDatabase") { database ->
-              database.packageName /= "klib.data.db.sqldelight"
-              // Required by asynchronous web-worker-driver for js.
-              database.generateAsync /= true
-            }

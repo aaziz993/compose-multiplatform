@@ -45,7 +45,7 @@ public annotation class Entity(
 public fun KClass<*>.getEntityProperties(): BiMap<String, String> =
     serializer().descriptor.let { descriptor ->
         val entityAnnotation = descriptor.getAnnotation<Entity>()
-            ?: error("Missing Entity annotation on '$qualifiedName'")
+            ?: error("Missing Entity annotation on '$simpleName'")
         descriptor.elementIndices.filter { index ->
             !descriptor.hasElementAnnotation<TransientProperty>(index) &&
                 (descriptor.hasElementAnnotation<Property>(index) ||
@@ -173,7 +173,7 @@ public inline fun <T : Any, C : Any> KClass<*>.toTable(
     val entitySerializer = serializer()
     val entityDescriptor = serializer().descriptor
     val entityAnnotation = entityDescriptor.getAnnotation<Entity>()
-        ?: error("Missing Entity annotation on '$qualifiedName'")
+        ?: error("Missing Entity annotation on '$simpleName'")
     val entity =
         table(entityAnnotation.name.takeUnlessEmpty() ?: entityDescriptor.serialName.toSnakeCase())
     val properties = mutableMapOf<String, C>()

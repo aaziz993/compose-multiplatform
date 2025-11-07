@@ -222,6 +222,7 @@ dependencies {
     runtimeOnly(libs.plugins.android.application.toDep())
 
     // Apple.
+    implementation(libs.plugins.spmForKmp.toDep())
     implementation(libs.plugins.cocoapods.toDep())
 
     // Native.

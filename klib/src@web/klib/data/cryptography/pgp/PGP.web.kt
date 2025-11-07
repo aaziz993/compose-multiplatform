@@ -2,6 +2,12 @@
 
 package klib.data.cryptography.pgp
 
+import js.date.Date
+import js.objects.unsafeJso
+import js.typedarrays.Uint8Array
+import js.typedarrays.toByteArray
+import js.typedarrays.toUint8Array
+import klib.data.cryptography.MIN_RSA_KEY_SIZE
 import klib.data.cryptography.pgp.model.COMPRESSIONS
 import klib.data.cryptography.pgp.model.CURVES
 import klib.data.cryptography.pgp.model.ECC
@@ -15,18 +21,25 @@ import klib.data.cryptography.pgp.model.PGPVerification
 import klib.data.cryptography.pgp.model.PGPVerifiedResult
 import klib.data.cryptography.pgp.model.RSA
 import klib.data.cryptography.pgp.model.SYMMETRIC_ALGORITHM_MAP
-import klib.data.type.primitives.string.decodeToString
-import js.buffer.ArrayBuffer
-import js.date.Date
-import js.objects.unsafeJso
-import js.promise.catch
-import js.typedarrays.Uint8Array
-import js.typedarrays.toByteArray
-import js.typedarrays.toUint8Array
-import klib.data.cryptography.MIN_RSA_KEY_SIZE
 import klib.data.type.await
-import klib.data.type.collections.flatten
 import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.primitives.string.decodeToString
+import kotlin.Array
+import kotlin.Boolean
+import kotlin.ByteArray
+import kotlin.Double
+import kotlin.Long
+import kotlin.OptIn
+import kotlin.String
+import kotlin.Suppress
+import kotlin.collections.List
+import kotlin.collections.first
+import kotlin.collections.isNotEmpty
+import kotlin.collections.listOf
+import kotlin.collections.map
+import kotlin.collections.orEmpty
+import kotlin.collections.single
+import kotlin.collections.toTypedArray
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.js.JsString
 import kotlin.js.Promise
@@ -35,6 +48,9 @@ import kotlin.js.toJsArray
 import kotlin.js.toJsBoolean
 import kotlin.js.toJsString
 import kotlin.js.toList
+import kotlin.let
+import kotlin.require
+import kotlin.text.encodeToByteArray
 
 public actual suspend fun generatePGPKey(
     key: PGPKey,

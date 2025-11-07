@@ -7,3 +7,10 @@ script:
       - id: (libs.plugins("sqldelight").pluginId)
   - sqldelight:
       linkSqlite: true
+      databases:
+        - create: |
+            ("${pathUnderscore.uppercaseFirstChar()}Database") { database ->
+              database.packageName /= "klib.data.db.sqldelight"
+              // Required by asynchronous web-worker-driver for js.
+              database.generateAsync /= true
+            }

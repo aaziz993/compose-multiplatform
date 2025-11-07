@@ -8,6 +8,7 @@ script:
                 implementation(libs["androidx.room.runtime.ktx"])
                 implementation(libs["androidx.sqlite.bundled"])
                 implementation(libs["androidx.sqlite"])
+                implementation(libs.bundles("diglol")) // remove when wasmJs taget added.
               }
             }
         - named: |

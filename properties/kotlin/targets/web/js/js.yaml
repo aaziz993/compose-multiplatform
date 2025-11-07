@@ -33,5 +33,6 @@ script:
                 implementation(libs("kotlinWrappers")["js"])
                 implementation(libs["worldwind"])
                 implementation(libs("ktor")["client.js"])
+                implementation(libs.bundles("diglol")) // remove when wasmJs taget added.
               }
             }

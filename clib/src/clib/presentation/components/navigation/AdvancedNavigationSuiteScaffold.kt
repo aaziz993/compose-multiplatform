@@ -8,8 +8,10 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldState
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
+import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -45,10 +47,11 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
     navigator: Navigator<Dest>,
     navigationSuiteRoute: NavigationSuiteScope.(destination: NavDestination?, route: Route<Dest>) -> Unit,
     modifier: Modifier = Modifier,
+    layoutType: NavigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo()),
     navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
-    layoutType: NavigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo()),
+    state: NavigationSuiteScaffoldState = rememberNavigationSuiteScaffoldState(),
     navController: NavHostController = rememberNavController(),
     onNavHostReady: suspend (NavController) -> Unit = {},
     content: @Composable () -> Unit
@@ -70,17 +73,17 @@ public fun <Dest : Any> AdvancedNavigationSuiteScaffold(
             navigator::navigate,
         ) {
             NavigationSuiteScaffold(
-                {
+                navigationSuiteItems = {
                     route.routes.forEach { route -> navigationSuiteRoute(destination, route) }
                 },
-                modifier,
-                layoutType,
-                navigationSuiteColors,
-                containerColor,
-                contentColor,
-            ) {
-                content()
-            }
+                modifier = modifier,
+                layoutType = layoutType,
+                navigationSuiteColors = navigationSuiteColors,
+                containerColor = containerColor,
+                contentColor = contentColor,
+                state = state,
+                content = content,
+            )
         }
     }
 

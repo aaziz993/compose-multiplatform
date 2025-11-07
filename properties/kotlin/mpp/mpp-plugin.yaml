@@ -17,14 +17,14 @@ script:
                 implementation(libs["javamath2kmp"])
                 implementation(libs["kotlinx.uuid.core"])
                 implementation(libs.bundles("fleeksoft.charset"))
-                // implementation(libs.bundles("diglol"))
+                // implementation(libs.bundles("diglol")) // uncomment when wasmJs target added.
                 implementation(libs["kotlin.codepoints"])
                 implementation(libs["highlights"])
                 implementation(libs.bundles("kmputils"))
                 implementation(libs.bundles("kotlinx.serialization"))
                 implementation(libs.bundles("serialization"))
                 implementation(libs.bundles("ksoup"))
-                // implementation(libs["rssparser"]) // no js target
+                implementation(libs["rssparser"])
                 implementation(libs["xmpcore"])
                 implementation(libs["jsonpathkt.kotlinx"])
                 implementation(libs.bundles("coroutines"))
@@ -33,8 +33,8 @@ script:
                 implementation(libs["kim"])
                 implementation(libs.bundles("arrow"))
                 implementation(libs["cache4k"])
-                // implementation(libs.bundles("kache"))
                 implementation(libs.bundles("kotlinx.io"))
+                implementation(libs["okio"])
                 implementation(libs.bundles("multiplatform.settings"))
                 implementation(libs["kstore"])
                 implementation(libs.bundles("sqldelight"))
@@ -60,7 +60,6 @@ script:
                 implementation(libs["semver"])
                 implementation(libs["kotlinx.benchmark.runtime"])
                 implementation(libs["androidx.paging.common"])
-                // implementation(libs.bundles("opentelemetry"))
               }
             }
         - named: |

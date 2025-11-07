@@ -4,11 +4,9 @@ import gradle.api.initialization.settingsScript
 import gradle.api.project.sensitive
 import gradle.api.project.sensitiveOrElse
 import gradle.api.project.settings
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.Date
-import org.bouncycastle.bcpg.ArmoredOutputStream
-import org.bouncycastle.openpgp.PGPSecretKeyRing
+import org.bouncycastle.openpgp.api.OpenPGPKey
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
@@ -52,7 +50,7 @@ public fun SigningExtension.useGpg(
             nameEmail,
             nameComment,
             expire,
-        ).toAsciiArmored().also(keyFile::writeText)
+        ).toAsciiArmoredString().also(keyFile::writeText)
 
     project.signing.useInMemoryPgpKeys(key, password)
 }
@@ -71,42 +69,41 @@ private fun PGPainless.Companion.modernKeyRing(
     nameEmail: String = "",
     nameComment: String = "",
     expire: Long = 0L
-): PGPSecretKeyRing =
-    buildKeyRing()
-        .apply {
-            setPrimaryKey(
-                getBuilder(
-                    keyType.toKeyType(keyParam), KeyFlag.CERTIFY_OTHER,
-                ),
-            )
-            addSubkey(
-                getBuilder(
-                    subkeyType.toKeyType(subkeyParam),
-                    KeyFlag.ENCRYPT_COMMS,
-                    KeyFlag.ENCRYPT_STORAGE,
-                ),
-            )
-            addSubkey(
-                getBuilder(KeyType.EDDSA_LEGACY(EdDSALegacyCurve._Ed25519), KeyFlag.SIGN_DATA),
-            )
-            setPassphrase(Passphrase(passphrase.toCharArray()))
+): OpenPGPKey = PGPainless.getInstance().buildKey()
+    .apply {
+        setPrimaryKey(
+            getBuilder(
+                keyType.toKeyType(keyParam), KeyFlag.CERTIFY_OTHER,
+            ),
+        )
+        addSubkey(
+            getBuilder(
+                subkeyType.toKeyType(subkeyParam),
+                KeyFlag.ENCRYPT_COMMS,
+                KeyFlag.ENCRYPT_STORAGE,
+            ),
+        )
+        addSubkey(
+            getBuilder(KeyType.EDDSA_LEGACY(EdDSALegacyCurve._Ed25519), KeyFlag.SIGN_DATA),
+        )
+        setPassphrase(Passphrase(passphrase.toCharArray()))
 
-            if (nameEmail.isNotBlank()) {
-                val userId = buildString {
-                    append(nameReal)
-                    if (nameComment.isNotBlank()) append(" ($nameComment)")
-                    append(" <$nameEmail>")
-                }
-                addUserId(userId)
+        if (nameEmail.isNotBlank()) {
+            val userId = buildString {
+                append(nameReal)
+                if (nameComment.isNotBlank()) append(" ($nameComment)")
+                append(" <$nameEmail>")
             }
-
-            // Set expiration if > 0
-            if (expire > 0L) {
-                val expireDate = Date(System.currentTimeMillis() + expire * 1000)
-                setExpirationDate(expireDate)
-            }
+            addUserId(userId)
         }
-        .build()
+
+        // Set expiration if > 0
+        if (expire > 0L) {
+            val expireDate = Date(System.currentTimeMillis() + expire * 1000)
+            setExpirationDate(expireDate)
+        }
+    }
+    .build()
 
 private fun String.toKeyType(arg: String): KeyType = when (uppercase()) {
     "EDDSA_LEGACY" -> KeyType.EDDSA_LEGACY(EdDSALegacyCurve.valueOf("_$arg"))
@@ -115,13 +112,6 @@ private fun String.toKeyType(arg: String): KeyType = when (uppercase()) {
     "RSA" -> KeyType.RSA(RsaLength.valueOf("_$arg"))
 
     else -> throw IllegalArgumentException("Unknown key type: $this")
-}
-
-private fun PGPSecretKeyRing.toAsciiArmored(): String = ByteArrayOutputStream().run {
-    ArmoredOutputStream(this).use { armor ->
-        encode(armor)
-    }
-    toString(Charsets.UTF_8.name())
 }
 
 

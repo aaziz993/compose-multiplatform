@@ -19,6 +19,7 @@ script:
                 implementation(libs["sshj"])
                 implementation(libs("ktor")["client.okhttp"])
                 implementation(libs["worldwind"])
+                implementation(libs.bundles("opentelemetry"))
               }
             }
         - named: |
