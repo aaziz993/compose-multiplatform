@@ -14,6 +14,7 @@ import kotlinx.io.Buffer
 import kotlinx.io.IOException
 import kotlinx.io.files.FileSystem
 import kotlinx.io.files.Path
+import kotlinx.io.readString
 import platform.posix.PATH_MAX
 import platform.posix.S_IFLNK
 import platform.posix.S_IFMT
@@ -29,7 +30,7 @@ public actual fun FileSystem.canonicalize(path: Path): Path {
     val fullpath = realpath(path.toString(), null)
         ?: throw errnoToIOException(errno)
     try {
-        return Buffer().writeNullTerminated(fullpath).toPath(normalize = true)
+        return Buffer().writeNullTerminated(fullpath).readString().toPath(normalize = true)
     }
     finally {
         free(fullpath)

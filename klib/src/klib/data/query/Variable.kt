@@ -14,13 +14,9 @@ import kotlin.time.Duration
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
-@Serializable
-public sealed class Variable {
+public sealed interface Operand
 
-    public fun p(alias: String? = null): Projection = Projection(this, alias)
-}
-
-public sealed interface ComparableOperand {
+public sealed interface ComparableOperand : Operand {
 
     public fun isNull(): IsNull = CompareExpression.isNull(this)
 
@@ -68,9 +64,15 @@ public inline infix fun <reified T> ComparableOperand.nin(other: Iterable<T>): N
     nin(other.v)
 
 @Serializable
+public sealed class Variable : ComparableOperand {
+
+    public fun p(alias: String? = null): Projection = Projection(this, alias)
+}
+
+@Serializable
 public sealed class ComparableVariable : Variable(), ComparableOperand
 
-public sealed interface BooleanOperand {
+public sealed interface BooleanOperand : Operand {
 
     public fun and(vararg values: BooleanOperand): And = LogicExpression.and(this, *values)
 
@@ -90,7 +92,7 @@ public sealed interface BooleanOperand {
 @Serializable
 public sealed class BooleanVariable : ComparableVariable(), BooleanOperand
 
-public sealed interface NumberOperand {
+public sealed interface NumberOperand : Operand {
 
     public fun plus(vararg values: NumberOperand): Plus =
         NumberExpression.plus(this, *values)
@@ -218,7 +220,7 @@ public sealed class BigNumberVariable : ComparableVariable(), NumberOperand
 @Serializable
 public sealed class CharVariable : ComparableVariable()
 
-public sealed interface StringOperand {
+public sealed interface StringOperand : Operand {
 
     public fun eq(
         other: StringOperand,
@@ -395,7 +397,7 @@ public sealed interface StringOperand {
 @Serializable
 public sealed class StringVariable : ComparableVariable(), StringOperand
 
-public sealed interface TimeOperand {
+public sealed interface TimeOperand : Operand {
 
     public fun time(): Time = TimeExpression.time(this)
 
@@ -543,36 +545,36 @@ public data class In(override val arguments: List<Variable>) : LogicExpression()
 @Serializable
 public data class NotIn(override val arguments: List<Variable>) : LogicExpression()
 
-public interface AggregateOperand {
+public interface AggregateOperand : Operand {
     public fun count(): Count = AggregateExpression.count(this)
 
-    public fun <T : Any> max(): Max<T> = AggregateExpression.max(this)
+    public fun <T> max(): Max<T> = AggregateExpression.max(this)
 
-    public fun <T : Any> min(): Min<T> = AggregateExpression.min(this)
+    public fun <T> min(): Min<T> = AggregateExpression.min(this)
 
-    public fun <T : Any> avg(): Avg<T> = AggregateExpression.avg(this)
+    public fun <T> avg(): Avg<T> = AggregateExpression.avg(this)
 
-    public fun <T : Any> sum(): Sum<T> = AggregateExpression.sum(this)
+    public fun <T> sum(): Sum<T> = AggregateExpression.sum(this)
 }
 
 @Suppress("UNCHECKED_CAST")
 @Serializable
-public sealed class AggregateExpression<T : Any> : Variable(), Expression {
+public sealed class AggregateExpression<T> : Variable(), Expression {
     public companion object {
 
         public fun count(variable: AggregateOperand? = null): Count =
             Count(listOfNotNull(variable) as List<Variable>)
 
-        public fun <T : Any> max(variable: AggregateOperand): Max<T> =
+        public fun <T> max(variable: AggregateOperand): Max<T> =
             Max(listOf(variable) as List<Variable>)
 
-        public fun <T : Any> min(variable: AggregateOperand): Min<T> =
+        public fun <T> min(variable: AggregateOperand): Min<T> =
             Min(listOf(variable) as List<Variable>)
 
-        public fun <T : Any> avg(variable: AggregateOperand): Avg<T> =
+        public fun <T> avg(variable: AggregateOperand): Avg<T> =
             Avg(listOf(variable) as List<Variable>)
 
-        public fun <T : Any> sum(variable: AggregateOperand): Sum<T> =
+        public fun <T> sum(variable: AggregateOperand): Sum<T> =
             Sum(listOf(variable) as List<Variable>)
     }
 }
@@ -581,16 +583,16 @@ public sealed class AggregateExpression<T : Any> : Variable(), Expression {
 public data class Count(override val arguments: List<Variable>) : AggregateExpression<Long>()
 
 @Serializable
-public data class Max<T : Any>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Max<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
 
 @Serializable
-public data class Min<T : Any>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Min<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
 
 @Serializable
-public data class Avg<T : Any>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Avg<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
 
 @Serializable
-public data class Sum<T : Any>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Sum<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
 
 @Suppress("UNCHECKED_CAST")
 @Serializable
@@ -921,7 +923,7 @@ public data class Regexp(override val arguments: List<Variable>) : LogicExpressi
 public data class Ascii(override val arguments: List<Variable>) : StringExpression()
 
 @Serializable
-public data class CharLength(override val arguments: List<Variable>) : StringExpression()
+public data class CharLength(override val arguments: List<Variable>) : NumberExpression()
 
 @Serializable
 public data class Lowercase(override val arguments: List<Variable>) : StringExpression()
@@ -1164,13 +1166,12 @@ public data object NullValue : Variable(), Value<Nothing?>, ComparableOperand, B
 }
 
 @Serializable
-public data object NothingValue : Variable(), Value<Nothing>, ComparableOperand, BooleanOperand,
+public data object UnitValue : Variable(), Value<Unit>, ComparableOperand, BooleanOperand,
     NumberOperand,
     StringOperand,
     TimeOperand {
 
-    override val value: Nothing
-        get() = throw UnsupportedOperationException("Not a value")
+    override val value: Unit = Unit
 }
 
 @Serializable
@@ -1212,7 +1213,7 @@ public val BigNumber<*>.v: BigNumberVariable
         else -> throw IllegalArgumentException("Unknown value $this")
     }
 
-public val <T>  T.v: ComparableOperand
+public val <T>  T.v: Variable
     get() = when (this) {
         null -> NullValue
         is Boolean -> v

@@ -3,7 +3,6 @@ package klib.data.fs.path
 import klib.data.fs.errnoToIOException
 import klib.data.fs.symlinkTarget
 import klib.data.type.primitive.epochMillis
-import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.io.files.Path
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
@@ -16,7 +15,6 @@ import platform.posix.errno
 import platform.posix.lstat
 import platform.posix.stat
 
-@OptIn(ExperimentalForeignApi::class)
 public actual fun Path.metadataOrNull(): PathMetadata? {
     return memScoped {
         val stat = alloc<stat>()

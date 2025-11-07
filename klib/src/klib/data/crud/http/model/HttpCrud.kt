@@ -45,7 +45,7 @@ public sealed class HttpCrud {
 
     @Serializable
     public data class Aggregate(
-        val aggregate: AggregateExpression<*>,
+        val aggregate: AggregateExpression<Nothing>,
         val predicate: Variable? = null,
     ) : HttpCrud()
 
