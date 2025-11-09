@@ -1,6 +1,7 @@
 package di.module
 
 import clib.presentation.components.auth.stateholder.AuthStateHolder
+import clib.presentation.components.navigation.Route
 import clib.presentation.components.navigation.stateholder.NavigationStateHolder
 import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
@@ -14,8 +15,8 @@ import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.Module
+import org.koin.core.annotation.Provided
 import org.koin.core.annotation.Single
-import ui.navigation.presentation.Phone
 
 @Module
 @Configuration
@@ -32,7 +33,8 @@ public class CommonModule {
     public fun provideAuthStateHolder(): AuthStateHolder = AuthStateHolder()
 
     @Single
-    public fun provideNavigator(): NavigationStateHolder = NavigationStateHolder(Phone)
+    public fun provideNavigator(@Provided startRoute: Route): NavigationStateHolder =
+        NavigationStateHolder(startRoute)
 
     @Single
     public fun provideJson(): Json = Json {

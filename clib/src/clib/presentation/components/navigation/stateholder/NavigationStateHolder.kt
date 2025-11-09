@@ -4,8 +4,11 @@ import androidx.compose.runtime.mutableStateListOf
 import clib.presentation.components.navigation.Route
 
 public class NavigationStateHolder(
-    public val startRoute: Route,
+    startRoute: Route,
 ) {
+
+    public var startRoute: Route = startRoute
+        private set
 
     public val backStack: List<Route>
         field = mutableStateListOf(startRoute)
@@ -45,8 +48,10 @@ public class NavigationStateHolder(
             is NavigationAction.NavigateAndClearCurrent ->
                 backStack[backStack.lastIndex] = action.route
 
-            is NavigationAction.NavigateAndClear ->
+            is NavigationAction.NavigateAndClear -> {
+                if (action.reset) startRoute = action.route
                 navigateAndClear(action.route)
+            }
         }
     }
 

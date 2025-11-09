@@ -42,7 +42,7 @@ public abstract class NavRoute<T : Route> {
         get() = { _, _ -> }
 
     @Composable
-    public open fun AppBar(content: @Composable () -> Unit): Unit = content()
+    public open fun ParentContent(content: @Composable () -> Unit): Unit = content()
 
     @Composable
     protected open fun Content(route: T): Unit = Unit

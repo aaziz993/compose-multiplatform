@@ -91,7 +91,7 @@ public data object Home : NavRoute<Home>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Home) {
@@ -120,7 +120,7 @@ public data object Articles : NavRoute<Articles>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Articles) {
@@ -149,7 +149,7 @@ public data object Map : NavRoute<Map>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Map) {
@@ -178,7 +178,7 @@ public data object Services : NavRoute<Services>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Services) {
@@ -207,7 +207,7 @@ public data object Settings : NavRoute<Settings>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Settings) {
@@ -241,7 +241,7 @@ public data object About : NavRoute<About>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: About) {
@@ -272,7 +272,7 @@ public data object Phone : NavRoute<Phone>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Phone) {
@@ -310,7 +310,7 @@ public data class Otp(val phone: String = "") : Route {
         }
 
         @Composable
-        override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+        override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
         @Composable
         override fun Content(route: Otp) {
@@ -344,7 +344,7 @@ public data object PinCode : NavRoute<PinCode>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: PinCode) {
@@ -377,7 +377,7 @@ public data object Login : NavRoute<Login>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Login) {
@@ -402,7 +402,7 @@ public data object ForgotPassword : NavRoute<ForgotPassword>(), Route {
     override val route: ForgotPassword? = null
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: ForgotPassword) {
@@ -423,7 +423,7 @@ public data object Unverified : NavRoute<Unverified>(), Route {
     override val route: Unverified? = null
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Unverified) {
@@ -446,7 +446,7 @@ public data object Verification : NavRoute<Verification>(), Route {
     override val route: Verification? = null
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Verification) {
@@ -473,7 +473,7 @@ public data object Verification : NavRoute<Verification>(), Route {
 public data object Profile : NavRoute<Profile>(), Route {
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Person, label, modifier)
@@ -513,7 +513,7 @@ public data object Balance : NavRoute<Balance>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Balance) {
@@ -542,7 +542,7 @@ public data object Crypto : NavRoute<Crypto>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Crypto) {
@@ -571,7 +571,7 @@ public data object Stock : NavRoute<Stock>(), Route {
     }
 
     @Composable
-    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
 
     @Composable
     override fun Content(route: Stock) {
@@ -587,8 +587,9 @@ public data object Stock : NavRoute<Stock>(), Route {
     override fun authResource(): AuthResource? = AuthResource()
 }
 
+@Suppress("FunctionName")
 @Composable
-private fun AppAppBar(content: @Composable () -> Unit) {
+private fun _ParentContent(content: @Composable () -> Unit) {
     val themeStateHolder: ThemeStateHolder = koinInject()
     val localeStateHolder: LocaleStateHolder = koinInject()
     val authStateHolder: AuthStateHolder = koinInject()

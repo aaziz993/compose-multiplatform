@@ -20,7 +20,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.window.core.layout.WindowSizeClass
@@ -52,7 +51,7 @@ public fun NavScreen(
     val currentRoute = navigationStateHolder.backStack.last()
     val drawerStateHolder: DrawerStateHolder = koinInject()
 
-    currentRoute.navRoute.AppBar {
+    currentRoute.navRoute.ParentContent {
         NavigationSuiteScaffold(
             navigationSuiteItems = {
                 Routes.items(

@@ -30,6 +30,7 @@ public fun AppEnvironment(
     lightColorSchemeHighContrast: ColorScheme = LightColorsHighContrast,
     darkColorScheme: ColorScheme = DarkColors,
     darkColorSchemeHighContrast: ColorScheme = DarkColorsHighContrast,
+    motionScheme: MotionScheme = MotionScheme.expressive(),
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = MaterialTheme.typography,
     content: @Composable () -> Unit
@@ -42,15 +43,15 @@ public fun AppEnvironment(
 ) { colorScheme ->
     MaterialExpressiveTheme(
         colorScheme = colorScheme,
-        motionScheme = MotionScheme.expressive(),
+        motionScheme = motionScheme,
         shapes = shapes,
         typography = typography,
     ) {
         CompositionLocalProvider(
-                LocalAppLocale provides locale,
-                LocalAppDensity provides customAppDensity,
-                LocalAuth provides auth,
-                content = content,
+            LocalAppLocale provides locale,
+            LocalAppDensity provides customAppDensity,
+            LocalAuth provides auth,
+            content = content,
         )
     }
 }

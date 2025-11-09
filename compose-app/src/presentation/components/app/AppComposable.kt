@@ -17,11 +17,13 @@ import clib.presentation.theme.LightColors
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import clib.di.koinInject
 import clib.presentation.components.di.AutoConnectKoinScope
+import org.koin.core.parameter.parametersOf
 import presentation.theme.DarkColorsHighContrast
 import presentation.theme.LightColorsHighContrast
 import presentation.theme.Shapes
 import presentation.theme.Typography
 import ui.navigation.presentation.Articles
+import ui.navigation.presentation.Login
 import ui.navigation.presentation.NavScreen
 import ui.navigation.presentation.Phone
 
@@ -33,7 +35,9 @@ public fun AppComposable(
     authStateHolder: AuthStateHolder = koinInject(),
     loginStartRoute: Route = Phone,
     loggedInStartRoute: Route = Articles,
-    navigationStateHolder: NavigationStateHolder = koinInject(),
+    navigationStateHolder: NavigationStateHolder = koinInject {
+        parametersOf(if (authStateHolder.state.value.user == null) loginStartRoute else loggedInStartRoute)
+    },
 ): Unit = AutoConnectKoinScope(backStack = navigationStateHolder.backStack) {
     val theme by themeStateHolder.state.collectAsStateWithLifecycle()
     val locale by localeStateHolder.state.collectAsStateWithLifecycle()
@@ -60,6 +64,7 @@ public fun AppComposable(
         navigationStateHolder.action(
             NavigationAction.NavigateAndClear(
                 if (auth.user == null) loginStartRoute else loggedInStartRoute,
+                true,
             ),
         )
     }

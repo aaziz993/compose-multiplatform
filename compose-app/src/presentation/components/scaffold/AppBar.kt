@@ -98,7 +98,6 @@ public fun AppBar(
     inputScale: HazeInputScale = HazeInputScale.Default,
     content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
-
     val auth = LocalAuth.current
     val hazeState = rememberHazeState(blurEnabled = blurEnabled)
     val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
