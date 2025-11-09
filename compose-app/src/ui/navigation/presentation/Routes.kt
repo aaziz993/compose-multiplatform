@@ -36,19 +36,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import clib.presentation.auth.stateholder.AuthStateHolder
-import clib.presentation.components.navigation.model.NavigationDestination
-import clib.presentation.components.navigation.model.NavigationRoute
-import clib.presentation.components.navigation.model.Route
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.auth.stateholder.AuthStateHolder
+import clib.presentation.components.navigation.NavRoute
+import clib.presentation.components.navigation.Route
 import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import klib.data.type.auth.AuthResource
-import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.koin.compose.koinInject
-import org.koin.compose.viewmodel.koinViewModel
+import clib.di.koinInject
+import clib.di.koinViewModel
+import clib.presentation.components.navigation.stateholder.NavigationStateHolder
 import presentation.components.scaffold.AppBar
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
@@ -73,31 +71,16 @@ import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
-public sealed interface Destination
-
-@Serializable
-public data object NavRoute : Destination, NavigationRoute<Destination>() {
-
-    override val deepLinks: List<String> = listOf("https://", "http://")
-
-    override val routes: List<Route<Destination>> =
-        listOf(
-//            Home,
-            News,
-            Map,
-            Services,
-            Settings,
-//            About,
-            AuthRoute,
-//            WalletRoute,
-        )
-
-    override fun authResource(): AuthResource? = null
-}
+public object Routes : List<Route> by listOf(
+    Articles,
+    Map,
+    Services,
+    Settings,
+)
 
 @Serializable
 @SerialName("home")
-public data object Home : Destination, NavigationDestination<Home>() {
+public data object Home : NavRoute<Home>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Home, label, modifier)
@@ -108,20 +91,16 @@ public data object Home : Destination, NavigationDestination<Home>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(
-        route: Home,
-        onNavigationAction: (NavigationAction) -> Unit,
-    ) {
+    override fun Content(route: Home) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         HomeScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -129,19 +108,8 @@ public data object Home : Destination, NavigationDestination<Home>() {
 }
 
 @Serializable
-@SerialName("news")
-public data object News : Destination, NavigationRoute<Destination>() {
-
-    override val expand: Boolean = true
-
-    override val routes: List<Route<Destination>> = listOf(Articles)
-
-    override fun authResource(): AuthResource? = AuthResource()
-}
-
-@Serializable
 @SerialName("articles")
-public data object Articles : Destination, NavigationDestination<Articles>() {
+public data object Articles : NavRoute<Articles>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Newspaper, label, modifier)
@@ -152,20 +120,16 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(
-        route: Articles,
-        onNavigationAction: (NavigationAction) -> Unit,
-    ) {
+    override fun Content(route: Articles) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         ArticlesScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -174,7 +138,7 @@ public data object Articles : Destination, NavigationDestination<Articles>() {
 
 @Serializable
 @SerialName("map")
-public data object Map : Destination, NavigationDestination<Map>() {
+public data object Map : NavRoute<Map>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Map, label, modifier)
@@ -185,17 +149,16 @@ public data object Map : Destination, NavigationDestination<Map>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Map, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Map) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         MapScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -204,7 +167,7 @@ public data object Map : Destination, NavigationDestination<Map>() {
 
 @Serializable
 @SerialName("services")
-public data object Services : Destination, NavigationDestination<Services>() {
+public data object Services : NavRoute<Services>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Apps, label, modifier)
@@ -215,20 +178,16 @@ public data object Services : Destination, NavigationDestination<Services>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(
-        route: Services,
-        onNavigationAction: (NavigationAction) -> Unit,
-    ) {
+    override fun Content(route: Services) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         ServicesScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -237,7 +196,7 @@ public data object Services : Destination, NavigationDestination<Services>() {
 
 @Serializable
 @SerialName("settings")
-public data object Settings : Destination, NavigationDestination<Settings>() {
+public data object Settings : NavRoute<Settings>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Settings, label, modifier)
@@ -248,23 +207,21 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Settings, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Settings) {
+        val scrollState = rememberScrollState()
         val themeStateHolder: ThemeStateHolder = koinInject()
         val authStateHolder: AuthStateHolder = koinInject()
-        val scrollState = rememberScrollState()
+        val navigationStateHolder: NavigationStateHolder = koinInject()
 
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             themeStateHolder::action,
             authStateHolder::action,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -273,7 +230,7 @@ public data object Settings : Destination, NavigationDestination<Settings>() {
 
 @Serializable
 @SerialName("about")
-public data object About : Destination, NavigationDestination<About>() {
+public data object About : NavRoute<About>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Info, label, modifier)
@@ -284,17 +241,16 @@ public data object About : Destination, NavigationDestination<About>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: About, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: About) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         AboutScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -302,19 +258,10 @@ public data object About : Destination, NavigationDestination<About>() {
 }
 
 @Serializable
-@SerialName("auth")
-public data object AuthRoute : Destination, NavigationRoute<Destination>() {
-
-    override val expand: Boolean = true
-
-    override val routes: List<Route<Destination>> = listOf(Phone, Otp, Unverified, Verification, PinCode, Login, ForgotPassword, Profile)
-}
-
-@Serializable
 @SerialName("phone")
-public data object Phone : Destination, NavigationDestination<Phone>() {
+public data object Phone : NavRoute<Phone>(), Route {
 
-    override val deepLinks: List<String> = listOf("phone")
+    override val route: Phone? = null
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.PersonAddAlt, label, modifier)
@@ -325,38 +272,34 @@ public data object Phone : Destination, NavigationDestination<Phone>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Phone, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Phone) {
         val viewModel: PhoneViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val navigationStateHolder: NavigationStateHolder = koinInject()
 
         PhoneScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
-
-    override fun isNavigateItem(): Boolean = false
 }
 
 @Serializable
 @SerialName("otp")
-public data class Otp(val phone: String = "") : Destination {
+public data class Otp(val phone: String = "") : Route {
 
-    public companion object : NavigationDestination<Otp>() {
+    override val navRoute: NavRoute<Route>
+        get() = Otp as NavRoute<Route>
 
-        override val route: KClass<Otp>
-            get() = Otp::class
+    public companion object : NavRoute<Otp>() {
 
-        override val deepLinks: List<String> = listOf("otp")
+        override val route: Otp? = null
 
         override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
             Icon(Icons.AutoMirrored.Outlined.Login, label, modifier)
@@ -367,32 +310,30 @@ public data class Otp(val phone: String = "") : Destination {
         }
 
         @Composable
-        override fun AppBar(
-            onNavigationAction: (NavigationAction) -> Unit,
-            content: @Composable () -> Unit
-        ): Unit = AppAppBar(onNavigationAction, content)
+        override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
         @Composable
-        override fun Screen(route: Otp, onNavigationAction: (NavigationAction) -> Unit) {
+        override fun Content(route: Otp) {
             val viewModel: OtpViewModel = koinViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val navigationStateHolder: NavigationStateHolder = koinInject()
 
             OtpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
                 route,
                 state,
                 viewModel::action,
-                onNavigationAction,
+                navigationStateHolder::action,
             )
         }
-
-        override fun isNavigateItem(): Boolean = false
     }
 }
 
 @Serializable
 @SerialName("pincode")
-public data object PinCode : Destination, NavigationDestination<PinCode>() {
+public data object PinCode : NavRoute<PinCode>(), Route {
+
+    override val route: PinCode? = null
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.PersonAddAlt, label, modifier)
@@ -403,31 +344,29 @@ public data object PinCode : Destination, NavigationDestination<PinCode>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: PinCode, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: PinCode) {
         val viewModel: PinCodeViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val navigationStateHolder: NavigationStateHolder = koinInject()
 
         PinCodeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
-
-    override fun isNavigateItem(): Boolean = false
 }
 
 @Serializable
 @SerialName("login")
-public data object Login : Destination, NavigationDestination<Login>() {
+public data object Login : NavRoute<Login>(), Route {
+
+    override val route: Login? = null
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.AutoMirrored.Outlined.Login, label, modifier)
@@ -438,114 +377,103 @@ public data object Login : Destination, NavigationDestination<Login>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Login, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Login) {
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val navigationStateHolder: NavigationStateHolder = koinInject()
 
         LoginScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
-
-    override fun isNavigateItem(): Boolean = false
 }
 
 @Serializable
 @SerialName("forgotpassword")
-public data object ForgotPassword : Destination, NavigationDestination<ForgotPassword>() {
+public data object ForgotPassword : NavRoute<ForgotPassword>(), Route {
+
+    override val route: ForgotPassword? = null
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: ForgotPassword, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: ForgotPassword) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         ForgotPasswordScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
-
-    override fun isNavigateItem(): Boolean = false
 }
 
 @Serializable
 @SerialName("unverified")
-public data object Unverified : Destination, NavigationDestination<Unverified>() {
+public data object Unverified : NavRoute<Unverified>(), Route {
+
+    override val route: Unverified? = null
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Unverified, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Unverified) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         UnverifiedScreen(
             Modifier.fillMaxSize().padding(16.dp),
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
-
-    override fun isNavigateItem(): Boolean = false
 
     override fun authResource(): AuthResource? = AuthResource()
 }
 
 @Serializable
 @SerialName("verification")
-public data object Verification : Destination, NavigationDestination<Verification>() {
+public data object Verification : NavRoute<Verification>(), Route {
+
+    override val route: Verification? = null
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Verification, onNavigationAction: (NavigationAction) -> Unit) {
-        val authStateHolder: AuthStateHolder = koinInject()
+    override fun Content(route: Verification) {
         val viewModel: VerificationViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val navigationStateHolder: NavigationStateHolder = koinInject()
 
         VerificationScreen(
             Modifier.fillMaxSize().padding(16.dp),
             route,
-            authStateHolder::action,
             state,
             viewModel::action,
-            onNavigationAction,
+            authStateHolder::action,
+            navigationStateHolder::action,
         )
     }
-
-    override fun isNavigateItem(): Boolean = false
 
     override fun authResource(): AuthResource? = AuthResource()
 }
 
 @Serializable
 @SerialName("profile")
-public data object Profile : Destination, NavigationDestination<Profile>() {
+public data object Profile : NavRoute<Profile>(), Route {
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Person, label, modifier)
@@ -556,15 +484,16 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
     }
 
     @Composable
-    override fun Screen(route: Profile, onNavigationAction: (NavigationAction) -> Unit) {
-        val authStateHolder: AuthStateHolder = koinInject()
+    override fun Content(route: Profile) {
         val scrollState = rememberScrollState()
+        val authStateHolder: AuthStateHolder = koinInject()
+        val navigationStateHolder: NavigationStateHolder = koinInject()
 
         ProfileScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             authStateHolder::action,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -572,17 +501,8 @@ public data object Profile : Destination, NavigationDestination<Profile>() {
 }
 
 @Serializable
-@SerialName("wallet")
-public data object WalletRoute : Destination, NavigationRoute<Destination>() {
-
-    override val routes: List<Route<Destination>> = listOf<Route<Destination>>(Balance, Crypto, Stock)
-
-    override fun authResource(): AuthResource? = AuthResource()
-}
-
-@Serializable
 @SerialName("balance")
-public data object Balance : Destination, NavigationDestination<Balance>() {
+public data object Balance : NavRoute<Balance>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.AccountBalance, label, modifier)
@@ -593,17 +513,16 @@ public data object Balance : Destination, NavigationDestination<Balance>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Balance, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Balance) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         BalanceScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -612,7 +531,7 @@ public data object Balance : Destination, NavigationDestination<Balance>() {
 
 @Serializable
 @SerialName("crypto")
-public data object Crypto : Destination, NavigationDestination<Crypto>() {
+public data object Crypto : NavRoute<Crypto>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.EnhancedEncryption, label, modifier)
@@ -623,17 +542,16 @@ public data object Crypto : Destination, NavigationDestination<Crypto>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Crypto, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Crypto) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         CryptoScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -642,7 +560,7 @@ public data object Crypto : Destination, NavigationDestination<Crypto>() {
 
 @Serializable
 @SerialName("stock")
-public data object Stock : Destination, NavigationDestination<Stock>() {
+public data object Stock : NavRoute<Stock>(), Route {
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.CurrencyExchange, label, modifier)
@@ -653,17 +571,16 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
     }
 
     @Composable
-    override fun AppBar(
-        onNavigationAction: (NavigationAction) -> Unit,
-        content: @Composable () -> Unit
-    ): Unit = AppAppBar(onNavigationAction, content)
+    override fun AppBar(content: @Composable () -> Unit): Unit = AppAppBar(content)
 
     @Composable
-    override fun Screen(route: Stock, onNavigationAction: (NavigationAction) -> Unit) {
+    override fun Content(route: Stock) {
+        val navigationStateHolder: NavigationStateHolder = koinInject()
+
         StockScreen(
             Modifier,
             route,
-            onNavigationAction,
+            navigationStateHolder::action,
         )
     }
 
@@ -671,29 +588,28 @@ public data object Stock : Destination, NavigationDestination<Stock>() {
 }
 
 @Composable
-private fun AppAppBar(
-    onNavigationAction: (NavigationAction) -> Unit,
-    content: @Composable () -> Unit
-) {
+private fun AppAppBar(content: @Composable () -> Unit) {
     val themeStateHolder: ThemeStateHolder = koinInject()
     val localeStateHolder: LocaleStateHolder = koinInject()
     val authStateHolder: AuthStateHolder = koinInject()
+    val navigationStateHolder: NavigationStateHolder = koinInject()
     val drawerStateHolder: DrawerStateHolder = koinInject()
-    val isDrawerOpen by drawerStateHolder.state.collectAsStateWithLifecycle()
 
     AppBar(
         themeStateHolder::action,
         localeStateHolder::action,
         authStateHolder::action,
-        isDrawerOpen,
-        drawerStateHolder::toggle,
-        onNavigationAction,
+        navigationStateHolder.backStack.last(),
+        navigationStateHolder.canNavigateBack(),
+        navigationStateHolder::action,
+        drawerStateHolder.isOpen,
+        { drawerStateHolder.isOpen = !drawerStateHolder.isOpen },
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(top = innerPadding.calculateTopPadding()),
         ) {
             content()
         }

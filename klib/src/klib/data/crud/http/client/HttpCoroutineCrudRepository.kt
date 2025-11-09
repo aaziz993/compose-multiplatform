@@ -93,7 +93,7 @@ public class HttpCoroutineCrudRepository<T : Any>(
     override suspend fun delete(predicate: BooleanOperand?): Long =
         api.delete(HttpCrud.Delete(predicate as Variable))
 
-    override suspend fun <T : Any> aggregate(aggregate: AggregateExpression<T>, predicate: BooleanOperand?): T? =
+    override suspend fun <T> aggregate(aggregate: AggregateExpression, predicate: BooleanOperand?): T =
         api.aggregate(HttpCrud.Aggregate(aggregate, predicate as Variable?)).execute().bodyAsPolymorphic { null }
 
     override suspend fun insert(entities: List<T>): List<T> =

@@ -1,6 +1,6 @@
 @file:Suppress("ComposeCompositionLocalUsage")
 
-package clib.presentation.auth
+package clib.presentation.components.auth
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal

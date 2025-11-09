@@ -26,7 +26,7 @@ import io.michaelrocks.libphonenumber.kotlin.metadata.defaultMetadataLoader
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import klib.data.type.collections.get
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 public fun CountryCodePickerTextField(

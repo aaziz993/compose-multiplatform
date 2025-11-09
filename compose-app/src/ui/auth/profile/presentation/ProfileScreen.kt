@@ -29,10 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import clib.presentation.auth.LocalAuth
-import clib.presentation.auth.stateholder.AuthAction
+import clib.presentation.components.auth.LocalAuth
+import clib.presentation.components.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
 import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
@@ -40,7 +40,7 @@ import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.verify
 import klib.data.type.auth.model.Auth
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Profile
 import ui.navigation.presentation.Verification
 
@@ -154,7 +154,7 @@ public fun ProfileScreen(
         if (LocalAuth.current.user?.roles?.contains("Verified") == false)
             Button(
                 onClick = {
-                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(Verification))
+                    onNavigationAction(NavigationAction.Navigate(Verification))
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {

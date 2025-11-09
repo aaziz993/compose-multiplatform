@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun CountryHeaderDialog(

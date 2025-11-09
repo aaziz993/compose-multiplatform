@@ -1,10 +1,9 @@
 package ui.auth.login.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.data.type.collections.restartableflow.RestartableMutableStateFlow
 import clib.data.type.collections.restartableflow.RestartableStateFlow
-import clib.presentation.auth.stateholder.AuthAction
-import clib.presentation.auth.stateholder.AuthStateHolder
+import clib.presentation.components.auth.stateholder.AuthAction
+import clib.presentation.components.auth.stateholder.AuthStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.type.auth.model.User
 import kotlinx.coroutines.flow.MutableStateFlow

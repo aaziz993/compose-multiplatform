@@ -21,9 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.data.type.primitives.string.toStringResource
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
 import clib.presentation.components.picker.country.mode.CountryPicker
 import compose_app.generated.resources.Res
@@ -33,13 +35,11 @@ import compose_app.generated.resources.phone
 import compose_app.generated.resources.search
 import klib.data.location.country.Country
 import klib.data.location.country.current
+import klib.data.location.country.getCountries
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.auth.phone.presentation.viewmodel.PhoneAction
 import ui.auth.phone.presentation.viewmodel.PhoneState
 import ui.navigation.presentation.Phone
-import clib.data.type.primitives.string.stringResource
-import klib.data.location.country.getCountries
 
 @Composable
 public fun PhoneScreen(
@@ -73,12 +73,12 @@ public fun PhoneScreen(
                 .fillMaxWidth()
                 .padding(10.dp),
             selectedCountry = country.copy(
-                name = stringResource(country.toString(), Res.allStringResources) {
+                name = country.toString().toStringResource(Res.allStringResources) {
                     country.name
                 },
             ),
             countries = Country.getCountries().toList().map { country ->
-                country.copy(name = stringResource(country.toString(), Res.allStringResources) { country.name })
+                country.copy(name = country.toString().toStringResource(Res.allStringResources) { country.name })
             },
             enabled = true,
             textStyle = MaterialTheme.typography.bodyMedium,

@@ -37,10 +37,10 @@ public interface CrudRepository<T : Any> {
         limitOffset: LimitOffset? = null
     ): Sequence<List<Any?>> = emptySequence()
 
-    public fun <T : Any> aggregate(
-        aggregate: AggregateExpression<T>,
+    public fun <T> aggregate(
+        aggregate: AggregateExpression,
         predicate: BooleanOperand? = null,
-    ): T?
+    ): T
 
     public fun insert(entities: List<T>): List<T>
 

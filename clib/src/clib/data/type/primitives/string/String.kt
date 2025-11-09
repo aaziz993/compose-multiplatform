@@ -5,10 +5,10 @@ import klib.data.type.primitives.string.case.toSnakeCase
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
+@Suppress("ComposeUnstableReceiver")
 @Composable
-public fun stringResource(
-    value: String,
+public fun String.toStringResource(
     resources: Map<String, StringResource>,
-    defaultValue: () -> String = { value }
-): String = resources[value.lowercase().toSnakeCase()]?.let { stringResource -> stringResource(stringResource) }
+    defaultValue: () -> String = { this }
+): String = resources[lowercase().toSnakeCase()]?.let { stringResource -> stringResource(stringResource) }
     ?: defaultValue()

@@ -1,8 +1,7 @@
 package di.module
 
-import clib.presentation.auth.stateholder.AuthStateHolder
-import clib.presentation.components.navigation.DefaultNavigator
-import clib.presentation.components.navigation.Navigator
+import clib.presentation.components.auth.stateholder.AuthStateHolder
+import clib.presentation.components.navigation.stateholder.NavigationStateHolder
 import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import dev.jordond.connectivity.Connectivity
@@ -13,12 +12,13 @@ import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.encodeAnyToString
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
-import ui.navigation.presentation.AuthRoute
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.Phone
 
 @Module
+@Configuration
 @ComponentScan("ui", "presentation")
 public class CommonModule {
 
@@ -32,7 +32,7 @@ public class CommonModule {
     public fun provideAuthStateHolder(): AuthStateHolder = AuthStateHolder()
 
     @Single
-    public fun provideNavigator(): Navigator<Destination> = DefaultNavigator(AuthRoute)
+    public fun provideNavigator(): NavigationStateHolder = NavigationStateHolder(Phone)
 
     @Single
     public fun provideJson(): Json = Json {

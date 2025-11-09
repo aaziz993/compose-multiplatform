@@ -1,8 +1,6 @@
 package klib.data.type.primitives.string.humanreadable
 
 import klib.data.type.primitives.string.format
-import klib.data.type.primitives.string.humanreadable.model.RelativeTime
-import klib.data.type.primitives.string.humanreadable.model.TimeUnit
 import kotlin.time.Instant
 
 /**
@@ -11,58 +9,18 @@ import kotlin.time.Instant
  *
  * @return a formatted string
  */
-public fun Instant.toHumanReadable(
+public inline fun Instant.toHumanReadable(
     baseInstant: Instant,
-    nanosecondsUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "nanosecond${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    microsecondsUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "microsecond${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    millisecondsUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "millisecond${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    secondsUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "second${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    minutesUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "minute${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    hoursUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "hour${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    daysUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "day${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    weeksUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "week${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    monthsUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "month${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
-    yearsUnit: TimeUnit = TimeUnit(
-        { "" },
-        { "year${if (it > 1) "s" else ""}" },
-        { "" },
-    ),
+    nanoseconds: (quantity: Int) -> String = { quantity -> "nanosecond${if (quantity > 1) "s" else ""}" },
+    microseconds: (quantity: Int) -> String = { quantity -> "microsecond${if (quantity > 1) "s" else ""}" },
+    milliseconds: (quantity: Int) -> String = { quantity -> "millisecond${if (quantity > 1) "s" else ""}" },
+    seconds: (quantity: Int) -> String = { quantity -> "second${if (quantity > 1) "s" else ""}" },
+    minutes: (quantity: Int) -> String = { quantity -> "minute${if (quantity > 1) "s" else ""}" },
+    hours: (quantity: Int) -> String = { quantity -> "hour${if (quantity > 1) "s" else ""}" },
+    days: (quantity: Int) -> String = { quantity -> "day${if (quantity > 1) "s" else ""}" },
+    weeks: (quantity: Int) -> String = { quantity -> "week${if (quantity > 1) "s" else ""}" },
+    months: (quantity: Int) -> String = { quantity -> "month${if (quantity > 1) "s" else ""}" },
+    years: (quantity: Int) -> String = { quantity -> "year${if (quantity > 1) "s" else ""}" },
     timeInFuture: String = $$"in ${time}",
     now: String = "now",
     timeAgo: String = $$"${time} ago",
@@ -73,17 +31,16 @@ public fun Instant.toHumanReadable(
     return when {
         secondsAgo < 0 -> timeInFuture.format(
             diff.absoluteValue.toHumanReadable(
-                nanosecondsUnit,
-                microsecondsUnit,
-                millisecondsUnit,
-                secondsUnit,
-                minutesUnit,
-                hoursUnit,
-                daysUnit,
-                weeksUnit,
-                monthsUnit,
-                yearsUnit,
-                RelativeTime.Future,
+                nanoseconds,
+                microseconds,
+                milliseconds,
+                seconds,
+                minutes,
+                hours,
+                days,
+                weeks,
+                months,
+                years,
             ),
         )
 
@@ -91,17 +48,16 @@ public fun Instant.toHumanReadable(
 
         else -> timeAgo.format(
             diff.absoluteValue.toHumanReadable(
-                nanosecondsUnit,
-                microsecondsUnit,
-                millisecondsUnit,
-                secondsUnit,
-                minutesUnit,
-                hoursUnit,
-                daysUnit,
-                weeksUnit,
-                monthsUnit,
-                yearsUnit,
-                RelativeTime.Past,
+                nanoseconds,
+                microseconds,
+                milliseconds,
+                seconds,
+                minutes,
+                hours,
+                days,
+                weeks,
+                months,
+                years,
             ),
         )
     }

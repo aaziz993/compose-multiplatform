@@ -139,4 +139,60 @@
     <string name="theme">Theme</string>
     <string name="high_contrast">High contrast</string>
     <string name="enable_high_contrast">Enable high contrast</string>
+
+    <!-- Duration / Relative Time Strings -->
+    <string name="time_now">now</string>
+    <string name="time_in">in %1$s</string>
+    <string name="time_ago">%1$s ago</string>
+
+    <plurals name="nanoseconds">
+        <item quantity="one">%d nanosecond</item>
+        <item quantity="other">%d nanoseconds</item>
+    </plurals>
+
+    <plurals name="microseconds">
+        <item quantity="one">%d microsecond</item>
+        <item quantity="other">%d microseconds</item>
+    </plurals>
+
+    <plurals name="milliseconds">
+        <item quantity="one">%d millisecond</item>
+        <item quantity="other">%d milliseconds</item>
+    </plurals>
+
+    <plurals name="seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">%d week</item>
+        <item quantity="other">%d weeks</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+
+    <plurals name="years">
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
+
 </resources>

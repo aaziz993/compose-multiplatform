@@ -1,13 +1,5 @@
 imports:
   - android-compose.yaml
 script:
-  - kotlin:
-      sourceSets:
-        - named: |
-            ("androidMain") { sourceSet ->
-              sourceSet.dependencies {
-                implementation(composeLibs.preview)
-              }
-            }
   - dependencies:
-      - debugImplementation: (composeLibs.uiTooling)
+      - debugImplementation: (libs("composeLibs")["ui.tooling"])

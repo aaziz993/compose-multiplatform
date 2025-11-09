@@ -39,10 +39,10 @@ public interface CoroutineCrudRepository<T : Any> {
         limitOffset: LimitOffset? = null
     ): Flow<List<Any?>> = emptyFlow()
 
-    public suspend fun <T : Any> aggregate(
-        aggregate: AggregateExpression<T>,
+    public suspend fun <T> aggregate(
+        aggregate: AggregateExpression,
         predicate: BooleanOperand? = null,
-    ): T?
+    ): T
 
     public suspend fun insert(entities: List<T>): List<T>
 

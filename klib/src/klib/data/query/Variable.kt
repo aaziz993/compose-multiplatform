@@ -109,7 +109,6 @@ public sealed interface NumberOperand : Operand {
     public fun plus(vararg values: ULong): Plus =
         plus(*values.map(ULong::v).toTypedArray())
 
-
     public fun plus(vararg values: Number): Plus =
         plus(*values.map(Number::v).toTypedArray())
 
@@ -289,7 +288,7 @@ public sealed interface StringOperand : Operand {
         this,
         distinct,
         separator,
-        orderBy
+        orderBy,
     )
 
     public fun groupConcat(
@@ -546,59 +545,62 @@ public data class In(override val arguments: List<Variable>) : LogicExpression()
 public data class NotIn(override val arguments: List<Variable>) : LogicExpression()
 
 public interface AggregateOperand : Operand {
+
     public fun count(): Count = AggregateExpression.count(this)
 
-    public fun <T> max(): Max<T> = AggregateExpression.max(this)
+    public fun max(): Max = AggregateExpression.max(this)
 
-    public fun <T> min(): Min<T> = AggregateExpression.min(this)
+    public fun min(): Min = AggregateExpression.min(this)
 
-    public fun <T> avg(): Avg<T> = AggregateExpression.avg(this)
+    public fun avg(): Avg = AggregateExpression.avg(this)
 
-    public fun <T> sum(): Sum<T> = AggregateExpression.sum(this)
+    public fun sum(): Sum = AggregateExpression.sum(this)
 }
 
 @Suppress("UNCHECKED_CAST")
 @Serializable
-public sealed class AggregateExpression<T> : Variable(), Expression {
+public sealed class AggregateExpression : Variable(), Expression {
+
     public companion object {
 
         public fun count(variable: AggregateOperand? = null): Count =
             Count(listOfNotNull(variable) as List<Variable>)
 
-        public fun <T> max(variable: AggregateOperand): Max<T> =
+        public fun max(variable: AggregateOperand): Max =
             Max(listOf(variable) as List<Variable>)
 
-        public fun <T> min(variable: AggregateOperand): Min<T> =
+        public fun min(variable: AggregateOperand): Min =
             Min(listOf(variable) as List<Variable>)
 
-        public fun <T> avg(variable: AggregateOperand): Avg<T> =
+        public fun avg(variable: AggregateOperand): Avg =
             Avg(listOf(variable) as List<Variable>)
 
-        public fun <T> sum(variable: AggregateOperand): Sum<T> =
+        public fun sum(variable: AggregateOperand): Sum =
             Sum(listOf(variable) as List<Variable>)
     }
 }
 
 @Serializable
-public data class Count(override val arguments: List<Variable>) : AggregateExpression<Long>()
+public data class Count(override val arguments: List<Variable>) : AggregateExpression()
 
 @Serializable
-public data class Max<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Max(override val arguments: List<Variable>) : AggregateExpression()
 
 @Serializable
-public data class Min<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Min(override val arguments: List<Variable>) : AggregateExpression()
 
 @Serializable
-public data class Avg<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Avg(override val arguments: List<Variable>) : AggregateExpression()
 
 @Serializable
-public data class Sum<T>(override val arguments: List<Variable>) : AggregateExpression<T>()
+public data class Sum(override val arguments: List<Variable>) : AggregateExpression()
 
 @Suppress("UNCHECKED_CAST")
 @Serializable
 public sealed class NumberExpression : NumberVariable(), Expression {
 
     public companion object Companion {
+
         public fun random(seed: NumberOperand?): Random =
             Random(listOfNotNull(seed) as List<Variable>)
 
@@ -814,7 +816,7 @@ public sealed class StringExpression : StringVariable(), Expression {
             listOf(
                 variable,
                 distinct,
-                separator
+                separator,
             ) as List<Variable>,
             orderBy,
         )
@@ -1181,6 +1183,7 @@ public data class ComparableValue<T>(val value: T) : ComparableVariable()
 public data class Field(override val value: String) : Variable(),
     Value<String>, ComparableOperand, BooleanOperand, NumberOperand,
     StringOperand, TimeOperand, AggregateOperand {
+
     public fun p(alias: String? = null, distinct: Boolean = false): Projection =
         Projection(this, alias, distinct)
 }

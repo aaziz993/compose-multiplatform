@@ -4,6 +4,6 @@ script:
       - named: |
           ("jsMain") { sourceSet ->
             sourceSet.dependencies {
-              implementation(composeLibs.html.core)
+              implementation(libs("composeLibs")["html.core"])
             }
           }

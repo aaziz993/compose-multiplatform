@@ -1,7 +1,6 @@
 package ui.news.articles.presentation
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,24 +11,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import coil3.compose.AsyncImage
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.viewmodel.koinViewModel
+import clib.di.koinViewModel
 import ui.navigation.presentation.Articles
 import ui.news.articles.data.model.Article
 import ui.news.articles.presentation.viewmodel.ArticleViewModel
@@ -115,7 +113,7 @@ private fun ArticleItem(
                                 char('-')
                                 monthNumber()
                                 char('-')
-                                dayOfMonth()
+                                day()
 
                                 chars(" at ")
 

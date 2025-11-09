@@ -1,28 +1,25 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package clib.presentation
 
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.key
-import clib.presentation.auth.LocalAuth
+import clib.presentation.components.auth.LocalAuth
 import clib.presentation.locale.LocalAppLocale
-import clib.presentation.locale.customAppLocale
 import clib.presentation.theme.AppTheme
 import clib.presentation.theme.DarkColors
 import clib.presentation.theme.DarkColorsHighContrast
-import clib.presentation.theme.density.LocalAppDensity
-import clib.presentation.theme.density.customAppDensity
 import clib.presentation.theme.LightColors
 import clib.presentation.theme.LightColorsHighContrast
+import clib.presentation.theme.density.LocalAppDensity
+import clib.presentation.theme.density.customAppDensity
 import clib.presentation.theme.model.Theme
 import klib.data.location.locale.Locale
 import klib.data.type.auth.model.Auth
-import androidx.compose.material3.MotionScheme
 
 @Composable
 public fun AppEnvironment(
@@ -43,19 +40,18 @@ public fun AppEnvironment(
     darkColorScheme,
     darkColorSchemeHighContrast,
 ) { colorScheme ->
-    MaterialTheme(
+    MaterialExpressiveTheme(
         colorScheme = colorScheme,
         motionScheme = MotionScheme.expressive(),
         shapes = shapes,
         typography = typography,
     ) {
         CompositionLocalProvider(
-            LocalAppLocale provides locale,
-            LocalAppDensity provides customAppDensity,
-            LocalAuth provides auth,
-        ) {
-            content()
-        }
+                LocalAppLocale provides locale,
+                LocalAppDensity provides customAppDensity,
+                LocalAuth provides auth,
+                content = content,
+        )
     }
 }
 

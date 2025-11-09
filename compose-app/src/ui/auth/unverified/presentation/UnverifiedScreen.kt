@@ -18,12 +18,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.unverified_description
 import compose_app.generated.resources.verify_offer
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Unverified
 import ui.navigation.presentation.Verification
 
@@ -74,7 +74,7 @@ public fun UnverifiedScreen(
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.85f),
                     ),
                     modifier = Modifier.clickable {
-                        onNavigationAction(NavigationAction.TypeNavigation.Navigate(Verification))
+                        onNavigationAction(NavigationAction.Navigate(Verification))
                     },
                 )
             }

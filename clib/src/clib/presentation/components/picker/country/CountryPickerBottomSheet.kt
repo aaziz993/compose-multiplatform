@@ -28,7 +28,7 @@ import clib.presentation.components.picker.country.mode.CountryPicker
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

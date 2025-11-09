@@ -3,19 +3,14 @@ package clib.presentation.components.connectivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import clib.presentation.components.connectivity.model.ConnectivityLocalization
-import clib.presentation.event.snackbar.GlobalSnackbarEventController
-import clib.presentation.event.snackbar.model.SnackbarAction
-import clib.presentation.event.snackbar.model.SnackbarEvent
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.Connectivity.Status
 
 @Composable
-public fun ConnectivityGlobalSnackbar(
+public fun Connectivity(
     connectivity: Connectivity,
-    connectedAction: SnackbarAction? = null,
-    disconnectedAction: SnackbarAction? = null,
-    localization: ConnectivityLocalization = ConnectivityLocalization(),
+    connected: suspend () -> Unit = {},
+    disconnected: suspend () -> Unit = {},
 ) {
     LaunchedEffect(connectivity) {
         var lastStatus: Status? = null
@@ -23,13 +18,8 @@ public fun ConnectivityGlobalSnackbar(
             if (status != lastStatus) {
                 lastStatus = status
                 when (status) {
-                    is Status.Connected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(localization.connected, connectedAction),
-                    )
-
-                    is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(localization.disconnected, disconnectedAction),
-                    )
+                    is Status.Connected -> connected()
+                    is Status.Disconnected -> disconnected()
                 }
             }
         }

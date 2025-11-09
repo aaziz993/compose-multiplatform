@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.permission.rememberPermissionsControllerFactory
-import clib.presentation.auth.stateholder.AuthAction
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.auth.stateholder.AuthAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.confirm
@@ -45,9 +45,9 @@ import ui.navigation.presentation.Verification
 public fun VerificationScreen(
     modifier: Modifier = Modifier,
     route: Verification = Verification,
-    onAuthAction: (AuthAction) -> Unit = {},
     state: VerificationState = VerificationState(),
     onAction: (VerificationAction) -> Unit = {},
+    onAuthAction: (AuthAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -109,7 +109,7 @@ public fun VerificationScreen(
 
         Button(
             onClick = {
-                onNavigationAction(NavigationAction.TypeNavigation.Navigate(Services))
+                onNavigationAction(NavigationAction.Navigate(Services))
             },
             modifier = Modifier.fillMaxWidth(),
         ) {

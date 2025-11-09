@@ -20,14 +20,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
 import compose_app.generated.resources.pin_code
 import compose_app.generated.resources.reset_password
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Login
@@ -77,7 +77,7 @@ public fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(Phone))
+                    onNavigationAction(NavigationAction.Navigate(Phone))
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

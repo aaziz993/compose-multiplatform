@@ -11,8 +11,7 @@
 -keep class kotlinx.serialization.** { *; }
 -keepclassmembers class kotlinx.serialization.** { *; }
 
-# Room.
--keep class * extends androidx.room.RoomDatabase { <init>(); }
+
 
 # ===================================================
 # 2. Jetpack Compose / UI
@@ -88,3 +87,20 @@
 
 # Print full configuration to inspect rules
 -printconfiguration ../build/tmp/full-r8-config.txt
+
+
+
+
+
+
+
+
+# ---------------------------------------------------------ROOM---------------------------------------------------------
+-keep class * extends androidx.room.RoomDatabase { <init>(); }
+
+# ---------------------------------------------------------KOIN---------------------------------------------------------
+# Keep annotation definitions
+-keep class org.koin.core.annotation.** { *; }
+
+# Keep classes annotated with Koin annotations
+-keep @org.koin.core.annotation.* class * { *; }

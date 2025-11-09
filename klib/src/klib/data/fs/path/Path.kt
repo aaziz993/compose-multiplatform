@@ -2,6 +2,7 @@
 
 package klib.data.fs.path
 
+import io.ktor.utils.io.core.readBytes
 import klib.data.BUFFER_SIZE
 import klib.data.fs.canonicalize
 import klib.data.fs.copy
@@ -10,24 +11,27 @@ import klib.data.fs.iterator
 import klib.data.type.collections.iterator.AbstractClosableAbstractIterator
 import klib.data.type.collections.iterator.coroutine.CoroutineIterator
 import klib.data.type.collections.iterator.coroutine.forEach
+import kotlin.jvm.JvmName
 import kotlinx.io.Buffer
 import kotlinx.io.IOException
+import kotlinx.io.bytestring.ByteString
 import kotlinx.io.files.FileNotFoundException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.okio.toOkioByteString
 import okio.Path.Companion.toPath as toOkioPath
 
 public val Path.segments: List<String>
-    get() = toString().toOkioPath().segments
+    get() = toOkioPath().segments
 
 public val Path.root: Path?
-    get() = toString().toOkioPath().root?.toString()?.let(::Path)
+    get() = toOkioPath().root?.toString()?.let(::Path)
 
 public val Path.isRoot: Boolean
-    get() = toString().toOkioPath().isRoot
+    get() = toOkioPath().isRoot
 
 public val Path.volumeLetter: Char?
-    get() = toString().toOkioPath().volumeLetter
+    get() = toOkioPath().volumeLetter
 
 public val Path.isRelative: Boolean
     get() = !isAbsolute
@@ -42,12 +46,6 @@ public fun String.toPathOrNull(vararg parts: String): Path? =
     catch (_: IllegalArgumentException) {
         null
     }
-
-public fun String.toPath(normalize: Boolean = false): Path =
-    Path(toOkioPath(normalize).toString())
-
-public operator fun Path.div(other: Path): Path =
-    toString().toOkioPath().div(other.toString()).toString().toPath()
 
 public expect fun Path.metadataOrNull(): PathMetadata?
 
@@ -134,3 +132,37 @@ public suspend fun Path.write(
         buffer.clear()
     }
 }
+
+public fun Path.resolve(child: String, normalize: Boolean): Path = toOkioPath().resolve(child, normalize).toPath()
+
+public fun Path.resolve(child: ByteString, normalize: Boolean): Path =
+    toOkioPath().resolve(child.toOkioByteString(), normalize).toPath()
+
+public fun Path.resolve(child: Path, normalize: Boolean): Path =
+    toOkioPath().resolve(child.toOkioPath(), normalize).toPath()
+
+@JvmName("resolve")
+public operator fun Path.div(child: String): Path = toOkioPath().div(child).toPath()
+
+@JvmName("resolve")
+public operator fun Path.div(child: ByteString): Path = toOkioPath().div(child.toOkioByteString()).toPath()
+
+@JvmName("resolve")
+public operator fun Path.div(child: Path): Path = toOkioPath().div(child.toOkioPath()).toPath()
+
+public fun Path.relativeTo(other: Path): Path = toOkioPath().relativeTo(other.toOkioPath()).toPath()
+
+public fun Path.resolveToRoot(fromRootPath: Path, toRootPath: Path): Path =
+    toRootPath / relativeTo(fromRootPath)
+
+public fun Path.normalized(): Path = toOkioPath().normalized().toPath()
+
+public fun Path.compareTo(other: Path): Int = toOkioPath().compareTo(other.toOkioPath())
+
+public fun String.toPath(vararg parts: String): Path = Path(this, *parts)
+public fun String.toPath(normalize: Boolean): Path = toOkioPath(normalize).toPath()
+
+public fun Buffer.toPath(): Path = okio.Path(okio.Buffer().write(readBytes())).toPath()
+
+private fun Path.toOkioPath(): okio.Path = toString().toOkioPath()
+private fun okio.Path.toPath(): Path = toString().toPath()

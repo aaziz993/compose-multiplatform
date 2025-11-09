@@ -1,21 +1,18 @@
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.ui.tooling.preview.Preview
+import clib.di.KoinApplicationPreview
+import clib.di.KoinMultiplatformApplication
 import di.koinConfiguration
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.KoinApplication
-import org.koin.compose.KoinApplicationPreview
-import org.koin.core.KoinApplication
+import org.koin.dsl.KoinConfiguration
 import presentation.components.app.AppComposable
 
 @Composable
-public fun App(onNavHostReady: suspend (NavController) -> Unit = {}): Unit =
-    KoinApplication(KoinApplication::koinConfiguration) {
-        AppComposable(onNavHostReady = onNavHostReady)
-    }
-
-@Preview
-@Composable
-public fun PreviewApp(): Unit = KoinApplicationPreview(KoinApplication::koinConfiguration) {
+public fun App(): Unit = KoinMultiplatformApplication(KoinConfiguration(koinConfiguration())) {
     AppComposable()
 }
 
+@Preview
+@Composable
+public fun PreviewApp(): Unit = KoinApplicationPreview(koinConfiguration()) {
+    AppComposable()
+}

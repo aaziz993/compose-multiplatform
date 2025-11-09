@@ -216,6 +216,9 @@ dependencies {
     // test.
     runtimeOnly(libs.plugins.kotest.multiplatform.toDep())
 
+    // Desktop.
+    implementation(libs.proguard.gradle)
+
     // Android.
     compileOnly(libs.android.gradle.plugin)
     runtimeOnly(libs.plugins.android.kotlin.multiplatform.library.toDep())

@@ -4,32 +4,26 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import clib.di.AutoConnectKoinScope
 import clib.presentation.AppEnvironment
-import clib.presentation.auth.stateholder.AuthStateHolder
-import clib.presentation.components.connectivity.ConnectivityGlobalSnackbar
-import clib.presentation.components.navigation.Navigator
+import clib.presentation.components.auth.stateholder.AuthStateHolder
+import clib.presentation.components.navigation.stateholder.NavigationStateHolder
+import clib.presentation.components.navigation.Route
 import clib.presentation.locale.stateholder.LocaleStateHolder
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.theme.DarkColors
 import clib.presentation.theme.LightColors
 import clib.presentation.theme.stateholder.ThemeStateHolder
-import org.koin.compose.koinInject
+import clib.di.koinInject
+import clib.presentation.components.di.AutoConnectKoinScope
 import presentation.theme.DarkColorsHighContrast
 import presentation.theme.LightColorsHighContrast
 import presentation.theme.Shapes
 import presentation.theme.Typography
-import ui.navigation.presentation.AuthRoute
-import ui.navigation.presentation.Destination
+import ui.navigation.presentation.Articles
 import ui.navigation.presentation.NavScreen
-import ui.navigation.presentation.News
+import ui.navigation.presentation.Phone
 
 @Composable
 public fun AppComposable(
@@ -37,41 +31,36 @@ public fun AppComposable(
     themeStateHolder: ThemeStateHolder = koinInject(),
     localeStateHolder: LocaleStateHolder = koinInject(),
     authStateHolder: AuthStateHolder = koinInject(),
-    startDestination: Destination = AuthRoute,
-    loggedInDestination: Destination = News,
-    navigator: Navigator<Destination> = koinInject(),
-    navController: NavHostController = rememberNavController(),
-    onNavHostReady: suspend (NavController) -> Unit = {}
-): Unit = AutoConnectKoinScope(navController) {
+    loginStartRoute: Route = Phone,
+    loggedInStartRoute: Route = Articles,
+    navigationStateHolder: NavigationStateHolder = koinInject(),
+): Unit = AutoConnectKoinScope(backStack = navigationStateHolder.backStack) {
     val theme by themeStateHolder.state.collectAsStateWithLifecycle()
     val locale by localeStateHolder.state.collectAsStateWithLifecycle()
     val auth by authStateHolder.state.collectAsStateWithLifecycle()
 
-    var currentDestination: Destination? by remember { mutableStateOf(null) }
-
-    currentDestination?.let { destination ->
-        AppEnvironment(
-            theme,
-            locale,
-            auth,
-            LightColors,
-            LightColorsHighContrast,
-            DarkColors,
-            DarkColorsHighContrast,
-            Shapes,
-            Typography,
-        ) {
-            NavScreen(
-                modifier = modifier,
-                startDestination = destination,
-                navigator = navigator,
-                navController = navController,
-                onNavHostReady = onNavHostReady,
-            )
-        }
+    AppEnvironment(
+        theme,
+        locale,
+        auth,
+        LightColors,
+        LightColorsHighContrast,
+        DarkColors,
+        DarkColorsHighContrast,
+        Shapes,
+        Typography,
+    ) {
+        NavScreen(
+            modifier = modifier,
+            navigationStateHolder = navigationStateHolder,
+        )
     }
 
     LaunchedEffect(auth.user) {
-        currentDestination = if (auth.user == null) startDestination else loggedInDestination
+        navigationStateHolder.action(
+            NavigationAction.NavigateAndClear(
+                if (auth.user == null) loginStartRoute else loggedInStartRoute,
+            ),
+        )
     }
 }

@@ -1,7 +1,12 @@
 package ui.navigation.presentation
 
-import clib.presentation.stateholders.BooleanStateHolder
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import org.koin.core.annotation.Single
 
 @Single
-public class DrawerStateHolder(value: Boolean = true) : BooleanStateHolder(value)
+public class DrawerStateHolder(isOpen: Boolean = true) {
+
+    public var isOpen: Boolean by mutableStateOf(isOpen)
+}

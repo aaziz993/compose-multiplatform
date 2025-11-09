@@ -13,6 +13,7 @@ script:
           (
             "androidx.compose.ui.ExperimentalComposeUiApi",
             "androidx.compose.material3.ExperimentalMaterial3Api",
+            "androidx.compose.material3.ExperimentalMaterial3ExpressiveApi",
             "kotlin.js.ExperimentalWasmJsInterop",
             "org.jetbrains.compose.resources.InternalResourceApi",
             "dev.chrisbanes.haze.ExperimentalHazeApi",
@@ -22,18 +23,18 @@ script:
         - named: |
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(composeLibs.runtime)
-                implementation(composeLibs.foundation)
-                // implementation(composeLibs.material3)
-                implementation(libs["material3"]) // newer version with expressive design.
-                implementation(composeLibs.ui)
-                implementation(composeLibs.components.resources)
-                implementation(composeLibs.components.uiToolingPreview)
-                implementation(composeLibs.material3AdaptiveNavigationSuite)
-                implementation(composeLibs.materialIconsExtended)
+                implementation(libs("composeLibs")["runtime"])
+                implementation(libs("composeLibs")["ui"])
+                implementation(libs("composeLibs")["foundation"])
+                implementation(libs("composeLibs")["material3"])
+                implementation(libs("composeLibs")["components.resources"])
+                implementation(libs("composeLibs")["ui.tooling.preview"])
+                implementation(libs("composeLibs")["material.icons.extended"])
+                implementation(libs("composeLibs")["window.core"])
                 implementation(libs.bundles("androidx.lifecycle"))
-                implementation(libs.bundles("nav3"))
+                implementation(libs.bundles("androidx.nav3"))
                 implementation(libs.bundles("material3.adaptive"))
+                implementation(libs("composeLibs")["material3.adaptive.navigation.suite"])
                 implementation(libs.bundles("haze"))
                 implementation(libs.bundles("compose.settings.ui"))
                 implementation(libs["androidx.paging.compose"])
@@ -53,7 +54,7 @@ script:
             ("commonTest") { sourceSet ->
               sourceSet.dependencies {
                 @OptIn(ExperimentalComposeLibrary::class)
-                implementation(composeLibs.uiTest)
+                implementation(libs("composeLibs")["ui.test"])
               }
             }
   - compose:

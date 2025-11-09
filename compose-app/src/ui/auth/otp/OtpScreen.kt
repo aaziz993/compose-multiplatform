@@ -20,15 +20,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.enter_code_sent_to
 import compose_app.generated.resources.resend_code
 import compose_app.generated.resources.resend_code_in
-import klib.data.type.primitives.string.humanreadable.toHumanReadable
 import kotlin.time.Duration
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
+import clib.data.type.primitives.string.humanreadable.toHumanReadable
+import compose_app.generated.resources.days
+import compose_app.generated.resources.hours
+import compose_app.generated.resources.microseconds
+import compose_app.generated.resources.milliseconds
+import compose_app.generated.resources.minutes
+import compose_app.generated.resources.months
+import compose_app.generated.resources.nanoseconds
+import compose_app.generated.resources.seconds
+import compose_app.generated.resources.weeks
+import compose_app.generated.resources.years
 import presentation.components.textfield.otp.AppOtpInputField
 import ui.auth.otp.viewmodel.OTP_CODE_LENGTH
 import ui.auth.otp.viewmodel.OtpAction
@@ -73,7 +83,21 @@ public fun OtpScreen(
 
         Text(
             text = if (state.countdown == Duration.ZERO) stringResource(Res.string.resend_code)
-            else stringResource(Res.string.resend_code_in, state.countdown.toHumanReadable()),
+            else stringResource(
+                Res.string.resend_code_in,
+                state.countdown.toHumanReadable(
+                    nanoseconds = Res.plurals.nanoseconds,
+                    microseconds = Res.plurals.microseconds,
+                    milliseconds = Res.plurals.milliseconds,
+                    seconds = Res.plurals.seconds,
+                    minutes = Res.plurals.minutes,
+                    hours = Res.plurals.hours,
+                    days = Res.plurals.days,
+                    weeks = Res.plurals.weeks,
+                    months = Res.plurals.months,
+                    years = Res.plurals.years,
+                ),
+            ),
             color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
             textAlign = TextAlign.Center,
             modifier = Modifier

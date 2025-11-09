@@ -3,8 +3,8 @@ package ui.auth.verification.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
-import clib.presentation.auth.stateholder.AuthAction
-import clib.presentation.auth.stateholder.AuthStateHolder
+import clib.presentation.components.auth.stateholder.AuthAction
+import clib.presentation.components.auth.stateholder.AuthStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

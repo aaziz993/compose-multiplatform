@@ -52,16 +52,20 @@ import java.security.NoSuchAlgorithmException
 import org.bouncycastle.openpgp.PGPSecretKeyRing
 import java.util.Date
 import klib.data.type.collections.map.getStrict
+import klib.data.type.primitives.string.encodeToByteArray
 import kotlinx.coroutines.IO
+import org.bouncycastle.openpgp.api.OpenPGPKey
+import org.pgpainless.bouncycastle.extensions.encode
 import org.pgpainless.key.generation.type.eddsa_legacy.EdDSALegacyCurve
 import org.pgpainless.key.generation.type.xdh_legacy.XDHLegacySpec
+import org.pgpainless.key.parsing.KeyRingReader
 
 private var sop: SOP = SOPImpl()
 
 private fun InputStream.readSecretKeys(requireContent: Boolean): PGPSecretKeyRingCollection {
     val keys =
         try {
-            PGPainless.readKeyRing().secretKeyRingCollection(this)
+            KeyRingReader.readSecretKeyRingCollection(this)
         }
         catch (e: IOException) {
             if (e.message == null) {
@@ -84,7 +88,7 @@ private fun InputStream.readSecretKeys(requireContent: Boolean): PGPSecretKeyRin
 private fun InputStream.readPublicKeys(requireContent: Boolean): PGPPublicKeyRingCollection {
     val certs =
         try {
-            PGPainless.readKeyRing().keyRingCollection(this, false)
+            KeyRingReader.readKeyRingCollection(this, false)
         }
         catch (e: IOException) {
             if (e.message == null) {
@@ -212,10 +216,9 @@ public actual suspend fun generatePGPKey(
     armored: Boolean,
 ): ByteArray {
     try {
-        return PGPainless
-            .buildKeyRing()
+        return PGPainless.getInstance()
+            .buildKey()
             .also { builder ->
-
                 key.toKeySpecBuilders().let {
                     builder.setPrimaryKey(it[0]).addSubkey(it[1])
                 }
@@ -229,9 +232,7 @@ public actual suspend fun generatePGPKey(
                     )
                 }
 
-                if (password != null) {
-                    builder.setPassphrase(Passphrase.fromPassword(password))
-                }
+                if (password != null) builder.setPassphrase(Passphrase.fromPassword(password))
 
                 userIDs.forEach { uid ->
                     builder.addUserId(
@@ -248,14 +249,7 @@ public actual suspend fun generatePGPKey(
                     expireDate?.takeIf { it != 0L }?.let { Date(it * 1000L) },
                 )
             }.build()
-            .let { k ->
-                if (armored) {
-                    k.toArmoredByteArray()
-                }
-                else {
-                    ByteArrayOutputStream().apply { k.encode(this) }.toByteArray()
-                }
-            }
+            .let { k -> if (armored) k.toAsciiArmoredString().encodeToByteArray() else k.encoded }
     }
     catch (e: InvalidAlgorithmParameterException) {
         throw SOPGPException.UnsupportedAsymmetricAlgo("Unsupported asymmetric algorithm.", e)
@@ -277,57 +271,43 @@ private fun KeyRingInfo.toPGPKeyMetadata(): PGPKeyMetadata =
     )
 
 public actual suspend fun ByteArray.pgpKeyMetadata(): PGPKeyMetadata =
-    KeyRingInfo(PGPainless.readKeyRing().keyRing(ByteArrayInputStream(this))!!).toPGPKeyMetadata()
+    KeyRingInfo(
+        PGPainless.getInstance().readKey().parseKey(this)!!,
+    ).toPGPKeyMetadata()
 
 public actual suspend fun ByteArray.armorPGPKey(): ByteArray =
     ByteArrayOutputStream().apply {
-        sop
-            .armor()
+        sop.armor()!!
             .data(ByteArrayInputStream(this@armorPGPKey))
             .writeTo(this)
     }.toByteArray()
 
 public actual suspend fun ByteArray.dearmorPGPKey(): ByteArray =
     ByteArrayOutputStream().apply {
-        sop
-            .dearmor()
+        sop.dearmor()!!
             .data(ByteArrayInputStream(this@dearmorPGPKey))
             .writeTo(this)
     }.toByteArray()
 
 public actual suspend fun ByteArray.privatePGPKeys(armored: Boolean): List<ByteArray> =
-    ByteArrayInputStream(this).readSecretKeys(false).let {
-        if (armored) {
-            it.map(PGPSecretKeyRing::toArmoredByteArray)
-        }
-        else {
-            it.map { ByteArrayOutputStream().apply { it.encode(this) }.toByteArray() }
-        }
+    ByteArrayInputStream(this).readSecretKeys(false).let { keyRings ->
+        if (armored) keyRings.map(PGPSecretKeyRing::toArmoredByteArray)
+        else keyRings.map(PGPSecretKeyRing::getEncoded)
     }
 
 public actual suspend fun ByteArray.publicPGPKey(armored: Boolean): ByteArray =
     ByteArrayOutputStream().apply {
-        sop
-            .extractCert()
-            .let {
-                if (armored) {
-                    it
-                }
-                else {
-                    it.noArmor()
-                }
-            }.key(ByteArrayInputStream(this@publicPGPKey))
+        sop.extractCert()!!
+            .let { cert ->
+                if (armored) cert else cert.noArmor()
+            }.key(this@publicPGPKey)
             .writeTo(this)
     }.toByteArray()
 
 public actual suspend fun ByteArray.publicPGPKeys(armored: Boolean): List<ByteArray> =
-    ByteArrayInputStream(this).readPublicKeys(false).let {
-        if (armored) {
-            it.map(PGPKeyRing::toArmoredByteArray)
-        }
-        else {
-            it.map { ByteArrayOutputStream().apply { it.encode(this) }.toByteArray() }
-        }
+    ByteArrayInputStream(this).readPublicKeys(false).let { keyRings ->
+        if (armored) keyRings.map(PGPKeyRing::toArmoredByteArray)
+        else keyRings.map(PGPKeyRing::getEncoded)
     }
 
 public actual suspend fun ByteArray.changePGPKeyPassword(
@@ -336,24 +316,15 @@ public actual suspend fun ByteArray.changePGPKeyPassword(
     armored: Boolean,
 ): ByteArray =
     ByteArrayOutputStream().apply {
-        sop
-            .changeKeyPassword()
-            .let {
-                if (armored) {
-                    it
-                }
-                else {
-                    it.noArmor()
-                }
+        sop.changeKeyPassword()!!
+            .let { password ->
+                if (armored) password
+                else password.noArmor()
+            }.let { password ->
+                oldPasswords.fold(password) { cp, p -> cp.oldKeyPassphrase(p) }
             }.let {
-                oldPasswords.fold(it) { cp, p -> cp.oldKeyPassphrase(p) }
-            }.let {
-                if (password == null) {
-                    it
-                }
-                else {
-                    it.newKeyPassphrase(password)
-                }
+                if (password == null) it
+                else it.newKeyPassphrase(password)
             }.keys(ByteArrayInputStream(this@changePGPKeyPassword))
             .writeTo(this)
     }.toByteArray()
@@ -364,15 +335,9 @@ public actual suspend fun ByteArray.revokePGPKey(
     armored: Boolean,
 ): ByteArray =
     ByteArrayOutputStream().apply {
-        sop
-            .revokeKey()
-            .let {
-                if (armored) {
-                    it
-                }
-                else {
-                    it.noArmor()
-                }
+        sop.revokeKey()!!
+            .let { key ->
+                if (armored) key else key.noArmor()
             }.let {
                 passwords
                     .fold(it) { rk, p ->
@@ -390,15 +355,9 @@ public actual suspend fun ByteArray.encryptPGP(
     isText: Boolean,
 ): ByteArray =
     ByteArrayOutputStream().apply {
-        sop
-            .encrypt()
-            .let {
-                if (armored) {
-                    it
-                }
-                else {
-                    it.noArmor()
-                }
+        sop.encrypt()!!
+            .let { encrypt ->
+                if (armored) encrypt else encrypt.noArmor()
             }.let {
                 // encrypt for each recipient
                 encryptionKeys.fold(it) { e, k -> e.withCert(ByteArrayInputStream(k)) }
@@ -416,9 +375,10 @@ public actual suspend fun ByteArray.encryptPGP(
 private fun SignatureVerification.toPGPVerification(vkrc: List<PGPPublicKeyRingCollection>): PGPVerification =
     PGPVerification(
         signature.keyID.toHexString(),
-        vkrc.any {
-            it.any {
-                it.publicKey.keyID == signingKey.primaryKeyId && it.getPublicKey(signingKey.subkeyId) != null
+        vkrc.any { keys ->
+            keys.any { key ->
+                key.publicKey.keyID == signingKey.certificateIdentifier.keyId &&
+                    key.getPublicKey(signingKey.componentKeyIdentifier.keyId) != null
             }
         },
     )
@@ -432,22 +392,23 @@ public actual suspend fun ByteArray.decryptPGP(
     val consumerOptions = ConsumerOptions.get()
     val protector = MatchMakingSecretKeyRingProtector()
 
-    decryptionKeys.forEach {
-        ByteArrayInputStream(it).readSecretKeys(true).forEach {
-            protector.addSecretKey(it)
-            consumerOptions.addDecryptionKey(it, protector)
-        }
+    decryptionKeys.forEach { decryptionKey ->
+        ByteArrayInputStream(decryptionKey)
+            .readSecretKeys(true).map(PGPainless.getInstance()::toKey).forEach { secretKey ->
+                protector.addSecretKey(secretKey)
+                consumerOptions.addDecryptionKey(secretKey, protector)
+            }
     }
 
     decryptionKeysPasswords?.forEach {
         protector.addPassphrase(Passphrase.fromPassword(it))
     }
 
-    val vkrc =
-        (
-            verificationKeys?.map { ByteArrayInputStream(it).readPublicKeys(true) }
-                .orEmpty()
-            ).onEach { consumerOptions.addVerificationCerts(it) }
+    val vkrc = verificationKeys?.map { ByteArrayInputStream(it).readPublicKeys(true) }.orEmpty()
+        .onEach { keyRings ->
+            keyRings.map(PGPainless.getInstance()::toCertificate)
+                .forEach(consumerOptions::addVerificationCert)
+        }
 
     passwords?.forEach { password ->
         consumerOptions.addMessagePassphrase(Passphrase.fromPassword(password))
@@ -467,8 +428,8 @@ public actual suspend fun ByteArray.decryptPGP(
 
     val decryptionStream =
         try {
-            PGPainless
-                .decryptAndOrVerify()
+            PGPainless.getInstance()
+                .processMessage()
                 .onInputStream(ByteArrayInputStream(this))
                 .withOptions(consumerOptions)
         }
@@ -522,55 +483,34 @@ public actual suspend fun ByteArray.signPGP(
     mode: PGPSignMode,
     detached: Boolean,
     armored: Boolean,
-): ByteArray =
-    if (detached) {
-        pgpDetachedSign(
-            signingKeys,
-            signingKeysPasswords,
-            armored,
-        )
-    }
-    else {
-        ByteArrayOutputStream().apply {
-            sop
-                .inlineSign()
-                .mode(mode.toSignMode())
-                .let {
-                    if (armored) {
-                        it
-                    }
-                    else {
-                        it.noArmor()
-                    }
-                }.let {
-                    signingKeys.fold(it) { s, k -> s.key(ByteArrayInputStream(k)) }
-                }.let {
-                    signingKeysPasswords?.fold(it) { s, p -> s.withKeyPassword(p) } ?: it
-                }.data(ByteArrayInputStream(this@signPGP)).writeTo(this)
-        }.toByteArray()
-    }
+): ByteArray = if (detached) pgpDetachedSign(signingKeys, signingKeysPasswords, armored)
+else ByteArrayOutputStream().apply {
+    sop.inlineSign()!!
+        .mode(mode.toSignMode())
+        .let { sign ->
+            if (armored) sign
+            else sign.noArmor()
+        }.let {
+            signingKeys.fold(it) { s, k -> s.key(ByteArrayInputStream(k)) }
+        }.let {
+            signingKeysPasswords?.fold(it) { s, p -> s.withKeyPassword(p) } ?: it
+        }.data(ByteArrayInputStream(this@signPGP)).writeTo(this)
+}.toByteArray()
 
 private fun ByteArray.pgpDetachedSign(
     signingKeys: List<ByteArray>,
     signingKeysPasswords: List<String>?,
     armored: Boolean,
-): ByteArray =
-    ByteArrayOutputStream().apply {
-        sop
-            .detachedSign()
-            .let {
-                if (armored) {
-                    it
-                }
-                else {
-                    it.noArmor()
-                }
-            }.let {
-                signingKeys.fold(it) { s, k -> s.key(ByteArrayInputStream(k)) }
-            }.let {
-                signingKeysPasswords?.fold(it) { s, p -> s.withKeyPassword(p) } ?: it
-            }.data(ByteArrayInputStream(this@pgpDetachedSign)).writeTo(this)
-    }.toByteArray()
+): ByteArray = ByteArrayOutputStream().apply {
+    sop.detachedSign()!!
+        .let { sign ->
+            if (armored) sign else sign.noArmor()
+        }.let {
+            signingKeys.fold(it) { s, k -> s.key(ByteArrayInputStream(k)) }
+        }.let {
+            signingKeysPasswords?.fold(it) { s, p -> s.withKeyPassword(p) } ?: it
+        }.data(ByteArrayInputStream(this@pgpDetachedSign)).writeTo(this)
+}.toByteArray()
 
 public actual suspend fun ByteArray.verifyPGP(
     verificationKeys: List<ByteArray>,
@@ -580,14 +520,18 @@ public actual suspend fun ByteArray.verifyPGP(
     try {
         val options = ConsumerOptions.get()
 
-        val vkrc =
-            verificationKeys.map { ByteArrayInputStream(it).readPublicKeys(true) }.onEach {
-                options.addVerificationCerts(it)
+        val vkrc = verificationKeys.map { key -> ByteArrayInputStream(key).readPublicKeys(true) }
+            .onEach { keyRings ->
+                keyRings.map(PGPainless.getInstance()::toCertificate)
+                    .forEach(options::addVerificationCert)
             }
+
         signatures?.forEach { options.addVerificationOfDetachedSignatures(ByteArrayInputStream(it)) }
 
-        val verificationStream =
-            PGPainless.decryptAndOrVerify().onInputStream(ByteArrayInputStream(this)).withOptions(options)
+        val verificationStream = PGPainless.getInstance()
+            .processMessage()
+            .onInputStream(ByteArrayInputStream(this))
+            .withOptions(options)
 
         PGPVerifiedResult(
             withContext(Dispatchers.IO) {
@@ -605,9 +549,7 @@ public actual suspend fun ByteArray.verifyPGP(
 
             if (options.getCertificateSource().getExplicitCertificates().isNotEmpty() &&
                 verifications.isEmpty()
-            ) {
-                throw SOPGPException.NoSignature()
-            }
+            ) throw SOPGPException.NoSignature()
 
             verifications.map { it.toPGPVerification(vkrc) }
         }

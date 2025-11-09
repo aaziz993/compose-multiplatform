@@ -40,14 +40,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
-import androidx.window.core.layout.WindowWidthSizeClass
+import androidx.window.core.layout.WindowSizeClass
 import clib.data.location.country.flag
-import clib.presentation.auth.LocalAuth
-import clib.presentation.auth.stateholder.AuthAction
+import clib.data.type.primitives.string.toStringResource
+import clib.presentation.components.auth.LocalAuth
+import clib.presentation.components.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.navigation.LocalDestinationTitle
-import clib.presentation.components.navigation.LocalHasPreviousDestination
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.Route
+import clib.presentation.components.navigation.hasNavigationItems
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.components.picker.country.mode.CountryPicker
 import clib.presentation.easedVerticalGradient
@@ -78,19 +79,19 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
-import ui.navigation.presentation.AuthRoute
-import ui.navigation.presentation.NavRoute
 import ui.navigation.presentation.Profile
-import clib.data.type.primitives.string.stringResource
+import ui.navigation.presentation.Routes
 
 @Composable
 public fun AppBar(
     onThemeAction: (ThemeAction) -> Unit,
     onLocaleAction: (LocaleAction) -> Unit,
     onAuthAction: (AuthAction) -> Unit,
+    currentRoute: Route,
+    canNavigateBack: Boolean,
+    onNavigationAction: (NavigationAction) -> Unit,
     isDrawerOpen: Boolean,
     toggleDrawer: () -> Unit,
-    onNavigationAction: (NavigationAction) -> Unit,
     modifier: Modifier = Modifier,
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
@@ -98,8 +99,8 @@ public fun AppBar(
     content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
 
+    val auth = LocalAuth.current
     val hazeState = rememberHazeState(blurEnabled = blurEnabled)
-
     val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
 
     Scaffold(
@@ -120,19 +121,10 @@ public fun AppBar(
             },
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(LocalDestinationTitle.current, Res.allStringResources),
-                    )
-                },
+                title = { Text(text = currentRoute.name.toStringResource(Res.allStringResources)) },
                 navigationIcon = {
                     Row {
-                        val hasNavigationItems = NavRoute.filterNot { route ->
-                            route == AuthRoute || AuthRoute.contains(route)
-                        }.toList().any { route ->
-                            route.canNavigateItem(LocalAuth.current)
-                        }
-                        if (hasNavigationItems && currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED)
+                        if (Routes.hasNavigationItems(auth) && currentWindowAdaptiveInfo().windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
                             AppTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
                                     onClick = toggleDrawer,
@@ -144,7 +136,7 @@ public fun AppBar(
                                 }
                             }
 
-                        if (LocalHasPreviousDestination.current)
+                        if (canNavigateBack)
                             AppTooltipBox(stringResource(Res.string.navigate_back)) {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.NavigateBack) },
@@ -213,7 +205,7 @@ public fun AppBar(
                                 .toList()
                                 .map { country ->
                                     country.copy(
-                                        name = stringResource(country.toString(), Res.allStringResources) {
+                                        name = country.toString().toStringResource(Res.allStringResources) {
                                             country.name
                                         },
                                     )
@@ -258,7 +250,7 @@ public fun AppBar(
                         LocalAuth.current.user?.let { user ->
                             IconButton(
                                 onClick = {
-                                    onNavigationAction(NavigationAction.TypeNavigation.Navigate(Profile))
+                                    onNavigationAction(NavigationAction.Navigate(Profile))
                                 },
                             ) {
                                 Avatar(

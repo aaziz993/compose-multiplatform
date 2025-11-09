@@ -18,13 +18,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.confirm
 import compose_app.generated.resources.pin_code
 import compose_app.generated.resources.repeat_pin_code
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import presentation.components.textfield.otp.AppOtpInputField
 import ui.auth.pincode.viewmodel.PinCodeAction
 import ui.auth.pincode.viewmodel.PinCodeState

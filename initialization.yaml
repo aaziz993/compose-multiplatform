@@ -3,7 +3,6 @@ imports:
   - properties/initialization-meta.yaml
 config:
   imports:
-    - org.gradle.api.initialization.resolve.RepositoriesMode
     - org.gradle.caching.http.HttpBuildCache
     - com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
     - gradle.api.initialization.*
@@ -26,6 +25,7 @@ script:
         - gradlePluginPortal: ()
         - maven: ("https://company/com/maven2")
         - maven: ("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
+        - maven: ("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   - plugins:
       # Settings plugins.
       - alias: (libs.plugins("develocity"))
@@ -121,8 +121,9 @@ script:
         - maven: ("https://packages.confluent.io/maven/")
         - maven: ("https://jitpack.io")
       versionCatalogs:
-        - create: ("kotlinWrappers"){ catalog -> catalog.fromLib(libs["kotlin.wrappers.catalog"]) }
-        - create: ("ktor") { catalog -> catalog.fromLib(libs["ktor.version.catalog"]) }
+        - create: ("kotlinWrappers"){ catalog -> catalog.from0(libs["kotlin.wrappers.catalog"]) }
+        - create: ("ktor") { catalog -> catalog.from0(libs["ktor.version.catalog"]) }
+        - create: ("composeLibs") { catalog -> catalog.from0(layout.settingsDirectory.files("gradle/libs.compose-versions.toml")) }
   - enableCacheRedirect: ()
   - buildCache:
       - local:

@@ -26,7 +26,7 @@ import androidx.compose.ui.window.Dialog
 import clib.presentation.components.picker.country.mode.CountryPicker
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 public fun CountryPickerDialog(

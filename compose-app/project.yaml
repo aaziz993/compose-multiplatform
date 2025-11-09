@@ -25,10 +25,9 @@ imports:
 config:
   imports:
     - org.jetbrains.compose.desktop.application.dsl.TargetFormat
+    - org.jetbrains.compose.reload.gradle.ComposeHotRun
 description: Compose Multiplatform application.
 script:
-  - plugins:
-      - id: (libs.plugins("compose.hotReload").pluginId)
   - kotlin:
       cocoapods:
         - podfile: file("../apple-app/Podfile")
@@ -81,8 +80,18 @@ script:
             vendor: '"Example vendor"'
             licenseFile: (file("LICENSE.txt"))
             appResourcesRootDir: layout.projectDirectory.dir("resources")
+            windows:
+              shortcut: true
+              menuGroup: group.toString()
+              # https://wixtoolset.org/documentation/manual/v3/howtos/general/generate_guids.html
+              upgradeUuid: '"28EA1N5A-D39A-4D09-A6FC-EFD835CFTG72"'
           buildTypes:
             release:
               proguard:
                 configurationFiles.from: (file("compose-desktop.pro"))
                 obfuscate: true
+  - tasks:
+      - withType: |
+          <ComposeHotRun> {
+            mainClass /= "MainKt"
+          }

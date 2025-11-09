@@ -3,7 +3,6 @@ package ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Accessibility
 import androidx.compose.material.icons.outlined.CameraAlt
@@ -20,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
-import clib.presentation.auth.stateholder.AuthAction
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.auth.stateholder.AuthAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.theme.LocalAppTheme
@@ -44,7 +43,7 @@ import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Settings
 
 @Composable

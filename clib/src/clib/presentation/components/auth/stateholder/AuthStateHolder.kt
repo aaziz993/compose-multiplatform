@@ -1,4 +1,4 @@
-package clib.presentation.auth.stateholder
+package clib.presentation.components.auth.stateholder
 
 import klib.data.type.auth.model.Auth
 import klib.data.type.auth.model.User

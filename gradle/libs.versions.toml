@@ -397,7 +397,7 @@ npm-pako = "2.1.0"
 npm-puppeteer = "24.22.0"
 
 ##Compose.
-compose = "1.9.2"
+compose = "1.10.0-beta01"
 material3 = "1.9.0"
 compose-hotReload = "1.0.0-rc02"
 materialExtendedIcon = "1.7.0-rc01"
@@ -414,7 +414,7 @@ coil3 = "3.3.0"
 # ui shape.
 squircle-shape = "4.0.0"
 # adaptive ui.
-material3-adaptive = "1.2.0"
+androidx-adaptive = "1.3.0-alpha01"
 androidx-material = "1.13.0"
 # haze is a library providing a 'glassmorphism' style blur for Compose.
 haze = "1.6.10"
@@ -423,10 +423,11 @@ compose-settings = "2.13.0"
 # repository paging.
 androidx-paging = "3.4.0-alpha04"
 # business logic.
-androidx-lifecycle = "2.9.5"
+androidx-lifecycle = "2.10.0-alpha04"
 # navigation.
-navigation3 = "1.0.0-alpha04"
+androidx-nav3 = "1.0.0-alpha04+dev3147"
 androidx-navigation-compose = "2.9.1"
+androidx-savedstate = "1.4.0-beta01"
 androidx-material-navigation = "1.9.2"
 # testing.
 androidx-test-ext-junit = "1.3.0"
@@ -445,7 +446,7 @@ jxmapviewer2 = "2.8"
 ## desktop.
 # in project version.
 compose-desktop-packageVersion = "1.0.0"
-
+proguard-gradle = "7.8.1"
 ##Metrics.
 prometheus = "1.15.5"
 dropwizard = "4.2.37"
@@ -454,8 +455,8 @@ cohort = "2.8.0"
 cohort-http = "2.4.1"
 
 ##Koin.
-koin = "4.1.1"
-koin-annotations = "2.3.0"
+koin = "4.2.0-alpha1"
+koin-annotations = "2.3.1"
 kotzilla = "1.3.0"
 # Semantic version.
 semver = "3.0.0"
@@ -681,6 +682,7 @@ klibs-kstorage = { module = "ru.astrainteractive.klibs:kstorage", version.ref = 
 # file system.
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 kotlinx-io-bytestring = { module = "org.jetbrains.kotlinx:kotlinx-io-bytestring", version.ref = "kotlinx-io" }
+kotlinx-io-okio = { module = "org.jetbrains.kotlinx:kotlinx-io-okio", version.ref = "kotlinx-io" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
 okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem", version.ref = "okio" }
@@ -852,6 +854,9 @@ kctfork-ksp = { module = "dev.zacsweers.kctfork:ksp", version.ref = "kctfork" }
 # knit.
 kotlinx-knit-test = { module = "org.jetbrains.kotlinx:kotlinx-knit-test", version.ref = "knit" }
 
+##Desktop.
+proguard-gradle = { module = "com.guardsquare:proguard-gradle", version.ref = "proguard-gradle" }
+
 ##Android.
 # gradle plugin.
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -920,9 +925,10 @@ material3 = { module = "org.jetbrains.compose.material3:material3", version.ref 
 # material3 Adaptive.
 material3-window-size-clazz = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose" }
 material3-adaptive-navigation-suite = { module = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite", version.ref = "compose" }
-material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3-adaptive" }
-material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "material3-adaptive" }
-material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
+material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "androidx-adaptive" }
+material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "androidx-adaptive" }
+material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "androidx-adaptive" }
+androidx-material3-adaptive-nav3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "androidx-adaptive" }
 # haze is a library providing a 'glassmorphism' style blur for Compose.
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
@@ -939,8 +945,11 @@ androidx-paging-testing = { module = "androidx.paging:paging-testing", version.r
 androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 # navigation.
-androidx-navigation3-runtime = { module = "org.jetbrains.androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
-androidx-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+androidx-nav3-runtime = { module = "org.jetbrains.androidx.navigation3:navigation3-runtime", version.ref = "androidx-nav3" }
+androidx-nav3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "androidx-nav3" }
+androidx-navigationevent = { module = "androidx.navigationevent:navigationevent", version.ref = "androidx-nav3" }
+androidx-lifecycle-viewmodel-nav3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "androidx-lifecycle" }
+androidx-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation-compose" }
 androidx-material-navigation = { module = "org.jetbrains.compose.material:material-navigation", version.ref = "androidx-material-navigation" }
 # file picker.
@@ -994,6 +1003,7 @@ koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref =
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin" }
+koin-compose-navigation3 = { module = "io.insert-koin:koin-compose-navigation3", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
@@ -1174,7 +1184,8 @@ kache = [
 ]
 kotlinx-io = [
     "kotlinx-io-core",
-    "kotlinx-io-bytestring"
+    "kotlinx-io-bytestring",
+    "kotlinx-io-okio",
 ]
 # multiplatform settings.
 multiplatform-settings = [
@@ -1360,7 +1371,8 @@ material3-adaptive = [
     #    "material3-adaptive-navigation-suite",
     "material3-adaptive",
     "material3-adaptive-layout",
-    "material3-adaptive-navigation"
+    #    "material3-adaptive-navigation",
+    "androidx-material3-adaptive-nav3",
 ]
 # haze is a library providing a 'glassmorphism' style blur for Compose.
 haze = [
@@ -1381,11 +1393,13 @@ androidx-paging-runtime = [
 androidx-lifecycle = [
     "androidx-lifecycle-viewmodel",
     "androidx-lifecycle-runtime-compose",
+    "androidx-lifecycle-viewmodel-nav3",
 ]
 # navigation.
-nav3 = [
-    "androidx-navigation3-runtime",
-    "androidx-navigation3-ui"
+androidx-nav3 = [
+    #    "androidx-nav3-runtime",
+    "androidx-nav3-ui",
+    "androidx-navigationevent"
 ]
 androidx-navigation = [
     "androidx-navigation-compose",

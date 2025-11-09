@@ -126,9 +126,11 @@ script:
           }
         }
   - ksp:
-      # room
+      # Room.
       - arg: ("room.incremental", "true")
       - arg: ("room.expandProjection", "true")
+      # Koin.
+      - arg: ("KOIN_CONFIG_CHECK", "true")
   - powerAssert:
       includeKotlinSourceSets: ()
   - dependencies:

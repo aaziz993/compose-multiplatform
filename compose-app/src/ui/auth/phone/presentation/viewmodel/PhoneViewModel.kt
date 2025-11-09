@@ -2,19 +2,19 @@ package ui.auth.phone.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
-import clib.presentation.components.navigation.Navigator
+import clib.presentation.components.navigation.stateholder.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationStateHolder
 import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.coroutines.StandardDispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
-import ui.navigation.presentation.Destination
 import ui.navigation.presentation.Otp
 
 @KoinViewModel
 public class PhoneViewModel(
-    private val navigator: Navigator<Destination>
+    private val navigator: NavigationStateHolder
 ) : AbstractViewModel<PhoneAction>() {
 
     public val state: RestartableStateFlow<PhoneState>
@@ -31,7 +31,11 @@ public class PhoneViewModel(
     private fun confirm() {
         viewModelScope.launch(StandardDispatchers.io) {
             if (state.value.isValid)
-                navigator.navigate(Otp("${state.value.countryCode}${state.value.number}"))
+                navigator.action(
+                    NavigationAction.Navigate(
+                        Otp("${state.value.countryCode}${state.value.number}"),
+                    ),
+                )
         }
     }
 }

@@ -26,3 +26,11 @@ script:
       cocoapods:
         # We don't need a podspec for a module dependency.
         - noPodspec: ()
+  - sqldelight:
+      databases:
+        - create: |
+            ("KlibDatabase") { database ->
+              database.packageName /= "klib.data.db.sqldelight"
+              // Required by asynchronous web-worker-driver for js.
+              database.generateAsync /= true
+            }

@@ -22,6 +22,7 @@ import org.gradle.api.artifacts.MutableVersionConstraint
 import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableMinimalDependency
@@ -42,44 +43,50 @@ public data class VersionCatalog(
 ) {
 
     public fun versions(alias: String): VersionConstraint =
-        versions[alias] ?: throw IllegalArgumentException("Unresolved version '$alias'")
+        requireNotNull(versions[alias]) { "Unresolved version '$alias'" }
 
     public fun libraries(alias: String): MinimalExternalModuleDependency =
-        libraries[alias] ?: throw IllegalArgumentException("Unresolved library '$alias'")
+        requireNotNull(libraries[alias]) { "Unresolved library '$alias'" }
 
     public operator fun get(alias: String): MinimalExternalModuleDependency = libraries(alias)
 
     public fun plugins(alias: String): PluginDependency =
-        plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")
+        requireNotNull(plugins[alias]) { "Unresolved plugin '$alias'" }
 
     context(project: Project)
     public fun bundles(alias: String): Provider<ExternalModuleDependencyBundle> =
         project.objects.property(ExternalModuleDependencyBundle::class.java).apply {
-            set(bundles[alias] ?: error("Unresolved bundle '$alias'"))
+            set(requireNotNull(bundles[alias]) { "Unresolved bundle '$alias'" })
         }
 
     public companion object {
 
         @Suppress("UnstableApiUsage")
         context(settings: Settings)
-        public operator fun invoke(lib: MinimalExternalModuleDependency): VersionCatalog {
-            val file = settings.layout.settingsDirectory.dir(VERSION_CATALOG_DIR).file(".$lib.toml").asFile
+        public operator fun invoke(dependencyNotation: Any): VersionCatalog =
+            when (dependencyNotation) {
+                is FileCollection -> Toml.decodeFromString<VersionCatalog>(dependencyNotation.files.single().readText())
+                is MinimalExternalModuleDependency -> {
+                    val file = settings.layout.settingsDirectory.dir(VERSION_CATALOG_DIR).file(".$dependencyNotation.toml").asFile
 
-            val text = if (file.exists()) file.readText()
-            else settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repository ->
-                when (repository) {
-                    is MavenArtifactRepository -> repository.url
-                    is IvyArtifactRepository -> repository.url
-                    else -> null
-                }?.let { url ->
-                    runCatching {
-                        url.resolve(lib.toString().toCatalogUrl()).toURL().readText()
-                    }.getOrNull()
+                    val text = if (file.exists()) file.readText()
+                    else settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repository ->
+                        when (repository) {
+                            is MavenArtifactRepository -> repository.url
+                            is IvyArtifactRepository -> repository.url
+                            else -> null
+                        }?.let { url ->
+                            runCatching {
+                                url.resolve(dependencyNotation.toString().toCatalogUrl()).toURL().readText()
+                            }.getOrNull()
+                        }
+                    }?.also(file::writeText) ?: error("Couldn't find version catalog '$dependencyNotation'")
+
+                    Toml.decodeFromString<VersionCatalog>(text)
                 }
-            }?.also(file::writeText) ?: error("Couldn't find version catalog '$lib'")
 
-            return Toml.decodeFromString<VersionCatalog>(text)
-        }
+                else -> error("Unknown dependency notation '$dependencyNotation'")
+            }
 
         private fun String.toCatalogUrl(): String {
             val fileNamePart = substringAfter(":", "").replace(":", "-")
@@ -172,7 +179,7 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
     ): MutableVersionConstraint =
         when (version) {
             null, is String -> DefaultMutableVersionConstraint(version.orEmpty())
-            else -> versions[version.asMap["ref"]]!!
+            else -> requireNotNull(versions[version.asMap["ref"]]) { "Unresolved version ref '${version.asMap["ref"]}'" }
         }
 
     private fun <V> Map<String, V>.toCatalogAliasMap() = mapKeys { (key, _) -> key.toCatalogAlias() }

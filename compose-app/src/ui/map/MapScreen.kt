@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import clib.presentation.components.map.Map
 import clib.presentation.components.map.model.MapView
 import clib.presentation.components.map.model.Marker
-import clib.presentation.components.navigation.viewmodel.NavigationAction
+import clib.presentation.components.navigation.stateholder.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.google_map
 import compose_app.generated.resources.open_street_map
@@ -14,7 +14,7 @@ import compose_app.generated.resources.select_tile
 import compose_app.generated.resources.virtual_earth_map
 import klib.data.location.LocationImpl
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Map
 
 @Composable

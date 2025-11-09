@@ -1,15 +1,16 @@
 package di
 
-import di.module.CommonModule
-import di.module.PlatformModule
-import org.koin.core.KoinApplication
-import org.koin.ksp.generated.module
+import org.koin.core.annotation.KoinApplication
+import org.koin.core.option.viewModelScopeFactory
+import org.koin.dsl.KoinAppDeclaration
+import org.koin.ksp.generated.koinConfiguration
 
-public fun KoinApplication.koinConfiguration() {
-    printLogger()
+@KoinApplication
+public object App
 
-    modules(
-        CommonModule().module,
-        PlatformModule().module,
-    )
-}
+public fun koinConfiguration(): KoinAppDeclaration =
+    App.koinConfiguration {
+        options(
+            viewModelScopeFactory(),
+        )
+    }
