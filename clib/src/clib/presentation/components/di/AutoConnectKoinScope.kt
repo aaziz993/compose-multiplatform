@@ -24,14 +24,13 @@ public fun AutoConnectKoinScope(
 
     val scopeToInject by remember {
         derivedStateOf {
-            val currentRoute = backStack.last().name
+            val currentRoute = backStack.lastOrNull()?.name ?: return@derivedStateOf rootScope
 
             // Close scopes no longer in backStack
             val activeRoutes = backStack.map(Route::name)
             val closedScopes = scopeMap.keys - activeRoutes.toSet()
             closedScopes.forEach { route ->
-                scopeMap[route]?.close()
-                scopeMap.remove(route)
+                scopeMap.remove(route)?.close()
             }
 
             // Get or create scope for current route

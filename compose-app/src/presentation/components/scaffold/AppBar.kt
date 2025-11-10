@@ -88,7 +88,7 @@ public fun AppBar(
     onLocaleAction: (LocaleAction) -> Unit,
     onAuthAction: (AuthAction) -> Unit,
     currentRoute: Route,
-    canNavigateBack: Boolean,
+    hasBackRoute: Boolean,
     onNavigationAction: (NavigationAction) -> Unit,
     isDrawerOpen: Boolean,
     toggleDrawer: () -> Unit,
@@ -135,7 +135,7 @@ public fun AppBar(
                                 }
                             }
 
-                        if (canNavigateBack)
+                        if (hasBackRoute)
                             AppTooltipBox(stringResource(Res.string.navigate_back)) {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.NavigateBack) },

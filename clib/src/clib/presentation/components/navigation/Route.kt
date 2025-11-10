@@ -13,7 +13,9 @@ public interface Route : NavKey {
 
     @Suppress("UNCHECKED_CAST")
     public val navRoute: NavRoute<Route>
-        get() = this as NavRoute<Route>
+        get() = requireNotNull(this as? NavRoute<Route>) {
+            "NavRoute not found for '$this'"
+        }
 }
 
 public fun List<Route>.hasNavigationItems(auth: Auth = Auth()): Boolean =

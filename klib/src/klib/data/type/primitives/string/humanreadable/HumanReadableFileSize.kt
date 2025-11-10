@@ -1,21 +1,10 @@
 package klib.data.type.primitives.string.humanreadable
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.decimal.DecimalMode
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import com.ionspin.kotlin.bignum.integer.toBigInteger
+import klib.data.type.primitives.toBigDecimal
 
-public const val KB: Long = 1024
-
-public const val MB: Long = 1048576
-
-public const val GB: Long = 1073741824
-
-public const val TB: Long = 1099511627776
-
-public const val PB: Long = 1125899906842624
-
-public const val EB: Long = 1152921504606846976
+private val SIZE_BASE = BigInteger.fromInt(1024)
 
 /**
  * Returns the given bytes size in human-readable format. For example:
@@ -30,20 +19,20 @@ public fun BigInteger.toHumanReadableSize(
     decimals: Int = 0,
     groupSeparator: String = ".",
     decimalSymbol: String = ",",
-    vararg suffixes: Pair<BigInteger, String> = arrayOf(
-        BigInteger.ONE to "B",
-        KB.toBigInteger() to "KB",
-        MB.toBigInteger() to "MB",
-        GB.toBigInteger() to "GB",
-        TB.toBigInteger() to "TB",
-        PB.toBigInteger() to "PB",
-        PB.toBigInteger() to "EB",
-    )
+    suffixes: List<String> = listOf("B", "KB", "MB", "GB", "TB", "PB", "EB"),
 ): String {
-    val index = suffixes.indexOfFirst { (value, _) -> this < value } - 1
+    if (this == BigInteger.ZERO) return "0${suffixes.first()}"
+
+    var value = this
+    var exponent = 0
+
+    while (value >= SIZE_BASE && exponent < suffixes.lastIndex) {
+        value = value / SIZE_BASE
+        exponent++
+    }
 
     return "${
-        (BigDecimal.fromBigInteger(this).divide(BigDecimal.fromBigInteger(suffixes[index].first), DecimalMode.US_CURRENCY))
+        toBigDecimal().divide(SIZE_BASE.pow(exponent).toBigDecimal(), DecimalMode.US_CURRENCY)
             .toHumanReadable(decimals, groupSeparator, decimalSymbol)
-    }${suffixes[index].second}"
+    }${suffixes[exponent]}"
 }

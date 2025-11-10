@@ -13,13 +13,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import clib.presentation.components.navigation.stateholder.NavigationAction
 import coil3.compose.AsyncImage
 import kotlinx.datetime.LocalDateTime
@@ -27,24 +25,19 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
-import clib.di.koinViewModel
 import ui.navigation.presentation.Articles
 import ui.news.articles.data.model.Article
-import ui.news.articles.presentation.viewmodel.ArticleViewModel
+import ui.news.articles.presentation.viewmodel.ArticlesState
 
 @Composable
 public fun ArticlesScreen(
     modifier: Modifier = Modifier,
     route: Articles = Articles,
+    state: ArticlesState = ArticlesState(),
     onNavigationAction: (NavigationAction) -> Unit = {},
-) {
-    val viewModel = koinViewModel<ArticleViewModel>()
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    ArticleContent(
-        articles = state.articles,
-    )
-}
+): Unit = ArticleContent(
+    articles = state.articles,
+)
 
 @Composable
 private fun ArticleContent(

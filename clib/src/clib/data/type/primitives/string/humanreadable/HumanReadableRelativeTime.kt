@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import klib.data.type.primitives.string.humanreadable.toHumanReadable
 import kotlin.time.Instant
 import org.jetbrains.compose.resources.PluralStringResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Returns the given duration in human-readable format.
@@ -26,9 +28,9 @@ public fun Instant.toHumanReadable(
     weeks: PluralStringResource,
     months: PluralStringResource,
     years: PluralStringResource,
-    timeInFuture: String = $$"in ${time}",
-    now: String = "now",
-    timeAgo: String = $$"${time} ago",
+    timeInFuture: StringResource,
+    now: StringResource,
+    timeAgo: StringResource,
 ): String = toHumanReadable(
     baseInstant,
     { quantity -> pluralStringResource(nanoseconds, quantity) },
@@ -41,8 +43,8 @@ public fun Instant.toHumanReadable(
     { quantity -> pluralStringResource(weeks, quantity) },
     { quantity -> pluralStringResource(months, quantity) },
     { quantity -> pluralStringResource(years, quantity) },
-    timeInFuture,
-    now,
-    timeAgo,
+    stringResource(timeInFuture),
+    stringResource(now),
+    stringResource(timeAgo),
 )
 

@@ -1,7 +1,6 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.ExperimentalBrowserHistoryApi
-import androidx.navigation.bindToBrowserNavigation
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_name
 import kotlinx.browser.document
@@ -15,9 +14,7 @@ public suspend fun main() {
     setFavicon(Res.getUri("drawable/compose-multiplatform.svg"), "image/svg+xml")
     val body = document.body ?: return
     ComposeViewport(body) {
-        App(
-            onNavHostReady = { it.bindToBrowserNavigation() },
-        )
+        App()
     }
 }
 

@@ -52,11 +52,11 @@ public abstract class NavRoute<T : Route> {
         metadata: Map<String, Any> = emptyMap(),
     ): NavEntry<T> = NavEntry(
         route,
-        route::class.serializer().descriptor.serialName,
+        route.name,
         metadata,
     ) { key -> Content(key) }
 
-    protected open fun authResource(): AuthResource? = null
+    public open fun authResource(): AuthResource? = null
 
     context(navigationSuiteScope: NavigationSuiteScope)
     public open fun item(
@@ -98,6 +98,6 @@ public abstract class NavRoute<T : Route> {
 
     internal fun isNavigateItem(auth: Auth): Boolean = route != null && isAuth(auth)
 
-    private fun isAuth(auth: Auth): Boolean =
+    public fun isAuth(auth: Auth): Boolean =
         authResource()?.validate(auth.provider, auth.user) != false
 }

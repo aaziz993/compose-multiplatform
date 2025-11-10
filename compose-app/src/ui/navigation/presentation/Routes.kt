@@ -36,17 +36,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import clib.di.koinInject
+import clib.di.koinViewModel
 import clib.presentation.components.auth.stateholder.AuthStateHolder
+import clib.presentation.components.navigation.AuthRoute
 import clib.presentation.components.navigation.NavRoute
 import clib.presentation.components.navigation.Route
+import clib.presentation.components.navigation.stateholder.NavigationStateHolder
 import clib.presentation.locale.stateholder.LocaleStateHolder
 import clib.presentation.theme.stateholder.ThemeStateHolder
 import klib.data.type.auth.AuthResource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import clib.di.koinInject
-import clib.di.koinViewModel
-import clib.presentation.components.navigation.stateholder.NavigationStateHolder
 import presentation.components.scaffold.AppBar
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPasswordScreen
@@ -65,6 +66,7 @@ import ui.auth.verification.presentation.viewmodel.VerificationViewModel
 import ui.home.HomeScreen
 import ui.map.MapScreen
 import ui.news.articles.presentation.ArticlesScreen
+import ui.news.articles.presentation.viewmodel.ArticleViewModel
 import ui.services.ServicesScreen
 import ui.settings.SettingsScreen
 import ui.wallet.balance.BalanceScreen
@@ -91,7 +93,7 @@ public data object Home : NavRoute<Home>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Home) {
@@ -120,15 +122,18 @@ public data object Articles : NavRoute<Articles>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Articles) {
+        val viewModel: ArticleViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
         val navigationStateHolder: NavigationStateHolder = koinInject()
 
         ArticlesScreen(
             Modifier,
             route,
+            state,
             navigationStateHolder::action,
         )
     }
@@ -149,7 +154,7 @@ public data object Map : NavRoute<Map>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Map) {
@@ -178,7 +183,7 @@ public data object Services : NavRoute<Services>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Services) {
@@ -207,7 +212,7 @@ public data object Settings : NavRoute<Settings>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Settings) {
@@ -241,7 +246,7 @@ public data object About : NavRoute<About>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: About) {
@@ -259,7 +264,7 @@ public data object About : NavRoute<About>(), Route {
 
 @Serializable
 @SerialName("phone")
-public data object Phone : NavRoute<Phone>(), Route {
+public data object Phone : NavRoute<Phone>(), Route, AuthRoute {
 
     override val route: Phone? = null
 
@@ -272,7 +277,7 @@ public data object Phone : NavRoute<Phone>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Phone) {
@@ -292,7 +297,7 @@ public data object Phone : NavRoute<Phone>(), Route {
 
 @Serializable
 @SerialName("otp")
-public data class Otp(val phone: String = "") : Route {
+public data class Otp(val phone: String = "") : Route, AuthRoute {
 
     override val navRoute: NavRoute<Route>
         get() = Otp as NavRoute<Route>
@@ -310,7 +315,7 @@ public data class Otp(val phone: String = "") : Route {
         }
 
         @Composable
-        override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+        override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
         @Composable
         override fun Content(route: Otp) {
@@ -331,7 +336,7 @@ public data class Otp(val phone: String = "") : Route {
 
 @Serializable
 @SerialName("pincode")
-public data object PinCode : NavRoute<PinCode>(), Route {
+public data object PinCode : NavRoute<PinCode>(), Route, AuthRoute {
 
     override val route: PinCode? = null
 
@@ -344,7 +349,7 @@ public data object PinCode : NavRoute<PinCode>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: PinCode) {
@@ -364,7 +369,7 @@ public data object PinCode : NavRoute<PinCode>(), Route {
 
 @Serializable
 @SerialName("login")
-public data object Login : NavRoute<Login>(), Route {
+public data object Login : NavRoute<Login>(), Route, AuthRoute {
 
     override val route: Login? = null
 
@@ -377,7 +382,7 @@ public data object Login : NavRoute<Login>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Login) {
@@ -397,12 +402,12 @@ public data object Login : NavRoute<Login>(), Route {
 
 @Serializable
 @SerialName("forgotpassword")
-public data object ForgotPassword : NavRoute<ForgotPassword>(), Route {
+public data object ForgotPassword : NavRoute<ForgotPassword>(), Route, AuthRoute {
 
     override val route: ForgotPassword? = null
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: ForgotPassword) {
@@ -423,7 +428,7 @@ public data object Unverified : NavRoute<Unverified>(), Route {
     override val route: Unverified? = null
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Unverified) {
@@ -446,7 +451,7 @@ public data object Verification : NavRoute<Verification>(), Route {
     override val route: Verification? = null
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Verification) {
@@ -473,7 +478,7 @@ public data object Verification : NavRoute<Verification>(), Route {
 public data object Profile : NavRoute<Profile>(), Route {
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     override val icon: @Composable (String, Modifier) -> Unit = { label, modifier ->
         Icon(Icons.Outlined.Person, label, modifier)
@@ -513,7 +518,7 @@ public data object Balance : NavRoute<Balance>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Balance) {
@@ -542,7 +547,7 @@ public data object Crypto : NavRoute<Crypto>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Crypto) {
@@ -571,7 +576,7 @@ public data object Stock : NavRoute<Stock>(), Route {
     }
 
     @Composable
-    override fun ParentContent(content: @Composable () -> Unit): Unit = _ParentContent(content)
+    override fun ParentContent(content: @Composable () -> Unit): Unit = AppParentContent(content)
 
     @Composable
     override fun Content(route: Stock) {
@@ -587,9 +592,8 @@ public data object Stock : NavRoute<Stock>(), Route {
     override fun authResource(): AuthResource? = AuthResource()
 }
 
-@Suppress("FunctionName")
 @Composable
-private fun _ParentContent(content: @Composable () -> Unit) {
+private fun AppParentContent(content: @Composable () -> Unit) {
     val themeStateHolder: ThemeStateHolder = koinInject()
     val localeStateHolder: LocaleStateHolder = koinInject()
     val authStateHolder: AuthStateHolder = koinInject()
@@ -601,10 +605,10 @@ private fun _ParentContent(content: @Composable () -> Unit) {
         localeStateHolder::action,
         authStateHolder::action,
         navigationStateHolder.backStack.last(),
-        navigationStateHolder.canNavigateBack(),
+        navigationStateHolder.hasBackRoute(),
         navigationStateHolder::action,
         drawerStateHolder.isOpen,
-        { drawerStateHolder.isOpen = !drawerStateHolder.isOpen },
+        drawerStateHolder::toggle,
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
         Box(

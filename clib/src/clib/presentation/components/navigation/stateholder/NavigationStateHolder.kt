@@ -1,41 +1,42 @@
 package clib.presentation.components.navigation.stateholder
 
 import androidx.compose.runtime.mutableStateListOf
+import clib.presentation.components.navigation.AuthRoute
 import clib.presentation.components.navigation.Route
+import klib.data.type.auth.model.Auth
 
 public class NavigationStateHolder(
-    startRoute: Route,
+    private var auth: Auth = Auth(),
+    private val publicStartRoute: Route,
+    private val authRoute: Route = publicStartRoute,
+    private val protectedStartRoute: Route = publicStartRoute,
+    private val loginReset: Boolean = false,
+    private val logoutReset: Boolean = false,
 ) {
 
-    public var startRoute: Route = startRoute
-        private set
+    private val startRoute: Route
+        get() = if (auth.user == null) publicStartRoute else protectedStartRoute
 
     public val backStack: List<Route>
         field = mutableStateListOf(startRoute)
 
-    public fun canNavigateBack(): Boolean = backStack.size > 1 || backStack[0] != startRoute
+    private var authRedirectRoute: Route? = null
 
-    @Suppress("UNCHECKED_CAST")
+    public fun hasBackRoute(): Boolean = backStack.size > 1 || backStack[0] != startRoute
+
     public fun action(action: NavigationAction) {
         when (action) {
-            NavigationAction.NavigateBack -> {
-                if (backStack.size > 1) backStack.removeLast()
-                else if (backStack.first() != startRoute) backStack[0] = startRoute
-            }
+            NavigationAction.NavigateBack ->
+                if (backStack.size > 1) backStack.removeLast() else backStack[0] = startRoute
 
-            is NavigationAction.Navigate ->
-                if (backStack.last() != action.route) {
-                    val index = backStack.indexOf(action.route)
-
-                    if (index != -1) {
-                        backStack[index] = backStack[backStack.lastIndex].also {
-                            backStack[backStack.lastIndex] = backStack[index]
-                        }
-                        return
-                    }
-
-                    backStack.add(action.route)
+            is NavigationAction.Navigate -> {
+                if (action.route.navRoute.isAuth(auth)) add(action.route)
+                else {
+                    // Store the intended destination and redirect to login.
+                    authRedirectRoute = action.route
+                    return add(authRoute)
                 }
+            }
 
             is NavigationAction.NavigateBackTo -> {
                 val index = backStack.indexOf(action.route)
@@ -45,18 +46,35 @@ public class NavigationStateHolder(
                 else backStack.removeRange(fromIndex, backStack.size)
             }
 
-            is NavigationAction.NavigateAndClearCurrent ->
-                backStack[backStack.lastIndex] = action.route
+            is NavigationAction.NavigateAndClearCurrent -> backStack[backStack.lastIndex] = action.route
 
-            is NavigationAction.NavigateAndClear -> {
-                if (action.reset) startRoute = action.route
-                navigateAndClear(action.route)
+            is NavigationAction.NavigateAndClear -> navigateAndClear(action.route)
+
+            is NavigationAction.NavigateAuth -> {
+                auth = action.auth
+                if (auth.user == null)
+                    auth(publicStartRoute, logoutReset) { route -> route.navRoute.authResource() != null }
+                else auth(authRedirectRoute ?: startRoute, loginReset) { route -> route is AuthRoute }
             }
         }
+        authRedirectRoute = null
+    }
+
+    private fun add(route: Route) {
+        backStack.add(route)
+        val index = backStack.indexOf(route)
+        if (index != -1 && index != backStack.lastIndex) backStack.removeAt(index)
     }
 
     private fun navigateAndClear(route: Route) {
         backStack[0] = route
-        backStack.removeRange(1, backStack.size)
+        if (backStack.size > 1) backStack.removeRange(1, backStack.size)
     }
+
+    private fun auth(route: Route, reset: Boolean, predicate: (Route) -> Boolean) =
+        if (reset) navigateAndClear(route)
+        else {
+            add(route)
+            backStack.removeAll(predicate)
+        }
 }

@@ -1,6 +1,7 @@
 package clib.presentation.components.navigation.stateholder
 
 import clib.presentation.components.navigation.Route
+import klib.data.type.auth.model.Auth
 
 public sealed interface NavigationAction {
     /**
@@ -29,5 +30,10 @@ public sealed interface NavigationAction {
     /**
      * Navigate to route and remove all previous routes making current one as a top
      */
-    public data class NavigateAndClear(public val route: Route, val reset: Boolean = false) : NavigationAction
+    public data class NavigateAndClear(public val route: Route) : NavigationAction
+
+    /**
+     * Auth navigation.
+     */
+    public data class NavigateAuth(val auth: Auth) : NavigationAction
 }

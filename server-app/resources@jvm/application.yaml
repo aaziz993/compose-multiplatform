@@ -48,6 +48,15 @@ config:
     - config.applicationScript
     - config.ssl
   jvmTarget: 22
+  compilerOptions:
+    - -Xignore-const-optimization-errors
+    - -Xinline-classes
+    - -Xwhen-guards
+    - -Xnon-local-break-continue
+    - -Xcontext-parameters
+    - -Xmulti-dollar-interpolation
+    - -Xrender-internal-diagnostic-names
+    - -Xskip-prerelease-check
 script:
   # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
   - developmentMode: true

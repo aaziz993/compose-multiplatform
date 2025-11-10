@@ -18,9 +18,7 @@ public suspend fun main() {
         document.title = title
         setFavicon(Res.getUri("drawable/compose-multiplatform.svg"), "image/svg+xml")
         ComposeViewport(body) {
-            App(
-                onNavHostReady = { it.bindToBrowserNavigation() },
-            )
+            App()
         }
     }
 }

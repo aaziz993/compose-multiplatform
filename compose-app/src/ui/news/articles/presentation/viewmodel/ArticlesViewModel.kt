@@ -12,8 +12,8 @@ import ui.news.articles.data.net.http.ArticlesApiService
 @KoinViewModel
 public class ArticleViewModel(private val apiService: ArticlesApiService) : AbstractViewModel<Unit>() {
 
-    public val state: StateFlow<ArticlesViewState>
-        field = MutableStateFlow(ArticlesViewState())
+    public val state: StateFlow<ArticlesState>
+        field = MutableStateFlow(ArticlesState())
 
     init {
         viewModelScope.launch {
