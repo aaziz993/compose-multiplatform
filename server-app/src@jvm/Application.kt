@@ -5,11 +5,9 @@ import config.ApplicationScript
 import config.ServerConfig
 import engine.Netty
 import io.github.smiley4.ktoropenapi.get
-import io.github.smiley4.ktorswaggerui.swaggerUI
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.netty.NettyApplicationEngine
-import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.routing
@@ -36,10 +34,6 @@ public fun main(): Unit = SuspendApp {
 
 @Suppress("unused")
 private fun Application.module() {
-    routing {
-        swaggerUI("")
-        swaggerUI("", "")
-    }
 }
 
 public fun Application.ping(): Routing = routing {
