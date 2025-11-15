@@ -72,7 +72,7 @@ import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
-public object App : Routes() {
+public object App : Routes(), NavRoute by Auth {
 
     override val isRoot: Boolean = true
 
@@ -286,6 +286,7 @@ public data object About : Route<About>(), NavRoute {
 }
 
 @Serializable
+@SerialName("auth")
 public object Auth : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
@@ -458,7 +459,8 @@ public data object Profile : Route<Profile>(), NavRoute {
     }
 }
 
-@Serializable
+@Serializable()
+@SerialName("wallet")
 public object Wallet : Routes() {
 
     override val routes: List<BaseRoute> by lazy {

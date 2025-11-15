@@ -12,10 +12,11 @@ import clib.presentation.navigation.model.NavigationItem
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
 import kotlin.reflect.KClass
+import org.koin.core.component.KoinComponent
 
 @Suppress("UNCHECKED_CAST")
 @Immutable
-public sealed class BaseRoute : Iterable<BaseRoute> {
+public sealed class BaseRoute : Iterable<BaseRoute>, KoinComponent {
 
     public open val navigationRoute: KClass<out NavRoute>
         get() = requireNotNull(this::class as? KClass<out NavRoute>) { "No rout in '$this'" }
@@ -84,7 +85,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 }
 
-public abstract class Routes : BaseRoute(), NavRoute {
+public abstract class Routes() : BaseRoute(), NavRoute {
 
     public open val isRoot: Boolean = false
 
@@ -108,16 +109,14 @@ public abstract class Routes : BaseRoute(), NavRoute {
     final override fun Content(backStack: List<NavRoute>, onBack: () -> Unit) {
         val ownBackStack by remember(backStack) {
             derivedStateOf {
-                backStack.filter { route -> route.route == this || route.route in routes }.let { stack ->
-                    if (stack.last().route == this) stack + startRoute else stack
-                }
+                listOf(startRoute) + backStack.filter { navRoute -> navRoute != startRoute && navRoute.route in routes }
             }
         }
 
         BackInterceptionProvider(!isRoot) {
             Content(ownBackStack, onBack) { navRoute ->
                 NavEntry(navRoute, navRoute.name, navRoute.route.metadata) {
-                    navRoute.route.Content(backStack, onBack)
+                    navRoute.route.Content(ownBackStack, onBack)
                 }
             }
         }
