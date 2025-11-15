@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.ui.NavDisplay
 import clib.presentation.navigation.model.NavigationItem
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
@@ -93,11 +94,11 @@ public abstract class Routes : BaseRoute(), NavRoute {
         get() = requireNotNull(routes.first() as? NavRoute) { "No start route in '$this'" }
 
     @Composable
-    protected open fun NavDisplay(
+    protected open fun Content(
         backStack: List<NavRoute>,
         onBack: () -> Unit,
         entryProvider: (NavRoute) -> NavEntry<NavRoute>
-    ): Unit = androidx.navigation3.ui.NavDisplay(
+    ): Unit = NavDisplay(
         backStack = backStack,
         onBack = onBack,
         entryProvider = entryProvider,
@@ -114,7 +115,7 @@ public abstract class Routes : BaseRoute(), NavRoute {
         }
 
         BackInterceptionProvider(!isRoot) {
-            NavDisplay(ownBackStack, onBack) { navRoute ->
+            Content(ownBackStack, onBack) { navRoute ->
                 NavEntry(navRoute, navRoute.name, navRoute.route.metadata) {
                     navRoute.route.Content(backStack, onBack)
                 }

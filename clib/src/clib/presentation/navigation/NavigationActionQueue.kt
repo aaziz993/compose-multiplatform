@@ -1,9 +1,9 @@
 package clib.presentation.navigation
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import clib.presentation.state.mutableStateOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -22,19 +22,21 @@ import kotlinx.coroutines.launch
 public class NavigationActionQueue : NavigatorHolder {
 
     /** Currently registered navigator, null if none is set */
-    private var navigator: Navigator? = null
+    private var _navigator: Navigator? by mutableStateOf(null)
 
     /**
      * Currently registered navigator back stack.
      */
-    internal var backStack: List<NavRoute> by mutableStateOf(emptyList())
-        private set
+    internal val backStack: List<NavRoute> by derivedStateOf {
+        _navigator?.backStack ?: emptyList()
+    }
 
     /**
      *  Checks does back stack has back route.
      */
-    internal var hasBackRoute: Boolean by mutableStateOf(false)
-        private set
+    internal val hasBackRoute: Boolean by derivedStateOf {
+        _navigator?.hasBackRoute ?: false
+    }
 
     /** Queue of pending actions waiting for a navigator to become available */
     private val pendingActions = mutableListOf<Array<out NavigationAction>>()
@@ -51,9 +53,7 @@ public class NavigationActionQueue : NavigatorHolder {
      * @param navigator The navigator to register
      */
     override fun setNavigator(navigator: Navigator) {
-        this.navigator = navigator
-        backStack = navigator.backStack
-        hasBackRoute = navigator.hasBackRoute
+        _navigator = navigator
         if (pendingActions.isNotEmpty()) {
             val snapshot = pendingActions.toList()
             pendingActions.clear()
@@ -67,9 +67,7 @@ public class NavigationActionQueue : NavigatorHolder {
      * After calling this, new actions will be queued until a new navigator is set.
      */
     override fun removeNavigator() {
-        navigator = null
-        backStack = emptyList()
-        hasBackRoute = false
+        _navigator = null
     }
 
     /**
@@ -82,7 +80,7 @@ public class NavigationActionQueue : NavigatorHolder {
      */
     public fun actions(actions: Array<out NavigationAction>) {
         mainScope.launch {
-            navigator?.actions(actions) ?: pendingActions.add(actions)
+            _navigator?.actions(actions) ?: pendingActions.add(actions)
         }
     }
 }

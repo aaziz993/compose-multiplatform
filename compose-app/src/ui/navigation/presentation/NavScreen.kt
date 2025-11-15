@@ -2,8 +2,6 @@ package ui.navigation.presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -12,23 +10,16 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation3.runtime.NavBackStack
 import androidx.window.core.layout.WindowSizeClass
-import clib.data.type.collections.ToLaunchedEffect
 import clib.data.type.primitives.string.asStringResource
 import clib.di.koinInject
 import clib.presentation.auth.AuthState
 import clib.presentation.components.connectivity.Connectivity
-import clib.presentation.components.dialog.alert.AlertDialog
-import clib.presentation.event.alert.GlobalAlertEventController
-import clib.presentation.event.alert.model.AlertEvent
+import clib.presentation.event.alert.GlobalAlertDialog
+import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocaleState
@@ -39,7 +30,6 @@ import clib.presentation.navigation.rememberRouter
 import clib.presentation.theme.ThemeState
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
-import kotlinx.coroutines.launch
 import presentation.components.scaffold.AppBar
 import compose_app.generated.resources.online
 import compose_app.generated.resources.offline
@@ -94,47 +84,18 @@ public fun NavScreen(
             else NavigationSuiteType.None,
             state = navigationSuiteScaffoldState,
         ) {
-            val coroutineScope = rememberCoroutineScope()
+            GlobalSnackbar()
 
-            // Global Snackbar by GlobalSnackbarEventController
-            val snackbarHostState = remember { SnackbarHostState() }
-            GlobalSnackbarEventController.events.ToLaunchedEffect(
-                snackbarHostState,
-            ) { event ->
-                coroutineScope.launch {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-
-                    val result = snackbarHostState.showSnackbar(
-                        event.message,
-                        event.action?.name,
-                    )
-
-                    if (result == SnackbarResult.ActionPerformed) event.action?.action?.invoke()
-                }
-            }
-
-            // Global AlertDialog by GlobalAlertEventController
-            var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
-            GlobalAlertEventController.events.ToLaunchedEffect { event ->
-                alertDialogState = event
-            }
-            alertDialogState?.let { event ->
-                AlertDialog(
-                    event.message,
-                    isError = event.isError,
-                    onConfirm = event.action,
-                    onCancel = { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
-                )
-            }
+            GlobalAlertDialog()
 
             Connectivity(
-                connectivity = koinInject(),
-                connected = {
+                koinInject(),
+                {
                     GlobalSnackbarEventController.sendEvent(
                         SnackbarEvent(getString(Res.string.online)),
                     )
                 },
-                disconnected = {
+                {
                     GlobalSnackbarEventController.sendEvent(
                         SnackbarEvent(getString(Res.string.offline)),
                     )

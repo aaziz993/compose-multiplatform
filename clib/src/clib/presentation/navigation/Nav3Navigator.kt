@@ -23,7 +23,7 @@ import pro.respawn.kmmutils.common.replaceWith
  * @param authRoute The route that users should be taken to when they attempt to access a route that requires login
  * @param auth
  * @param onBack Callback triggered when navigation is pretend to become empty
- * @param onNavigationError Callback triggered when navigation action throws error
+ * @param onError Callback triggered when navigation action throws error
  */
 public open class Nav3Navigator(
     private var auth: Auth = Auth(),
@@ -32,7 +32,7 @@ public open class Nav3Navigator(
     private val publicRoute: NavRoute = authRoute,
     private val navBackStack: NavBackStack<NavRoute>,
     private val onBack: () -> Unit = {},
-    private val onNavigationError: suspend (NavigationException) -> Unit = { },
+    private val onError: suspend (NavigationException) -> Unit = { },
 ) : Navigator {
 
     init {
@@ -77,7 +77,7 @@ public open class Nav3Navigator(
             }
             catch (e: RuntimeException) {
                 mainScope.launch {
-                    onNavigationError(NavigationException(action, e))
+                    onError(NavigationException(action, e))
                 }
             }
         }

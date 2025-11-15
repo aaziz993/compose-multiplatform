@@ -52,24 +52,14 @@ public fun AlertDialog(
                 iconVector,
                 null,
                 Modifier.size(64.dp),
-                tint = if (isError) {
-                    MaterialTheme.colorScheme.error
-                }
-                else {
-                    LocalContentColor.current
-                },
+                tint = if (isError) MaterialTheme.colorScheme.error else LocalContentColor.current,
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 message,
-                color = if (isError) {
-                    MaterialTheme.colorScheme.error
-                }
-                else {
-                    Color.Unspecified
-                },
+                color = if (isError) MaterialTheme.colorScheme.error else Color.Unspecified,
             )
 
             if (!(onCancel == null && onConfirm == null)) {

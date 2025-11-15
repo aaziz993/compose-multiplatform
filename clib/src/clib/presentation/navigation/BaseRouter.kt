@@ -20,7 +20,8 @@ public abstract class BaseRouter {
     /**
      * Currently registered navigator back stack.
      */
-    public val backStack: List<NavRoute> = navigationActionQueue.backStack
+    public val backStack: List<NavRoute>
+        get() = navigationActionQueue.backStack
 
     /**
      * Back stack current route
@@ -31,7 +32,8 @@ public abstract class BaseRouter {
     /**
      * Variable to check whether back stack has back route.
      */
-    public val hasBackRoute: Boolean = navigationActionQueue.hasBackRoute
+    public val hasBackRoute: Boolean
+        get() = navigationActionQueue.hasBackRoute
 
     /**
      * Executes one or more navigation actions.
