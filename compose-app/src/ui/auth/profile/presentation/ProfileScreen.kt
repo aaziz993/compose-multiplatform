@@ -29,10 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.auth.LocalAuth
-import clib.presentation.components.auth.stateholder.AuthAction
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.navigation.stateholder.NavigationAction
+import clib.presentation.navigation.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
 import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
@@ -48,14 +46,15 @@ import ui.navigation.presentation.Verification
 public fun ProfileScreen(
     modifier: Modifier = Modifier,
     route: Profile = Profile,
-    onAuthAction: (AuthAction) -> Unit = {},
+    auth: Auth = Auth(),
+    onAuthChange: (Auth) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    LocalAuth.current.user?.let { user->
+    auth.user?.let { user ->
         Avatar(
             user = user,
             modifier = Modifier.size(80.dp)
@@ -151,10 +150,10 @@ public fun ProfileScreen(
             }
         }
 
-        if (LocalAuth.current.user?.roles?.contains("Verified") == false)
+        if (auth.user?.roles?.contains("Verified") == false)
             Button(
                 onClick = {
-                    onNavigationAction(NavigationAction.Navigate(Verification))
+                    onNavigationAction(NavigationAction.Push(Verification))
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -163,7 +162,7 @@ public fun ProfileScreen(
 
         Button(
             onClick = {
-                onAuthAction(AuthAction.SetAuth(Auth()))
+                onAuthChange(Auth())
             },
             modifier = Modifier.fillMaxWidth(),
         ) {

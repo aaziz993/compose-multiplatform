@@ -2,8 +2,7 @@ package ui.auth.login.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
-import clib.presentation.components.auth.stateholder.AuthAction
-import clib.presentation.components.auth.stateholder.AuthStateHolder
+import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.AbstractViewModel
 import klib.data.type.auth.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +12,7 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 public class LoginViewModel(
-    private val authStateHolder: AuthStateHolder
+    private val authState: AuthState
 ) : AbstractViewModel<LoginAction>() {
 
     public val state: RestartableStateFlow<LoginState>
@@ -32,14 +31,12 @@ public class LoginViewModel(
     private fun login() {
         viewModelScope.launch {
             if (state.value.pinCode == "7890")
-                authStateHolder.action(
-                    AuthAction.SetUser(
-                        User(
-                            username = "jogn.doe@gmail.com",
-                            firstName = "John",
-                            lastName = "Doe",
-                            roles = setOf("User"),
-                        ),
+                authState.setUser(
+                    User(
+                        username = "jogn.doe@gmail.com",
+                        firstName = "John",
+                        lastName = "Doe",
+                        roles = setOf("User"),
                     ),
                 )
             else state.update { it.copy(error = "Invalid pin code") }

@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.navigation.stateholder.NavigationAction
+import clib.presentation.navigation.NavigationAction
 import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
@@ -77,7 +77,7 @@ public fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    onNavigationAction(NavigationAction.Navigate(Phone))
+                    onNavigationAction(NavigationAction.Push(Phone))
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

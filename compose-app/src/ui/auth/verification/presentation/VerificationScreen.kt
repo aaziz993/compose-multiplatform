@@ -27,12 +27,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.permission.rememberPermissionsControllerFactory
-import clib.presentation.components.auth.stateholder.AuthAction
-import clib.presentation.components.navigation.stateholder.NavigationAction
+import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.confirm
 import compose_app.generated.resources.upload_id
+import klib.data.type.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.tooltipbox.AppTooltipBox
@@ -47,7 +47,8 @@ public fun VerificationScreen(
     route: Verification = Verification,
     state: VerificationState = VerificationState(),
     onAction: (VerificationAction) -> Unit = {},
-    onAuthAction: (AuthAction) -> Unit = {},
+    auth: Auth = Auth(),
+    onAuthChange: (Auth) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -109,7 +110,7 @@ public fun VerificationScreen(
 
         Button(
             onClick = {
-                onNavigationAction(NavigationAction.Navigate(Services))
+                onNavigationAction(NavigationAction.Push(Services))
             },
             modifier = Modifier.fillMaxWidth(),
         ) {

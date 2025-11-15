@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 
 public open class Item(
     public val modifier: Modifier = Modifier,
-    public val text: (@Composable (Modifier) -> Unit)? = null,
-    public val icon: (@Composable (Modifier) -> Unit)? = null,
-    public val badge: (@Composable (Modifier) -> Unit)? = null,
+    public val text: @Composable () -> Unit = {},
+    public val icon: @Composable () -> Unit = {},
+    public val badge: @Composable () -> Unit = {},
 )

@@ -5,8 +5,9 @@ import androidx.compose.ui.Modifier
 import clib.presentation.components.model.item.Item
 
 public open class PickerItem<T : Any>(
-    text: (@Composable (Modifier) -> Unit)? = null,
-    icon: (@Composable (Modifier) -> Unit)? = null,
-    badge: (@Composable (Modifier) -> Unit)? = null,
+    modifier: Modifier = Modifier,
+    text: @Composable () -> Unit = {},
+    icon: @Composable () -> Unit = {},
+    badge: @Composable () -> Unit = {},
     public val value: T? = null,
-) : Item(text = text, icon = icon, badge = badge)
+) : Item(modifier, text, icon, badge)

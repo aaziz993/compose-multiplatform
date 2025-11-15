@@ -111,14 +111,14 @@ public fun <T : Any> AdvancedPickerDialog(
                                 .padding(
                                     horizontal = 18.dp,
                                     vertical = 18.dp,
-                                )
+                                ).then(item.modifier)
                                 .clickable {
                                     onItemClick(item)
                                     onDismissRequest()
                                 },
                         ) {
-                            item.icon?.invoke(Modifier)
-                            item.text?.invoke(Modifier)
+                            item.icon()
+                            item.text()
                         }
                     }
                 }

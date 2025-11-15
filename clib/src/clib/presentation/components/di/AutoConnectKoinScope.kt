@@ -6,16 +6,16 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
-import clib.presentation.components.navigation.Route
 import org.koin.compose.ComposeContextWrapper
 import clib.di.LocalKoinScopeContext
 import clib.di.getKoin
+import clib.presentation.navigation.NavRoute
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 
 @Composable
 public fun AutoConnectKoinScope(
-    backStack: List<Route>,
+    backStack: List<NavRoute>,
     rootScope: Scope = getKoin().scopeRegistry.rootScope,
     content: @Composable () -> Unit
 ) {
@@ -24,10 +24,10 @@ public fun AutoConnectKoinScope(
 
     val scopeToInject by remember {
         derivedStateOf {
-            val currentRoute = backStack.lastOrNull()?.name ?: return@derivedStateOf rootScope
+            val currentRoute = backStack.lastOrNull()?.toString() ?: return@derivedStateOf rootScope
 
             // Close scopes no longer in backStack
-            val activeRoutes = backStack.map(Route::name)
+            val activeRoutes = backStack.map(NavRoute::toString)
             val closedScopes = scopeMap.keys - activeRoutes.toSet()
             closedScopes.forEach { route ->
                 scopeMap.remove(route)?.close()

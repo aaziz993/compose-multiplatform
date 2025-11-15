@@ -28,6 +28,7 @@ public fun <T, R> StateFlow<T>.map(
     transform: suspend (data: T) -> R
 ): StateFlow<R> = mapLatest(transform).stateIn(scope, SharingStarted.Eagerly, initialValue)
 
+@Suppress("ComposeUnstableReceiver")
 @Composable
 public fun <T> Flow<T>.ToLaunchedEffect(
     vararg keys: Any?,

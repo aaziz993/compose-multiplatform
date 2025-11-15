@@ -3,8 +3,7 @@ package ui.auth.verification.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
-import clib.presentation.components.auth.stateholder.AuthAction
-import clib.presentation.components.auth.stateholder.AuthStateHolder
+import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.AbstractViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,7 +12,7 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 public class VerificationViewModel(
-    private val authStateHolder: AuthStateHolder,
+    private val authState: AuthState,
     override val savedStateHandle: SavedStateHandle = SavedStateHandle(),
 ) : AbstractViewModel<VerificationAction>() {
 
@@ -31,10 +30,9 @@ public class VerificationViewModel(
 
     private fun confirm() {
         viewModelScope.launch {
-            val user = authStateHolder.state.value.user!!
-            authStateHolder.action(
-                AuthAction.SetUser(user.copy(roles = user.roles + "Verified")),
-            )
+            authState.auth.user?.let { user ->
+                authState.setUser(user.copy(roles = user.roles + "Verified"))
+            }
         }
     }
 }

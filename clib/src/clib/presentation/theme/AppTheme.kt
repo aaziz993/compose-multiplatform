@@ -6,17 +6,16 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.key
 import androidx.compose.runtime.staticCompositionLocalOf
 import clib.presentation.noLocalProvidedFor
-import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 
-public val LocalAppTheme: ProvidableCompositionLocal<Theme> = staticCompositionLocalOf { noLocalProvidedFor("LocalTheme") }
+public val LocalThemeState: ProvidableCompositionLocal<ThemeState> =
+    staticCompositionLocalOf { noLocalProvidedFor("LocalThemeStateHolder") }
 
 @Composable
 public fun AppTheme(
-    theme: Theme,
+    themeState: ThemeState = rememberThemeState(),
     lightColorScheme: ColorScheme = LightColors,
     lightColorSchemeHighContrast: ColorScheme = LightColorsHighContrast,
     darkColorScheme: ColorScheme = DarkColors,
@@ -24,16 +23,16 @@ public fun AppTheme(
     content: @Composable (ColorScheme) -> Unit,
 ) {
     val (light, dark) =
-        if (theme.isHighContrast) lightColorSchemeHighContrast to darkColorSchemeHighContrast else lightColorScheme to darkColorScheme
+        if (themeState.theme.isHighContrast) lightColorSchemeHighContrast to darkColorSchemeHighContrast else lightColorScheme to darkColorScheme
 
-    val colorScheme = when (theme.mode) {
+    val colorScheme = when (themeState.theme.mode) {
         ThemeMode.SYSTEM -> systemTheme(light, dark)
         ThemeMode.LIGHT -> light
         ThemeMode.DARK -> dark
     }
 
     CompositionLocalProvider(
-        LocalAppTheme provides theme,
+        LocalThemeState provides themeState,
     ) {
         content(colorScheme)
     }

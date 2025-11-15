@@ -15,16 +15,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
-import clib.presentation.components.auth.stateholder.AuthAction
-import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
-import clib.presentation.theme.LocalAppTheme
-import clib.presentation.theme.stateholder.ThemeAction
+import clib.presentation.navigation.NavigationAction
+import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsSwitch
 import compose_app.generated.resources.Res
@@ -41,17 +40,19 @@ import compose_app.generated.resources.permissions
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
+import klib.data.type.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Settings
 
 @Composable
 public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
-    onThemeAction: (ThemeAction) -> Unit = {},
-    onAuthAction: (AuthAction) -> Unit = {},
+    theme: Theme = Theme(),
+    onThemeChange: (Theme) -> Unit = {},
+    auth: Auth = Auth(),
+    onAuthChange: (Auth) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
@@ -74,7 +75,6 @@ public fun SettingsScreen(
         title = { Text(text = stringResource(Res.string.general)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        val theme = LocalAppTheme.current
         SettingsSwitch(
             state = theme.isHighContrast,
             title = { Text(text = stringResource(Res.string.high_contrast)) },
@@ -82,7 +82,7 @@ public fun SettingsScreen(
             modifier = Modifier,
             enabled = true,
             icon = { Icon(Icons.Outlined.Accessibility, "") },
-            onCheckedChange = { newState: Boolean -> onThemeAction(ThemeAction.SetTheme(theme.copy(isHighContrast = newState))) },
+            onCheckedChange = { newState: Boolean -> onThemeChange(theme.copy(isHighContrast = newState)) },
         )
     }
     SettingsGroup(

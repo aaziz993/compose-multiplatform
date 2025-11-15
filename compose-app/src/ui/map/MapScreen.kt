@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import clib.presentation.components.map.Map
 import clib.presentation.components.map.model.MapView
 import clib.presentation.components.map.model.Marker
-import clib.presentation.components.navigation.stateholder.NavigationAction
+import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.google_map
 import compose_app.generated.resources.open_street_map

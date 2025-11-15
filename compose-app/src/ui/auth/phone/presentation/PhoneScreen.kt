@@ -24,8 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.data.type.primitives.string.toStringResource
-import clib.presentation.components.navigation.stateholder.NavigationAction
+import clib.data.type.primitives.string.asStringResource
+import clib.presentation.navigation.NavigationAction
 import clib.presentation.components.picker.country.CountryCodePickerTextField
 import clib.presentation.components.picker.country.mode.CountryPicker
 import compose_app.generated.resources.Res
@@ -73,12 +73,12 @@ public fun PhoneScreen(
                 .fillMaxWidth()
                 .padding(10.dp),
             selectedCountry = country.copy(
-                name = country.toString().toStringResource(Res.allStringResources) {
+                name = country.toString().asStringResource(Res.allStringResources) {
                     country.name
                 },
             ),
             countries = Country.getCountries().toList().map { country ->
-                country.copy(name = country.toString().toStringResource(Res.allStringResources) { country.name })
+                country.copy(name = country.toString().asStringResource(Res.allStringResources) { country.name })
             },
             enabled = true,
             textStyle = MaterialTheme.typography.bodyMedium,

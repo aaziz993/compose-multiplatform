@@ -7,7 +7,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-public fun String.toStringResource(
+public fun String.asStringResource(
     resources: Map<String, StringResource>,
     defaultValue: () -> String = { this }
 ): String = resources[lowercase().toSnakeCase()]?.let { stringResource -> stringResource(stringResource) }

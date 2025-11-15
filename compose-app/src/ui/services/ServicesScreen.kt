@@ -2,7 +2,7 @@ package ui.services
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import clib.presentation.components.navigation.stateholder.NavigationAction
+import clib.presentation.navigation.NavigationAction
 import androidx.compose.ui.tooling.preview.Preview
 import ui.navigation.presentation.Services
 

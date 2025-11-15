@@ -24,7 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -32,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,24 +39,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import clib.data.location.country.flag
-import clib.data.type.primitives.string.toStringResource
-import clib.presentation.components.auth.LocalAuth
-import clib.presentation.components.auth.stateholder.AuthAction
+import clib.data.type.primitives.string.asStringResource
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.navigation.Route
-import clib.presentation.components.navigation.hasNavigationItems
-import clib.presentation.components.navigation.stateholder.NavigationAction
 import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.components.picker.country.mode.CountryPicker
 import clib.presentation.easedVerticalGradient
-import clib.presentation.locale.LocalAppLocale
-import clib.presentation.locale.stateholder.LocaleAction
-import clib.presentation.theme.LocalAppTheme
+import clib.presentation.navigation.NavigationAction
+import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
-import clib.presentation.theme.stateholder.ThemeAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.allStringResources
 import compose_app.generated.resources.country_flag
@@ -75,32 +69,39 @@ import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
+import klib.data.location.locale.Locale
+import klib.data.location.locale.current
+import klib.data.type.auth.model.Auth
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
+import ui.navigation.presentation.App
 import ui.navigation.presentation.Profile
-import ui.navigation.presentation.Routes
 
 @Composable
 public fun AppBar(
-    onThemeAction: (ThemeAction) -> Unit,
-    onLocaleAction: (LocaleAction) -> Unit,
-    onAuthAction: (AuthAction) -> Unit,
-    currentRoute: Route,
-    hasBackRoute: Boolean,
-    onNavigationAction: (NavigationAction) -> Unit,
-    isDrawerOpen: Boolean,
-    toggleDrawer: () -> Unit,
     modifier: Modifier = Modifier,
+    title: @Composable () -> Unit = {},
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
+    theme: Theme = Theme(),
+    onThemeChange: (Theme) -> Unit = {},
+    locale: Locale? = null,
+    onLocaleChange: (Locale?) -> Unit = {},
+    auth: Auth = Auth(),
+    onAuthChange: (Auth) -> Unit = {},
+    isDrawerOpen: Boolean = true,
+    onDrawerToggle: suspend () -> Unit = {},
+    hasBackRoute: Boolean = true,
+    onNavigationAction: (NavigationAction) -> Unit = {},
     content: @Composable (innerPadding: PaddingValues) -> Unit
 ) {
-    val auth = LocalAuth.current
     val hazeState = rememberHazeState(blurEnabled = blurEnabled)
     val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier
@@ -120,13 +121,17 @@ public fun AppBar(
             },
         topBar = {
             TopAppBar(
-                title = { Text(text = currentRoute.name.toStringResource(Res.allStringResources)) },
+                title = title,
                 navigationIcon = {
                     Row {
-                        if (Routes.hasNavigationItems(auth) && currentWindowAdaptiveInfo().windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
+                        if (App.isNavigationItem(auth) && currentWindowAdaptiveInfo().windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
                             AppTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
-                                    onClick = toggleDrawer,
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            onDrawerToggle()
+                                        }
+                                    },
                                 ) {
                                     Icon(
                                         imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
@@ -138,7 +143,7 @@ public fun AppBar(
                         if (hasBackRoute)
                             AppTooltipBox(stringResource(Res.string.navigate_back)) {
                                 IconButton(
-                                    onClick = { onNavigationAction(NavigationAction.NavigateBack) },
+                                    onClick = { onNavigationAction(NavigationAction.Pop) },
                                 ) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -149,7 +154,7 @@ public fun AppBar(
                     }
                 },
                 actions = {
-                    if (LocalAuth.current.user != null)
+                    if (auth.user != null)
                         AppTooltipBox(stringResource(Res.string.sos)) {
                             IconButton(
                                 onClick = {
@@ -163,15 +168,13 @@ public fun AppBar(
                             }
                         }
 
-                    val theme = LocalAppTheme.current
-
                     AppTooltipBox(stringResource(Res.string.theme)) {
                         IconButton(
                             onClick = {
                                 when (theme.mode) {
-                                    ThemeMode.SYSTEM -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.LIGHT)))
-                                    ThemeMode.LIGHT -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.DARK)))
-                                    ThemeMode.DARK -> onThemeAction(ThemeAction.SetTheme(theme.copy(mode = ThemeMode.SYSTEM)))
+                                    ThemeMode.SYSTEM -> onThemeChange(theme.copy(mode = ThemeMode.LIGHT))
+                                    ThemeMode.LIGHT -> onThemeChange(theme.copy(mode = ThemeMode.DARK))
+                                    ThemeMode.DARK -> onThemeChange(theme.copy(mode = ThemeMode.SYSTEM))
                                 }
                             },
                         ) {
@@ -192,7 +195,7 @@ public fun AppBar(
                         CountryPickerDialog(
                             onItemClicked = { country ->
                                 country.locales().firstOrNull()?.let { locale ->
-                                    onLocaleAction(LocaleAction.SetLocale(locale))
+                                    onLocaleChange(locale)
                                     isCountryPickerDialogOpen = false
                                 }
                             },
@@ -204,7 +207,7 @@ public fun AppBar(
                                 .toList()
                                 .map { country ->
                                     country.copy(
-                                        name = country.toString().toStringResource(Res.allStringResources) {
+                                        name = country.toString().asStringResource(Res.allStringResources) {
                                             country.name
                                         },
                                     )
@@ -216,7 +219,7 @@ public fun AppBar(
                         )
 
                     val country = (if (!LocalInspectionMode.current)
-                        LocalAppLocale.current.country()
+                        (locale ?: Locale.current).country()
                     else null) ?: Country.forCode("TJ")
 
                     AppTooltipBox(stringResource(Res.string.language)) {
@@ -246,10 +249,10 @@ public fun AppBar(
                     }
 
                     AppTooltipBox(stringResource(Res.string.profile)) {
-                        LocalAuth.current.user?.let { user ->
+                        auth.user?.let { user ->
                             IconButton(
                                 onClick = {
-                                    onNavigationAction(NavigationAction.Navigate(Profile))
+                                    onNavigationAction(NavigationAction.Push(Profile))
                                 },
                             ) {
                                 Avatar(
@@ -268,7 +271,10 @@ public fun AppBar(
                 ),
             )
         },
-    ) { innerPadding ->
-        content(innerPadding)
-    }
+        content = content,
+    )
 }
+
+@Preview
+@Composable
+public fun PreviewAppBar(): Unit = AppBar {}
