@@ -8,7 +8,7 @@ import klib.data.type.auth.model.Auth
 
 @Composable
 public inline fun AuthComposable(
-    authResource: AuthResource?,
+    authResource: AuthResource? = AuthResource(),
     auth: Auth = LocalAuthState.current.auth,
     content: @Composable () -> Unit
 ) {

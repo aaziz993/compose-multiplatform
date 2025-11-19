@@ -10,12 +10,13 @@ import org.koin.compose.ComposeContextWrapper
 import clib.di.LocalKoinScopeContext
 import clib.di.getKoin
 import clib.presentation.navigation.NavRoute
+import clib.presentation.navigation.Router
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 
 @Composable
 public fun AutoConnectKoinScope(
-    backStack: List<NavRoute>,
+    router: Router,
     rootScope: Scope = getKoin().scopeRegistry.rootScope,
     content: @Composable () -> Unit
 ) {
@@ -24,10 +25,10 @@ public fun AutoConnectKoinScope(
 
     val scopeToInject by remember {
         derivedStateOf {
-            val currentRoute = backStack.lastOrNull()?.toString() ?: return@derivedStateOf rootScope
+            val currentRoute = router.backStack.lastOrNull()?.name ?: return@derivedStateOf rootScope
 
             // Close scopes no longer in backStack
-            val activeRoutes = backStack.map(NavRoute::toString)
+            val activeRoutes = router.backStack.map(NavRoute::name)
             val closedScopes = scopeMap.keys - activeRoutes.toSet()
             closedScopes.forEach { route ->
                 scopeMap.remove(route)?.close()

@@ -1,4 +1,6 @@
-package clib.presentation.navigation
+package clib.presentation.navigation.exception
+
+import clib.presentation.navigation.NavigationAction
 
 /**
  * Represents an error that occurred during navigation.
@@ -9,4 +11,4 @@ package clib.presentation.navigation
 public class NavigationException(
     public val action: NavigationAction,
     cause: Throwable,
-) : RuntimeException("Navigation failed for action: $action", cause)
+) : RuntimeException("Navigation failed '$action'", cause)

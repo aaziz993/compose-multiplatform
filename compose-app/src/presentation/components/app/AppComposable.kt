@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MotionScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation3.runtime.NavBackStack
+import androidx.compose.ui.tooling.preview.Preview
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
@@ -14,10 +14,9 @@ import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
 import clib.presentation.navigation.NavRoute
-import clib.presentation.navigation.NavigationException
 import clib.presentation.navigation.Router
-import clib.presentation.navigation.platformOnBack
-import clib.presentation.navigation.rememberNavBackStack
+import clib.presentation.navigation.Routes
+import clib.presentation.navigation.exception.NavigationException
 import clib.presentation.theme.DarkColors
 import clib.presentation.theme.LightColors
 import clib.presentation.theme.ThemeState
@@ -28,26 +27,24 @@ import presentation.theme.Shapes
 import presentation.theme.Typography
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
-import ui.navigation.presentation.NavScreen
-import ui.navigation.presentation.News
+import ui.navigation.presentation.Protected
+import ui.navigation.presentation.Public
 
-@Suppress("UNCHECKED_CAST")
 @Composable
 public fun AppComposable(
     modifier: Modifier = Modifier.fillMaxSize(),
     themeState: ThemeState = rememberThemeState(),
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = koinInject(),
-    protectedRoute: NavRoute = News,
-    authRoute: NavRoute = Auth,
-    publicRoute: NavRoute = authRoute,
-    backStack: NavBackStack<NavRoute> = App.rememberNavBackStack(),
     router: Router = koinInject(),
-    onNavigateBack: () -> Unit = platformOnBack(),
-    onNavigationError: suspend (NavigationException) -> Unit = { exception ->
+    routes: Routes = App,
+    publicRoute: NavRoute = Public,
+    protectedRoute: NavRoute? = Protected,
+    authRoute: NavRoute? = Auth,
+    onError: suspend (NavigationException) -> Unit = { exception ->
         GlobalAlertEventController.sendEvent(AlertEvent(exception.message.orEmpty(), true))
     },
-): Unit = AutoConnectKoinScope(backStack = backStack) {
+): Unit = AutoConnectKoinScope(router) {
     AppEnvironment(
         themeState,
         LightColors,
@@ -56,27 +53,20 @@ public fun AppComposable(
         DarkColorsHighContrast,
         localeState,
         authState,
-        protectedRoute,
-        authRoute,
-        publicRoute,
-        backStack,
-        onNavigateBack,
-        onNavigationError,
-        router,
         MotionScheme.expressive(),
         Shapes,
         Typography,
     ) {
-        NavScreen(
-            modifier,
-            themeState,
-            localeState,
-            authState,
-            authRoute,
-            publicRoute,
-            protectedRoute,
-            backStack,
-            router,
+        App.Content(
+            router = router,
+            startRoute = if (authState.auth.user == null) publicRoute else requireNotNull(protectedRoute) { "No protected route" },
+            authRoute = authRoute,
+            auth = authState.auth,
+            onError = onError,
         )
     }
 }
+
+@Preview
+@Composable
+public fun PreviewAppComposable(): Unit = AppComposable()

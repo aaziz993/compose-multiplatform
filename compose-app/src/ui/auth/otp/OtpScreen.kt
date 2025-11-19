@@ -47,7 +47,7 @@ public fun OtpScreen(
 
     LaunchedEffect(otpValue.value) {
         if (otpValue.value != state.code) onAction(OtpAction.SetCode(otpValue.value))
-        if (otpValue.value.length == OTP_CODE_LENGTH) onAction(OtpAction.Confirm(route.phone))
+        if (otpValue.value.length == OTP_CODE_LENGTH) onAction(OtpAction.Confirm)
     }
 
     Column(

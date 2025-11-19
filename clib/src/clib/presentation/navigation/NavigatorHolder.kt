@@ -3,7 +3,7 @@ package clib.presentation.navigation
 /**
  * Interface for managing the lifecycle of Navigator instances.
  *
- * NavigatorHolder is used to decouple navigation command generation from navigation execution.
+ * NavigatorHolder is used to decouple navigation action generation from navigation execution.
  * This allows actions to be queued when no navigator is available and executed later
  * when a navigator becomes available.
  *

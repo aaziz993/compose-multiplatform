@@ -93,12 +93,14 @@ public fun AppBar(
     onLocaleChange: (Locale?) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
+    hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
     onDrawerToggle: suspend () -> Unit = {},
-    hasBackRoute: Boolean = true,
+    hasBack: Boolean = true,
     onNavigationAction: (NavigationAction) -> Unit = {},
-    content: @Composable (innerPadding: PaddingValues) -> Unit
+    content: @Composable (innerPadding: PaddingValues) -> Unit = {},
 ) {
+    val windowInfo = currentWindowAdaptiveInfo()
     val hazeState = rememberHazeState(blurEnabled = blurEnabled)
     val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
     val coroutineScope = rememberCoroutineScope()
@@ -124,7 +126,7 @@ public fun AppBar(
                 title = title,
                 navigationIcon = {
                     Row {
-                        if (App.isNavigationItem(auth) && currentWindowAdaptiveInfo().windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
+                        if (hasDrawer)
                             AppTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
                                     onClick = {
@@ -140,7 +142,7 @@ public fun AppBar(
                                 }
                             }
 
-                        if (hasBackRoute)
+                        if (hasBack)
                             AppTooltipBox(stringResource(Res.string.navigate_back)) {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.Pop) },
@@ -277,4 +279,4 @@ public fun AppBar(
 
 @Preview
 @Composable
-public fun PreviewAppBar(): Unit = AppBar {}
+public fun PreviewAppBar(): Unit = AppBar()

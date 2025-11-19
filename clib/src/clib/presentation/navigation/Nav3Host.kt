@@ -15,14 +15,14 @@ import androidx.compose.runtime.DisposableEffect
  * The connection between router and navigator is automatically managed through
  * DisposableEffect, ensuring proper cleanup when the composable leaves the composition.
  *
- * @param navigator The navigator instance for executing commands (auto-created if not provided)
  * @param router The router instance for issuing navigation commands
+ * @param navigator The navigator instance for executing commands (auto-created if not provided)
  * @param content The content composable that receives the navigation setup
  */
 @Composable
 public fun Nav3Host(
+    router: Router,
     navigator: Navigator,
-    router: Router = rememberRouter(),
     content: @Composable () -> Unit,
 ) {
     DisposableEffect(router, navigator) {
@@ -30,7 +30,9 @@ public fun Nav3Host(
         onDispose { router.navigationActionQueue.removeNavigator() }
     }
 
+    val interceptionEnabled = LocalRouter.current != null
+
     CompositionLocalProvider(LocalRouter provides router) {
-        content()
+        BackInterceptionProvider(interceptionEnabled, content)
     }
 }

@@ -13,20 +13,20 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.serializer
 
 @Composable
-public fun Routes.rememberNavBackStack(
+public fun rememberNavBackStack(
     vararg elements: NavRoute,
 ): NavBackStack<NavRoute> {
     return rememberSerializable(
+        serializer = NavBackStackSerializer(PolymorphicSerializer(NavRoute::class)),
         configuration = SavedStateConfiguration {
             serializersModule = SerializersModule {
                 polymorphic(baseClass = NavRoute::class) {
-                    forEach { route ->
-                        subclass(route.navigationRoute as KClass<NavRoute>, route.navigationRoute.serializer())
+                    elements.forEach { route ->
+                        subclass(route::class as KClass<NavRoute>, route::class.serializer())
                     }
                 }
             }
         },
-        serializer = NavBackStackSerializer(PolymorphicSerializer(NavRoute::class)),
     ) {
         NavBackStack(*elements)
     }

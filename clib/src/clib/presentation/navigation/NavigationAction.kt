@@ -1,7 +1,5 @@
 package clib.presentation.navigation
 
-import klib.data.type.auth.model.Auth
-
 /**
  * Base interface for all navigation NavigationActions.
  * Actions represent different navigation operations that can be applied to the navigation stack.
@@ -13,8 +11,8 @@ public interface NavigationAction {
      * Action to push a new route onto the navigation stack.
      * The route will be added to the top of the stack.
      *
-     * @param route The route to push onto the stack
-     * @param popTo Pop to route if exists
+     * @param route The route to push onto the stack.
+     * @param popTo Pop to route if exists.
      */
     public data class Push(val route: NavRoute, val popTo: Boolean = true) : NavigationAction
 
@@ -29,9 +27,10 @@ public interface NavigationAction {
     /**
      * Replaces the entire navigation stack with new routes.
      *
+     * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
      *
-     * @param routes Variable number of routes to replace the stack with
-     * @throws IllegalArgumentException if no routes are provided
+     * @param routes Variable number of routes to replace the stack with.
+     * @triggers system back navigation when the stack is empty.
      */
     public data class ReplaceStack(val routes: List<NavRoute>) : NavigationAction
 
@@ -61,11 +60,4 @@ public interface NavigationAction {
      * After this NavigationAction, system back navigation will be triggered.
      */
     public data object DropStack : NavigationAction
-
-    /**
-     * Switches between authenticated/unauthenticated stacks.
-     *
-     * @param auth Auth state
-     */
-    public data class AuthStack(val auth: Auth) : NavigationAction
 }

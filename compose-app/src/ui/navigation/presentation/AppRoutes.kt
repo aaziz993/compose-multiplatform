@@ -26,15 +26,22 @@ import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavEntry
+import androidx.window.core.layout.WindowSizeClass
 import clib.data.type.primitives.string.asStringResource
 import clib.di.koinViewModel
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.Item
+import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.LocalRouter
@@ -49,6 +56,7 @@ import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.koin.core.parameter.parametersOf
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPinCodeScreen
 import ui.auth.login.presentation.LoginScreen
@@ -72,12 +80,71 @@ import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
-public object App : Routes(), NavRoute by Auth {
-
-    override val isRoot: Boolean = true
+public object App : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Auth, News, Services, Map, Settings)
+        listOf(Public, Protected)
+    }
+
+    @Composable
+    override fun Content(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>,
+    ) {
+        val themeState = LocalThemeState.current
+        val localeState = LocalLocaleState.current
+        val authState = LocalAuthState.current
+        val router = LocalRouter.current!!
+        val currentRoute = router.backStack.lastOrNull() ?: return
+        val layoutType = if (router.routes?.isNavigationItems(authState.auth) == true) {
+            val adaptiveInfo = currentWindowAdaptiveInfo(true)
+
+            if (adaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
+                NavigationSuiteType.NavigationDrawer
+            else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
+        }
+        else NavigationSuiteType.None
+
+        NavScreen(
+            Modifier.fillMaxSize(),
+            { Text(text = currentRoute.name.asStringResource(Res.allStringResources)) },
+            themeState.theme,
+            { value -> themeState.theme = value },
+            localeState.locale,
+            { value -> localeState.locale = value },
+            authState.auth,
+            { value -> authState.auth = value },
+            layoutType == NavigationSuiteType.NavigationDrawer,
+            router.backStack.size > 1,
+            layoutType,
+            router::actions,
+            {
+                router.routes?.items(
+                    authState.auth,
+                    currentRoute,
+                    router::push,
+                )
+            },
+        ) {
+            super.Content(backStack, onBack, entryProvider)
+        }
+    }
+}
+
+@Serializable
+public object Public : Routes() {
+
+    override val routes: List<BaseRoute> by lazy {
+        listOf(News, Auth)
+    }
+}
+
+@Serializable
+public object Protected : Routes() {
+
+    override val routes: List<BaseRoute> by lazy {
+        listOf(Map, Services, Settings, Profile)
     }
 }
 
@@ -102,7 +169,7 @@ public data object Home : Route<Home>(), NavRoute {
 
     @Composable
     override fun Content(route: Home) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         HomeScreen(
             Modifier,
@@ -113,6 +180,7 @@ public data object Home : Route<Home>(), NavRoute {
 }
 
 @Serializable
+@SerialName("news")
 public object News : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
@@ -143,7 +211,7 @@ public data object Articles : Route<Articles>(), NavRoute {
     override fun Content(route: Articles) {
         val viewModel: ArticleViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         ArticlesScreen(
             Modifier,
@@ -175,7 +243,7 @@ public data object Services : Route<Services>(), NavRoute {
 
     @Composable
     override fun Content(route: Services) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         ServicesScreen(
             Modifier,
@@ -206,7 +274,7 @@ public data object Map : Route<Map>(), NavRoute {
 
     @Composable
     override fun Content(route: Map) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         MapScreen(
             Modifier,
@@ -240,7 +308,7 @@ public data object Settings : Route<Settings>(), NavRoute {
         val scrollState = rememberScrollState()
         val themeState = LocalThemeState.current
         val authState = LocalAuthState.current
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -275,7 +343,7 @@ public data object About : Route<About>(), NavRoute {
 
     @Composable
     override fun Content(route: About) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         AboutScreen(
             Modifier,
@@ -287,7 +355,7 @@ public data object About : Route<About>(), NavRoute {
 
 @Serializable
 @SerialName("auth")
-public object Auth : Routes() {
+public object Auth : Routes(), AuthRoute {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Phone, Otp, PinCode, ForgotPinCode, Verification, Profile)
@@ -302,7 +370,7 @@ public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
     override fun Content(route: Phone) {
         val viewModel: PhoneViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         PhoneScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -328,9 +396,9 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
 
         @Composable
         override fun Content(route: Otp) {
-            val viewModel: OtpViewModel = koinViewModel()
+            val viewModel: OtpViewModel = koinViewModel { parametersOf(route) }
             val state by viewModel.state.collectAsStateWithLifecycle()
-            val router = LocalRouter.current
+            val router = LocalRouter.current!!
 
             OtpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -351,7 +419,7 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
     override fun Content(route: PinCode) {
         val viewModel: PinCodeViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         PinCodeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -371,7 +439,7 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
     override fun Content(route: Login) {
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         LoginScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -389,7 +457,7 @@ public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 
     @Composable
     override fun Content(route: ForgotPinCode) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         ForgotPinCodeScreen(
             Modifier,
@@ -410,7 +478,7 @@ public data object Verification : Route<Verification>(), NavRoute {
         val viewModel: VerificationViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val authState = LocalAuthState.current
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         VerificationScreen(
             Modifier.fillMaxSize().padding(16.dp),
@@ -447,7 +515,7 @@ public data object Profile : Route<Profile>(), NavRoute {
     override fun Content(route: Profile) {
         val scrollState = rememberScrollState()
         val authState = LocalAuthState.current
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         ProfileScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -489,7 +557,7 @@ public data object Balance : Route<Balance>(), NavRoute {
 
     @Composable
     override fun Content(route: Balance) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         BalanceScreen(
             Modifier,
@@ -520,7 +588,7 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 
     @Composable
     override fun Content(route: Crypto) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         CryptoScreen(
             Modifier,
@@ -551,7 +619,7 @@ public data object Stock : Route<Stock>(), NavRoute {
 
     @Composable
     override fun Content(route: Stock) {
-        val router = LocalRouter.current
+        val router = LocalRouter.current!!
 
         StockScreen(
             Modifier,

@@ -19,6 +19,7 @@
 
     <string name="home">Home</string>
     <string name="articles">Articles</string>
+    <string name="news">News</string>
     <string name="services">Services</string>
     <string name="map">Map</string>
     <string name="settings">Settings</string>
@@ -70,7 +71,9 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="cont">Continue</string>
+    <string name="auth">Auth</string>
     <string name="phone">Phone</string>
+    <string name="wallet">Wallet</string>
     <string name="about_the_system">About the System</string>
     <string name="system_description">"       The Electronic Data Exchange System for the Situational Center of the Customs Service under the Government of the Republic of Tajikistan was developed in 2024 with technical support from the USAID Trade Program in Central Asia, as part of the Medium-Term Development Program for the Customs Authorities of the Republic of Tajikistan for 2020-2024.
 \n       The main goal of the system is to enhance the efficiency, reliability, and transparency of customs control through technical equipment. The system provides automated data collection from customs posts for their prompt processing and analysis in the Situational Center, improving coordination, management, and decision-making in the operations of customs authorities of the Republic of Tajikistan."</string>
@@ -142,7 +145,6 @@
     <string name="theme">Theme</string>
     <string name="high_contrast">High contrast</string>
     <string name="enable_high_contrast">Enable high contrast</string>
-
 
 
     <!-- Connectivity Strings -->

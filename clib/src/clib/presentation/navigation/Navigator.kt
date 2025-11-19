@@ -9,9 +9,11 @@ package clib.presentation.navigation
  */
 public interface Navigator {
 
-    public val backStack: List<NavRoute>
+    /** The top level route associated with navigator. */
+    public val routes: Routes
 
-    public val hasBackRoute: Boolean
+    /** The Navigation 3 back stack to control. */
+    public val backStack: List<NavRoute>
 
     /**
      * Applies an array of navigation commands to the navigation stack.

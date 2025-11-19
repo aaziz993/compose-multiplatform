@@ -1,7 +1,6 @@
 package ui.auth.otp.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import arrow.optics.copy
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.AbstractViewModel
@@ -13,10 +12,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
+import ui.navigation.presentation.Otp
 
 @KoinViewModel
 public class OtpViewModel(
-    private val authState: AuthState
+    private val authState: AuthState,
+    @Provided
+    private val otp: Otp,
 ) : AbstractViewModel<OtpAction>() {
 
     public val state: RestartableStateFlow<OtpState>
@@ -53,7 +56,7 @@ public class OtpViewModel(
         when (action) {
             is OtpAction.SetCode -> setCode(action.value)
             is OtpAction.ResendCode -> resendCode()
-            is OtpAction.Confirm -> confirm(action.phone)
+            is OtpAction.Confirm -> confirm()
         }
     }
 
@@ -64,7 +67,7 @@ public class OtpViewModel(
         startTimer()
     }
 
-    private fun confirm(phone: String) {
+    private fun confirm() {
         viewModelScope.launch {
             if (state.value.code == "1234")
                 authState.setUser(
@@ -72,7 +75,7 @@ public class OtpViewModel(
                         username = "jogn.doe@gmail.com",
                         firstName = "John",
                         lastName = "Doe",
-                        phone = phone,
+                        phone = otp.phone,
                         roles = setOf("User"),
                     ),
                 )

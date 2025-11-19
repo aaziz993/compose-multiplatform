@@ -40,7 +40,7 @@ import org.koin.core.component.KoinComponent
 // The reasoning 5_000 was chosen for the stopTimeoutMillis can be found in the official Android documentation, which discusses the ANR (Application Not Responding) timeout threshold.
 public const val STATE_STARTED_STOP_TIMEOUT_MILLIS: Long = 5_000
 
-public abstract class AbstractViewModel<T : Any>() : ViewModel(), KoinComponent {
+public abstract class AbstractViewModel<T : Any>() : ViewModel() {
 
     protected open val savedStateHandle: SavedStateHandle = SavedStateHandle()
 
