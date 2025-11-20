@@ -5,5 +5,5 @@ import web.history.history
 import web.window.window
 
 @Composable
-public actual fun platformOnBack(): () -> Unit =
+public actual fun systemOnBack(): () -> Unit =
     if (history.length > 1) history::back else window::close

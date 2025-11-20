@@ -3,4 +3,4 @@ package clib.presentation.navigation
 import androidx.compose.runtime.Composable
 
 @Composable
-public expect fun platformOnBack(): () -> Unit
+public expect fun systemOnBack(): () -> Unit

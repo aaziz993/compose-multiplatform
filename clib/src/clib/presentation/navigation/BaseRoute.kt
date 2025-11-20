@@ -1,5 +1,8 @@
 package clib.presentation.navigation
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.NavigationBarItem
@@ -7,16 +10,23 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import clib.presentation.event.alert.GlobalAlertEventController
+import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.navigation.exception.NavigationException
 import clib.presentation.navigation.model.NavigationItem
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
 import kotlin.reflect.KClass
+import kotlinx.coroutines.launch
+import kotlinx.serialization.serializer
 import org.koin.core.component.KoinComponent
 
 @Stable
@@ -24,8 +34,8 @@ import org.koin.core.component.KoinComponent
 public sealed class BaseRoute : Iterable<BaseRoute>, KoinComponent {
 
     @Suppress("UNCHECKED_CAST")
-    public open val navigationRoute: KClass<out NavRoute>
-        get() = requireNotNull(this::class as? KClass<out NavRoute>) { "No rout in '$this'" }
+    public open val navRoute: KClass<out NavRoute>
+        get() = requireNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
     public open val metadata: Map<String, Any> = emptyMap()
 
     public open val navigationItem: NavigationItem? = null
@@ -39,8 +49,8 @@ public sealed class BaseRoute : Iterable<BaseRoute>, KoinComponent {
         router: Router,
         auth: Auth,
         authRoute: NavRoute?,
-        onBack: () -> Unit,
-        onError: suspend (NavigationException) -> Unit,
+        onBack: (() -> Unit)?,
+        onError: ((NavigationException) -> Unit)? = null,
     )
 
     public open fun isNavigationItem(auth: Auth): Boolean = navigationItem != null && isAuth(auth)
@@ -95,6 +105,8 @@ public sealed class BaseRoute : Iterable<BaseRoute>, KoinComponent {
             navigationItem!!.alwaysShowLabel,
         )
     }
+
+    override fun toString(): String = navRoute.serializer().descriptor.serialName
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -108,9 +120,13 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
         router: Router,
         auth: Auth,
         authRoute: NavRoute?,
-        onBack: () -> Unit,
-        onError: suspend (NavigationException) -> Unit,
-    ): Unit = scope.addEntryProvider(navigationRoute, NavRoute::name, metadata) { navRoute ->
+        onBack: (() -> Unit)?,
+        onError: ((NavigationException) -> Unit)?,
+    ): Unit = scope.addEntryProvider(
+        navRoute,
+        { navRoute -> navRoute.route.toString() },
+        metadata,
+    ) { navRoute ->
         Content(navRoute as T)
     }
 
@@ -124,9 +140,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public val startRoute: NavRoute by lazy {
         requireNotNull(routes.firstOrNull() as? NavRoute) { "No start route" }
     }
-
-    override val name: String
-        get() = startRoute.name
 
     override val metadata: Map<String, Any>
         get() = startRoute.route.metadata
@@ -146,25 +159,51 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         backStack = backStack,
         modifier = Modifier.fillMaxSize(),
         onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+        ),
+        transitionSpec = {
+            slideInHorizontally(initialOffsetX = { it }) togetherWith
+                slideOutHorizontally(targetOffsetX = { -it })
+        },
+        popTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                slideOutHorizontally(targetOffsetX = { it })
+        },
+        predictivePopTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                slideOutHorizontally(targetOffsetX = { it })
+        },
         entryProvider = entryProvider,
     )
 
     @Composable
     public fun Content(
         router: Router = rememberRouter(),
-        startRoute: NavRoute? = null,
         auth: Auth = Auth(),
         authRoute: NavRoute? = null,
-        onBack: () -> Unit = {},
-        onError: suspend (NavigationException) -> Unit = {},
+        authRedirectRoute: NavRoute? = null,
+        onBack: (() -> Unit)? = null,
+        onError: ((NavigationException) -> Unit)? = null,
     ) {
+        require(this.startRoute.route in routes) { "Start route '${this.startRoute.route}' isn't in '$routes'" }
+
+        val coroutineScope = rememberCoroutineScope()
         val navigator = rememberNav3Navigator(
             this,
-            startRoute ?: this.startRoute,
-            authRoute,
             auth,
-            onBack,
-            onError,
+            authRoute,
+            authRedirectRoute,
+            LocalParentRouter.current?.let { it::pop } ?: onBack ?: systemOnBack(),
+            onError ?: { exception ->
+                coroutineScope.launch {
+                    GlobalAlertEventController.sendEvent(
+                        AlertEvent(exception.message.orEmpty(), true),
+                    )
+                }
+                Unit
+            },
         )
 
         Nav3Host(
@@ -173,7 +212,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         ) {
             Content(
                 navigator.backStack,
-                router::pop,
+                onBack ?: LocalParentRouter.current?.let { it::pop } ?: systemOnBack(),
                 entryProvider {
                     routes.forEach { route ->
                         route.entry(
@@ -194,9 +233,13 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         router: Router,
         auth: Auth,
         authRoute: NavRoute?,
-        onBack: () -> Unit,
-        onError: suspend (NavigationException) -> Unit,
-    ) = scope.addEntryProvider(navigationRoute, NavRoute::name, metadata) {
+        onBack: (() -> Unit)?,
+        onError: ((NavigationException) -> Unit)?,
+    ) = scope.addEntryProvider(
+        navRoute,
+        { navRoute -> navRoute.route.toString() },
+        metadata,
+    ) {
         Content(
             router = router,
             auth = auth,
@@ -229,5 +272,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
             yieldAll(route)
         }
     }.iterator()
+
+    override fun toString(): String = startRoute.route.toString()
 }
 

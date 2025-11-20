@@ -83,7 +83,7 @@ import ui.wallet.stock.StockScreen
 public object App : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Public, Protected)
+        listOf(Auth, News, Map, Services, Profile, Settings)
     }
 
     @Composable
@@ -95,7 +95,7 @@ public object App : Routes() {
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
         val currentRoute = router.backStack.lastOrNull() ?: return
         val layoutType = if (router.routes?.isNavigationItems(authState.auth) == true) {
             val adaptiveInfo = currentWindowAdaptiveInfo(true)
@@ -108,7 +108,7 @@ public object App : Routes() {
 
         NavScreen(
             Modifier.fillMaxSize(),
-            { Text(text = currentRoute.name.asStringResource(Res.allStringResources)) },
+            { Text(text = currentRoute.toString().asStringResource(Res.allStringResources)) },
             themeState.theme,
             { value -> themeState.theme = value },
             localeState.locale,
@@ -116,7 +116,7 @@ public object App : Routes() {
             authState.auth,
             { value -> authState.auth = value },
             layoutType == NavigationSuiteType.NavigationDrawer,
-            router.backStack.size > 1,
+            router.hasBack,
             layoutType,
             router::actions,
             {
@@ -133,34 +133,18 @@ public object App : Routes() {
 }
 
 @Serializable
-public object Public : Routes() {
-
-    override val routes: List<BaseRoute> by lazy {
-        listOf(News, Auth)
-    }
-}
-
-@Serializable
-public object Protected : Routes() {
-
-    override val routes: List<BaseRoute> by lazy {
-        listOf(Map, Services, Settings, Profile)
-    }
-}
-
-@Serializable
 @SerialName("home")
 public data object Home : Route<Home>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.Home, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.Home, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.Home, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.Home, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -169,7 +153,7 @@ public data object Home : Route<Home>(), NavRoute {
 
     @Composable
     override fun Content(route: Home) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         HomeScreen(
             Modifier,
@@ -195,12 +179,12 @@ public data object Articles : Route<Articles>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.Newspaper, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.Newspaper, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.Newspaper, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.Newspaper, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -211,7 +195,7 @@ public data object Articles : Route<Articles>(), NavRoute {
     override fun Content(route: Articles) {
         val viewModel: ArticleViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         ArticlesScreen(
             Modifier,
@@ -229,12 +213,12 @@ public data object Services : Route<Services>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.Apps, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.Apps, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.Apps, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.Apps, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -243,7 +227,7 @@ public data object Services : Route<Services>(), NavRoute {
 
     @Composable
     override fun Content(route: Services) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         ServicesScreen(
             Modifier,
@@ -260,12 +244,12 @@ public data object Map : Route<Map>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.Map, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.Map, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.Map, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.Map, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -274,7 +258,7 @@ public data object Map : Route<Map>(), NavRoute {
 
     @Composable
     override fun Content(route: Map) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         MapScreen(
             Modifier,
@@ -291,12 +275,12 @@ public data object Settings : Route<Settings>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.Settings, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.Settings, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.Settings, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.Settings, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -308,7 +292,7 @@ public data object Settings : Route<Settings>(), NavRoute {
         val scrollState = rememberScrollState()
         val themeState = LocalThemeState.current
         val authState = LocalAuthState.current
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -329,12 +313,12 @@ public data object About : Route<About>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.Info, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.Info, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.Info, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.Info, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -343,7 +327,7 @@ public data object About : Route<About>(), NavRoute {
 
     @Composable
     override fun Content(route: About) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         AboutScreen(
             Modifier,
@@ -370,7 +354,7 @@ public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
     override fun Content(route: Phone) {
         val viewModel: PhoneViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         PhoneScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -391,14 +375,14 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
 
     public companion object : Route<Otp>() {
 
-        override val navigationRoute: KClass<out NavRoute>
+        override val navRoute: KClass<out NavRoute>
             get() = Otp::class
 
         @Composable
         override fun Content(route: Otp) {
             val viewModel: OtpViewModel = koinViewModel { parametersOf(route) }
             val state by viewModel.state.collectAsStateWithLifecycle()
-            val router = LocalRouter.current!!
+            val router = LocalRouter.current
 
             OtpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -419,7 +403,7 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
     override fun Content(route: PinCode) {
         val viewModel: PinCodeViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         PinCodeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -439,7 +423,7 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
     override fun Content(route: Login) {
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         LoginScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -457,7 +441,7 @@ public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 
     @Composable
     override fun Content(route: ForgotPinCode) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         ForgotPinCodeScreen(
             Modifier,
@@ -478,7 +462,7 @@ public data object Verification : Route<Verification>(), NavRoute {
         val viewModel: VerificationViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val authState = LocalAuthState.current
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         VerificationScreen(
             Modifier.fillMaxSize().padding(16.dp),
@@ -499,12 +483,12 @@ public data object Profile : Route<Profile>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.Person, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.Person, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.Person, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.Person, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -515,7 +499,7 @@ public data object Profile : Route<Profile>(), NavRoute {
     override fun Content(route: Profile) {
         val scrollState = rememberScrollState()
         val authState = LocalAuthState.current
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         ProfileScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -543,12 +527,12 @@ public data object Balance : Route<Balance>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.AccountBalance, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.AccountBalance, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.AccountBalance, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.AccountBalance, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -557,7 +541,7 @@ public data object Balance : Route<Balance>(), NavRoute {
 
     @Composable
     override fun Content(route: Balance) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         BalanceScreen(
             Modifier,
@@ -574,12 +558,12 @@ public data object Crypto : Route<Crypto>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.EnhancedEncryption, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.EnhancedEncryption, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.EnhancedEncryption, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.EnhancedEncryption, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -588,7 +572,7 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 
     @Composable
     override fun Content(route: Crypto) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         CryptoScreen(
             Modifier,
@@ -605,12 +589,12 @@ public data object Stock : Route<Stock>(), NavRoute {
     override val navigationItem: NavigationItem? = NavigationItem(
         item = Item(
             icon = {
-                Icon(Icons.Outlined.CurrencyExchange, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Outlined.CurrencyExchange, toString().asStringResource(Res.allStringResources))
             },
         ),
         selectedItem = Item(
             icon = {
-                Icon(Icons.Filled.CurrencyExchange, name.asStringResource(Res.allStringResources))
+                Icon(Icons.Filled.CurrencyExchange, toString().asStringResource(Res.allStringResources))
             },
         ),
     )
@@ -619,7 +603,7 @@ public data object Stock : Route<Stock>(), NavRoute {
 
     @Composable
     override fun Content(route: Stock) {
-        val router = LocalRouter.current!!
+        val router = LocalRouter.current
 
         StockScreen(
             Modifier,

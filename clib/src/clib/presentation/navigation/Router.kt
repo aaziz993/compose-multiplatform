@@ -4,21 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
+import clib.presentation.noLocalProvidedFor
 
 /**
- * CompositionLocal that provides access to the parent Router in nested navigation hierarchies.
+ * CompositionLocal that provides access to the Router.
  *
- * This is used to establish a parent-child relationship between navigation containers.
- * When a nested Nav3Host is created, it can access its parent router through this CompositionLocal
- * to properly handle navigation events like pop() and dropStack().
- *
- * Value is null for root navigation containers (no parent exists).
- * Value is non-null for nested navigation containers (parent router available).
- *
- * Users typically don't need to access this directly - it's managed automatically by Nav3Host.
  */
 @Suppress("ComposeCompositionLocalUsage")
-public val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocalOf { null }
+public val LocalRouter: ProvidableCompositionLocal<Router> =
+    compositionLocalOf { noLocalProvidedFor("LocalRouter") }
 
 /**
  * Main router implementation providing high-level navigation operations.
@@ -45,7 +39,7 @@ public class Router() : BaseRouter() {
         require(routes.isNotEmpty()) { "Screens must not be empty" }
 
         val actions = routes.map(NavigationAction::Push).toTypedArray()
-        navigationActionQueue.actions(actions)
+        navigationActionQueue.actions(*actions)
     }
 
     /**
@@ -58,6 +52,17 @@ public class Router() : BaseRouter() {
      */
     public fun replaceCurrent(route: NavRoute): Unit =
         actions(NavigationAction.ReplaceCurrent(route))
+
+    /**
+     * Replaces the entire navigation stack with new routes.
+     *
+     * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
+     *
+     * @param routes Variable number of routes to replace the stack with.
+     * @triggers system back navigation when the stack is empty.
+     */
+    public fun replaceStack(vararg routes: NavRoute): Unit =
+        actions(NavigationAction.ReplaceStack(routes.toList()))
 
     /**
      * Removes the top route from the navigation stack.
@@ -76,17 +81,6 @@ public class Router() : BaseRouter() {
      * @param route The target route to navigate back to
      */
     public fun popTo(route: NavRoute): Unit = actions(NavigationAction.PopTo(route))
-
-    /**
-     * Replaces the entire navigation stack with new routes.
-     *
-     * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
-     *
-     * @param routes Variable number of routes to replace the stack with.
-     * @triggers system back navigation when the stack is empty.
-     */
-    public fun replaceStack(vararg routes: NavRoute): Unit =
-        actions(NavigationAction.ReplaceStack(routes.toList()))
 
     /**
      * Clears all routes except the root route.

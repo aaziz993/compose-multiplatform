@@ -26,7 +26,7 @@ public class NavigationActionQueue : NavigatorHolder {
         private set
 
     /** Queue of pending actions waiting for a navigator to become available. */
-    private val pendingCommands = mutableListOf<Array<out NavigationAction>>()
+    private val pendingActions = mutableListOf<Array<out NavigationAction>>()
 
     /** Coroutine scope for executing actions on the main thread. */
     private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -41,9 +41,9 @@ public class NavigationActionQueue : NavigatorHolder {
      */
     override fun setNavigator(navigator: Navigator) {
         this._navigator = navigator
-        if (pendingCommands.isNotEmpty()) {
-            val snapshot = pendingCommands.toList()
-            pendingCommands.clear()
+        if (pendingActions.isNotEmpty()) {
+            val snapshot = pendingActions.toList()
+            pendingActions.clear()
             snapshot.forEach(navigator::actions)
         }
     }
@@ -65,9 +65,9 @@ public class NavigationActionQueue : NavigatorHolder {
      *
      * @param actions Array of actions to execute.
      */
-    public fun actions(actions: Array<out NavigationAction>) {
+    public fun actions(vararg actions: NavigationAction) {
         mainScope.launch {
-            _navigator?.actions(actions) ?: pendingCommands.add(actions)
+            _navigator?.actions(*actions) ?: pendingActions.add(actions)
         }
     }
 }

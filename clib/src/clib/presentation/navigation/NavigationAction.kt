@@ -12,9 +12,9 @@ public interface NavigationAction {
      * The route will be added to the top of the stack.
      *
      * @param route The route to push onto the stack.
-     * @param popTo Pop to route if exists.
+     * @param duplicate Determines push new route or popTo route if exists.
      */
-    public data class Push(val route: NavRoute, val popTo: Boolean = true) : NavigationAction
+    public data class Push(val route: NavRoute, val duplicate: Boolean = false) : NavigationAction
 
     /**
      * Action to replace the current top route with a new one.
@@ -46,7 +46,7 @@ public interface NavigationAction {
      *
      * @param route The target route to navigate back to
      */
-    public data class PopTo(val route: NavRoute, val inclusive: Boolean = false) : NavigationAction
+    public data class PopTo(val route: NavRoute) : NavigationAction
 
     /**
      * Action to clear all routes except the root route.

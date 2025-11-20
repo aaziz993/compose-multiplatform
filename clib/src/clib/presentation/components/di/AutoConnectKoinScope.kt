@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import org.koin.compose.ComposeContextWrapper
 import clib.di.LocalKoinScopeContext
 import clib.di.getKoin
+import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Router
 import org.koin.core.qualifier.named
@@ -21,14 +22,14 @@ public fun AutoConnectKoinScope(
     content: @Composable () -> Unit
 ) {
     val koin = getKoin()
-    val scopeMap = remember { mutableStateMapOf<String, Scope>() }
+    val scopeMap = remember { mutableStateMapOf<BaseRoute, Scope>() }
 
     val scopeToInject by remember {
         derivedStateOf {
-            val currentRoute = router.backStack.lastOrNull()?.name ?: return@derivedStateOf rootScope
+            val currentRoute = router.backStack.lastOrNull()?.route ?: return@derivedStateOf rootScope
 
             // Close scopes no longer in backStack
-            val activeRoutes = router.backStack.map(NavRoute::name)
+            val activeRoutes = router.backStack.map(NavRoute::route)
             val closedScopes = scopeMap.keys - activeRoutes.toSet()
             closedScopes.forEach { route ->
                 scopeMap.remove(route)?.close()
@@ -37,8 +38,8 @@ public fun AutoConnectKoinScope(
             // Get or create scope for current route
             scopeMap.getOrPut(currentRoute) {
                 koin.getOrCreateScope(
-                    scopeId = currentRoute,
-                    qualifier = named(currentRoute),
+                    scopeId = currentRoute.toString(),
+                    qualifier = named(currentRoute.toString()),
                 )
             }
         }

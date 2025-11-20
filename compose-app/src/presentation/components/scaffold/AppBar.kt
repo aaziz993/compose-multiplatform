@@ -26,12 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,9 +39,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.window.core.layout.WindowSizeClass
 import clib.data.location.country.flag
 import clib.data.type.primitives.string.asStringResource
+import clib.presentation.auth.AuthComposable
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.picker.country.CountryPickerDialog
 import clib.presentation.components.picker.country.mode.CountryPicker
@@ -72,12 +70,10 @@ import klib.data.location.country.getCountries
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.type.auth.model.Auth
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
-import ui.navigation.presentation.App
 import ui.navigation.presentation.Profile
 
 @Composable
@@ -95,15 +91,13 @@ public fun AppBar(
     onAuthChange: (Auth) -> Unit = {},
     hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
-    onDrawerToggle: suspend () -> Unit = {},
+    onDrawerToggle: () -> Unit = {},
     hasBack: Boolean = true,
     onNavigationAction: (NavigationAction) -> Unit = {},
     content: @Composable (innerPadding: PaddingValues) -> Unit = {},
 ) {
-    val windowInfo = currentWindowAdaptiveInfo()
     val hazeState = rememberHazeState(blurEnabled = blurEnabled)
     val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
-    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier
@@ -129,11 +123,7 @@ public fun AppBar(
                         if (hasDrawer)
                             AppTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            onDrawerToggle()
-                                        }
-                                    },
+                                    onClick = onDrawerToggle,
                                 ) {
                                     Icon(
                                         imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
@@ -156,7 +146,7 @@ public fun AppBar(
                     }
                 },
                 actions = {
-                    if (auth.user != null)
+                    AuthComposable(auth) {
                         AppTooltipBox(stringResource(Res.string.sos)) {
                             IconButton(
                                 onClick = {
@@ -169,6 +159,7 @@ public fun AppBar(
                                 )
                             }
                         }
+                    }
 
                     AppTooltipBox(stringResource(Res.string.theme)) {
                         IconButton(
@@ -250,8 +241,8 @@ public fun AppBar(
                         }
                     }
 
-                    AppTooltipBox(stringResource(Res.string.profile)) {
-                        auth.user?.let { user ->
+                    AuthComposable(auth) { user ->
+                        AppTooltipBox(stringResource(Res.string.profile)) {
                             IconButton(
                                 onClick = {
                                     onNavigationAction(NavigationAction.Push(Profile))

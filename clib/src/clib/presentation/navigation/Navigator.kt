@@ -20,5 +20,5 @@ public interface Navigator {
      *
      * @param actions Array of actions to apply to the navigation stack
      */
-    public fun actions(actions: Array<out NavigationAction>)
+    public fun actions(vararg actions: NavigationAction)
 }

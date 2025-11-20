@@ -14,6 +14,12 @@ import clib.presentation.auth.rememberAuthState
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
+import clib.presentation.navigation.LocalRouter
+import clib.presentation.navigation.NavRoute
+import clib.presentation.navigation.Router
+import clib.presentation.navigation.Routes
+import clib.presentation.navigation.exception.NavigationException
+import clib.presentation.navigation.rememberRouter
 import clib.presentation.theme.AppTheme
 import clib.presentation.theme.DarkColors
 import clib.presentation.theme.DarkColorsHighContrast
@@ -32,12 +38,17 @@ public fun AppEnvironment(
     lightColorSchemeHighContrast: ColorScheme = LightColorsHighContrast,
     darkColorScheme: ColorScheme = DarkColors,
     darkColorSchemeHighContrast: ColorScheme = DarkColorsHighContrast,
-    localeState: LocaleState = rememberLocaleState(),
-    authState: AuthState = rememberAuthState(),
     motionScheme: MotionScheme = MotionScheme.expressive(),
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = MaterialTheme.typography,
-    content: @Composable () -> Unit,
+    localeState: LocaleState = rememberLocaleState(),
+    authState: AuthState = rememberAuthState(),
+    router: Router = rememberRouter(),
+    routes: Routes,
+    authRoute: NavRoute? = null,
+    authRedirectRoute: NavRoute? = null,
+    onBack: (() -> Unit)? = null,
+    onError: ((NavigationException) -> Unit)? = null,
 ): Unit = AppTheme(
     themeState,
     lightColorScheme,
@@ -54,9 +65,18 @@ public fun AppEnvironment(
         CompositionLocalProvider(
             LocalLocaleState provides localeState,
             LocalAuthState provides authState,
+            LocalRouter provides router,
             LocalAppDensity provides customAppDensity,
-            content = content,
-        )
+        ) {
+            routes.Content(
+                router,
+                authState.auth,
+                authRoute,
+                authRedirectRoute,
+                onBack,
+                onError,
+            )
+        }
     }
 }
 

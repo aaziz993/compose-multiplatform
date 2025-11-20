@@ -10,6 +10,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.di.koinInject
@@ -25,6 +26,7 @@ import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
 import klib.data.location.locale.Locale
 import klib.data.type.auth.model.Auth
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import presentation.components.scaffold.AppBar
 
@@ -48,6 +50,7 @@ public fun NavScreen(
     content: @Composable () -> Unit = {},
 ) {
     val navigationSuiteScaffoldState = rememberNavigationSuiteScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
 
     AppBar(
         modifier = modifier,
@@ -60,7 +63,11 @@ public fun NavScreen(
         onAuthChange = onAuthChange,
         hasDrawer = hasDrawer,
         isDrawerOpen = navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible,
-        onDrawerToggle = navigationSuiteScaffoldState::toggle,
+        onDrawerToggle = {
+            coroutineScope.launch {
+                navigationSuiteScaffoldState.toggle()
+            }
+        },
         hasBack = hasBack,
         onNavigationAction = onNavigationAction,
     ) { innerPadding ->
