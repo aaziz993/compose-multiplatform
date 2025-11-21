@@ -95,13 +95,12 @@ public object App : Routes() {
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
         val currentRoute = router.backStack.lastOrNull() ?: return
-        val layoutType = if (router.routes?.isNavigationItems(authState.auth) == true) {
-            val adaptiveInfo = currentWindowAdaptiveInfo(true)
-
-            if (adaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
-                NavigationSuiteType.NavigationDrawer
-            else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
-        }
+        val layoutType = if (router.routes?.isNavigationItems(authState.auth) == true)
+            with(currentWindowAdaptiveInfo(true)) {
+                if (windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
+                    NavigationSuiteType.NavigationDrawer
+                else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(this)
+            }
         else NavigationSuiteType.None
 
 
@@ -649,18 +648,18 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 public data object Stock : Route<Stock>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-            item = { text ->
-                Item(
-                        text = { Text(text) },
-                        icon = { Icon(Icons.Outlined.CurrencyExchange, text) },
-                )
-            },
-            selectedItem = { text ->
-                Item(
-                        text = { Text(text) },
-                        icon = { Icon(Icons.Filled.CurrencyExchange, text) },
-                )
-            },
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.CurrencyExchange, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.CurrencyExchange, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()

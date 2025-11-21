@@ -56,7 +56,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         if (!isNavigationItem(auth)) return {}
         check(this is NavRoute) { "Not a nav route '$this'" }
 
-        val router = LocalParentRouter.current!!
+        val router = LocalParentNavigator.current!!
         val selected = this == router.backStack.lastOrNull()
         val item = navigationItem!!.item(label(), selected)
 
@@ -85,7 +85,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         if (!isNavigationItem(auth)) return
         check(this is NavRoute) { "Not a route '$this'" }
 
-        val router = LocalParentRouter.current!!
+        val router = LocalParentNavigator.current!!
         val selected = this == router.backStack.lastOrNull()
         val item = navigationItem!!.item(label(), selected)
 
@@ -201,19 +201,19 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     ) {
         require(this.startRoute.route in routes) { "Start route '${this.startRoute.route}' isn't in '$routes'" }
 
-        val routesNavigator = navigator(this)
+        val _navigator = navigator(this)
 
         Nav3Host(
             router,
-            routesNavigator,
+            _navigator,
         ) { hasBack ->
             Content(
                 router,
                 hasBack,
             ) {
                 NavDisplay(
-                    routesNavigator.backStack,
-                    { routesNavigator.actions(NavigationAction.Pop) },
+                    _navigator.backStack,
+                    { _navigator.actions(NavigationAction.Pop) },
                     entryProvider {
                         routes.forEach { route ->
                             route.entry(

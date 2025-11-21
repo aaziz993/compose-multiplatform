@@ -1,7 +1,9 @@
 package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
 import clib.presentation.navigation.exception.NavigationException
 import klib.data.type.auth.model.Auth
@@ -89,8 +91,8 @@ public open class Nav3Navigator(
     ) {
         when (action) {
             is NavigationAction.Push -> push(snapshot, action)
-            is NavigationAction.ReplaceCurrent -> replace(snapshot, action)
-            is NavigationAction.ReplaceStack -> replace(snapshot, action)
+            is NavigationAction.ReplaceCurrent -> replaceCurrent(snapshot, action)
+            is NavigationAction.ReplaceStack -> replaceStack(snapshot, action)
             is NavigationAction.PopTo -> popTo(snapshot, action)
             is NavigationAction.Pop -> if (!pop(snapshot)) onBackRequested()
             is NavigationAction.ResetToRoot -> resetToRoot(snapshot)
@@ -135,7 +137,7 @@ public open class Nav3Navigator(
      * @param snapshot The stack snapshot to modify.
      * @param action The replace action containing the new route.
      */
-    protected open fun replace(
+    protected open fun replaceCurrent(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceCurrent,
     ) {
@@ -153,7 +155,7 @@ public open class Nav3Navigator(
      * @param routes Variable number of routes to replace the stack with.
      * @triggers system back navigation when the stack is empty.
      */
-    protected open fun replace(
+    protected open fun replaceStack(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceStack,
     ) {
@@ -232,6 +234,23 @@ public open class Nav3Navigator(
     }
 
     /**
+     * Atomically replaces the contents of a SnapshotStateList.
+     *
+     * Uses Compose's snapshot system to ensure the update is atomic and
+     * properly triggers recomposition.
+     *
+     * @param value The new contents for the list.
+     */
+    protected open fun NavBackStack<NavRoute>.swap(
+        value: List<NavRoute>,
+    ) {
+        Snapshot.withMutableSnapshot {
+            clear()
+            addAll(value)
+        }
+    }
+
+    /**
      * Extension function to add or replace route at the end of MutableList.
      *
      * @param route the route to add or replace at the end of the list.
@@ -272,12 +291,24 @@ public fun rememberNav3Navigator(
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onBack: () -> Unit = LocalParentRouter.current?.let { router -> router::pop } ?: systemOnBack(),
+    onBack: () -> Unit = LocalParentNavigator.current?.let { navigator ->
+        { navigator.actions(NavigationAction.Pop) }
+    } ?: systemOnBack(),
     onError: (NavigationException) -> Unit = {},
 ): Navigator {
-    val backStack = rememberNavBackStack(routes, routes.startRoute)
+    val backStack = rememberNavBackStack(routes)
 
-    return remember(auth, onBack, onError) {
+    val navigator = remember(auth, onBack, onError) {
         Nav3Navigator(routes, backStack, auth, authRoute, authRedirectRoute, onBack, onError)
     }
+
+    LaunchedEffect(auth) {
+        val newStack = if (auth.user == null)
+            navigator.backStack.filter { navRoute -> navRoute is AuthRoute || navRoute.route.isAuth(auth) }
+        else (navigator.backStack.filterNot { navRoute -> navRoute is AuthRoute } + listOfNotNull(authRedirectRoute)).distinct()
+
+        if (newStack.isNotEmpty())  navigator.actions(NavigationAction.ReplaceStack(newStack))
+    }
+
+    return navigator
 }

@@ -5,5 +5,6 @@ public open class TextSelectableItem(
     public val selectedItem: (text: String) -> Item = item,
 ) {
 
-    public fun item(text: String, selected: Boolean = false): Item = if (selected) selectedItem(text) else item(text)
+    public fun item(text: String, selected: Boolean): Item =
+        if (selected) selectedItem(text) else item(text)
 }

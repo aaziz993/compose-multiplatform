@@ -5,5 +5,5 @@ public open class SelectableItem(
     public val selectedItem: Item = item,
 ) {
 
-    public fun item(selected: Boolean = false): Item = if (selected) selectedItem else item
+    public fun item(selected: Boolean): Item = if (selected) selectedItem else item
 }
