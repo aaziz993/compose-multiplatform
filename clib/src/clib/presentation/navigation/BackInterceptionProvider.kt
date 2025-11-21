@@ -1,19 +1,24 @@
 package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
+import androidx.navigationevent.compose.rememberNavigationEventDispatcherOwner
 
-/**
- * Provides automatic back interception for nested navigation containers.
- *
- * This prevents nested NavigationBackHandlers from intercepting back events that
- * should be handled by parent navigation containers.
- *
- * @param interceptionEnabled Whether to enable back event interception.
- *                           Should be true for nested containers, false for root.
- * @param content The composable content that will be wrapped with interception
- */
 @Composable
-public expect fun BackInterceptionProvider(
+public fun BackInterceptionProvider(
     interceptionEnabled: Boolean,
     content: @Composable () -> Unit
-)
+) {
+    val parentOwner = LocalNavigationEventDispatcherOwner.current
+
+    if (interceptionEnabled && parentOwner != null) {
+        val interceptingOwner =
+            rememberNavigationEventDispatcherOwner(false, parentOwner)
+
+        CompositionLocalProvider(
+            LocalNavigationEventDispatcherOwner provides interceptingOwner,
+            content = content,
+        )
+    } else content()
+}

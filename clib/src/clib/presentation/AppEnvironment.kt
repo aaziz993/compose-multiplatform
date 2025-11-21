@@ -14,11 +14,10 @@ import clib.presentation.auth.rememberAuthState
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
-import clib.presentation.navigation.LocalRouter
-import clib.presentation.navigation.NavRoute
+import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
-import clib.presentation.navigation.exception.NavigationException
+import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.navigation.rememberRouter
 import clib.presentation.theme.AppTheme
 import clib.presentation.theme.DarkColors
@@ -43,12 +42,9 @@ public fun AppEnvironment(
     typography: Typography = MaterialTheme.typography,
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = rememberAuthState(),
-    router: Router = rememberRouter(),
     routes: Routes,
-    authRoute: NavRoute? = null,
-    authRedirectRoute: NavRoute? = null,
-    onBack: (() -> Unit)? = null,
-    onError: ((NavigationException) -> Unit)? = null,
+    router: Router = rememberRouter(),
+    navigator: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
 ): Unit = AppTheme(
     themeState,
     lightColorScheme,
@@ -65,17 +61,9 @@ public fun AppEnvironment(
         CompositionLocalProvider(
             LocalLocaleState provides localeState,
             LocalAuthState provides authState,
-            LocalRouter provides router,
             LocalAppDensity provides customAppDensity,
         ) {
-            routes.Content(
-                router,
-                authState.auth,
-                authRoute,
-                authRedirectRoute,
-                onBack,
-                onError,
-            )
+            routes.NavHost(router, navigator)
         }
     }
 }

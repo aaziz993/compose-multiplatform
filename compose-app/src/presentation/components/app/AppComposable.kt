@@ -10,14 +10,17 @@ import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
 import clib.presentation.components.di.AutoConnectKoinScope
+import clib.presentation.event.alert.GlobalAlertEventController
+import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
-import clib.presentation.navigation.NavRoute
+import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
-import clib.presentation.navigation.exception.NavigationException
+import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.rememberThemeState
+import kotlinx.coroutines.launch
 import presentation.theme.DarkColors
 import presentation.theme.DarkColorsHighContrast
 import presentation.theme.LightColors
@@ -34,14 +37,25 @@ public fun AppComposable(
     themeState: ThemeState = rememberThemeState(),
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = koinInject(),
-    router: Router = koinInject(),
     routes: Routes = App,
-    authRoute: NavRoute? = Auth,
-    authRedirectRoute: NavRoute? = News,
-    onBack: (() -> Unit)? = null,
-    onError: ((NavigationException) -> Unit)? = null,
+    router: Router = koinInject(),
+    navigator: @Composable (Routes) -> Navigator = {
+        val coroutineScope = rememberCoroutineScope()
+        rememberNav3Navigator(
+            routes = it,
+            auth = authState.auth,
+            authRoute = Auth,
+            authRedirectRoute = if (it == routes) News else null,
+            onError = { exception ->
+                coroutineScope.launch {
+                    GlobalAlertEventController.sendEvent(
+                        AlertEvent(exception.message.orEmpty(), true),
+                    )
+                }
+            },
+        )
+    },
 ): Unit = AutoConnectKoinScope(router) {
-    val coroutineScope = rememberCoroutineScope()
     AppEnvironment(
         themeState,
         LightColors,
@@ -53,12 +67,9 @@ public fun AppComposable(
         Typography,
         localeState,
         authState,
-        router,
         routes,
-        authRoute,
-        authRedirectRoute,
-        onBack,
-        onError,
+        router,
+        navigator,
     )
 }
 

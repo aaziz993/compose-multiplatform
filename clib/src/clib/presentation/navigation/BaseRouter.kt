@@ -1,8 +1,5 @@
 package clib.presentation.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-
 /**
  * Base class for all router implementations.
  *
@@ -29,10 +26,6 @@ public abstract class BaseRouter {
      */
     public val backStack: List<NavRoute>
         get() = navigationActionQueue._navigator?.backStack ?: emptyList()
-
-    public val hasBack: Boolean
-        @Composable
-        get() = LocalParentRouter.current != null || backStack.size > 1
 
     /**
      * Executes one or more navigation actions.

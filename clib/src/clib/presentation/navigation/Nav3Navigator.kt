@@ -2,7 +2,6 @@ package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
 import clib.presentation.navigation.exception.NavigationException
 import klib.data.type.auth.model.Auth
@@ -28,19 +27,15 @@ import kotlinx.coroutines.yield
  * @param onBack Callback to trigger system back navigation when the stack is empty.
  * @param onError Callback triggered when navigation throws exception.
  */
-public class Nav3Navigator(
+public open class Nav3Navigator(
     override val routes: Routes,
-    backStack: NavBackStack<NavRoute>,
+    override val backStack: NavBackStack<NavRoute>,
     private val auth: Auth,
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
     private val onBack: () -> Unit,
     private val onError: (NavigationException) -> Unit,
 ) : Navigator {
-
-    /** The Navigation 3 back stack to control. */
-    override val backStack: List<NavRoute>
-        field = backStack
 
     /** Coroutine scope for scheduling back navigation calls. */
     private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -55,7 +50,7 @@ public class Nav3Navigator(
      * @param actions Array of navigation actions to apply.
      */
     override fun actions(
-        actions: Array<out NavigationAction>,
+        vararg actions: NavigationAction,
     ) {
         val snapshot = backStack.toMutableList()
         var callOnBack = false
@@ -72,7 +67,7 @@ public class Nav3Navigator(
             }
         }
 
-        swap(snapshot)
+        backStack.swap(snapshot)
 
         if (callOnBack) scheduleOnBack()
     }
@@ -87,7 +82,7 @@ public class Nav3Navigator(
      * @param action Command to process.
      * @param onBackRequested Callback to trigger when system back navigation is needed.
      */
-    private fun action(
+    protected open fun action(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction,
         onBackRequested: () -> Unit,
@@ -112,12 +107,10 @@ public class Nav3Navigator(
      * @param snapshot The stack snapshot to modify.
      * @param action The push action containing the route to add.
      */
-    private fun push(
+    protected open fun push(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.Push,
     ) {
-        throw NavigationException(action, Exception("TEST"))
-
         // If the user explicitly requested the auth route, don't redirect them after login.
         if (action.route == authRoute) authRedirectRoute = null
 
@@ -128,6 +121,8 @@ public class Nav3Navigator(
             authRedirectRoute = action.route
             requireNotNull(authRoute) { "No auth route" }
         }
+
+        check(route.route in routes.routes) { "Route '${route.route}' isn't in '${routes.routes}'" }
 
         if (!action.duplicate) popTo(snapshot, NavigationAction.PopTo(action.route))
 
@@ -140,10 +135,15 @@ public class Nav3Navigator(
      * @param snapshot The stack snapshot to modify.
      * @param action The replace action containing the new route.
      */
-    private fun replace(
+    protected open fun replace(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceCurrent,
-    ) = if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
+    ) {
+        require(action.route.route in routes.routes) {
+            "Route '${action.route.route}' isn't in '${routes.routes}'"
+        }
+        if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
+    }
 
     /**
      * Replaces the entire navigation stack with new routes.
@@ -153,11 +153,13 @@ public class Nav3Navigator(
      * @param routes Variable number of routes to replace the stack with.
      * @triggers system back navigation when the stack is empty.
      */
-    public fun replace(
+    protected open fun replace(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceStack,
     ) {
-        require(action.routes.isNotEmpty()) { "Routes must not be empty" }
+        require(action.routes.all { navRoute -> navRoute.route in routes.routes }) {
+            "Routes '${action.routes.map(NavRoute::route)}' in '${routes.routes}'"
+        }
         snapshot.replaceWith(action.routes)
     }
 
@@ -167,7 +169,7 @@ public class Nav3Navigator(
      * @param snapshot The stack snapshot to modify.
      * @param action The popTo action containing the target route.
      */
-    private fun popTo(
+    protected open fun popTo(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.PopTo,
     ) {
@@ -185,7 +187,7 @@ public class Nav3Navigator(
      * @param snapshot The stack snapshot to modify
      * @return true if a route was removed, false if the stack would become empty
      */
-    private fun pop(
+    protected open fun pop(
         snapshot: MutableList<NavRoute>,
     ): Boolean {
         val result = snapshot.size > 1
@@ -200,7 +202,7 @@ public class Nav3Navigator(
      *
      * @param snapshot The stack snapshot to modify
      */
-    private fun resetToRoot(snapshot: MutableList<NavRoute>) {
+    protected open fun resetToRoot(snapshot: MutableList<NavRoute>) {
         if (snapshot.size > 1) snapshot.removeRange(1, snapshot.size)
     }
 
@@ -212,7 +214,7 @@ public class Nav3Navigator(
      *
      * @param snapshot The stack snapshot to modify.
      */
-    private fun dropStack(snapshot: MutableList<NavRoute>) = snapshot.removeRange(0, snapshot.lastIndex)
+    protected open fun dropStack(snapshot: MutableList<NavRoute>): Unit = snapshot.removeRange(0, snapshot.lastIndex)
 
     /**
      * Schedules a system back navigation call.
@@ -222,27 +224,10 @@ public class Nav3Navigator(
      * This prevents race conditions where the system tries to handle back
      * navigation before the UI has been updated.
      */
-    private fun scheduleOnBack() {
+    protected open fun scheduleOnBack() {
         mainScope.launch {
             yield()
             onBack()
-        }
-    }
-
-    /**
-     * Atomically replaces the contents of a SnapshotStateList.
-     *
-     * Uses Compose's snapshot system to ensure the update is atomic and
-     * properly triggers recomposition.
-     *
-     * @param value The new contents for the list.
-     */
-    private fun swap(
-        value: List<NavRoute>,
-    ) {
-        Snapshot.withMutableSnapshot {
-            backStack.clear()
-            backStack.addAll(value)
         }
     }
 
@@ -251,7 +236,7 @@ public class Nav3Navigator(
      *
      * @param route the route to add or replace at the end of the list.
      */
-    private fun MutableList<NavRoute>.addOrReplace(route: NavRoute) =
+    protected open fun MutableList<NavRoute>.addOrReplace(route: NavRoute): Unit =
         if (lastOrNull() == route) this[lastIndex] = route else this += route
 
     /**
@@ -262,7 +247,9 @@ public class Nav3Navigator(
      * @param fromIndex Start index (inclusive).
      * @param toIndex End index (exclusive).
      */
-    private fun MutableList<NavRoute>.removeRange(fromIndex: Int, toIndex: Int) = subList(fromIndex, toIndex).clear()
+    protected open fun MutableList<NavRoute>.removeRange(fromIndex: Int, toIndex: Int) {
+        subList(fromIndex, toIndex).clear()
+    }
 }
 
 /**
@@ -280,13 +267,13 @@ public class Nav3Navigator(
  * @return A remembered navigator instance.
  */
 @Composable
-internal fun rememberNav3Navigator(
+public fun rememberNav3Navigator(
     routes: Routes,
-    auth: Auth,
-    authRoute: NavRoute?,
-    authRedirectRoute: NavRoute?,
-    onBack: () -> Unit,
-    onError: (NavigationException) -> Unit,
+    auth: Auth = Auth(),
+    authRoute: NavRoute? = null,
+    authRedirectRoute: NavRoute? = null,
+    onBack: () -> Unit = LocalParentRouter.current?.let { router -> router::pop } ?: systemOnBack(),
+    onError: (NavigationException) -> Unit = {},
 ): Navigator {
     val backStack = rememberNavBackStack(routes, routes.startRoute)
 

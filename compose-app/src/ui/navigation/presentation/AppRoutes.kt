@@ -35,7 +35,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavEntry
 import androidx.window.core.layout.WindowSizeClass
 import clib.data.type.primitives.string.asStringResource
 import clib.di.koinViewModel
@@ -44,9 +43,9 @@ import clib.presentation.components.model.item.Item
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
-import clib.presentation.navigation.LocalRouter
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Route
+import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.model.NavigationItem
 import clib.presentation.theme.LocalThemeState
@@ -83,19 +82,18 @@ import ui.wallet.stock.StockScreen
 public object App : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Auth, News, Map, Services, Profile, Settings)
+        listOf(Auth, News, Map, Services, Profile, Settings, Verification)
     }
 
     @Composable
     override fun Content(
-        backStack: List<NavRoute>,
-        onBack: () -> Unit,
-        entryProvider: (NavRoute) -> NavEntry<NavRoute>,
+        router: Router,
+        hasBack: Boolean,
+        content: @Composable () -> Unit,
     ) {
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
-        val router = LocalRouter.current
         val currentRoute = router.backStack.lastOrNull() ?: return
         val layoutType = if (router.routes?.isNavigationItems(authState.auth) == true) {
             val adaptiveInfo = currentWindowAdaptiveInfo(true)
@@ -106,9 +104,10 @@ public object App : Routes() {
         }
         else NavigationSuiteType.None
 
+
         NavScreen(
             Modifier.fillMaxSize(),
-            { Text(text = currentRoute.toString().asStringResource(Res.allStringResources)) },
+            { Text(text = currentRoute.route.toString().asStringResource(Res.allStringResources)) },
             themeState.theme,
             { value -> themeState.theme = value },
             localeState.locale,
@@ -116,19 +115,15 @@ public object App : Routes() {
             authState.auth,
             { value -> authState.auth = value },
             layoutType == NavigationSuiteType.NavigationDrawer,
-            router.hasBack,
+            hasBack,
             layoutType,
             router::actions,
-            {
-                router.routes?.items(
-                    authState.auth,
-                    currentRoute,
-                    router::push,
-                )
-            },
-        ) {
-            super.Content(backStack, onBack, entryProvider)
-        }
+            router.routes?.items(
+                label = { toString().asStringResource(Res.allStringResources) },
+                auth = authState.auth,
+            ) ?: {},
+            content,
+        )
     }
 }
 
@@ -137,23 +132,32 @@ public object App : Routes() {
 public data object Home : Route<Home>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.Home, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.Home, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = {
+                    Icon(Icons.Outlined.Home, text)
+                },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = {
+                    Icon(Icons.Filled.Home, text)
+                },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Home) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Home,
+    ) {
 
         HomeScreen(
             Modifier,
@@ -177,25 +181,30 @@ public object News : Routes() {
 public data object Articles : Route<Articles>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.Newspaper, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.Newspaper, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Newspaper, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Newspaper, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Articles) {
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Articles,
+    ) {
         val viewModel: ArticleViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
 
         ArticlesScreen(
             Modifier,
@@ -211,23 +220,28 @@ public data object Articles : Route<Articles>(), NavRoute {
 public data object Services : Route<Services>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.Apps, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.Apps, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Apps, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Apps, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Services) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Services,
+    ) {
 
         ServicesScreen(
             Modifier,
@@ -242,23 +256,28 @@ public data object Services : Route<Services>(), NavRoute {
 public data object Map : Route<Map>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.Map, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.Map, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Map, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Map, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Map) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Map,
+    ) {
 
         MapScreen(
             Modifier,
@@ -273,26 +292,31 @@ public data object Map : Route<Map>(), NavRoute {
 public data object Settings : Route<Settings>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.Settings, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.Settings, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Settings, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Settings, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Settings) {
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Settings,
+    ) {
         val scrollState = rememberScrollState()
         val themeState = LocalThemeState.current
         val authState = LocalAuthState.current
-        val router = LocalRouter.current
 
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -311,23 +335,28 @@ public data object Settings : Route<Settings>(), NavRoute {
 public data object About : Route<About>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.Info, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.Info, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Info, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Info, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: About) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: About,
+    ) {
 
         AboutScreen(
             Modifier,
@@ -342,7 +371,7 @@ public data object About : Route<About>(), NavRoute {
 public object Auth : Routes(), AuthRoute {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Phone, Otp, PinCode, ForgotPinCode, Verification, Profile)
+        listOf(Phone, Otp, PinCode, ForgotPinCode)
     }
 }
 
@@ -351,10 +380,13 @@ public object Auth : Routes(), AuthRoute {
 public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
 
     @Composable
-    override fun Content(route: Phone) {
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Phone,
+    ) {
         val viewModel: PhoneViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
 
         PhoneScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -379,10 +411,13 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
             get() = Otp::class
 
         @Composable
-        override fun Content(route: Otp) {
+        override fun Content(
+            router: Router,
+            hasBack: Boolean,
+            route: Otp,
+        ) {
             val viewModel: OtpViewModel = koinViewModel { parametersOf(route) }
             val state by viewModel.state.collectAsStateWithLifecycle()
-            val router = LocalRouter.current
 
             OtpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -400,10 +435,13 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
 public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
 
     @Composable
-    override fun Content(route: PinCode) {
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: PinCode,
+    ) {
         val viewModel: PinCodeViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
 
         PinCodeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -420,10 +458,13 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
 public data object Login : Route<Login>(), NavRoute, AuthRoute {
 
     @Composable
-    override fun Content(route: Login) {
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Login,
+    ) {
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = LocalRouter.current
 
         LoginScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -440,8 +481,11 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
 public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 
     @Composable
-    override fun Content(route: ForgotPinCode) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: ForgotPinCode,
+    ) {
 
         ForgotPinCodeScreen(
             Modifier,
@@ -458,11 +502,14 @@ public data object Verification : Route<Verification>(), NavRoute {
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Verification) {
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Verification,
+    ) {
         val viewModel: VerificationViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val authState = LocalAuthState.current
-        val router = LocalRouter.current
 
         VerificationScreen(
             Modifier.fillMaxSize().padding(16.dp),
@@ -481,25 +528,30 @@ public data object Verification : Route<Verification>(), NavRoute {
 public data object Profile : Route<Profile>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.Person, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.Person, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Person, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Person, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Profile) {
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Profile,
+    ) {
         val scrollState = rememberScrollState()
         val authState = LocalAuthState.current
-        val router = LocalRouter.current
 
         ProfileScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -525,23 +577,28 @@ public object Wallet : Routes() {
 public data object Balance : Route<Balance>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.AccountBalance, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.AccountBalance, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.AccountBalance, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.AccountBalance, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Balance) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Balance,
+    ) {
 
         BalanceScreen(
             Modifier,
@@ -556,23 +613,28 @@ public data object Balance : Route<Balance>(), NavRoute {
 public data object Crypto : Route<Crypto>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.EnhancedEncryption, toString().asStringResource(Res.allStringResources))
-            },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.EnhancedEncryption, toString().asStringResource(Res.allStringResources))
-            },
-        ),
+        item = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.EnhancedEncryption, text) },
+            )
+        },
+        selectedItem = { text ->
+            Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.EnhancedEncryption, text) },
+            )
+        },
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Crypto) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Crypto,
+    ) {
 
         CryptoScreen(
             Modifier,
@@ -587,23 +649,28 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 public data object Stock : Route<Stock>(), NavRoute {
 
     override val navigationItem: NavigationItem? = NavigationItem(
-        item = Item(
-            icon = {
-                Icon(Icons.Outlined.CurrencyExchange, toString().asStringResource(Res.allStringResources))
+            item = { text ->
+                Item(
+                        text = { Text(text) },
+                        icon = { Icon(Icons.Outlined.CurrencyExchange, text) },
+                )
             },
-        ),
-        selectedItem = Item(
-            icon = {
-                Icon(Icons.Filled.CurrencyExchange, toString().asStringResource(Res.allStringResources))
+            selectedItem = { text ->
+                Item(
+                        text = { Text(text) },
+                        icon = { Icon(Icons.Filled.CurrencyExchange, text) },
+                )
             },
-        ),
     )
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
-    override fun Content(route: Stock) {
-        val router = LocalRouter.current
+    override fun Content(
+        router: Router,
+        hasBack: Boolean,
+        route: Stock,
+    ) {
 
         StockScreen(
             Modifier,

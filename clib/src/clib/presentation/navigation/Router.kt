@@ -1,18 +1,7 @@
 package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
-import clib.presentation.noLocalProvidedFor
-
-/**
- * CompositionLocal that provides access to the Router.
- *
- */
-@Suppress("ComposeCompositionLocalUsage")
-public val LocalRouter: ProvidableCompositionLocal<Router> =
-    compositionLocalOf { noLocalProvidedFor("LocalRouter") }
 
 /**
  * Main router implementation providing high-level navigation operations.
@@ -24,7 +13,7 @@ public val LocalRouter: ProvidableCompositionLocal<Router> =
  * This class is designed to be used as the primary navigation interface in applications.
  *
  */
-public class Router() : BaseRouter() {
+public open class Router() : BaseRouter() {
 
     /**
      * Pushes one or more routes onto the navigation stack.
@@ -107,8 +96,12 @@ public class Router() : BaseRouter() {
  * The router will be recreated if any of the provided keys change, allowing for
  * state-dependent router configurations.
  *
-
- * @return A remembered router instance.
+ * @param keys Optional keys that trigger router recreation when changed
+ * @param factory Factory function to create the router instance
+ * @return A remembered router instance
  */
 @Composable
-public fun rememberRouter(vararg keys: Any?): Router = remember(*keys) { Router() }
+public fun rememberRouter(
+    vararg keys: Any?,
+    factory: () -> Router = { Router() },
+): Router = remember(*keys) { factory() }

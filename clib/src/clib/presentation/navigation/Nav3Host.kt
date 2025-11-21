@@ -25,22 +25,22 @@ internal val LocalParentRouter: ProvidableCompositionLocal<Router?> = compositio
  * Main composable for setting up Navigation 3 integration.
  *
  * This composable:
- * 1. Connects the router to the navigator for command execution
+ * 1. Connects the router to the navigator for action execution
  * 2. Provides proper lifecycle management (setup/cleanup)
  * 3. Creates a standardized onBack callback for UI components
  *
  * The connection between router and navigator is automatically managed through
  * DisposableEffect, ensuring proper cleanup when the composable leaves the composition.
  *
- * @param router The router instance for issuing navigation commands
- * @param navigator The navigator instance for executing commands (auto-created if not provided)
+ * @param router The router instance for issuing navigation actions
+ * @param navigator The navigator instance for executing actions (auto-created if not provided)
  * @param content The content composable that receives the navigation setup
  */
 @Composable
-public fun Nav3Host(
+internal fun Nav3Host(
     router: Router,
     navigator: Navigator,
-    content: @Composable () -> Unit,
+    content: @Composable (hasBack: Boolean) -> Unit,
 ) {
     DisposableEffect(router, navigator) {
         router.navigationActionQueue.setNavigator(navigator)
@@ -48,8 +48,11 @@ public fun Nav3Host(
     }
 
     val interceptionEnabled = LocalParentRouter.current != null
+    val hasBack = interceptionEnabled || router.backStack.size > 1
 
     CompositionLocalProvider(LocalParentRouter provides router) {
-        BackInterceptionProvider(interceptionEnabled, content)
+        BackInterceptionProvider(interceptionEnabled) {
+            content(hasBack)
+        }
     }
 }

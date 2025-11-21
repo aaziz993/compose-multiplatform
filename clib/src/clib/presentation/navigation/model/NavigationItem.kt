@@ -1,11 +1,11 @@
 package clib.presentation.navigation.model
 
 import clib.presentation.components.model.item.Item
-import clib.presentation.components.model.item.SelectableItem
+import clib.presentation.components.model.item.TextSelectableItem
 
-public data class NavigationItem(
-    val enabled: Boolean = true,
-    val alwaysShowLabel: Boolean = true,
-    val item: Item,
-    val selectedItem: Item = item,
-) : SelectableItem(item, selectedItem)
+public class NavigationItem(
+    public val enabled: Boolean = true,
+    public val alwaysShowLabel: Boolean = true,
+    item: (text: String) -> Item,
+    selectedItem: (text: String) -> Item = item,
+) : TextSelectableItem(item, selectedItem)

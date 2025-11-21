@@ -11,4 +11,4 @@ import clib.presentation.navigation.NavigationAction
 public class NavigationException(
     public val action: NavigationAction,
     cause: Throwable,
-) : RuntimeException("Navigation failed '$action'", cause)
+) : RuntimeException(cause.message ?: "Navigation failed '$action'", cause)
