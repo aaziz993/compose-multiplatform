@@ -13,12 +13,14 @@ public interface NavigatorHolder {
     /**
      * Registers a navigator instance to handle navigation actions.
      *
-     * @param navigator The navigator instance to register
+     * @param navigator The navigator instance to register.
      */
     public fun setNavigator(navigator: Navigator)
 
     /**
      * Unregisters the current navigator.
+     *
+     * @param navigator The navigator instance to unregister.
      */
-    public fun removeNavigator()
+    public fun removeNavigator(navigator: Navigator)
 }

@@ -1,7 +1,6 @@
 package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
@@ -39,6 +38,10 @@ public open class Nav3Navigator(
     private val onError: (NavigationException) -> Unit,
 ) : Navigator {
 
+    init {
+        auth()
+    }
+
     /** Coroutine scope for scheduling back navigation calls. */
     private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -69,7 +72,7 @@ public open class Nav3Navigator(
             }
         }
 
-        backStack.swap(snapshot)
+        swap(snapshot)
 
         if (callOnBack) scheduleOnBack()
     }
@@ -113,18 +116,18 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.Push,
     ) {
-        // If the user explicitly requested the auth route, don't redirect them after login.
-        if (action.route == authRoute) authRedirectRoute = null
-
         val route = if (action.route.route.isAuth(auth)) action.route
         else {
             check(auth.user == null) { "Insufficient user privileges '${auth.user}'" }
             // Store the intended destination and redirect to auth.
             authRedirectRoute = action.route
-            requireNotNull(authRoute) { "No auth route" }
+            checkNotNull(authRoute) { "No auth route" }
         }
 
         check(route.route in routes.routes) { "Route '${route.route}' isn't in '${routes.routes}'" }
+
+        // If the user explicitly requested the auth route, don't redirect them after login.
+        if (action.route == authRoute) authRedirectRoute = null
 
         if (!action.duplicate) popTo(snapshot, NavigationAction.PopTo(action.route))
 
@@ -153,7 +156,7 @@ public open class Nav3Navigator(
      * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
      *
      * @param routes Variable number of routes to replace the stack with.
-     * @triggers system back navigation when the stack is empty.
+     * @throws IllegalArgumentException if no routes are provided.
      */
     protected open fun replaceStack(
         snapshot: MutableList<NavRoute>,
@@ -163,6 +166,17 @@ public open class Nav3Navigator(
             "Routes '${action.routes.map(NavRoute::route)}' in '${routes.routes}'"
         }
         snapshot.replaceWith(action.routes)
+    }
+
+    /**
+     * Switches between authenticated/unauthenticated routes.
+     *
+     */
+    protected open fun auth() {
+        val authStack = if (auth.user == null)
+            backStack.filter { navRoute -> navRoute is AuthRoute || navRoute.route.isAuth(auth) }
+        else backStack.filterNot { navRoute -> navRoute is AuthRoute } + listOfNotNull(authRedirectRoute)
+        if (authStack.isNotEmpty()) actions(NavigationAction.ReplaceStack(authStack))
     }
 
     /**
@@ -241,12 +255,12 @@ public open class Nav3Navigator(
      *
      * @param value The new contents for the list.
      */
-    protected open fun NavBackStack<NavRoute>.swap(
+    public open fun swap(
         value: List<NavRoute>,
     ) {
         Snapshot.withMutableSnapshot {
-            clear()
-            addAll(value)
+            backStack.clear()
+            backStack.addAll(value)
         }
     }
 
@@ -291,24 +305,15 @@ public fun rememberNav3Navigator(
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onBack: () -> Unit = LocalParentNavigator.current?.let { navigator ->
-        { navigator.actions(NavigationAction.Pop) }
-    } ?: systemOnBack(),
+    onBack: () -> Unit = systemOnBack(),
     onError: (NavigationException) -> Unit = {},
 ): Navigator {
-    val backStack = rememberNavBackStack(routes)
-
-    val navigator = remember(auth, onBack, onError) {
-        Nav3Navigator(routes, backStack, auth, authRoute, authRedirectRoute, onBack, onError)
+    val backStack = rememberNavBackStack(routes, auth, authRedirectRoute)
+    val parentOnBack = LocalParentNavigator.current?.let { navigator ->
+        { navigator.actions(NavigationAction.Pop) }
     }
 
-    LaunchedEffect(auth) {
-        val newStack = if (auth.user == null)
-            navigator.backStack.filter { navRoute -> navRoute is AuthRoute || navRoute.route.isAuth(auth) }
-        else (navigator.backStack.filterNot { navRoute -> navRoute is AuthRoute } + listOfNotNull(authRedirectRoute)).distinct()
-
-        if (newStack.isNotEmpty())  navigator.actions(NavigationAction.ReplaceStack(newStack))
+    return remember(auth) {
+        Nav3Navigator(routes, backStack, auth, authRoute, authRedirectRoute, parentOnBack ?: onBack, onError)
     }
-
-    return navigator
 }

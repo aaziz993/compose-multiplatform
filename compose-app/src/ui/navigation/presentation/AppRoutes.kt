@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavEntry
 import androidx.window.core.layout.WindowSizeClass
 import clib.data.type.primitives.string.asStringResource
 import clib.di.koinViewModel
@@ -82,15 +83,11 @@ import ui.wallet.stock.StockScreen
 public object App : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Auth, News, Map, Services, Profile, Settings, Verification)
+        listOf(Auth, Articles, Map, Services, Profile, Settings, Verification)
     }
 
     @Composable
-    override fun Content(
-        router: Router,
-        hasBack: Boolean,
-        content: @Composable () -> Unit,
-    ) {
+    override fun NavDisplay(router: Router, backStack: List<NavRoute>, onBack: () -> Unit, entryProvider: (NavRoute) -> NavEntry<NavRoute>) {
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
@@ -103,10 +100,9 @@ public object App : Routes() {
             }
         else NavigationSuiteType.None
 
-
         NavScreen(
             Modifier.fillMaxSize(),
-            { Text(text = currentRoute.route.toString().asStringResource(Res.allStringResources)) },
+            { Text(text = currentRoute.route.name.asStringResource(Res.allStringResources)) },
             themeState.theme,
             { value -> themeState.theme = value },
             localeState.locale,
@@ -114,15 +110,16 @@ public object App : Routes() {
             authState.auth,
             { value -> authState.auth = value },
             layoutType == NavigationSuiteType.NavigationDrawer,
-            hasBack,
+            router.hasBack,
             layoutType,
             router::actions,
             router.routes?.items(
-                label = { toString().asStringResource(Res.allStringResources) },
+                router = router,
                 auth = authState.auth,
             ) ?: {},
-            content,
-        )
+        ) {
+            super.NavDisplay(router, backStack, onBack, entryProvider)
+        }
     }
 }
 
@@ -130,31 +127,29 @@ public object App : Routes() {
 @SerialName("home")
 public data object Home : Route<Home>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = {
                     Icon(Icons.Outlined.Home, text)
                 },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = {
                     Icon(Icons.Filled.Home, text)
                 },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Home,
     ) {
 
@@ -179,27 +174,25 @@ public object News : Routes() {
 @SerialName("articles")
 public data object Articles : Route<Articles>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Newspaper, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.Newspaper, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Articles,
     ) {
         val viewModel: ArticleViewModel = koinViewModel()
@@ -218,27 +211,25 @@ public data object Articles : Route<Articles>(), NavRoute {
 @SerialName("services")
 public data object Services : Route<Services>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Apps, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.Apps, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Services,
     ) {
 
@@ -254,27 +245,25 @@ public data object Services : Route<Services>(), NavRoute {
 @SerialName("map")
 public data object Map : Route<Map>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Map, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.Map, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Map,
     ) {
 
@@ -290,27 +279,25 @@ public data object Map : Route<Map>(), NavRoute {
 @SerialName("settings")
 public data object Settings : Route<Settings>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Settings, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.Settings, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Settings,
     ) {
         val scrollState = rememberScrollState()
@@ -333,27 +320,25 @@ public data object Settings : Route<Settings>(), NavRoute {
 @SerialName("about")
 public data object About : Route<About>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Info, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.Info, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: About,
     ) {
 
@@ -381,7 +366,6 @@ public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Phone,
     ) {
         val viewModel: PhoneViewModel = koinViewModel()
@@ -412,7 +396,6 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
         @Composable
         override fun Content(
             router: Router,
-            hasBack: Boolean,
             route: Otp,
         ) {
             val viewModel: OtpViewModel = koinViewModel { parametersOf(route) }
@@ -436,7 +419,6 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: PinCode,
     ) {
         val viewModel: PinCodeViewModel = koinViewModel()
@@ -459,7 +441,6 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Login,
     ) {
         val viewModel: LoginViewModel = koinViewModel()
@@ -482,7 +463,6 @@ public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: ForgotPinCode,
     ) {
 
@@ -503,7 +483,6 @@ public data object Verification : Route<Verification>(), NavRoute {
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Verification,
     ) {
         val viewModel: VerificationViewModel = koinViewModel()
@@ -526,27 +505,25 @@ public data object Verification : Route<Verification>(), NavRoute {
 @SerialName("profile")
 public data object Profile : Route<Profile>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Person, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.Person, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Profile,
     ) {
         val scrollState = rememberScrollState()
@@ -575,27 +552,25 @@ public object Wallet : Routes() {
 @SerialName("balance")
 public data object Balance : Route<Balance>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.AccountBalance, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.AccountBalance, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Balance,
     ) {
 
@@ -611,27 +586,25 @@ public data object Balance : Route<Balance>(), NavRoute {
 @SerialName("crypto")
 public data object Crypto : Route<Crypto>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.EnhancedEncryption, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.EnhancedEncryption, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Crypto,
     ) {
 
@@ -647,27 +620,25 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 @SerialName("stock")
 public data object Stock : Route<Stock>(), NavRoute {
 
-    override val navigationItem: NavigationItem? = NavigationItem(
-        item = { text ->
-            Item(
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.asStringResource(Res.allStringResources)
+        NavigationItem(
+            item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.CurrencyExchange, text) },
-            )
-        },
-        selectedItem = { text ->
-            Item(
+            ),
+            selectedItem = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Filled.CurrencyExchange, text) },
-            )
-        },
-    )
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
         router: Router,
-        hasBack: Boolean,
         route: Stock,
     ) {
 

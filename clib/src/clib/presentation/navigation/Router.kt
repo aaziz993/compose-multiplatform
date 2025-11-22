@@ -21,8 +21,8 @@ public open class Router() : BaseRouter() {
      * Each route will be added to the top of the stack in the order provided.
      * This allows for building deep navigation chains in a single operation.
      *
-     * @param routes Variable number of routes to push onto the stack
-     * @throws IllegalArgumentException if no routes are provided
+     * @param routes Variable number of routes to push onto the stack.
+     * @throws IllegalArgumentException if no routes are provided.
      */
     public fun push(vararg routes: NavRoute) {
         require(routes.isNotEmpty()) { "Screens must not be empty" }
@@ -37,7 +37,7 @@ public open class Router() : BaseRouter() {
      * If the stack is empty, the new route will be added as the first route.
      * This is useful for scenarios like login flow completion or error recovery.
      *
-     * @param route The route to replace the current top route with
+     * @param route The route to replace the current top route with.
      */
     public fun replaceCurrent(route: NavRoute): Unit =
         actions(NavigationAction.ReplaceCurrent(route))
@@ -56,7 +56,7 @@ public open class Router() : BaseRouter() {
     /**
      * Removes the top route from the navigation stack.
      *
-     * If only one route remains, this will trigger system back navigation
+     * If only one route remains, this will trigger system back navigation.
      * (typically exiting the app or returning to the previous activity).
      */
     public fun pop(): Unit = actions(NavigationAction.Pop)
@@ -67,7 +67,7 @@ public open class Router() : BaseRouter() {
      * Removes all routes above the target route. If the target route is not found,
      * all routes except the root will be removed.
      *
-     * @param route The target route to navigate back to
+     * @param route The target route to navigate back to.
      */
     public fun popTo(route: NavRoute): Unit = actions(NavigationAction.PopTo(route))
 
@@ -96,9 +96,9 @@ public open class Router() : BaseRouter() {
  * The router will be recreated if any of the provided keys change, allowing for
  * state-dependent router configurations.
  *
- * @param keys Optional keys that trigger router recreation when changed
- * @param factory Factory function to create the router instance
- * @return A remembered router instance
+ * @param keys Optional keys that trigger router recreation when changed.
+ * @param factory Factory function to create the router instance.
+ * @return A remembered router instance.
  */
 @Composable
 public fun rememberRouter(

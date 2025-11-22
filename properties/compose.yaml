@@ -36,6 +36,7 @@ script:
                 implementation(libs.bundles("material3.adaptive"))
                 implementation(libs("composeLibs")["material3.adaptive.navigation.suite"])
                 implementation(libs.bundles("haze"))
+                implementation(libs["liquid"])
                 implementation(libs.bundles("compose.settings.ui"))
                 implementation(libs["androidx.paging.compose"])
                 implementation(libs["libphonenumber"])

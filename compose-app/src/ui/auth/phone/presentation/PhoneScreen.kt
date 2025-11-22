@@ -36,6 +36,7 @@ import compose_app.generated.resources.search
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
+import klib.data.type.primitives.string.takeUnlessEmpty
 import org.jetbrains.compose.resources.stringResource
 import ui.auth.phone.presentation.viewmodel.PhoneAction
 import ui.auth.phone.presentation.viewmodel.PhoneState
@@ -62,7 +63,9 @@ public fun PhoneScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        val country = (if (!LocalInspectionMode.current) Country.current else null) ?: Country.forCode("TJ")
+        val country = Country.getCountries().find { country -> country.dial == state.countryCode }
+            ?: (if (!LocalInspectionMode.current) Country.current else null)
+            ?: Country.forCode("TJ")
 
         CountryCodePickerTextField(
             value = state.number,
@@ -72,11 +75,7 @@ public fun PhoneScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            selectedCountry = country.copy(
-                name = country.toString().asStringResource(Res.allStringResources) {
-                    country.name
-                },
-            ),
+            selectedCountry = country,
             countries = Country.getCountries().toList().map { country ->
                 country.copy(name = country.toString().asStringResource(Res.allStringResources) { country.name })
             },

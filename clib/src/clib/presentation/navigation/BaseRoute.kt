@@ -29,10 +29,12 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     @Suppress("UNCHECKED_CAST")
     public open val navRoute: KClass<out NavRoute>
-        get() = requireNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
+        get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
+    public open val name: String
+        get() = toString()
     public open val metadata: Map<String, Any> = emptyMap()
 
-    public open val navigationItem: NavigationItem? = null
+    public open val navigationItem: (@Composable (name: String) -> NavigationItem)? = null
     public open val authResource: AuthResource? = null
 
     public fun isAuth(auth: Auth): Boolean =
@@ -41,35 +43,34 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
         router: Router,
-        navigator: @Composable (Routes) -> Navigator,
-        hasBack: Boolean,
+        navigatorFactory: @Composable (Routes) -> Navigator,
     )
 
     public open fun isNavigationItem(auth: Auth): Boolean = navigationItem != null && isAuth(auth)
 
     @Composable
     public open fun item(
-        label: @Composable BaseRoute.() -> String = { toString() },
+        router: Router,
         auth: Auth = Auth(),
         pushDuplicate: Boolean = false,
     ): NavigationSuiteScope.() -> Unit {
         if (!isNavigationItem(auth)) return {}
         check(this is NavRoute) { "Not a nav route '$this'" }
 
-        val router = LocalParentNavigator.current!!
         val selected = this == router.backStack.lastOrNull()
-        val item = navigationItem!!.item(label(), selected)
+        val item = navigationItem!!(name)
+        val selectedItem = item.item(selected)
 
         return {
             item(
                 selected,
                 { router.actions(NavigationAction.Push(this@BaseRoute, pushDuplicate)) },
-                item.icon,
-                item.modifier,
-                navigationItem!!.enabled,
-                item.text,
-                navigationItem!!.alwaysShowLabel,
-                item.badge,
+                selectedItem.icon,
+                selectedItem.modifier,
+                item.enabled,
+                selectedItem.text,
+                item.alwaysShowLabel,
+                selectedItem.badge,
             )
         }
     }
@@ -78,25 +79,25 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     @Composable
     context(scope: RowScope)
     public open fun NavigationBarItem(
-        label: @Composable BaseRoute.() -> String = { toString() },
+        router: Router,
         auth: Auth = Auth(),
         pushDuplicate: Boolean = false,
     ) {
         if (!isNavigationItem(auth)) return
         check(this is NavRoute) { "Not a route '$this'" }
 
-        val router = LocalParentNavigator.current!!
         val selected = this == router.backStack.lastOrNull()
-        val item = navigationItem!!.item(label(), selected)
+        val item = navigationItem!!(name)
+        val selectedItem = item.item(selected)
 
         scope.NavigationBarItem(
             selected,
             { router.actions(NavigationAction.Push(this, pushDuplicate)) },
-            item.icon,
-            item.modifier,
-            navigationItem!!.enabled,
-            item.text,
-            navigationItem!!.alwaysShowLabel,
+            selectedItem.icon,
+            selectedItem.modifier,
+            item.enabled,
+            selectedItem.text,
+            item.alwaysShowLabel,
         )
     }
 
@@ -108,7 +109,6 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     @Composable
     protected abstract fun Content(
         router: Router,
-        hasBack: Boolean,
         route: T,
     )
 
@@ -116,14 +116,13 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
         router: Router,
-        navigator: @Composable (Routes) -> Navigator,
-        hasBack: Boolean,
+        navigatorFactory: @Composable (Routes) -> Navigator,
     ): Unit = scope.addEntryProvider(
         navRoute,
         { navRoute -> navRoute.route.toString() },
         metadata,
     ) { navRoute ->
-        Content(router, hasBack, navRoute as T)
+        Content(router, navRoute as T)
     }
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
@@ -134,27 +133,22 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public abstract val routes: List<BaseRoute>
 
     public val startRoute: NavRoute by lazy {
-        requireNotNull(routes.firstOrNull() as? NavRoute) { "No start route" }
+        checkNotNull(routes.firstOrNull() as? NavRoute) { "No start route" }
     }
 
+    override val name: String
+        get() = startRoute.route.name
     override val metadata: Map<String, Any>
         get() = startRoute.route.metadata
 
-    override val navigationItem: NavigationItem?
+    override val navigationItem: (@Composable (name: String) -> NavigationItem)?
         get() = startRoute.route.navigationItem
-
     override val authResource: AuthResource?
         get() = startRoute.route.authResource
 
     @Composable
-    protected open fun Content(
-        router: Router,
-        hasBack: Boolean,
-        content: @Composable () -> Unit
-    ): Unit = content()
-
-    @Composable
     protected open fun NavDisplay(
+        router: Router,
         backStack: List<NavRoute>,
         onBack: () -> Unit,
         entryProvider: (NavRoute) -> NavEntry<NavRoute>,
@@ -184,47 +178,41 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
         router: Router,
-        navigator: @Composable (Routes) -> Navigator,
-        hasBack: Boolean,
+        navigatorFactory: @Composable (Routes) -> Navigator,
     ) = scope.addEntryProvider(
         navRoute,
         { navRoute -> navRoute.route.toString() },
         metadata,
     ) {
-        NavHost(router, navigator)
+        NavHost(router, navigatorFactory)
     }
 
     @Composable
     public fun NavHost(
         router: Router = rememberRouter(),
-        navigator: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
+        navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     ) {
-        require(this.startRoute.route in routes) { "Start route '${this.startRoute.route}' isn't in '$routes'" }
+        check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
-        val _navigator = navigator(this)
+        val navigator = navigatorFactory(this)
 
         Nav3Host(
             router,
-            _navigator,
-        ) { hasBack ->
-            Content(
+            navigator,
+        ) {
+            NavDisplay(
                 router,
-                hasBack,
-            ) {
-                NavDisplay(
-                    _navigator.backStack,
-                    { _navigator.actions(NavigationAction.Pop) },
-                    entryProvider {
-                        routes.forEach { route ->
-                            route.entry(
-                                router,
-                                navigator,
-                                hasBack,
-                            )
-                        }
-                    },
-                )
-            }
+                navigator.backStack,
+                { navigator.actions(NavigationAction.Pop) },
+                entryProvider {
+                    routes.forEach { route ->
+                        route.entry(
+                            router,
+                            navigatorFactory,
+                        )
+                    }
+                },
+            )
         }
     }
 
@@ -232,21 +220,22 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     @Composable
     public fun items(
-        label: @Composable BaseRoute.() -> String = { toString() },
+        router: Router,
         auth: Auth = Auth(),
         pushDuplicate: Boolean = false,
     ): NavigationSuiteScope.() -> Unit {
-        val items = routes.map { route -> route.item(label, auth, pushDuplicate) }
+        val items = routes.map { route -> route.item(router, auth, pushDuplicate) }
         return { items.forEach { item -> item() } }
     }
 
     @Composable
     context(scope: RowScope)
     public fun NavigationBarItems(
+        router: Router,
         label: @Composable BaseRoute.() -> String = { toString() },
         auth: Auth = Auth(),
         pushDuplicate: Boolean = false,
-    ): Unit = routes.forEach { route -> route.NavigationBarItem(label, auth, pushDuplicate) }
+    ): Unit = routes.forEach { route -> route.NavigationBarItem(router, auth, pushDuplicate) }
 
     final override fun iterator(): Iterator<BaseRoute> = sequence {
         routes.forEach { route ->
@@ -254,7 +243,5 @@ public abstract class Routes() : BaseRoute(), NavRoute {
             yieldAll(route)
         }
     }.iterator()
-
-    override fun toString(): String = startRoute.route.toString()
 }
 

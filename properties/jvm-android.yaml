@@ -28,6 +28,7 @@ script:
                 implementation(libs["mockk"])
                 implementation(libs["mockito.kotlin"])
                 implementation(libs["truth"])
+                implementation(libs["konsist"])
                 implementation(libs["kotlinx.knit.test"])
               }
             }

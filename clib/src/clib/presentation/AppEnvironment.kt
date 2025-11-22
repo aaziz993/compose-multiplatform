@@ -44,7 +44,7 @@ public fun AppEnvironment(
     authState: AuthState = rememberAuthState(),
     routes: Routes,
     router: Router = rememberRouter(),
-    navigator: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
+    navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
 ): Unit = AppTheme(
     themeState,
     lightColorScheme,
@@ -63,7 +63,7 @@ public fun AppEnvironment(
             LocalAuthState provides authState,
             LocalAppDensity provides customAppDensity,
         ) {
-            routes.NavHost(router, navigator)
+            routes.NavHost(router, navigatorFactory)
         }
     }
 }

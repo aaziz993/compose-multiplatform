@@ -18,6 +18,7 @@ import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.rememberNav3Navigator
+import clib.presentation.navigation.systemOnBack
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.rememberThemeState
 import kotlinx.coroutines.launch
@@ -28,8 +29,8 @@ import presentation.theme.LightColorsHighContrast
 import presentation.theme.Shapes
 import presentation.theme.Typography
 import ui.navigation.presentation.App
+import ui.navigation.presentation.Articles
 import ui.navigation.presentation.Auth
-import ui.navigation.presentation.News
 
 @Composable
 public fun AppComposable(
@@ -39,21 +40,21 @@ public fun AppComposable(
     authState: AuthState = koinInject(),
     routes: Routes = App,
     router: Router = koinInject(),
-    navigator: @Composable (Routes) -> Navigator = {
+    navigatorFactory: @Composable (Routes) -> Navigator = {
         val coroutineScope = rememberCoroutineScope()
         rememberNav3Navigator(
-            routes = it,
-            auth = authState.auth,
-            authRoute = Auth,
-            authRedirectRoute = if (it == routes) News else null,
-            onError = { exception ->
-                coroutineScope.launch {
-                    GlobalAlertEventController.sendEvent(
-                        AlertEvent(exception.message.orEmpty(), true),
-                    )
-                }
-            },
-        )
+            it,
+            authState.auth,
+            Auth,
+            if (it == routes) Articles else null,
+            systemOnBack(),
+        ) { exception ->
+            coroutineScope.launch {
+                GlobalAlertEventController.sendEvent(
+                    AlertEvent(exception.message.orEmpty(), true),
+                )
+            }
+        }
     },
 ): Unit = AutoConnectKoinScope(router) {
     AppEnvironment(
@@ -69,7 +70,7 @@ public fun AppComposable(
         authState,
         routes,
         router,
-        navigator,
+        navigatorFactory,
     )
 }
 

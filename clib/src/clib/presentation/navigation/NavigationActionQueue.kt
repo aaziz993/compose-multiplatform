@@ -1,8 +1,6 @@
 package clib.presentation.navigation
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,10 +18,8 @@ import kotlinx.coroutines.launch
  */
 public class NavigationActionQueue : NavigatorHolder {
 
-    /** Currently registered navigator, null if none is set. */
-    @Suppress("PropertyName")
-    internal var _navigator: Navigator? by mutableStateOf(null)
-        private set
+    /** Currently registered navigators. */
+    internal val navigators = mutableStateListOf<Navigator>()
 
     /** Queue of pending actions waiting for a navigator to become available. */
     private val pendingActions = mutableListOf<Array<out NavigationAction>>()
@@ -37,10 +33,10 @@ public class NavigationActionQueue : NavigatorHolder {
      * When a navigator is registered, all queued actions are immediately
      * executed in the order they were added to the queue.
      *
-     * @param navigator The navigator to register.
+     * @param navigator The navigator to register
      */
     override fun setNavigator(navigator: Navigator) {
-        this._navigator = navigator
+        navigators.add(navigator)
         if (pendingActions.isNotEmpty()) {
             val snapshot = pendingActions.toList()
             pendingActions.clear()
@@ -53,8 +49,8 @@ public class NavigationActionQueue : NavigatorHolder {
      *
      * After calling this, new actions will be queued until a new navigator is set.
      */
-    override fun removeNavigator() {
-        _navigator = null
+    override fun removeNavigator(navigator: Navigator) {
+        navigators.remove(navigator)
     }
 
     /**
@@ -67,7 +63,7 @@ public class NavigationActionQueue : NavigatorHolder {
      */
     public fun actions(vararg actions: NavigationAction) {
         mainScope.launch {
-            _navigator?.actions(*actions) ?: pendingActions.add(actions)
+            navigators.lastOrNull()?.actions(*actions) ?: pendingActions.add(actions)
         }
     }
 }

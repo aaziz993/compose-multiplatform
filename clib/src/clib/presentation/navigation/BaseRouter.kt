@@ -19,13 +19,19 @@ public abstract class BaseRouter {
 
     /** The current top level route. */
     public val routes: Routes?
-        get() = navigationActionQueue._navigator?.routes
+        get() = navigationActionQueue.navigators.lastOrNull()?.routes
 
     /**
      * Currently registered navigator back stack.
      */
     public val backStack: List<NavRoute>
-        get() = navigationActionQueue._navigator?.backStack ?: emptyList()
+        get() = navigationActionQueue.navigators.lastOrNull()?.backStack ?: emptyList()
+
+    /**
+     * Currently registered navigators has back.
+     */
+    public val hasBack: Boolean
+        get() = navigationActionQueue.navigators.size > 1 || backStack.size > 1
 
     /**
      * Executes one or more navigation actions.

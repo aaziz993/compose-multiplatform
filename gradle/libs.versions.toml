@@ -334,6 +334,8 @@ mockk = "1.14.6"
 mockito-kotlin = "6.1.0"
 # fluent assertions for Java and Android.
 truth = "1.4.5"
+# konsist is a linter that guards the consistency of Kotlin projects by enforcing a cohesive code structure and unified architecture. Konsist guards are written in the form of unit tests (JUnit / Kotest).
+konsist = "0.17.3"
 # In project version.
 # In project version.
 kotlin-cocoapods-ios-deploymentTarget = "18.6"
@@ -418,6 +420,9 @@ androidx-adaptive = "1.3.0-alpha01"
 androidx-material = "1.13.0"
 # haze is a library providing a 'glassmorphism' style blur for Compose.
 haze = "1.6.10"
+# liquid unlocks a new capability for Compose Multiplatform: letting modifier nodes sample and manipulate the pixels behind them. By tagging nodes as liquefiable, you can create effects that distort the underlying content in a way that isn't normally possible with Compose's rendering pipeline.
+# this enables Liquid Glass-style effects like dynamic frosted glass, lenses, and other distortions. Powered by RuntimeShaders/RuntimeEffects and ModifierNodeElement APIs, it delivers GPU-accelerated visuals to your Compose UI.
+liquid = "1.0.1"
 # setting ui.
 compose-settings = "2.13.0"
 # repository paging.
@@ -848,6 +853,8 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 # fluent assertions for Java and Android.
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
+# konsist is a linter that guards the consistency of Kotlin projects by enforcing a cohesive code structure and unified architecture. Konsist guards are written in the form of unit tests (JUnit / Kotest).
+konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 # a library for in-process compilation of Kotlin and Java code, in the spirit of Google Compile Testing. For example, you can use this library to test your annotation processor or compiler plugin.
 kctfork-core = { module = "dev.zacsweers.kctfork:core", version.ref = "kctfork" }
 kctfork-ksp = { module = "dev.zacsweers.kctfork:ksp", version.ref = "kctfork" }
@@ -932,6 +939,9 @@ androidx-material3-adaptive-nav3 = { module = "org.jetbrains.compose.material3.a
 # haze is a library providing a 'glassmorphism' style blur for Compose.
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
+# liquid unlocks a new capability for Compose Multiplatform: letting modifier nodes sample and manipulate the pixels behind them. By tagging nodes as liquefiable, you can create effects that distort the underlying content in a way that isn't normally possible with Compose's rendering pipeline.
+# this enables Liquid Glass-style effects like dynamic frosted glass, lenses, and other distortions. Powered by RuntimeShaders/RuntimeEffects and ModifierNodeElement APIs, it delivers GPU-accelerated visuals to your Compose UI.
+liquid = { module = "io.github.fletchmckee.liquid:liquid", version.ref = "liquid" }
 # settings ui.
 compose-settings-ui = { module = "com.github.alorma.compose-settings:ui-tiles", version.ref = "compose-settings" }
 compose-settings-ui-extended = { module = "com.github.alorma.compose-settings:ui-tiles-extended", version.ref = "compose-settings" }

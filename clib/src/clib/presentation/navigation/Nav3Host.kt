@@ -40,19 +40,16 @@ internal val LocalParentNavigator: ProvidableCompositionLocal<Navigator?> = comp
 internal fun Nav3Host(
     router: Router,
     navigator: Navigator,
-    content: @Composable (hasBack: Boolean) -> Unit,
+    content: @Composable () -> Unit,
 ) {
     DisposableEffect(router, navigator) {
         router.navigationActionQueue.setNavigator(navigator)
-        onDispose { router.navigationActionQueue.removeNavigator() }
+        onDispose { router.navigationActionQueue.removeNavigator(navigator) }
     }
 
     val interceptionEnabled = LocalParentNavigator.current != null
-    val hasBack = interceptionEnabled || router.backStack.size > 1
 
     CompositionLocalProvider(LocalParentNavigator provides navigator) {
-        BackInterceptionProvider(interceptionEnabled) {
-            content(hasBack)
-        }
+        BackInterceptionProvider(interceptionEnabled, content)
     }
 }

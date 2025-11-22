@@ -30,7 +30,7 @@ public interface NavigationAction {
      * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
      *
      * @param routes Variable number of routes to replace the stack with.
-     * @triggers system back navigation when the stack is empty.
+     * @throws IllegalArgumentException if no routes are provided.
      */
     public data class ReplaceStack(val routes: List<NavRoute>) : NavigationAction
 
