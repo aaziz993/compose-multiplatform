@@ -31,7 +31,7 @@ public abstract class BaseRouter {
      * Currently registered navigators has back.
      */
     public val hasBack: Boolean
-        get() = navigationActionQueue.navigators.size > 1 || backStack.size > 1
+        get() = navigationActionQueue.navigators.any { navigator -> navigator.backStack.size > 1 }
 
     /**
      * Executes one or more navigation actions.

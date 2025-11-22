@@ -31,6 +31,7 @@ import presentation.theme.Typography
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Articles
 import ui.navigation.presentation.Auth
+import ui.navigation.presentation.Services
 
 @Composable
 public fun AppComposable(
@@ -46,7 +47,7 @@ public fun AppComposable(
             it,
             authState.auth,
             Auth,
-            if (it == routes) Articles else null,
+            if (it == routes) Services else null,
             systemOnBack(),
         ) { exception ->
             coroutineScope.launch {

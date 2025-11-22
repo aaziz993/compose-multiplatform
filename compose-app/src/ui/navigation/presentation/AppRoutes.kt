@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Newspaper
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
@@ -23,7 +22,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Newspaper
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -83,7 +81,7 @@ import ui.wallet.stock.StockScreen
 public object App : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Auth, Articles, Map, Services, Profile, Settings, Verification)
+        listOf(Auth, News, Map, Services, Profile, Verification, Settings)
     }
 
     @Composable
@@ -504,20 +502,6 @@ public data object Verification : Route<Verification>(), NavRoute {
 @Serializable
 @SerialName("profile")
 public data object Profile : Route<Profile>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Person, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.Person, text) },
-            ),
-        )
-    }
 
     override val authResource: AuthResource? = AuthResource()
 

@@ -124,7 +124,7 @@ public open class Nav3Navigator(
             checkNotNull(authRoute) { "No auth route" }
         }
 
-        check(route.route in routes.routes) { "Route '${route.route}' isn't in '${routes.routes}'" }
+        check(route.route in routes.routes) { "Route '${route.route}' isn't in '$routes'" }
 
         // If the user explicitly requested the auth route, don't redirect them after login.
         if (action.route == authRoute) authRedirectRoute = null
@@ -145,7 +145,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceCurrent,
     ) {
         require(action.route.route in routes.routes) {
-            "Route '${action.route.route}' isn't in '${routes.routes}'"
+            "Route '${action.route.route}' isn't in '$routes'"
         }
         if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
     }
@@ -163,18 +163,29 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceStack,
     ) {
         require(action.routes.all { navRoute -> navRoute.route in routes.routes }) {
-            "Routes '${action.routes.map(NavRoute::route)}' in '${routes.routes}'"
+            "Routes '${action.routes.map(NavRoute::route)}' isn't in '$routes'"
         }
         snapshot.replaceWith(action.routes)
     }
 
     /**
-     * Switches between authenticated/unauthenticated routes.
+     * Replaces routes based on authentication state.
      *
+     * When the user is unauthenticated:
+     * - Keeps only routes that are allowed for unauthenticated users.
+     * - If none remain, falls back to a start route that allows unauthenticated access.
+     *
+     * When the user is authenticated:
+     * - Removes all authentication-only routes.
+     * - Appends an auth redirect route if defined.
+     *
+     * If the resulting stack is non-empty, it replaces the current stack.
+     * If empty, parent navigators may handle the transition instead.
      */
     protected open fun auth() {
-        val authStack = if (auth.user == null)
-            backStack.filter { navRoute -> navRoute is AuthRoute || navRoute.route.isAuth(auth) }
+        val authStack = if (auth.user == null) backStack.filter { navRoute -> navRoute.route.isAuth(auth) }.ifEmpty {
+            listOfNotNull(routes.startRoute.takeIf { navRoute -> navRoute.route.isAuth(auth) })
+        }
         else backStack.filterNot { navRoute -> navRoute is AuthRoute } + listOfNotNull(authRedirectRoute)
         if (authStack.isNotEmpty()) actions(NavigationAction.ReplaceStack(authStack))
     }
@@ -308,12 +319,18 @@ public fun rememberNav3Navigator(
     onBack: () -> Unit = systemOnBack(),
     onError: (NavigationException) -> Unit = {},
 ): Navigator {
-    val backStack = rememberNavBackStack(routes, auth, authRedirectRoute)
-    val parentOnBack = LocalParentNavigator.current?.let { navigator ->
-        { navigator.actions(NavigationAction.Pop) }
-    }
+    val backStack = rememberNavBackStack(routes)
+    val parentOnBack = LocalParentNavigator.current?.let { navigator -> { navigator.actions(NavigationAction.Pop) } }
 
     return remember(auth) {
-        Nav3Navigator(routes, backStack, auth, authRoute, authRedirectRoute, parentOnBack ?: onBack, onError)
+        Nav3Navigator(
+            routes,
+            backStack,
+            auth,
+            authRoute,
+            authRedirectRoute,
+            parentOnBack ?: onBack,
+            onError,
+        )
     }
 }
