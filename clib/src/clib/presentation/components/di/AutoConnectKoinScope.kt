@@ -38,8 +38,8 @@ public fun AutoConnectKoinScope(
             // Get or create scope for current route
             scopeMap.getOrPut(currentRoute) {
                 koin.getOrCreateScope(
-                    scopeId = currentRoute.toString(),
-                    qualifier = named(currentRoute.toString()),
+                    scopeId = currentRoute.name,
+                    qualifier = named(currentRoute.name),
                 )
             }
         }

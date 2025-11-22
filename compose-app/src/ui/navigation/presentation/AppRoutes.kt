@@ -78,7 +78,7 @@ import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
-public object App : Routes() {
+public data object App : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Auth, News, Map, Services, Profile, Verification, Settings)
@@ -161,7 +161,7 @@ public data object Home : Route<Home>(), NavRoute {
 
 @Serializable
 @SerialName("news")
-public object News : Routes() {
+public data object News : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Articles)
@@ -350,7 +350,7 @@ public data object About : Route<About>(), NavRoute {
 
 @Serializable
 @SerialName("auth")
-public object Auth : Routes(), AuthRoute {
+public data object Auth : Routes(), AuthRoute {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Phone, Otp, PinCode, ForgotPinCode)
@@ -525,7 +525,7 @@ public data object Profile : Route<Profile>(), NavRoute {
 
 @Serializable()
 @SerialName("wallet")
-public object Wallet : Routes() {
+public data object Wallet : Routes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Balance, Crypto, Stock)

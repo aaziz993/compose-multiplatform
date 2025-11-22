@@ -31,7 +31,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
     public open val name: String
-        get() = toString()
+        get() = navRoute.serializer().descriptor.serialName
     public open val metadata: Map<String, Any> = emptyMap()
 
     public open val navigationItem: (@Composable (name: String) -> NavigationItem)? = null
@@ -100,8 +100,6 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
             item.alwaysShowLabel,
         )
     }
-
-    override fun toString(): String = navRoute.serializer().descriptor.serialName
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -119,7 +117,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
         navigatorFactory: @Composable (Routes) -> Navigator,
     ): Unit = scope.addEntryProvider(
         navRoute,
-        { navRoute -> navRoute.route.toString() },
+        { navRoute -> navRoute.route.name },
         metadata,
     ) { navRoute ->
         Content(router, navRoute as T)
@@ -181,7 +179,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         navigatorFactory: @Composable (Routes) -> Navigator,
     ) = scope.addEntryProvider(
         navRoute,
-        { navRoute -> navRoute.route.toString() },
+        { navRoute -> navRoute.route.name },
         metadata,
     ) {
         NavHost(router, navigatorFactory)
