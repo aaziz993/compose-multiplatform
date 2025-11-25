@@ -34,8 +34,7 @@ public abstract class KoinRoutes : Routes(), KoinComponent {
         }
     }
 
-    context(module: Module)
-    public fun registerScopedRouters() {
+    public fun module(): Module = module {
         filterIsInstance<Routes>().forEach { routes ->
             module.scope(getScopeName()) {
                 scoped { Router(routes) }

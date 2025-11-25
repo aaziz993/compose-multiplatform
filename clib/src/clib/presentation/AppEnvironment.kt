@@ -10,6 +10,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import clib.di.koinInject
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
@@ -23,7 +24,6 @@ import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.rememberNav3Navigator
-import clib.presentation.navigation.rememberRouter
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.ThemeState
@@ -43,7 +43,7 @@ public fun AppEnvironment(
     shapes: Shapes? = null,
     typography: Typography? = null,
     animationSpec: FiniteAnimationSpec<Color> = spring(),
-    routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
+    routerFactory: @Composable (Routes) -> Router = { routes -> koinInject() },
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
 ): Unit = CompositionLocalProvider(

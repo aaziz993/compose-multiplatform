@@ -14,9 +14,5 @@ public fun koinConfiguration(): KoinAppDeclaration =
         options(
             viewModelScopeFactory(),
         )
-        modules(
-            module {
-                ui.navigation.presentation.App.registerScopedRouters()
-            },
-        )
+        modules(ui.navigation.presentation.App.module())
     }
