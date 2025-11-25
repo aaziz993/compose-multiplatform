@@ -81,3 +81,9 @@ public val Regex.Companion.DOUBLE_QUOTED_STRING_PATTERN: String
     get() = """"$DOUBLE_QUOTED_STRING_PLAIN_PATTERN""""
 public val Regex.Companion.DOUBLE_QUOTED_STRING: Regex
     get() = """"$DOUBLE_QUOTED_STRING_PLAIN_PATTERN"""".toRegex()
+
+// Color
+public val Regex.Companion.HEX_COLOR_PATTERN: String
+    get() = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$"
+public val Regex.Companion.HEX_COLOR: Regex
+    get() = Regex.HEX_COLOR_PATTERN.toRegex()

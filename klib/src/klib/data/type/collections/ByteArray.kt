@@ -1,6 +1,6 @@
 package klib.data.type.collections
 
-import klib.data.type.primitives.toByteArray
+import klib.data.type.primitives.number.toByteArray
 
 public fun ByteArray.withLengthHeader(): ByteArray = size.toLong().toByteArray(Long.SIZE_BYTES) + this
 

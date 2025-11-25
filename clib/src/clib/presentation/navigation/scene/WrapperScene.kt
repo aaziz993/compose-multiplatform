@@ -32,6 +32,8 @@ public abstract class WrapperSceneStrategy<T : Any> : SceneStrategy<T> {
     @Composable
     protected abstract fun Content(content: @Composable () -> Unit)
 
+    public fun delegate(): Map<String, SceneStrategy<T>> = mapOf(key to this)
+
     override fun SceneStrategyScope<T>.calculateScene(entries: List<NavEntry<T>>): Scene<T>? {
         val lastEntry = entries.lastOrNull()?.takeIf { entry -> entry.metadata[key] == true } ?: return null
 

@@ -6,6 +6,12 @@ import com.github.ajalt.colormath.convertTo
 import com.github.ajalt.colormath.model.Ansi16
 import com.github.ajalt.colormath.model.Ansi256
 import com.github.ajalt.colormath.model.RGB
+import klib.data.type.primitives.number.denormalizeByte
+import klib.data.type.primitives.number.denormalizeInt
+import klib.data.type.primitives.number.normalize
+import klib.data.type.primitives.number.toByteArray
+import klib.data.type.primitives.number.toInt
+import klib.data.type.primitives.number.unsigned
 import kotlin.collections.copyOfRange
 import kotlin.collections.dropLast
 import kotlin.collections.fold

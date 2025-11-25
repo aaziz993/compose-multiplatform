@@ -13,8 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
-import clib.presentation.density.DensityState
-import clib.presentation.density.rememberDensityState
+import clib.presentation.theme.density.DensityState
+import clib.presentation.theme.density.rememberDensityState
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.locale.LocaleState
@@ -36,7 +36,7 @@ import presentation.theme.SquircleShapes
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services
-import  androidx.compose.material3.Typography
+import androidx.compose.material3.Typography
 
 @Composable
 public fun AppComposable(

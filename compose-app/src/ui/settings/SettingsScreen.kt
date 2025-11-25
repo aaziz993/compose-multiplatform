@@ -23,7 +23,6 @@ import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.theme.model.BaseTheme
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsSwitch
@@ -50,7 +49,7 @@ import ui.navigation.presentation.Settings
 public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
-    theme: BaseTheme = Theme(),
+    theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},

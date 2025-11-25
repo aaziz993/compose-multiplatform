@@ -13,6 +13,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.getScopeId
 import org.koin.core.component.getScopeName
 import org.koin.core.module.Module
+import org.koin.dsl.module
 
 public abstract class KoinRoutes : Routes(), KoinComponent {
 
@@ -36,7 +37,7 @@ public abstract class KoinRoutes : Routes(), KoinComponent {
 
     public fun module(): Module = module {
         filterIsInstance<Routes>().forEach { routes ->
-            module.scope(getScopeName()) {
+            scope(getScopeName()) {
                 scoped { Router(routes) }
             }
         }

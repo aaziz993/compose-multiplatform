@@ -3,7 +3,7 @@ package klib.data.type.collections
 import java.io.InputStream
 import java.io.OutputStream
 import klib.data.type.collections.iterator.next
-import klib.data.type.primitives.toIntLSB
+import klib.data.type.primitives.number.toIntLSB
 
 // /////////////////////////////////////////////////////INPUTSTREAM//////////////////////////////////////////////////////
 public fun Iterator<Byte>.asInputStream(): InputStream = IteratorInputStream(this)

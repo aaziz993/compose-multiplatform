@@ -13,8 +13,8 @@ import klib.data.type.primitives.string.tokenization.combinators.unaryMinus
 import klib.data.type.primitives.string.tokenization.combinators.use
 import klib.data.type.primitives.string.tokenization.lexer.TokenMatch
 import klib.data.type.primitives.string.unescape
-import klib.data.type.primitives.toInt
-import klib.data.type.primitives.toNumber
+import klib.data.type.primitives.number.toInt
+import klib.data.type.primitives.number.toNumber
 
 public object Parsers {
     // Literals.

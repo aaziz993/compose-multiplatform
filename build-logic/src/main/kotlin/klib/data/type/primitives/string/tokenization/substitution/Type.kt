@@ -1,8 +1,8 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
 import klib.data.type.primitives.string.case.toPascalCase
-import klib.data.type.primitives.toBigDecimal
-import klib.data.type.primitives.toBigInteger
+import klib.data.type.primitives.number.toBigDecimal
+import klib.data.type.primitives.number.toBigInteger
 import kotlin.Pair
 import kotlin.collections.ArrayDeque
 import kotlin.collections.HashSet

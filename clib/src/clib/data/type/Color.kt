@@ -1,4 +1,4 @@
-package clib.data.type
+package clib.data.type.color
 
 import androidx.annotation.ColorInt
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
@@ -18,8 +18,418 @@ import com.github.ajalt.colormath.model.RGBColorSpaces.ROMM_RGB
 import com.github.ajalt.colormath.model.RGBInt
 import com.github.ajalt.colormath.model.SRGB
 import com.github.ajalt.colormath.model.XYZColorSpaces.XYZ50
-import kotlin.math.roundToInt
 import androidx.compose.ui.graphics.Color as ComposeColor
+
+/**
+ * Material colors 500
+ */
+public object Color {
+
+    public val White: ComposeColor = ComposeColor(0xAAFFFFFF)
+    public val Red: ComposeColor = ComposeColor(0xFFF44336)
+    public val Rose: ComposeColor = ComposeColor(0xFFE91E63)
+    public val LPurple: ComposeColor = ComposeColor(0xFF9C27B0)
+    public val DPurple: ComposeColor = ComposeColor(0xFF673AB7)
+    public val DBlue: ComposeColor = ComposeColor(0xFF3F51B5)
+    public val LBlue: ComposeColor = ComposeColor(0xFF2196F3)
+    public val LLBlue: ComposeColor = ComposeColor(0xFF03A9F4)
+    public val LCyan: ComposeColor = ComposeColor(0xFF00BCD4)
+    public val DCyan: ComposeColor = ComposeColor(0xFF009688)
+    public val DGreen: ComposeColor = ComposeColor(0xFF4CAF50)
+    public val LGreen: ComposeColor = ComposeColor(0xFF8BC34A)
+    public val LLGreen: ComposeColor = ComposeColor(0xFFCDDC39)
+    public val Yellow: ComposeColor = ComposeColor(0xFFFFEB3B)
+    public val Gold: ComposeColor = ComposeColor(0xFFFFC107)
+    public val Orange: ComposeColor = ComposeColor(0xFFFF9800)
+    public val Black: ComposeColor = ComposeColor(0xAA000000)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 900
+ * This is for internal usage only.
+ */
+internal object Color900 {
+
+    val Red: ComposeColor = ComposeColor(0xFFB71C1C)
+    val Rose: ComposeColor = ComposeColor(0xFF880E4F)
+    val LPurple: ComposeColor = ComposeColor(0xFF4A148C)
+    val DPurple: ComposeColor = ComposeColor(0xFF311B92)
+    val DBlue: ComposeColor = ComposeColor(0xFF1A237E)
+    val LBlue: ComposeColor = ComposeColor(0xFF0D47A1)
+    val LLBlue: ComposeColor = ComposeColor(0xFF01579B)
+    val LCyan: ComposeColor = ComposeColor(0xFF006064)
+    val DCyan: ComposeColor = ComposeColor(0xFF004D40)
+    val DGreen: ComposeColor = ComposeColor(0xFF1B5E20)
+    val LGreen: ComposeColor = ComposeColor(0xFF33691E)
+    val LLGreen: ComposeColor = ComposeColor(0xFF827717)
+    val Yellow: ComposeColor = ComposeColor(0xFFF57F17)
+    val Gold: ComposeColor = ComposeColor(0xFFFF6F00)
+    val Orange: ComposeColor = ComposeColor(0xFFE65100)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 800
+ * This is for internal usage only.
+ */
+internal object Color800 {
+
+    val Red: ComposeColor = ComposeColor(0xFFC62828)
+    val Rose: ComposeColor = ComposeColor(0xFFAD1457)
+    val LPurple: ComposeColor = ComposeColor(0xFF6A1B9A)
+    val DPurple: ComposeColor = ComposeColor(0xFF4527A0)
+    val DBlue: ComposeColor = ComposeColor(0xFF283593)
+    val LBlue: ComposeColor = ComposeColor(0xFF1565C0)
+    val LLBlue: ComposeColor = ComposeColor(0xFF0277BD)
+    val LCyan: ComposeColor = ComposeColor(0xFF00838F)
+    val DCyan: ComposeColor = ComposeColor(0xFF00695C)
+    val DGreen: ComposeColor = ComposeColor(0xFF2E7D32)
+    val LGreen: ComposeColor = ComposeColor(0xFF558B2F)
+    val LLGreen: ComposeColor = ComposeColor(0xFF9E9D24)
+    val Yellow: ComposeColor = ComposeColor(0xFFF9A825)
+    val Gold: ComposeColor = ComposeColor(0xFFFF8F00)
+    val Orange: ComposeColor = ComposeColor(0xFFEF6C00)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 700
+ * This is for internal usage only.
+ */
+internal object Color700 {
+
+    val Red: ComposeColor = ComposeColor(0xFFD32F2F)
+    val Rose: ComposeColor = ComposeColor(0xFFC2185B)
+    val LPurple: ComposeColor = ComposeColor(0xFF7B1FA2)
+    val DPurple: ComposeColor = ComposeColor(0xFF512DA8)
+    val DBlue: ComposeColor = ComposeColor(0xFF303F9F)
+    val LBlue: ComposeColor = ComposeColor(0xFF1976D2)
+    val LLBlue: ComposeColor = ComposeColor(0xFF0288D1)
+    val LCyan: ComposeColor = ComposeColor(0xFF0097A7)
+    val DCyan: ComposeColor = ComposeColor(0xFF00796B)
+    val DGreen: ComposeColor = ComposeColor(0xFF388E3C)
+    val LGreen: ComposeColor = ComposeColor(0xFF689F38)
+    val LLGreen: ComposeColor = ComposeColor(0xFFAFB42B)
+    val Yellow: ComposeColor = ComposeColor(0xFFFBC02D)
+    val Gold: ComposeColor = ComposeColor(0xFFFFA000)
+    val Orange: ComposeColor = ComposeColor(0xFFF57C00)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 600
+ * This is for internal usage only.
+ */
+internal object Color600 {
+
+    val Red: ComposeColor = ComposeColor(0xFFE53935)
+    val Rose: ComposeColor = ComposeColor(0xFFD81B60)
+    val LPurple: ComposeColor = ComposeColor(0xFF8E24AA)
+    val DPurple: ComposeColor = ComposeColor(0xFF5E35B1)
+    val DBlue: ComposeColor = ComposeColor(0xFF3949AB)
+    val LBlue: ComposeColor = ComposeColor(0xFF1E88E5)
+    val LLBlue: ComposeColor = ComposeColor(0xFF039BE5)
+    val LCyan: ComposeColor = ComposeColor(0xFF00ACC1)
+    val DCyan: ComposeColor = ComposeColor(0xFF00897B)
+    val DGreen: ComposeColor = ComposeColor(0xFF43A047)
+    val LGreen: ComposeColor = ComposeColor(0xFF7CB342)
+    val LLGreen: ComposeColor = ComposeColor(0xFFC0CA33)
+    val Yellow: ComposeColor = ComposeColor(0xFFFDD835)
+    val Gold: ComposeColor = ComposeColor(0xFFFFB300)
+    val Orange: ComposeColor = ComposeColor(0xFFFB8C00)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 400
+ * This is for internal usage only.
+ */
+internal object Color400 {
+
+    val Red: ComposeColor = ComposeColor(0xFFEF5350)
+    val Rose: ComposeColor = ComposeColor(0xFFEC407A)
+    val LPurple: ComposeColor = ComposeColor(0xFFAB47BC)
+    val DPurple: ComposeColor = ComposeColor(0xFF7E57C2)
+    val DBlue: ComposeColor = ComposeColor(0xFF5C6BC0)
+    val LBlue: ComposeColor = ComposeColor(0xFF42A5F5)
+    val LLBlue: ComposeColor = ComposeColor(0xFF29B6F6)
+    val LCyan: ComposeColor = ComposeColor(0xFF26C6DA)
+    val DCyan: ComposeColor = ComposeColor(0xFF26A69A)
+    val DGreen: ComposeColor = ComposeColor(0xFF66BB6A)
+    val LGreen: ComposeColor = ComposeColor(0xFF9CCC65)
+    val LLGreen: ComposeColor = ComposeColor(0xFFD4E157)
+    val Yellow: ComposeColor = ComposeColor(0xFFFFEE58)
+    val Gold: ComposeColor = ComposeColor(0xFFFFCA28)
+    val Orange: ComposeColor = ComposeColor(0xFFFFA726)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 300
+ * This is for internal usage only.
+ */
+internal object Color300 {
+
+    val Red: ComposeColor = ComposeColor(0xFFE57373)
+    val Rose: ComposeColor = ComposeColor(0xFFF06292)
+    val LPurple: ComposeColor = ComposeColor(0xFFBA68C8)
+    val DPurple: ComposeColor = ComposeColor(0xFF9575CD)
+    val DBlue: ComposeColor = ComposeColor(0xFF7986CB)
+    val LBlue: ComposeColor = ComposeColor(0xFF64B5F6)
+    val LLBlue: ComposeColor = ComposeColor(0xFF4FC3F7)
+    val LCyan: ComposeColor = ComposeColor(0xFF4DD0E1)
+    val DCyan: ComposeColor = ComposeColor(0xFF4DB6AC)
+    val DGreen: ComposeColor = ComposeColor(0xFF81C784)
+    val LGreen: ComposeColor = ComposeColor(0xFFAED581)
+    val LLGreen: ComposeColor = ComposeColor(0xFFDCE775)
+    val Yellow: ComposeColor = ComposeColor(0xFFFFF176)
+    val Gold: ComposeColor = ComposeColor(0xFFFFD54F)
+    val Orange: ComposeColor = ComposeColor(0xFFFFB74D)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 200
+ * This is for internal usage only.
+ */
+internal object Color200 {
+
+    val Red: ComposeColor = ComposeColor(0xFFEF9A9A)
+    val Rose: ComposeColor = ComposeColor(0xFFF48FB1)
+    val LPurple: ComposeColor = ComposeColor(0xFFCE93D8)
+    val DPurple: ComposeColor = ComposeColor(0xFFB39DDB)
+    val DBlue: ComposeColor = ComposeColor(0xFF9FA8DA)
+    val LBlue: ComposeColor = ComposeColor(0xFF90CAF9)
+    val LLBlue: ComposeColor = ComposeColor(0xFF81D4FA)
+    val LCyan: ComposeColor = ComposeColor(0xFF80DEEA)
+    val DCyan: ComposeColor = ComposeColor(0xFF80CBC4)
+    val DGreen: ComposeColor = ComposeColor(0xFFA5D6A7)
+    val LGreen: ComposeColor = ComposeColor(0xFFC5E1A5)
+    val LLGreen: ComposeColor = ComposeColor(0xFFE6EE9C)
+    val Yellow: ComposeColor = ComposeColor(0xFFFFF59D)
+    val Gold: ComposeColor = ComposeColor(0xFFFFE082)
+    val Orange: ComposeColor = ComposeColor(0xFFFFCC80)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 100
+ * This is for internal usage only.
+ */
+internal object Color100 {
+
+    val Red: ComposeColor = ComposeColor(0xFFFFCDD2)
+    val Rose: ComposeColor = ComposeColor(0xFFF8BBD0)
+    val LPurple: ComposeColor = ComposeColor(0xFFE1BEE7)
+    val DPurple: ComposeColor = ComposeColor(0xFFD1C4E9)
+    val DBlue: ComposeColor = ComposeColor(0xFFC5CAE9)
+    val LBlue: ComposeColor = ComposeColor(0xFFBBDEFB)
+    val LLBlue: ComposeColor = ComposeColor(0xFFB3E5FC)
+    val LCyan: ComposeColor = ComposeColor(0xFFB2EBF2)
+    val DCyan: ComposeColor = ComposeColor(0xFFB2DFDB)
+    val DGreen: ComposeColor = ComposeColor(0xFFC8E6C9)
+    val LGreen: ComposeColor = ComposeColor(0xFFDCEDC8)
+    val LLGreen: ComposeColor = ComposeColor(0xFFF0F4C3)
+    val Yellow: ComposeColor = ComposeColor(0xFFFFF9C4)
+    val Gold: ComposeColor = ComposeColor(0xFFFFECB3)
+    val Orange: ComposeColor = ComposeColor(0xFFFFE0B2)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
+
+/**
+ * Material colors 50
+ * This is for internal usage only.
+ */
+internal object Color50 {
+
+    val Red: ComposeColor = ComposeColor(0xFFFFEBEE)
+    val Rose: ComposeColor = ComposeColor(0xFFFCE4EC)
+    val LPurple: ComposeColor = ComposeColor(0xFFF3E5F5)
+    val DPurple: ComposeColor = ComposeColor(0xFFEDE7F6)
+    val DBlue: ComposeColor = ComposeColor(0xFFE8EAF6)
+    val LBlue: ComposeColor = ComposeColor(0xFFE3F2FD)
+    val LLBlue: ComposeColor = ComposeColor(0xFFE1F5FE)
+    val LCyan: ComposeColor = ComposeColor(0xFFE0F7FA)
+    val DCyan: ComposeColor = ComposeColor(0xFFE0F2F1)
+    val DGreen: ComposeColor = ComposeColor(0xFFE8F5E9)
+    val LGreen: ComposeColor = ComposeColor(0xFFF1F8E9)
+    val LLGreen: ComposeColor = ComposeColor(0xFFF9FBE7)
+    val Yellow: ComposeColor = ComposeColor(0xFFFFFDE7)
+    val Gold: ComposeColor = ComposeColor(0xFFFFF8E1)
+    val Orange: ComposeColor = ComposeColor(0xFFFFF3E0)
+
+    public fun getColorList(): List<ComposeColor> = listOf(
+        Red,
+        Rose,
+        LPurple,
+        DPurple,
+        DBlue,
+        LBlue,
+        LLBlue,
+        LCyan,
+        DCyan,
+        DGreen,
+        LGreen,
+        LLGreen,
+        Yellow,
+        Gold,
+        Orange,
+    )
+}
 
 /**
  * Convert this color to a Colormath [Color] instance.
@@ -94,40 +504,6 @@ public fun @receiver:ColorInt Int.toRGB(): RGB = RGBInt(toUInt()).toSRGB()
  * Create an [RGBInt] instance from a packed argb [color int][ColorInt].
  */
 public fun @receiver:ColorInt Int.toRGBInt(): RGBInt = RGBInt(toUInt())
-
-/**
- * Format the integer as a hex string.
- *
- * @receiver[Int] to format.
- * @return [String] hex representation of the integer.
- */
-internal fun Int.format(): String = toString(16).padStart(2, '0')
-
-/**
- * Convert the color to a hex string.
- *
- * @receiver[Color] to convert.
- * @param[includePrefix] whether to include the '#' [prefix].
- * @return [String] hex representation of the color.
- */
-public fun ComposeColor.toHex(
-    includePrefix: Boolean = true,
-    prefix: String = "#",
-    alwaysIncludeAlpha: Boolean = false,
-): String {
-    val alpha = (alpha * 255).roundToInt()
-    val red = (red * 255).roundToInt()
-    val green = (green * 255).roundToInt()
-    val blue = (blue * 255).roundToInt()
-
-    return buildString {
-        if (includePrefix) append(prefix)
-        if (alwaysIncludeAlpha || alpha < 255) append(alpha.format())
-        append(red.format())
-        append(green.format())
-        append(blue.format())
-    }.uppercase()
-}
 
 /**
  * Parses a hexadecimal color string into a [Color] object.

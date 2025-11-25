@@ -14,9 +14,6 @@ import clib.di.koinInject
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
-import clib.presentation.density.DensityState
-import clib.presentation.density.LocalAppDensity
-import clib.presentation.density.rememberDensityState
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
@@ -27,8 +24,12 @@ import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.ThemeState
-import clib.presentation.theme.model.DynamicTheme
-import clib.presentation.theme.model.Theme
+import clib.presentation.theme.density.DensityState
+import clib.presentation.theme.density.LocalAppDensity
+import clib.presentation.theme.density.rememberDensityState
+import clib.presentation.theme.model.DynamicColorPalette
+import clib.presentation.theme.model.StaticColorPalette
+import clib.presentation.theme.model.toColorScheme
 import clib.presentation.theme.rememberThemeState
 import com.materialkolor.DynamicMaterialExpressiveTheme
 
@@ -51,13 +52,14 @@ public fun AppEnvironment(
     LocalAppTheme provides themeState.theme.isDark,
     LocalLocaleState provides localeState,
     LocalAuthState provides authState,
-    LocalAppDensity provides densityState.density,
+    LocalAppDensity provides densityState.density?.toDensity(),
 ) {
     val theme = themeState.theme
-    when (theme) {
-        is Theme -> MaterialExpressiveTheme(
-            if (LocalAppTheme.current) theme.darkColorScheme?.toColorScheme()
-            else theme.lightColorScheme?.toColorScheme(),
+
+    when (theme.colorPalette) {
+        is StaticColorPalette -> MaterialExpressiveTheme(
+            if (LocalAppTheme.current) theme.colorPalette.lightColorScheme?.toColorScheme()
+            else theme.colorPalette.darkColorScheme?.toColorScheme(),
             motionScheme,
             shapes,
             typography,
@@ -65,21 +67,21 @@ public fun AppEnvironment(
             routes.Nav3Host(routerFactory, navigatorFactory)
         }
 
-        is DynamicTheme -> DynamicMaterialExpressiveTheme(
-            seedColor = theme.seedColor.toColor(),
+        is DynamicColorPalette -> DynamicMaterialExpressiveTheme(
+            seedColor = theme.colorPalette.seedColor.toColor(),
             motionScheme = motionScheme,
-            isAmoled = theme.isAmoled,
-            primary = theme.primary?.toColor(),
-            secondary = theme.secondary?.toColor(),
-            tertiary = theme.tertiary?.toColor(),
-            neutral = theme.neutral?.toColor(),
-            neutralVariant = theme.neutralVariant?.toColor(),
-            error = theme.error?.toColor(),
-            contrastLevel = theme.contrastLevel,
-            platform = theme.platform,
+            isAmoled = theme.colorPalette.isAmoled,
+            primary = theme.colorPalette.primary?.toColor(),
+            secondary = theme.colorPalette.secondary?.toColor(),
+            tertiary = theme.colorPalette.tertiary?.toColor(),
+            neutral = theme.colorPalette.neutral?.toColor(),
+            neutralVariant = theme.colorPalette.neutralVariant?.toColor(),
+            error = theme.colorPalette.error?.toColor(),
+            contrastLevel = theme.colorPalette.contrastLevel,
+            platform = theme.colorPalette.platform,
             shapes = shapes ?: MaterialTheme.shapes,
             typography = typography ?: MaterialTheme.typography,
-            animate = theme.animate,
+            animate = theme.colorPalette.animate,
             animationSpec = animationSpec,
         ) {
             routes.Nav3Host(routerFactory, navigatorFactory)

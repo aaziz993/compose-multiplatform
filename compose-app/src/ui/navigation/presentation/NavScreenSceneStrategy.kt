@@ -58,8 +58,6 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
         }
     }
 
-    public fun delegate(): Map<String, NavScreenSceneStrategy> = mapOf(NAV_SCREEN_KEY to this)
-
     public companion object {
 
         private const val NAV_SCREEN_KEY = "navScreen"

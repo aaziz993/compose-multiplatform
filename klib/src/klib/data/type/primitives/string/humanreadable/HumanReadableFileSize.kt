@@ -2,7 +2,7 @@ package klib.data.type.primitives.string.humanreadable
 
 import com.ionspin.kotlin.bignum.decimal.DecimalMode
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import klib.data.type.primitives.toBigDecimal
+import klib.data.type.primitives.number.toBigDecimal
 
 private val SIZE_BASE = BigInteger.fromInt(1024)
 

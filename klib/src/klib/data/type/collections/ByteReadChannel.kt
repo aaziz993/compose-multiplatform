@@ -7,7 +7,7 @@ import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.readByteArray
 import io.ktor.utils.io.readRemaining
-import klib.data.type.primitives.toLong
+import klib.data.type.primitives.number.toLong
 import klib.data.type.serialization.json.decodeAnyFromString
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

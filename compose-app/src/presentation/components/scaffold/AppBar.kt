@@ -46,7 +46,6 @@ import clib.presentation.components.country.CountryPickerDialog
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.theme.model.BaseTheme
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.country_flag
@@ -82,8 +81,8 @@ public fun AppBar(
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
-    theme: BaseTheme = Theme(),
-    onThemeChange: (Boolean?) -> Unit = {},
+    theme: Theme = Theme(),
+    onThemeChange: (Theme) -> Unit = {},
     locale: Locale? = null,
     onLocaleChange: (Locale?) -> Unit = {},
     auth: Auth = Auth(),
@@ -164,9 +163,9 @@ public fun AppBar(
                         IconButton(
                             onClick = {
                                 when (theme.isDark) {
-                                    null -> onThemeChange(false)
-                                    false -> onThemeChange(true)
-                                    true -> onThemeChange(null)
+                                    null -> onThemeChange(theme.copy(isDark = false))
+                                    false -> onThemeChange(theme.copy(isDark = true))
+                                    true -> onThemeChange(theme.copy(isDark = null))
                                 }
                             },
                         ) {

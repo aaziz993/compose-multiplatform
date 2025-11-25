@@ -4,7 +4,7 @@ import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
 import klib.data.type.primitives.string.tokenization.substitution.substitute
-import klib.data.type.primitives.toInt
+import klib.data.type.primitives.number.toInt
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
 import kotlin.contracts.ExperimentalContracts

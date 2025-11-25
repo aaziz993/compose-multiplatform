@@ -1,7 +1,7 @@
 package clib.presentation.components.map
 
-import klib.data.type.primitives.toDegrees
-import klib.data.type.primitives.toRadians
+import klib.data.type.primitives.number.toDegrees
+import klib.data.type.primitives.number.toRadians
 import kotlin.math.PI
 import kotlin.math.atan
 import kotlin.math.exp

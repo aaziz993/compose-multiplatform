@@ -9,8 +9,8 @@ import klib.data.type.collections.list.asNullableListOrNull
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.toSortedValues
-import klib.data.type.primitives.toInt
-import klib.data.type.primitives.toNumber
+import klib.data.type.primitives.number.toInt
+import klib.data.type.primitives.number.toNumber
 import klib.data.type.serialization.annotations.SerialContext
 import klib.data.type.serialization.annotations.SerialScript
 import klib.data.type.serialization.annotations.TypeSerial

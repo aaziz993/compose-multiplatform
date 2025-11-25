@@ -7,7 +7,7 @@ import klib.data.type.collections.list.getOrPut
 import klib.data.type.collections.list.put
 import klib.data.type.collections.map.asMutableMap
 import klib.data.type.functions.Equator
-import klib.data.type.primitives.toInt
+import klib.data.type.primitives.number.toInt
 import kotlin.IllegalArgumentException
 import kotlin.NoSuchElementException
 import kotlin.collections.ArrayList

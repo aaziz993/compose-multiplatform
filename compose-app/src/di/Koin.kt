@@ -3,7 +3,6 @@ package di
 import org.koin.core.annotation.KoinApplication
 import org.koin.core.option.viewModelScopeFactory
 import org.koin.dsl.KoinAppDeclaration
-import org.koin.dsl.module
 import org.koin.ksp.generated.koinConfiguration
 
 @KoinApplication
