@@ -227,6 +227,7 @@ dependencies {
     // Apple.
     implementation(libs.plugins.spmForKmp.toDep())
     implementation(libs.plugins.cocoapods.toDep())
+    implementation(libs.plugins.skie.toDep())
 
     // Native.
     runtimeOnly(libs.plugins.kmp.nativecoroutines.toDep())
@@ -239,8 +240,8 @@ dependencies {
 
     // Compose multiplatform.
     implementation(libs.plugins.compose.multiplatform.toDep())
-    implementation(libs.plugins.compose.hotReload.toDep())
     runtimeOnly(libs.plugins.compose.compiler.toDep())
+    //runtimeOnly(libs.plugins.localization.toDep())
 
     // Semantic version.
     implementation(libs.semver)

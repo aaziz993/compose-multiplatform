@@ -25,31 +25,25 @@ import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavEntry
-import androidx.window.core.layout.WindowSizeClass
-import clib.data.type.primitives.string.asStringResource
 import clib.di.koinViewModel
 import clib.presentation.auth.LocalAuthState
+import clib.di.navigation.KoinRoutes
 import clib.presentation.components.model.item.Item
-import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Route
-import clib.presentation.navigation.Router
-import clib.presentation.navigation.Routes
+import clib.presentation.navigation.currentRouter
 import clib.presentation.navigation.model.NavigationItem
+import clib.presentation.navigation.scene.DelegatedScreenStrategy
 import clib.presentation.theme.LocalThemeState
-import compose_app.generated.resources.Res
-import compose_app.generated.resources.allStringResources
+import data.type.primitives.string.asStringResource
 import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
@@ -78,55 +72,37 @@ import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
 
-public data object App : Routes() {
+@Serializable
+@SerialName("app")
+public data object App : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Auth, News, Map, Services, Profile, Verification, Settings)
     }
 
     @Composable
-    override fun NavDisplay(router: Router, backStack: List<NavRoute>, onBack: () -> Unit, entryProvider: (NavRoute) -> NavEntry<NavRoute>) {
-        val themeState = LocalThemeState.current
-        val localeState = LocalLocaleState.current
-        val authState = LocalAuthState.current
-        val currentRoute = router.backStack.lastOrNull() ?: return
-        val layoutType = if (router.routes?.isNavigationItems(authState.auth) == true)
-            with(currentWindowAdaptiveInfo(true)) {
-                if (windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
-                    NavigationSuiteType.NavigationDrawer
-                else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(this)
-            }
-        else NavigationSuiteType.None
-
-        NavScreen(
-            Modifier.fillMaxSize(),
-            { Text(text = currentRoute.route.name.asStringResource(Res.allStringResources)) },
-            themeState.theme,
-            { value -> themeState.theme = value },
-            localeState.locale,
-            { value -> localeState.locale = value },
-            authState.auth,
-            { value -> authState.auth = value },
-            layoutType == NavigationSuiteType.NavigationDrawer,
-            router.hasBack,
-            layoutType,
-            router::actions,
-            router.routes?.items(
-                router = router,
-                auth = authState.auth,
-            ) ?: {},
-        ) {
-            super.NavDisplay(router, backStack, onBack, entryProvider)
-        }
-    }
+    override fun NavDisplay(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>
+    ): Unit = androidx.navigation3.ui.NavDisplay(
+        backStack = backStack,
+        onBack = onBack,
+        sceneStrategy = DelegatedScreenStrategy(
+            NavScreenSceneStrategy().delegate(),
+        ),
+        entryProvider = entryProvider,
+    )
 }
 
 @Serializable
 @SerialName("home")
 public data object Home : Route<Home>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -147,9 +123,9 @@ public data object Home : Route<Home>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Home,
     ) {
+        val router = currentRouter()
 
         HomeScreen(
             Modifier,
@@ -161,19 +137,35 @@ public data object Home : Route<Home>(), NavRoute {
 
 @Serializable
 @SerialName("news")
-public data object News : Routes() {
+public data object News : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Articles)
     }
+
+    @Composable
+    override fun NavDisplay(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>
+    ): Unit = androidx.navigation3.ui.NavDisplay(
+        backStack = backStack,
+        onBack = onBack,
+        sceneStrategy = DelegatedScreenStrategy(
+            NavScreenSceneStrategy().delegate(),
+        ),
+        entryProvider = entryProvider,
+    )
 }
 
 @Serializable
 @SerialName("articles")
 public data object Articles : Route<Articles>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -190,9 +182,9 @@ public data object Articles : Route<Articles>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Articles,
     ) {
+        val router = currentRouter()
         val viewModel: ArticleViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -209,8 +201,10 @@ public data object Articles : Route<Articles>(), NavRoute {
 @SerialName("services")
 public data object Services : Route<Services>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -227,9 +221,9 @@ public data object Services : Route<Services>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Services,
     ) {
+        val router = currentRouter()
 
         ServicesScreen(
             Modifier,
@@ -243,8 +237,10 @@ public data object Services : Route<Services>(), NavRoute {
 @SerialName("map")
 public data object Map : Route<Map>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -261,9 +257,9 @@ public data object Map : Route<Map>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Map,
     ) {
+        val router = currentRouter()
 
         MapScreen(
             Modifier,
@@ -277,8 +273,10 @@ public data object Map : Route<Map>(), NavRoute {
 @SerialName("settings")
 public data object Settings : Route<Settings>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -295,12 +293,12 @@ public data object Settings : Route<Settings>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Settings,
     ) {
         val scrollState = rememberScrollState()
         val themeState = LocalThemeState.current
         val authState = LocalAuthState.current
+        val router = currentRouter()
 
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -318,8 +316,10 @@ public data object Settings : Route<Settings>(), NavRoute {
 @SerialName("about")
 public data object About : Route<About>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -336,9 +336,9 @@ public data object About : Route<About>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: About,
     ) {
+        val router = currentRouter()
 
         AboutScreen(
             Modifier,
@@ -350,22 +350,38 @@ public data object About : Route<About>(), NavRoute {
 
 @Serializable
 @SerialName("auth")
-public data object Auth : Routes(), AuthRoute {
+public data object Auth : KoinRoutes(), AuthRoute {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Phone, Otp, PinCode, ForgotPinCode)
     }
+
+    @Composable
+    override fun NavDisplay(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>
+    ): Unit = androidx.navigation3.ui.NavDisplay(
+        backStack = backStack,
+        onBack = onBack,
+        sceneStrategy = DelegatedScreenStrategy(
+            NavScreenSceneStrategy().delegate(),
+        ),
+        entryProvider = entryProvider,
+    )
 }
 
 @Serializable
 @SerialName("phone")
 public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     @Composable
     override fun Content(
-        router: Router,
         route: Phone,
     ) {
+        val router = currentRouter()
         val viewModel: PhoneViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -391,11 +407,13 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
         override val navRoute: KClass<out NavRoute>
             get() = Otp::class
 
+        override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
         @Composable
         override fun Content(
-            router: Router,
             route: Otp,
         ) {
+            val router = currentRouter()
             val viewModel: OtpViewModel = koinViewModel { parametersOf(route) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -414,11 +432,13 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
 @SerialName("pinCode")
 public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     @Composable
     override fun Content(
-        router: Router,
         route: PinCode,
     ) {
+        val router = currentRouter()
         val viewModel: PinCodeViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -436,11 +456,13 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
 @SerialName("login")
 public data object Login : Route<Login>(), NavRoute, AuthRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     @Composable
     override fun Content(
-        router: Router,
         route: Login,
     ) {
+        val router = currentRouter()
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -458,11 +480,13 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
 @SerialName("forgotPinCode")
 public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     @Composable
     override fun Content(
-        router: Router,
         route: ForgotPinCode,
     ) {
+        val router = currentRouter()
 
         ForgotPinCodeScreen(
             Modifier,
@@ -476,16 +500,18 @@ public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 @SerialName("verification")
 public data object Verification : Route<Verification>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
-        router: Router,
         route: Verification,
     ) {
+        val authState = LocalAuthState.current
+        val router = currentRouter()
         val viewModel: VerificationViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val authState = LocalAuthState.current
 
         VerificationScreen(
             Modifier.fillMaxSize().padding(16.dp),
@@ -503,15 +529,17 @@ public data object Verification : Route<Verification>(), NavRoute {
 @SerialName("profile")
 public data object Profile : Route<Profile>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
     override fun Content(
-        router: Router,
         route: Profile,
     ) {
         val scrollState = rememberScrollState()
         val authState = LocalAuthState.current
+        val router = currentRouter()
 
         ProfileScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
@@ -525,19 +553,35 @@ public data object Profile : Route<Profile>(), NavRoute {
 
 @Serializable()
 @SerialName("wallet")
-public data object Wallet : Routes() {
+public data object Wallet : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Balance, Crypto, Stock)
     }
+
+    @Composable
+    override fun NavDisplay(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>
+    ): Unit = androidx.navigation3.ui.NavDisplay(
+        backStack = backStack,
+        onBack = onBack,
+        sceneStrategy = DelegatedScreenStrategy(
+            NavScreenSceneStrategy().delegate(),
+        ),
+        entryProvider = entryProvider,
+    )
 }
 
 @Serializable
 @SerialName("balance")
 public data object Balance : Route<Balance>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -554,9 +598,9 @@ public data object Balance : Route<Balance>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Balance,
     ) {
+        val router = currentRouter()
 
         BalanceScreen(
             Modifier,
@@ -570,8 +614,10 @@ public data object Balance : Route<Balance>(), NavRoute {
 @SerialName("crypto")
 public data object Crypto : Route<Crypto>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -588,9 +634,9 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Crypto,
     ) {
+        val router = currentRouter()
 
         CryptoScreen(
             Modifier,
@@ -604,8 +650,10 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 @SerialName("stock")
 public data object Stock : Route<Stock>(), NavRoute {
 
+    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.asStringResource(Res.allStringResources)
+        val text = name.asStringResource()
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -622,9 +670,9 @@ public data object Stock : Route<Stock>(), NavRoute {
 
     @Composable
     override fun Content(
-        router: Router,
         route: Stock,
     ) {
+        val router = currentRouter()
 
         StockScreen(
             Modifier,

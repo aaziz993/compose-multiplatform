@@ -17,17 +17,20 @@ script:
         }
   # Api documentation engine for Kotlin.
   - dokka:
-      dependenciesFromIncludes: ()
-  # Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
-  - knit:
-      siteRoot: '"${settings.settingsScript.remote.url}"'
-      moduleRootsFromIncludes: ()
-      moduleDocs: '"build/dokka/html"'
-      dokkaMultiModuleRoot: '"build/dokka/htmlMultiModule/"'
-  # Api documentation engine for Kotlin.
-  - dokka:
-      dependenciesFromIncludes: ()
+      dependenciesFromIncludes: |
+        { project->
+          project.path != ":bom"
+        }
       pluginsConfiguration:
         - html:
             customStyleSheets.from: ("dokka/style.css", "dokka/prism.css", "dokka/logo-styles.css")
             customAssets.from: ("dokka/logo-icon.svg")
+  # Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+  - knit:
+      siteRoot: '"${settings.settingsScript.remote.url}"'
+      moduleRootsFromIncludes: |
+        { project->
+          project.path != ":bom"
+        }
+      moduleDocs: '"build/dokka/html"'
+      dokkaMultiModuleRoot: '"build/dokka/htmlMultiModule/"'

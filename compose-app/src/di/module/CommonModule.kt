@@ -1,7 +1,6 @@
 package di.module
 
 import clib.presentation.auth.AuthState
-import clib.presentation.navigation.Router
 import dev.jordond.connectivity.Connectivity
 import klib.data.cache.Cache
 import klib.data.cache.SettingsCache
@@ -21,9 +20,6 @@ public class CommonModule {
 
     @Single
     public fun provideAuthState(): AuthState = AuthState()
-
-    @Single
-    public fun provideRouter(): Router = Router()
 
     @Single
     public fun provideJson(): Json = Json {

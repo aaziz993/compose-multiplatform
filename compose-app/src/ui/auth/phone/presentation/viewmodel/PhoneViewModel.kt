@@ -3,18 +3,19 @@ package ui.auth.phone.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.navigation.Router
-import clib.presentation.viewmodel.AbstractViewModel
+import clib.presentation.viewmodel.ViewModel
 import klib.data.coroutines.StandardDispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
 import ui.navigation.presentation.Otp
 
 @KoinViewModel
 public class PhoneViewModel(
-    private val router: Router
-) : AbstractViewModel<PhoneAction>() {
+    @Provided private val router: Router
+) : ViewModel<PhoneAction>() {
 
     public val state: RestartableStateFlow<PhoneState>
         field = MutableStateFlow(PhoneState()).onStartStateIn { it }

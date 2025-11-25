@@ -40,6 +40,7 @@
     <string name="back">Back</string>
     <string name="dark_mode">Dark mode</string>
     <string name="language">Language</string>
+    <string name="country">Country</string>
     <string name="user_interface">User interface</string>
     <string name="remember_me">Remember me?</string>
     <string name="first_name">First name</string>
@@ -126,7 +127,7 @@
     <string name="country_flag">Country flag</string>
     <string name="menu">Menu</string>
     <string name="navigate_back">Navigate Back</string>
-    <string name="sos">SOS</string>
+    <string name="help">Help</string>
     <string name="back_content_description">Back content description</string>
     <string name="share_content_description">Share content description</string>
     <string name="read_more_at">Read more at</string>

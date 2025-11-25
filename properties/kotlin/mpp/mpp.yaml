@@ -15,6 +15,7 @@ imports:
   - ../../ktorfit.yaml
   - ../../rpc.yaml
   - ../../apollo.yaml
+  - ../../skie.yaml
   - mpp-plugin.yaml
   - ../kotlin.yaml
 config:

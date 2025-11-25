@@ -1,7 +1,7 @@
 package ui.news.articles.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.presentation.viewmodel.AbstractViewModel
+import clib.presentation.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -10,7 +10,7 @@ import org.koin.android.annotation.KoinViewModel
 import ui.news.articles.data.net.http.ArticlesApiService
 
 @KoinViewModel
-public class ArticleViewModel(private val apiService: ArticlesApiService) : AbstractViewModel<Unit>() {
+public class ArticleViewModel(private val apiService: ArticlesApiService) : ViewModel<Unit>() {
 
     public val state: StateFlow<ArticlesState>
         field = MutableStateFlow(ArticlesState())

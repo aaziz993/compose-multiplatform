@@ -23,6 +23,7 @@ import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
+import clib.presentation.theme.model.BaseTheme
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsSwitch
@@ -49,7 +50,7 @@ import ui.navigation.presentation.Settings
 public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
-    theme: Theme = Theme(),
+    theme: BaseTheme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
@@ -75,15 +76,15 @@ public fun SettingsScreen(
         title = { Text(text = stringResource(Res.string.general)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        SettingsSwitch(
-            state = theme.isHighContrast,
-            title = { Text(text = stringResource(Res.string.high_contrast)) },
-            subtitle = { Text(text = stringResource(Res.string.enable_high_contrast)) },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Outlined.Accessibility, "") },
-            onCheckedChange = { newState: Boolean -> onThemeChange(theme.copy(isHighContrast = newState)) },
-        )
+//        SettingsSwitch(
+//            state = theme.isHighContrast,
+//            title = { Text(text = stringResource(Res.string.high_contrast)) },
+//            subtitle = { Text(text = stringResource(Res.string.enable_high_contrast)) },
+//            modifier = Modifier,
+//            enabled = true,
+//            icon = { Icon(Icons.Outlined.Accessibility, "") },
+//            onCheckedChange = { newState: Boolean -> onThemeChange(theme.copy(isHighContrast = newState)) },
+//        )
     }
     SettingsGroup(
         modifier = Modifier,

@@ -1,0 +1,13 @@
+# SKIE is a tool for Kotlin Multiplatform development that enhances the Swift API published from Kotlin.
+config:
+  imports:
+    - gradle.api.skie.*
+script:
+  - plugins:
+      - id: (libs.plugins("skie").pluginId)
+  - skie:
+      features:
+        # https://skie.touchlab.co/features/flows-in-swiftui
+        enableSwiftUIObservingPreview: true
+      analytics:
+        enabled: false

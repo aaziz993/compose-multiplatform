@@ -3,7 +3,7 @@ package ui.auth.otp.viewmodel
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
-import clib.presentation.viewmodel.AbstractViewModel
+import clib.presentation.viewmodel.ViewModel
 import klib.data.type.auth.model.User
 import klib.data.type.primitives.time.CountDownTimer
 import kotlin.time.Duration
@@ -20,7 +20,7 @@ public class OtpViewModel(
     private val authState: AuthState,
     @Provided
     private val otp: Otp,
-) : AbstractViewModel<OtpAction>() {
+) : ViewModel<OtpAction>() {
 
     public val state: RestartableStateFlow<OtpState>
         field = MutableStateFlow(OtpState()).onStartStateIn { it }

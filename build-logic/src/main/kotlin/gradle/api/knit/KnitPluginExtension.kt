@@ -7,12 +7,11 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
 
 context(project: Project)
-public fun KnitPluginExtension.moduleRootsFromIncludes(): Unit =
+public fun KnitPluginExtension.moduleRootsFromIncludes(predicate: (Project) -> Boolean = { true }): Unit =
     project.pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
-        moduleRoots =
-            (project.settings.gradle.rootProject.subprojects.map { project ->
-                project.path.replace(":", "/")
-            } + ".")
+        moduleRoots = project.settings.gradle.rootProject.subprojects
+            .filter(predicate)
+            .map { project -> project.path.replace(":", "/") } + "."
     }
 
 public val Project.knit: KnitPluginExtension get() = the()

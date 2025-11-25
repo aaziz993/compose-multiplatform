@@ -15,6 +15,11 @@ import compose_app.generated.resources.virtual_earth_map
 import klib.data.location.LocationImpl
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import clib.presentation.components.map.model.Camera
+import clib.presentation.components.map.model.GestureOptions
+import clib.presentation.components.map.tile.GoogleMaps
+import clib.presentation.components.map.tile.OpenStreetMap
+import clib.presentation.components.map.tile.VirtualEarth
 import ui.navigation.presentation.Map
 
 @Composable
@@ -42,14 +47,17 @@ public fun MapScreen(
         },
         routes = null,
         view = MapView(
-            initialCenter = center,
-            initialZoom = 4,
-            movable = true,
-            zoomable = true,
+            camera = Camera(
+                initialCenter = center,
+                initialZoom = 4,
+            ),
+            gestureOptions = GestureOptions(),
             selectTile = stringResource(Res.string.select_tile),
-            virtualEarthMapTile = stringResource(Res.string.virtual_earth_map),
-            openStreetMapTile = stringResource(Res.string.open_street_map),
-            googleMapTile = stringResource(Res.string.google_map),
+            tiles = listOf(
+                OpenStreetMap(stringResource(Res.string.open_street_map)),
+                VirtualEarth(stringResource(Res.string.virtual_earth_map)),
+                GoogleMaps(name = stringResource(Res.string.google_map), key = ""),
+            ),
         ),
     )
 }

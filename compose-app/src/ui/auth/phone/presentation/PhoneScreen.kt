@@ -24,19 +24,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.data.type.primitives.string.asStringResource
+import clib.presentation.components.country.CountryCodePickerTextField
+import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.components.picker.country.CountryCodePickerTextField
-import clib.presentation.components.picker.country.mode.CountryPicker
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.allStringResources
-import compose_app.generated.resources.language
+import compose_app.generated.resources.country
 import compose_app.generated.resources.phone
 import compose_app.generated.resources.search
+import data.type.primitives.string.asStringResource
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
-import klib.data.type.primitives.string.takeUnlessEmpty
 import org.jetbrains.compose.resources.stringResource
 import ui.auth.phone.presentation.viewmodel.PhoneAction
 import ui.auth.phone.presentation.viewmodel.PhoneState
@@ -77,7 +75,7 @@ public fun PhoneScreen(
                 .padding(10.dp),
             selectedCountry = country,
             countries = Country.getCountries().toList().map { country ->
-                country.copy(name = country.toString().asStringResource(Res.allStringResources) { country.name })
+                country.copy(name = country.toString().asStringResource { country.name })
             },
             enabled = true,
             textStyle = MaterialTheme.typography.bodyMedium,
@@ -104,11 +102,11 @@ public fun PhoneScreen(
                 },
             ),
             shape = RoundedCornerShape(10.dp),
-            showSheet = true,
             picker = CountryPicker(
-                headerTitle = stringResource(Res.string.language),
+                headerTitle = stringResource(Res.string.country),
                 searchHint = stringResource(Res.string.search),
             ),
+            showSheet = true,
         )
     }
 }

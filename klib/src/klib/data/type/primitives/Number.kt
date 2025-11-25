@@ -2,6 +2,7 @@ package klib.data.type.primitives
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
+import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.reflect.KClass
@@ -568,6 +569,10 @@ public fun Double.denormalizeShort(max: Short = Short.MAX_VALUE): Short = (this 
 public fun Double.denormalizeInt(max: Int = Int.MAX_VALUE): Int = (this * max).toInt()
 
 public fun Double.denormalizeLong(max: Long = Long.MAX_VALUE): Long = (this * max).toLong()
+
+public fun Double.toRadians(): Double = this / 180.0 * PI
+
+public fun Double.toDegrees(): Double = this * 180.0 / PI
 
 // ////////////////////////////////////////////////////BIGINTEGER///////////////////////////////////////////////////////
 public val BigInteger.Companion.DEFAULT: BigInteger

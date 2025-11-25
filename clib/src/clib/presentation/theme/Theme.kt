@@ -41,7 +41,7 @@ public fun ColorScheme.darkColorsHighContrast(): ColorScheme = copy(
 
 @Composable
 public fun systemTheme(
-    lightColorScheme: ColorScheme = LightColors,
-    darkColorScheme: ColorScheme = DarkColors
-): ColorScheme = if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
+    lightColorScheme: ColorScheme? = LightColors,
+    darkColorScheme: ColorScheme? = DarkColors
+): ColorScheme? = if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
 

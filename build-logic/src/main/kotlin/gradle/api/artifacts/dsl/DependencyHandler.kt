@@ -9,13 +9,13 @@
     "ObjectPropertyName",
     "deprecation",
 )
-@file:org.gradle.api.Generated
 
 /* ktlint-disable */
 
 package gradle.api.artifacts.dsl
 
 import org.gradle.api.Action
+import org.gradle.api.Project
 import org.gradle.api.artifacts.*
 import org.gradle.api.artifacts.dsl.ArtifactHandler
 import org.gradle.api.artifacts.dsl.DependencyConstraintHandler
@@ -27,6 +27,20 @@ import org.gradle.kotlin.dsl.accessors.runtime.addDependencyTo
 import org.gradle.kotlin.dsl.accessors.runtime.addExternalModuleDependencyTo
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.create
+
+/**
+ * Creates a dependency on a project.
+ *
+ * @param notation The project notation, in one of the notations described above.
+ * @return The dependency.
+ */
+public fun DependencyHandler.project(notation: Any): Dependency =
+    when (notation) {
+        is String -> project(mapOf("path" to notation))
+        is Project -> project(notation.path)
+
+        else -> error("Unknown notation '$notation'")
+    }
 
 /**
  * Adds a dependency to the 'debugImplementation' configuration.

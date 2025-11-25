@@ -11,6 +11,7 @@ script:
       compilerOptions:
         optIn.addAll: |
           (
+            "androidx.compose.ui.InternalComposeUiApi",
             "androidx.compose.ui.ExperimentalComposeUiApi",
             "androidx.compose.material3.ExperimentalMaterial3Api",
             "androidx.compose.material3.ExperimentalMaterial3ExpressiveApi",
@@ -37,15 +38,17 @@ script:
                 implementation(libs("composeLibs")["material3.adaptive.navigation.suite"])
                 implementation(libs.bundles("haze"))
                 implementation(libs["liquid"])
+                implementation(libs["htmlconverter"])
+                implementation(libs["richeditor.compose"])
                 implementation(libs.bundles("compose.settings.ui"))
                 implementation(libs["androidx.paging.compose"])
                 implementation(libs["libphonenumber"])
                 implementation(libs["connectivity.compose"])
-                // implementation(libs["material.kolor"])
+                implementation(libs["material.kolor"])
                 implementation(libs["compose.colorpicker"])
                 implementation(libs.bundles("compose.icons"))
                 implementation(libs.bundles("coil.compose"))
-                // implementation(libs["squircle.shape"])
+                // implementation(libs["squircle.shape"]) js unsupported.
                 implementation(libs["filekit.compose"])
                 implementation(libs.bundles("koin.compose.multiplatform"))
                 // implementation(libs["circuit.foundation"])

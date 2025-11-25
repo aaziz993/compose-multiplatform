@@ -12,12 +12,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ContactSupport
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.SettingsBrightness
-import androidx.compose.material.icons.outlined.Sos
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -40,25 +40,24 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
-import clib.data.type.primitives.string.asStringResource
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.picker.country.CountryPickerDialog
-import clib.presentation.components.picker.country.mode.CountryPicker
+import clib.presentation.components.country.CountryPickerDialog
+import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
+import clib.presentation.theme.model.BaseTheme
 import clib.presentation.theme.model.Theme
-import clib.presentation.theme.model.ThemeMode
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.allStringResources
 import compose_app.generated.resources.country_flag
+import compose_app.generated.resources.help
 import compose_app.generated.resources.language
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate_back
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
-import compose_app.generated.resources.sos
 import compose_app.generated.resources.theme
+import data.type.primitives.string.asStringResource
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
 import dev.chrisbanes.haze.HazeProgressive
@@ -83,8 +82,8 @@ public fun AppBar(
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
-    theme: Theme = Theme(),
-    onThemeChange: (Theme) -> Unit = {},
+    theme: BaseTheme = Theme(),
+    onThemeChange: (Boolean?) -> Unit = {},
     locale: Locale? = null,
     onLocaleChange: (Locale?) -> Unit = {},
     auth: Auth = Auth(),
@@ -147,15 +146,15 @@ public fun AppBar(
                 },
                 actions = {
                     AuthComposable(auth) {
-                        AppTooltipBox(stringResource(Res.string.sos)) {
+                        AppTooltipBox(stringResource(Res.string.help)) {
                             IconButton(
                                 onClick = {
 
                                 },
                             ) {
                                 Icon(
-                                    imageVector = Icons.Outlined.Sos,
-                                    contentDescription = stringResource(Res.string.sos),
+                                    imageVector = Icons.AutoMirrored.Outlined.ContactSupport,
+                                    contentDescription = stringResource(Res.string.help),
                                 )
                             }
                         }
@@ -164,18 +163,18 @@ public fun AppBar(
                     AppTooltipBox(stringResource(Res.string.theme)) {
                         IconButton(
                             onClick = {
-                                when (theme.mode) {
-                                    ThemeMode.SYSTEM -> onThemeChange(theme.copy(mode = ThemeMode.LIGHT))
-                                    ThemeMode.LIGHT -> onThemeChange(theme.copy(mode = ThemeMode.DARK))
-                                    ThemeMode.DARK -> onThemeChange(theme.copy(mode = ThemeMode.SYSTEM))
+                                when (theme.isDark) {
+                                    null -> onThemeChange(false)
+                                    false -> onThemeChange(true)
+                                    true -> onThemeChange(null)
                                 }
                             },
                         ) {
                             Icon(
-                                imageVector = when (theme.mode) {
-                                    ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
-                                    ThemeMode.LIGHT -> Icons.Outlined.LightMode
-                                    ThemeMode.DARK -> Icons.Outlined.DarkMode
+                                imageVector = when (theme.isDark) {
+                                    null -> Icons.Outlined.SettingsBrightness
+                                    false -> Icons.Outlined.LightMode
+                                    true -> Icons.Outlined.DarkMode
                                 },
                                 contentDescription = stringResource(Res.string.theme),
                             )
@@ -200,9 +199,7 @@ public fun AppBar(
                                 .toList()
                                 .map { country ->
                                     country.copy(
-                                        name = country.toString().asStringResource(Res.allStringResources) {
-                                            country.name
-                                        },
+                                        name = country.toString().asStringResource { country.name },
                                     )
                                 },
                             picker = CountryPicker(

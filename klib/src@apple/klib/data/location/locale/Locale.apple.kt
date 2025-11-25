@@ -33,7 +33,13 @@ public fun Locale.toNSLocale(): NSLocale {
 }
 
 public actual val Locale.Companion.current: Locale
-    get() = (NSLocale.preferredLanguages.first() as String).toLocale()
+    get() {
+        val locale = NSLocale.preferredLanguages.firstOrNull()
+            ?.let { NSLocale(it as String) }
+            ?: NSLocale.currentLocale
+
+        return locale.toKotlinLocale()
+    }
 
 public actual fun Locale.Companion.setCurrent(locale: Locale?): Unit =
     if (locale == null) NSUserDefaults.standardUserDefaults.removeObjectForKey(LANG_KEY)

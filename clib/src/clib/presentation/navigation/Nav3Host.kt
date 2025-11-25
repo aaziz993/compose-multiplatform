@@ -3,23 +3,8 @@ package clib.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.compositionLocalOf
-
-/**
- * CompositionLocal that provides access to the parent Navigator in nested navigation hierarchies.
- *
- * This is used to establish a parent-child relationship between navigation containers.
- * When a nested Nav3Host is created, it can access its parent navigator through this CompositionLocal
- * to properly handle navigation events like pop() and dropStack().
- *
- * Value is null for root navigation containers (no parent exists).
- * Value is non-null for nested navigation containers (parent navigator available).
- *
- * Users typically don't need to access this directly - it's managed automatically by Nav3Host.
- */
-@Suppress("ComposeCompositionLocalUsage")
-internal val LocalParentNavigator: ProvidableCompositionLocal<Navigator?> = compositionLocalOf { null }
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 
 /**
  * Main composable for setting up Navigation 3 integration.
@@ -40,16 +25,34 @@ internal val LocalParentNavigator: ProvidableCompositionLocal<Navigator?> = comp
 internal fun Nav3Host(
     router: Router,
     navigator: Navigator,
-    content: @Composable () -> Unit,
+    content: @Composable (
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        router: Router,
+    ) -> Unit,
 ) {
+    val parentRouter = LocalRouter.current
+
+    LaunchedEffect(router) {
+        check(parentRouter != router) { "Router can't be parent of itself" }
+        parentRouter?.child = router
+        router.parent = parentRouter
+    }
+
     DisposableEffect(router, navigator) {
         router.navigationActionQueue.setNavigator(navigator)
         onDispose { router.navigationActionQueue.removeNavigator(navigator) }
     }
 
-    val interceptionEnabled = LocalParentNavigator.current != null
+    val onBack: () -> Unit = remember(router) {
+        { router.pop() }
+    }
 
-    CompositionLocalProvider(LocalParentNavigator provides navigator) {
-        BackInterceptionProvider(interceptionEnabled, content)
+    val interceptionEnabled = parentRouter != null
+
+    CompositionLocalProvider(LocalRouter provides router) {
+        BackInterceptionProvider(interceptionEnabled) {
+            content(navigator.backStack, onBack, router)
+        }
     }
 }

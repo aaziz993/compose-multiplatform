@@ -23,7 +23,7 @@ public class DokkaPlugin : Plugin<Project> {
             sourceSet.sourceLinks.configureEach { sourceLink ->
                 sourceLink.localDirectory = layout.projectDirectory.dir(
                     when (projectScript.layout) {
-                        is ProjectLayout.Flat -> ""
+                        is ProjectLayout.Flat -> "."
                         else -> "src"
                     },
                 )

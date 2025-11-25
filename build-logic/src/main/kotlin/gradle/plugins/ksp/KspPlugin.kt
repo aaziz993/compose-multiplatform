@@ -1,6 +1,7 @@
 package gradle.plugins.ksp
 
-import gradle.api.kotlin.mpp.commonMainSourceSet
+import gradle.api.kotlin.mpp.commonMain
+import gradle.api.kotlin.mpp.commonTest
 import gradle.api.kotlin.mpp.kotlin
 import gradle.api.ksp.ksp
 import gradle.api.project.ProjectLayout
@@ -15,6 +16,7 @@ public class KspPlugin : Plugin<Project> {
         with(target) {
             pluginManager.withPlugin("com.google.devtools.ksp") {
                 configureArgs()
+                configureSrcDirs()
                 configureTasks()
             }
         }
@@ -35,9 +37,24 @@ public class KspPlugin : Plugin<Project> {
         }
     }
 
+    private fun Project.configureSrcDirs() = pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+        kotlin.sourceSets.commonMain {
+            kotlin.srcDir(
+                layout.buildDirectory.dir("generated/ksp/metadata/${KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME}/kotlin"),
+            )
+        }
+
+        kotlin.sourceSets.commonTest {
+            kotlin.srcDir(
+                layout.buildDirectory.dir("generated/ksp/metadata/${KotlinSourceSet.COMMON_TEST_SOURCE_SET_NAME}/kotlin"),
+            )
+        }
+    }
+
     // Trigger Common Metadata Generation from Native tasks.
-    private fun Project.configureTasks() =
+    private fun Project.configureTasks() = pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
         tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }.configureEach {
             dependsOn("kspCommonMainKotlinMetadata")
         }
+    }
 }

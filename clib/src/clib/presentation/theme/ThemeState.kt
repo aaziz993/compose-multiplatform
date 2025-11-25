@@ -7,11 +7,12 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import clib.presentation.theme.model.BaseTheme
 import clib.presentation.theme.model.Theme
 
-public class ThemeState(initialValue: Theme = Theme()) {
+public class ThemeState(initialValue: BaseTheme = Theme()) {
 
-    public var theme: Theme by mutableStateOf(initialValue)
+    public var theme: BaseTheme by mutableStateOf(initialValue)
 
     public companion object Companion {
 
@@ -23,5 +24,5 @@ public class ThemeState(initialValue: Theme = Theme()) {
 }
 
 @Composable
-public fun rememberThemeState(initialValue: Theme = Theme()): ThemeState =
+public fun rememberThemeState(initialValue: BaseTheme = Theme()): ThemeState =
     rememberSaveable(saver = ThemeState.Saver) { ThemeState(initialValue) }

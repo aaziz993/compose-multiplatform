@@ -1,6 +1,8 @@
 package clib.presentation.navigation
 
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,8 +20,9 @@ import kotlinx.coroutines.launch
  */
 public class NavigationActionQueue : NavigatorHolder {
 
-    /** Currently registered navigators. */
-    internal val navigators = mutableStateListOf<Navigator>()
+    /** Currently registered navigator, null if none is set. */
+    internal var registeredNavigator: Navigator? by mutableStateOf(null)
+        private set
 
     /** Queue of pending actions waiting for a navigator to become available. */
     private val pendingActions = mutableListOf<Array<out NavigationAction>>()
@@ -36,7 +39,7 @@ public class NavigationActionQueue : NavigatorHolder {
      * @param navigator The navigator to register
      */
     override fun setNavigator(navigator: Navigator) {
-        navigators.add(navigator)
+        registeredNavigator = navigator
         if (pendingActions.isNotEmpty()) {
             val snapshot = pendingActions.toList()
             pendingActions.clear()
@@ -50,7 +53,7 @@ public class NavigationActionQueue : NavigatorHolder {
      * After calling this, new actions will be queued until a new navigator is set.
      */
     override fun removeNavigator(navigator: Navigator) {
-        navigators.remove(navigator)
+        registeredNavigator = null
     }
 
     /**
@@ -63,7 +66,7 @@ public class NavigationActionQueue : NavigatorHolder {
      */
     public fun actions(vararg actions: NavigationAction) {
         mainScope.launch {
-            navigators.lastOrNull()?.actions(*actions) ?: pendingActions.add(actions)
+            registeredNavigator?.actions(*actions) ?: pendingActions.add(actions)
         }
     }
 }

@@ -15,23 +15,13 @@ public abstract class BaseRouter {
      * This is internal to prevent direct access from outside the library,
      * but accessible to the navigation system for setup.
      */
-    internal val navigationActionQueue = NavigationActionQueue()
-
-    /** The current top level route. */
-    public val routes: Routes?
-        get() = navigationActionQueue.navigators.lastOrNull()?.routes
+    internal val navigationActionQueue: NavigationActionQueue = NavigationActionQueue()
 
     /**
      * Currently registered navigator back stack.
      */
     public val backStack: List<NavRoute>
-        get() = navigationActionQueue.navigators.lastOrNull()?.backStack ?: emptyList()
-
-    /**
-     * Currently registered navigators has back.
-     */
-    public val hasBack: Boolean
-        get() = navigationActionQueue.navigators.any { navigator -> navigator.backStack.size > 1 }
+        get() = navigationActionQueue.registeredNavigator?.backStack ?: emptyList()
 
     /**
      * Executes one or more navigation actions.

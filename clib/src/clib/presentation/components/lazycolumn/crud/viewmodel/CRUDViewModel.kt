@@ -7,7 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.RemoteMediator
 import clib.data.crud.AbstractCRUDMutablePager
 import clib.data.crud.model.EntityProperty
-import clib.presentation.viewmodel.AbstractViewModel
+import clib.presentation.viewmodel.ViewModel
 import klib.data.crud.CoroutineCrudRepository
 import klib.data.query.BooleanOperand
 import klib.data.query.Order
@@ -33,7 +33,7 @@ public class CRUDViewModel<T : Any>(
     remoteMediator: RemoteMediator<Long, T>? = null,
     firstItemOffset: Long = 0,
     override val savedStateHandle: SavedStateHandle = SavedStateHandle()
-) : AbstractViewModel<CRUDAction<T>>() {
+) : ViewModel<CRUDAction<T>>() {
 
     public val pager: AbstractCRUDMutablePager<T>
         field = repository.mutablePager(

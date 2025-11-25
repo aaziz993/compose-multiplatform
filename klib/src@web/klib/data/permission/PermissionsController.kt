@@ -2,6 +2,7 @@
 
 package klib.data.permission
 
+import io.ktor.utils.io.CancellationException
 import js.objects.unsafeJso
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.type.await
@@ -61,7 +62,6 @@ private val PERMISSIONS = listOf(
     listOf(Permission.WINDOW_MANAGEMENT) to listOf(PermissionName.windowManagement),
 )
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 public actual class PermissionsController {
 
     public actual suspend fun getPermissionState(permission: Permission): PermissionState =
@@ -73,7 +73,7 @@ public actual class PermissionsController {
         ) PermissionState.GRANTED
         else PermissionState.NOT_DETERMINED
 
-    @Throws(PermissionDeniedAlwaysException::class, PermissionDeniedException::class, PermissionRequestCanceledException::class)
+    @Throws(CancellationException::class, PermissionDeniedAlwaysException::class, PermissionDeniedException::class, PermissionRequestCanceledException::class)
     public actual suspend fun providePermission(permission: Permission) {
         if (!permission
                 .toPlatformPermission()!!

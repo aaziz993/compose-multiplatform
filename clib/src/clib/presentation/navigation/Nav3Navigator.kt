@@ -124,7 +124,7 @@ public open class Nav3Navigator(
             checkNotNull(authRoute) { "No auth route" }
         }
 
-        check(route.route in routes.routes) { "Route '${route.route}' isn't in '$routes'" }
+        check(route.route in routes.routes) { "Route '${route.route}' isn't in '$routes${routes.routes}'" }
 
         // If the user explicitly requested the auth route, don't redirect them after login.
         if (action.route == authRoute) authRedirectRoute = null
@@ -145,7 +145,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceCurrent,
     ) {
         require(action.route.route in routes.routes) {
-            "Route '${action.route.route}' isn't in '$routes'"
+            "Route '${action.route.route}' isn't in '$routes${routes.routes}'"
         }
         if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
     }
@@ -163,7 +163,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceStack,
     ) {
         require(action.routes.all { navRoute -> navRoute.route in routes.routes }) {
-            "Routes '${action.routes.map(NavRoute::route)}' isn't in '$routes'"
+            "Routes '${action.routes.map(NavRoute::route)}' isn't in '$routes${routes.routes}'"
         }
         snapshot.replaceWith(action.routes)
     }
@@ -320,7 +320,8 @@ public fun rememberNav3Navigator(
     onError: (NavigationException) -> Unit = {},
 ): Navigator {
     val backStack = rememberNavBackStack(routes)
-    val parentOnBack = LocalParentNavigator.current?.let { navigator -> { navigator.actions(NavigationAction.Pop) } }
+
+    val parentOnBack = LocalRouter.current?.let { it::pop }
 
     return remember(auth) {
         Nav3Navigator(

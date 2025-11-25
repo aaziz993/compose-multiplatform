@@ -1,7 +1,27 @@
 package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
+/**
+ * CompositionLocal that provides access to the parent Router in nested navigation hierarchies.
+ *
+ * This is used to establish a parent-child relationship between navigation containers.
+ * When a nested Nav3Host is created, it can access its parent router through this CompositionLocal
+ * to properly handle navigation events like pop() and dropStack().
+ *
+ * Value is null for root navigation containers (no parent exists).
+ * Value is non-null for nested navigation containers (parent router available).
+ *
+ * Users typically don't need to access this directly - it's managed automatically by Nav3Host.
+ */
+@Suppress("ComposeCompositionLocalUsage")
+internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocalOf { null }
 
 /**
  * Main router implementation providing high-level navigation operations.
@@ -12,8 +32,31 @@ import androidx.compose.runtime.remember
  *
  * This class is designed to be used as the primary navigation interface in applications.
  *
+ * @param routes The current top level route.
  */
-public open class Router() : BaseRouter() {
+public open class Router(public val routes: Routes) : BaseRouter(), Iterable<Router> {
+
+    /** Parent router in nested navigation hierarchy. */
+    public var parent: Router? by mutableStateOf(null)
+        internal set
+
+    /** Parent child router in nested navigation hierarchy. */
+    public var child: Router? by mutableStateOf(null)
+        internal set
+
+    /**
+     * Currently registered navigators has back.
+     */
+    public val hasBack: Boolean
+        get() = backStack.size > 1 || parent?.hasBack == true
+
+    override fun iterator(): Iterator<Router> = sequence {
+        var router = this@Router
+        while (router.child != null) {
+            router = router.child!!
+            yield(router)
+        }
+    }.iterator()
 
     /**
      * Pushes one or more routes onto the navigation stack.
@@ -102,6 +145,10 @@ public open class Router() : BaseRouter() {
  */
 @Composable
 public fun rememberRouter(
+    routes: Routes,
     vararg keys: Any?,
-    factory: () -> Router = { Router() },
+    factory: () -> Router = { Router(routes) },
 ): Router = remember(*keys) { factory() }
+
+@Composable
+public fun currentRouter(): Router = checkNotNull(LocalRouter.current) { "No Router was provided via LocalRouter" }

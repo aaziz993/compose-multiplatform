@@ -5,9 +5,6 @@ script:
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->
-              // Ksp generated source directory.
-              sourceSet.kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-
               sourceSet.dependencies {
                 implementation(libs["diamondedge.logging"])
                 implementation(libs["kotlinx.datetime"])

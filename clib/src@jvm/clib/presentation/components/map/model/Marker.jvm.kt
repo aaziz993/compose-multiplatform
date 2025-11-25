@@ -1,7 +1,7 @@
 package clib.presentation.components.map.model
 
 import clib.data.location.toSwingWaypoint
-import clib.presentation.geometry.toDimension
+import clib.data.type.toDimension
 
 public fun Marker.toSwingWaypoint(): SwingWaypoint = location.toSwingWaypoint(
     size.toDimension(),

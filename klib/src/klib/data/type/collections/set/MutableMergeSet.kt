@@ -14,7 +14,7 @@ internal class MutableMergeSetIml<E>(
     override val merger: Merger<E> = Merger.default(),
 ) : MutableMergeSet<E> {
 
-    public constructor(
+    constructor(
         elements: Collection<E>,
         equator: Equator<E> = Equator.default(),
         merger: Merger<E> = Merger.default()

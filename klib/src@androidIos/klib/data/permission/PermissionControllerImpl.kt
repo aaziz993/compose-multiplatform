@@ -27,6 +27,7 @@ import dev.icerock.moko.permissions.motion.MotionPermission
 import dev.icerock.moko.permissions.notifications.RemoteNotificationPermission
 import dev.icerock.moko.permissions.storage.StoragePermission
 import dev.icerock.moko.permissions.storage.WriteStoragePermission
+import io.ktor.utils.io.CancellationException
 
 private val PERMISSION_STATES = mapOf(
     MonoPermissionState.NotDetermined to PermissionState.NOT_DETERMINED,
@@ -63,7 +64,7 @@ public abstract class PermissionControllerImpl(
         PERMISSIONS[permission]?.let { PERMISSION_STATES[permissionsController.getPermissionState(it)]!! }
             ?: PermissionState.UNSUPPORTED
 
-    @Throws(PermissionDeniedAlwaysException::class, PermissionDeniedException::class, PermissionRequestCanceledException::class)
+    @Throws(CancellationException::class, PermissionDeniedAlwaysException::class, PermissionDeniedException::class, PermissionRequestCanceledException::class)
     public suspend fun providePermission(permission: Permission) {
         PERMISSIONS[permission]?.let {
             try {

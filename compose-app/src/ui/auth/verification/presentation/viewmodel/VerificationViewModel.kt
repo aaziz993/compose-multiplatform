@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
-import clib.presentation.viewmodel.AbstractViewModel
+import clib.presentation.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import org.koin.android.annotation.KoinViewModel
 public class VerificationViewModel(
     private val authState: AuthState,
     override val savedStateHandle: SavedStateHandle = SavedStateHandle(),
-) : AbstractViewModel<VerificationAction>() {
+) : ViewModel<VerificationAction>() {
 
     public val state: RestartableStateFlow<VerificationState>
         field = MutableStateFlow(VerificationState()).onStartStateIn { it }

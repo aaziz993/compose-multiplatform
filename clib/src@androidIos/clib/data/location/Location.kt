@@ -1,8 +1,8 @@
 package clib.data.location
 
-import io.github.dellisd.spatialk.geojson.Position
 import klib.data.location.Location
 import klib.data.location.LocationImpl
+import org.maplibre.spatialk.geojson.Position
 
 public fun Location.toPosition(): Position = Position(longitude, latitude)
 

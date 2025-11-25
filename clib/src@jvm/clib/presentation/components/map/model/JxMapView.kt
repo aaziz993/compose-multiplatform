@@ -1,6 +1,10 @@
 package clib.presentation.components.map.model
 
 import clib.data.location.toGeoPosition
+import clib.presentation.components.map.tile.GoogleMaps
+import clib.presentation.components.map.tile.OpenStreetMap
+import clib.presentation.components.map.tile.VirtualEarth
+import clib.presentation.components.map.tile.WMS
 import java.awt.GridLayout
 import java.awt.Rectangle
 import java.awt.geom.Point2D
@@ -12,6 +16,7 @@ import klib.data.type.collections.updateSymmetric
 import org.jxmapviewer.JXMapViewer
 import org.jxmapviewer.OSMTileFactoryInfo
 import org.jxmapviewer.VirtualEarthTileFactoryInfo
+import org.jxmapviewer.WMSTileFactoryInfo
 import org.jxmapviewer.cache.FileBasedLocalCache
 import org.jxmapviewer.google.GoogleMapsTileFactoryInfo
 import org.jxmapviewer.input.CenterMapListener
@@ -32,25 +37,50 @@ public class JxMapView(
     view: MapView = MapView(),
 ) : JXMapViewer() {
 
-    private val factories = listOf(
-        view.virtualEarthMapTile to VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP).toCachedDefaultTileFactory(),
-        view.openStreetMapTile to OSMTileFactoryInfo().toCachedDefaultTileFactory(),
-        view.googleMapTile to view.googleApiKey?.let { GoogleMapsTileFactoryInfo(it).toCachedDefaultTileFactory() },
-    ).filterNot { it.second == null }
+    private val factories =
+        view.tiles.map { tile ->
+            when (tile) {
+                is OpenStreetMap -> OSMTileFactoryInfo(tile.name, tile.baseURL)
+                is VirtualEarth -> VirtualEarthTileFactoryInfo(
+                    when (tile.mode) {
+                        VirtualEarth.MAP -> VirtualEarthTileFactoryInfo.MAP
+                        VirtualEarth.SATELLITE -> VirtualEarthTileFactoryInfo.SATELLITE
+                        VirtualEarth.HYBRID -> VirtualEarthTileFactoryInfo.HYBRID
+                    },
+                )
+
+                is GoogleMaps -> GoogleMapsTileFactoryInfo(tile.name, tile.baseURL, tile.key)
+
+                is WMS -> WMSTileFactoryInfo(tile.minimumZoomLevel, tile.maximumZoomLevel, tile.totalMapZoom, tile.baseURL, tile.layers, tile.styles, tile.tileBgColor, tile.tileFormat, tile.srs, tile.tileSize)
+
+                else -> TileFactoryInfo(
+                    tile.name,
+                    tile.minimumZoomLevel,
+                    tile.maximumZoomLevel,
+                    tile.totalMapZoom,
+                    tile.tileSize,
+                    tile.xr2l,
+                    tile.yt2b,
+                    tile.baseURL,
+                    tile.xParam,
+                    tile.yParam,
+                    tile.zParam,
+                )
+            }.toCachedDefaultTileFactory()
+        }
 
     private val selectedMarkers = mutableListOf<SwingWaypoint>()
 
     init {
-        tileFactory = factories[0].second
+        tileFactory = factories[0]
 
-        view.initialZoom?.let { zoom = it }
-        view.initialCenter?.let { addressLocation = it.toGeoPosition() }
+        view.camera.initialZoom?.let { zoom = it }
+        view.camera.initialCenter?.let { addressLocation = it.toGeoPosition() }
 
         // Event listeners
-        if (view.zoomable)
-            addMouseWheelListener(ZoomMouseWheelListenerCursor(this))
+        if (view.gestureOptions.isZoomEnabled) addMouseWheelListener(ZoomMouseWheelListenerCursor(this))
 
-        if (view.movable) {
+        if (view.gestureOptions.isMoveEnabled) {
             PanMouseInputListener(this).let {
                 addMouseListener(it)
                 addMouseMotionListener(it)
@@ -91,25 +121,24 @@ public class JxMapView(
 
         val tileLicenseLabel = JLabel(tileFactory.toLicenseText())
 
-        if (view.tilePicker) {
+        if (view.isTilePickerEnabled)
             add(
                 JPanel().apply {
                     layout = GridLayout()
                     add(JLabel(view.selectTile))
                     add(
-                        JComboBox(factories.map { it.first }.toTypedArray()).apply {
+                        JComboBox(factories.map { factory -> factory.info.name }.toTypedArray()).apply {
                             addItemListener {
-                                tileFactory = factories[selectedIndex].second
-                                view.initialZoom?.let { zoom = it }
+                                tileFactory = factories[selectedIndex]
+                                view.camera.initialZoom?.let { zoom = it }
                                 tileLicenseLabel.setText(tileFactory.toLicenseText())
                             }
                         },
                     )
                 },
             )
-        }
 
-        add(tileLicenseLabel)
+        if (view.ornamentOptions.isAttributionEnabled) add(tileLicenseLabel)
     }
 
     public fun toScreenPixel(geoPosition: GeoPosition): Point2D = tileFactory.geoToPixel(geoPosition, zoom).let {

@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.components.picker.country.CountryCodePickerTextField
+import clib.presentation.components.country.CountryCodePickerTextField
 import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.sign_out
@@ -39,6 +39,9 @@ import compose_app.generated.resources.verify
 import klib.data.type.auth.model.Auth
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import clib.presentation.components.country.model.CountryPicker
+import compose_app.generated.resources.country
+import compose_app.generated.resources.search
 import ui.navigation.presentation.Profile
 import ui.navigation.presentation.Verification
 
@@ -100,8 +103,12 @@ public fun ProfileScreen(
         CountryCodePickerTextField(
             value = user.phone.orEmpty(),
             onValueChange = { _, _, _ -> },
-            label = { Text("Phone") },
             modifier = Modifier.fillMaxWidth(),
+            label = { Text("Phone") },
+            picker = CountryPicker(
+                headerTitle = stringResource(Res.string.country),
+                searchHint = stringResource(Res.string.search),
+            ),
         )
 
         Spacer(modifier = Modifier.height(32.dp))

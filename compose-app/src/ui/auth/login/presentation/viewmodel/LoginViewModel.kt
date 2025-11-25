@@ -3,7 +3,7 @@ package ui.auth.login.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
-import clib.presentation.viewmodel.AbstractViewModel
+import clib.presentation.viewmodel.ViewModel
 import klib.data.type.auth.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,7 +13,7 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 public class LoginViewModel(
     private val authState: AuthState
-) : AbstractViewModel<LoginAction>() {
+) : ViewModel<LoginAction>() {
 
     public val state: RestartableStateFlow<LoginState>
         field = MutableStateFlow(LoginState()).onStartStateIn { it }

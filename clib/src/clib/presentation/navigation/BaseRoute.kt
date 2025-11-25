@@ -1,8 +1,5 @@
 package clib.presentation.navigation
 
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.NavigationBarItem
@@ -30,10 +27,11 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     @Suppress("UNCHECKED_CAST")
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
+
+    public open val metadata: Map<String, Any> = slideTransition()
+
     public open val name: String
         get() = navRoute.serializer().descriptor.serialName
-    public open val metadata: Map<String, Any> = emptyMap()
-
     public open val navigationItem: (@Composable (name: String) -> NavigationItem)? = null
     public open val authResource: AuthResource? = null
 
@@ -42,7 +40,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
-        router: Router,
+        routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
     )
 
@@ -50,13 +48,13 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     @Composable
     public open fun item(
-        router: Router,
         auth: Auth = Auth(),
-        pushDuplicate: Boolean = false,
+        onPush: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
         if (!isNavigationItem(auth)) return {}
         check(this is NavRoute) { "Not a nav route '$this'" }
 
+        val router = currentRouter()
         val selected = this == router.backStack.lastOrNull()
         val item = navigationItem!!(name)
         val selectedItem = item.item(selected)
@@ -64,7 +62,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         return {
             item(
                 selected,
-                { router.actions(NavigationAction.Push(this@BaseRoute, pushDuplicate)) },
+                { router.onPush(this@BaseRoute) },
                 selectedItem.icon,
                 selectedItem.modifier,
                 item.enabled,
@@ -79,20 +77,20 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     @Composable
     context(scope: RowScope)
     public open fun NavigationBarItem(
-        router: Router,
         auth: Auth = Auth(),
-        pushDuplicate: Boolean = false,
+        onPush: Router.(NavRoute) -> Unit = Router::push,
     ) {
         if (!isNavigationItem(auth)) return
         check(this is NavRoute) { "Not a route '$this'" }
 
+        val router = currentRouter()
         val selected = this == router.backStack.lastOrNull()
         val item = navigationItem!!(name)
         val selectedItem = item.item(selected)
 
         scope.NavigationBarItem(
             selected,
-            { router.actions(NavigationAction.Push(this, pushDuplicate)) },
+            { router.onPush(this) },
             selectedItem.icon,
             selectedItem.modifier,
             item.enabled,
@@ -105,22 +103,19 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 public abstract class Route<T : NavRoute> : BaseRoute() {
 
     @Composable
-    protected abstract fun Content(
-        router: Router,
-        route: T,
-    )
+    protected abstract fun Content(route: T)
 
     @Suppress("UNCHECKED_CAST")
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        router: Router,
+        routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
     ): Unit = scope.addEntryProvider(
         navRoute,
         { navRoute -> navRoute.route.name },
         metadata,
     ) { navRoute ->
-        Content(router, navRoute as T)
+        Content(navRoute as T)
     }
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
@@ -136,9 +131,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     override val name: String
         get() = startRoute.route.name
-    override val metadata: Map<String, Any>
-        get() = startRoute.route.metadata
-
     override val navigationItem: (@Composable (name: String) -> NavigationItem)?
         get() = startRoute.route.navigationItem
     override val authResource: AuthResource?
@@ -146,7 +138,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     @Composable
     protected open fun NavDisplay(
-        router: Router,
         backStack: List<NavRoute>,
         onBack: () -> Unit,
         entryProvider: (NavRoute) -> NavEntry<NavRoute>,
@@ -158,56 +149,38 @@ public abstract class Routes() : BaseRoute(), NavRoute {
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator(),
         ),
-        transitionSpec = {
-            slideInHorizontally(initialOffsetX = { it }) togetherWith
-                slideOutHorizontally(targetOffsetX = { -it })
-        },
-        popTransitionSpec = {
-            slideInHorizontally(initialOffsetX = { -it }) togetherWith
-                slideOutHorizontally(targetOffsetX = { it })
-        },
-        predictivePopTransitionSpec = {
-            slideInHorizontally(initialOffsetX = { -it }) togetherWith
-                slideOutHorizontally(targetOffsetX = { it })
-        },
         entryProvider = entryProvider,
     )
 
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        router: Router,
+        routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
     ) = scope.addEntryProvider(
         navRoute,
         { navRoute -> navRoute.route.name },
         metadata,
     ) {
-        NavHost(router, navigatorFactory)
+        Nav3Host(routerFactory, navigatorFactory)
     }
 
     @Composable
-    public fun NavHost(
-        router: Router = rememberRouter(),
+    public open fun Nav3Host(
+        routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     ) {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
-        val navigator = navigatorFactory(this)
-
         Nav3Host(
-            router,
-            navigator,
-        ) {
+            routerFactory(this),
+            navigatorFactory(this),
+        ) { backStack, onBack, _ ->
             NavDisplay(
-                router,
-                navigator.backStack,
-                { navigator.actions(NavigationAction.Pop) },
+                backStack,
+                onBack,
                 entryProvider {
                     routes.forEach { route ->
-                        route.entry(
-                            router,
-                            navigatorFactory,
-                        )
+                        route.entry(routerFactory, navigatorFactory)
                     }
                 },
             )
@@ -220,9 +193,9 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public fun items(
         router: Router,
         auth: Auth = Auth(),
-        pushDuplicate: Boolean = false,
+        onPush: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
-        val items = routes.map { route -> route.item(router, auth, pushDuplicate) }
+        val items = routes.map { route -> route.item(auth, onPush) }
         return { items.forEach { item -> item() } }
     }
 
@@ -230,10 +203,9 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     context(scope: RowScope)
     public fun NavigationBarItems(
         router: Router,
-        label: @Composable BaseRoute.() -> String = { toString() },
         auth: Auth = Auth(),
-        pushDuplicate: Boolean = false,
-    ): Unit = routes.forEach { route -> route.NavigationBarItem(router, auth, pushDuplicate) }
+        onPush: Router.(NavRoute) -> Unit = Router::push,
+    ): Unit = routes.forEach { route -> route.NavigationBarItem(auth, onPush) }
 
     final override fun iterator(): Iterator<BaseRoute> = sequence {
         routes.forEach { route ->
