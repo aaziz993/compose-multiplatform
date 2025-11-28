@@ -73,7 +73,7 @@ internal fun HSVColorPicker(
                 HsvColorPicker(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .height(220.dp),
                     controller = controller,
                 )
 
@@ -81,8 +81,7 @@ internal fun HSVColorPicker(
 
                 BrightnessSlider(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
+                        .fillMaxWidth(),
                     controller = controller,
                 )
 
@@ -90,8 +89,7 @@ internal fun HSVColorPicker(
 
                 AlphaSlider(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
+                        .fillMaxWidth(),
                     controller = controller,
                 )
             }

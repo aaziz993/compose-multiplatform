@@ -25,8 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import clib.data.location.country.flag
 import clib.data.location.country.getEmojiFlag
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
@@ -36,14 +36,13 @@ import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.quickaccess.QuickAccess
-import clib.presentation.theme.density.model.Density
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSlider
 import com.alorma.compose.settings.ui.SettingsSwitch
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.accessibility
+import compose_app.generated.resources.appearance
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.color_palette
 import compose_app.generated.resources.density
@@ -55,13 +54,11 @@ import compose_app.generated.resources.language
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permissions
-import compose_app.generated.resources.quick_access
 import compose_app.generated.resources.quick_avatar
 import compose_app.generated.resources.quick_locale
 import compose_app.generated.resources.quick_support
 import compose_app.generated.resources.quick_theme
 import compose_app.generated.resources.theme
-import compose_app.generated.resources.appearance
 import data.type.primitives.EnabledText
 import data.type.primitives.string.asStringResource
 import klib.data.location.locale.Locale
@@ -70,7 +67,6 @@ import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
 import klib.data.type.auth.model.Auth
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.country.LocalePickerDialog
 import presentation.theme.model.IsDarkIcon
@@ -83,7 +79,7 @@ public fun SettingsScreen(
     route: Settings = Settings,
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
-    density: Density = Density(),
+    density: Density = Density(2f, 1f),
     onDensityChange: (Density) -> Unit = {},
     locale: Locale = Locale.root,
     onLocaleChange: (Locale) -> Unit = {},
@@ -212,7 +208,7 @@ public fun SettingsScreen(
             enabled = true,
             icon = { Icon(Icons.Default.TouchApp, stringResource(Res.string.density)) },
             onValueChange = { value ->
-                onDensityChange(density.copy(density = value))
+                onDensityChange(Density(value, density.fontScale))
             },
         )
 
@@ -225,7 +221,7 @@ public fun SettingsScreen(
             enabled = true,
             icon = { Icon(Icons.Default.TextFields, stringResource(Res.string.font_scale)) },
             onValueChange = { value ->
-                onDensityChange(density.copy(fontScale = value))
+                onDensityChange(Density(density.density, value))
             },
         )
 

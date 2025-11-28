@@ -10,15 +10,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import clib.presentation.noLocalProvidedFor
-import clib.presentation.theme.density.model.Density
-import clib.presentation.theme.density.model.toDensity
+import clib.presentation.theme.density.model.DensitySerial
 
 @Suppress("ComposeCompositionLocalUsage")
 public val LocalDensityState: ProvidableCompositionLocal<DensityState> =
     staticCompositionLocalOf { noLocalProvidedFor("LocalDensityState") }
 
-public class DensityState(initialValue: Density) {
+public class DensityState(initialValue: DensitySerial) {
 
     public var density: Density by mutableStateOf(initialValue)
 
@@ -32,5 +32,5 @@ public class DensityState(initialValue: Density) {
 }
 
 @Composable
-public fun rememberDensityState(initialValue: Density = LocalDensity.current.toDensity()): DensityState =
+public fun rememberDensityState(initialValue: Density = LocalDensity.current): DensityState =
     rememberSaveable(saver = DensityState.Saver) { DensityState(initialValue) }

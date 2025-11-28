@@ -68,7 +68,7 @@ public fun AppEnvironment(
     LocalThemeState provides themeState,
     LocalAppTheme provides themeState.theme.isDark,
     LocalDensityState provides densityState,
-    LocalDensity provides densityState.density.toDensity(),
+    LocalDensity provides densityState.density,
     LocalLocaleState provides localeState,
     LocalAppLocale provides localeState.locale,
     LocalAuthState provides authState,
