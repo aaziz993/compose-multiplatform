@@ -1,9 +1,11 @@
 package clib.presentation.theme.shapes
 
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.Immutable
+import clib.presentation.theme.shapes.squircleshape.CornerSmoothing
+import klib.data.type.cast
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 public sealed class CornerBasedShape {
 
@@ -14,6 +16,26 @@ public sealed class CornerBasedShape {
 
     public abstract fun toCornerBasedShape(): androidx.compose.foundation.shape.CornerBasedShape
 }
+
+public fun androidx.compose.foundation.shape.CornerBasedShape.toCornerBasedShape(): CornerBasedShape =
+    when (this) {
+        is androidx.compose.foundation.shape.RoundedCornerShape -> RoundedCornerShape(
+            topStart.toCornerSize(),
+            topEnd.toCornerSize(),
+            bottomEnd.toCornerSize(),
+            bottomStart.toCornerSize(),
+        )
+
+        is clib.presentation.theme.shapes.squircleshape.SquircleShape -> SquircleShape(
+            topStart.toCornerSize(),
+            topEnd.toCornerSize(),
+            bottomEnd.toCornerSize(),
+            bottomStart.toCornerSize(),
+            smoothing,
+        )
+
+        else -> throw IllegalArgumentException("Unknown corner shape '$this'")
+    }
 
 @Serializable
 public data class RoundedCornerShape(
@@ -32,55 +54,30 @@ public data class RoundedCornerShape(
         )
 }
 
-public val CircleShape: RoundedCornerShape = RoundedCornerShape(50)
+public val CircleShape: RoundedCornerShape =
+    androidx.compose.foundation.shape.CircleShape.toCornerBasedShape().cast()
 
-public fun RoundedCornerShape(corner: CornerSize): RoundedCornerShape =
-    RoundedCornerShape(corner, corner, corner, corner)
+@Serializable
+public sealed class SquircleBasedShape : CornerBasedShape() {
 
-public fun RoundedCornerShape(size: Dp): RoundedCornerShape = RoundedCornerShape(CornerSize(size))
+    public abstract val smoothing: Int
+}
 
-public fun RoundedCornerShape(size: Float): RoundedCornerShape = RoundedCornerShape(CornerSize(size))
+@Serializable
+public data class SquircleShape(
+    override val topStart: CornerSize = CornerSize(100),
+    override val topEnd: CornerSize = CornerSize(100),
+    override val bottomStart: CornerSize = CornerSize(100),
+    override val bottomEnd: CornerSize = CornerSize(100),
+    override val smoothing: Int = CornerSmoothing.Medium
+) : SquircleBasedShape() {
 
-public fun RoundedCornerShape(percent: Int): RoundedCornerShape = RoundedCornerShape(
-    CornerSize(
-        percent
-    )
-)
-
-public fun RoundedCornerShape(
-    topStart: Dp = 0.dp,
-    topEnd: Dp = 0.dp,
-    bottomEnd: Dp = 0.dp,
-    bottomStart: Dp = 0.dp,
-): RoundedCornerShape = RoundedCornerShape(
-    topStart = CornerSize(topStart),
-    topEnd = CornerSize(topEnd),
-    bottomEnd = CornerSize(bottomEnd),
-    bottomStart = CornerSize(bottomStart),
-)
-
-public fun RoundedCornerShape(
-    topStart: Float = 0.0f,
-    topEnd: Float = 0.0f,
-    bottomEnd: Float = 0.0f,
-    bottomStart: Float = 0.0f,
-): RoundedCornerShape = RoundedCornerShape(
-    topStart = CornerSize(topStart),
-    topEnd = CornerSize(topEnd),
-    bottomEnd = CornerSize(bottomEnd),
-    bottomStart = CornerSize(bottomStart),
-)
-
-public fun RoundedCornerShape(
-    topStartPercent: Int = 0,
-    topEndPercent: Int = 0,
-    bottomEndPercent: Int = 0,
-    bottomStartPercent: Int = 0,
-): RoundedCornerShape = RoundedCornerShape(
-    topStart = CornerSize(topStartPercent),
-    topEnd = CornerSize(topEndPercent),
-    bottomEnd = CornerSize(bottomEndPercent),
-    bottomStart = CornerSize(bottomStartPercent),
-)
-
-
+    override fun toCornerBasedShape(): androidx.compose.foundation.shape.CornerBasedShape =
+        clib.presentation.theme.shapes.squircleshape.SquircleShape(
+            topStart.toCornerSize(),
+            topEnd.toCornerSize(),
+            bottomEnd.toCornerSize(),
+            bottomStart.toCornerSize(),
+            smoothing,
+        )
+}

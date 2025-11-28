@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.navigation.Router
 import clib.presentation.viewmodel.ViewModel
-import klib.data.coroutines.StandardDispatchers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ public class PhoneViewModel(
         state.update { it.copy(countryCode = countryCode, number = number, isValid = isValid) }
 
     private fun confirm() {
-        viewModelScope.launch(StandardDispatchers.io) {
+        viewModelScope.launch(Dispatchers.Main) {
             if (state.value.isValid) router.push(Otp("${state.value.countryCode}${state.value.number}"))
         }
     }

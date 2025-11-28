@@ -13,6 +13,8 @@ import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.currentRouter
 import clib.presentation.navigation.scene.WrapperSceneStrategy
+import clib.presentation.quickaccess.QuickAccess
+import clib.presentation.state.LocalStateStore
 import clib.presentation.theme.LocalThemeState
 import data.type.primitives.string.asStringResource
 import kotlin.collections.Map
@@ -26,6 +28,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
+        val stateStore = LocalStateStore.current
         val router = currentRouter()
         router.backStack.lastOrNull()?.let { currentRoute ->
             val layoutType = if (router.routes.isNavigationItems(authState.auth))
@@ -41,10 +44,11 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 { Text(text = currentRoute.route.name.asStringResource()) },
                 themeState.theme,
                 { value -> themeState.theme = value },
-                localeState.locale,
+                localeState.localeInspectionAware(),
                 { value -> localeState.locale = value },
                 authState.auth,
                 { value -> authState.auth = value },
+                stateStore.get<QuickAccess>(),
                 layoutType == NavigationSuiteType.NavigationDrawer,
                 router.hasBack,
                 layoutType,

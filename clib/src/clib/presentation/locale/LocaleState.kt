@@ -9,16 +9,23 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalInspectionMode
 import clib.presentation.noLocalProvidedFor
 import klib.data.location.locale.Locale
+import klib.data.location.locale.current
 
 @Suppress("ComposeCompositionLocalUsage")
 public val LocalLocaleState: ProvidableCompositionLocal<LocaleState> =
     staticCompositionLocalOf { noLocalProvidedFor("LocalLocaleState") }
 
-public class LocaleState(initialValue: Locale? = null) {
+public class LocaleState(initialValue: Locale = Locale.current) {
 
-    public var locale: Locale? by mutableStateOf(initialValue)
+    public var locale: Locale by mutableStateOf(initialValue)
+
+    @Suppress("ComposeUnstableReceiver")
+    @Composable
+    public fun localeInspectionAware(): Locale =
+        (if (LocalInspectionMode.current) null else locale) ?: Locale.forLanguageTag("en-US")
 
     public companion object Companion {
 
@@ -30,5 +37,5 @@ public class LocaleState(initialValue: Locale? = null) {
 }
 
 @Composable
-public fun rememberLocaleState(initialValue: Locale? = null): LocaleState =
+public fun rememberLocaleState(initialValue: Locale = Locale.current): LocaleState =
     rememberSaveable(saver = LocaleState.Saver) { LocaleState(initialValue) }

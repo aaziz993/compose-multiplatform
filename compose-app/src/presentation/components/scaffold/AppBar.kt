@@ -12,12 +12,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ContactSupport
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.SettingsBrightness
+import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -36,16 +32,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.components.country.CountryPickerDialog
-import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
+import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.country_flag
@@ -54,24 +48,22 @@ import compose_app.generated.resources.language
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate_back
 import compose_app.generated.resources.profile
-import compose_app.generated.resources.search
 import compose_app.generated.resources.theme
-import data.type.primitives.string.asStringResource
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
 import dev.chrisbanes.haze.HazeProgressive
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
-import klib.data.location.country.Country
-import klib.data.location.country.getCountries
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.type.auth.model.Auth
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import presentation.components.country.LocalePickerDialog
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
+import presentation.theme.model.IsDarkIcon
 import ui.navigation.presentation.Profile
 
 @Composable
@@ -83,10 +75,11 @@ public fun AppBar(
     inputScale: HazeInputScale = HazeInputScale.Default,
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
-    locale: Locale? = null,
-    onLocaleChange: (Locale?) -> Unit = {},
+    locale: Locale = Locale.current,
+    onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
+    quickAccess: QuickAccess = QuickAccess(),
     hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
     onDrawerToggle: () -> Unit = {},
@@ -124,7 +117,7 @@ public fun AppBar(
                                     onClick = onDrawerToggle,
                                 ) {
                                     Icon(
-                                        imageVector = if (isDrawerOpen) Icons.Filled.Menu else Icons.Outlined.Menu,
+                                        imageVector = if (isDrawerOpen) Icons.Default.Menu else Icons.Default.Menu,
                                         contentDescription = stringResource(Res.string.menu),
                                     )
                                 }
@@ -136,7 +129,7 @@ public fun AppBar(
                                     onClick = { onNavigationAction(NavigationAction.Pop) },
                                 ) {
                                     Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
                                         contentDescription = stringResource(Res.string.navigate_back),
                                     )
                                 }
@@ -144,115 +137,88 @@ public fun AppBar(
                     }
                 },
                 actions = {
-                    AuthComposable(auth) {
-                        AppTooltipBox(stringResource(Res.string.help)) {
-                            IconButton(
-                                onClick = {
+                    if (quickAccess.isSupport)
+                        AuthComposable(auth) {
+                            AppTooltipBox(stringResource(Res.string.help)) {
+                                IconButton(
+                                    onClick = {
 
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Outlined.ContactSupport,
-                                    contentDescription = stringResource(Res.string.help),
-                                )
-                            }
-                        }
-                    }
-
-                    AppTooltipBox(stringResource(Res.string.theme)) {
-                        IconButton(
-                            onClick = {
-                                when (theme.isDark) {
-                                    null -> onThemeChange(theme.copy(isDark = false))
-                                    false -> onThemeChange(theme.copy(isDark = true))
-                                    true -> onThemeChange(theme.copy(isDark = null))
-                                }
-                            },
-                        ) {
-                            Icon(
-                                imageVector = when (theme.isDark) {
-                                    null -> Icons.Outlined.SettingsBrightness
-                                    false -> Icons.Outlined.LightMode
-                                    true -> Icons.Outlined.DarkMode
-                                },
-                                contentDescription = stringResource(Res.string.theme),
-                            )
-                        }
-                    }
-
-                    var isCountryPickerDialogOpen by remember { mutableStateOf(false) }
-
-                    if (isCountryPickerDialogOpen)
-                        CountryPickerDialog(
-                            onItemClicked = { country ->
-                                country.locales().firstOrNull()?.let { locale ->
-                                    onLocaleChange(locale)
-                                    isCountryPickerDialogOpen = false
-                                }
-                            },
-                            onDismissRequest = {
-                                isCountryPickerDialogOpen = false
-                            },
-                            countries = Country.getCountries()
-                                .filter { country -> country.locales().isNotEmpty() }
-                                .toList()
-                                .map { country ->
-                                    country.copy(
-                                        name = country.toString().asStringResource { country.name },
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.SupportAgent,
+                                        contentDescription = stringResource(Res.string.help),
                                     )
-                                },
-                            picker = CountryPicker(
-                                headerTitle = stringResource(Res.string.language),
-                                searchHint = stringResource(Res.string.search),
-                            ),
-                        )
-
-                    val country = (if (!LocalInspectionMode.current)
-                        (locale ?: Locale.current).country()
-                    else null) ?: Country.forCode("TJ")
-
-                    AppTooltipBox(stringResource(Res.string.language)) {
-                        Button(
-                            onClick = {
-                                isCountryPickerDialogOpen = true
-                            },
-                            modifier = Modifier.height(48.dp),
-                            shape = RoundedCornerShape(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent,
-                                contentColor = Color.Unspecified,
-                                disabledContainerColor = Color.Transparent,
-                            ),
-                            elevation = null,
-                            contentPadding = PaddingValues(0.dp),
-                        ) {
-                            Image(
-                                painter = painterResource(country.alpha2.flag),
-                                contentDescription = stringResource(Res.string.country_flag),
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                                    .wrapContentWidth(),
-                                contentScale = ContentScale.Fit,
-                            )
+                                }
+                            }
                         }
-                    }
 
-                    AuthComposable(auth) { user ->
-                        AppTooltipBox(stringResource(Res.string.profile)) {
+                    if (quickAccess.isTheme)
+                        AppTooltipBox(stringResource(Res.string.theme)) {
                             IconButton(
                                 onClick = {
-                                    onNavigationAction(NavigationAction.Push(Profile))
+                                    onThemeChange(theme.copyIsDarkToggled())
                                 },
                             ) {
-                                Avatar(
-                                    user = user,
+                                theme.IsDarkIcon()
+                            }
+                        }
+
+                    if (quickAccess.isLocale) {
+                        var isLocalePickerDialogOpen by remember { mutableStateOf(false) }
+
+                        if (isLocalePickerDialogOpen)
+                            LocalePickerDialog(
+                                onLocaleChange = onLocaleChange,
+                            ) {
+                                isLocalePickerDialogOpen = false
+                            }
+
+
+                        AppTooltipBox(stringResource(Res.string.language)) {
+                            Button(
+                                onClick = {
+                                    isLocalePickerDialogOpen = true
+                                },
+                                modifier = Modifier.height(48.dp),
+                                shape = RoundedCornerShape(10.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = Color.Unspecified,
+                                    disabledContainerColor = Color.Transparent,
+                                ),
+                                elevation = null,
+                                contentPadding = PaddingValues(0.dp),
+                            ) {
+                                Image(
+                                    painter = painterResource(locale.country()!!.alpha2.flag),
+                                    contentDescription = stringResource(Res.string.country_flag),
                                     modifier = Modifier
-                                        .fillMaxSize()
-                                        .clip(CircleShape),
+                                        .fillMaxHeight()
+                                        .wrapContentWidth(),
+                                    contentScale = ContentScale.Fit,
                                 )
                             }
                         }
                     }
+
+                    if (quickAccess.isAvatar)
+                        AuthComposable(auth) { user ->
+                            AppTooltipBox(stringResource(Res.string.profile)) {
+                                IconButton(
+                                    onClick = {
+                                        onNavigationAction(NavigationAction.Push(Profile))
+                                    },
+                                ) {
+                                    Avatar(
+                                        user = user,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(CircleShape),
+                                    )
+                                }
+                            }
+                        }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,

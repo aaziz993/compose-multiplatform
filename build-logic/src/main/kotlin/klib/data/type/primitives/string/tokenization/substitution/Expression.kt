@@ -595,7 +595,7 @@ public class Iterator(
             is Iterable<*> -> iterator()
             is Sequence<*> -> iterator()
             is Map<*, *> -> pairs().iterator()
-            else -> error("Expected Iterable, Sequence or Map, but got '${this::class.simpleName}'")
+            else -> throw IllegalArgumentException("Expected Iterable, Sequence or Map, but got '${this::class.simpleName}'")
         }
 }
 

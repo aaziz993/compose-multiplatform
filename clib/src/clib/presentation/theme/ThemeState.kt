@@ -1,13 +1,20 @@
 package clib.presentation.theme
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
+import clib.presentation.noLocalProvidedFor
 import clib.presentation.theme.model.Theme
+
+@Suppress("ComposeCompositionLocalUsage")
+public val LocalThemeState: ProvidableCompositionLocal<ThemeState> =
+    staticCompositionLocalOf { noLocalProvidedFor("LocalThemeState") }
 
 public class ThemeState(initialValue: Theme = Theme()) {
 

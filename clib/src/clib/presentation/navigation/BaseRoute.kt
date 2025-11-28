@@ -1,20 +1,26 @@
 package clib.presentation.navigation
 
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import clib.presentation.event.EventBus
 import clib.presentation.navigation.model.NavigationItem
+import clib.presentation.navigation.result.LocalResultEventBus
+import clib.presentation.navigation.result.LocalResultStore
+import clib.presentation.state.rememberStateStore
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
 import kotlin.reflect.KClass
@@ -42,6 +48,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     internal abstract fun entry(
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
+        sharedTransitionScope: SharedTransitionScope,
     )
 
     public open fun isNavigationItem(auth: Auth): Boolean = navigationItem != null && isAuth(auth)
@@ -103,19 +110,22 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 public abstract class Route<T : NavRoute> : BaseRoute() {
 
     @Composable
-    protected abstract fun Content(route: T)
+    protected abstract fun Content(
+        route: T,
+        sharedTransitionScope: SharedTransitionScope,
+    )
 
     @Suppress("UNCHECKED_CAST")
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
+        sharedTransitionScope: SharedTransitionScope,
     ): Unit = scope.addEntryProvider(
-        navRoute,
-        { navRoute -> navRoute.route.name },
-        metadata,
+        clazz = navRoute,
+        metadata = metadata,
     ) { navRoute ->
-        Content(navRoute as T)
+        Content(navRoute as T, sharedTransitionScope)
     }
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
@@ -143,7 +153,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         entryProvider: (NavRoute) -> NavEntry<NavRoute>,
     ): Unit = NavDisplay(
         backStack = backStack,
-        modifier = Modifier.fillMaxSize(),
         onBack = onBack,
         entryDecorators = listOf(
             rememberSaveableStateHolderNavEntryDecorator(),
@@ -156,16 +165,16 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     final override fun entry(
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
+        sharedTransitionScope: SharedTransitionScope,
     ) = scope.addEntryProvider(
-        navRoute,
-        { navRoute -> navRoute.route.name },
-        metadata,
+        clazz = navRoute,
+        metadata = metadata,
     ) {
         Nav3Host(routerFactory, navigatorFactory)
     }
 
     @Composable
-    public open fun Nav3Host(
+    public fun Nav3Host(
         routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     ) {
@@ -175,15 +184,31 @@ public abstract class Routes() : BaseRoute(), NavRoute {
             routerFactory(this),
             navigatorFactory(this),
         ) { backStack, onBack, _ ->
-            NavDisplay(
-                backStack,
-                onBack,
-                entryProvider {
-                    routes.forEach { route ->
-                        route.entry(routerFactory, navigatorFactory)
-                    }
-                },
-            )
+            // Return a result from one screen to a previous screen using a state-based approach.
+            val resultStore = rememberStateStore()
+            // Return a result from one screen to a previous screen using an event-based approach.
+            val resultEventBus = remember { EventBus() }
+
+            CompositionLocalProvider(
+                LocalResultStore provides resultStore,
+                LocalResultEventBus provides resultEventBus,
+            ) {
+                SharedTransitionLayout {
+                    NavDisplay(
+                        backStack,
+                        onBack,
+                        entryProvider {
+                            routes.forEach { route ->
+                                route.entry(
+                                    routerFactory,
+                                    navigatorFactory,
+                                    this@SharedTransitionLayout,
+                                )
+                            }
+                        },
+                    )
+                }
+            }
         }
     }
 

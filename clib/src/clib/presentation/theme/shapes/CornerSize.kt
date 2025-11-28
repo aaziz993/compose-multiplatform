@@ -1,14 +1,32 @@
 package clib.presentation.theme.shapes
 
-import androidx.compose.foundation.shape.ZeroCornerSize
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.platform.InspectableValue
 import androidx.compose.ui.unit.Dp
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 public sealed class CornerSize {
 
     public abstract fun toCornerSize(): androidx.compose.foundation.shape.CornerSize
 }
+
+public fun androidx.compose.foundation.shape.CornerSize.toCornerSize(): CornerSize =
+    when (val valueOverride = (this as InspectableValue).valueOverride) {
+        is Dp -> CornerSize(valueOverride)
+        is String -> when {
+            valueOverride.endsWith("px") -> CornerSize(valueOverride.removeSuffix("px").toFloat())
+            valueOverride.endsWith("%") ->
+                CornerSize(valueOverride.removeSuffix("%").toFloat().toInt())
+
+            valueOverride == "ZeroCornerSize" -> ZeroCornerSize
+
+            else -> throw IllegalArgumentException("Unknown corner size '$this'")
+        }
+
+        else -> throw IllegalArgumentException("Unknown corner size '$this'")
+    }
 
 @Serializable
 public data class DpCornerSize(private val size: DpSerial) : CornerSize() {
@@ -45,6 +63,7 @@ public fun CornerSize(percent: Int): CornerSize = PercentCornerSize(percent.toFl
 
 public object ZeroCornerSize : CornerSize() {
 
-    override fun toCornerSize(): androidx.compose.foundation.shape.CornerSize = ZeroCornerSize
+    override fun toCornerSize(): androidx.compose.foundation.shape.CornerSize =
+        androidx.compose.foundation.shape.ZeroCornerSize
 }
 

@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
-public actual suspend fun ClipEntry.getText() = withContext(Dispatchers.IO) {
+public actual suspend fun ClipEntry.getText(): String? = withContext(Dispatchers.IO) {
     getPlainText()
 }
 

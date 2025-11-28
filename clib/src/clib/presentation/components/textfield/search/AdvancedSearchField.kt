@@ -19,6 +19,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,7 +49,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import org.jetbrains.compose.resources.painterResource
-import clib.presentation.theme.model.color
+import clib.data.type.color
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 
 @Composable
@@ -194,7 +195,7 @@ public fun AdvancedSearchField(
         }
 
         if (!isEnum && compareMatchers.isNotEmpty()) {
-            var index by remember { mutableStateOf(0) }
+            var index by remember { mutableIntStateOf(0) }
 
             Icon(
                 when (state.compareMatch) {

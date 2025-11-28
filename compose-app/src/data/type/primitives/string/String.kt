@@ -9,3 +9,4 @@ import compose_app.generated.resources.allStringResources
 @Composable
 public fun String.asStringResource(defaultValue: () -> String = { this }): String =
     asStringResource(Res.allStringResources, defaultValue)
+

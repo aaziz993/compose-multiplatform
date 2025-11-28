@@ -60,9 +60,7 @@ public class SearchFieldState(
 
 @Composable
 public fun rememberSearchFieldState(state: SearchFieldState = SearchFieldState()): SearchFieldState =
-    rememberSaveable(saver = SearchFieldState.Saver) {
-        state
-    }
+    rememberSaveable(saver = SearchFieldState.Saver) { state }
 
 @Composable
 public fun rememberSearchFieldState(data: SearchFieldStateData): SearchFieldState =

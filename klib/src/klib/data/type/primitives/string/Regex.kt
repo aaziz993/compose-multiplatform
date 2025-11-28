@@ -52,7 +52,7 @@ public val Regex.Companion.ASCII_PATTERN: String
 public val Regex.Companion.ASCII: Regex
     get() = "\\p{ASCII}".toRegex()
 
-// Case transitions.─
+// Case transitions.
 public val Regex.Companion.LOWER_TO_UPPER_PATTERN: String
     get() = """(?<=$LOWERCASE_LETTER_PATTERN)(?=$UPPERCASE_LETTER_PATTERN)"""
 public val Regex.Companion.LOWER_TO_UPPER: Regex
@@ -62,13 +62,13 @@ public val Regex.Companion.UPPER_TO_LOWER_PATTERN: String
 public val Regex.Companion.UPPER_TO_LOWER: Regex
     get() = """(?<=$UPPERCASE_LETTER_PATTERN)(?=$LOWERCASE_LETTER_PATTERN)""".toRegex()
 
-// Identifiers.──
+// Identifiers.
 public val Regex.Companion.ID_PATTERN: String
     get() = "[_\\p{L}][_\\p{L}\\p{N}]*"
 public val Regex.Companion.ID: Regex
     get() = "[_\\p{L}][_\\p{L}\\p{N}]*".toRegex()
 
-// String literals.─
+// String literals.
 public val Regex.Companion.SINGLE_QUOTED_STRING_PLAIN_PATTERN: String
     get() = """(?:[^'\\]|\\.)*"""
 public val Regex.Companion.SINGLE_QUOTED_STRING_PATTERN: String
@@ -81,3 +81,9 @@ public val Regex.Companion.DOUBLE_QUOTED_STRING_PATTERN: String
     get() = """"$DOUBLE_QUOTED_STRING_PLAIN_PATTERN""""
 public val Regex.Companion.DOUBLE_QUOTED_STRING: Regex
     get() = """"$DOUBLE_QUOTED_STRING_PLAIN_PATTERN"""".toRegex()
+
+// Color.
+public val Regex.Companion.HEX_COLOR_PATTERN: String
+    get() = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$"
+public val Regex.Companion.HEX_COLOR: Regex
+    get() = Regex.HEX_COLOR_PATTERN.toRegex()

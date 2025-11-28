@@ -20,7 +20,7 @@ public actual class OleBlob(public val oleBlob: com.healthmarketscience.jackcess
         is com.healthmarketscience.jackcess.util.OleBlob.PackageContent -> JavaPackageContent(content)
         is com.healthmarketscience.jackcess.util.OleBlob.EmbeddedContent -> JavaEmbeddedContent(content)
 
-        else -> error("Unknown content '$content'")
+        else -> throw IllegalArgumentException("Unknown content '$content'")
     }
 
     public companion object {

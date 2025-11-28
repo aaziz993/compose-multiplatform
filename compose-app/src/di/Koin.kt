@@ -13,5 +13,4 @@ public fun koinConfiguration(): KoinAppDeclaration =
         options(
             viewModelScopeFactory(),
         )
-        modules(ui.navigation.presentation.App.module())
     }

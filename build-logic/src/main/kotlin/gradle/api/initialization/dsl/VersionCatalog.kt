@@ -85,7 +85,7 @@ public data class VersionCatalog(
                     Toml.decodeFromString<VersionCatalog>(text)
                 }
 
-                else -> error("Unknown dependency notation '$dependencyNotation'")
+                else -> throw IllegalArgumentException("Unknown dependency notation '$dependencyNotation'")
             }
 
         private fun String.toCatalogUrl(): String {

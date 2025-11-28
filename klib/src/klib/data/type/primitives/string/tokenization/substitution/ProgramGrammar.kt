@@ -201,7 +201,7 @@ public object ProgramGrammar : Grammar<Program>() {
                     Message::class.simpleName!!.toCamelCase() -> Message(receiver, optional)
                     StackTraceToString::class.simpleName!!.toCamelCase() -> StackTraceToString(receiver, optional)
 
-                    else -> error("Unknown member call '$name'")
+                    else -> throw IllegalArgumentException("Unknown member call '$name'")
                 }
             }
         }
@@ -224,7 +224,7 @@ public object ProgramGrammar : Grammar<Program>() {
                 exclamationMarkToken -> NotNull(acc)
                 plusToken -> Inc(acc)
                 hyphenToken -> Dec(acc)
-                else -> error("Unexpected postfix operator")
+                else -> throw IllegalArgumentException("Unexpected postfix operator")
             }
         }
     }
@@ -245,7 +245,7 @@ public object ProgramGrammar : Grammar<Program>() {
             forwardSlashToken -> l / r
             remToken -> l % r
 
-            else -> error("Unsupported multiplication token '$o'")
+            else -> throw IllegalArgumentException("Unsupported multiplication token '$o'")
         }
     }
 
@@ -255,7 +255,7 @@ public object ProgramGrammar : Grammar<Program>() {
             plusToken -> l + r
             hyphenToken -> l - r
 
-            else -> error("Unsupported sum token '$o'")
+            else -> throw IllegalArgumentException("Unsupported sum token '$o'")
         }
     }
 
@@ -288,7 +288,7 @@ public object ProgramGrammar : Grammar<Program>() {
                     6 -> l geq r
                     7 -> l gt r
 
-                    else -> error("Unsupported comparison token '$o'")
+                    else -> throw IllegalArgumentException("Unsupported comparison token '$o'")
                 }
             } ?: l
         }
@@ -340,7 +340,7 @@ public object ProgramGrammar : Grammar<Program>() {
                 forwardSlashToken -> assignee / value
                 remToken -> assignee % value
                 powToken -> assignee pow value
-                else -> error("Unsupported compound assign '${compound.type}'")
+                else -> throw IllegalArgumentException("Unsupported compound assign '${compound.type}'")
             }
         )
     }

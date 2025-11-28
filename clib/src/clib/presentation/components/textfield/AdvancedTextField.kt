@@ -51,7 +51,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
-import clib.presentation.theme.model.color
+import clib.data.type.color
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 
 @Composable

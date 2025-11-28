@@ -240,7 +240,7 @@ public abstract class Script {
                     "json" -> Json.decodeAnyFromString(text)
                     "properties" -> Properties.decodeAnyFromString(text)
 
-                    else -> error("Unsupported file extension ${file.extension}")
+                    else -> throw IllegalArgumentException("Unsupported file extension ${file.extension}")
                 }!!.asStringNullableMap
             },
             cache: Cache<String, String> = SqliteCache(

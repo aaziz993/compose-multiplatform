@@ -1,10 +1,10 @@
 package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
-import clib.presentation.navigation.exception.NavigationException
 import klib.data.type.auth.model.Auth
 import klib.data.type.collections.replaceWith
 import kotlinx.coroutines.CoroutineScope
@@ -12,6 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
+
+private const val TAG_LOG: String = "Navigator"
 
 /**
  * Navigator implementation that integrates with Navigation 3.
@@ -26,7 +28,6 @@ import kotlinx.coroutines.yield
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param auth The current authentication state used to determine access control.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
- * @param onError Callback triggered when navigation throws exception.
  */
 public open class Nav3Navigator(
     override val routes: Routes,
@@ -35,7 +36,6 @@ public open class Nav3Navigator(
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
     private val onBack: () -> Unit,
-    private val onError: (NavigationException) -> Unit,
 ) : Navigator {
 
     init {
@@ -68,7 +68,7 @@ public open class Nav3Navigator(
                 ) { callOnBack = true }
             }
             catch (e: RuntimeException) {
-                return onError(NavigationException(action, e))
+                return nav3Logger.error(e, TAG_LOG) { "Navigation failed '$action'" }
             }
         }
 
@@ -307,7 +307,6 @@ public open class Nav3Navigator(
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param auth The current authentication state used to determine access control.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
- * @param onError Callback triggered when navigation throws exception.
  * @return A remembered navigator instance.
  */
 @Composable
@@ -317,11 +316,13 @@ public fun rememberNav3Navigator(
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
     onBack: () -> Unit = systemOnBack(),
-    onError: (NavigationException) -> Unit = {},
 ): Navigator {
     val backStack = rememberNavBackStack(routes)
-
     val parentOnBack = LocalRouter.current?.let { it::pop }
+
+    LaunchedEffect(backStack.toList()) {
+        nav3Logger.debug(TAG_LOG) { "Back stack: ${backStack.joinToString(" -> ")}" }
+    }
 
     return remember(auth) {
         Nav3Navigator(
@@ -331,7 +332,6 @@ public fun rememberNav3Navigator(
             authRoute,
             authRedirectRoute,
             parentOnBack ?: onBack,
-            onError,
         )
     }
 }

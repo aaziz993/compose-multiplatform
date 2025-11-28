@@ -1,4 +1,4 @@
-package clib.presentation.color.common
+package clib.presentation.components.color.common
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -13,12 +13,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -27,26 +24,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import clib.data.type.color.toColor
-import com.github.ajalt.colormath.model.HSV
 
+@Suppress("ComposeParameterOrder")
 @Composable
 internal fun SliderHue(
     modifier: Modifier = Modifier,
-    onColorSelect: (color: Color) -> Unit
+    value: Float,
+    onValueChange: (value: Float) -> Unit,
 ) {
-    val hueValueState = rememberSaveable { mutableFloatStateOf(0f) }
-    val huePanelWidth = rememberSaveable { mutableFloatStateOf(1f) }
-
-    var hsv by remember { mutableStateOf(Color.Blue.toColor().toHSV()) }
-
-    // Launch an effect to invoke the provided callback with the selected color
-    LaunchedEffect(hueValueState.floatValue) {
-        val selectedHue = pointToHue(hueValueState.floatValue, huePanelWidth.value)
-        hsv = HSV(selectedHue, hsv.s, hsv.v)
-        val generatedColor = Color.hsv(hsv.h, hsv.s, hsv.v)
-        onColorSelect.invoke(generatedColor)
-    }
+    var hue by rememberSaveable { mutableFloatStateOf(value) }
+    val huePanelWidth = rememberSaveable { mutableFloatStateOf(360f) }
 
     Box(
         modifier = modifier
@@ -59,8 +46,11 @@ internal fun SliderHue(
                 .fillMaxWidth()
                 .align(Alignment.Center),
             valueRange = 0f..huePanelWidth.value,
-            value = hueValueState.floatValue,
-            onValueChange = hueValueState.component2(),
+            value = hue,
+            onValueChange = {
+                onValueChange(pointToHue(it, huePanelWidth.value))
+                hue = it
+            },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
                 activeTrackColor = Color.Transparent,

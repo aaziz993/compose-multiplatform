@@ -20,11 +20,13 @@ import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
+import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
 import klib.data.location.locale.Locale
+import klib.data.location.locale.current
 import klib.data.type.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -37,10 +39,11 @@ public fun NavScreen(
     title: @Composable () -> Unit = {},
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
-    locale: Locale? = null,
-    onLocaleChange: (Locale?) -> Unit = {},
+    locale: Locale = Locale.current,
+    onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
+    quickAccess: QuickAccess = QuickAccess(),
     hasDrawer: Boolean = true,
     hasBack: Boolean = true,
     layoutType: NavigationSuiteType =
@@ -61,6 +64,7 @@ public fun NavScreen(
         onLocaleChange = onLocaleChange,
         auth = auth,
         onAuthChange = onAuthChange,
+        quickAccess = quickAccess,
         hasDrawer = hasDrawer,
         isDrawerOpen = navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible,
         onDrawerToggle = {

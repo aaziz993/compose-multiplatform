@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 public class OpenStreetMap(
     override val name: String = "OpenStreetMap",
-
-    override val baseURL: String = LIBERTY) : Tile() {
+    override val baseURL: String = "http://tile.openstreetmap.org",
+) : Tile() {
 
     override val minimumZoomLevel: Int
         get() = 0

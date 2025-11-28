@@ -1,4 +1,4 @@
-package clib.presentation.color.common
+package clib.presentation.components.color.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -42,55 +42,77 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.toClipEntry
-import clib.data.type.color.Color100
-import clib.data.type.color.Color200
-import clib.data.type.color.Color300
-import clib.data.type.color.Color400
-import clib.data.type.color.Color50
-import clib.data.type.color.Color600
-import clib.data.type.color.Color700
-import clib.data.type.color.Color800
-import clib.data.type.color.Color900
+import clib.data.type.Color100
+import clib.data.type.Color200
+import clib.data.type.Color300
+import clib.data.type.Color400
+import clib.data.type.Color50
+import clib.data.type.Color600
+import clib.data.type.Color700
+import clib.data.type.Color800
+import clib.data.type.Color900
+import clib.data.type.getColorMap
+import clib.data.type.hexToColor
+import com.github.skydoves.colorpicker.compose.ColorPickerController
+import com.github.skydoves.colorpicker.compose.rememberColorPickerController
+import com.materialkolor.ktx.toHex
 import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
+import klib.data.type.primitives.string.HEX_COLOR
+import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
+
+@Composable
+public fun rememberColorPickerController(initialValue: Color): ColorPickerController =
+    rememberColorPickerController().apply {
+        selectColor(initialValue)
+    }
+
+internal fun ColorPickerController.selectColor(color: Color) {
+    (selectedColor as MutableState<Color>).value = color
+}
 
 /**
  * A composable function that creates a slider for adjusting a float value associated with a color.
  *
- * @param colorLabel: String: The label to display alongside the slider.
- * @param colorValueState: MutableState<Float>: The mutable state holding the current color value of the slider.
- * @param color: Color: The color used for the active track of the slider.
+ * @param label: String: The label to display alongside the slider.
+ * @param trackColor: Color: The color used for the active track of the slider.
+ * @param value: MutableState<Float>: The mutable state holding the current color value of the slider.
+ * @param onValueChange: (value: Float) -> Unit: Callback to invoke when the slider value changes.: The mutable state holding the current color value of the slider.
  *
  * @return @Composable: A slider UI for color selection.
  */
 @Composable
-internal fun ColorSlider(colorLabel: String, colorValueState: MutableState<Float>, color: Color) {
-
-    val sliderValue = remember { mutableStateOf(TextFieldValue("0")) }
+internal fun ColorSlider(
+    label: String,
+    trackColor: Color,
+    value: Float,
+    onValueChange: (Float) -> Unit
+) {
+    var sliderValue by remember { mutableStateOf(TextFieldValue((value * 255).toInt().toString())) }
 
     /**
-     * Displays a slider for adjusting the given [colorValueState] associated with the provided [colorLabel].
-     * The slider's active track color is set to [color].
+     * Displays a slider for adjusting the given [value] associated with the provided [label].
+     * The slider's active track color is set to [trackColor].
      */
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Text(
-            text = colorLabel,
+            text = label,
             color = Color.Black,
             fontSize = 14.sp,
             modifier = Modifier.weight(.2f),
         )
         Slider(
-            value = colorValueState.value,
-            onValueChange = { newValue ->
-                colorValueState.value = newValue
-                sliderValue.value = TextFieldValue(toColorRange(colorValueState.value).toString())
+            value = value,
+            onValueChange = { value ->
+                onValueChange(value)
+                sliderValue = TextFieldValue(toColorRange(value).toString())
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = color,
+                activeTrackColor = trackColor,
             ),
             modifier = Modifier.weight(.8f),
         )
@@ -101,14 +123,10 @@ internal fun ColorSlider(colorLabel: String, colorValueState: MutableState<Float
                 .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20)),
         ) {
             BasicTextField(
-                value = sliderValue.value,
+                value = sliderValue,
                 onValueChange = {
-                    if (it.text != "" && it.text.toInt() > 255)
-                        sliderValue.value = TextFieldValue("255")
-                    else
-                        sliderValue.value = it
-
-                    colorValueState.value = sliderRange(sliderValue.value.text)
+                    sliderValue = if (it.text != "" && it.text.toInt() > 255) TextFieldValue("255") else it
+                    onValueChange(sliderRange(sliderValue.text))
                 },
                 modifier = Modifier
                     .width(80.dp)
@@ -134,29 +152,17 @@ private fun toColorRange(value: Float): Int = (value * 255 + 0.5f).toInt()
  *
  * @return The float representation of the slider component
  */
-private fun sliderRange(value: String): Float {
-    return if (value == "") {
-        0f
-    }
-    else {
-        (value.toFloat() / 255)
-    }
-}
+private fun sliderRange(value: String): Float = if (value.isEmpty()) 0f else value.toFloat() / 255
 
 /**
  * A composable function that creates a slider for adjusting a float value associated with a color alpha valuw.
  *
- * @param alphaValueState: MutableState<Float>: The mutable state holding the current value of the slider.
- * @param color: Color: The color used for the active track of the slider.
+ * @param controller: ColorPickerController.
  *
  * @return @Composable: A slider UI for alpha selection.
  */
 @Composable
-internal fun AlphaSlider(alphaValueState: MutableState<Float>, color: Color) {
-    /**
-     * Displays a slider for adjusting the given [alphaValueState].
-     * The slider's active track color is set to [color].
-     */
+internal fun AlphaSlider(controller: ColorPickerController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -168,17 +174,21 @@ internal fun AlphaSlider(alphaValueState: MutableState<Float>, color: Color) {
             modifier = Modifier.weight(.2f),
         )
         Slider(
-            value = alphaValueState.value,
-            onValueChange = alphaValueState.component2(),
+            value = controller.selectedColor.value.alpha,
+            onValueChange = { value ->
+                controller.setAlpha(value, true)
+            },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = color,
+                activeTrackColor = controller.selectedColor.value,
             ),
             valueRange = 0f..1f,
             modifier = Modifier.weight(.8f),
         )
 
-        val displayText = DecimalFormatter.DefaultFormatter.format(alphaValueState.value).displayValue
+        val displayText = DecimalFormatter.DefaultFormatter.format(
+            (controller.selectedColor.value.alpha * 10000).roundToInt(),
+        ).displayValue
 
         Text(
             text = displayText,
@@ -196,16 +206,22 @@ internal fun AlphaSlider(alphaValueState: MutableState<Float>, color: Color) {
  * A composable function that creates a slider for adjusting a float value associated with a color alpha value.
  *
  * @param label: String: The label to display alongside the slider.
- * @param valueState: MutableState<Float>: The mutable state holding the current value of the slider.
- * @param color: Color: The color used for the active track of the slider.
+ * @param trackColor: Color: The color used for the active track of the slider.
+ * @param value: The value holding the current value of the slider.
+ * @param onValueChange Callback for value change.
  *
  * @return @Composable: A slider UI for alpha selection.
  */
 @Composable
-internal fun ColorSaturationAndLightnessSlider(label: String, valueState: MutableState<Float>, color: Color) {
+internal fun ColorSaturationAndLightnessSlider(
+    label: String,
+    trackColor: Color,
+    value: Float,
+    onValueChange: (Float) -> Unit,
+) {
     /**
-     * Displays a slider for adjusting the given [valueState] associated with the provided [label].
-     * The slider's active track color is set to [color].
+     * The slider's active track color is set to [trackColor].
+     * Displays a slider for adjusting the given [value] associated with the provided [label].
      */
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -218,17 +234,17 @@ internal fun ColorSaturationAndLightnessSlider(label: String, valueState: Mutabl
             modifier = Modifier.weight(.2f),
         )
         Slider(
-            value = valueState.value,
-            onValueChange = valueState.component2(),
+            value = value,
+            onValueChange = onValueChange,
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = color,
+                activeTrackColor = trackColor,
             ),
             valueRange = 0f..1f,
             modifier = Modifier.weight(.8f),
         )
 
-        val displayText = DecimalFormatter.DefaultFormatter.format(valueState.value).displayValue
+        val displayText = DecimalFormatter.DefaultFormatter.format((value * 10000).roundToInt()).displayValue
 
         Text(
             text = displayText,
@@ -245,17 +261,15 @@ internal fun ColorSaturationAndLightnessSlider(label: String, valueState: Mutabl
 /**
  * A composable function that displays the selected color and its details.
  *
- * @param color: Color: The selected color to display.
- * @param colorHex: MutableState<TextFieldValue>: The mutable state holding the current color hex value.
+ * @param controller: ColorPickerController.
+ * @param title: Title.
  *
  * @return @Composable: A UI to display selected color and its details.
  */
 @Composable
 internal fun SelectedColorDetail(
+    controller: ColorPickerController,
     title: String,
-    hexLabel: String,
-    color: Color,
-    colorHex: MutableState<TextFieldValue>,
 ) {
     // Retrieve a ClipboardManager object
     val clipboard = LocalClipboard.current
@@ -272,7 +286,7 @@ internal fun SelectedColorDetail(
                     .padding(start = 12.dp, end = 12.dp, top = 22.dp, bottom = 12.dp)
                     .height(75.dp)
                     .width(75.dp)
-                    .background(color, shape = MaterialTheme.shapes.large)
+                    .background(controller.selectedColor.value, shape = MaterialTheme.shapes.large)
                     .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp)),
             )
         }
@@ -291,16 +305,19 @@ internal fun SelectedColorDetail(
                 style = MaterialTheme.typography.bodyMedium,
             )
 
+            val hex = controller.selectedColor.value.toHex()
+
             Row {
                 OutlinedTextField(
                     modifier = Modifier
                         .padding(2.dp)
                         .weight(.8f),
-                    value = colorHex.value,
+                    value = hex,
                     maxLines = 1,
-                    label = { Text(text = hexLabel) },
-                    onValueChange = { newColorHex ->
-                        colorHex.value = newColorHex
+                    label = { Text(text = title) },
+                    onValueChange = { value ->
+                        if (Regex.HEX_COLOR.matches(value))
+                            controller.selectColor(value.hexToColor())
                     },
                 )
 
@@ -315,7 +332,7 @@ internal fun SelectedColorDetail(
                         .padding(8.dp)
                         .clickable {
                             coroutineScope.launch {
-                                clipboard.setClipEntry(colorHex.value.text.toClipEntry())
+                                clipboard.setClipEntry(hex.toClipEntry())
                             }
                         },
                 )
@@ -328,23 +345,23 @@ internal fun SelectedColorDetail(
  * A composable function that displays a color colum with predefined colors.
  *
  * @param givenColor: KvColor: The color to generate color palette. This is from [Color]
- * @param selectedColor: Color: The selected color to highlight.
- * @param onSelect: (color: Color) -> Unit: Callback to invoke when a color is selected.
+ * @param value: Color: The selected color to highlight.
+ * @param onValueChange: (color: Color) -> Unit: Callback to invoke when a color is selected.
  */
 @Composable
-internal fun ColorColum(
+internal fun ColorColumn(
     boxSize: Dp,
-    givenColor: Color,
-    selectedColor: Color,
-    onSelect: (color: Color) -> Unit
+    givenColor: String,
+    value: Color,
+    onValueChange: (color: Color) -> Unit
 ) {
     val colors = generateColorPalette(givenColor = givenColor)
     Column {
         colors.forEach {
             ColorBox(
-                givenColor = it,
-                selectedColor = selectedColor,
-                onSelect = onSelect,
+                boxColor = it,
+                value = value,
+                onValueChange = onValueChange,
                 boxSize = boxSize,
             )
         }
@@ -355,31 +372,31 @@ internal fun ColorColum(
  * A composable function that displays a single color box.
  *
  * @param boxSize: Dp: Size of the color box.
- * @param givenColor: Color: The color to display.
- * @param selectedColor: Color: The selected color to highlight.
- * @param onSelect: (color: Color) -> Unit: Callback to invoke when a color is selected.
+ * @param boxColor: Color: The color to display.
+ * @param value: Color: The selected color to highlight.
+ * @param onValueChange: (color: Color) -> Unit: Callback to invoke when a color is selected.
  */
 @Composable
 internal fun ColorBox(
-    givenColor: Color,
-    selectedColor: Color?,
-    onSelect: (color: Color) -> Unit,
-    boxSize: Dp = 24.dp,
+    boxSize: Dp,
+    boxColor: Color,
+    value: Color?,
+    onValueChange: (color: Color) -> Unit,
 ) {
     var isSelected by remember { mutableStateOf(false) }
 
-    selectedColor?.let {
-        isSelected = givenColor == it
+    value?.let {
+        isSelected = boxColor == it
     }
 
     Box(
         modifier = Modifier
             .width(boxSize)
             .height(boxSize)
-            .background(givenColor, RectangleShape)
+            .background(boxColor, RectangleShape)
             .clickable {
                 isSelected = true
-                onSelect(givenColor)
+                onValueChange(boxColor)
             }
             .then(if (isSelected) Modifier.border(2.dp, Color.White) else Modifier),
     )
@@ -392,16 +409,16 @@ internal fun ColorBox(
  * @param givenColor The color to generate the color packages for.
  * @return A list of colors.
  */
-private fun generateColorPalette(givenColor: Color, alphaChange: Float = 1f): List<Color> =
+private fun generateColorPalette(givenColor: String, alphaChange: Float = 1f): List<Color> =
     listOf(
-        Color900.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color800.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color700.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color600.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        clib.data.type.color.Color.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color400.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color300.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color200.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color100.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
-        Color50.getColorList().single { color -> color == givenColor }.copy(alpha = alphaChange),
+        Color900.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color800.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color700.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color600.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color400.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color300.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color200.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color100.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color50.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
     )

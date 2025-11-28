@@ -2,7 +2,7 @@ package clib.presentation.theme
 
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
-import clib.presentation.theme.model.StaticColorPalette
+import clib.presentation.theme.model.ColorPalette
 import clib.presentation.theme.model.toColorScheme
 
 public object WhiteBlueTheme {
@@ -70,7 +70,7 @@ public object WhiteBlueTheme {
         scrim = md_theme_light_scrim,
     )
 
-    public val ColorPalette: StaticColorPalette = StaticColorPalette(
+    public val ColorPalette: ColorPalette = ColorPalette(
         lightColorScheme = WhiteBlueColorScheme.toColorScheme(),
         darkColorScheme = WhiteBlueColorScheme.toColorScheme(),
     )

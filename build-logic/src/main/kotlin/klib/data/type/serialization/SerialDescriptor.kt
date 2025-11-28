@@ -85,7 +85,7 @@ public fun SerialDescriptor.now(timeZone: TimeZone): Any =
         LocalDate::class.serializer().descriptor -> LocalDate.now(timeZone)
         LocalDateTime::class.serializer().descriptor -> LocalDateTime.now(timeZone)
 
-        else -> error("Invalid time type: $serialName")
+        else -> throw IllegalArgumentException("Invalid time type: $serialName")
     }
 
 @Suppress("UNCHECKED_CAST")

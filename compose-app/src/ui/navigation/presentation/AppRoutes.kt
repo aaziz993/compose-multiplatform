@@ -1,5 +1,6 @@
 package ui.navigation.presentation
 
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -30,11 +31,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import clib.di.koinViewModel
-import clib.presentation.auth.LocalAuthState
 import clib.di.navigation.KoinRoutes
+import clib.di.navigation.rememberKoinScopeNavEntryDecorator
+import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.Item
+import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
@@ -42,7 +47,10 @@ import clib.presentation.navigation.Route
 import clib.presentation.navigation.currentRouter
 import clib.presentation.navigation.model.NavigationItem
 import clib.presentation.navigation.scene.DelegatedScreenStrategy
+import clib.presentation.quickaccess.QuickAccess
+import clib.presentation.state.LocalStateStore
 import clib.presentation.theme.LocalThemeState
+import clib.presentation.theme.density.LocalDensityState
 import data.type.primitives.string.asStringResource
 import klib.data.type.auth.AuthResource
 import kotlin.reflect.KClass
@@ -88,6 +96,11 @@ public data object App : KoinRoutes() {
     ): Unit = androidx.navigation3.ui.NavDisplay(
         backStack = backStack,
         onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+            rememberKoinScopeNavEntryDecorator(),
+        ),
         sceneStrategy = DelegatedScreenStrategy(
             NavScreenSceneStrategy().delegate(),
         ),
@@ -124,6 +137,7 @@ public data object Home : Route<Home>(), NavRoute {
     @Composable
     override fun Content(
         route: Home,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
@@ -151,6 +165,11 @@ public data object News : KoinRoutes() {
     ): Unit = androidx.navigation3.ui.NavDisplay(
         backStack = backStack,
         onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+            rememberKoinScopeNavEntryDecorator(),
+        ),
         sceneStrategy = DelegatedScreenStrategy(
             NavScreenSceneStrategy().delegate(),
         ),
@@ -183,6 +202,7 @@ public data object Articles : Route<Articles>(), NavRoute {
     @Composable
     override fun Content(
         route: Articles,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
         val viewModel: ArticleViewModel = koinViewModel()
@@ -222,6 +242,7 @@ public data object Services : Route<Services>(), NavRoute {
     @Composable
     override fun Content(
         route: Services,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
@@ -258,6 +279,7 @@ public data object Map : Route<Map>(), NavRoute {
     @Composable
     override fun Content(
         route: Map,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
@@ -294,19 +316,29 @@ public data object Settings : Route<Settings>(), NavRoute {
     @Composable
     override fun Content(
         route: Settings,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
         val themeState = LocalThemeState.current
+        val densityState = LocalDensityState.current
+        val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
+        val stateStore = LocalStateStore.current
         val router = currentRouter()
 
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             themeState.theme,
-            { theme -> themeState.theme = theme },
+            { value -> themeState.theme = value },
+            densityState.density,
+            { value -> densityState.density = value },
+            localeState.localeInspectionAware(),
+            { value -> localeState.locale = value },
             authState.auth,
-            { auth -> authState.auth = auth },
+            { value -> authState.auth = value },
+            stateStore.get<QuickAccess>(),
+            onQuickAccessChange = { value -> stateStore.set<QuickAccess>(value = value) },
             router::actions,
         )
     }
@@ -337,6 +369,7 @@ public data object About : Route<About>(), NavRoute {
     @Composable
     override fun Content(
         route: About,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
@@ -364,6 +397,11 @@ public data object Auth : KoinRoutes(), AuthRoute {
     ): Unit = androidx.navigation3.ui.NavDisplay(
         backStack = backStack,
         onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+            rememberKoinScopeNavEntryDecorator(),
+        ),
         sceneStrategy = DelegatedScreenStrategy(
             NavScreenSceneStrategy().delegate(),
         ),
@@ -380,9 +418,10 @@ public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         route: Phone,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
-        val viewModel: PhoneViewModel = koinViewModel()
+        val viewModel: PhoneViewModel = koinViewModel { parametersOf(router) }
         val state by viewModel.state.collectAsStateWithLifecycle()
 
         PhoneScreen(
@@ -412,6 +451,7 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
         @Composable
         override fun Content(
             route: Otp,
+            sharedTransitionScope: SharedTransitionScope,
         ) {
             val router = currentRouter()
             val viewModel: OtpViewModel = koinViewModel { parametersOf(route) }
@@ -437,6 +477,7 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         route: PinCode,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
         val viewModel: PinCodeViewModel = koinViewModel()
@@ -461,6 +502,7 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         route: Login,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
         val viewModel: LoginViewModel = koinViewModel()
@@ -485,6 +527,7 @@ public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
     @Composable
     override fun Content(
         route: ForgotPinCode,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
@@ -507,6 +550,7 @@ public data object Verification : Route<Verification>(), NavRoute {
     @Composable
     override fun Content(
         route: Verification,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val authState = LocalAuthState.current
         val router = currentRouter()
@@ -536,6 +580,7 @@ public data object Profile : Route<Profile>(), NavRoute {
     @Composable
     override fun Content(
         route: Profile,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
         val authState = LocalAuthState.current
@@ -567,6 +612,11 @@ public data object Wallet : KoinRoutes() {
     ): Unit = androidx.navigation3.ui.NavDisplay(
         backStack = backStack,
         onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+            rememberKoinScopeNavEntryDecorator(),
+        ),
         sceneStrategy = DelegatedScreenStrategy(
             NavScreenSceneStrategy().delegate(),
         ),
@@ -599,6 +649,7 @@ public data object Balance : Route<Balance>(), NavRoute {
     @Composable
     override fun Content(
         route: Balance,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
@@ -635,6 +686,7 @@ public data object Crypto : Route<Crypto>(), NavRoute {
     @Composable
     override fun Content(
         route: Crypto,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
@@ -671,6 +723,7 @@ public data object Stock : Route<Stock>(), NavRoute {
     @Composable
     override fun Content(
         route: Stock,
+        sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 

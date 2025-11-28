@@ -54,7 +54,7 @@ public data class Assign(val assignee: Expression, val value: Expression) : Stat
 
         is Get -> ExpressionStatement(Set(assignee.arguments + value, assignee.optional))(machine)
 
-        else -> error("Invalid assignment target")
+        else -> throw IllegalArgumentException("Invalid assignment target")
     }
 }
 

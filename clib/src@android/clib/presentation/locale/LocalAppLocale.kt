@@ -15,25 +15,21 @@ import klib.data.location.locale.setCurrent
 import klib.data.location.locale.toJavaLocale
 import klib.data.type.serialization.plus
 
-public actual object LocalAppLocale {
+internal actual object LocalAppLocale {
 
-    private var default: Locale? = null
-    public actual val current: Locale
+    actual val current: Locale
         @Composable get() = Locale.current
 
     @Composable
-    public actual infix fun provides(value: Locale?): ProvidedValue<*> {
-        val newLocale = value ?: default ?: Locale.current
-        if (default == null) default = newLocale
-
-        Locale.setCurrent(newLocale)
+    actual infix fun provides(value: Locale): ProvidedValue<*> {
+        Locale.setCurrent(value)
 
         val context = LocalContext.current
         val configuration = Configuration(context.resources.configuration).apply {
-            setLocale(newLocale.toJavaLocale())
+            setLocale(value.toJavaLocale())
         }
 
-        val localizedContext = remember(newLocale) {
+        val localizedContext = remember(value) {
             context.createConfigurationContext(configuration)
         }
 

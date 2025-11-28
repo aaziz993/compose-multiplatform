@@ -39,7 +39,7 @@ public fun DependencyHandler.project(notation: Any): Dependency =
         is String -> project(mapOf("path" to notation))
         is Project -> project(notation.path)
 
-        else -> error("Unknown notation '$notation'")
+        else -> throw IllegalArgumentException("Unknown notation '$notation'")
     }
 
 /**

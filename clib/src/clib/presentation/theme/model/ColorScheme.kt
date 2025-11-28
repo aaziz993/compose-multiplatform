@@ -1,7 +1,11 @@
 package clib.presentation.theme.model
 
+import androidx.compose.runtime.Immutable
+import clib.data.type.Color
+import clib.data.type.toColor
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 public data class ColorScheme(
     val primary: Color,

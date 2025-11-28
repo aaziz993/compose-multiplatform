@@ -1,7 +1,7 @@
 package clib.presentation.components.topappbar
 
 import androidx.compose.material3.TopAppBarColors
-import clib.presentation.theme.model.Color
+import clib.data.type.Color
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,6 +11,7 @@ public data class TopAppBarColors(
     val navigationIconContentColor: Color,
     val titleContentColor: Color,
     val actionIconContentColor: Color,
+    val subtitleContentColor: Color,
 ) {
 
     public fun toTopAppBarColors(): TopAppBarColors =
@@ -20,5 +21,6 @@ public data class TopAppBarColors(
             navigationIconContentColor.toColor(),
             titleContentColor.toColor(),
             actionIconContentColor.toColor(),
+            subtitleContentColor.toColor(),
         )
 }

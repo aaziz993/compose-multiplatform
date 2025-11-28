@@ -102,7 +102,7 @@ public actual class Database(public val database: Database) :
                 is UnionQuery -> JavaUnionQuery(query)
                 is UpdateQuery -> JavaUpdateQuery(query)
 
-                else -> error("Unsupported query")
+                else -> throw IllegalArgumentException("Unsupported query")
             }
 
         }

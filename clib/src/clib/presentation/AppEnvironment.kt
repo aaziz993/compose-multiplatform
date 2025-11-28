@@ -3,17 +3,22 @@ package clib.presentation
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.material3.MaterialExpressiveTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import clib.di.koinInject
+import androidx.compose.ui.platform.LocalDensity
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
+import clib.presentation.event.EventBus
+import clib.presentation.event.LocalEventBus
+import clib.presentation.locale.LocalAppLocale
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
@@ -21,68 +26,95 @@ import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.rememberNav3Navigator
-import clib.presentation.theme.LocalAppTheme
+import clib.presentation.navigation.rememberRouter
+import clib.presentation.quickaccess.QuickAccess
+import clib.presentation.state.LocalStateStore
+import clib.presentation.state.StateStore
+import clib.presentation.state.rememberStateStore
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.density.DensityState
-import clib.presentation.theme.density.LocalAppDensity
+import clib.presentation.theme.density.LocalDensityState
 import clib.presentation.theme.density.rememberDensityState
-import clib.presentation.theme.model.DynamicColorPalette
-import clib.presentation.theme.model.StaticColorPalette
-import clib.presentation.theme.model.toColorScheme
 import clib.presentation.theme.rememberThemeState
-import com.materialkolor.DynamicMaterialExpressiveTheme
+import com.materialkolor.LocalDynamicMaterialThemeSeed
+import com.materialkolor.dynamiccolor.ColorSpec
+import com.materialkolor.ktx.animateColorScheme
+import com.materialkolor.rememberDynamicMaterialThemeState
 
-@Suppress("ComposeParameterOrder")
+@Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
 public fun AppEnvironment(
     themeState: ThemeState = rememberThemeState(),
     densityState: DensityState = rememberDensityState(),
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = rememberAuthState(),
+    stateStore: StateStore = rememberStateStore(
+        mapOf(
+            QuickAccess::class.toString() to mutableStateOf(QuickAccess()),
+        ),
+    ),
+    eventBus: EventBus = remember { EventBus() },
     motionScheme: MotionScheme? = null,
     shapes: Shapes? = null,
     typography: Typography? = null,
     animationSpec: FiniteAnimationSpec<Color> = spring(),
-    routerFactory: @Composable (Routes) -> Router = { routes -> koinInject() },
+    routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
 ): Unit = CompositionLocalProvider(
     LocalThemeState provides themeState,
-    LocalAppTheme provides themeState.theme.isDark,
+    LocalDensityState provides densityState,
+    LocalDensity provides densityState.density.toDensity(),
     LocalLocaleState provides localeState,
+    LocalAppLocale provides localeState.locale,
     LocalAuthState provides authState,
-    LocalAppDensity provides densityState.density?.toDensity(),
+    LocalStateStore provides stateStore,
+    LocalEventBus provides eventBus,
 ) {
     val theme = themeState.theme
 
-    when (theme.colorPalette) {
-        is StaticColorPalette -> MaterialExpressiveTheme(
-            if (LocalAppTheme.current) theme.colorPalette.lightColorScheme?.toColorScheme()
-            else theme.colorPalette.darkColorScheme?.toColorScheme(),
+    val isDark = theme.isDark()
+
+    val (colorScheme, seedColor) = if (theme.isDynamic) {
+        val dynamicColorPalette =
+            if (theme.isHighContrast) theme.dynamicColorPaletteHighContrast else theme.dynamicColorPalette
+
+        val state = rememberDynamicMaterialThemeState(
+            seedColor = dynamicColorPalette!!.seedColor.toColor(),
+            isDark = isDark,
+            isAmoled = dynamicColorPalette.isAmoled,
+            primary = dynamicColorPalette.primary?.toColor(),
+            secondary = dynamicColorPalette.secondary?.toColor(),
+            tertiary = dynamicColorPalette.tertiary?.toColor(),
+            neutral = dynamicColorPalette.neutral?.toColor(),
+            neutralVariant = dynamicColorPalette.neutralVariant?.toColor(),
+            error = dynamicColorPalette.error?.toColor(),
+            contrastLevel = dynamicColorPalette.contrastLevel,
+            specVersion = ColorSpec.SpecVersion.SPEC_2025,
+            platform = dynamicColorPalette.platform,
+        )
+
+        Surface { }
+
+        val colorScheme = state.colorScheme
+        (if (!dynamicColorPalette.animate) colorScheme
+        else animateColorScheme(colorScheme = colorScheme, animationSpec = { animationSpec })) to state.seedColor
+    }
+    else {
+        val colorPalette =
+            if (theme.isHighContrast) theme.colorPaletteHighContrast else theme.colorPalette
+
+        (if (isDark) colorPalette.darkColorScheme?.toColorScheme()
+        else colorPalette.lightColorScheme?.toColorScheme()) to Color.Transparent
+    }
+
+    CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
+        MaterialExpressiveTheme(
+            colorScheme,
             motionScheme,
             shapes,
             typography,
-        ) {
-            routes.Nav3Host(routerFactory, navigatorFactory)
-        }
-
-        is DynamicColorPalette -> DynamicMaterialExpressiveTheme(
-            seedColor = theme.colorPalette.seedColor.toColor(),
-            motionScheme = motionScheme,
-            isAmoled = theme.colorPalette.isAmoled,
-            primary = theme.colorPalette.primary?.toColor(),
-            secondary = theme.colorPalette.secondary?.toColor(),
-            tertiary = theme.colorPalette.tertiary?.toColor(),
-            neutral = theme.colorPalette.neutral?.toColor(),
-            neutralVariant = theme.colorPalette.neutralVariant?.toColor(),
-            error = theme.colorPalette.error?.toColor(),
-            contrastLevel = theme.colorPalette.contrastLevel,
-            platform = theme.colorPalette.platform,
-            shapes = shapes ?: MaterialTheme.shapes,
-            typography = typography ?: MaterialTheme.typography,
-            animate = theme.colorPalette.animate,
-            animationSpec = animationSpec,
         ) {
             routes.Nav3Host(routerFactory, navigatorFactory)
         }

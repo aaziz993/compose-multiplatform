@@ -1,8 +1,8 @@
-package clib.data.type.color
+package clib.data.type
 
 import androidx.annotation.ColorInt
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
-import com.github.ajalt.colormath.Color
+import com.github.ajalt.colormath.Color as ColorMath
 import com.github.ajalt.colormath.model.LABColorSpaces.LAB50
 import com.github.ajalt.colormath.model.Oklab
 import com.github.ajalt.colormath.model.RGB
@@ -19,48 +19,70 @@ import com.github.ajalt.colormath.model.RGBInt
 import com.github.ajalt.colormath.model.SRGB
 import com.github.ajalt.colormath.model.XYZColorSpaces.XYZ50
 import androidx.compose.ui.graphics.Color as ComposeColor
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import kotlin.jvm.JvmInline
+import kotlinx.serialization.Serializable
+
+@Immutable
+@Serializable
+@JvmInline
+public value class Color(public val value: ULong) {
+
+    public fun toColor(): ComposeColor = ComposeColor(value)
+}
+
+public fun ComposeColor.toColor(): Color = Color(value)
 
 /**
  * Material colors 500
  */
-public object Color {
+public val ComposeColor.Companion.Rose: ComposeColor
+    get() = ComposeColor(0xFFE91E63)
+public val ComposeColor.Companion.LPurple: ComposeColor
+    get() = ComposeColor(0xFF9C27B0)
+public val ComposeColor.Companion.DPurple: ComposeColor
+    get() = ComposeColor(0xFF673AB7)
+public val ComposeColor.Companion.DBlue: ComposeColor
+    get() = ComposeColor(0xFF3F51B5)
+public val ComposeColor.Companion.LBlue: ComposeColor
+    get() = ComposeColor(0xFF2196F3)
+public val ComposeColor.Companion.LLBlue: ComposeColor
+    get() = ComposeColor(0xFF03A9F4)
+public val ComposeColor.Companion.LCyan: ComposeColor
+    get() = ComposeColor(0xFF00BCD4)
+public val ComposeColor.Companion.DCyan: ComposeColor
+    get() = ComposeColor(0xFF009688)
+public val ComposeColor.Companion.DGreen: ComposeColor
+    get() = ComposeColor(0xFF4CAF50)
+public val ComposeColor.Companion.LGreen: ComposeColor
+    get() = ComposeColor(0xFF8BC34A)
+public val ComposeColor.Companion.LLGreen: ComposeColor
+    get() = ComposeColor(0xFFCDDC39)
+public val ComposeColor.Companion.Gold: ComposeColor
+    get() = ComposeColor(0xFFFFC107)
+public val ComposeColor.Companion.Orange: ComposeColor
+    get() = ComposeColor(0xFFFF9800)
 
-    public val White: ComposeColor = ComposeColor(0xAAFFFFFF)
-    public val Red: ComposeColor = ComposeColor(0xFFF44336)
-    public val Rose: ComposeColor = ComposeColor(0xFFE91E63)
-    public val LPurple: ComposeColor = ComposeColor(0xFF9C27B0)
-    public val DPurple: ComposeColor = ComposeColor(0xFF673AB7)
-    public val DBlue: ComposeColor = ComposeColor(0xFF3F51B5)
-    public val LBlue: ComposeColor = ComposeColor(0xFF2196F3)
-    public val LLBlue: ComposeColor = ComposeColor(0xFF03A9F4)
-    public val LCyan: ComposeColor = ComposeColor(0xFF00BCD4)
-    public val DCyan: ComposeColor = ComposeColor(0xFF009688)
-    public val DGreen: ComposeColor = ComposeColor(0xFF4CAF50)
-    public val LGreen: ComposeColor = ComposeColor(0xFF8BC34A)
-    public val LLGreen: ComposeColor = ComposeColor(0xFFCDDC39)
-    public val Yellow: ComposeColor = ComposeColor(0xFFFFEB3B)
-    public val Gold: ComposeColor = ComposeColor(0xFFFFC107)
-    public val Orange: ComposeColor = ComposeColor(0xFFFF9800)
-    public val Black: ComposeColor = ComposeColor(0xAA000000)
-
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
-    )
-}
+public fun ComposeColor.Companion.getColorMap(): Map<String, ComposeColor> = mapOf(
+    "Red" to Red,
+    "Rose" to Rose,
+    "LPurple" to LPurple,
+    "DPurple" to DPurple,
+    "DBlue" to DBlue,
+    "LBlue" to LBlue,
+    "LLBlue" to LLBlue,
+    "LCyan" to LCyan,
+    "DCyan" to DCyan,
+    "DGreen" to DGreen,
+    "LGreen" to LGreen,
+    "LLGreen" to LLGreen,
+    "Yellow" to Yellow,
+    "Gold" to Gold,
+    "Orange" to Orange,
+)
 
 /**
  * Material colors 900
@@ -84,22 +106,22 @@ internal object Color900 {
     val Gold: ComposeColor = ComposeColor(0xFFFF6F00)
     val Orange: ComposeColor = ComposeColor(0xFFE65100)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -125,22 +147,22 @@ internal object Color800 {
     val Gold: ComposeColor = ComposeColor(0xFFFF8F00)
     val Orange: ComposeColor = ComposeColor(0xFFEF6C00)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -166,22 +188,22 @@ internal object Color700 {
     val Gold: ComposeColor = ComposeColor(0xFFFFA000)
     val Orange: ComposeColor = ComposeColor(0xFFF57C00)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -207,22 +229,22 @@ internal object Color600 {
     val Gold: ComposeColor = ComposeColor(0xFFFFB300)
     val Orange: ComposeColor = ComposeColor(0xFFFB8C00)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -248,22 +270,22 @@ internal object Color400 {
     val Gold: ComposeColor = ComposeColor(0xFFFFCA28)
     val Orange: ComposeColor = ComposeColor(0xFFFFA726)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -289,22 +311,22 @@ internal object Color300 {
     val Gold: ComposeColor = ComposeColor(0xFFFFD54F)
     val Orange: ComposeColor = ComposeColor(0xFFFFB74D)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -330,22 +352,22 @@ internal object Color200 {
     val Gold: ComposeColor = ComposeColor(0xFFFFE082)
     val Orange: ComposeColor = ComposeColor(0xFFFFCC80)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -371,22 +393,22 @@ internal object Color100 {
     val Gold: ComposeColor = ComposeColor(0xFFFFECB3)
     val Orange: ComposeColor = ComposeColor(0xFFFFE0B2)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
@@ -412,29 +434,33 @@ internal object Color50 {
     val Gold: ComposeColor = ComposeColor(0xFFFFF8E1)
     val Orange: ComposeColor = ComposeColor(0xFFFFF3E0)
 
-    public fun getColorList(): List<ComposeColor> = listOf(
-        Red,
-        Rose,
-        LPurple,
-        DPurple,
-        DBlue,
-        LBlue,
-        LLBlue,
-        LCyan,
-        DCyan,
-        DGreen,
-        LGreen,
-        LLGreen,
-        Yellow,
-        Gold,
-        Orange,
+    fun getColorMap(): Map<String, ComposeColor> = mapOf(
+        "Red" to Red,
+        "Rose" to Rose,
+        "LPurple" to LPurple,
+        "DPurple" to DPurple,
+        "DBlue" to DBlue,
+        "LBlue" to LBlue,
+        "LLBlue" to LLBlue,
+        "LCyan" to LCyan,
+        "DCyan" to DCyan,
+        "DGreen" to DGreen,
+        "LGreen" to LGreen,
+        "LLGreen" to LLGreen,
+        "Yellow" to Yellow,
+        "Gold" to Gold,
+        "Orange" to Orange,
     )
 }
 
+@Composable
+public fun color(error: Boolean): ComposeColor =
+    if (error) MaterialTheme.colorScheme.error else LocalContentColor.current
+
 /**
- * Convert this color to a Colormath [Color] instance.
+ * Convert this color to a ColorMath [ColorMath] instance.
  */
-public fun ComposeColor.toColor(): Color =
+public fun ComposeColor.toColorMath(): ColorMath =
     when (colorSpace) {
         ColorSpaces.Srgb -> SRGB(red, green, blue, alpha)
         ColorSpaces.Aces -> ACES(red, green, blue, alpha)
@@ -452,15 +478,15 @@ public fun ComposeColor.toColor(): Color =
     }
 
 /**
- * Convert this color to a Colormath [SRGB] instance.
+ * Convert this color to a ColorMath [SRGB] instance.
  */
 public fun ComposeColor.toSRGB(): RGB =
     convert(ColorSpaces.Srgb).let { SRGB(it.red, it.green, it.blue, it.alpha) }
 
 /**
- * Convert this color to a Jetpack Compose [Color][ComposeColor] instance.
+ * Convert this color to a Compose [ComposeColor] instance.
  */
-public fun Color.toColor(): ComposeColor {
+public fun ColorMath.toColor(): ComposeColor {
     if (this is RGBInt) return ComposeColor(argb.toInt())
     val s = when {
         space == SRGB -> ColorSpaces.Srgb
@@ -493,7 +519,7 @@ public fun Color.toColor(): ComposeColor {
  * Convert this color to a packed argb [color int][ColorInt].
  */
 @ColorInt
-public fun Color.toColorInt(): Int = toSRGB().toRGBInt().argb.toInt()
+public fun ColorMath.toColorInt(): Int = toSRGB().toRGBInt().argb.toInt()
 
 /**
  * Create an [RGB] instance from a packed argb [color int][ColorInt].
