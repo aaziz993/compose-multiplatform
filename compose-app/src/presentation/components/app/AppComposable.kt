@@ -38,6 +38,7 @@ import presentation.theme.DarkColorsHighContrast
 import presentation.theme.LightColors
 import presentation.theme.LightColorsHighContrast
 import presentation.theme.SquircleShapes
+import presentation.theme.Typography
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services
@@ -58,6 +59,7 @@ public fun AppComposable(
             dynamicColorPalette = DynamicColorPalette(Color.Cyan),
             dynamicColorPaletteHighContrast = DynamicColorPalette(Color.Blue),
             shapes = SquircleShapes,
+            typography = Typography,
         ),
     ),
     densityState: DensityState = rememberDensityState(),
