@@ -1,9 +1,8 @@
 package clib.presentation.theme.model
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import clib.presentation.theme.shapes.Shapes
+import clib.presentation.theme.shapes.ShapesSerial
+import clib.presentation.theme.typography.TypographySerial
 import kotlinx.serialization.Serializable
 
 @Immutable
@@ -16,7 +15,8 @@ public data class Theme(
     val colorPaletteHighContrast: ColorPalette = ColorPalette(),
     val dynamicColorPalette: DynamicColorPalette? = null,
     val dynamicColorPaletteHighContrast: DynamicColorPalette? = null,
-    val shapes: Shapes? = null,
+    val shapes: ShapesSerial? = null,
+    val typography: TypographySerial? = null,
 ) {
 
     public fun copyIsDarkToggled(): Theme = when (isDark) {
@@ -24,9 +24,5 @@ public data class Theme(
         false -> copy(isDark = true)
         true -> copy(isDark = null)
     }
-
-    @Suppress("ComposeUnstableReceiver")
-    @Composable
-    public fun isDark(): Boolean = isDark ?: isSystemInDarkTheme()
 }
 

@@ -3,7 +3,6 @@ package clib.presentation.theme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 import clib.presentation.theme.model.ColorPalette
-import clib.presentation.theme.model.toColorScheme
 
 public object WhiteBlueTheme {
 
@@ -71,7 +70,7 @@ public object WhiteBlueTheme {
     )
 
     public val ColorPalette: ColorPalette = ColorPalette(
-        lightColorScheme = WhiteBlueColorScheme.toColorScheme(),
-        darkColorScheme = WhiteBlueColorScheme.toColorScheme(),
+        lightColorScheme = WhiteBlueColorScheme,
+        darkColorScheme = WhiteBlueColorScheme,
     )
 }

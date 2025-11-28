@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.data.type.toColorMath
+import clib.data.type.toColor
 import clib.presentation.components.color.common.SliderHue
 import clib.presentation.components.color.common.selectColor
 import com.github.skydoves.colorpicker.compose.ColorPickerController
@@ -60,7 +60,7 @@ internal fun BlendColorPicker(
 ) {
     // State variables for first color hue and second color hue
     var firstHue by remember {
-        mutableFloatStateOf(controller.selectedColor.value.toColorMath().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
+        mutableFloatStateOf(controller.selectedColor.value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
     }
     var secondHue by remember { mutableFloatStateOf(firstHue) }
     var firstBlendColor by remember { mutableStateOf(controller.selectedColor.value) }

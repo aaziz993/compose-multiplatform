@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import clib.data.type.toColor
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
@@ -33,9 +32,7 @@ import clib.presentation.theme.density.rememberDensityState
 import clib.presentation.theme.model.ColorPalette
 import clib.presentation.theme.model.DynamicColorPalette
 import clib.presentation.theme.model.Theme
-import clib.presentation.theme.model.toColorScheme
 import clib.presentation.theme.rememberThemeState
-import clib.presentation.theme.shapes.toShapes
 import presentation.theme.DarkColors
 import presentation.theme.DarkColorsHighContrast
 import presentation.theme.LightColors
@@ -51,16 +48,16 @@ public fun AppComposable(
     themeState: ThemeState = rememberThemeState(
         Theme(
             colorPalette = ColorPalette(
-                LightColors.toColorScheme(),
-                DarkColors.toColorScheme(),
+                LightColors,
+                DarkColors,
             ),
             colorPaletteHighContrast = ColorPalette(
-                LightColorsHighContrast.toColorScheme(),
-                DarkColorsHighContrast.toColorScheme(),
+                LightColorsHighContrast,
+                DarkColorsHighContrast,
             ),
-            dynamicColorPalette = DynamicColorPalette(Color.Cyan.toColor()),
-            dynamicColorPaletteHighContrast = DynamicColorPalette(Color.Blue.toColor()),
-            shapes = SquircleShapes.toShapes(),
+            dynamicColorPalette = DynamicColorPalette(Color.Cyan),
+            dynamicColorPaletteHighContrast = DynamicColorPalette(Color.Blue),
+            shapes = SquircleShapes,
         ),
     ),
     densityState: DensityState = rememberDensityState(),

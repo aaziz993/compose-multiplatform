@@ -1,20 +1,20 @@
 package clib.presentation.theme.model
 
-import clib.data.type.Color
+import clib.data.type.ColorSerial
 import com.materialkolor.Contrast
 import com.materialkolor.scheme.DynamicScheme
 import kotlinx.serialization.Serializable
 
 @Serializable
 public data class DynamicColorPalette(
-    val seedColor: Color,
+    val seedColor: ColorSerial,
     val isAmoled: Boolean = false,
-    val primary: Color? = null,
-    val secondary: Color? = null,
-    val tertiary: Color? = null,
-    val neutral: Color? = null,
-    val neutralVariant: Color? = null,
-    val error: Color? = null,
+    val primary: ColorSerial? = null,
+    val secondary: ColorSerial? = null,
+    val tertiary: ColorSerial? = null,
+    val neutral: ColorSerial? = null,
+    val neutralVariant: ColorSerial? = null,
+    val error: ColorSerial? = null,
     val contrastLevel: Double = Contrast.Default.value,
     val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
     val animate: Boolean = false,

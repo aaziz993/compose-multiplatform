@@ -22,12 +22,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.toColor
-import clib.data.type.toColorMath
 import clib.presentation.components.color.common.AlphaSlider
 import clib.presentation.components.color.common.ColorSaturationAndLightnessSlider
 import clib.presentation.components.color.common.SliderHue
 import clib.presentation.components.color.common.selectColor
-import com.github.ajalt.colormath.model.HSL
 import com.github.skydoves.colorpicker.compose.ColorPickerController
 
 /**
@@ -79,7 +77,7 @@ internal fun HSLAColorPicker(
                 verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
                 var hsl by remember {
-                    mutableStateOf(controller.selectedColor.value.toColorMath().toHSL())
+                    mutableStateOf(controller.selectedColor.value.toColor().toHSL())
                 }
 
                 if (hsl.h.isNaN()) hsl = hsl.copy(h = 0f)

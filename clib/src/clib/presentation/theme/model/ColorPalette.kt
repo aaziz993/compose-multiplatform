@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Immutable
 @Serializable
 public data class ColorPalette(
-    val lightColorScheme: ColorScheme? = null,
-    val darkColorScheme: ColorScheme? = null,
+    val lightColorScheme: ColorSchemeSerial? = null,
+    val darkColorScheme: ColorSchemeSerial? = null,
 )

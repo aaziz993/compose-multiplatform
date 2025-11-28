@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
+import clib.data.location.country.getEmojiFlag
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
@@ -245,9 +246,7 @@ public fun SettingsScreen(
             modifier = Modifier,
             enabled = true,
             icon = {
-                locale.country()?.let { country ->
-                    Icon(painterResource(country.alpha2.flag), stringResource(Res.string.language))
-                }
+                Text(locale.country()!!.alpha2.getEmojiFlag())
             },
             onClick = {
                 isLocalePickerDialogOpen = true

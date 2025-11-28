@@ -1,8 +1,10 @@
 package clib.data.type
 
 import androidx.annotation.ColorInt
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
-import com.github.ajalt.colormath.Color as ColorMath
 import com.github.ajalt.colormath.model.LABColorSpaces.LAB50
 import com.github.ajalt.colormath.model.Oklab
 import com.github.ajalt.colormath.model.RGB
@@ -18,23 +20,18 @@ import com.github.ajalt.colormath.model.RGBColorSpaces.ROMM_RGB
 import com.github.ajalt.colormath.model.RGBInt
 import com.github.ajalt.colormath.model.SRGB
 import com.github.ajalt.colormath.model.XYZColorSpaces.XYZ50
-import androidx.compose.ui.graphics.Color as ComposeColor
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import kotlin.jvm.JvmInline
+import klib.data.type.serialization.serializers.primitive.PrimitiveULongSerializer
 import kotlinx.serialization.Serializable
+import androidx.compose.ui.graphics.Color as ComposeColor
+import com.github.ajalt.colormath.Color
 
-@Immutable
-@Serializable
-@JvmInline
-public value class Color(public val value: ULong) {
+public object ColorSerializer : PrimitiveULongSerializer<ComposeColor>(
+    ComposeColor::class.simpleName!!,
+    ComposeColor::value,
+    ::ComposeColor,
+)
 
-    public fun toColor(): ComposeColor = ComposeColor(value)
-}
-
-public fun ComposeColor.toColor(): Color = Color(value)
+public typealias ColorSerial = @Serializable(with = ColorSerializer::class) ComposeColor
 
 /**
  * Material colors 500
@@ -458,9 +455,9 @@ public fun color(error: Boolean): ComposeColor =
     if (error) MaterialTheme.colorScheme.error else LocalContentColor.current
 
 /**
- * Convert this color to a ColorMath [ColorMath] instance.
+ * Convert this color to a ColorMath [Color] instance.
  */
-public fun ComposeColor.toColorMath(): ColorMath =
+public fun ComposeColor.toColor(): Color =
     when (colorSpace) {
         ColorSpaces.Srgb -> SRGB(red, green, blue, alpha)
         ColorSpaces.Aces -> ACES(red, green, blue, alpha)
@@ -486,7 +483,7 @@ public fun ComposeColor.toSRGB(): RGB =
 /**
  * Convert this color to a Compose [ComposeColor] instance.
  */
-public fun ColorMath.toColor(): ComposeColor {
+public fun Color.toColor(): ComposeColor {
     if (this is RGBInt) return ComposeColor(argb.toInt())
     val s = when {
         space == SRGB -> ColorSpaces.Srgb
@@ -519,7 +516,7 @@ public fun ColorMath.toColor(): ComposeColor {
  * Convert this color to a packed argb [color int][ColorInt].
  */
 @ColorInt
-public fun ColorMath.toColorInt(): Int = toSRGB().toRGBInt().argb.toInt()
+public fun Color.toColorInt(): Int = toSRGB().toRGBInt().argb.toInt()
 
 /**
  * Create an [RGB] instance from a packed argb [color int][ColorInt].

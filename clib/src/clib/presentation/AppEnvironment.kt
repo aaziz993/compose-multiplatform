@@ -2,6 +2,7 @@ package clib.presentation
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
@@ -31,6 +32,7 @@ import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.state.LocalStateStore
 import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
+import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.density.DensityState
@@ -64,6 +66,7 @@ public fun AppEnvironment(
     routes: Routes,
 ): Unit = CompositionLocalProvider(
     LocalThemeState provides themeState,
+    LocalAppTheme provides themeState.theme.isDark,
     LocalDensityState provides densityState,
     LocalDensity provides densityState.density.toDensity(),
     LocalLocaleState provides localeState,
@@ -74,22 +77,20 @@ public fun AppEnvironment(
 ) {
     val theme = themeState.theme
 
-    val isDark = theme.isDark()
-
     val (colorScheme, seedColor) = if (theme.isDynamic) {
         val dynamicColorPalette =
             if (theme.isHighContrast) theme.dynamicColorPaletteHighContrast else theme.dynamicColorPalette
 
         val state = rememberDynamicMaterialThemeState(
-            seedColor = dynamicColorPalette!!.seedColor.toColor(),
-            isDark = isDark,
+            seedColor = dynamicColorPalette!!.seedColor,
+            isDark = isSystemInDarkTheme(),
             isAmoled = dynamicColorPalette.isAmoled,
-            primary = dynamicColorPalette.primary?.toColor(),
-            secondary = dynamicColorPalette.secondary?.toColor(),
-            tertiary = dynamicColorPalette.tertiary?.toColor(),
-            neutral = dynamicColorPalette.neutral?.toColor(),
-            neutralVariant = dynamicColorPalette.neutralVariant?.toColor(),
-            error = dynamicColorPalette.error?.toColor(),
+            primary = dynamicColorPalette.primary,
+            secondary = dynamicColorPalette.secondary,
+            tertiary = dynamicColorPalette.tertiary,
+            neutral = dynamicColorPalette.neutral,
+            neutralVariant = dynamicColorPalette.neutralVariant,
+            error = dynamicColorPalette.error,
             contrastLevel = dynamicColorPalette.contrastLevel,
             specVersion = ColorSpec.SpecVersion.SPEC_2025,
             platform = dynamicColorPalette.platform,
@@ -105,8 +106,8 @@ public fun AppEnvironment(
         val colorPalette =
             if (theme.isHighContrast) theme.colorPaletteHighContrast else theme.colorPalette
 
-        (if (isDark) colorPalette.darkColorScheme?.toColorScheme()
-        else colorPalette.lightColorScheme?.toColorScheme()) to Color.Transparent
+        (if (isSystemInDarkTheme()) colorPalette.darkColorScheme
+        else colorPalette.lightColorScheme) to Color.Transparent
     }
 
     CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
