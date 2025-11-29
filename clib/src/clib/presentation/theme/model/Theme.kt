@@ -11,6 +11,7 @@ public data class Theme(
     val isDark: Boolean? = null,
     val isDynamic: Boolean = false,
     val isHighContrast: Boolean = false,
+    val isExpressive: Boolean = true,
     val colorPalette: ColorPalette = ColorPalette(),
     val colorPaletteHighContrast: ColorPalette = ColorPalette(),
     val dynamicColorPalette: DynamicColorPalette? = null,

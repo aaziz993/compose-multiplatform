@@ -1,17 +1,19 @@
-package klib.data.type.collections.list.linked
+package klib.data.type.collections.linkedlist
+
+import klib.data.type.collections.linkedlist.model.DataNode
 
 public class DoublyLinkedList<T> : MutableLinkedList<T> {
 
-    override var head: Node<T>? = null
+    override var head: DataNode<T>? = null
         private set
-    override var tail: Node<T>? = null
+    override var tail: DataNode<T>? = null
         private set
     override var size: Int = 0
         private set
 
     // Insertion at Beginning
     override fun insertAtBeginning(data: T) {
-        val newNode = Node(data)
+        val newNode = DataNode(data)
         if (head == null) {
             head = newNode
             tail = newNode
@@ -26,7 +28,7 @@ public class DoublyLinkedList<T> : MutableLinkedList<T> {
 
     // Insertion at End
     override fun insertAtEnd(data: T) {
-        val newNode = Node(data)
+        val newNode = DataNode(data)
         if (tail == null) {
             head = newNode
             tail = newNode
@@ -40,9 +42,9 @@ public class DoublyLinkedList<T> : MutableLinkedList<T> {
     }
 
     // Insertion After Specific Node
-    override fun insertAfter(prevNode: Node<T>, data: T) {
+    override fun insertAfter(prevNode: DataNode<T>, data: T) {
         if (head == null) return
-        val newNode = Node(data)
+        val newNode = DataNode(data)
         newNode.next = prevNode.next
         newNode.prev = prevNode
         prevNode.next?.prev = newNode
@@ -70,7 +72,7 @@ public class DoublyLinkedList<T> : MutableLinkedList<T> {
         size--
     }
 
-    override fun deleteNode(node: Node<T>) {
+    override fun deleteNode(node: DataNode<T>) {
         when (node) {
             head -> deleteAtBeginning()
             tail -> deleteAtEnd()
@@ -82,6 +84,6 @@ public class DoublyLinkedList<T> : MutableLinkedList<T> {
         }
     }
 
-    override fun iterator(): MutableIterator<Node<T>> = DoublyMutableIterator(this)
+    override fun iterator(): MutableIterator<DataNode<T>> = DoublyMutableIterator(this)
 }
 

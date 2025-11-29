@@ -23,6 +23,7 @@ import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
+import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
 
@@ -143,8 +144,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         get() = startRoute.route.name
     override val navigationItem: (@Composable (name: String) -> NavigationItem)?
         get() = startRoute.route.navigationItem
-    override val authResource: AuthResource?
-        get() = startRoute.route.authResource
 
     @Composable
     protected open fun NavDisplay(
@@ -232,11 +231,8 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         onPush: Router.(NavRoute) -> Unit = Router::push,
     ): Unit = routes.forEach { route -> route.NavigationBarItem(auth, onPush) }
 
-    final override fun iterator(): Iterator<BaseRoute> = sequence {
-        routes.forEach { route ->
-            yield(route)
-            yieldAll(route)
-        }
-    }.iterator()
+    final override fun iterator(): Iterator<BaseRoute> =
+        routes.iterator().depthIterator(
+            { _, route -> route.iterator() },
+        )
 }
-

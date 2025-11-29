@@ -1,11 +1,7 @@
 package presentation.components.app
 
-import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MotionScheme
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,8 +52,16 @@ public fun AppComposable(
                 LightColorsHighContrast,
                 DarkColorsHighContrast,
             ),
-            dynamicColorPalette = DynamicColorPalette(seedColor = Color.Cyan, animate = true),
-            dynamicColorPaletteHighContrast = DynamicColorPalette(seedColor = Color.Blue, animate = true),
+            dynamicColorPalette = DynamicColorPalette(
+                seedColor = Color.Cyan,
+                animate = true,
+                animationSpec = spring(),
+            ),
+            dynamicColorPaletteHighContrast = DynamicColorPalette(
+                seedColor = Color.Blue,
+                animate = true,
+                animationSpec = spring(),
+            ),
             shapes = SquircleShapes,
             typography = Typography,
         ),
@@ -71,10 +75,6 @@ public fun AppComposable(
         ),
     ),
     eventBus: EventBus = remember { EventBus() },
-    motionScheme: MotionScheme? = MotionScheme.expressive(),
-    shapes: Shapes? = SquircleShapes,
-    typography: Typography? = presentation.theme.Typography,
-    animationSpec: FiniteAnimationSpec<Color> = spring(),
     routes: Routes = App,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
@@ -92,10 +92,6 @@ public fun AppComposable(
     authState,
     stateStore,
     eventBus,
-    motionScheme,
-    shapes,
-    typography,
-    animationSpec,
     routerFactory,
     navigatorFactory,
     routes,

@@ -13,9 +13,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,49 +32,51 @@ internal fun SliderHue(
     value: Float,
     onValueChange: (value: Float) -> Unit,
 ) {
-    var hue by rememberSaveable { mutableFloatStateOf(value) }
-    val huePanelWidth = rememberSaveable { mutableFloatStateOf(360f) }
-
     Box(
         modifier = modifier
             .fillMaxWidth(),
     ) {
-        HuePanel(huePanelWidth)
+        var huePanelWidth: Float? by rememberSaveable { mutableStateOf(null) }
 
-        Slider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            valueRange = 0f..huePanelWidth.value,
-            value = hue,
-            onValueChange = {
-                onValueChange(pointToHue(it, huePanelWidth.value))
-                hue = it
-            },
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = Color.Transparent,
-                inactiveTrackColor = Color.Transparent,
-            ),
-            thumb = {
-                Box(
-                    modifier = Modifier
-                        .height(45.dp)
-                        .width(10.dp)
-                        .background(Color.Transparent, shape = MaterialTheme.shapes.large)
-                        .border(
-                            2.dp,
-                            Color.Gray,
-                            RoundedCornerShape(12.dp),
-                        ),
-                )
-            },
-        )
+        HuePanel { width -> huePanelWidth = width }
+
+        if (huePanelWidth != null) {
+            var hue by rememberSaveable { mutableFloatStateOf(value * huePanelWidth!! / 360f) }
+            Slider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+                valueRange = 0f..huePanelWidth!!,
+                value = hue,
+                onValueChange = {
+                    onValueChange(pointToHue(it, huePanelWidth!!))
+                    hue = it
+                },
+                colors = SliderDefaults.colors(
+                    thumbColor = MaterialTheme.colorScheme.primary,
+                    activeTrackColor = Color.Transparent,
+                    inactiveTrackColor = Color.Transparent,
+                ),
+                thumb = {
+                    Box(
+                        modifier = Modifier
+                            .height(45.dp)
+                            .width(10.dp)
+                            .background(Color.Transparent, shape = MaterialTheme.shapes.large)
+                            .border(
+                                2.dp,
+                                Color.Gray,
+                                RoundedCornerShape(12.dp),
+                            ),
+                    )
+                },
+            )
+        }
     }
 }
 
 @Composable
-private fun HuePanel(huePanelWidth: MutableState<Float>) {
+private fun HuePanel(onDrown: (width: Float) -> Unit) =
     Canvas(
         modifier = Modifier
             .padding(top = 1.dp)
@@ -82,8 +84,6 @@ private fun HuePanel(huePanelWidth: MutableState<Float>) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(12)),
     ) {
-        huePanelWidth.value = size.width
-
         drawRect(
             brush = Brush.horizontalGradient(
                 colors = List(361) { hue ->
@@ -92,7 +92,8 @@ private fun HuePanel(huePanelWidth: MutableState<Float>) {
             ),
             size = size,
         )
+
+        onDrown(size.width)
     }
-}
 
 private fun pointToHue(pointX: Float, huePanelWidth: Float): Float = pointX * 360f / huePanelWidth

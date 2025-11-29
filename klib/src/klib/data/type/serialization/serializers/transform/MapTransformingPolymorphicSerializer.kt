@@ -7,7 +7,7 @@ import kotlinx.serialization.KSerializer
 public open class MapTransformingPolymorphicSerializer<T : Any>(
     baseClass: KClass<T>,
     baseSerializer: KSerializer<T>? = null,
-    subclasses: Map<KClass<T>, KSerializer<T>>,
+    subclasses: Map<KClass<out T>, KSerializer<out T>>,
     classDiscriminator: String = "type",
     valueDiscriminator: String = "value",
 ) : MapTransformingSerializer<T>(

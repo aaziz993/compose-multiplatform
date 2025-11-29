@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package clib.presentation.components.color
 
 import androidx.compose.foundation.background
@@ -5,9 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -19,11 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.skydoves.colorpicker.compose.AlphaSlider
-import com.github.skydoves.colorpicker.compose.BrightnessSlider
+import clib.presentation.components.color.common.AlphaSlider
+import clib.presentation.components.color.common.ColorSaturationAndLightnessSlider
 import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
-import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 /**
  * A composable function that creates a color picker UI for selecting HSV properties to get color. This component
@@ -42,6 +41,8 @@ internal fun HSVColorPicker(
     controller: ColorPickerController,
     modifier: Modifier = Modifier,
     title: String = "Select color hsv",
+    brightnessLabel: String = "Brightness",
+    alphaLabel: String = "Alpha",
 ): Unit = Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
     Column(
         modifier = Modifier
@@ -73,25 +74,18 @@ internal fun HSVColorPicker(
                 HsvColorPicker(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(220.dp),
+                        .weight(.8f),
                     controller = controller,
+                    initialColor = controller.selectedColor.value,
                 )
-
-                Spacer(Modifier.height(12.dp))
-
-                BrightnessSlider(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    controller = controller,
-                )
-
-                Spacer(Modifier.height(12.dp))
-
-                AlphaSlider(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    controller = controller,
-                )
+                ColorSaturationAndLightnessSlider(
+                    brightnessLabel,
+                    controller.selectedColor.value,
+                    controller.brightness.value,
+                ) { value ->
+                    controller.setBrightness(value, true)
+                }
+                AlphaSlider(controller, alphaLabel)
             }
         }
     }

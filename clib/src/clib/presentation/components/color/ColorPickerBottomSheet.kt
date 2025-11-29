@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -59,21 +58,30 @@ public fun ColorPickerBottomSheet(
     picker: ColorPicker = ColorPicker()
 ): Unit = ModalBottomSheet(
     onDismissRequest = onDismissRequest,
-    modifier = Modifier.wrapContentHeight(),
     sheetState = sheetState,
     containerColor = MaterialTheme.colorScheme.background,
     scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .5f),
 ) {
-    Column {
-        var tabIndex by remember { mutableIntStateOf(0) }
-        val tabs = listOf(
-            picker.rgbaLabel,
-            picker.gridLabel,
-            picker.hsvLabel,
-            picker.hslaLabel,
-            picker.blendLabel,
-        )
+    var tabIndex by remember { mutableIntStateOf(0) }
+    val tabs = listOf(
+        picker.rgbaLabel,
+        picker.gridLabel,
+        picker.hsvLabel,
+        picker.hslaLabel,
+        picker.blendLabel,
+    )
 
+    Column(
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
+            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
+            .shadow(
+                elevation = 10.dp,
+                shape = RoundedCornerShape(8.dp),
+            )
+            .background(color = MaterialTheme.colorScheme.background)
+            .padding(start = 12.dp, end = 12.dp),
+    ) {
         Text(
             text = picker.title,
             textAlign = TextAlign.Start,
@@ -111,89 +119,85 @@ public fun ColorPickerBottomSheet(
                 )
             }
         }
-        when (tabIndex) {
-            0 -> RGBAColorPicker(
-                controller,
-                Modifier.padding(16.dp),
-                picker.rgbaLabel,
-                picker.redLabel,
-                picker.greenLabel,
-                picker.blueLabel,
-            )
-
-            1 -> GridColorPicker(
-                controller,
-                modifier = Modifier.padding(16.dp),
-                picker.gridLabel,
-            )
-
-            2 -> HSVColorPicker(
-                controller,
-                Modifier.padding(16.dp),
-                picker.hsvLabel,
-            )
-
-            3 -> HSLAColorPicker(
-                controller,
-                Modifier.padding(16.dp),
-                picker.hslaLabel,
-                picker.saturationLabel,
-                picker.lightnessLabel,
-            )
-
-            4 -> BlendColorPicker(
-                controller,
-                Modifier.padding(16.dp),
-                picker.blendLabel,
-            )
-        }
 
         Column(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
-                .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
-                .shadow(
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(8.dp),
-                )
-                .background(color = MaterialTheme.colorScheme.background)
-                .padding(start = 12.dp, end = 12.dp),
+                .weight(1f),
         ) {
-            SelectedColorDetail(
-                controller,
-                picker.hexLabel,
-            )
+            when (tabIndex) {
+                0 -> RGBAColorPicker(
+                    controller,
+                    Modifier.padding(16.dp),
+                    picker.rgbaLabel,
+                    picker.redLabel,
+                    picker.greenLabel,
+                    picker.blueLabel,
+                    picker.alphaLabel,
+                )
 
-            Row(
+                1 -> GridColorPicker(
+                    controller,
+                    modifier = Modifier.padding(16.dp),
+                    picker.gridLabel,
+                )
+
+                2 -> HSVColorPicker(
+                    controller,
+                    Modifier.padding(16.dp),
+                    picker.hsvLabel,
+                )
+
+                3 -> HSLAColorPicker(
+                    controller,
+                    Modifier.padding(16.dp),
+                    picker.hslaLabel,
+                    picker.saturationLabel,
+                    picker.lightnessLabel,
+                    picker.alphaLabel,
+                )
+
+                4 -> BlendColorPicker(
+                    controller,
+                    Modifier.padding(16.dp),
+                    picker.blendLabel,
+                )
+            }
+        }
+
+        SelectedColorDetail(
+            controller,
+            picker.hexLabel,
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp),
+        ) {
+            OutlinedButton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 12.dp),
+                    .padding(start = 4.dp, end = 4.dp)
+                    .weight(1f),
+                shape = RoundedCornerShape(8.dp),
+                onClick = onClose,
             ) {
-                OutlinedButton(
-                    modifier = Modifier
-                        .padding(start = 4.dp, end = 4.dp)
-                        .weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    onClick = onClose,
-                ) {
-                    Text(
-                        text = picker.close,
-                        color = MaterialTheme.colorScheme.secondary,
-                    )
-                }
+                Text(
+                    text = picker.close,
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+            }
 
-                Button(
-                    modifier = Modifier
-                        .padding(start = 4.dp, end = 4.dp)
-                        .weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    onClick = onConfirm,
-                ) {
-                    Text(
-                        text = picker.confirm,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                }
+            Button(
+                modifier = Modifier
+                    .padding(start = 4.dp, end = 4.dp)
+                    .weight(1f),
+                shape = RoundedCornerShape(8.dp),
+                onClick = onConfirm,
+            ) {
+                Text(
+                    text = picker.confirm,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
             }
         }
     }

@@ -47,7 +47,7 @@ public class EventBus {
      * Removes all values associated with the given key from the store.
      */
     public inline fun <reified T> removeResult(key: String = T::class.toString()) {
-        channelMap.remove(key)
+        channelMap.remove(key)?.close()
     }
 }
 

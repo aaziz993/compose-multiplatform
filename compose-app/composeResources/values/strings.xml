@@ -147,10 +147,10 @@
     <string name="quick_access">Quick access</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
-    <string name="quick_support">Quick support</string>
-    <string name="quick_theme">Quick theme</string>
-    <string name="quick_locale">Quick locale</string>
-    <string name="quick_avatar">Quick avatar</string>
+    <string name="quick_support">Quick access support</string>
+    <string name="quick_theme">Quick access theme</string>
+    <string name="quick_locale">Quick access locale</string>
+    <string name="quick_avatar">Quick access avatar</string>
     <string name="color_palette">Color palette</string>
     <string name="dynamic_color_palette">Dynamic color palette</string>
     <string name="font">Font</string>

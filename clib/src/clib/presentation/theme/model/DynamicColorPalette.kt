@@ -18,4 +18,5 @@ public data class DynamicColorPalette(
     val contrastLevel: Double = Contrast.Default.value,
     val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
     val animate: Boolean = false,
+    val animationSpec: AnimationSpecSerial<ColorSerial>? = null,
 )

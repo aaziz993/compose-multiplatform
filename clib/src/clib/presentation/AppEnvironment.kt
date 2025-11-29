@@ -1,13 +1,10 @@
 package clib.presentation
 
 import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
@@ -57,10 +54,6 @@ public fun AppEnvironment(
         ),
     ),
     eventBus: EventBus = remember { EventBus() },
-    motionScheme: MotionScheme? = null,
-    shapes: Shapes? = null,
-    typography: Typography? = null,
-    animationSpec: FiniteAnimationSpec<Color> = spring(),
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
@@ -100,7 +93,12 @@ public fun AppEnvironment(
 
         val colorScheme = state.colorScheme
         (if (!dynamicColorPalette.animate) colorScheme
-        else animateColorScheme(colorScheme = colorScheme, animationSpec = { animationSpec })) to state.seedColor
+        else animateColorScheme(
+                colorScheme = colorScheme,
+                animationSpec = {
+                    dynamicColorPalette.animationSpec as FiniteAnimationSpec<Color>
+                },
+        )) to state.seedColor
     }
     else {
         val colorPalette =
@@ -113,9 +111,9 @@ public fun AppEnvironment(
     CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
         MaterialExpressiveTheme(
             colorScheme,
-            motionScheme,
-            shapes,
-            typography,
+            if (theme.isExpressive) MotionScheme.expressive() else MotionScheme.standard(),
+            theme.shapes,
+            theme.typography,
         ) {
             routes.Nav3Host(routerFactory, navigatorFactory)
         }

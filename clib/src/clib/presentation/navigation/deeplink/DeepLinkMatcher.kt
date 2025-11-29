@@ -37,7 +37,7 @@ internal class DeepLinkMatcher<T : NavKey>(
                 // requested segment into the expected type
                 if (candidateSegment.isParamArg) {
                     val parsedValue = try {
-                        candidateSegment.typeParser.invoke(requestedSegment)
+                        candidateSegment.typeParser(requestedSegment)
                     }
                     catch (e: IllegalArgumentException) {
                         nav3Logger.error(e, TAG_LOG) {
@@ -47,17 +47,16 @@ internal class DeepLinkMatcher<T : NavKey>(
                     }
                     args[candidateSegment.stringValue] = parsedValue
                 }
-                else if (requestedSegment != candidateSegment.stringValue) {
-                    // if it's path arg is not the expected type, its not a match
+                else if (requestedSegment != candidateSegment.stringValue)
+                // if it's path arg is not the expected type, its not a match
                     return null
-                }
             }
         // match queries (if any)
         request.queries.forEach { query ->
             val name = query.key
             val queryStringParser: TypeParser? = deepLinkPattern.queryValueParsers[name]
             val queryParsedValue = try {
-                queryStringParser!!.invoke(query.value)
+                queryStringParser!!(query.value)
             }
             catch (e: IllegalArgumentException) {
                 nav3Logger.error(e, TAG_LOG) { "Failed to parse query name:[$name] value:[${query.value}]." }

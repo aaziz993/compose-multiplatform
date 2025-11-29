@@ -22,24 +22,25 @@ import kotlinx.serialization.modules.polymorphic
 public open class PolymorphicSerializer<T : Any>(
     override val baseClass: KClass<T>,
     baseSerializer: KSerializer<T>? = null,
-    public val subclasses: Map<KClass<T>, KSerializer<T>>,
+    public val subclasses: Map<KClass<out T>, KSerializer<out T>>,
     classDiscriminator: String = "type",
     valueDiscriminator: String = "value"
 ) : AbstractPolymorphicSerializer<T>() {
 
     public val serializersModule: SerializersModule = SerializersModule {
+
         polymorphic(baseClass, baseSerializer) {
             subclasses(subclasses)
         }
     }
 
     public override val descriptor: SerialDescriptor by lazy(LazyThreadSafetyMode.PUBLICATION) {
-        buildSerialDescriptor("data.type.serialization.Polymorphic", PolymorphicKind.OPEN) {
+        buildSerialDescriptor("klib.data.type.serialization.serializers.polymorphic.Polymorphic", PolymorphicKind.OPEN) {
             element(classDiscriminator, String.serializer().descriptor)
             element(
                 valueDiscriminator,
                 buildSerialDescriptor(
-                    "data.type.serialization.Polymorphic<${baseClass.simpleName}>",
+                    "klib.data.type.serialization.serializers.polymorphic.Polymorphic<${baseClass.simpleName}>",
                     SerialKind.CONTEXTUAL,
                 ),
             )

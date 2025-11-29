@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -56,9 +57,7 @@ import clib.data.type.hexToColor
 import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.materialkolor.ktx.toHex
-import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
 import klib.data.type.primitives.string.HEX_COLOR
-import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 
 @Composable
@@ -88,8 +87,6 @@ internal fun ColorSlider(
     value: Float,
     onValueChange: (Float) -> Unit
 ) {
-    var sliderValue by remember { mutableStateOf(TextFieldValue((value * 255).toInt().toString())) }
-
     /**
      * Displays a slider for adjusting the given [value] associated with the provided [label].
      * The slider's active track color is set to [trackColor].
@@ -104,11 +101,14 @@ internal fun ColorSlider(
             fontSize = 14.sp,
             modifier = Modifier.weight(.2f),
         )
+
+        var sliderValue by remember { mutableStateOf(TextFieldValue(toColorValue(value, 255).toString())) }
+
         Slider(
             value = value,
-            onValueChange = { value ->
-                onValueChange(value)
-                sliderValue = TextFieldValue(toColorRange(value).toString())
+            onValueChange = {
+                onValueChange(it)
+                sliderValue = TextFieldValue(toColorValue(it, 255).toString())
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
@@ -116,43 +116,15 @@ internal fun ColorSlider(
             ),
             modifier = Modifier.weight(.8f),
         )
-        Box(
-            modifier = Modifier
-                .width(80.dp)
-                .weight(.2f)
-                .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20)),
-        ) {
-            BasicTextField(
-                value = sliderValue,
-                onValueChange = {
-                    sliderValue = if (it.text != "" && it.text.toInt() > 255) TextFieldValue("255") else it
-                    onValueChange(sliderRange(sliderValue.text))
-                },
-                modifier = Modifier
-                    .width(80.dp)
-                    .padding(5.dp),
-                textStyle = TextStyle(fontSize = 12.sp, color = Color.Black, textAlign = TextAlign.Center),
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
-        }
 
+        TextField(
+            sliderValue,
+        ) {
+            sliderValue = TextFieldValue(sanitizeSliderValue(it.text, 255))
+            onValueChange(toSliderValue(sliderValue.text, 255))
+        }
     }
 }
-
-/**
- * Converts a float value in the range [0, 1] to an integer color component in the range [0, 255].
- *
- * @return The integer representation of the color component.
- */
-private fun toColorRange(value: Float): Int = (value * 255 + 0.5f).toInt()
-
-/**
- * Converts a string value in the range [0, 255] to a float value of slider in tha range of [0, 1]
- *
- * @return The float representation of the slider component
- */
-private fun sliderRange(value: String): Float = if (value.isEmpty()) 0f else value.toFloat() / 255
 
 /**
  * A composable function that creates a slider for adjusting a float value associated with a color alpha valuw.
@@ -162,7 +134,10 @@ private fun sliderRange(value: String): Float = if (value.isEmpty()) 0f else val
  * @return @Composable: A slider UI for alpha selection.
  */
 @Composable
-internal fun AlphaSlider(controller: ColorPickerController) {
+internal fun AlphaSlider(
+    controller: ColorPickerController,
+    label: String = "Alpha",
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -173,10 +148,16 @@ internal fun AlphaSlider(controller: ColorPickerController) {
             fontSize = 12.sp,
             modifier = Modifier.weight(.2f),
         )
+
+        var sliderValue by remember {
+            mutableStateOf(TextFieldValue(toColorValue(controller.selectedColor.value.alpha, 100).toString()))
+        }
+
         Slider(
             value = controller.selectedColor.value.alpha,
             onValueChange = { value ->
                 controller.setAlpha(value, true)
+                sliderValue = TextFieldValue(toColorValue(value, 100).toString())
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
@@ -186,19 +167,12 @@ internal fun AlphaSlider(controller: ColorPickerController) {
             modifier = Modifier.weight(.8f),
         )
 
-        val displayText = DecimalFormatter.DefaultFormatter.format(
-            (controller.selectedColor.value.alpha * 10000).roundToInt(),
-        ).displayValue
-
-        Text(
-            text = displayText,
-            modifier = Modifier
-                .width(25.dp)
-                .weight(.2f),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Black,
-        )
+        TextField(
+            sliderValue,
+        ) {
+            sliderValue = TextFieldValue(sanitizeSliderValue(it.text, 100))
+            controller.setAlpha(toSliderValue(sliderValue.text, 100), true)
+        }
     }
 }
 
@@ -233,9 +207,17 @@ internal fun ColorSaturationAndLightnessSlider(
             fontSize = 12.sp,
             modifier = Modifier.weight(.2f),
         )
+
+        var sliderValue by remember {
+            mutableStateOf(TextFieldValue(toColorValue(value, 100).toString()))
+        }
+
         Slider(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = {
+                onValueChange(it)
+                sliderValue = TextFieldValue(toColorValue(it, 100).toString())
+            },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
                 activeTrackColor = trackColor,
@@ -244,19 +226,62 @@ internal fun ColorSaturationAndLightnessSlider(
             modifier = Modifier.weight(.8f),
         )
 
-        val displayText = DecimalFormatter.DefaultFormatter.format((value * 10000).roundToInt()).displayValue
-
-        Text(
-            text = displayText,
-            modifier = Modifier
-                .width(25.dp)
-                .weight(.1f),
-            textAlign = TextAlign.End,
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Black,
-        )
+        TextField(
+            sliderValue,
+        ) {
+            sliderValue = TextFieldValue(sanitizeSliderValue(it.text, 100))
+            onValueChange(toSliderValue(sliderValue.text, 100))
+        }
     }
 }
+
+@Suppress("ComposeUnstableReceiver")
+@Composable
+internal fun RowScope.TextField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+): Unit = BasicTextField(
+    value = value,
+    onValueChange = onValueChange,
+    modifier = Modifier
+        .width(80.dp)
+        .padding(5.dp),
+    textStyle = TextStyle(fontSize = 12.sp, color = Color.Black, textAlign = TextAlign.Center),
+    singleLine = true,
+    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+) { innerTextField ->
+    Box(
+        modifier = Modifier
+            .width(80.dp)
+            .weight(.2f)
+            .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20)),
+    ) {
+        innerTextField()
+    }
+}
+
+/**
+ * Converts a float value in the range [0, 1] to an integer color component in the range [0, maxValue].
+ *
+ * @return The integer representation of the color component.
+ */
+private fun toColorValue(value: Float, maxValue: Int): Int = (value * maxValue).toInt()
+
+/**
+ * Converts a string value in the range [0, maxValue] to a float value of slider in tha range of [0, 1]
+ *
+ * @return The float representation of the slider component
+ */
+private fun toSliderValue(value: String, maxValue: Int): Float = if (value.isEmpty()) 0f else value.toFloat() / maxValue
+
+private fun sanitizeSliderValue(value: String, maxValue: Int): String =
+    value.toFloatOrNull()?.let {
+        when {
+            it < 0 -> "0"
+            it > maxValue -> maxValue.toString()
+            else -> value
+        }
+    } ?: "0"
 
 /**
  * A composable function that displays the selected color and its details.

@@ -11,6 +11,7 @@ public data class ColorPicker(
     val hsvLabel: String = "Hsv",
     val saturationLabel: String = "Saturation",
     val lightnessLabel: String = "Lightness",
+    val alphaLabel: String = "Alpha",
     val blendLabel: String = "Blend",
     val hexLabel: String = "Hex",
     val close: String = "Close",

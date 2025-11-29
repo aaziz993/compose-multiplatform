@@ -1,6 +1,8 @@
-package klib.data.type.collections.list.linked
+package klib.data.type.collections.linkedlist
 
-public interface MutableLinkedList<T> : MutableIterable<Node<T>>, LinkedList<T> {
+import klib.data.type.collections.linkedlist.model.DataNode
+
+public interface MutableLinkedList<T> : MutableIterable<DataNode<T>>, LinkedList<T> {
 
     public fun insertAtBeginning(data: T)
 
@@ -8,7 +10,7 @@ public interface MutableLinkedList<T> : MutableIterable<Node<T>>, LinkedList<T> 
     public fun insertAtEnd(data: T)
 
     // Insertion After Specific Node
-    public fun insertAfter(prevNode: Node<T>, data: T)
+    public fun insertAfter(prevNode: DataNode<T>, data: T)
 
     // Deletion at Beginning
     public fun deleteAtBeginning()
@@ -17,5 +19,5 @@ public interface MutableLinkedList<T> : MutableIterable<Node<T>>, LinkedList<T> 
     public fun deleteAtEnd()
 
     // Deletion of a specific node
-    public fun deleteNode(node: Node<T>)
+    public fun deleteNode(node: DataNode<T>)
 }

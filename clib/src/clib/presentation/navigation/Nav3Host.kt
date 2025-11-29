@@ -35,8 +35,8 @@ internal fun Nav3Host(
 
     LaunchedEffect(router) {
         check(parentRouter != router) { "Router can't be parent of itself" }
-        parentRouter?.child = router
-        router.parent = parentRouter
+        parentRouter?.next = router
+        router.prev = parentRouter
     }
 
     DisposableEffect(router, navigator) {

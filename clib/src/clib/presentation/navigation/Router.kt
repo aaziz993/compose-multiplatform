@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import klib.data.type.collections.linkedlist.model.Node
 
 /**
  * CompositionLocal that provides access to the parent Router in nested navigation hierarchies.
@@ -34,29 +35,21 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  *
  * @param routes The current top level route.
  */
-public open class Router(public val routes: Routes) : BaseRouter(), Iterable<Router> {
+public open class Router(public val routes: Routes) : BaseRouter(), Node<Router> {
 
     /** Parent router in nested navigation hierarchy. */
-    public var parent: Router? by mutableStateOf(null)
+    override var prev: Router? by mutableStateOf(null)
         internal set
 
     /** Parent child router in nested navigation hierarchy. */
-    public var child: Router? by mutableStateOf(null)
+    override var next: Router? by mutableStateOf(null)
         internal set
 
     /**
      * Currently registered navigators has back.
      */
     public val hasBack: Boolean
-        get() = backStack.size > 1 || parent?.hasBack == true
-
-    override fun iterator(): Iterator<Router> = sequence {
-        var router = this@Router
-        while (router.child != null) {
-            router = router.child!!
-            yield(router)
-        }
-    }.iterator()
+        get() = backStack.size > 1 || prev?.hasBack == true
 
     /**
      * Pushes one or more routes onto the navigation stack.

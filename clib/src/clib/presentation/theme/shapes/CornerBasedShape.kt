@@ -1,7 +1,9 @@
 package clib.presentation.theme.shapes
 
 import clib.presentation.theme.shapes.squircleshape.CornerSmoothing
+import klib.data.type.serialization.serializers.transform.MapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -10,7 +12,7 @@ import androidx.compose.foundation.shape.CornerBasedShape as ComposeCornerBasedS
 import androidx.compose.foundation.shape.RoundedCornerShape as ComposeRoundedCornerShape
 import clib.presentation.theme.shapes.squircleshape.SquircleShape as ComposeSquircleShape
 
-@Serializable
+@Serializable(CornerBasedShapeSerializer::class)
 private sealed class CornerBasedShape {
 
     abstract val topStart: CornerSizeSerial
@@ -21,7 +23,16 @@ private sealed class CornerBasedShape {
     abstract fun toCornerBasedShape(): ComposeCornerBasedShape
 }
 
+private object CornerBasedShapeSerializer : MapTransformingPolymorphicSerializer<CornerBasedShape>(
+    baseClass = CornerBasedShape::class,
+    subclasses = mapOf(
+        RoundedCornerShape::class to RoundedCornerShape.serializer(),
+        SquircleShape::class to SquircleShape.serializer(),
+    ),
+)
+
 @Serializable
+@SerialName("rounded")
 private data class RoundedCornerShape(
     override val topStart: CornerSizeSerial,
     override val topEnd: CornerSizeSerial,
@@ -38,13 +49,13 @@ private data class RoundedCornerShape(
         )
 }
 
-@Serializable
 private sealed class SquircleBasedShape : CornerBasedShape() {
 
     abstract val smoothing: Int
 }
 
 @Serializable
+@SerialName("squircle")
 private data class SquircleShape(
     override val topStart: CornerSizeSerial,
     override val topEnd: CornerSizeSerial,
@@ -63,7 +74,7 @@ private data class SquircleShape(
         )
 }
 
-public object CornerBasedShapeSerializer : KSerializer<ComposeCornerBasedShape> {
+public object ComposeCornerBasedShapeSerializer : KSerializer<ComposeCornerBasedShape> {
 
     override val descriptor: SerialDescriptor = CornerBasedShape.serializer().descriptor
 
@@ -86,7 +97,7 @@ public object CornerBasedShapeSerializer : KSerializer<ComposeCornerBasedShape> 
                     value.smoothing,
                 )
 
-                else -> throw IllegalArgumentException("Unknown corner shape '$this'")
+                else -> throw IllegalArgumentException("Unknown corner shape '$value'")
             },
         )
 
@@ -94,4 +105,4 @@ public object CornerBasedShapeSerializer : KSerializer<ComposeCornerBasedShape> 
         decoder.decodeSerializableValue(CornerBasedShape.serializer()).toCornerBasedShape()
 }
 
-public typealias CornerBasedShapeSerial = @Serializable(with = CornerBasedShapeSerializer::class) ComposeCornerBasedShape
+public typealias CornerBasedShapeSerial = @Serializable(with = ComposeCornerBasedShapeSerializer::class) ComposeCornerBasedShape

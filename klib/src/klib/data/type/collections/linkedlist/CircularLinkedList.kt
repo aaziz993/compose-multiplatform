@@ -1,16 +1,18 @@
-package klib.data.type.collections.list.linked
+package klib.data.type.collections.linkedlist
+
+import klib.data.type.collections.linkedlist.model.DataNode
 
 public class CircularLinkedList<T> : LinkedList<T>, MutableLinkedList<T> {
 
-    override var head: Node<T>? = null
+    override var head: DataNode<T>? = null
         private set
-    override val tail: Node<T>? = null
+    override val tail: DataNode<T>? = null
     override var size: Int = 0
         private set
 
     // Insertion at Beginning.
     override fun insertAtBeginning(data: T) {
-        val newNode = Node(data)
+        val newNode = DataNode(data)
         if (head == null) {
             head = newNode
             newNode.next = head
@@ -29,7 +31,7 @@ public class CircularLinkedList<T> : LinkedList<T>, MutableLinkedList<T> {
 
     // Insertion at End.
     override fun insertAtEnd(data: T) {
-        val newNode = Node(data)
+        val newNode = DataNode(data)
         if (head == null) {
             head = newNode
             newNode.next = head
@@ -46,9 +48,9 @@ public class CircularLinkedList<T> : LinkedList<T>, MutableLinkedList<T> {
     }
 
     // Insertion After Specific Node.
-    override fun insertAfter(prevNode: Node<T>, data: T) {
+    override fun insertAfter(prevNode: DataNode<T>, data: T) {
         if (head == null) return
-        val newNode = Node(data)
+        val newNode = DataNode(data)
         newNode.next = prevNode.next
         prevNode.next = newNode
         size++
@@ -80,7 +82,7 @@ public class CircularLinkedList<T> : LinkedList<T>, MutableLinkedList<T> {
             return
         }
         var current = head
-        var prev: Node<T>? = null
+        var prev: DataNode<T>? = null
         while (current?.next != head) {
             prev = current
             current = current?.next
@@ -90,7 +92,7 @@ public class CircularLinkedList<T> : LinkedList<T>, MutableLinkedList<T> {
     }
 
     // Deletion of a specific node.
-    override fun deleteNode(node: Node<T>) {
+    override fun deleteNode(node: DataNode<T>) {
         if (head == null) return
         if (node == head) return deleteAtBeginning()
 
@@ -107,14 +109,14 @@ public class CircularLinkedList<T> : LinkedList<T>, MutableLinkedList<T> {
     }
 
     // Mutable Iterator over Nodes
-    override fun iterator(): MutableIterator<Node<T>> = object : MutableIterator<Node<T>> {
-        private var prev: Node<T>? = null
-        private var current: Node<T>? = null
-        private var next: Node<T>? = head
+    override fun iterator(): MutableIterator<DataNode<T>> = object : MutableIterator<DataNode<T>> {
+        private var prev: DataNode<T>? = null
+        private var current: DataNode<T>? = null
+        private var next: DataNode<T>? = head
 
         override fun hasNext(): Boolean = next != null
 
-        override fun next(): Node<T> {
+        override fun next(): DataNode<T> {
             if (next == null) throw NoSuchElementException()
             prev = current
             current = next

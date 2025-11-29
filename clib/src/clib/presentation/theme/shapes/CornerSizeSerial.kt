@@ -3,7 +3,9 @@ package clib.presentation.theme.shapes
 import androidx.compose.ui.platform.InspectableValue
 import androidx.compose.ui.unit.Dp
 import clib.data.type.DpSerial
+import klib.data.type.serialization.serializers.transform.MapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -11,13 +13,23 @@ import kotlinx.serialization.encoding.Encoder
 import androidx.compose.foundation.shape.CornerSize as ComposeCornerSize
 import androidx.compose.foundation.shape.ZeroCornerSize as ComposeZeroCornerSize
 
-@Serializable
+@Serializable(CornerSizeSerializer::class)
 private sealed class CornerSize {
 
     abstract fun toCornerSize(): ComposeCornerSize
 }
 
+private object CornerSizeSerializer : MapTransformingPolymorphicSerializer<CornerSize>(
+    baseClass = CornerSize::class,
+    subclasses = mapOf(
+        DpCornerSize::class to DpCornerSize.serializer(),
+        PxCornerSize::class to PxCornerSize.serializer(),
+        PercentCornerSize::class to PercentCornerSize.serializer(),
+    ),
+)
+
 @Serializable
+@SerialName("dp")
 private data class DpCornerSize(private val size: DpSerial) : CornerSize() {
 
     override fun toCornerSize(): ComposeCornerSize =
@@ -25,6 +37,7 @@ private data class DpCornerSize(private val size: DpSerial) : CornerSize() {
 }
 
 @Serializable
+@SerialName("px")
 private data class PxCornerSize(private val size: Float) : CornerSize() {
 
     override fun toCornerSize(): ComposeCornerSize =
@@ -32,6 +45,7 @@ private data class PxCornerSize(private val size: Float) : CornerSize() {
 }
 
 @Serializable
+@SerialName("percent")
 private data class PercentCornerSize(private val percent: Float) : CornerSize() {
 
     init {
@@ -43,12 +57,14 @@ private data class PercentCornerSize(private val percent: Float) : CornerSize() 
     override fun toCornerSize(): ComposeCornerSize = ComposeCornerSize(percent)
 }
 
+@Serializable
+@SerialName("zero")
 private object ZeroCornerSize : CornerSize() {
 
     override fun toCornerSize(): ComposeCornerSize = ComposeZeroCornerSize
 }
 
-public object CornerSizeSerializer : KSerializer<ComposeCornerSize> {
+public object ComposeCornerSizeSerializer : KSerializer<ComposeCornerSize> {
 
     override val descriptor: SerialDescriptor = CornerSize.serializer().descriptor
 
@@ -58,15 +74,16 @@ public object CornerSizeSerializer : KSerializer<ComposeCornerSize> {
             when (val valueOverride = (value as InspectableValue).valueOverride) {
                 is Dp -> DpCornerSize(valueOverride)
                 is String -> when {
-                    valueOverride == "ZeroCornerSize" -> ZeroCornerSize
                     valueOverride.endsWith("px") -> PxCornerSize(valueOverride.removeSuffix("px").toFloat())
                     valueOverride.endsWith("%") ->
                         PercentCornerSize(valueOverride.removeSuffix("%").toFloat())
 
-                    else -> throw IllegalArgumentException("Unknown corner size '$this'")
+                    valueOverride == "ZeroCornerSize" -> ZeroCornerSize
+
+                    else -> throw IllegalArgumentException("Unknown corner size '$value'")
                 }
 
-                else -> throw IllegalArgumentException("Unknown corner size '$this'")
+                else -> throw IllegalArgumentException("Unknown corner size '$value'")
             },
         )
 
@@ -74,4 +91,4 @@ public object CornerSizeSerializer : KSerializer<ComposeCornerSize> {
         decoder.decodeSerializableValue(CornerSize.serializer()).toCornerSize()
 }
 
-public typealias CornerSizeSerial = @Serializable(with = CornerSizeSerializer::class) ComposeCornerSize
+public typealias CornerSizeSerial = @Serializable(with = ComposeCornerSizeSerializer::class) ComposeCornerSize

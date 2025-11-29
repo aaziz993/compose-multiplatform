@@ -22,7 +22,7 @@ import kotlinx.serialization.modules.polymorphic
 public open class PolymorphicSerializer<T : Any>(
     override val baseClass: KClass<T>,
     baseSerializer: KSerializer<T>? = null,
-    public val subclasses: Map<KClass<T>, KSerializer<T>>,
+    public val subclasses: Map<KClass<out T>, KSerializer<out T>>,
     classDiscriminator: String = "type",
     valueDiscriminator: String = "value"
 ) : AbstractPolymorphicSerializer<T>() {

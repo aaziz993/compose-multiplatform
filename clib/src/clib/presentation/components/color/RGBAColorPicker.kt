@@ -33,6 +33,7 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
  * @param redLabel: Red label.
  * @param greenLabel: Green label.
  * @param blueLabel: Blue label.
+ * @param alphaLabel: Alpha label.
  *
  * @return @Composable: A color picker UI for selecting RGB-A colors.
  */
@@ -44,6 +45,7 @@ internal fun RGBAColorPicker(
     redLabel: String = "Red",
     greenLabel: String = "Green",
     blueLabel: String = "Blue",
+    alphaLabel: String = "Alpha",
 ): Unit = Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
     Column(
         modifier = Modifier
@@ -94,7 +96,7 @@ internal fun RGBAColorPicker(
                 ) { value ->
                     controller.selectColor(controller.selectedColor.value.copy(blue = value))
                 }
-                AlphaSlider(controller)
+                AlphaSlider(controller, alphaLabel)
             }
         }
     }

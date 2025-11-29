@@ -1,3 +1,5 @@
+@file:Suppress("ComposeCompositionLocalUsage")
+
 package clib.presentation.locale
 
 import androidx.compose.runtime.Composable
@@ -20,3 +22,4 @@ internal actual object LocalAppLocale {
         return LocalAppLocale.provides(value)
     }
 }
+

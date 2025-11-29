@@ -1,13 +1,15 @@
-package klib.data.type.collections.list.linked
+package klib.data.type.collections.linkedlist
 
-public class DoublyMutableIterator<T>(private val mutableList: MutableLinkedList<T>) : MutableIterator<Node<T>> {
+import klib.data.type.collections.linkedlist.model.DataNode
 
-    private var current: Node<T>? = null
-    private var next: Node<T>? = mutableList.head
+public class DoublyMutableIterator<T>(private val mutableList: MutableLinkedList<T>) : MutableIterator<DataNode<T>> {
+
+    private var current: DataNode<T>? = null
+    private var next: DataNode<T>? = mutableList.head
 
     override fun hasNext(): Boolean = next != null
 
-    override fun next(): Node<T> {
+    override fun next(): DataNode<T> {
         current = next ?: throw NoSuchElementException()
         next = if (next?.next == mutableList.head) null else next?.next
         return current!!
