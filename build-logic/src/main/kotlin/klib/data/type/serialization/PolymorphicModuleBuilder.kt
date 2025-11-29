@@ -15,11 +15,16 @@ public fun <Base : Any> PolymorphicModuleBuilder<Base>.subclass(
     serializer: KSerializer<out Base>
 ): Unit = subclass(subclass as KClass<Base>, serializer as KSerializer<Base>)
 
-@Suppress("UNCHECKED_CAST")
 public inline fun <Base : Any> PolymorphicModuleBuilder<Base>.subclass(
     subclass: KClass<out Base>,
     serializer: (typeSerializers: List<KSerializer<*>>) -> KSerializer<out Base>
 ): Unit = subclass(subclass, serializer(subclass.typeParameters.map { NothingSerializer() }))
+
+public fun <Base : Any> PolymorphicModuleBuilder<Base>.subclasses(subclasses: Map<KClass<out Base>, KSerializer<out Base>>) {
+    subclasses.forEach { (subclass, serializer) ->
+        subclass(subclass, serializer)
+    }
+}
 
 public fun <T : Any> reflectionPolymorphicSubclasses(baseClass: KClass<T>): Map<KClass<out T>, KSerializer<out T>> =
     (if (baseClass.isSealed) baseClass.sealedSubclasses
@@ -30,12 +35,6 @@ public fun <T : Any> reflectionPolymorphicSubclasses(baseClass: KClass<T>): Map<
                 kClass to serializer
             }
         }.toMap()
-
-public fun <Base : Any> PolymorphicModuleBuilder<Base>.subclasses(subclasses: Map<KClass<out Base>, KSerializer<out Base>>) {
-    subclasses.forEach { (subclass, serializer) ->
-        subclass(subclass, serializer)
-    }
-}
 
 public fun <T : Any> PolymorphicModuleBuilder<T>.reflectionSubclasses(baseClass: KClass<T>): Unit =
     subclasses(reflectionPolymorphicSubclasses(baseClass))
