@@ -94,10 +94,10 @@ public fun AppEnvironment(
         val colorScheme = state.colorScheme
         (if (!dynamicColorPalette.animate) colorScheme
         else animateColorScheme(
-                colorScheme = colorScheme,
-                animationSpec = {
-                    dynamicColorPalette.animationSpec as FiniteAnimationSpec<Color>
-                },
+            colorScheme = colorScheme,
+            animationSpec = {
+                dynamicColorPalette.animationSpec as FiniteAnimationSpec<Color>
+            },
         )) to state.seedColor
     }
     else {

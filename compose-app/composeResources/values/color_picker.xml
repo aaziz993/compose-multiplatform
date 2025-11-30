@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_color">Pick color</string>
+    <string name="rgba">Rgba</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="alpha">Alpha</string>
+    <string name="grid">Grid</string>
+    <string name="hsla">Hsla</string>
+    <string name="hsv">Hsv</string>
+    <string name="brightness">Brightness</string>
+    <string name="blend">Blend</string>
+    <string name="hex">Hex</string>
+    <string name="close">Close</string>
+    <string name="confirm">Confirm</string>
+</resources>

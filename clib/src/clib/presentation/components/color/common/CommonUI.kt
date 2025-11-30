@@ -7,28 +7,29 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +38,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -97,18 +97,20 @@ internal fun ColorSlider(
     ) {
         Text(
             text = label,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 14.sp,
             modifier = Modifier.weight(.2f),
         )
 
-        var sliderValue by remember { mutableStateOf(TextFieldValue(toColorValue(value, 255).toString())) }
+        var sliderText by rememberSaveable {
+            mutableStateOf(toColorValue(value, 255).toString())
+        }
 
         Slider(
             value = value,
             onValueChange = {
                 onValueChange(it)
-                sliderValue = TextFieldValue(toColorValue(it, 255).toString())
+                sliderText = toColorValue(it, 255).toString()
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
@@ -118,10 +120,10 @@ internal fun ColorSlider(
         )
 
         TextField(
-            sliderValue,
+            sliderText,
         ) {
-            sliderValue = TextFieldValue(sanitizeSliderValue(it.text, 255))
-            onValueChange(toSliderValue(sliderValue.text, 255))
+            sliderText = sanitizeSliderValue(it, 255)
+            onValueChange(toSliderValue(sliderText, 255))
         }
     }
 }
@@ -143,21 +145,21 @@ internal fun AlphaSlider(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Text(
-            text = "Alpha",
-            color = Color.Black,
+            text = label,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 12.sp,
             modifier = Modifier.weight(.2f),
         )
 
-        var sliderValue by remember {
-            mutableStateOf(TextFieldValue(toColorValue(controller.selectedColor.value.alpha, 100).toString()))
+        var sliderText by rememberSaveable {
+            mutableStateOf(toColorValue(controller.selectedColor.value.alpha, 100).toString())
         }
 
         Slider(
             value = controller.selectedColor.value.alpha,
             onValueChange = { value ->
                 controller.setAlpha(value, true)
-                sliderValue = TextFieldValue(toColorValue(value, 100).toString())
+                sliderText = toColorValue(value, 100).toString()
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
@@ -168,10 +170,10 @@ internal fun AlphaSlider(
         )
 
         TextField(
-            sliderValue,
+            sliderText,
         ) {
-            sliderValue = TextFieldValue(sanitizeSliderValue(it.text, 100))
-            controller.setAlpha(toSliderValue(sliderValue.text, 100), true)
+            sliderText = sanitizeSliderValue(it, 100)
+            controller.setAlpha(toSliderValue(sliderText, 100), true)
         }
     }
 }
@@ -203,20 +205,21 @@ internal fun ColorSaturationAndLightnessSlider(
     ) {
         Text(
             text = label,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 12.sp,
             modifier = Modifier.weight(.2f),
         )
 
-        var sliderValue by remember {
-            mutableStateOf(TextFieldValue(toColorValue(value, 100).toString()))
+        var sliderText by rememberSaveable {
+            mutableStateOf(toColorValue(value, 100).toString())
         }
+
 
         Slider(
             value = value,
             onValueChange = {
                 onValueChange(it)
-                sliderValue = TextFieldValue(toColorValue(it, 100).toString())
+                sliderText = toColorValue(it, 100).toString()
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
@@ -227,38 +230,29 @@ internal fun ColorSaturationAndLightnessSlider(
         )
 
         TextField(
-            sliderValue,
+            sliderText,
         ) {
-            sliderValue = TextFieldValue(sanitizeSliderValue(it.text, 100))
-            onValueChange(toSliderValue(sliderValue.text, 100))
+            sliderText = sanitizeSliderValue(it, 100)
+            onValueChange(toSliderValue(sliderText, 100))
         }
     }
 }
 
-@Suppress("ComposeUnstableReceiver")
 @Composable
-internal fun RowScope.TextField(
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
-): Unit = BasicTextField(
+internal fun TextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+): Unit = OutlinedTextField(
     value = value,
     onValueChange = onValueChange,
     modifier = Modifier
         .width(80.dp)
+        .height(40.dp)
         .padding(5.dp),
-    textStyle = TextStyle(fontSize = 12.sp, color = Color.Black, textAlign = TextAlign.Center),
+    textStyle = TextStyle(fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign . Center),
     singleLine = true,
     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-) { innerTextField ->
-    Box(
-        modifier = Modifier
-            .width(80.dp)
-            .weight(.2f)
-            .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20)),
-    ) {
-        innerTextField()
-    }
-}
+)
 
 /**
  * Converts a float value in the range [0, 1] to an integer color component in the range [0, maxValue].
@@ -295,24 +289,27 @@ private fun sanitizeSliderValue(value: String, maxValue: Int): String =
 internal fun SelectedColorDetail(
     controller: ColorPickerController,
     title: String,
+    copy: String,
 ) {
-    // Retrieve a ClipboardManager object
-    val clipboard = LocalClipboard.current
-
     Row(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Display the current color in a Box with a MaterialTheme shape
-        Column(
-            verticalArrangement = Arrangement.Center,
-        ) {
+        Column {
+            // Color preview box.
             Box(
                 modifier = Modifier
-                    .padding(start = 12.dp, end = 12.dp, top = 22.dp, bottom = 12.dp)
-                    .height(75.dp)
-                    .width(75.dp)
-                    .background(controller.selectedColor.value, shape = MaterialTheme.shapes.large)
-                    .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp)),
+                    .size(75.dp)
+                    .background(
+                        color = controller.selectedColor.value,
+                        shape = MaterialTheme.shapes.large,
+                    )
+                    .border(
+                        width = 2.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = MaterialTheme.shapes.large,
+                    ),
             )
         }
 
@@ -330,7 +327,12 @@ internal fun SelectedColorDetail(
                 style = MaterialTheme.typography.bodyMedium,
             )
 
-            val hex = controller.selectedColor.value.toHex()
+            var hex by remember { mutableStateOf(controller.selectedColor.value.toHex()) }
+
+            LaunchedEffect(controller.selectedColor.value) {
+                val newHex = controller.selectedColor.value.toHex()
+                if (hex != newHex) hex = newHex
+            }
 
             Row {
                 OutlinedTextField(
@@ -346,21 +348,22 @@ internal fun SelectedColorDetail(
                     },
                 )
 
+                // Retrieve a ClipboardManager object.
+                val clipboard = LocalClipboard.current
                 val coroutineScope = rememberCoroutineScope()
 
-                Icon(
-                    imageVector = Icons.Filled.CopyAll,
-                    contentDescription = "copy icon",
-                    modifier = Modifier
-                        .width(45.dp)
-                        .height(45.dp)
-                        .padding(8.dp)
-                        .clickable {
-                            coroutineScope.launch {
-                                clipboard.setClipEntry(hex.toClipEntry())
-                            }
-                        },
-                )
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            clipboard.setClipEntry(hex.toClipEntry())
+                        }
+                    },
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.CopyAll,
+                        contentDescription = copy,
+                    )
+                }
             }
         }
     }
@@ -408,11 +411,7 @@ internal fun ColorBox(
     value: Color?,
     onValueChange: (color: Color) -> Unit,
 ) {
-    var isSelected by remember { mutableStateOf(false) }
-
-    value?.let {
-        isSelected = boxColor == it
-    }
+    val isSelected = value == boxColor
 
     Box(
         modifier = Modifier
@@ -420,7 +419,6 @@ internal fun ColorBox(
             .height(boxSize)
             .background(boxColor, RectangleShape)
             .clickable {
-                isSelected = true
                 onValueChange(boxColor)
             }
             .then(if (isSelected) Modifier.border(2.dp, Color.White) else Modifier),
@@ -436,14 +434,14 @@ internal fun ColorBox(
  */
 private fun generateColorPalette(givenColor: String, alphaChange: Float = 1f): List<Color> =
     listOf(
-        Color900.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color800.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color700.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color600.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color400.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color300.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color200.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color100.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
-        Color50.getColorMap().entries.single { (key, _) -> key == givenColor }.value.copy(alpha = alphaChange),
+        Color900.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color800.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color700.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color600.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color400.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color300.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color200.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color100.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
+        Color50.getColorMap()[givenColor]!!.copy(alpha = alphaChange),
     )

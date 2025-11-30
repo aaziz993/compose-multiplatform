@@ -64,11 +64,11 @@ public fun ColorPickerBottomSheet(
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf(
-        picker.rgbaLabel,
-        picker.gridLabel,
-        picker.hsvLabel,
-        picker.hslaLabel,
-        picker.blendLabel,
+        picker.rgba,
+        picker.grid,
+        picker.hsv,
+        picker.hsla,
+        picker.blend,
     )
 
     Column(
@@ -120,53 +120,59 @@ public fun ColorPickerBottomSheet(
             }
         }
 
-        Column(
-            modifier = Modifier
-                .weight(1f),
-        ) {
-            when (tabIndex) {
-                0 -> RGBAColorPicker(
-                    controller,
-                    Modifier.padding(16.dp),
-                    picker.rgbaLabel,
-                    picker.redLabel,
-                    picker.greenLabel,
-                    picker.blueLabel,
-                    picker.alphaLabel,
-                )
+        when (tabIndex) {
+            0 -> RGBAColorPicker(
+                controller,
+                Modifier
+                    .weight(1f)
+                    .padding(16.dp),
+                picker.rgba,
+                picker.red,
+                picker.green,
+                picker.blue,
+                picker.alpha,
+            )
 
-                1 -> GridColorPicker(
-                    controller,
-                    modifier = Modifier.padding(16.dp),
-                    picker.gridLabel,
-                )
+            1 -> GridColorPicker(
+                controller,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp),
+                picker.grid,
+            )
 
-                2 -> HSVColorPicker(
-                    controller,
-                    Modifier.padding(16.dp),
-                    picker.hsvLabel,
-                )
+            2 -> HSVColorPicker(
+                controller,
+                Modifier
+                    .weight(1f)
+                    .padding(16.dp),
+                picker.hsv,
+            )
 
-                3 -> HSLAColorPicker(
-                    controller,
-                    Modifier.padding(16.dp),
-                    picker.hslaLabel,
-                    picker.saturationLabel,
-                    picker.lightnessLabel,
-                    picker.alphaLabel,
-                )
+            3 -> HSLAColorPicker(
+                controller,
+                Modifier
+                    .weight(1f)
+                    .padding(16.dp),
+                picker.hsla,
+                picker.saturation,
+                picker.lightness,
+                picker.alpha,
+            )
 
-                4 -> BlendColorPicker(
-                    controller,
-                    Modifier.padding(16.dp),
-                    picker.blendLabel,
-                )
-            }
+            4 -> BlendColorPicker(
+                controller,
+                Modifier
+                    .weight(1f)
+                    .padding(16.dp),
+                picker.blend,
+            )
         }
 
         SelectedColorDetail(
             controller,
-            picker.hexLabel,
+            picker.hex,
+            picker.copy,
         )
 
         Row(
