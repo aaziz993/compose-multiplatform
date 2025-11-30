@@ -3,9 +3,7 @@ package clib.presentation.navigation
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 /**
@@ -28,7 +26,7 @@ public class NavigationActionQueue : NavigatorHolder {
     private val pendingActions = mutableListOf<Array<out NavigationAction>>()
 
     /** Coroutine scope for executing actions on the main thread. */
-    private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val mainScope = MainScope()
 
     /**
      * Sets the navigator and executes any pending actions.

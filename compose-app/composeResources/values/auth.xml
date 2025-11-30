@@ -5,6 +5,8 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>
+    <string name="passwords_mismatch">Passwords mismatch</string>
+    <string name="reset_password">Repeat password</string>
     <string name="new_password">New password</string>
     <string name="remember_me">Remember me?</string>
     <string name="enter_code_sent_to">Enter code sent to %1$s</string>

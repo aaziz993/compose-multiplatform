@@ -42,11 +42,11 @@ import clib.presentation.navigation.NavigationAction
 import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.back
 import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.help
 import compose_app.generated.resources.language
 import compose_app.generated.resources.menu
-import compose_app.generated.resources.navigate_back
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.theme
 import dev.chrisbanes.haze.HazeDefaults
@@ -124,13 +124,13 @@ public fun AppBar(
                             }
 
                         if (hasBack)
-                            AppTooltipBox(stringResource(Res.string.navigate_back)) {
+                            AppTooltipBox(stringResource(Res.string.back)) {
                                 IconButton(
                                     onClick = { onNavigationAction(NavigationAction.Pop) },
                                 ) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                        contentDescription = stringResource(Res.string.navigate_back),
+                                        contentDescription = stringResource(Res.string.back),
                                     )
                                 }
                             }

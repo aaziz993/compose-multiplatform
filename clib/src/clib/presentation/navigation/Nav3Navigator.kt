@@ -7,9 +7,7 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
 import klib.data.type.auth.model.Auth
 import klib.data.type.collections.replaceWith
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 
@@ -43,7 +41,7 @@ public open class Nav3Navigator(
     }
 
     /** Coroutine scope for scheduling back navigation calls. */
-    private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val mainScope = MainScope()
 
     /**
      * Applies an array of navigation actions to the back stack.

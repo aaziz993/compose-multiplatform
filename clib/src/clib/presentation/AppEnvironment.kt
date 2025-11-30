@@ -23,6 +23,7 @@ import clib.presentation.locale.rememberLocaleState
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
+import clib.presentation.navigation.deeplink.DeepLinkListener
 import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.navigation.rememberRouter
 import clib.presentation.quickaccess.QuickAccess
@@ -117,6 +118,10 @@ public fun AppEnvironment(
         ) {
             routes.Nav3Host(routerFactory, navigatorFactory)
         }
+    }
+
+    DeepLinkListener {
+
     }
 }
 
