@@ -16,231 +16,31 @@
     <!-- Buttons -->
 
     <!-- Toast messages -->
-
-    <string name="home">Home</string>
-    <string name="articles">Articles</string>
-    <string name="news">News</string>
-    <string name="services">Services</string>
-    <string name="map">Map</string>
-    <string name="settings">Settings</string>
-    <string name="about">About</string>
-    <string name="login">Login</string>
-    <string name="profile">Profile</string>
-    <string name="balance">Balance</string>
-    <string name="crypto">Crypto</string>
-    <string name="stock">Stock</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="pin_code">Pin code</string>
-    <string name="repeat_pin_code">Repeat pin code</string>
-    <string name="enter_code_sent_to">Enter code sent to %1$s</string>
-    <string name="resend_code_in">Resend code in %1$s</string>
-    <string name="resend_code">Resend code</string>
-    <string name="invalid_pin_code">Invalid pin code</string>
-    <string name="back">Back</string>
-    <string name="dark_theme">Dark theme</string>
-    <string name="light_theme">Light theme</string>
-    <string name="system_theme">System theme</string>
-    <string name="language">Language</string>
-    <string name="country">Country</string>
-    <string name="user_interface">User interface</string>
-    <string name="remember_me">Remember me?</string>
-    <string name="first_name">First name</string>
-    <string name="email">Email</string>
+    <string name="general">General</string>
     <string name="actions">Actions</string>
-    <string name="user_info">User info</string>
-    <string name="forgot_pin_code">Forgot pin code</string>
-    <string name="last_name">Last name</string>
-    <string name="roles">Roles</string>
-    <string name="submit">Submit</string>
-    <string name="Russian">Russian</string>
-    <string name="select_tile">Select tile</string>
-    <string name="English">English</string>
-    <string name="new_password">New password</string>
-    <string name="Tajik">Tajik</string>
-    <string name="sign_in">Sign In</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="network_401">Unauthorized</string>
-    <string name="repeat_password">Repeat password</string>
-    <string name="retry">Retry</string>
-    <string name="value_is_empty">Value is empty</string>
-    <string name="value_length_is_invalid">Value length is invalid</string>
-    <string name="value_is_invalid">Value is invalid</string>
-    <string name="passwords_mismatch">Passwords mismatch</string>
-    <string name="value_has_whitespace">Value has whitespace</string>
-    <string name="phone_prefix_is_invalid">Should start with +</string>
-    <string name="value_has_not_digits">Value has not digits</string>
-    <string name="value_has_letters">Value has letters</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
-    <string name="cont">Continue</string>
-    <string name="auth">Auth</string>
-    <string name="phone">Phone</string>
-    <string name="wallet">Wallet</string>
-    <string name="about_the_system">About the System</string>
-    <string name="system_description">"       The Electronic Data Exchange System for the Situational Center of the Customs Service under the Government of the Republic of Tajikistan was developed in 2024 with technical support from the USAID Trade Program in Central Asia, as part of the Medium-Term Development Program for the Customs Authorities of the Republic of Tajikistan for 2020-2024.
-\n       The main goal of the system is to enhance the efficiency, reliability, and transparency of customs control through technical equipment. The system provides automated data collection from customs posts for their prompt processing and analysis in the Situational Center, improving coordination, management, and decision-making in the operations of customs authorities of the Republic of Tajikistan."</string>
-    <string name="search">Search</string>
-    <string name="virtual_earth_map">Virtual earth map</string>
-    <string name="pagination">Pagination</string>
-    <string name="select">Select</string>
-    <string name="markers">Markers</string>
-    <string name="options">Options</string>
-    <string name="header">Header</string>
-    <string name="live_search">Live search</string>
-    <string name="confirm_alert">Are you shure?</string>
-    <string name="value_is_negative">Value is negative</string>
-    <string name="open_street_map">OpenStreet map</string>
-    <string name="google_map">Google map</string>
-    <string name="scans">Scans</string>
-    <string name="description">Description</string>
-    <string name="vehicle_license_plate">Vehicle number</string>
-    <string name="driver_name">Driver</string>
-    <string name="total_weight">Weight</string>
-    <string name="document_number">Document</string>
-    <string name="latitude">Latitude</string>
-    <string name="identifier">Identifier</string>
-    <string name="longitude">Longitude</string>
-    <string name="value_prefix_is_not_plus">Value prefix is not +</string>
-    <string name="country_of_dispatch">Country of dispatch</string>
-    <string name="driver_license">Driver license</string>
-    <string name="camera">Camera</string>
-    <string name="scales">Scales</string>
-    <string name="xray">X-Ray</string>
-    <string name="path">Path</string>
-    <string name="id">ID</string>
+    <string name="continue">Continue</string>
     <string name="content">Content</string>
-    <string name="at">Time</string>
-    <string name="officer_name">Officer Name</string>
-    <string name="source">Source</string>
-    <string name="goods_description">Goods description</string>
-    <string name="image">Image</string>
-    <string name="is_file">File</string>
-    <string name="mapper_id">Mapper ID</string>
-    <string name="data_path">Data path</string>
-    <string name="at_format">Date format</string>
-    <string name="vehicle_license_plate_image">Vehicle license plate image</string>
-    <string name="mapper">Mapper</string>
-
-    <string name="otp">Otp</string>
-    <string name="phonecheckup">Phone checkup</string>
-    <string name="verification">Verification</string>
-    <string name="unverified">Unverified</string>
-    <string name="country_flag">Country flag</string>
+    <string name="description">Description</string>
+    <string name="file">File</string>
+    <string name="live_search">Live search</string>
+    <string name="markers">Markers</string>
     <string name="menu">Menu</string>
-    <string name="navigate_back">Navigate Back</string>
+    <string name="options">Options</string>
+    <string name="path">Path</string>
+    <string name="pagination">Pagination</string>
+    <string name="retry">Retry</string>
+    <string name="search">Search</string>
+    <string name="select">Select</string>
+    <string name="submit">Submit</string>
+    <string name="time">Time</string>
+    <string name="time_format">Time format</string>
+    <string name="header">Header</string>
     <string name="help">Help</string>
-    <string name="back_content_description">Back content description</string>
-    <string name="share_content_description">Share content description</string>
-    <string name="read_more_at">Read more at</string>
-    <string name="verify_offer">Please verify to use paid services</string>
-    <string name="upload_id">Upload ID</string>
-    <string name="unverified_description">Your account is not verified yet.</string>
-    <string name="general">General</string>
-    <string name="permissions">Permissions</string>
-    <string name="microphone">Microphone</string>
-    <string name="location">Location</string>
-    <string name="user">User</string>
-    <string name="verify">Verify</string>
-    <string name="appearance">Appearance</string>
-    <string name="theme">Theme</string>
-    <string name="quick_access">Quick access</string>
-    <string name="enabled">Enabled</string>
-    <string name="disabled">Disabled</string>
-    <string name="quick_support">Quick access support</string>
-    <string name="quick_theme">Quick access theme</string>
-    <string name="quick_locale">Quick access locale</string>
-    <string name="quick_avatar">Quick access avatar</string>
-    <string name="color_palette">Color palette</string>
-    <string name="dynamic_color_palette">Dynamic color palette</string>
-    <string name="font">Font</string>
-    <string name="density">Density</string>
-    <string name="set_density">Density</string>
-    <string name="font_scale">Font scale</string>
-    <string name="accessibility">Accessibility</string>
-    <string name="high_contrast">High contrast</string>
-
-    <!-- Connectivity Strings -->
-    <string name="online">Online</string>
-    <string name="offline">Offline</string>
-
-    <!-- Number Strings -->
-    <string-array name="number_suffixes">
-        <item></item>       <!-- empty for base (no suffix) -->
-        <item>K</item>      <!-- thousand -->
-        <item>M</item>      <!-- million -->
-        <item>B</item>      <!-- billion -->
-        <item>T</item>      <!-- trillion -->
-        <item>P</item>      <!-- peta -->
-        <item>Z</item>      <!-- zetta -->
-        <item>Y</item>      <!-- yotta -->
-        <item>Q</item>      <!-- quetta -->
-    </string-array>
-
-    <!-- Duration / Relative Time Strings -->
-    <string name="now">now</string>
-    <string name="time_in">in %1$s</string>
-    <string name="time_ago">%1$s ago</string>
-
-    <plurals name="nanoseconds">
-        <item quantity="one">nanosecond</item>
-        <item quantity="other">nanoseconds</item>
-    </plurals>
-
-    <plurals name="microseconds">
-        <item quantity="one">microsecond</item>
-        <item quantity="other">microseconds</item>
-    </plurals>
-
-    <plurals name="milliseconds">
-        <item quantity="one">millisecond</item>
-        <item quantity="other">milliseconds</item>
-    </plurals>
-
-    <plurals name="seconds">
-        <item quantity="one">second</item>
-        <item quantity="other">seconds</item>
-    </plurals>
-
-    <plurals name="minutes">
-        <item quantity="one">minute</item>
-        <item quantity="other">minutes</item>
-    </plurals>
-
-    <plurals name="hours">
-        <item quantity="one">hour</item>
-        <item quantity="other">hours</item>
-    </plurals>
-
-    <plurals name="days">
-        <item quantity="one">day</item>
-        <item quantity="other">days</item>
-    </plurals>
-
-    <plurals name="weeks">
-        <item quantity="one">week</item>
-        <item quantity="other">weeks</item>
-    </plurals>
-
-    <plurals name="months">
-        <item quantity="one">month</item>
-        <item quantity="other">months</item>
-    </plurals>
-
-    <plurals name="years">
-        <item quantity="one">year</item>
-        <item quantity="other">years</item>
-    </plurals>
-
-    <!-- Size Strings -->
-    <string-array name="size_suffixes">
-        <item>B</item>
-        <item>KB</item>
-        <item>MB</item>
-        <item>GB</item>
-        <item>TB</item>
-        <item>PB</item>
-        <item>EB</item>
-    </string-array>
-
+    <string name="identifier">Identifier</string>
+    <string name="id">ID</string>
+    <string name="image">Image</string>
 </resources>

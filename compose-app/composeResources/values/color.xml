@@ -12,6 +12,4 @@
     <string name="brightness">Brightness</string>
     <string name="blend">Blend</string>
     <string name="hex">Hex</string>
-    <string name="close">Close</string>
-    <string name="confirm">Confirm</string>
 </resources>

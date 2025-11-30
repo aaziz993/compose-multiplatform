@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="value_is_empty">Value is empty</string>
+    <string name="value_length_is_invalid">Value length is invalid</string>
+    <string name="value_is_invalid">Value is invalid</string>
+    <string name="passwords_mismatch">Passwords mismatch</string>
+    <string name="value_has_whitespace">Value has whitespace</string>
+    <string name="phone_prefix_is_invalid">Should start with +</string>
+    <string name="value_has_not_digits">Value has not digits</string>
+    <string name="value_has_letters">Value has letters</string>
+    <string name="value_prefix_is_not_plus">Value prefix is not +</string>
+    <string name="value_is_negative">Value is negative</string>
+</resources>

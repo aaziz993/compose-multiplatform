@@ -23,7 +23,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -47,7 +46,6 @@ import compose_app.generated.resources.camera
 import compose_app.generated.resources.color_palette
 import compose_app.generated.resources.density
 import compose_app.generated.resources.dynamic_color_palette
-import compose_app.generated.resources.font
 import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.language
@@ -165,26 +163,15 @@ public fun SettingsScreen(
             onClick = { },
         )
 
-        SettingsMenuLink(
-            title = { Text(text = stringResource(Res.string.font)) },
-            subtitle = { Text(text = stringResource(Res.string.font)) },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.ColorLens, stringResource(Res.string.font)) },
-            onClick = { },
-        )
-
         var showSheet by remember { mutableStateOf(false) }
 
-        if (showSheet) {
-
+        if (showSheet)
             ColorPickerBottomSheet(
                 { showSheet = false },
                 {
                     showSheet = false
                 },
             )
-        }
 
         SettingsMenuLink(
             title = { Text(text = stringResource(Res.string.dynamic_color_palette)) },

@@ -13,7 +13,7 @@ public fun BigDecimal.toHumanReadableAbbreviation(
     decimals: Int = 0,
     groupSeparator: String = ".",
     decimalSymbol: String = ",",
-    vararg suffixes: String = arrayOf("", "K", "M", "B", "T", "P", "Z", "Y", "Q")
+    vararg suffixes: String = arrayOf("K", "M", "B", "T", "P", "Z", "Y", "Q")
 ): String {
     var current = this
     var index = 0
@@ -23,5 +23,7 @@ public fun BigDecimal.toHumanReadableAbbreviation(
         index++
     }
 
-    return "${current.toHumanReadable(decimals, groupSeparator, decimalSymbol)}${suffixes[index]}"
+    return "${current.toHumanReadable(decimals, groupSeparator, decimalSymbol)}${
+        if (index == 0) "" else suffixes[index - 1]
+    }"
 }
