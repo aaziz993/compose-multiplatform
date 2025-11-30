@@ -177,10 +177,8 @@ public fun SettingsScreen(
         var showSheet by remember { mutableStateOf(false) }
 
         if (showSheet) {
-            val colorPickerController = clib.presentation.components.color.common.rememberColorPickerController(Color.White)
-            colorPickerController.debounceDuration = 200L
+
             ColorPickerBottomSheet(
-                colorPickerController,
                 { showSheet = false },
                 {
                     showSheet = false
@@ -202,7 +200,7 @@ public fun SettingsScreen(
         SettingsSlider(
             value = density.density,
             valueRange = 1f..4f,
-            steps = 30,
+            steps = 300,
             title = { Text(stringResource(Res.string.density)) },
             subtitle = { Text(stringResource(Res.string.density)) },
             enabled = true,
@@ -215,7 +213,7 @@ public fun SettingsScreen(
         SettingsSlider(
             value = density.fontScale,
             valueRange = 0.5f..3.5f,
-            steps = 30,
+            steps = 300,
             title = { Text(stringResource(Res.string.font_scale)) },
             subtitle = { Text(stringResource(Res.string.font_scale)) },
             enabled = true,

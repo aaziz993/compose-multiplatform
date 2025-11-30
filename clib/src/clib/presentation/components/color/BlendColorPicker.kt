@@ -35,8 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.toColor
 import clib.presentation.components.color.common.SliderHue
-import clib.presentation.components.color.common.selectColor
-import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.materialkolor.ktx.blend
 import com.materialkolor.ktx.toHex
 
@@ -46,7 +44,8 @@ import com.materialkolor.ktx.toHex
  * can change how blended color bias to first or second color.
  * By selecting first and second color then by adjusting color bias value, consumer can select or generate their desired color.
  *
- * @param controller: ColorPickerController.
+ * @param value Color value.
+ * @param onValueChange Callback on color value change.
  * @param modifier: The modifier to apply to this layout.
  * @param title: Title.
  *
@@ -54,16 +53,17 @@ import com.materialkolor.ktx.toHex
  */
 @Composable
 internal fun BlendColorPicker(
-    controller: ColorPickerController,
+    value: Color,
+    onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color blend",
 ) {
     // State variables for first color hue and second color hue
     var firstHue by remember {
-        mutableFloatStateOf(controller.selectedColor.value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
+        mutableFloatStateOf(value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
     }
     var secondHue by remember { mutableFloatStateOf(firstHue) }
-    var firstBlendColor by remember { mutableStateOf(controller.selectedColor.value) }
+    var firstBlendColor by remember { mutableStateOf(value) }
     var secondBlendColor by remember { mutableStateOf(firstBlendColor) }
     var colorBias by remember { mutableFloatStateOf(.5f) }
 
@@ -107,7 +107,7 @@ internal fun BlendColorPicker(
                     ) {
                         firstHue = it
                         firstBlendColor = Color.hsv(firstHue, 1f, 1f)
-                        controller.selectColor(firstBlendColor.blend(secondBlendColor, colorBias))
+                        onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
                     }
 
                     Text(text = firstBlendColor.toHex())
@@ -126,7 +126,7 @@ internal fun BlendColorPicker(
                     ) {
                         secondHue = it
                         secondBlendColor = Color.hsv(secondHue, 1f, 1f)
-                        controller.selectColor(firstBlendColor.blend(secondBlendColor, colorBias))
+                        onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
                     }
 
                     Text(text = secondBlendColor.toHex())
@@ -185,7 +185,7 @@ internal fun BlendColorPicker(
                         valueRange = 0f..1f,
                         onValueChange = {
                             colorBias = it
-                            controller.selectColor(firstBlendColor.blend(secondBlendColor, colorBias))
+                            onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
                         },
                     )
                     Icon(

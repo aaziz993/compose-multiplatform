@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CopyAll
@@ -24,7 +26,6 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,29 +55,17 @@ import clib.data.type.Color800
 import clib.data.type.Color900
 import clib.data.type.getColorMap
 import clib.data.type.hexToColor
-import com.github.skydoves.colorpicker.compose.ColorPickerController
-import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.materialkolor.ktx.toHex
 import klib.data.type.primitives.string.HEX_COLOR
 import kotlinx.coroutines.launch
-
-@Composable
-public fun rememberColorPickerController(initialValue: Color): ColorPickerController =
-    rememberColorPickerController().apply {
-        selectColor(initialValue)
-    }
-
-internal fun ColorPickerController.selectColor(color: Color) {
-    (selectedColor as MutableState<Color>).value = color
-}
 
 /**
  * A composable function that creates a slider for adjusting a float value associated with a color.
  *
  * @param label: String: The label to display alongside the slider.
  * @param trackColor: Color: The color used for the active track of the slider.
- * @param value: MutableState<Float>: The mutable state holding the current color value of the slider.
- * @param onValueChange: (value: Float) -> Unit: Callback to invoke when the slider value changes.: The mutable state holding the current color value of the slider.
+ * @param value: The value holding the current value of the slider.
+ * @param onValueChange Callback for value change.
  *
  * @return @Composable: A slider UI for color selection.
  */
@@ -84,6 +73,7 @@ internal fun ColorPickerController.selectColor(color: Color) {
 internal fun ColorSlider(
     label: String,
     trackColor: Color,
+    maxValue: Int,
     value: Float,
     onValueChange: (Float) -> Unit
 ) {
@@ -103,14 +93,14 @@ internal fun ColorSlider(
         )
 
         var sliderText by rememberSaveable {
-            mutableStateOf(toColorValue(value, 255).toString())
+            mutableStateOf(toColorValue(value, maxValue).toString())
         }
 
         Slider(
             value = value,
             onValueChange = {
                 onValueChange(it)
-                sliderText = toColorValue(it, 255).toString()
+                sliderText = toColorValue(it, maxValue).toString()
             },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
@@ -119,140 +109,27 @@ internal fun ColorSlider(
             modifier = Modifier.weight(.8f),
         )
 
-        TextField(
-            sliderText,
+        Box(
+            modifier = Modifier
+                .width(80.dp)
+                .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20)),
         ) {
-            sliderText = sanitizeSliderValue(it, 255)
-            onValueChange(toSliderValue(sliderText, 255))
+            BasicTextField(
+                value = sliderText,
+                onValueChange = {
+                    sliderText = sanitizeSliderValue(it, maxValue)
+                    onValueChange(toSliderValue(sliderText, maxValue))
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                textStyle = TextStyle(fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center),
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            )
         }
     }
 }
-
-/**
- * A composable function that creates a slider for adjusting a float value associated with a color alpha valuw.
- *
- * @param controller: ColorPickerController.
- *
- * @return @Composable: A slider UI for alpha selection.
- */
-@Composable
-internal fun AlphaSlider(
-    controller: ColorPickerController,
-    label: String = "Alpha",
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        Text(
-            text = label,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 12.sp,
-            modifier = Modifier.weight(.2f),
-        )
-
-        var sliderText by rememberSaveable {
-            mutableStateOf(toColorValue(controller.selectedColor.value.alpha, 100).toString())
-        }
-
-        Slider(
-            value = controller.selectedColor.value.alpha,
-            onValueChange = { value ->
-                controller.setAlpha(value, true)
-                sliderText = toColorValue(value, 100).toString()
-            },
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = controller.selectedColor.value,
-            ),
-            valueRange = 0f..1f,
-            modifier = Modifier.weight(.8f),
-        )
-
-        TextField(
-            sliderText,
-        ) {
-            sliderText = sanitizeSliderValue(it, 100)
-            controller.setAlpha(toSliderValue(sliderText, 100), true)
-        }
-    }
-}
-
-/**
- * A composable function that creates a slider for adjusting a float value associated with a color alpha value.
- *
- * @param label: String: The label to display alongside the slider.
- * @param trackColor: Color: The color used for the active track of the slider.
- * @param value: The value holding the current value of the slider.
- * @param onValueChange Callback for value change.
- *
- * @return @Composable: A slider UI for alpha selection.
- */
-@Composable
-internal fun ColorSaturationAndLightnessSlider(
-    label: String,
-    trackColor: Color,
-    value: Float,
-    onValueChange: (Float) -> Unit,
-) {
-    /**
-     * The slider's active track color is set to [trackColor].
-     * Displays a slider for adjusting the given [value] associated with the provided [label].
-     */
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        Text(
-            text = label,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 12.sp,
-            modifier = Modifier.weight(.2f),
-        )
-
-        var sliderText by rememberSaveable {
-            mutableStateOf(toColorValue(value, 100).toString())
-        }
-
-
-        Slider(
-            value = value,
-            onValueChange = {
-                onValueChange(it)
-                sliderText = toColorValue(it, 100).toString()
-            },
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = trackColor,
-            ),
-            valueRange = 0f..1f,
-            modifier = Modifier.weight(.8f),
-        )
-
-        TextField(
-            sliderText,
-        ) {
-            sliderText = sanitizeSliderValue(it, 100)
-            onValueChange(toSliderValue(sliderText, 100))
-        }
-    }
-}
-
-@Composable
-internal fun TextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-): Unit = OutlinedTextField(
-    value = value,
-    onValueChange = onValueChange,
-    modifier = Modifier
-        .width(80.dp)
-        .height(40.dp)
-        .padding(5.dp),
-    textStyle = TextStyle(fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign . Center),
-    singleLine = true,
-    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-)
 
 /**
  * Converts a float value in the range [0, 1] to an integer color component in the range [0, maxValue].
@@ -275,19 +152,21 @@ private fun sanitizeSliderValue(value: String, maxValue: Int): String =
             it > maxValue -> maxValue.toString()
             else -> value
         }
-    } ?: "0"
+    } ?: ""
 
 /**
  * A composable function that displays the selected color and its details.
  *
- * @param controller: ColorPickerController.
+ * @param value Color value.
+ * @param onValueChange Callback on color value change.
  * @param title: Title.
  *
  * @return @Composable: A UI to display selected color and its details.
  */
 @Composable
 internal fun SelectedColorDetail(
-    controller: ColorPickerController,
+    value: Color,
+    onValueChange: (Color) -> Unit,
     title: String,
     copy: String,
 ) {
@@ -302,7 +181,7 @@ internal fun SelectedColorDetail(
                 modifier = Modifier
                     .size(75.dp)
                     .background(
-                        color = controller.selectedColor.value,
+                        color = value,
                         shape = MaterialTheme.shapes.large,
                     )
                     .border(
@@ -327,10 +206,10 @@ internal fun SelectedColorDetail(
                 style = MaterialTheme.typography.bodyMedium,
             )
 
-            var hex by remember { mutableStateOf(controller.selectedColor.value.toHex()) }
+            var hex by remember { mutableStateOf(value.toHex()) }
 
-            LaunchedEffect(controller.selectedColor.value) {
-                val newHex = controller.selectedColor.value.toHex()
+            LaunchedEffect(value) {
+                val newHex = value.toHex()
                 if (hex != newHex) hex = newHex
             }
 
@@ -344,7 +223,7 @@ internal fun SelectedColorDetail(
                     label = { Text(text = title) },
                     onValueChange = { value ->
                         if (Regex.HEX_COLOR.matches(value))
-                            controller.selectColor(value.hexToColor())
+                            onValueChange(value.hexToColor())
                     },
                 )
 

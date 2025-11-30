@@ -21,14 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.getColorMap
 import clib.presentation.components.color.common.ColorColumn
-import clib.presentation.components.color.common.selectColor
-import com.github.skydoves.colorpicker.compose.ColorPickerController
 
 /**
  * A composable function that creates a grid to select colors. This color grid is created with
  * 16 predefined major colors and those color's 10 color variances.
- *
- * @param controller: ColorPickerController.
+ * @param value Color value.
+ * @param onValueChange Callback on color value change.
  * @param modifier: The modifier to apply to this layout.
  * @param title: Title.
  *
@@ -37,7 +35,8 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
 @Suppress("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun GridColorPicker(
-    controller: ColorPickerController,
+    value: Color,
+    onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color grid",
 ): Unit = Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -76,10 +75,8 @@ internal fun GridColorPicker(
                     ColorColumn(
                         boxSize = boxSize,
                         givenColor = key,
-                        value = controller.selectedColor.value,
-                        onValueChange = { value ->
-                            controller.selectColor(value)
-                        },
+                        value = value,
+                        onValueChange = onValueChange,
                     )
                 }
             }

@@ -19,10 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.color.common.AlphaSlider
-import clib.presentation.components.color.common.ColorSaturationAndLightnessSlider
-import com.github.skydoves.colorpicker.compose.ColorPickerController
+import clib.presentation.components.color.common.ColorSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
+import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 /**
  * A composable function that creates a color picker UI for selecting HSV properties to get color. This component
@@ -30,7 +29,8 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
  * selected color's saturation, lightness and alpha values.
  * By adjusting these values, consumer can select or generate their desired color.
  *
- * @param controller: ColorPickerController.
+ * @param value Color value.
+ * @param onValueChange Callback on color value change.
  * @param modifier: The modifier to apply to this layout.
  * @param title: Title.
  *
@@ -38,11 +38,13 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
  */
 @Composable
 internal fun HSVColorPicker(
-    controller: ColorPickerController,
+    value: Color,
+    onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color hsv",
     brightnessLabel: String = "Brightness",
     alphaLabel: String = "Alpha",
+    initialValue: Color? = null,
 ): Unit = Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
     Column(
         modifier = Modifier
@@ -71,21 +73,39 @@ internal fun HSVColorPicker(
                     .padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
+
+                val controller = rememberColorPickerController()
+                controller.debounceDuration = 200L
+
                 HsvColorPicker(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(.8f),
                     controller = controller,
-                    initialColor = controller.selectedColor.value,
+                    initialColor = initialValue,
+                    onColorChanged = { (color, _, fromUser) ->
+                        if (fromUser) onValueChange(color)
+                    },
                 )
-                ColorSaturationAndLightnessSlider(
+                ColorSlider(
                     brightnessLabel,
                     controller.selectedColor.value,
+                    100,
                     controller.brightness.value,
                 ) { value ->
                     controller.setBrightness(value, true)
+                    onValueChange(controller.selectedColor.value)
                 }
-                AlphaSlider(controller, alphaLabel)
+
+                ColorSlider(
+                    brightnessLabel,
+                    controller.selectedColor.value,
+                    100,
+                    controller.alpha.value,
+                ) { value ->
+                    controller.setAlpha(value, true)
+                    onValueChange(controller.selectedColor.value)
+                }
             }
         }
     }

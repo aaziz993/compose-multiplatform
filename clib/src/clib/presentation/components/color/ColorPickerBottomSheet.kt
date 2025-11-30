@@ -20,6 +20,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -30,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.common.SelectedColorDetail
 import clib.presentation.components.color.model.ColorPicker
-import com.github.skydoves.colorpicker.compose.ColorPickerController
 
 /**
  * This created a bottom sheet to pick color. As a content of this user can select their color using
@@ -40,7 +40,7 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
  * RED, GREEN and BLUE values in a color.
  *
  * @param onDismissRequest: Executes when the user clicks outside of the bottom sheet, after sheet animates to Hidden.
- * @param onConfirm: (selectedColor: Color) -> Unit: Callback to invoke when a color is selected.
+ * @param onSelect: (selectedColor: Color) -> Unit: Callback to invoke when a color is selected.
  * @param onClose: Callback to invoke when user clicks close button.
  * @param sheetState: SheetState: State variable to control the bottom sheet.
  * @param picker: Picker visual configuration.
@@ -50,10 +50,10 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
 @Suppress("ComposeModifierMissing")
 @Composable
 public fun ColorPickerBottomSheet(
-    controller: ColorPickerController,
     onDismissRequest: () -> Unit,
-    onConfirm: () -> Unit,
+    onSelect: (Color) -> Unit,
     onClose: () -> Unit = onDismissRequest,
+    initialColor: Color = Color.White,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
     picker: ColorPicker = ColorPicker()
 ): Unit = ModalBottomSheet(
@@ -62,6 +62,7 @@ public fun ColorPickerBottomSheet(
     containerColor = MaterialTheme.colorScheme.background,
     scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .5f),
 ) {
+    var color by remember { mutableStateOf(initialColor) }
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf(
         picker.rgba,
@@ -122,7 +123,10 @@ public fun ColorPickerBottomSheet(
 
         when (tabIndex) {
             0 -> RGBAColorPicker(
-                controller,
+                color,
+                { value ->
+                    color = value
+                },
                 Modifier
                     .weight(1f)
                     .padding(16.dp),
@@ -134,7 +138,10 @@ public fun ColorPickerBottomSheet(
             )
 
             1 -> GridColorPicker(
-                controller,
+                color,
+                { value ->
+                    color = value
+                },
                 modifier = Modifier
                     .weight(1f)
                     .padding(16.dp),
@@ -142,15 +149,24 @@ public fun ColorPickerBottomSheet(
             )
 
             2 -> HSVColorPicker(
-                controller,
+                color,
+                { value ->
+                    color = value
+                },
                 Modifier
                     .weight(1f)
                     .padding(16.dp),
                 picker.hsv,
+                picker.brightness,
+                picker.alpha,
+                color,
             )
 
             3 -> HSLAColorPicker(
-                controller,
+                color,
+                { value ->
+                    color = value
+                },
                 Modifier
                     .weight(1f)
                     .padding(16.dp),
@@ -161,7 +177,10 @@ public fun ColorPickerBottomSheet(
             )
 
             4 -> BlendColorPicker(
-                controller,
+                color,
+                { value ->
+                    color = value
+                },
                 Modifier
                     .weight(1f)
                     .padding(16.dp),
@@ -170,7 +189,10 @@ public fun ColorPickerBottomSheet(
         }
 
         SelectedColorDetail(
-            controller,
+            color,
+            { value ->
+                color = value
+            },
             picker.hex,
             picker.copy,
         )
@@ -198,7 +220,7 @@ public fun ColorPickerBottomSheet(
                     .padding(start = 4.dp, end = 4.dp)
                     .weight(1f),
                 shape = RoundedCornerShape(8.dp),
-                onClick = onConfirm,
+                onClick = { onSelect(color) },
             ) {
                 Text(
                     text = picker.confirm,

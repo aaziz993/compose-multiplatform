@@ -22,11 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.toColor
-import clib.presentation.components.color.common.AlphaSlider
-import clib.presentation.components.color.common.ColorSaturationAndLightnessSlider
+import clib.presentation.components.color.common.ColorSlider
 import clib.presentation.components.color.common.SliderHue
-import clib.presentation.components.color.common.selectColor
-import com.github.skydoves.colorpicker.compose.ColorPickerController
 
 /**
  * A composable function that creates a color picker UI for selecting HSL-A properties to get color. This component
@@ -34,7 +31,8 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
  * selected color's saturation, lightness and alpha values.
  * By adjusting these values, consumer can select or generate their desired color.
  *
- * @param controller: ColorPickerController.
+ * @param value Color value.
+ * @param onValueChange Callback on color value change.
  * @param modifier: The modifier to apply to this layout.
  * @param title: Title.
  *
@@ -42,7 +40,8 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
  */
 @Composable
 internal fun HSLAColorPicker(
-    controller: ColorPickerController,
+    value: Color,
+    onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color hsla",
     saturationLabel: String = "Saturation",
@@ -78,7 +77,7 @@ internal fun HSLAColorPicker(
                 verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
                 var hsl by remember {
-                    mutableStateOf(controller.selectedColor.value.toColor().toHSL())
+                    mutableStateOf(value.toColor().toHSL())
                 }
 
                 if (hsl.h.isNaN()) hsl = hsl.copy(h = 0f)
@@ -88,26 +87,36 @@ internal fun HSLAColorPicker(
                     value = hsl.h,
                     onValueChange = { value ->
                         hsl = hsl.copy(h = value)
-                        controller.selectColor(hsl.toColor())
+                        onValueChange(hsl.toColor())
                     },
                 )
-                ColorSaturationAndLightnessSlider(
+                ColorSlider(
                     saturationLabel,
-                    controller.selectedColor.value,
+                    value,
+                    100,
                     hsl.s,
                 ) { value ->
                     hsl = hsl.copy(s = value)
-                    controller.selectColor(hsl.toColor())
+                    onValueChange(hsl.toColor())
                 }
-                ColorSaturationAndLightnessSlider(
+                ColorSlider(
                     lightnessLabel,
-                    controller.selectedColor.value,
+                    value,
+                    100,
                     hsl.l,
                 ) { value ->
                     hsl = hsl.copy(l = value)
-                    controller.selectColor(hsl.toColor())
+                    onValueChange(hsl.toColor())
                 }
-                AlphaSlider(controller, alphaLabel)
+                ColorSlider(
+                    lightnessLabel,
+                    value,
+                    100,
+                    value.alpha,
+                ) { value ->
+                    hsl = hsl.copy(alpha = value)
+                    onValueChange(hsl.toColor())
+                }
             }
         }
     }

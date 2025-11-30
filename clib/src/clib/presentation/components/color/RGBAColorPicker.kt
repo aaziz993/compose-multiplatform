@@ -17,17 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.color.common.AlphaSlider
 import clib.presentation.components.color.common.ColorSlider
-import clib.presentation.components.color.common.selectColor
-import com.github.skydoves.colorpicker.compose.ColorPickerController
 
 /**
  * A composable function that creates a color picker UI for selecting RGB-A colors. This component
  * contain 3 sliders for adjusting the red, green, and blue values of the color and another slider to adjust the alpha value.
  * By adjusting these values, consumer can select or generate your desired color.
  *
- * @param controller: ColorPickerController.
+ * @param value Color value.
+ * @param onValueChange Callback on color value change.
  * @param modifier: The modifier to apply to this layout.
  * @param title: Title.
  * @param redLabel: Red label.
@@ -39,7 +37,8 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
  */
 @Composable
 internal fun RGBAColorPicker(
-    controller: ColorPickerController,
+    value: Color,
+    onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color rgba",
     redLabel: String = "Red",
@@ -78,25 +77,35 @@ internal fun RGBAColorPicker(
                 ColorSlider(
                     redLabel,
                     Color.Red,
-                    controller.selectedColor.value.red,
-                ) { value ->
-                    controller.selectColor(controller.selectedColor.value.copy(red = value))
+                    255,
+                    value.red,
+                ) {
+                    onValueChange(value.copy(red = it))
                 }
                 ColorSlider(
                     greenLabel,
                     Color.Green,
-                    controller.selectedColor.value.green,
-                ) { value ->
-                    controller.selectColor(controller.selectedColor.value.copy(green = value))
+                    255,
+                    value.green,
+                ) {
+                    onValueChange(value.copy(green = it))
                 }
                 ColorSlider(
                     blueLabel,
                     Color.Blue,
-                    controller.selectedColor.value.blue,
-                ) { value ->
-                    controller.selectColor(controller.selectedColor.value.copy(blue = value))
+                    255,
+                    value.blue,
+                ) {
+                    onValueChange(value.copy(blue = it))
                 }
-                AlphaSlider(controller, alphaLabel)
+                ColorSlider(
+                    blueLabel,
+                    value,
+                    255,
+                    value.alpha,
+                ) {
+                    onValueChange(value.copy(alpha = it))
+                }
             }
         }
     }
