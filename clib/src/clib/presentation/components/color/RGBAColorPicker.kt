@@ -45,67 +45,64 @@ internal fun RGBAColorPicker(
     greenLabel: String = "Green",
     blueLabel: String = "Blue",
     alphaLabel: String = "Alpha",
-): Unit = Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-    Column(
-        modifier = Modifier
-            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
-            .shadow(
-                elevation = 10.dp,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .background(Color.White)
-            .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
-    ) {
-        Text(
-            text = title,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
-            color = Color.Gray,
-            style = MaterialTheme.typography.bodySmall,
-            fontSize = 12.sp,
+): Unit = Column(
+    modifier = Modifier
+        .shadow(
+            elevation = 10.dp,
+            shape = RoundedCornerShape(8.dp),
         )
+        .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
+        .then(modifier),
+) {
+    Text(
+        text = title,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+            .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
+        color = Color.Gray,
+        style = MaterialTheme.typography.bodySmall,
+        fontSize = 12.sp,
+    )
 
-        Row {
-            // Sliders for adjusting RGB-A values
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(5.dp),
+    Row {
+        // Sliders for adjusting RGB-A values
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+        ) {
+            ColorSlider(
+                redLabel,
+                Color.Red,
+                255,
+                value.red,
             ) {
-                ColorSlider(
-                    redLabel,
-                    Color.Red,
-                    255,
-                    value.red,
-                ) {
-                    onValueChange(value.copy(red = it))
-                }
-                ColorSlider(
-                    greenLabel,
-                    Color.Green,
-                    255,
-                    value.green,
-                ) {
-                    onValueChange(value.copy(green = it))
-                }
-                ColorSlider(
-                    blueLabel,
-                    Color.Blue,
-                    255,
-                    value.blue,
-                ) {
-                    onValueChange(value.copy(blue = it))
-                }
-                ColorSlider(
-                    blueLabel,
-                    value,
-                    255,
-                    value.alpha,
-                ) {
-                    onValueChange(value.copy(alpha = it))
-                }
+                onValueChange(value.copy(red = it))
+            }
+            ColorSlider(
+                greenLabel,
+                Color.Green,
+                255,
+                value.green,
+            ) {
+                onValueChange(value.copy(green = it))
+            }
+            ColorSlider(
+                blueLabel,
+                Color.Blue,
+                255,
+                value.blue,
+            ) {
+                onValueChange(value.copy(blue = it))
+            }
+            ColorSlider(
+                blueLabel,
+                value,
+                255,
+                value.alpha,
+            ) {
+                onValueChange(value.copy(alpha = it))
             }
         }
     }

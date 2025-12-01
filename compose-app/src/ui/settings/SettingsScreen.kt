@@ -31,6 +31,7 @@ import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.components.color.ColorPickerBottomSheet
+import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
@@ -38,7 +39,6 @@ import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsMenuLink
-import com.alorma.compose.settings.ui.SettingsSlider
 import com.alorma.compose.settings.ui.SettingsSwitch
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.appearance
@@ -192,7 +192,7 @@ public fun SettingsScreen(
             subtitle = { Text(stringResource(Res.string.density)) },
             enabled = true,
             icon = { Icon(Icons.Default.TouchApp, stringResource(Res.string.density)) },
-            onValueChange = { value ->
+            onValueChange = { value, _ ->
                 onDensityChange(Density(value, density.fontScale))
             },
         )
@@ -205,7 +205,7 @@ public fun SettingsScreen(
             subtitle = { Text(stringResource(Res.string.font_scale)) },
             enabled = true,
             icon = { Icon(Icons.Default.TextFields, stringResource(Res.string.font_scale)) },
-            onValueChange = { value ->
+            onValueChange = { value, _ ->
                 onDensityChange(Density(density.density, value))
             },
         )

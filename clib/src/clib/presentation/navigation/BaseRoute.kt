@@ -17,10 +17,12 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import clib.presentation.event.EventBus
+import clib.presentation.navigation.deeplink.DeepLinkListener
 import clib.presentation.navigation.model.NavigationItem
 import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
+import klib.data.net.http.toRoute
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
 import klib.data.type.collections.iterator.depthIterator
@@ -179,10 +181,17 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     ) {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
+        val isRoot = LocalRouter.current == null
+
         Nav3Host(
             routerFactory(this),
             navigatorFactory(this),
         ) { backStack, onBack, _ ->
+            if (isRoot)
+                DeepLinkListener { url ->
+
+                }
+
             // Return a result from one screen to a previous screen using a state-based approach.
             val resultStore = rememberStateStore()
             // Return a result from one screen to a previous screen using an event-based approach.

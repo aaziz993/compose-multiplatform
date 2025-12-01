@@ -10,7 +10,7 @@ import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.google_map
 import compose_app.generated.resources.open_street_map
-import compose_app.generated.resources.select_tile
+import compose_app.generated.resources.select
 import compose_app.generated.resources.virtual_earth_map
 import klib.data.location.LocationImpl
 import org.jetbrains.compose.resources.stringResource
@@ -52,7 +52,7 @@ public fun MapScreen(
                 initialZoom = 4,
             ),
             gestureOptions = GestureOptions(),
-            selectTile = stringResource(Res.string.select_tile),
+            selectTile = stringResource(Res.string.select),
             tiles = listOf(
                 OpenStreetMap(stringResource(Res.string.open_street_map)),
                 VirtualEarth(stringResource(Res.string.virtual_earth_map)),

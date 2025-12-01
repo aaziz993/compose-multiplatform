@@ -71,7 +71,7 @@ public fun LoginScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = stringResource(Res.string. reset_password),
+            text = stringResource(Res.string.reset_password),
             color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center,
             modifier = Modifier

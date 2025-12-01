@@ -1,0 +1,9 @@
+theme:
+  isDynamic: true
+  isExpressive: true
+locales:
+  - en-US
+  - ru-RU
+  - tg-TJ
+locale:
+  - en-US

@@ -1,29 +1,32 @@
 package clib.presentation.components.color
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import clib.data.type.toColor
 import clib.presentation.components.color.common.ColorSlider
-import clib.presentation.components.color.common.SliderHue
+import clib.presentation.components.slider.CircularProgressBar
+import com.github.ajalt.colormath.model.HSL
 
 /**
  * A composable function that creates a color picker UI for selecting HSL-A properties to get color. This component
@@ -40,6 +43,7 @@ import clib.presentation.components.color.common.SliderHue
  */
 @Composable
 internal fun HSLAColorPicker(
+    hexColorChanged: Boolean,
     value: Color,
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
@@ -47,77 +51,83 @@ internal fun HSLAColorPicker(
     saturationLabel: String = "Saturation",
     lightnessLabel: String = "Lightness",
     alphaLabel: String = "Alpha",
-): Unit = Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-    Column(
-        modifier = Modifier
-            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
-            .shadow(
-                elevation = 10.dp,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .background(Color.White)
-            .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
-    ) {
-        Text(
-            text = title,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
-            color = Color.Gray,
-            style = MaterialTheme.typography.bodySmall,
-            fontSize = 12.sp,
+): Unit = Column(
+    modifier = Modifier
+        .shadow(
+            elevation = 10.dp,
+            shape = RoundedCornerShape(8.dp),
         )
+        .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
+        .then(modifier),
+) {
+    Text(
+        text = title,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+            .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
+        color = Color.Gray,
+        style = MaterialTheme.typography.bodySmall,
+        fontSize = 12.sp,
+    )
 
-        Row {
-            // Sliders for adjusting HSL-A values.
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(5.dp),
-            ) {
-                var hsl by remember {
-                    mutableStateOf(value.toColor().toHSL())
-                }
+    var hsl by remember { mutableStateOf(HSL(0, 0, 0, 0)) }
 
-                if (hsl.h.isNaN()) hsl = hsl.copy(h = 0f)
-
-                SliderHue(
-                    modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
-                    value = hsl.h,
-                    onValueChange = { value ->
-                        hsl = hsl.copy(h = value)
-                        onValueChange(hsl.toColor())
-                    },
-                )
-                ColorSlider(
-                    saturationLabel,
-                    value,
-                    100,
-                    hsl.s,
-                ) { value ->
-                    hsl = hsl.copy(s = value)
-                    onValueChange(hsl.toColor())
-                }
-                ColorSlider(
-                    lightnessLabel,
-                    value,
-                    100,
-                    hsl.l,
-                ) { value ->
-                    hsl = hsl.copy(l = value)
-                    onValueChange(hsl.toColor())
-                }
-                ColorSlider(
-                    lightnessLabel,
-                    value,
-                    100,
-                    value.alpha,
-                ) { value ->
-                    hsl = hsl.copy(alpha = value)
-                    onValueChange(hsl.toColor())
-                }
-            }
+    LaunchedEffect(hexColorChanged) {
+        hsl = value.toColor().toHSL().let {
+            if (it.h.isNaN()) it.copy(h = 0f) else it
         }
+    }
+
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(.8f),
+        contentAlignment = Alignment.Center,
+    ) {
+        // Take the smaller of width/height as diameter.
+        val diameter = min(maxWidth, maxHeight)
+        val radiusCircle = diameter / 2f
+
+        CircularProgressBar(
+            maxNum = 360,
+            radiusCircle = radiusCircle,
+            progressColor = Brush.linearGradient(colors = listOf(Color.Transparent.copy(alpha = .2f), Color.Transparent.copy(alpha = .2f))),
+            trackColor = Brush.linearGradient(
+                colors = List(361) { hue ->
+                    Color.hsv(hue.toFloat(), 1f, 1f)
+                },
+            ),
+            currentProgressToBeReturned = {
+                hsl = hsl.copy(h = it * 360 / 100)
+                onValueChange(hsl.toColor())
+            },
+        )
+    }
+    ColorSlider(
+        saturationLabel,
+        value,
+        100,
+        hsl.s,
+    ) {
+        hsl = hsl.copy(s = it)
+        onValueChange(hsl.toColor())
+    }
+    ColorSlider(
+        lightnessLabel,
+        value,
+        100,
+        hsl.l,
+    ) {
+        hsl = hsl.copy(l = it)
+        onValueChange(hsl.toColor())
+    }
+    ColorSlider(
+        alphaLabel,
+        value,
+        100,
+        hsl.alpha,
+    ) {
+        hsl = hsl.copy(alpha = it)
+        onValueChange(hsl.toColor())
     }
 }

@@ -1,8 +1,8 @@
 package clib.presentation.components.color.common
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,25 +17,24 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CopyAll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -55,8 +54,13 @@ import clib.data.type.Color800
 import clib.data.type.Color900
 import clib.data.type.getColorMap
 import clib.data.type.hexToColor
+import clib.data.type.invert
+import clib.presentation.components.slider.ColorfulSlider
+import clib.presentation.components.slider.MaterialSliderDefaults
+import clib.presentation.components.slider.SliderBrushColor
 import com.materialkolor.ktx.toHex
 import klib.data.type.primitives.string.HEX_COLOR
+import klib.data.type.primitives.string.emptyIf
 import kotlinx.coroutines.launch
 
 /**
@@ -92,21 +96,23 @@ internal fun ColorSlider(
             modifier = Modifier.weight(.2f),
         )
 
-        var sliderText by rememberSaveable {
-            mutableStateOf(toColorValue(value, maxValue).toString())
+        val sliderText by remember(value) {
+            derivedStateOf { toColorValue(value, maxValue).toString() }
         }
 
-        Slider(
+        ColorfulSlider(
             value = value,
-            onValueChange = {
-                onValueChange(it)
-                sliderText = toColorValue(it, maxValue).toString()
-            },
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = trackColor,
-            ),
+            onValueChange = onValueChange,
             modifier = Modifier.weight(.8f),
+            colors = MaterialSliderDefaults.defaultColors(
+                thumbColor = SliderBrushColor(
+                    color = MaterialTheme.colorScheme.primary,
+                ),
+                activeTrackColor = SliderBrushColor(
+                    color = trackColor,
+                ),
+            ),
+            borderStroke = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
         )
 
         Box(
@@ -117,8 +123,8 @@ internal fun ColorSlider(
             BasicTextField(
                 value = sliderText,
                 onValueChange = {
-                    sliderText = sanitizeSliderValue(it, maxValue)
-                    onValueChange(toSliderValue(sliderText, maxValue))
+                    val sanitized = sanitizeSliderValue(it, maxValue)
+                    onValueChange(toSliderValue(sanitized, maxValue))
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -167,11 +173,14 @@ private fun sanitizeSliderValue(value: String, maxValue: Int): String =
 internal fun SelectedColorDetail(
     value: Color,
     onValueChange: (Color) -> Unit,
+    @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
     title: String,
     copy: String,
 ) {
     Row(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .then(modifier),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Display the current color in a Box with a MaterialTheme shape
@@ -221,9 +230,10 @@ internal fun SelectedColorDetail(
                     value = hex,
                     maxLines = 1,
                     label = { Text(text = title) },
-                    onValueChange = { value ->
-                        if (Regex.HEX_COLOR.matches(value))
-                            onValueChange(value.hexToColor())
+                    onValueChange = {
+                        hex = it
+                        if (Regex.HEX_COLOR.matches(it))
+                            onValueChange(it.hexToColor())
                     },
                 )
 
@@ -264,44 +274,24 @@ internal fun ColorColumn(
 ) {
     val colors = generateColorPalette(givenColor = givenColor)
     Column {
-        colors.forEach {
-            ColorBox(
-                boxColor = it,
-                value = value,
-                onValueChange = onValueChange,
-                boxSize = boxSize,
+        colors.forEach { boxColor ->
+            val checked = value == boxColor
+            Checkbox(
+                checked = checked,
+                onCheckedChange = {
+                    onValueChange(boxColor)
+                },
+                modifier = Modifier
+                    .width(boxSize)
+                    .height(boxSize),
+                colors = CheckboxDefaults.colors().copy(
+                    checkedCheckmarkColor = boxColor.invert(),
+                    checkedBoxColor = boxColor,
+                    uncheckedBoxColor = boxColor,
+                ),
             )
         }
     }
-}
-
-/**
- * A composable function that displays a single color box.
- *
- * @param boxSize: Dp: Size of the color box.
- * @param boxColor: Color: The color to display.
- * @param value: Color: The selected color to highlight.
- * @param onValueChange: (color: Color) -> Unit: Callback to invoke when a color is selected.
- */
-@Composable
-internal fun ColorBox(
-    boxSize: Dp,
-    boxColor: Color,
-    value: Color?,
-    onValueChange: (color: Color) -> Unit,
-) {
-    val isSelected = value == boxColor
-
-    Box(
-        modifier = Modifier
-            .width(boxSize)
-            .height(boxSize)
-            .background(boxColor, RectangleShape)
-            .clickable {
-                onValueChange(boxColor)
-            }
-            .then(if (isSelected) Modifier.border(2.dp, Color.White) else Modifier),
-    )
 }
 
 /**

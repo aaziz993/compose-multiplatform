@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.common.SelectedColorDetail
 import clib.presentation.components.color.model.ColorPicker
+import com.github.skydoves.colorpicker.compose.ColorPickerController
+import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 /**
  * This created a bottom sheet to pick color. As a content of this user can select their color using
@@ -42,6 +44,7 @@ import clib.presentation.components.color.model.ColorPicker
  * @param onDismissRequest: Executes when the user clicks outside of the bottom sheet, after sheet animates to Hidden.
  * @param onSelect: (selectedColor: Color) -> Unit: Callback to invoke when a color is selected.
  * @param onClose: Callback to invoke when user clicks close button.
+ * @param controller [ColorPickerController].
  * @param sheetState: SheetState: State variable to control the bottom sheet.
  * @param picker: Picker visual configuration.
  *
@@ -53,6 +56,7 @@ public fun ColorPickerBottomSheet(
     onDismissRequest: () -> Unit,
     onSelect: (Color) -> Unit,
     onClose: () -> Unit = onDismissRequest,
+    controller: ColorPickerController = rememberColorPickerController(),
     initialColor: Color = Color.White,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
     picker: ColorPicker = ColorPicker()
@@ -63,6 +67,7 @@ public fun ColorPickerBottomSheet(
     scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .5f),
 ) {
     var color by remember { mutableStateOf(initialColor) }
+    var hexColorChanged by remember { mutableStateOf(false) }
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf(
         picker.rgba,
@@ -75,12 +80,10 @@ public fun ColorPickerBottomSheet(
     Column(
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
-            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
             .shadow(
                 elevation = 10.dp,
                 shape = RoundedCornerShape(8.dp),
             )
-            .background(color = MaterialTheme.colorScheme.background)
             .padding(start = 12.dp, end = 12.dp),
     ) {
         Text(
@@ -95,7 +98,6 @@ public fun ColorPickerBottomSheet(
         PrimaryTabRow(
             modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp),
             selectedTabIndex = tabIndex,
-            containerColor = Color.Transparent,
             indicator = {
                 TabRowDefaults.PrimaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(tabIndex),
@@ -128,7 +130,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(1f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.rgba,
                 picker.red,
@@ -143,18 +145,19 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.grid,
             )
 
             2 -> HSVColorPicker(
+                controller,
                 color,
                 { value ->
                     color = value
                 },
                 Modifier
-                    .weight(1f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.hsv,
                 picker.brightness,
@@ -163,12 +166,13 @@ public fun ColorPickerBottomSheet(
             )
 
             3 -> HSLAColorPicker(
+                hexColorChanged,
                 color,
                 { value ->
                     color = value
                 },
                 Modifier
-                    .weight(1f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.hsla,
                 picker.saturation,
@@ -177,12 +181,13 @@ public fun ColorPickerBottomSheet(
             )
 
             4 -> BlendColorPicker(
+                hexColorChanged,
                 color,
                 { value ->
                     color = value
                 },
                 Modifier
-                    .weight(1f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.blend,
             )
@@ -190,9 +195,12 @@ public fun ColorPickerBottomSheet(
 
         SelectedColorDetail(
             color,
-            { value ->
-                color = value
+            {
+                color = it
+                hexColorChanged = !hexColorChanged
+                controller.selectByColor(it, true)
             },
+            Modifier.weight(1f),
             picker.hex,
             picker.copy,
         )
@@ -200,6 +208,7 @@ public fun ColorPickerBottomSheet(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .weight(.2f)
                 .padding(bottom = 12.dp),
         ) {
             OutlinedButton(

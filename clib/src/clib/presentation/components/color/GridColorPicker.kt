@@ -39,46 +39,43 @@ internal fun GridColorPicker(
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color grid",
-): Unit = Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-    Column(
-        modifier = Modifier
-            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
-            .shadow(
-                elevation = 10.dp,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .background(Color.White)
-            .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 8.dp),
-    ) {
-        Text(
-            text = title,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
-            color = Color.Gray,
-            style = MaterialTheme.typography.bodySmall,
-            fontSize = 12.sp,
+): Unit = Column(
+    modifier = Modifier
+        .shadow(
+            elevation = 10.dp,
+            shape = RoundedCornerShape(8.dp),
         )
+        .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 8.dp)
+        .then(modifier),
+) {
+    Text(
+        text = title,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+            .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
+        color = Color.Gray,
+        style = MaterialTheme.typography.bodySmall,
+        fontSize = 12.sp,
+    )
 
-        BoxWithConstraints {
-            val screenWidth = maxWidth
-            val boxSize = screenWidth * .065f
+    BoxWithConstraints {
+        val screenWidth = maxWidth
+        val boxSize = screenWidth * .065f
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, start = 4.dp, end = 4.dp, bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                Color.getColorMap().keys.map { key ->
-                    ColorColumn(
-                        boxSize = boxSize,
-                        givenColor = key,
-                        value = value,
-                        onValueChange = onValueChange,
-                    )
-                }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 4.dp, end = 4.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Color.getColorMap().keys.map { key ->
+                ColorColumn(
+                    boxSize = boxSize,
+                    givenColor = key,
+                    value = value,
+                    onValueChange = onValueChange,
+                )
             }
         }
     }

@@ -14,9 +14,8 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,21 +35,21 @@ internal fun SliderHue(
         modifier = modifier
             .fillMaxWidth(),
     ) {
-        var huePanelWidth: Float? by rememberSaveable { mutableStateOf(null) }
+        var huePanelWidth: Float? by remember { mutableStateOf(null) }
 
         HuePanel { width -> huePanelWidth = width }
 
-        if (huePanelWidth != null) {
-            var hue by rememberSaveable { mutableFloatStateOf(value * huePanelWidth!! / 360f) }
+        huePanelWidth?.let { width ->
+            val hue = hueToPoint(value, width)
+
             Slider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Center),
-                valueRange = 0f..huePanelWidth!!,
+                valueRange = 0f..width,
                 value = hue,
                 onValueChange = {
-                    onValueChange(pointToHue(it, huePanelWidth!!))
-                    hue = it
+                    onValueChange(pointToHue(it, width))
                 },
                 colors = SliderDefaults.colors(
                     thumbColor = MaterialTheme.colorScheme.primary,
@@ -97,3 +96,6 @@ private fun HuePanel(onDrown: (width: Float) -> Unit) =
     }
 
 private fun pointToHue(pointX: Float, huePanelWidth: Float): Float = pointX * 360f / huePanelWidth
+
+private fun hueToPoint(value: Float, huePanelWidth: Float): Float = value * huePanelWidth / 360f
+

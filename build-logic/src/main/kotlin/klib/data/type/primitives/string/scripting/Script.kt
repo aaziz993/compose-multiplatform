@@ -59,7 +59,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializer
 
 public const val SCRIPT_KEY: String = "script"
 
@@ -255,51 +254,49 @@ public abstract class Script {
         ): T {
             val fileTree = mutableMapOf<String, List<String>>()
 
-            return T::class.serializer().deserialize(
-                decodeFile(
-                    file,
-                    { file, decodedFile ->
-                        decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
-                            importToFile(file, import)
-                        }.also { imports -> fileTree[file] = imports.orEmpty() }
-                    },
-                    decoder = decoder,
-                ) { decodedFile, decodedImports ->
-                    val substitutedFile =
-                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).deepSubstitute(unescapeDollars = false)
+            return decodeFile(
+                file,
+                { file, decodedFile ->
+                    decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
+                        importToFile(file, import)
+                    }.also { imports -> fileTree[file] = imports.orEmpty() }
+                },
+                decoder = decoder,
+            ) { decodedFile, decodedImports ->
+                val substitutedFile =
+                    (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).deepSubstitute(unescapeDollars = false)
 
-                    val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
-                        script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
-                    } ?: emptyList()
+                val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
+                    script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
+                } ?: emptyList()
 
-                    if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to decodedFileScript)
-                    else {
-                        val mergedImports = decodedImports
-                            .map { decodedImport -> decodedImport - SCRIPT_KEY }
-                            .first()
-                            .deepPlus(
-                                *decodedImports.toTypedArray(),
-                                destinationGetter = { source ->
-                                    last().first.getOrPut(last().second, source::toNewMutableCollection)
-                                },
-                            )
-
-                        val mergedImportScripts = decodedImports
-                            .flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
-
-                        substitutedFile.deepSubstitute(
-                            getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
-                        ).deepMap(
-                            mergedImports,
+                if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to decodedFileScript)
+                else {
+                    val mergedImports = decodedImports
+                        .map { decodedImport -> decodedImport - SCRIPT_KEY }
+                        .first()
+                        .deepPlus(
+                            *decodedImports.toTypedArray(),
                             destinationGetter = { source ->
                                 last().first.getOrPut(last().second, source::toNewMutableCollection)
                             },
-                        ) + (SCRIPT_KEY to (mergedImportScripts + decodedFileScript))
-                    }
-                }.apply {
-                    this["fileTree"] = fileTree
-                },
-            ).apply {
+                        )
+
+                    val mergedImportScripts = decodedImports
+                        .flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
+
+                    substitutedFile.deepSubstitute(
+                        getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
+                    ).deepMap(
+                        mergedImports,
+                        destinationGetter = { source ->
+                            last().first.getOrPut(last().second, source::toNewMutableCollection)
+                        },
+                    ) + (SCRIPT_KEY to (mergedImportScripts + decodedFileScript))
+                }
+            }.apply {
+                this["fileTree"] = fileTree
+            }.deserialize<T>().apply {
                 this.cache = cache
                 this.assignOperation = assignOperation
                 this.config.config()

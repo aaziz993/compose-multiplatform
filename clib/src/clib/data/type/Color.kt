@@ -591,3 +591,29 @@ public fun String.hexToColor(): ComposeColor {
         else -> throw IllegalArgumentException("Invalid Hex color: $this")
     }
 }
+
+
+/**
+ * Returns a new [ComposeColor] that is the inverted version of the receiver color.
+ *
+ * The RGB components (red, green, blue) are inverted such that each channel
+ * becomes `1.0 - originalValue`. Optionally, the alpha (opacity) channel can
+ * also be inverted.
+ *
+ * For example:
+ * ```kotlin
+ * val original = ComposeColor(0.2f, 0.4f, 0.6f, 1.0f)
+ * val inverted = original.invert() // ComposeColor(0.8f, 0.6f, 0.4f, 1.0f)
+ * val invertedAlpha = original.invert(invertAlpha = true) // ComposeColor(0.8f, 0.6f, 0.4f, 0.0f)
+ * ```
+ *
+ * @param invertAlpha If `true`, the alpha component will also be inverted.
+ *                     Defaults to `false` (alpha remains unchanged).
+ * @return A new [ComposeColor] representing the inverted color.
+ */
+public fun ComposeColor.invert(invertAlpha: Boolean = false): ComposeColor = ComposeColor(
+    1f - red,
+    1f - green,
+    1f - blue,
+    if (invertAlpha) 1f - alpha else alpha,
+)

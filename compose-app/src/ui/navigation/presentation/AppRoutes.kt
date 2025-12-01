@@ -113,10 +113,10 @@ public data object App : KoinRoutes() {
 @SerialName("home")
 public data object Home : Route<Home>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -182,7 +182,7 @@ public data object News : KoinRoutes() {
 @SerialName("articles")
 public data object Articles : Route<Articles>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -222,10 +222,10 @@ public data object Articles : Route<Articles>(), NavRoute {
 @SerialName("services")
 public data object Services : Route<Services>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -259,10 +259,10 @@ public data object Services : Route<Services>(), NavRoute {
 @SerialName("map")
 public data object Map : Route<Map>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -296,10 +296,10 @@ public data object Map : Route<Map>(), NavRoute {
 @SerialName("settings")
 public data object Settings : Route<Settings>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -349,10 +349,10 @@ public data object Settings : Route<Settings>(), NavRoute {
 @SerialName("about")
 public data object About : Route<About>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -414,7 +414,7 @@ public data object Auth : KoinRoutes(), AuthRoute {
 @SerialName("phone")
 public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     @Composable
     override fun Content(
@@ -447,7 +447,7 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
         override val navRoute: KClass<out NavRoute>
             get() = Otp::class
 
-        override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+        override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
         @Composable
         override fun Content(
@@ -473,7 +473,7 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
 @SerialName("pinCode")
 public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     @Composable
     override fun Content(
@@ -498,7 +498,7 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
 @SerialName("login")
 public data object Login : Route<Login>(), NavRoute, AuthRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     @Composable
     override fun Content(
@@ -523,7 +523,7 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
 @SerialName("forgotPinCode")
 public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     @Composable
     override fun Content(
@@ -544,7 +544,7 @@ public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 @SerialName("verification")
 public data object Verification : Route<Verification>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val authResource: AuthResource? = AuthResource()
 
@@ -574,7 +574,7 @@ public data object Verification : Route<Verification>(), NavRoute {
 @SerialName("profile")
 public data object Profile : Route<Profile>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val authResource: AuthResource? = AuthResource()
 
@@ -629,10 +629,10 @@ public data object Wallet : KoinRoutes() {
 @SerialName("balance")
 public data object Balance : Route<Balance>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -666,10 +666,10 @@ public data object Balance : Route<Balance>(), NavRoute {
 @SerialName("crypto")
 public data object Crypto : Route<Crypto>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
@@ -703,10 +703,10 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 @SerialName("stock")
 public data object Stock : Route<Stock>(), NavRoute {
 
-    override val metadata: kotlin.collections.Map<String, Any> = NavScreenSceneStrategy.navScreen()
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-         val text = name.toSnakeCase().asStringResource { name }
+        val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },

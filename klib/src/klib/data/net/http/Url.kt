@@ -1,13 +1,20 @@
 package klib.data.net.http
 
-import io.ktor.http.*
-import kotlin.IllegalArgumentException
+import io.ktor.http.URLBuilder
+import io.ktor.http.URLProtocol
 import io.ktor.http.Url
+import io.ktor.http.encodedPath
+import io.ktor.http.parseUrl
+import io.ktor.http.path
 import io.ktor.util.toMap
+import klib.data.type.primitives.string.addPrefixIfNotEmpty
+import klib.data.type.primitives.string.surround
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.getElementDescriptor
+import klib.data.type.serialization.isElementOptional
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.StructureKind
+import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.serializer
 
 public val Regex.Companion.HTTP_PATTERN: String
@@ -95,6 +102,23 @@ public fun Url.matchParameters(urlPattern: Url): Map<String, Any>? {
     // provide the map of arg names to arg values.
     return args
 }
+
+public fun <T : Any> KSerializer<T>.deepLink(): Url {
+    val (pathParams, queryParams) = descriptor.elementNames.partition { name ->
+        val elementDescriptor = descriptor.getElementDescriptor(name)!!
+        descriptor.isElementOptional(name) == false && !elementDescriptor.isNullable && elementDescriptor.kind != StructureKind.LIST
+    }
+
+    return Url(
+        "${descriptor.serialName}${
+            pathParams.joinToString("/") { param -> param.surround("{", "}") }.addPrefixIfNotEmpty("/")
+        }${
+            queryParams.joinToString("&") { param -> param.surround("{", "}") }.addPrefixIfNotEmpty("?")
+        }",
+    )
+}
+
+public inline fun <reified T : Any> deepLink(): Url = T::class.serializer().deepLink()
 
 /**
  * Attempts to decode the current [Url] into a strongly-typed route object.
