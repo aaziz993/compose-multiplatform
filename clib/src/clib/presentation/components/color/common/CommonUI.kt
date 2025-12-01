@@ -60,7 +60,6 @@ import clib.presentation.components.slider.MaterialSliderDefaults
 import clib.presentation.components.slider.SliderBrushColor
 import com.materialkolor.ktx.toHex
 import klib.data.type.primitives.string.HEX_COLOR
-import klib.data.type.primitives.string.emptyIf
 import kotlinx.coroutines.launch
 
 /**
@@ -173,14 +172,11 @@ private fun sanitizeSliderValue(value: String, maxValue: Int): String =
 internal fun SelectedColorDetail(
     value: Color,
     onValueChange: (Color) -> Unit,
-    @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
     title: String,
     copy: String,
 ) {
     Row(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
-            .then(modifier),
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Display the current color in a Box with a MaterialTheme shape

@@ -130,7 +130,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.8f)
+                    .weight(.7f)
                     .padding(16.dp),
                 picker.rgba,
                 picker.red,
@@ -145,7 +145,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 modifier = Modifier
-                    .weight(.8f)
+                    .weight(.7f)
                     .padding(16.dp),
                 picker.grid,
             )
@@ -157,7 +157,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.8f)
+                    .weight(.7f)
                     .padding(16.dp),
                 picker.hsv,
                 picker.brightness,
@@ -172,7 +172,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.8f)
+                    .weight(.7f)
                     .padding(16.dp),
                 picker.hsla,
                 picker.saturation,
@@ -187,54 +187,62 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.8f)
+                    .weight(.7f)
                     .padding(16.dp),
                 picker.blend,
             )
         }
 
-        SelectedColorDetail(
-            color,
-            {
-                color = it
-                hexColorChanged = !hexColorChanged
-                controller.selectByColor(it, true)
-            },
-            Modifier.weight(1f),
-            picker.hex,
-            picker.copy,
-        )
-
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(.2f)
-                .padding(bottom = 12.dp),
+                .shadow(
+                    elevation = 10.dp,
+                    shape = RoundedCornerShape(8.dp),
+                )
+                .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
+                .weight(.3f),
         ) {
-            OutlinedButton(
-                modifier = Modifier
-                    .padding(start = 4.dp, end = 4.dp)
-                    .weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                onClick = onClose,
-            ) {
-                Text(
-                    text = picker.close,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-            }
+            SelectedColorDetail(
+                color,
+                {
+                    color = it
+                    hexColorChanged = !hexColorChanged
+                    controller.selectByColor(it, true)
+                },
+                picker.hex,
+                picker.copy,
+            )
 
-            Button(
+            Row(
                 modifier = Modifier
-                    .padding(start = 4.dp, end = 4.dp)
-                    .weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                onClick = { onSelect(color) },
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
             ) {
-                Text(
-                    text = picker.confirm,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                )
+                OutlinedButton(
+                    modifier = Modifier
+                        .padding(start = 4.dp, end = 4.dp)
+                        .weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    onClick = onClose,
+                ) {
+                    Text(
+                        text = picker.close,
+                        color = MaterialTheme.colorScheme.secondary,
+                    )
+                }
+
+                Button(
+                    modifier = Modifier
+                        .padding(start = 4.dp, end = 4.dp)
+                        .weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    onClick = { onSelect(color) },
+                ) {
+                    Text(
+                        text = picker.confirm,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
+                }
             }
         }
     }
