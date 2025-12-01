@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import clib.data.type.getColorMap
 import clib.presentation.components.color.common.ColorColumn
@@ -51,21 +53,15 @@ internal fun GridColorPicker(
         textAlign = TextAlign.Start,
         modifier = Modifier
             .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
-        color = Color.Gray,
         style = MaterialTheme.typography.bodySmall,
         fontSize = 12.sp,
     )
 
-    BoxWithConstraints {
-        val screenWidth = maxWidth
-        val boxSize = screenWidth * .065f
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        val boxSize = min(maxWidth, maxHeight) / Color.getColorMap().size
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 4.dp, end = 4.dp, bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Color.getColorMap().keys.map { key ->
                 ColorColumn(

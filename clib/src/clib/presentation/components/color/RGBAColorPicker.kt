@@ -57,7 +57,6 @@ internal fun RGBAColorPicker(
         textAlign = TextAlign.Start,
         modifier = Modifier
             .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
-        color = Color.Gray,
         style = MaterialTheme.typography.bodySmall,
         fontSize = 12.sp,
     )

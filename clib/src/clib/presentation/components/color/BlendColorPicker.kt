@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -61,178 +62,176 @@ internal fun BlendColorPicker(
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color blend",
-) =
-    Column(
-        modifier = Modifier
-            .shadow(
-                elevation = 10.dp,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
-            .then(modifier),
-    ) {
-        Text(
-            text = title,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
-            color = Color.Gray,
-            style = MaterialTheme.typography.bodySmall,
-            fontSize = 12.sp,
+) = Column(
+    modifier = Modifier
+        .shadow(
+            elevation = 10.dp,
+            shape = RoundedCornerShape(8.dp),
         )
+        .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
+        .then(modifier),
+) {
+    Text(
+        text = title,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+            .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
+        style = MaterialTheme.typography.bodySmall,
+        fontSize = 12.sp,
+    )
 
-        // State variables for first color hue and second color hue
-        var firstHue by remember { mutableFloatStateOf(0f) }
-        var secondHue by remember { mutableFloatStateOf(0f) }
+    // State variables for first color hue and second color hue
+    var firstHue by remember(hexColorChanged) {
+        mutableFloatStateOf(value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
+    }
+    var secondHue by remember(hexColorChanged) {
+        mutableFloatStateOf(value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
+    }
 
-        var firstBlendColor by remember { mutableStateOf(Color.hsv(firstHue, 1f, 1f)) }
-        val secondBlendColor by remember { mutableStateOf(firstBlendColor) }
-        var colorBias by remember { mutableFloatStateOf(.5f) }
+    var firstBlendColor by remember(hexColorChanged) { mutableStateOf(value) }
+    var secondBlendColor by remember(hexColorChanged) { mutableStateOf(value) }
+    var colorBias by remember(hexColorChanged) { mutableFloatStateOf(.5f) }
 
-        LaunchedEffect(hexColorChanged) {
-            firstHue = value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f
-            secondHue = firstHue
-            colorBias = .5f
+    Row(
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Column(
+            modifier = Modifier.weight(.5f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            SliderHue(
+                Modifier.padding(top = 4.dp, bottom = 4.dp),
+                firstHue,
+            ) {
+                firstHue = it
+                firstBlendColor = Color.hsv(it, 1f, 1f)
+                onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
+            }
+
+            Text(text = firstBlendColor.toHex())
         }
 
-        Row(
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Column(
+            modifier = Modifier.weight(.5f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
-            Column(
-                modifier = Modifier.weight(.5f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+            SliderHue(
+                Modifier.padding(top = 4.dp, bottom = 4.dp),
+                secondHue,
             ) {
-                SliderHue(
-                    Modifier.padding(top = 4.dp, bottom = 4.dp),
-                    firstHue,
-                ) {
-                    firstHue = it
-                    firstBlendColor = Color.hsv(firstHue, 1f, 1f)
-                    onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
-                }
-
-                Text(text = firstBlendColor.toHex())
+                secondHue = it
+                secondBlendColor = Color.hsv(it, 1f, 1f)
+                onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Column(
-                modifier = Modifier.weight(.5f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                SliderHue(
-                    Modifier.padding(top = 4.dp, bottom = 4.dp),
-                    secondHue,
-                ) {
-                    secondHue = it
-                }
-
-                Text(text = secondBlendColor.toHex())
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(.2f),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .height(50.dp)
-                        .width(50.dp)
-                        .background(
-                            firstBlendColor,
-                            shape = MaterialTheme.shapes.large,
-                        )
-                        .border(
-                            2.dp,
-                            MaterialTheme.colorScheme.primary,
-                            RoundedCornerShape(12.dp),
-                        ),
-                )
-            }
-
-            Spacer(modifier = Modifier.width(4.dp))
-
-            Row(
-                modifier = Modifier.weight(.7f),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowLeft,
-                    contentDescription = "Left arrow",
-                    Modifier
-                        .weight(.25f)
-                        .size(40.dp),
-                )
-
-                ColorfulSlider(
-                    value = colorBias,
-                    onValueChange = {
-                        colorBias = it
-                        onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
-                    },
-                    modifier = Modifier
-                        .height(50.dp)
-                        .weight(.7f),
-
-                    valueRange = 0f..1f,
-                    colors = MaterialSliderDefaults.defaultColors(
-                        thumbColor = SliderBrushColor(
-                            color = MaterialTheme.colorScheme.primary,
-                        ),
-                        activeTrackColor = SliderBrushColor(
-                            color = value,
-                        ),
-                    ),
-                )
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowRight,
-                    contentDescription = "Right arrow",
-                    Modifier
-                        .weight(.25f)
-                        .size(40.dp),
-                )
-            }
-
-            Spacer(modifier = Modifier.width(4.dp))
-
-            Column(
-                modifier = Modifier
-                    .weight(.2f),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .height(50.dp)
-                        .width(50.dp)
-                        .background(
-                            secondBlendColor,
-                            shape = MaterialTheme.shapes.large,
-                        )
-                        .border(
-                            2.dp,
-                            MaterialTheme.colorScheme.primary,
-                            RoundedCornerShape(12.dp),
-                        ),
-                )
-            }
+            Text(text = secondBlendColor.toHex())
         }
     }
+
+    Row(
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(.2f),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .height(50.dp)
+                    .width(50.dp)
+                    .background(
+                        firstBlendColor,
+                        shape = MaterialTheme.shapes.large,
+                    )
+                    .border(
+                        2.dp,
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(12.dp),
+                    ),
+            )
+        }
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Row(
+            modifier = Modifier.weight(.7f),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowLeft,
+                contentDescription = "Left arrow",
+                Modifier
+                    .weight(.25f)
+                    .size(40.dp),
+            )
+
+            ColorfulSlider(
+                value = colorBias,
+                onValueChange = {
+                    colorBias = it
+                    onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
+                },
+                modifier = Modifier
+                    .height(50.dp)
+                    .weight(.7f),
+
+                valueRange = 0f..1f,
+                colors = MaterialSliderDefaults.defaultColors(
+                    thumbColor = SliderBrushColor(
+                        color = MaterialTheme.colorScheme.primary,
+                    ),
+                    activeTrackColor = SliderBrushColor(
+                        color = value,
+                    ),
+                ),
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowRight,
+                contentDescription = "Right arrow",
+                Modifier
+                    .weight(.25f)
+                    .size(40.dp),
+            )
+        }
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Column(
+            modifier = Modifier
+                .weight(.2f),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .height(50.dp)
+                    .width(50.dp)
+                    .background(
+                        secondBlendColor,
+                        shape = MaterialTheme.shapes.large,
+                    )
+                    .border(
+                        2.dp,
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(12.dp),
+                    ),
+            )
+        }
+    }
+}

@@ -1,5 +1,6 @@
 package clib.presentation.components.slider
 
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -33,13 +34,13 @@ import kotlin.math.*
 /**
  * A Circular slider for Tracking progress. See https://github.com/Mindinventory/AndroidCircularSlider
  *
- * @param maxNum to provide maximum number for the slider.
+ * @param value to provide angle value for the slider.
+ * @param onValueChanged to provide callback on angle value change for the slider.
  * @param radiusCircle radius of the circular slider.
  * @param percentageFontSize font size of the percentage text.
  * @param percentageColor color of the percentage text.
  * @param progressWidth width of the Progress.
- * @param animDuration to set duration for the sliding animation.
- * @param animDelay to set delay for the sliding animation.
+ * @param animationSpec to set the sliding animation.
  * @param strokeCap to set strokes of the ends.
  * @param thumbRadius to set the radius of the thumb.
  * @param tickColor to set the color of the minute-like clock arms.
@@ -50,21 +51,20 @@ import kotlin.math.*
  * @param thumbColor Thumb color.
  * @param trackColor track color.
  * @param trackWidth width of the track.
- * @param isDisabled Flag to set enabled/disabled circular slider.
- * @param staticProgress Static progress in case if isDisabled is true.
+ * @param animate Flag to set enabled/disabled animation on circular slider.
  */
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
 public fun CircularProgressBar(
-    maxNum: Int = 50,
+    value: Double = 0.0,
+    onValueChanged: (Double) -> Unit,
     radiusCircle: Dp = 150.dp,
     percentageFontSize: TextUnit = 28.sp,
     percentageColor: Color = MaterialTheme.colorScheme.primary,
     progressWidth: Float = 28f,
-    animDuration: Int = 1000,
-    animDelay: Int = 0,
+    animationSpec: AnimationSpec<Float> = tween(1000),
     strokeCap: StrokeCap = StrokeCap.Round,
-    thumbRadius: Float = 40f,
+    thumbRadius: Float = 20f,
     tickColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
     tickHighlightedColor: Color = MaterialTheme.colorScheme.primary,
     dialColor: Color = MaterialTheme.colorScheme.secondaryContainer,
@@ -74,75 +74,32 @@ public fun CircularProgressBar(
             MaterialTheme.colorScheme.primaryContainer,
         ),
     ),
-    startThumbCircleColor: List<Color> = listOf(
-        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-    ),
+    startThumbCircleColor: List<Color>? = null,
     thumbColor: List<Color> = listOf(
         MaterialTheme.colorScheme.primary,
         MaterialTheme.colorScheme.primaryContainer,
     ),
-    trackColor: Brush = Brush.linearGradient(
-        colors = listOf(
-            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
-            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
-        ),
+    thumbShadowColor: Color? = Color.LBlue.copy(alpha = 0.20f),
+    trackColor: List<Color> = listOf(
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
     ),
     circleColor: Color = Color.Transparent,
-    trackWidth: Float = 20f,
-    isDisabled: Boolean = false,
-    staticProgress: Float = 0f,
-    // Float type value to be returned..to it's parent composable using State hoisting - we're passing currentPercentage to the parent composable.
-    currentProgressToBeReturned: (Float) -> Unit,
+    trackWidth: Float = thumbRadius,
+    animate: Boolean = false,
     currentUpdatedValue: String = "",
     onTouchEnabled: Boolean = true,
     onDragEnabled: Boolean = true,
 ) {
-    var radius by remember {
-        mutableStateOf(0f)
-    }
-
-    var shapeCenter by remember {   // Center of the shape.
+    // Center of the shape.
+    var shapeCenter by remember {
         mutableStateOf(Offset.Zero)
     }
-
-    var handleCenter by remember {  // Current position,
-        mutableStateOf(Offset.Zero)
-    }
-
-    var angle by remember { // Thumb and progress moves based on this (0 - 360).
-        mutableStateOf(0.0)
-    }
-
-    var animationDuration by remember {
-        mutableStateOf(1000)
-    }
-
-    animationDuration = animDuration
 
     val animatedAngle by animateFloatAsState(
-        targetValue = angle.toFloat(),
-        animationSpec = tween(
-            durationMillis = animationDuration,
-            delayMillis = animDelay,
-        ),
+        targetValue = value.toFloat(),
+        animationSpec = animationSpec,
     )
-
-    var currentValue by remember { mutableStateOf(0f) }
-    LaunchedEffect(key1 = animatedAngle) {
-        currentValue =
-            if (angle < 1.5) 0f else ((animatedAngle + 3f) * maxNum / 360)     // + 3f to show 100% in the slider.
-    }
-
-    var currentPercentage by remember { mutableStateOf(0f) }
-    if (isDisabled) {
-        currentPercentage = staticProgress
-        angle = (currentPercentage * 360f / 100f).toDouble()
-    }
-    else currentPercentage = currentValue * 100 / maxNum
-
-    //Returning percentage value to the parent composable.
-    if (currentPercentage in 0.0..100.0) currentProgressToBeReturned(currentPercentage)
 
     // Progressbar.
     Box(
@@ -154,166 +111,81 @@ public fun CircularProgressBar(
         Canvas(
             modifier = Modifier
                 .size(radiusCircle * 2f)
-                .pointerInput(Unit) {
-                    if (onDragEnabled && !onTouchEnabled) {
-                        detectDragGestures { change, dragAmount ->
-                            handleCenter += dragAmount
-                            angle = getRotationAngle(handleCenter, shapeCenter)
+                .pointerInput(onDragEnabled, onTouchEnabled) {
+                    if (onDragEnabled)
+                        detectDragGestures { change, _ ->
+                            onValueChanged(getRotationAngle(change.position, shapeCenter))
                             change.consume()
                         }
-                    }
-                    if (onTouchEnabled && !onDragEnabled) {
 
-                        detectTapGestures(
-                            onTap = { offset ->
-                                handleCenter = Offset.Zero + offset
-                                angle = getRotationAngle(handleCenter, shapeCenter)
-                            },
-                        )
-                    }
-                }
-                .pointerInput(Unit) {
-                    if (onTouchEnabled && onDragEnabled) {
-
-                        detectTapGestures(
-                            onTap = { offset ->
-                                handleCenter = Offset.Zero + offset
-                                angle = getRotationAngle(handleCenter, shapeCenter)
-                            },
-                        )
-                    }
-                }
-                .pointerInput(Unit) {
-                    if (onTouchEnabled && onDragEnabled) {
-
-                        detectDragGestures { change, dragAmount ->
-                            handleCenter += dragAmount
-                            angle = getRotationAngle(handleCenter, shapeCenter)
-                            change.consume()
+                    if (onTouchEnabled)
+                        detectTapGestures { offset ->
+                            onValueChanged(getRotationAngle(offset, shapeCenter))
                         }
-                    }
                 },
         ) {
             shapeCenter = center
-            radius = size.minDimension / 2
+            val radius = size.minDimension / 2
 
-            val x = (shapeCenter.x + cos(angle.toRadians()) * radius).toFloat()
-            val y = (shapeCenter.y + sin(angle.toRadians()) * radius).toFloat()
+            val x = (shapeCenter.x + cos(value.toRadians()) * radius).toFloat()
+            val y = (shapeCenter.y + sin(value.toRadians()) * radius).toFloat()
+            val handleCenter = Offset(x, y)
 
-            handleCenter = Offset(x, y)
-
-            // track
+            // track.
             drawCircle(
-                brush = trackColor,
+                brush = Brush.sweepGradient(
+                    colors = trackColor,
+                    center = center,
+                ),
                 style = Stroke(trackWidth),
                 radius = radius,
             )
 
-            //Clock arms.
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colors = listOf(Color.Black.copy(alpha = 50 / 255f), Color.Transparent),
-                    center = center,
-                    radius = radius + 70f,
-                ),
-                radius = radius + 70f,
-                center = center,
-            )
-
-            for (i in 0..20) {
-                val lineType = when {
-                    i % 5 == 0 -> ClockLineType.Hours
-                    else -> ClockLineType.Minutes
-                }
-                val lineLength = when (lineType) {
-                    ClockLineType.Minutes -> 8.dp.toPx()
-                    ClockLineType.Hours -> 12.dp.toPx()
-                }
-                val lineColor = when (lineType) {
-                    ClockLineType.Hours -> tickColor
-                    ClockLineType.Minutes -> tickHighlightedColor
-                }
-                val angleInRad = i * (360f / 60f) * (PI.toFloat() / 20f)
-                val lineStart = Offset(
-                    x = (radiusCircle.toPx() - lineLength) * cos(angleInRad) + center.x,
-                    y = (radiusCircle.toPx() - lineLength) * sin(angleInRad) + center.y,
-                )
-                val lineEnd = Offset(
-                    x = radiusCircle.toPx() * cos(angleInRad) + center.x,
-                    y = radiusCircle.toPx() * sin(angleInRad) + center.y,
-                )
-                drawLine(
-                    color = lineColor,
-                    start = lineStart,
-                    end = lineEnd,
-                    strokeWidth = if (lineType == ClockLineType.Hours) 2.dp.toPx() else 1.dp.toPx(),
-                )
-            }
-
             // Progress.
-            if (angle.toFloat() >= 359) angle = 0.0
-
             drawArc(
                 brush = progressColor,
                 startAngle = 0f,
-                sweepAngle = if (isDisabled) angle.toFloat() else animatedAngle,
+                sweepAngle = if (animate) animatedAngle else value.toFloat(),
                 useCenter = false,
                 style = Stroke(progressWidth),
             )
 
-            //Dial circle - Purple
-            drawCircle(
-                color = dialColor,
-                radius = (radiusCircle * 0.8f).toPx(),
-            )
-            //Inner Dial circle - 1
-            drawCircle(
-                color = Color.White,
-                radius = (radiusCircle * 0.6f).toPx(),
-                blendMode = BlendMode.Screen,
-            )
-            //Inner Dial boarder
-            drawCircle(
-                color = Color.Gray,
-                radius = (radiusCircle * 0.5f).toPx(),
-                style = Stroke(
-                    width = 1f,
-                ),
-            )
-            //Initial thumb circle at (0,0) coordinate
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colors = startThumbCircleColor.onEach { it.copy(alpha = 0.10f) },
+            // Initial thumb circle at (0,0) coordinate.
+            startThumbCircleColor?.let {
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = it.onEach { color -> color.copy(alpha = 0.10f) },
+                        center = Offset(size.width, size.height / 2),
+                    ),
                     center = Offset(size.width, size.height / 2),
-                ),
-                center = Offset(size.width, size.height / 2),
-                radius = thumbRadius + 5f,
-            )
-            //Inner initial circle
-            drawCircle(
-                color = thumbColor[0],
-                center = Offset(size.width, size.height / 2),
-                radius = thumbRadius - 10f,
-            )
+                    radius = thumbRadius + 5f,
+                )
+            }
+
             //Thumb
             drawCircle(
                 brush = Brush.radialGradient(colors = thumbColor, center = handleCenter),
                 center = handleCenter,
                 radius = thumbRadius,
             )
-            //Inner Thumb
-            drawCircle(
-                color = startThumbCircleColor[0],
-                center = handleCenter,
-                radius = thumbRadius - 10f,
-            )
-            //Outer Shadow
-            drawCircle(
-                color = Color.LBlue.copy(alpha = 0.20f),
-                center = handleCenter,
-                radius = thumbRadius + 20f,
-            )
-            //Extra layer to increase touch area
+            // Inner Thumb.
+            startThumbCircleColor?.let {
+                drawCircle(
+                    color = it[0],
+                    center = handleCenter,
+                    radius = thumbRadius - 10f,
+                )
+            }
+            // Outer Shadow.
+            thumbShadowColor?.let {
+                drawCircle(
+                    color = it,
+                    center = handleCenter,
+                    radius = thumbRadius + 20f,
+                )
+            }
+
+            // Extra layer to increase touch area.
             drawCircle(
                 color = Color.Transparent,
                 center = handleCenter,
@@ -321,7 +193,7 @@ public fun CircularProgressBar(
             )
         }
         /**
-         * Extra canvas layer to intercept touch event
+         * Extra canvas layer to intercept touch event.
          */
         Canvas(
             modifier = Modifier
@@ -339,7 +211,7 @@ public fun CircularProgressBar(
             )
         }
         Text(
-            text = if (currentUpdatedValue == "") "${currentPercentage.roundToInt()} %" else currentUpdatedValue,
+            text = if (currentUpdatedValue == "") "${(value * 100 / 360).roundToInt()} %" else currentUpdatedValue,
             color = percentageColor,
             fontSize = percentageFontSize,
             fontWeight = FontWeight.Bold,
@@ -360,6 +232,8 @@ private fun getRotationAngle(currentPosition: Offset, center: Offset): Double {
     var angle = theta.toDegrees()
 
     if (angle < 0) angle += 360.0
+
+    if (angle >= 359) angle = 0.0
 
     return angle
 }

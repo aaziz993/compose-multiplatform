@@ -3,6 +3,7 @@ package clib.presentation.components.color.common
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +18,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CopyAll
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,7 +54,6 @@ import clib.data.type.Color800
 import clib.data.type.Color900
 import clib.data.type.getColorMap
 import clib.data.type.hexToColor
-import clib.data.type.invert
 import clib.presentation.components.slider.ColorfulSlider
 import clib.presentation.components.slider.MaterialSliderDefaults
 import clib.presentation.components.slider.SliderBrushColor
@@ -172,11 +171,14 @@ private fun sanitizeSliderValue(value: String, maxValue: Int): String =
 internal fun SelectedColorDetail(
     value: Color,
     onValueChange: (Color) -> Unit,
+    @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
     title: String,
     copy: String,
 ) {
     Row(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .then(modifier),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Display the current color in a Box with a MaterialTheme shape
@@ -190,7 +192,7 @@ internal fun SelectedColorDetail(
                         shape = MaterialTheme.shapes.large,
                     )
                     .border(
-                        width = 2.dp,
+                        width = 1.dp,
                         color = MaterialTheme.colorScheme.primary,
                         shape = MaterialTheme.shapes.large,
                     ),
@@ -270,21 +272,16 @@ internal fun ColorColumn(
 ) {
     val colors = generateColorPalette(givenColor = givenColor)
     Column {
-        colors.forEach { boxColor ->
-            val checked = value == boxColor
-            Checkbox(
-                checked = checked,
-                onCheckedChange = {
-                    onValueChange(boxColor)
-                },
+        colors.forEach { color ->
+            val isSelected = value == color
+            Box(
                 modifier = Modifier
-                    .width(boxSize)
-                    .height(boxSize),
-                colors = CheckboxDefaults.colors().copy(
-                    checkedCheckmarkColor = boxColor.invert(),
-                    checkedBoxColor = boxColor,
-                    uncheckedBoxColor = boxColor,
-                ),
+                    .size(boxSize)
+                    .background(color, RectangleShape)
+                    .clickable {
+                        onValueChange(color)
+                    }
+                    .then(if (isSelected) Modifier.border(2.dp, Color.White) else Modifier),
             )
         }
     }

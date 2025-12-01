@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,8 +32,8 @@ import compose_app.generated.resources.phone
 import compose_app.generated.resources.search
 import data.type.primitives.string.asStringResource
 import klib.data.location.country.Country
-import klib.data.location.country.current
 import klib.data.location.country.getCountries
+import klib.data.type.primitives.string.DIGIT_PATTERN
 import org.jetbrains.compose.resources.stringResource
 import ui.auth.phone.presentation.viewmodel.PhoneAction
 import ui.auth.phone.presentation.viewmodel.PhoneState
@@ -46,6 +45,7 @@ public fun PhoneScreen(
     route: Phone = Phone,
     state: PhoneState = PhoneState(),
     onAction: (PhoneAction) -> Unit = {},
+    country: Country = Country.getCountries().first(),
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     Column(
@@ -61,14 +61,16 @@ public fun PhoneScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        val country = Country.getCountries().find { country -> country.dial == state.countryCode }
-            ?: (if (!LocalInspectionMode.current) Country.current else null)
-            ?: Country.forCode("TJ")
-
         CountryCodePickerTextField(
             value = state.number,
             onValueChange = { countryCode, value, isValid ->
-                onAction(PhoneAction.SetPhone(countryCode, value, isValid))
+                onAction(
+                    PhoneAction.SetPhone(
+                        countryCode,
+                        if ("${Regex.DIGIT_PATTERN}+".toRegex().matches(value)) value else state.number,
+                        isValid,
+                    ),
+                )
             },
             modifier = Modifier
                 .fillMaxWidth()

@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import clib.data.type.toColor
 import clib.presentation.components.color.common.ColorSlider
 import clib.presentation.components.slider.CircularProgressBar
-import com.github.ajalt.colormath.model.HSL
+import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
 
 /**
  * A composable function that creates a color picker UI for selecting HSL-A properties to get color. This component
@@ -64,17 +63,12 @@ internal fun HSLAColorPicker(
         textAlign = TextAlign.Start,
         modifier = Modifier
             .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
-        color = Color.Gray,
         style = MaterialTheme.typography.bodySmall,
         fontSize = 12.sp,
     )
 
-    var hsl by remember { mutableStateOf(HSL(0, 0, 0, 0)) }
-
-    LaunchedEffect(hexColorChanged) {
-        hsl = value.toColor().toHSL().let {
-            if (it.h.isNaN()) it.copy(h = 0f) else it
-        }
+    var hsl by remember(hexColorChanged) {
+        mutableStateOf(value.toColor().toHSL().let { if (it.h.isNaN()) it.copy(h = 0f) else it })
     }
 
     BoxWithConstraints(
@@ -88,18 +82,20 @@ internal fun HSLAColorPicker(
         val radiusCircle = diameter / 2f
 
         CircularProgressBar(
-            maxNum = 360,
-            radiusCircle = radiusCircle,
-            progressColor = Brush.linearGradient(colors = listOf(Color.Transparent.copy(alpha = .2f), Color.Transparent.copy(alpha = .2f))),
-            trackColor = Brush.linearGradient(
-                colors = List(361) { hue ->
-                    Color.hsv(hue.toFloat(), 1f, 1f)
-                },
-            ),
-            currentProgressToBeReturned = {
-                hsl = hsl.copy(h = it * 360 / 100)
+            value = hsl.h.toDouble(),
+            onValueChanged = {
+                hsl = hsl.copy(h = it.toFloat())
                 onValueChange(hsl.toColor())
             },
+            radiusCircle = radiusCircle,
+            percentageFontSize = 15.sp,
+            progressColor = Brush.linearGradient(
+                colors = listOf(Color.Transparent.copy(alpha = .2f), Color.Transparent.copy(alpha = .2f)),
+            ),
+            trackColor = List(361) { hue ->
+                Color.hsv(hue.toFloat(), 1f, 1f)
+            },
+            currentUpdatedValue = DecimalFormatter.DefaultFormatter.format((hsl.h * 100).toInt().toString()).displayValue,
         )
     }
     ColorSlider(

@@ -77,15 +77,7 @@ public fun ColorPickerBottomSheet(
         picker.blend,
     )
 
-    Column(
-        modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
-            .shadow(
-                elevation = 10.dp,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .padding(start = 12.dp, end = 12.dp),
-    ) {
+    Column {
         Text(
             text = picker.title,
             textAlign = TextAlign.Start,
@@ -130,7 +122,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.7f)
+                    .weight(.6f)
                     .padding(16.dp),
                 picker.rgba,
                 picker.red,
@@ -145,7 +137,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 modifier = Modifier
-                    .weight(.7f)
+                    .weight(.6f)
                     .padding(16.dp),
                 picker.grid,
             )
@@ -157,7 +149,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.7f)
+                    .weight(.6f)
                     .padding(16.dp),
                 picker.hsv,
                 picker.brightness,
@@ -172,7 +164,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.7f)
+                    .weight(.6f)
                     .padding(16.dp),
                 picker.hsla,
                 picker.saturation,
@@ -187,7 +179,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.7f)
+                    .weight(.6f)
                     .padding(16.dp),
                 picker.blend,
             )
@@ -200,7 +192,7 @@ public fun ColorPickerBottomSheet(
                     shape = RoundedCornerShape(8.dp),
                 )
                 .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
-                .weight(.3f),
+                .weight(.4f),
         ) {
             SelectedColorDetail(
                 color,
@@ -209,6 +201,7 @@ public fun ColorPickerBottomSheet(
                     hexColorChanged = !hexColorChanged
                     controller.selectByColor(it, true)
                 },
+                Modifier.weight(.6f),
                 picker.hex,
                 picker.copy,
             )
@@ -216,6 +209,7 @@ public fun ColorPickerBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(.4f)
                     .padding(bottom = 12.dp),
             ) {
                 OutlinedButton(

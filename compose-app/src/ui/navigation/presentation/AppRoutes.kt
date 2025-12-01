@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -52,6 +53,9 @@ import clib.presentation.state.LocalStateStore
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
 import data.type.primitives.string.asStringResource
+import klib.data.location.country.Country
+import klib.data.location.country.current
+import klib.data.location.country.getCountries
 import klib.data.type.auth.AuthResource
 import klib.data.type.primitives.string.case.toSnakeCase
 import kotlin.reflect.KClass
@@ -424,12 +428,16 @@ public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
         val router = currentRouter()
         val viewModel: PhoneViewModel = koinViewModel { parametersOf(router) }
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val country = Country.getCountries().find { country -> country.dial == state.countryCode }
+            ?: (if (!LocalInspectionMode.current) Country.current else null)
+            ?: Country.forCode("US")
 
         PhoneScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
+            country,
             router::actions,
         )
     }
