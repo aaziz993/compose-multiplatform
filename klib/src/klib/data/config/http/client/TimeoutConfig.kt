@@ -1,4 +1,4 @@
-package klib.data.config.client
+package klib.data.config.http.client
 
 import klib.data.config.EnabledConfig
 import kotlinx.serialization.Serializable

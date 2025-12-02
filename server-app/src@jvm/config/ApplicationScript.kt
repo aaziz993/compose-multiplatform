@@ -3,6 +3,12 @@ package config
 import com.github.ajalt.colormath.model.Ansi16
 import io.ktor.server.config.yaml.*
 import java.io.File
+import klib.data.config.Config
+import klib.data.config.Localization
+import klib.data.config.LogConfig
+import klib.data.config.di.KoinConfig
+import klib.data.config.http.client.HttpClientConfig
+import klib.data.config.validator.ValidatorConfig
 import klib.data.type.primitives.string.ansi.Attribute
 import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.scripting.Script
@@ -48,13 +54,17 @@ public lateinit var applicationScript: ApplicationScript
 
 @Serializable
 public class ApplicationScript(
-    public val host: String = "0.0.0.0",
-    public val port: Int = 80,
-    public val sslPort: Int = 443,
+    override val log: LogConfig = LogConfig(),
+    override val koin: KoinConfig = KoinConfig(),
+    override val localization: Localization = Localization(),
+    override val validator: ValidatorConfig = ValidatorConfig(),
+    override val httpClient: HttpClientConfig = HttpClientConfig(),
+    override val ui: klib.data.config.UIConfig = UIConfig(),
+    override val server: klib.data.config.ServerConfig = klib.data.config.ServerConfig(),
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,
-) : Script() {
+) : Script(), Config {
 
     public companion object {
 
@@ -65,11 +75,8 @@ public class ApplicationScript(
             serverConfigEvaluationImplicitReceiver: ServerConfig,
         ): ApplicationScript {
             val bootstrap = loadBootstrap()
-
             val environment = bootstrap.getOrElse("environment") { "dev" }.toString()
-
             val applicationFileName = "application-$environment.yaml"
-
             val applicationFile = {}.javaClass.classLoader.getResource(applicationFileName)?.toURI()?.path
                 ?: error("$applicationFileName not found in resources")
 

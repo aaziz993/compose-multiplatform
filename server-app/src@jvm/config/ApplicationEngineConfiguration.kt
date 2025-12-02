@@ -5,7 +5,6 @@ import io.ktor.network.tls.extensions.*
 import io.ktor.server.engine.*
 import java.io.File
 import java.io.FileInputStream
-import java.net.Inet4Address
 import java.net.InetAddress
 import java.security.KeyStore
 import java.util.concurrent.TimeUnit

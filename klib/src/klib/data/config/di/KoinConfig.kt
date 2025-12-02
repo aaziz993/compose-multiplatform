@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class KoinConfig(
     val logging: LogConfig? = null,
-    override val enabled: Boolean,
+    override val enabled: Boolean = true,
 ) : EnabledConfig

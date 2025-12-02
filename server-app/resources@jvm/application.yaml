@@ -5,7 +5,7 @@ imports:
   - application-https-redirect.yaml
   - application-routing.yaml
   - application-websockets.yaml
-#  - application-graphql.yaml
+  #  - application-graphql.yaml
   - application-call-logging.yaml
   - application-double-receive.yaml
   - application-call-id.yaml
@@ -61,18 +61,18 @@ script:
   # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
   - developmentMode: true
   - connector: |
-        {
-          host = applicationScript.host
-          port = applicationScript.port
-        }
+      {
+        host = applicationScript.server.host
+        port = applicationScript.server.port
+      }
   - ssl: |
       (
         keyStoreFile = File("resources@jvm/security/ssl/keystore.p12"),
         keyStorePassword = "KtorServerAdmin",
         keyPassword = "KtorServerAdmin",
-        domains = listOf("localhost", "127.0.0.1", applicationScript.host),
+        domains = listOf("localhost", "127.0.0.1", applicationScript.server.host),
         expire = 0L,
-        port = applicationScript.sslPort
+        port = applicationScript.server.sslPort
       )
   # Watch for changes in this directory and automatically reload the application if any file changes in development mode.
   - watchPaths: listOf("classes", "resources")

@@ -46,7 +46,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 { Text(text = currentRoute.route.name.asStringResource()) },
                 themeState.theme,
                 { value -> themeState.theme = value },
-                config.locales,
+                config.localization.locales,
                 localeState.localeInspectionAware(),
                 { value -> localeState.locale = value },
                 authState.auth,
