@@ -14,14 +14,13 @@ import klib.data.coroutines.runBlocking
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asStringNullableMap
-import klib.data.type.primitives.string.addPrefixIfNotEmpty
+import klib.data.type.primitives.string.ifNotEmpty
 import klib.data.type.serialization.IMPORTS_KEY
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.yaml.decodeAnyFromString
-import kotlin.toString
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -45,7 +44,7 @@ public data class Config(
         public operator fun invoke(readText: suspend (file: String) -> String): Config {
             val bootstrap = loadBootstrap(readText = readText)
             val environment = bootstrap["environment"]?.toString().orEmpty()
-            val applicationFile = "files/application${environment.addPrefixIfNotEmpty("-")}.yaml"
+            val applicationFile = "files/application${environment.ifNotEmpty { "-$it" }}.yaml"
 
             return decodeFile<Map<String, Any?>>(
                 applicationFile,

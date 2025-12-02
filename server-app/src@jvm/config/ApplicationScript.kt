@@ -11,6 +11,7 @@ import klib.data.config.http.client.HttpClientConfig
 import klib.data.config.validator.ValidatorConfig
 import klib.data.type.primitives.string.ansi.Attribute
 import klib.data.type.primitives.string.ansi.ansiSpan
+import klib.data.type.primitives.string.ifNotEmpty
 import klib.data.type.primitives.string.scripting.Script
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny
@@ -75,8 +76,8 @@ public class ApplicationScript(
             serverConfigEvaluationImplicitReceiver: ServerConfig,
         ): ApplicationScript {
             val bootstrap = loadBootstrap()
-            val environment = bootstrap.getOrElse("environment") { "dev" }.toString()
-            val applicationFileName = "application-$environment.yaml"
+            val environment = bootstrap["environment"]?.toString().orEmpty()
+            val applicationFileName = "application${environment.ifNotEmpty { "-$it" }}.yaml"
             val applicationFile = {}.javaClass.classLoader.getResource(applicationFileName)?.toURI()?.path
                 ?: error("$applicationFileName not found in resources")
 
