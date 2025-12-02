@@ -43,7 +43,7 @@ public fun hasher(algorithm: HashAlgorithm): Hasher = hasher(
 
         HashAlgorithm.SHA3_512 -> CRYPTO_SHA3_512
 
-        else -> throw IllegalArgumentException("Unsupported hash algorithm \"$algorithm\"")
+        else -> throw IllegalArgumentException("Unknown hash algorithm \"$algorithm\"")
     },
 )
 

@@ -20,8 +20,6 @@ import kotlinx.coroutines.newCoroutineContext
  * dispatcher is an event loop of another `runBlocking`, then this invocation uses the outer event
  * loop.
  *
- * If this blocked thread is interrupted (see [Thread.interrupt]), then the coroutine job is
- * cancelled and this `runBlocking` invocation throws [InterruptedException].
  *
  * See [newCoroutineContext] [CoroutineScope.newCoroutineContext] for a description of debugging
  * facilities that are available for a newly created coroutine.

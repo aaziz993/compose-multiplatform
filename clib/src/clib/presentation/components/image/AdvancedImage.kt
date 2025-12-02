@@ -80,6 +80,6 @@ public fun AdvancedImage(
         colorFilter,
     )
 
-    else -> throw IllegalArgumentException("Unsupported image source type: ${imageSource::class.simpleName}")
+    else -> throw IllegalArgumentException("Unknown image source type: ${imageSource::class.simpleName}")
 }
 

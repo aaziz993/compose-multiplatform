@@ -24,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import clib.data.type.toColor
+import clib.data.type.toHSL
 import clib.presentation.components.color.common.ColorSlider
-import clib.presentation.components.slider.CircularProgressBar
+import clib.presentation.components.color.common.SelectedColorDetail
+import clib.presentation.components.slider.CircularSlider
 import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
 import kotlin.math.roundToInt
 
@@ -44,7 +46,6 @@ import kotlin.math.roundToInt
  */
 @Composable
 internal fun HSLAColorPicker(
-    hexColorChanged: Boolean,
     value: Color,
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
@@ -52,6 +53,8 @@ internal fun HSLAColorPicker(
     saturationLabel: String = "Saturation",
     lightnessLabel: String = "Lightness",
     alphaLabel: String = "Alpha",
+    hex: String = "Hex",
+    copy: String = "Copy",
 ): Unit = Column(
     modifier = Modifier
         .shadow(
@@ -70,7 +73,7 @@ internal fun HSLAColorPicker(
         fontSize = 12.sp,
     )
 
-    var hsl by remember(hexColorChanged) {
+    var hsl by remember {
         mutableStateOf(value.toColor().toHSL().let { if (it.h.isNaN()) it.copy(h = 0f) else it })
     }
 
@@ -84,20 +87,20 @@ internal fun HSLAColorPicker(
         val diameter = min(maxWidth, maxHeight)
         val radiusCircle = diameter / 2f
 
-        CircularProgressBar(
-                value = hsl.h.toDouble(),
-                onValueChanged = {
-                    hsl = hsl.copy(h = it.toFloat())
-                    onValueChange(hsl.toColor())
-                },
-                radiusCircle = radiusCircle,
-                progressColor = Brush.linearGradient(
-                        colors = listOf(Color.Transparent.copy(alpha = .2f), Color.Transparent.copy(alpha = .2f)),
-                ),
-                trackColor = List(361) { hue ->
-                    Color.hsv(hue.toFloat(), 1f, 1f)
-                },
-                animate = true,
+        CircularSlider(
+            value = hsl.h.toDouble(),
+            onValueChanged = {
+                hsl = hsl.copy(h = it.toFloat())
+                onValueChange(hsl.toColor())
+            },
+            radiusCircle = radiusCircle,
+            progressColor = Brush.linearGradient(
+                colors = listOf(Color.Transparent.copy(alpha = .2f), Color.Transparent.copy(alpha = .2f)),
+            ),
+            trackColor = List(361) { hue ->
+                Color.hsv(hue.toFloat(), 1f, 1f)
+            },
+            animate = true,
         ) {
             val displayText = DecimalFormatter.DefaultFormatter.format((hsl.h * 100).roundToInt().toString()).displayValue
             Text(
@@ -109,6 +112,7 @@ internal fun HSLAColorPicker(
             )
         }
     }
+
     Column(
         modifier = Modifier.weight(.4f),
     ) {
@@ -140,4 +144,15 @@ internal fun HSLAColorPicker(
             onValueChange(hsl.toColor())
         }
     }
+
+    SelectedColorDetail(
+        value,
+        {
+            onValueChange(it)
+            hsl = it.toHSL()
+        },
+        Modifier.weight(.7f),
+        hex,
+        copy,
+    )
 }

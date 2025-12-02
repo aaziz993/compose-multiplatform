@@ -245,7 +245,7 @@ public object ProgramGrammar : Grammar<Program>() {
             forwardSlashToken -> l / r
             remToken -> l % r
 
-            else -> throw IllegalArgumentException("Unsupported multiplication token '$o'")
+            else -> throw IllegalArgumentException("Unknown multiplication token '$o'")
         }
     }
 
@@ -255,7 +255,7 @@ public object ProgramGrammar : Grammar<Program>() {
             plusToken -> l + r
             hyphenToken -> l - r
 
-            else -> throw IllegalArgumentException("Unsupported sum token '$o'")
+            else -> throw IllegalArgumentException("Unknown sum token '$o'")
         }
     }
 
@@ -288,7 +288,7 @@ public object ProgramGrammar : Grammar<Program>() {
                     6 -> l geq r
                     7 -> l gt r
 
-                    else -> throw IllegalArgumentException("Unsupported comparison token '$o'")
+                    else -> throw IllegalArgumentException("Unknown comparison token '$o'")
                 }
             } ?: l
         }
@@ -340,7 +340,7 @@ public object ProgramGrammar : Grammar<Program>() {
                 forwardSlashToken -> assignee / value
                 remToken -> assignee % value
                 powToken -> assignee pow value
-                else -> throw IllegalArgumentException("Unsupported compound assign '${compound.type}'")
+                else -> throw IllegalArgumentException("Unknown compound assign '${compound.type}'")
             }
         )
     }

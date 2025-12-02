@@ -7,6 +7,8 @@ import clib.presentation.noLocalProvidedFor
 import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.theme.density.model.DensitySerial
 import clib.presentation.theme.model.Theme
+import klib.data.config.client.RouteConfig
+import klib.data.config.client.UIConfig
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import kotlinx.serialization.Serializable
@@ -22,5 +24,9 @@ public data class Config(
     val locales: List<Locale> = emptyList(),
     val locale: Locale = Locale.current,
     val quickAccess: QuickAccess = QuickAccess(),
-    val routes: Map<String, RouteConfig> = emptyMap(),
-)
+    override val startRoute: String? = null,
+    override val databaseName: String? = null,
+    override val authRoute: String? = null,
+    override val authRedirectRoute: String? = null,
+    override val routes: Map<String, RouteConfig> = emptyMap(),
+) : UIConfig

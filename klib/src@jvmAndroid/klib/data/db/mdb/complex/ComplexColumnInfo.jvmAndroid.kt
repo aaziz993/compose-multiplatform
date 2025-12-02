@@ -30,7 +30,7 @@ public actual class ComplexColumnInfo<V : ComplexValue>(
                 is com.healthmarketscience.jackcess.complex.Version -> Version(value)
                 is com.healthmarketscience.jackcess.complex.UnsupportedValue -> UnsupportedValue(value)
 
-                else -> throw IllegalArgumentException("Unsupported value")
+                else -> throw IllegalArgumentException("Unknown value")
             } as V
         }
 

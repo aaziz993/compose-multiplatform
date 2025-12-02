@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +20,7 @@ import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import clib.data.type.getColorMap
 import clib.presentation.components.color.common.ColorColumn
+import clib.presentation.components.color.common.SelectedColorDetail
 
 /**
  * A composable function that creates a grid to select colors. This color grid is created with
@@ -38,6 +38,8 @@ internal fun GridColorPicker(
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color grid",
+    hex: String = "Hex",
+    copy: String = "Copy",
 ): Unit = Column(
     modifier = Modifier
         .shadow(
@@ -76,4 +78,12 @@ internal fun GridColorPicker(
             }
         }
     }
+
+    SelectedColorDetail(
+        value,
+        onValueChange,
+        Modifier,
+        hex,
+        copy,
+    )
 }

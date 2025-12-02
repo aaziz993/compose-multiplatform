@@ -53,7 +53,7 @@ import kotlin.math.*
  */
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
-public fun CircularProgressBar(
+public fun CircularSlider(
     value: Double = 0.0,
     onValueChanged: (Double) -> Unit,
     radiusCircle: Dp = 150.dp,

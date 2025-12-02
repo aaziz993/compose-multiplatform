@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.common.ColorSlider
+import clib.presentation.components.color.common.SelectedColorDetail
 import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 
@@ -39,10 +40,12 @@ internal fun HSVColorPicker(
     value: Color,
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
-    title: String = "Select color hsv",
-    brightnessLabel: String = "Brightness",
-    alphaLabel: String = "Alpha",
     initialValue: Color? = null,
+    title: String = "Select color hsv",
+    brightness: String = "Brightness",
+    alpha: String = "Alpha",
+    hex: String = "Hex",
+    copy: String = "Copy",
 ): Unit = Column(
     modifier = Modifier
         .shadow(
@@ -71,11 +74,12 @@ internal fun HSVColorPicker(
             if (fromUser) onValueChange(color)
         },
     )
+
     Column(
         modifier = Modifier.weight(.4f),
     ) {
         ColorSlider(
-            brightnessLabel,
+            brightness,
             controller.selectedColor.value,
             100,
             controller.brightness.value,
@@ -85,7 +89,7 @@ internal fun HSVColorPicker(
         }
 
         ColorSlider(
-            brightnessLabel,
+            brightness,
             controller.selectedColor.value,
             100,
             controller.alpha.value,
@@ -94,4 +98,15 @@ internal fun HSVColorPicker(
             onValueChange(controller.selectedColor.value)
         }
     }
+
+    SelectedColorDetail(
+        value,
+        {
+            onValueChange(it)
+            controller.selectByColor(it, true)
+        },
+        Modifier,
+        hex,
+        copy,
+    )
 }

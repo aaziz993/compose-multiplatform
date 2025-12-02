@@ -27,5 +27,5 @@ public val TransactionIsolation.r2dbcTransactionIsolation: IsolationLevel
         TransactionIsolation.READ_COMMITTED -> IsolationLevel.READ_COMMITTED
         TransactionIsolation.REPEATABLE_READ -> IsolationLevel.REPEATABLE_READ
         TransactionIsolation.SERIALIZABLE -> IsolationLevel.SERIALIZABLE
-        else -> throw IllegalArgumentException("Unsupported transaction isolation \"$name\"")
+        else -> throw IllegalArgumentException("Unknown transaction isolation \"$name\"")
     }

@@ -32,7 +32,7 @@ internal class SQLDelightQuery<out T : Any>(
                     is Double -> bindDouble(index, parameter)
                     is String -> bindString(index, parameter)
                     is ByteArray -> bindBytes(index, parameter)
-                    else -> throw IllegalArgumentException("Unsupported parameter type ${parameter?.let { it::class.simpleName }}")
+                    else -> throw IllegalArgumentException("Unknown parameter type ${parameter?.let { it::class.simpleName }}")
                 }
             }
         }

@@ -62,7 +62,7 @@ public fun Any.toInstant(timeZone: TimeZone = TimeZone.UTC): Instant = when (thi
     is Instant -> this
     is LocalDate -> toInstant(timeZone)
     is LocalDateTime -> toInstant(timeZone)
-    else -> throw IllegalArgumentException("Unsupported type for toInstant(): ${this::class}")
+    else -> throw IllegalArgumentException("Unknown type for toInstant(): ${this::class}")
 }
 
 public fun LocalTime.Companion.now(zone: TimeZone = TimeZone.currentSystemDefault()): LocalTime =
@@ -79,7 +79,7 @@ public fun Any.toLocalTime(timeZone: TimeZone = TimeZone.UTC): LocalTime = when 
     is Instant -> toLocalDateTime(timeZone).time
     is LocalDate -> time
     is LocalDateTime -> time
-    else -> throw IllegalArgumentException("Unsupported type for toLocalDate(): ${this::class}")
+    else -> throw IllegalArgumentException("Unknown type for toLocalDate(): ${this::class}")
 }
 
 public val ZERO_DATE: LocalDate = LocalDate.fromEpochDays(0)
@@ -108,7 +108,7 @@ public fun Any.toLocalDate(timeZone: TimeZone = TimeZone.UTC): LocalDate = when 
     is Instant -> toLocalDate(timeZone)
     is LocalDate -> this
     is LocalDateTime -> date
-    else -> throw IllegalArgumentException("Unsupported type for toLocalDate(): ${this::class}")
+    else -> throw IllegalArgumentException("Unknown type for toLocalDate(): ${this::class}")
 }
 
 public val ZERO_DATE_TIME: LocalDateTime = LocalDateTime(ZERO_DATE, ZERO_TIME)
@@ -127,7 +127,7 @@ public fun Any.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime
     is Instant -> toLocalDateTime(timeZone)
     is LocalDate -> toLocalDateTime()
     is LocalDateTime -> this
-    else -> throw IllegalArgumentException("Unsupported type for toLocalDateTime(): ${this::class}")
+    else -> throw IllegalArgumentException("Unknown type for toLocalDateTime(): ${this::class}")
 }
 
 public fun createLocalDateTimeFormatter(fraction: Int = 0): DateTimeFormat<LocalDateTime> =

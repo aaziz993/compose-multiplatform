@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.common.ColorSlider
+import clib.presentation.components.color.common.SelectedColorDetail
 
 /**
  * A composable function that creates a color picker UI for selecting RGB-A colors. This component
@@ -26,10 +27,10 @@ import clib.presentation.components.color.common.ColorSlider
  * @param onValueChange Callback on color value change.
  * @param modifier: The modifier to apply to this layout.
  * @param title: Title.
- * @param redLabel: Red label.
- * @param greenLabel: Green label.
- * @param blueLabel: Blue label.
- * @param alphaLabel: Alpha label.
+ * @param red: Red label.
+ * @param green: Green label.
+ * @param blue: Blue label.
+ * @param alpha: Alpha label.
  *
  * @return @Composable: A color picker UI for selecting RGB-A colors.
  */
@@ -39,10 +40,12 @@ internal fun RGBAColorPicker(
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color rgba",
-    redLabel: String = "Red",
-    greenLabel: String = "Green",
-    blueLabel: String = "Blue",
-    alphaLabel: String = "Alpha",
+    red: String = "Red",
+    green: String = "Green",
+    blue: String = "Blue",
+    alpha: String = "Alpha",
+    hex: String = "Hex",
+    copy: String = "Copy",
 ): Unit = Column(
     modifier = Modifier
         .shadow(
@@ -70,7 +73,7 @@ internal fun RGBAColorPicker(
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             ColorSlider(
-                redLabel,
+                red,
                 Color.Red,
                 255,
                 value.red,
@@ -78,7 +81,7 @@ internal fun RGBAColorPicker(
                 onValueChange(value.copy(red = it))
             }
             ColorSlider(
-                greenLabel,
+                green,
                 Color.Green,
                 255,
                 value.green,
@@ -86,7 +89,7 @@ internal fun RGBAColorPicker(
                 onValueChange(value.copy(green = it))
             }
             ColorSlider(
-                blueLabel,
+                blue,
                 Color.Blue,
                 255,
                 value.blue,
@@ -94,7 +97,7 @@ internal fun RGBAColorPicker(
                 onValueChange(value.copy(blue = it))
             }
             ColorSlider(
-                blueLabel,
+                blue,
                 value,
                 255,
                 value.alpha,
@@ -103,4 +106,12 @@ internal fun RGBAColorPicker(
             }
         }
     }
+
+    SelectedColorDetail(
+        value,
+        onValueChange,
+        Modifier,
+        hex,
+        copy,
+    )
 }

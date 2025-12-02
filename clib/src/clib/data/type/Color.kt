@@ -24,6 +24,7 @@ import klib.data.type.serialization.serializers.primitive.PrimitiveULongSerializ
 import kotlinx.serialization.Serializable
 import androidx.compose.ui.graphics.Color as ComposeColor
 import com.github.ajalt.colormath.Color
+import com.github.ajalt.colormath.model.HSL
 
 public object ColorSerializer : PrimitiveULongSerializer<ComposeColor>(
     ComposeColor::class.simpleName!!,
@@ -481,6 +482,11 @@ public fun ComposeColor.toSRGB(): RGB =
     convert(ColorSpaces.Srgb).let { SRGB(it.red, it.green, it.blue, it.alpha) }
 
 /**
+ * Convert this color to a ColorMath [HSL] instance.
+ */
+public fun ComposeColor.toHSL(): HSL = toColor().toHSL().let { hsl -> if (hsl.h.isNaN()) hsl.copy(h = 0f) else hsl }
+
+/**
  * Convert this color to a Compose [ComposeColor] instance.
  */
 public fun Color.toColor(): ComposeColor {
@@ -591,7 +597,6 @@ public fun String.hexToColor(): ComposeColor {
         else -> throw IllegalArgumentException("Invalid Hex color: $this")
     }
 }
-
 
 /**
  * Returns a new [ComposeColor] that is the inverted version of the receiver color.

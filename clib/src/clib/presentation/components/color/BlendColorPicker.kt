@@ -20,8 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +32,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.data.type.toColor
+import clib.data.type.toHSL
+import clib.presentation.components.color.common.SelectedColorDetail
 import clib.presentation.components.color.common.SliderHue
 import clib.presentation.components.slider.ColorfulSlider
 import clib.presentation.components.slider.MaterialSliderDefaults
@@ -57,11 +56,12 @@ import com.materialkolor.ktx.toHex
  */
 @Composable
 internal fun BlendColorPicker(
-    hexColorChanged: Boolean,
     value: Color,
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color blend",
+    hex: String = "Hex",
+    copy: String = "Copy",
 ) = Column(
     modifier = Modifier
         .shadow(
@@ -81,16 +81,16 @@ internal fun BlendColorPicker(
     )
 
     // State variables for first color hue and second color hue
-    var firstHue by remember(hexColorChanged) {
-        mutableFloatStateOf(value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
+    var firstHue by remember {
+        mutableFloatStateOf(value.toHSL().h)
     }
-    var secondHue by remember(hexColorChanged) {
-        mutableFloatStateOf(value.toColor().toHSL().h.takeUnless(Float::isNaN) ?: 0f)
+    var secondHue by remember {
+        mutableFloatStateOf(firstHue)
     }
 
-    var firstBlendColor by remember(hexColorChanged) { mutableStateOf(value) }
-    var secondBlendColor by remember(hexColorChanged) { mutableStateOf(value) }
-    var colorBias by remember(hexColorChanged) { mutableFloatStateOf(.5f) }
+    var firstBlendColor by remember { mutableStateOf(value) }
+    var secondBlendColor by remember { mutableStateOf(value) }
+    var colorBias by remember { mutableFloatStateOf(.5f) }
 
     Row(
         modifier = Modifier
@@ -234,4 +234,16 @@ internal fun BlendColorPicker(
             )
         }
     }
+
+    SelectedColorDetail(
+        value,
+        {
+            onValueChange(it)
+            firstHue = it.toHSL().h
+            secondHue = firstHue
+        },
+        Modifier,
+        hex,
+        copy,
+    )
 }

@@ -2,14 +2,24 @@ package di.module
 
 import clib.presentation.auth.AuthState
 import clib.presentation.config.Config
+import com.charleskorn.kaml.Yaml
+import compose_app.generated.resources.Res
 import dev.jordond.connectivity.Connectivity
 import klib.data.cache.Cache
 import klib.data.cache.SettingsCache
 import klib.data.coroutines.runBlocking
-import klib.data.location.locale.Locale
 import klib.data.net.createConnectivity
+import klib.data.type.collections.deepGetOrNull
+import klib.data.type.collections.list.asList
+import klib.data.type.collections.map.asStringNullableMap
+import klib.data.type.serialization.IMPORTS_KEY
+import klib.data.type.serialization.coders.tree.deserialize
+import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.encodeAnyToString
+import klib.data.type.serialization.properties.Properties
+import klib.data.type.serialization.yaml.decodeAnyFromString
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Configuration
@@ -22,35 +32,28 @@ import org.koin.core.annotation.Single
 public class CommonModule {
 
     @Single
-    public fun provideConfig(): Config = runBlocking {
-//        decodeFile<Map<String, Any?>>(
-//            "files/application.yaml",
-//            { file, decodedFile ->
-//                decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
-//                    "files/$import"
-//                }
-//            },
-//            decoder = { file ->
-//                val text = Res.readBytes(Res.getUri(file)).decodeToString()
-//                val extension = file.substringAfterLast(".", "")
-//                when (extension) {
-//                    "yaml" -> Yaml.default.decodeAnyFromString(text)
-//                    "json" -> Json.decodeAnyFromString(text)
-//                    "properties" -> Properties.decodeAnyFromString(text)
-//
-//                    else -> throw IllegalArgumentException("Unsupported file extension $extension")
-//                }!!.asStringNullableMap
-//
-//            },
-//        ).deserialize<ComposeConfig>()
-        Config(
-            locales = listOf(
-                "en-US",
-                "ru-RU",
-                "tg-TJ",
-            ).map(Locale::forLanguageTag),
-        )
-    }
+    public fun provideConfig(): Config =
+        decodeFile<Map<String, Any?>>(
+            "files/application.yaml",
+            { file, decodedFile ->
+                decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
+                    "files/$import"
+                }
+            },
+            decoder = { file ->
+                runBlocking(Dispatchers.Main) {
+                    val text = Res.readBytes(Res.getUri(file)).decodeToString()
+                    val extension = file.substringAfterLast(".", "")
+                    when (extension) {
+                        "yaml" -> Yaml.default.decodeAnyFromString(text)
+                        "json" -> Json.decodeAnyFromString(text)
+                        "properties" -> Properties.decodeAnyFromString(text)
+
+                        else -> throw IllegalArgumentException("Unknown file extension '$extension'")
+                    }!!.asStringNullableMap
+                }
+            },
+        ).deserialize<Config>()
 
     @Single
     public fun provideAuthState(): AuthState = AuthState()

@@ -49,6 +49,7 @@ import compose_app.generated.resources.camera
 import compose_app.generated.resources.color_palette
 import compose_app.generated.resources.density
 import compose_app.generated.resources.dynamic_color_palette
+import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.language
@@ -191,6 +192,20 @@ public fun SettingsScreen(
             icon = { Icon(Icons.Default.ColorLens, stringResource(Res.string.dynamic_color_palette)) },
             onClick = {
                 showSheet = true
+            },
+        )
+
+        SettingsSwitch(
+            state = theme.isExpressive,
+            title = { Text(text = stringResource(Res.string.expressive)) },
+            subtitle = {
+                theme.isExpressive.EnabledText()
+            },
+            modifier = Modifier,
+            enabled = true,
+            icon = { Icon(Icons.Default.Palette, stringResource(Res.string.expressive)) },
+            onCheckedChange = { state ->
+                onThemeChange(theme.copy(isExpressive = !theme.isExpressive))
             },
         )
 

@@ -3,21 +3,4 @@
     <string name="settings">Settings</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
-    <string name="appearance">Appearance</string>
-    <string name="theme">Theme</string>
-    <string name="dark_theme">Dark theme</string>
-    <string name="light_theme">Light theme</string>
-    <string name="system_theme">System theme</string>
-    <string name="dynamic_color_palette">Dynamic color palette</string>
-    <string name="high_contrast">High contrast</string>
-    <string name="color_palette">Color palette</string>
-    <string name="quick_access">Quick access</string>
-    <string name="quick_support">Quick access support</string>
-    <string name="quick_theme">Quick access theme</string>
-    <string name="quick_locale">Quick access locale</string>
-    <string name="quick_avatar">Quick access avatar</string>
-    <string name="density">Density</string>
-    <string name="font">Font</string>
-    <string name="font_scale">Font scale</string>
-    <string name="permissions">Permissions</string>
 </resources>

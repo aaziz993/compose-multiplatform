@@ -7,7 +7,10 @@ import compose_app.generated.resources.disabled
 import compose_app.generated.resources.enabled
 import org.jetbrains.compose.resources.stringResource
 
+@Composable
+public fun Boolean.enabledStringResource(): String =
+    if (this) stringResource(Res.string.enabled) else stringResource(Res.string.disabled)
+
 @Suppress("ComposeModifierMissing")
 @Composable
-public fun Boolean.EnabledText(): Unit = if (this) Text(text = stringResource(Res.string.enabled))
-else Text(text = stringResource(Res.string.disabled))
+public fun Boolean.EnabledText(): Unit = Text(text = enabledStringResource())

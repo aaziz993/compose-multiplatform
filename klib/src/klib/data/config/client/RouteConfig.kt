@@ -1,4 +1,4 @@
-package clib.presentation.config
+package klib.data.config.client
 
 import io.ktor.http.Url
 import klib.data.type.auth.AuthResource
