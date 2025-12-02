@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -60,6 +61,7 @@ import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
 import data.type.primitives.string.asStringResource
 import klib.data.location.locale.Locale
+import klib.data.location.locale.current
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
@@ -75,15 +77,19 @@ import ui.navigation.presentation.Settings
 public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
-    theme: Theme = Theme(),
+    defaultTheme: Theme = Theme(),
+    theme: Theme = defaultTheme,
     onThemeChange: (Theme) -> Unit = {},
-    density: Density = Density(2f, 1f),
+    defaultDensity: Density = Density(2f),
+    density: Density = defaultDensity,
     onDensityChange: (Density) -> Unit = {},
-    locale: Locale = Locale.root,
+    locales: List<Locale> = emptyList(),
+    locale: Locale = Locale.current,
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    quickAccess: QuickAccess = QuickAccess(),
+    defaultQuickAccess: QuickAccess = QuickAccess(),
+    quickAccess: QuickAccess = defaultQuickAccess,
     onQuickAccessChange: (QuickAccess) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ): Unit = Column(
@@ -184,29 +190,37 @@ public fun SettingsScreen(
             },
         )
 
+        var densityValue by remember { mutableFloatStateOf(density.density) }
         SettingsSlider(
-            value = density.density,
-            valueRange = 1f..4f,
-            steps = 300,
+            value = densityValue,
+            valueRange = 1.5f..2.5f,
+            steps = 1,
             title = { Text(stringResource(Res.string.density)) },
             subtitle = { Text(stringResource(Res.string.density)) },
             enabled = true,
             icon = { Icon(Icons.Default.TouchApp, stringResource(Res.string.density)) },
             onValueChange = { value, _ ->
-                onDensityChange(Density(value, density.fontScale))
+                densityValue = value
+            },
+            onValueChangeFinished = {
+                onDensityChange(Density(densityValue, density.fontScale))
             },
         )
 
+        var fontScaleValue by remember { mutableFloatStateOf(density.fontScale) }
         SettingsSlider(
-            value = density.fontScale,
-            valueRange = 0.5f..3.5f,
-            steps = 300,
+            value = fontScaleValue,
+            valueRange = 1f..2f,
+            steps = 1,
             title = { Text(stringResource(Res.string.font_scale)) },
             subtitle = { Text(stringResource(Res.string.font_scale)) },
             enabled = true,
             icon = { Icon(Icons.Default.TextFields, stringResource(Res.string.font_scale)) },
             onValueChange = { value, _ ->
-                onDensityChange(Density(density.density, value))
+                fontScaleValue = value
+            },
+            onValueChangeFinished = {
+                onDensityChange(Density(density.density, fontScaleValue))
             },
         )
 
@@ -214,7 +228,8 @@ public fun SettingsScreen(
 
         if (isLocalePickerDialogOpen)
             LocalePickerDialog(
-                onLocaleChange = onLocaleChange,
+                locales,
+                onLocaleChange,
             ) {
                 isLocalePickerDialogOpen = false
             }

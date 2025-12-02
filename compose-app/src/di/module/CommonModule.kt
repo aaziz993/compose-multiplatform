@@ -1,36 +1,15 @@
 package di.module
 
-import clib.data.config.ComposeConfig
 import clib.presentation.auth.AuthState
-import com.charleskorn.kaml.Yaml
-import compose_app.generated.resources.Res
+import clib.presentation.config.Config
 import dev.jordond.connectivity.Connectivity
 import klib.data.cache.Cache
 import klib.data.cache.SettingsCache
 import klib.data.coroutines.runBlocking
+import klib.data.location.locale.Locale
 import klib.data.net.createConnectivity
-import klib.data.type.collections.deepGet
-import klib.data.type.collections.deepGetOrNull
-import klib.data.type.collections.deepMap
-import klib.data.type.collections.deepPlus
-import klib.data.type.collections.deepSubstitute
-import klib.data.type.collections.getOrPut
-import klib.data.type.collections.list.asList
-import klib.data.type.collections.map.asMapOrNull
-import klib.data.type.collections.map.asStringNullableMap
-import klib.data.type.collections.set
-import klib.data.type.collections.toNewMutableCollection
-import klib.data.type.serialization.IMPORTS_KEY
-import klib.data.type.serialization.coders.tree.deserialize
-import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.encodeAnyToString
-import klib.data.type.serialization.properties.Properties
-import klib.data.type.serialization.yaml.decodeAnyFromString
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.orEmpty
-import kotlin.collections.plus
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Configuration
@@ -42,8 +21,8 @@ import org.koin.core.annotation.Single
 @ComponentScan("ui", "presentation")
 public class CommonModule {
 
-//    @Single
-//    public fun provideConfig(config: ComposeConfig): ComposeConfig = runBlocking {
+    @Single
+    public fun provideConfig(): Config = runBlocking {
 //        decodeFile<Map<String, Any?>>(
 //            "files/application.yaml",
 //            { file, decodedFile ->
@@ -64,7 +43,14 @@ public class CommonModule {
 //
 //            },
 //        ).deserialize<ComposeConfig>()
-//    }
+        Config(
+            locales = listOf(
+                "en-US",
+                "ru-RU",
+                "tg-TJ",
+            ).map(Locale::forLanguageTag),
+        )
+    }
 
     @Single
     public fun provideAuthState(): AuthState = AuthState()

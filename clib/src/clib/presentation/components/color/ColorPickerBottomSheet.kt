@@ -201,7 +201,7 @@ public fun ColorPickerBottomSheet(
                     hexColorChanged = !hexColorChanged
                     controller.selectByColor(it, true)
                 },
-                Modifier.weight(.6f),
+                Modifier.weight(.7f),
                 picker.hex,
                 picker.copy,
             )
@@ -209,7 +209,7 @@ public fun ColorPickerBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(.4f)
+                    .weight(.3f)
                     .padding(bottom = 12.dp),
             ) {
                 OutlinedButton(

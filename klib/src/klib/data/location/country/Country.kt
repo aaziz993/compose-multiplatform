@@ -3,7 +3,10 @@ package klib.data.location.country
 import klib.data.iso.Alpha2Letter
 import klib.data.iso.Alpha3Letter
 import klib.data.location.locale.Locale
+import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import kotlinx.serialization.Serializable
 
+@Serializable(CountrySerializer::class)
 public data class Country(
     val name: String,
     val alpha2: Alpha2Letter,
@@ -41,6 +44,12 @@ public data class Country(
                 ?: error("Invalid ISO 3166-1 alpha-2 country code: $code")
     }
 }
+
+private object CountrySerializer : PrimitiveStringSerializer<Country>(
+    "klib.data.location.country.Country",
+    Country::toString,
+    String::toCountry,
+)
 
 public expect val Country.Companion.current: Country?
 

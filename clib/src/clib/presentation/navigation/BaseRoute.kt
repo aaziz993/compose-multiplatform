@@ -22,7 +22,8 @@ import clib.presentation.navigation.model.NavigationItem
 import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
-import klib.data.net.http.toRoute
+import io.ktor.http.Url
+import klib.data.net.http.urlPattern
 import klib.data.type.auth.AuthResource
 import klib.data.type.auth.model.Auth
 import klib.data.type.collections.iterator.depthIterator
@@ -36,6 +37,10 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     @Suppress("UNCHECKED_CAST")
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
+
+    public val urls: List<Url> by lazy {
+        listOf(navRoute.serializer().urlPattern())
+    }
 
     public open val metadata: Map<String, Any> = slideTransition()
 

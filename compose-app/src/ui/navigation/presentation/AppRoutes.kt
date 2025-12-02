@@ -40,6 +40,7 @@ import clib.di.navigation.KoinRoutes
 import clib.di.navigation.rememberKoinScopeNavEntryDecorator
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.Item
+import clib.presentation.config.LocalConfig
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
@@ -324,6 +325,7 @@ public data object Settings : Route<Settings>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
+        val config = LocalConfig.current
         val themeState = LocalThemeState.current
         val densityState = LocalDensityState.current
         val localeState = LocalLocaleState.current
@@ -334,14 +336,18 @@ public data object Settings : Route<Settings>(), NavRoute {
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
+            config.theme,
             themeState.theme,
             { value -> themeState.theme = value },
+            config.density,
             densityState.density,
             { value -> densityState.density = value },
+            config.locales,
             localeState.localeInspectionAware(),
             { value -> localeState.locale = value },
             authState.auth,
             { value -> authState.auth = value },
+            config.quickAccess,
             stateStore.get<QuickAccess>(),
             onQuickAccessChange = { value -> stateStore.set<QuickAccess>(value = value) },
             router::actions,

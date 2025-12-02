@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
@@ -25,6 +27,7 @@ import clib.data.type.toColor
 import clib.presentation.components.color.common.ColorSlider
 import clib.presentation.components.slider.CircularProgressBar
 import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
+import kotlin.math.roundToInt
 
 /**
  * A composable function that creates a color picker UI for selecting HSL-A properties to get color. This component
@@ -74,7 +77,7 @@ internal fun HSLAColorPicker(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .weight(.8f),
+            .weight(.6f),
         contentAlignment = Alignment.Center,
     ) {
         // Take the smaller of width/height as diameter.
@@ -82,47 +85,59 @@ internal fun HSLAColorPicker(
         val radiusCircle = diameter / 2f
 
         CircularProgressBar(
-            value = hsl.h.toDouble(),
-            onValueChanged = {
-                hsl = hsl.copy(h = it.toFloat())
-                onValueChange(hsl.toColor())
-            },
-            radiusCircle = radiusCircle,
-            percentageFontSize = 15.sp,
-            progressColor = Brush.linearGradient(
-                colors = listOf(Color.Transparent.copy(alpha = .2f), Color.Transparent.copy(alpha = .2f)),
-            ),
-            trackColor = List(361) { hue ->
-                Color.hsv(hue.toFloat(), 1f, 1f)
-            },
-            currentUpdatedValue = DecimalFormatter.DefaultFormatter.format((hsl.h * 100).toInt().toString()).displayValue,
-        )
+                value = hsl.h.toDouble(),
+                onValueChanged = {
+                    hsl = hsl.copy(h = it.toFloat())
+                    onValueChange(hsl.toColor())
+                },
+                radiusCircle = radiusCircle,
+                progressColor = Brush.linearGradient(
+                        colors = listOf(Color.Transparent.copy(alpha = .2f), Color.Transparent.copy(alpha = .2f)),
+                ),
+                trackColor = List(361) { hue ->
+                    Color.hsv(hue.toFloat(), 1f, 1f)
+                },
+                animate = true,
+        ) {
+            val displayText = DecimalFormatter.DefaultFormatter.format((hsl.h * 100).roundToInt().toString()).displayValue
+            Text(
+                text = displayText,
+                color = value,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.rotate(90f),
+            )
+        }
     }
-    ColorSlider(
-        saturationLabel,
-        value,
-        100,
-        hsl.s,
+    Column(
+        modifier = Modifier.weight(.4f),
     ) {
-        hsl = hsl.copy(s = it)
-        onValueChange(hsl.toColor())
-    }
-    ColorSlider(
-        lightnessLabel,
-        value,
-        100,
-        hsl.l,
-    ) {
-        hsl = hsl.copy(l = it)
-        onValueChange(hsl.toColor())
-    }
-    ColorSlider(
-        alphaLabel,
-        value,
-        100,
-        hsl.alpha,
-    ) {
-        hsl = hsl.copy(alpha = it)
-        onValueChange(hsl.toColor())
+        ColorSlider(
+            saturationLabel,
+            value,
+            100,
+            hsl.s,
+        ) {
+            hsl = hsl.copy(s = it)
+            onValueChange(hsl.toColor())
+        }
+        ColorSlider(
+            lightnessLabel,
+            value,
+            100,
+            hsl.l,
+        ) {
+            hsl = hsl.copy(l = it)
+            onValueChange(hsl.toColor())
+        }
+        ColorSlider(
+            alphaLabel,
+            value,
+            100,
+            hsl.alpha,
+        ) {
+            hsl = hsl.copy(alpha = it)
+            onValueChange(hsl.toColor())
+        }
     }
 }

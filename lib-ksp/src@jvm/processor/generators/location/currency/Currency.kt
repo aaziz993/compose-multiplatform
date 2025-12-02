@@ -57,12 +57,12 @@ public fun generateCurrencyRegistry(
             add("demonym = %S,\n", currency.demonym)
             currency.majorSingle?.let { add("majorSingle = %S,\n", it) }
             currency.majorPlural?.let { add("majorPlural = %S,\n", it) }
-            add("ISOnum = %L,\n", currency.ISOnum)
+            add("isoNum = %L,\n", currency.ISOnum)
             currency.symbol?.let { add("symbol = %S,\n", it) }
             currency.symbolNative?.let { add("symbolNative = %S,\n", it) }
             currency.minorSingle?.let { add("minorSingle = %S,\n", it) }
             currency.minorPlural?.let { add("minorPlural = %S,\n", it) }
-            add("ISOdigits = %L,\n", currency.ISOdigits)
+            add("isoDigits = %L,\n", currency.ISOdigits)
             currency.decimals?.let { add("decimals = %L,\n", it) }
             currency.numToBasic?.let { add("numToBasic = %L,\n", it) }
             unindent()

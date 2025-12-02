@@ -7,9 +7,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -71,8 +72,9 @@ import kotlinx.coroutines.launch
  *
  * @return @Composable: A slider UI for color selection.
  */
+@Suppress("ComposeUnstableReceiver")
 @Composable
-internal fun ColorSlider(
+internal fun ColumnScope.ColorSlider(
     label: String,
     trackColor: Color,
     maxValue: Int,
@@ -84,6 +86,7 @@ internal fun ColorSlider(
      * The slider's active track color is set to [trackColor].
      */
     Row(
+        modifier = Modifier.weight(1f),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
@@ -271,7 +274,7 @@ internal fun ColorColumn(
     onValueChange: (color: Color) -> Unit
 ) {
     val colors = generateColorPalette(givenColor = givenColor)
-    Column {
+    Column(Modifier.fillMaxHeight()) {
         colors.forEach { color ->
             val isSelected = value == color
             Box(

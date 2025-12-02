@@ -64,30 +64,34 @@ internal fun HSVColorPicker(
     HsvColorPicker(
         modifier = Modifier
             .fillMaxWidth()
-            .weight(.8f),
+            .weight(.6f),
         controller = controller,
         initialColor = initialValue,
         onColorChanged = { (color, _, fromUser) ->
             if (fromUser) onValueChange(color)
         },
     )
-    ColorSlider(
-        brightnessLabel,
-        controller.selectedColor.value,
-        100,
-        controller.brightness.value,
-    ) { value ->
-        controller.setBrightness(value, true)
-        onValueChange(controller.selectedColor.value)
-    }
+    Column(
+        modifier = Modifier.weight(.4f),
+    ) {
+        ColorSlider(
+            brightnessLabel,
+            controller.selectedColor.value,
+            100,
+            controller.brightness.value,
+        ) { value ->
+            controller.setBrightness(value, true)
+            onValueChange(controller.selectedColor.value)
+        }
 
-    ColorSlider(
-        brightnessLabel,
-        controller.selectedColor.value,
-        100,
-        controller.alpha.value,
-    ) { value ->
-        controller.setAlpha(value, true)
-        onValueChange(controller.selectedColor.value)
+        ColorSlider(
+            brightnessLabel,
+            controller.selectedColor.value,
+            100,
+            controller.alpha.value,
+        ) { value ->
+            controller.setAlpha(value, true)
+            onValueChange(controller.selectedColor.value)
+        }
     }
 }

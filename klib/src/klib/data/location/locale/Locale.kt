@@ -1,7 +1,10 @@
 package klib.data.location.locale
 
 import klib.data.location.country.Country
+import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import kotlinx.serialization.Serializable
 
+@Serializable(LocaleSerializer::class)
 public data class Locale(
     private val languageTag: LanguageTag,
 ) {
@@ -79,6 +82,12 @@ public data class Locale(
         }.map(::forLanguageTag).toSet()
     }
 }
+
+private object LocaleSerializer : PrimitiveStringSerializer<Locale>(
+    "klib.data.location.locale.Locale",
+    Locale::toString,
+    String::toLocale,
+)
 
 public expect val Locale.Companion.current: Locale
 

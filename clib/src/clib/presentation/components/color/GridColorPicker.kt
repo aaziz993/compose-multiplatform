@@ -32,7 +32,6 @@ import clib.presentation.components.color.common.ColorColumn
  *
  * @return @Composable: A grid UI to select colors.
  */
-@Suppress("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun GridColorPicker(
     value: Color,
@@ -57,11 +56,15 @@ internal fun GridColorPicker(
         fontSize = 12.sp,
     )
 
-    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+    BoxWithConstraints {
         val boxSize = min(maxWidth, maxHeight) / Color.getColorMap().size
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 4.dp, end = 4.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
         ) {
             Color.getColorMap().keys.map { key ->
                 ColorColumn(

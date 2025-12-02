@@ -7,33 +7,32 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.language
 import compose_app.generated.resources.search
 import data.type.primitives.string.asStringResource
-import klib.data.location.country.Country
-import klib.data.location.country.getCountries
 import klib.data.location.locale.Locale
+import klib.data.type.collections.bimap.toBiMap
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 public fun LocalePickerDialog(
+    locales: List<Locale>,
     onLocaleChange: (Locale) -> Unit,
     onClose: () -> Unit,
-): Unit = CountryPickerDialog(
-    onItemClicked = { country ->
-        country.locales().firstOrNull()?.let { locale ->
-            onLocaleChange(locale)
+) {
+    val localeCountries = locales.associateWith { locale ->
+        locale.country()!!.copy(
+            name = locale.toString().asStringResource(),
+        )
+    }.toBiMap()
+
+    CountryPickerDialog(
+        onItemClicked = { country ->
+            onLocaleChange(localeCountries.inverse[country]!!)
             onClose()
-        }
-    },
-    onDismissRequest = onClose,
-    countries = Country.getCountries()
-        .filter { country -> country.locales().isNotEmpty() }
-        .toList()
-        .map { country ->
-            country.copy(
-                name = country.toString().asStringResource { country.name },
-            )
         },
-    picker = CountryPicker(
-        headerTitle = stringResource(Res.string.language),
-        searchHint = stringResource(Res.string.search),
-    ),
-)
+        onDismissRequest = onClose,
+        countries = localeCountries.values.toList(),
+        picker = CountryPicker(
+            headerTitle = stringResource(Res.string.language),
+            searchHint = stringResource(Res.string.search),
+        ),
+    )
+}

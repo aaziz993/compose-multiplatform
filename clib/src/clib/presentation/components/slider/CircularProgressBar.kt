@@ -37,10 +37,7 @@ import kotlin.math.*
  * @param value to provide angle value for the slider.
  * @param onValueChanged to provide callback on angle value change for the slider.
  * @param radiusCircle radius of the circular slider.
- * @param percentageFontSize font size of the percentage text.
- * @param percentageColor color of the percentage text.
  * @param progressWidth width of the Progress.
- * @param animationSpec to set the sliding animation.
  * @param strokeCap to set strokes of the ends.
  * @param thumbRadius to set the radius of the thumb.
  * @param tickColor to set the color of the minute-like clock arms.
@@ -52,6 +49,8 @@ import kotlin.math.*
  * @param trackColor track color.
  * @param trackWidth width of the track.
  * @param animate Flag to set enabled/disabled animation on circular slider.
+ * @param animationSpec to set the sliding animation.
+ * @param content Content to put inside circular slider.
  */
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
@@ -59,10 +58,7 @@ public fun CircularProgressBar(
     value: Double = 0.0,
     onValueChanged: (Double) -> Unit,
     radiusCircle: Dp = 150.dp,
-    percentageFontSize: TextUnit = 28.sp,
-    percentageColor: Color = MaterialTheme.colorScheme.primary,
     progressWidth: Float = 28f,
-    animationSpec: AnimationSpec<Float> = tween(1000),
     strokeCap: StrokeCap = StrokeCap.Round,
     thumbRadius: Float = 20f,
     tickColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
@@ -87,9 +83,18 @@ public fun CircularProgressBar(
     circleColor: Color = Color.Transparent,
     trackWidth: Float = thumbRadius,
     animate: Boolean = false,
-    currentUpdatedValue: String = "",
+    animationSpec: AnimationSpec<Float> = tween(1000),
     onTouchEnabled: Boolean = true,
     onDragEnabled: Boolean = true,
+    content: @Composable () -> Unit = {
+        Text(
+            text = "${(value * 100 / 360).roundToInt()} %",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.rotate(90f),
+        )
+    },
 ) {
     // Center of the shape.
     var shapeCenter by remember {
@@ -210,13 +215,8 @@ public fun CircularProgressBar(
                 blendMode = BlendMode.Screen,
             )
         }
-        Text(
-            text = if (currentUpdatedValue == "") "${(value * 100 / 360).roundToInt()} %" else currentUpdatedValue,
-            color = percentageColor,
-            fontSize = percentageFontSize,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.rotate(90f),
-        )
+
+        content()
     }
 }
 

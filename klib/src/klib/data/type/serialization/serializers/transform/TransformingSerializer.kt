@@ -30,10 +30,10 @@ import kotlinx.serialization.encoding.Encoder
  * // Unwraps a list to a single object
  * object UnwrappingListSerializer :
  *     TransformingSerializer<String>(String.serializer()) {
- *     override fun transformDeserialize(element: Any?): Any? {
- *         if (element !is List) return element
- *         require(element.size == 1) { "List size must be equal to 1 to unwrap it" }
- *         return element.first()
+ *     override fun transformDeserialize(value: Any?): Any? {
+ *         if (value !is List) return value
+ *         require(value.size == 1) { "List size must be equal to 1 to unwrap it" }
+ *         return value.first()
  *     }
  * }
  * // Now these functions both yield correct result:

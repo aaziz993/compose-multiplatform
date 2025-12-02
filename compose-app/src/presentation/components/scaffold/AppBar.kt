@@ -75,6 +75,7 @@ public fun AppBar(
     inputScale: HazeInputScale = HazeInputScale.Default,
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
+    locales: List<Locale> = emptyList(),
     locale: Locale = Locale.current,
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
@@ -169,7 +170,8 @@ public fun AppBar(
 
                         if (isLocalePickerDialogOpen)
                             LocalePickerDialog(
-                                onLocaleChange = onLocaleChange,
+                                locales,
+                                onLocaleChange,
                             ) {
                                 isLocalePickerDialogOpen = false
                             }

@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
+import clib.presentation.config.Config
 import clib.presentation.event.EventBus
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
@@ -42,6 +43,7 @@ import ui.navigation.presentation.Services
 @Composable
 public fun AppComposable(
     modifier: Modifier = Modifier.fillMaxSize(),
+    config: Config = koinInject(),
     themeState: ThemeState = rememberThemeState(
         Theme(
             colorPalette = ColorPalette(
@@ -86,6 +88,7 @@ public fun AppComposable(
         )
     },
 ): Unit = AppEnvironment(
+    config,
     themeState,
     densityState,
     localeState,

@@ -11,9 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import clib.presentation.config.Config
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
+import clib.presentation.config.LocalConfig
 import clib.presentation.event.EventBus
 import clib.presentation.event.LocalEventBus
 import clib.presentation.locale.LocalAppLocale
@@ -44,6 +46,7 @@ import com.materialkolor.rememberDynamicMaterialThemeState
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
 public fun AppEnvironment(
+    config: Config = Config(),
     themeState: ThemeState = rememberThemeState(),
     densityState: DensityState = rememberDensityState(),
     localeState: LocaleState = rememberLocaleState(),
@@ -58,6 +61,7 @@ public fun AppEnvironment(
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
 ): Unit = CompositionLocalProvider(
+    LocalConfig provides config,
     LocalThemeState provides themeState,
     LocalAppTheme provides themeState.theme.isDark,
     LocalDensityState provides densityState,
