@@ -1,5 +1,8 @@
 package clib.presentation.theme.model
 
+import androidx.compose.animation.core.AnimationConstants.DefaultDurationMillis
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
 import klib.data.type.serialization.serializers.transform.MapTransformingPolymorphicSerializer
 import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
@@ -35,8 +38,8 @@ private sealed class DurationBasedAnimationSpec<T> : FiniteAnimationSpec<T>()
 @Serializable
 @SerialName("spring")
 private data class SpringSpec<T>(
-    val dampingRatio: Float,
-    val stiffness: Float,
+    val dampingRatio: Float = Spring.DampingRatioNoBouncy,
+    val stiffness: Float = Spring.StiffnessMedium,
     val visibilityThreshold: T? = null,
 ) : FiniteAnimationSpec<T>() {
 
@@ -47,9 +50,9 @@ private data class SpringSpec<T>(
 @Serializable
 @SerialName("tween")
 private class TweenSpec<T>(
-    val durationMillis: Int,
-    val delay: Int,
-    val easing: EasingSerial,
+    val durationMillis: Int = DefaultDurationMillis,
+    val delay: Int = 0,
+    val easing: EasingSerial = FastOutSlowInEasing,
 ) : DurationBasedAnimationSpec<T>() {
 
     override fun toAnimatedSpec(): ComposeAnimationSpec<T> = ComposeTweenSpec(durationMillis, delay, easing)

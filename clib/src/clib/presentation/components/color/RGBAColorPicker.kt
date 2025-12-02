@@ -64,7 +64,9 @@ internal fun RGBAColorPicker(
         fontSize = 12.sp,
     )
 
-    Row {
+    Row(
+        modifier = Modifier.weight(.8f),
+    ) {
         // Sliders for adjusting RGB-A values
         Column(
             modifier = Modifier
@@ -110,7 +112,7 @@ internal fun RGBAColorPicker(
     SelectedColorDetail(
         value,
         onValueChange,
-        Modifier,
+        Modifier.weight(.2f),
         hex,
         copy,
     )

@@ -117,7 +117,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.6f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.rgba,
                 picker.red,
@@ -132,7 +132,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 modifier = Modifier
-                    .weight(.6f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.grid,
             )
@@ -144,7 +144,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.6f)
+                    .weight(.8f)
                     .padding(16.dp),
                 color,
                 picker.hsv,
@@ -158,7 +158,7 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.6f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.hsla,
                 picker.saturation,
@@ -172,15 +172,18 @@ public fun ColorPickerBottomSheet(
                     color = value
                 },
                 Modifier
-                    .weight(.6f)
+                    .weight(.8f)
                     .padding(16.dp),
                 picker.blend,
+                picker.left,
+                picker.right,
             )
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(.3f)
+                .weight(.2f)
                 .padding(bottom = 12.dp),
         ) {
             OutlinedButton(
@@ -196,7 +199,7 @@ public fun ColorPickerBottomSheet(
                 )
             }
 
-            Button(
+            OutlinedButton(
                 modifier = Modifier
                     .padding(start = 4.dp, end = 4.dp)
                     .weight(1f),
@@ -205,7 +208,7 @@ public fun ColorPickerBottomSheet(
             ) {
                 Text(
                     text = picker.confirm,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.secondary,
                 )
             }
         }

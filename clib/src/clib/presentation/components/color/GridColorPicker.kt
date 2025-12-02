@@ -58,7 +58,9 @@ internal fun GridColorPicker(
         fontSize = 12.sp,
     )
 
-    BoxWithConstraints {
+    BoxWithConstraints(
+        modifier = Modifier.weight(.8f),
+    ) {
         val boxSize = min(maxWidth, maxHeight) / Color.getColorMap().size
 
         Row(
@@ -82,7 +84,7 @@ internal fun GridColorPicker(
     SelectedColorDetail(
         value,
         onValueChange,
-        Modifier,
+        Modifier.weight(.2f),
         hex,
         copy,
     )

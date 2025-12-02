@@ -19,10 +19,7 @@ public fun LocalePickerDialog(
 ) {
     val localeCountries = locales.associateWith { locale ->
         val country = locale.country()!!
-
-        country.copy(
-            name = "${country.toString().asStringResource()} - ${locale.language?.asStringResource().orEmpty()}",
-        )
+        country.copy(name = "${locale.language}-$country".asStringResource { country.name })
     }.toBiMap()
 
     CountryPickerDialog(

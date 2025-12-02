@@ -178,66 +178,40 @@ internal fun SelectedColorDetail(
     title: String,
     copy: String,
 ) {
-    Row(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
-            .then(modifier),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Display the current color in a Box with a MaterialTheme shape
-        Column {
-            // Color preview box.
-            Box(
-                modifier = Modifier
-                    .size(75.dp)
-                    .background(
-                        color = value,
-                        shape = MaterialTheme.shapes.large,
-                    )
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.large,
-                    ),
-            )
-        }
+    var hex by remember { mutableStateOf(value.toHex()) }
 
-        Column(
+    LaunchedEffect(value) {
+        val newHex = value.toHex()
+        if (hex != newHex) hex = newHex
+    }
+
+    Row {
+        OutlinedTextField(
+            value = hex,
+            onValueChange = {
+                hex = it
+                if (Regex.HEX_COLOR.matches(it))
+                    onValueChange(it.hexToColor())
+            },
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-        ) {
-            Text(
-                text = title,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+                .padding(2.dp)
+                .weight(.8f),
+            label = { Text(text = title) },
+            leadingIcon = {
 
-            var hex by remember { mutableStateOf(value.toHex()) }
-
-            LaunchedEffect(value) {
-                val newHex = value.toHex()
-                if (hex != newHex) hex = newHex
-            }
-
-            Row {
-                OutlinedTextField(
+                // Show current color as a small box
+                Box(
                     modifier = Modifier
-                        .padding(2.dp)
-                        .weight(.8f),
-                    value = hex,
-                    maxLines = 1,
-                    label = { Text(text = title) },
-                    onValueChange = {
-                        hex = it
-                        if (Regex.HEX_COLOR.matches(it))
-                            onValueChange(it.hexToColor())
-                    },
+                        .size(24.dp)
+                        .background(value, shape = RoundedCornerShape(4.dp))
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.onSurface,
+                            RoundedCornerShape(4.dp),
+                        ),
                 )
-
+            },
+            trailingIcon = {
                 // Retrieve a ClipboardManager object.
                 val clipboard = LocalClipboard.current
                 val coroutineScope = rememberCoroutineScope()
@@ -254,8 +228,9 @@ internal fun SelectedColorDetail(
                         contentDescription = copy,
                     )
                 }
-            }
-        }
+            },
+            singleLine = true,
+        )
     }
 }
 

@@ -67,7 +67,7 @@ internal fun HSVColorPicker(
     HsvColorPicker(
         modifier = Modifier
             .fillMaxWidth()
-            .weight(.6f),
+            .weight(.5f),
         controller = controller,
         initialColor = initialValue,
         onColorChanged = { (color, _, fromUser) ->
@@ -76,7 +76,7 @@ internal fun HSVColorPicker(
     )
 
     Column(
-        modifier = Modifier.weight(.4f),
+        modifier = Modifier.weight(.3f),
     ) {
         ColorSlider(
             brightness,
@@ -105,7 +105,7 @@ internal fun HSVColorPicker(
             onValueChange(it)
             controller.selectByColor(it, true)
         },
-        Modifier,
+        Modifier.weight(.2f),
         hex,
         copy,
     )

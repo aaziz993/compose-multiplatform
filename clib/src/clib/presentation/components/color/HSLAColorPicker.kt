@@ -80,7 +80,7 @@ internal fun HSLAColorPicker(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .weight(.6f),
+            .weight(.5f),
         contentAlignment = Alignment.Center,
     ) {
         // Take the smaller of width/height as diameter.
@@ -114,7 +114,7 @@ internal fun HSLAColorPicker(
     }
 
     Column(
-        modifier = Modifier.weight(.4f),
+        modifier = Modifier.weight(.3f),
     ) {
         ColorSlider(
             saturationLabel,
@@ -151,7 +151,7 @@ internal fun HSLAColorPicker(
             onValueChange(it)
             hsl = it.toHSL()
         },
-        Modifier.weight(.7f),
+        Modifier.weight(.2f),
         hex,
         copy,
     )

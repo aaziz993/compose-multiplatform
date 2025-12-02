@@ -60,6 +60,8 @@ internal fun BlendColorPicker(
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color blend",
+    left: String = "Left",
+    right: String = "Right",
     hex: String = "Hex",
     copy: String = "Copy",
 ) = Column(
@@ -156,12 +158,12 @@ internal fun BlendColorPicker(
                     .width(50.dp)
                     .background(
                         firstBlendColor,
-                        shape = MaterialTheme.shapes.large,
+                        MaterialTheme.shapes.large,
                     )
                     .border(
                         2.dp,
                         MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(12.dp),
+                        MaterialTheme.shapes.large,
                     ),
             )
         }
@@ -174,7 +176,7 @@ internal fun BlendColorPicker(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowLeft,
-                contentDescription = "Left arrow",
+                contentDescription = left,
                 Modifier
                     .weight(.25f)
                     .size(40.dp),
@@ -202,7 +204,7 @@ internal fun BlendColorPicker(
             )
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowRight,
-                contentDescription = "Right arrow",
+                contentDescription = right,
                 Modifier
                     .weight(.25f)
                     .size(40.dp),
@@ -224,12 +226,12 @@ internal fun BlendColorPicker(
                     .width(50.dp)
                     .background(
                         secondBlendColor,
-                        shape = MaterialTheme.shapes.large,
+                        MaterialTheme.shapes.large,
                     )
                     .border(
                         2.dp,
                         MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(12.dp),
+                        MaterialTheme.shapes.large,
                     ),
             )
         }

@@ -14,6 +14,8 @@ public data class ColorPicker(
     val hsv: String = "Hsv",
     val brightness: String = "Brightness",
     val blend: String = "Blend",
+    val left: String = "Left",
+    val right: String = "Right",
     val hex: String = "Hex",
     val copy: String = "Copy",
     val close: String = "Close",

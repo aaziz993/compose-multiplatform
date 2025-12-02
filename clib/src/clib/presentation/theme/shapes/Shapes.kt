@@ -7,13 +7,15 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import androidx.compose.material3.Shapes as ComposeShapes
 
+private val SHAPES = ComposeShapes()
+
 @Serializable
 private data class Shapes(
-    val extraSmall: CornerBasedShapeSerial,
-    val small: CornerBasedShapeSerial,
-    val medium: CornerBasedShapeSerial,
-    val large: CornerBasedShapeSerial,
-    val extraLarge: CornerBasedShapeSerial,
+    val extraSmall: CornerBasedShapeSerial = SHAPES.extraSmall,
+    val small: CornerBasedShapeSerial = SHAPES.small,
+    val medium: CornerBasedShapeSerial = SHAPES.medium,
+    val large: CornerBasedShapeSerial = SHAPES.large,
+    val extraLarge: CornerBasedShapeSerial = SHAPES.extraLarge,
 )
 
 public object ShapesSerializer : KSerializer<ComposeShapes> {

@@ -1,6 +1,5 @@
 package clib.presentation.theme.shapes
 
-import clib.presentation.theme.shapes.squircleshape.CornerSmoothing
 import klib.data.type.serialization.serializers.transform.MapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
@@ -61,7 +60,7 @@ private data class SquircleShape(
     override val topEnd: CornerSizeSerial,
     override val bottomStart: CornerSizeSerial,
     override val bottomEnd: CornerSizeSerial,
-    override val smoothing: Int = CornerSmoothing.Medium
+    override val smoothing: Int,
 ) : SquircleBasedShape() {
 
     override fun toCornerBasedShape(): ComposeCornerBasedShape =
