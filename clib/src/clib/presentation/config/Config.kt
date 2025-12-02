@@ -8,6 +8,7 @@ import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.theme.density.model.DensitySerial
 import clib.presentation.theme.model.Theme
 import klib.data.location.locale.Locale
+import klib.data.location.locale.current
 import kotlinx.serialization.Serializable
 
 @Suppress("ComposeCompositionLocalUsage")
@@ -19,6 +20,7 @@ public data class Config(
     val theme: Theme = Theme(),
     val density: DensitySerial = Density(2f),
     val locales: List<Locale> = emptyList(),
+    val locale: Locale = Locale.current,
     val quickAccess: QuickAccess = QuickAccess(),
     val routes: Map<String, RouteConfig> = emptyMap(),
 )

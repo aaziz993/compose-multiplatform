@@ -18,10 +18,7 @@ import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.state.LocalStateStore
 import clib.presentation.theme.LocalThemeState
 import data.type.primitives.string.asStringResource
-import klib.data.location.locale.Locale
-import klib.data.type.cast
 import kotlin.collections.Map
-import presentation.config.AppConfig
 
 public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
@@ -29,7 +26,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
     @Composable
     override fun Content(content: @Composable () -> Unit) {
-        val config: AppConfig = LocalConfig.current.cast()
+        val config = LocalConfig.current
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
@@ -49,7 +46,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 { Text(text = currentRoute.route.name.asStringResource()) },
                 themeState.theme,
                 { value -> themeState.theme = value },
-                config.locales?.map(Locale::forLanguageTag).orEmpty(),
+                config.locales,
                 localeState.localeInspectionAware(),
                 { value -> localeState.locale = value },
                 authState.auth,

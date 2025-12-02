@@ -26,16 +26,13 @@ import clib.presentation.state.rememberStateStore
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.density.DensityState
 import clib.presentation.theme.density.rememberDensityState
-import clib.presentation.theme.model.ColorPalette
 import clib.presentation.theme.model.DynamicColorPalette
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.rememberThemeState
-import presentation.theme.DarkColors
-import presentation.theme.DarkColorsHighContrast
-import presentation.theme.LightColors
-import presentation.theme.LightColorsHighContrast
 import presentation.theme.SquircleShapes
 import presentation.theme.Typography
+import presentation.theme.colorPalette
+import presentation.theme.colorPaletteHighContrast
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services
@@ -46,14 +43,8 @@ public fun AppComposable(
     config: Config = koinInject(),
     themeState: ThemeState = rememberThemeState(
         Theme(
-            colorPalette = ColorPalette(
-                LightColors,
-                DarkColors,
-            ),
-            colorPaletteHighContrast = ColorPalette(
-                LightColorsHighContrast,
-                DarkColorsHighContrast,
-            ),
+            colorPalette = colorPalette,
+            colorPaletteHighContrast = colorPaletteHighContrast,
             dynamicColorPalette = DynamicColorPalette(
                 seedColor = Color.Cyan,
                 animate = true,

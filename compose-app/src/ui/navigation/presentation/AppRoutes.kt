@@ -343,6 +343,7 @@ public data object Settings : Route<Settings>(), NavRoute {
             densityState.density,
             { value -> densityState.density = value },
             config.locales,
+            config.locale,
             localeState.localeInspectionAware(),
             { value -> localeState.locale = value },
             authState.auth,

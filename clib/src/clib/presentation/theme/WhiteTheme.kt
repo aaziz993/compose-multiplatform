@@ -1,8 +1,8 @@
 package clib.presentation.theme
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
-import clib.presentation.theme.model.ColorPalette
 
 public object WhiteTheme {
 
@@ -37,7 +37,7 @@ public object WhiteTheme {
     private val md_theme_light_outlineVariant = Color(0xFFC6C5D0)
     private val md_theme_light_scrim = Color(0xFF000000)
 
-    private val WhiteColorScheme = lightColorScheme(
+    public val colorScheme: ColorScheme = lightColorScheme(
         primary = md_theme_light_primary,
         onPrimary = md_theme_light_onPrimary,
         primaryContainer = md_theme_light_primaryContainer,
@@ -67,10 +67,5 @@ public object WhiteTheme {
         surfaceTint = md_theme_light_surfaceTint,
         outlineVariant = md_theme_light_outlineVariant,
         scrim = md_theme_light_scrim,
-    )
-
-    public val ColorPalette: ColorPalette = ColorPalette(
-        lightColorScheme = WhiteColorScheme,
-        darkColorScheme = WhiteColorScheme,
     )
 }

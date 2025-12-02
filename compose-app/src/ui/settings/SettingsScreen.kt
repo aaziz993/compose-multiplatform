@@ -3,6 +3,7 @@ package ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material.icons.filled.CameraAlt
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,6 +59,7 @@ import compose_app.generated.resources.quick_avatar
 import compose_app.generated.resources.quick_locale
 import compose_app.generated.resources.quick_support
 import compose_app.generated.resources.quick_theme
+import compose_app.generated.resources.reset
 import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
 import data.type.primitives.string.asStringResource
@@ -84,6 +87,7 @@ public fun SettingsScreen(
     density: Density = defaultDensity,
     onDensityChange: (Density) -> Unit = {},
     locales: List<Locale> = emptyList(),
+    defaultLocale: Locale = Locale.current,
     locale: Locale = Locale.current,
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
@@ -369,6 +373,18 @@ public fun SettingsScreen(
                 }
             },
         )
+
+        Button(
+            onClick = {
+                onThemeChange(defaultTheme)
+                onDensityChange(defaultDensity)
+                onLocaleChange(defaultLocale)
+                onQuickAccessChange(defaultQuickAccess)
+            },
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(text = stringResource(Res.string.reset))
+        }
     }
 }
 

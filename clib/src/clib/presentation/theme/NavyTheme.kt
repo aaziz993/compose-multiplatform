@@ -1,8 +1,8 @@
 package clib.presentation.theme
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
-import clib.presentation.theme.model.ColorPalette
 
 public object NavyTheme {
 
@@ -37,7 +37,7 @@ public object NavyTheme {
     private val md_theme_dark_outlineVariant = Color(0xFF43474E)
     private val md_theme_dark_scrim = Color(0xFF000000)
 
-    private val NavyColorScheme = darkColorScheme(
+    public val colorScheme: ColorScheme = darkColorScheme(
         primary = md_theme_dark_primary,
         onPrimary = md_theme_dark_onPrimary,
         primaryContainer = md_theme_dark_primaryContainer,
@@ -67,10 +67,5 @@ public object NavyTheme {
         surfaceTint = md_theme_dark_surfaceTint,
         outlineVariant = md_theme_dark_outlineVariant,
         scrim = md_theme_dark_scrim,
-    )
-
-    public val ColorPalette: ColorPalette = ColorPalette(
-        lightColorScheme = NavyColorScheme,
-        darkColorScheme = NavyColorScheme,
     )
 }
