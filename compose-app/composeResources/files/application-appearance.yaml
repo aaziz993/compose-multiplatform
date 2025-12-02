@@ -1,50 +1,51 @@
-theme:
-  isDynamic: true
-  isHighContrast: true
-  isExpressive: true
-  dynamicColorPalette:
-    seedColor: 4278255615
-    animate: true
-    animationSpec:
-      spring: { }
-  dynamicColorPaletteHighContrast:
-    seedColor: 4278190335
-    animate: true
-    animationSpec:
-      spring: { }
-  shapes:
-    small:
-      squircle:
-        topStartCorner:
-          dp: 16
-        topEndCorner:
-          dp: 16
-        bottomStartCorner:
-          dp: 16
-        bottomEndCorner:
-          dp: 16
-        smoothing: 48
-    medium:
-      squircle:
-        topStartCorner:
-          dp: 32
-        topEndCorner:
-          dp: 32
-        bottomStartCorner:
-          dp: 32
-        bottomEndCorner:
-          dp: 32
-        smoothing: 48
-    large:
-      squircle:
-        topStartCorner:
-          dp: 100
-        topEndCorner:
-          dp: 100
-        bottomStartCorner:
-          dp: 100
-        bottomEndCorner:
-          dp: 100
-        smoothing: 48
-  typography: { }
+ui:
+  theme:
+    isDynamic: true
+    isHighContrast: true
+    isExpressive: true
+    dynamicColorPalette:
+      seedColor: 4278255615
+      animate: true
+      animationSpec:
+        spring: { }
+    dynamicColorPaletteHighContrast:
+      seedColor: 4278190335
+      animate: true
+      animationSpec:
+        spring: { }
+    shapes:
+      small:
+        squircle:
+          topStartCorner:
+            dp: 16
+          topEndCorner:
+            dp: 16
+          bottomStartCorner:
+            dp: 16
+          bottomEndCorner:
+            dp: 16
+          smoothing: 48
+      medium:
+        squircle:
+          topStartCorner:
+            dp: 32
+          topEndCorner:
+            dp: 32
+          bottomStartCorner:
+            dp: 32
+          bottomEndCorner:
+            dp: 32
+          smoothing: 48
+      large:
+        squircle:
+          topStartCorner:
+            dp: 100
+          topEndCorner:
+            dp: 100
+          bottomStartCorner:
+            dp: 100
+          bottomEndCorner:
+            dp: 100
+          smoothing: 48
+    typography: { }
 
