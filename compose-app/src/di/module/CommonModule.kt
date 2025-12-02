@@ -32,8 +32,8 @@ import org.koin.core.annotation.Single
 public class CommonModule {
 
     @Single
-    public fun provideConfig(): Config = Config.load { file ->
-        Res.readBytes(Res.getUri(file)).decodeToString()
+    public fun provideConfig(): Config = Config { file ->
+        Res.readBytes(file).decodeToString()
     }
 
     @Single

@@ -14,6 +14,7 @@ import klib.data.coroutines.runBlocking
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asStringNullableMap
+import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.serialization.IMPORTS_KEY
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
@@ -41,10 +42,10 @@ public data class Config(
 
     public companion object {
 
-        public fun load(readText: suspend (file: String) -> String): Config {
+        public operator fun invoke(readText: suspend (file: String) -> String): Config {
             val bootstrap = loadBootstrap(readText = readText)
-            val environment = bootstrap.getOrElse("environment") { "dev" }.toString()
-            val applicationFile = "files/application-$environment.yaml"
+            val environment = bootstrap["environment"]?.toString().orEmpty()
+            val applicationFile = "files/application${environment.addPrefixIfNotEmpty("-")}.yaml"
 
             return decodeFile<Map<String, Any?>>(
                 applicationFile,
@@ -74,7 +75,7 @@ public data class Config(
             readText: suspend (file: String) -> String,
         ): Map<String, Any?> = runBlocking {
             Yaml.default.decodeAnyFromString(readText("files/$path"))
-                ?.asStringNullableMap ?: mapOf("environment" to "dev")
+                ?.asStringNullableMap ?: emptyMap()
         }
     }
 }

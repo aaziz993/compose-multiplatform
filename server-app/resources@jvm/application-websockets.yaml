@@ -57,8 +57,3 @@ script:
           }
         }
       }
-
-#  page:
-#    - enable: true
-#      uri:
-#      wsURI:
