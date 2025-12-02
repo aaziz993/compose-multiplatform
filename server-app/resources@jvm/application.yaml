@@ -1,4 +1,5 @@
 imports:
+  - application-localization.yaml
   - application-server.yaml
   - application-koin.yaml
   - application-serialization.yaml

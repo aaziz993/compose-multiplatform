@@ -3,5 +3,4 @@ localization:
     - en-US
     - ru-RU
     - tg-TJ
-  locale:
-    - en-US
+  locale: en-US
