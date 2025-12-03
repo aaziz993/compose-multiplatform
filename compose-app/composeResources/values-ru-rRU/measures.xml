@@ -12,11 +12,7 @@
         <item>к.</item>      <!-- quetta -->
     </string-array>
 
-    <!-- Duration / Relative Time Strings -->
-    <string name="now">сейчас</string>
-    <string name="time_in">через %1$s</string>
-    <string name="time_ago">%1$s назад</string>
-
+    <!-- Time Strings -->
     <plurals name="nanoseconds">
         <item quantity="one">наносекунда</item>
         <item quantity="two">наносекунды</item>
@@ -96,6 +92,92 @@
         <item quantity="four">года</item>
         <item quantity="other">лет</item>
     </plurals>
+
+    <!-- Relative Time Strings -->
+    <plurals name="relative_nanoseconds">
+        <item quantity="one">наносекунду</item>
+        <item quantity="two">наносекунды</item>
+        <item quantity="three">наносекунды</item>
+        <item quantity="four">наносекунды</item>
+        <item quantity="other">наносекунд</item>
+    </plurals>
+
+    <plurals name="relative_microseconds">
+        <item quantity="one">микросекунду</item>
+        <item quantity="two">микросекунды</item>
+        <item quantity="three">микросекунды</item>
+        <item quantity="four">микросекунды</item>
+        <item quantity="other">микросекунд</item>
+    </plurals>
+
+    <plurals name="relative_milliseconds">
+        <item quantity="one">миллисекунду</item>
+        <item quantity="two">миллисекунды</item>
+        <item quantity="three">миллисекунды</item>
+        <item quantity="four">миллисекунды</item>
+        <item quantity="other">миллисекунд</item>
+    </plurals>
+
+    <plurals name="relative_seconds">
+        <item quantity="one">секунду</item>
+        <item quantity="two">секунды</item>
+        <item quantity="three">секунды</item>
+        <item quantity="four">секунды</item>
+        <item quantity="other">секунд</item>
+    </plurals>
+
+    <plurals name="relative_minutes">
+        <item quantity="one">минуту</item>
+        <item quantity="two">минуты</item>
+        <item quantity="three">минуты</item>
+        <item quantity="four">минуты</item>
+        <item quantity="other">минут</item>
+    </plurals>
+
+    <plurals name="relative_hours">
+        <item quantity="one">час</item>
+        <item quantity="two">часа</item>
+        <item quantity="three">часа</item>
+        <item quantity="four">часа</item>
+        <item quantity="other">часов</item>
+    </plurals>
+
+    <plurals name="relative_days">
+        <item quantity="one">день</item>
+        <item quantity="two">дня</item>
+        <item quantity="three">дня</item>
+        <item quantity="four">дня</item>
+        <item quantity="other">дней</item>
+    </plurals>
+
+    <plurals name="relative_weeks">
+        <item quantity="one">неделю</item>
+        <item quantity="two">недели</item>
+        <item quantity="three">недели</item>
+        <item quantity="four">недели</item>
+        <item quantity="other">недель</item>
+    </plurals>
+
+    <plurals name="relative_months">
+        <item quantity="one">месяц</item>
+        <item quantity="two">месяца</item>
+        <item quantity="three">месяца</item>
+        <item quantity="four">месяца</item>
+        <item quantity="other">месяцев</item>
+    </plurals>
+
+    <plurals name="relative_years">
+        <item quantity="one">год</item>
+        <item quantity="two">года</item>
+        <item quantity="three">года</item>
+        <item quantity="four">года</item>
+        <item quantity="other">лет</item>
+    </plurals>
+
+    <string name="now">сейчас</string>
+    <string name="time_in">через %1$s</string>
+    <string name="time_ago">%1$s назад</string>
+
 
     <!-- Size Strings -->
     <string-array name="size_suffixes">
