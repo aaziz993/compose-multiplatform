@@ -112,12 +112,11 @@ public fun CountryPickerBottomSheet(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountrySheetPreview(): Unit =
+public fun CountryPickerBottomSheetPreview(): Unit =
     CountryPickerBottomSheet(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.9f),
-        countries = Country.getCountries().toList(),
         onDismissRequest = {},
         onItemClicked = {},
     )

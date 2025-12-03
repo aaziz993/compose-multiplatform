@@ -3,16 +3,16 @@ package data.type.primitives.string.humanreadable
 import androidx.compose.runtime.Composable
 import clib.data.type.primitives.string.humanreadable.toHumanReadable
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.days
-import compose_app.generated.resources.hours
-import compose_app.generated.resources.microseconds
-import compose_app.generated.resources.milliseconds
-import compose_app.generated.resources.minutes
-import compose_app.generated.resources.months
-import compose_app.generated.resources.nanoseconds
-import compose_app.generated.resources.seconds
-import compose_app.generated.resources.weeks
-import compose_app.generated.resources.years
+import compose_app.generated.resources.relative_days
+import compose_app.generated.resources.relative_hours
+import compose_app.generated.resources.relative_microseconds
+import compose_app.generated.resources.relative_milliseconds
+import compose_app.generated.resources.relative_minutes
+import compose_app.generated.resources.relative_months
+import compose_app.generated.resources.relative_nanoseconds
+import compose_app.generated.resources.relative_seconds
+import compose_app.generated.resources.relative_weeks
+import compose_app.generated.resources.relative_years
 import kotlin.time.Duration
 
 /**
@@ -23,14 +23,14 @@ import kotlin.time.Duration
  */
 @Composable
 public fun Duration.toHumanReadable(): String = toHumanReadable(
-    Res.plurals.nanoseconds,
-    Res.plurals.microseconds,
-    Res.plurals.milliseconds,
-    Res.plurals.seconds,
-    Res.plurals.minutes,
-    Res.plurals.hours,
-    Res.plurals.days,
-    Res.plurals.weeks,
-    Res.plurals.months,
-    Res.plurals.years,
+    Res.plurals.relative_nanoseconds,
+    Res.plurals.relative_microseconds,
+    Res.plurals.relative_milliseconds,
+    Res.plurals.relative_seconds,
+    Res.plurals.relative_minutes,
+    Res.plurals.relative_hours,
+    Res.plurals.relative_days,
+    Res.plurals.relative_weeks,
+    Res.plurals.relative_months,
+    Res.plurals.relative_years,
 )

@@ -100,13 +100,12 @@ public fun CountryPickerDialog(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountryDialogPreview(): Unit =
+public fun CountryPickerDialogPreview(): Unit =
     CountryPickerDialog(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .clip(RoundedCornerShape(10.dp)),
-        countries = Country.getCountries().toList(),
         onDismissRequest = {},
         onItemClicked = {},
     )

@@ -5,7 +5,6 @@
     <string name="red">Красный</string>
     <string name="green">Зеленый</string>
     <string name="blue">Синий</string>
-    <string name="alpha">Альфа</string>
     <string name="hsla">Hsla</string>
     <string name="hue">Оттенок</string>
     <string name="saturation">Насыщенность</string>

@@ -73,10 +73,7 @@ public fun OtpScreen(
 
         Text(
             text = if (state.countdown == Duration.ZERO) stringResource(Res.string.resend_code)
-            else stringResource(
-                Res.string.resend_code_in,
-                state.countdown.toHumanReadable(),
-            ),
+            else stringResource(Res.string.resend_code_in, state.countdown.toHumanReadable()),
             color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
             textAlign = TextAlign.Center,
             modifier = Modifier

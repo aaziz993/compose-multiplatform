@@ -120,7 +120,7 @@ public fun CountryCodePickerTextFieldPreview() {
     var value by remember { mutableStateOf("") }
 
     CountryCodePickerTextField(
-        onValueChange = { _, number, _ -> value = number },
         value = value,
+        onValueChange = { _, number, _ -> value = number },
     )
 }
