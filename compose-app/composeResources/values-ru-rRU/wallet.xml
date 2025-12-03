@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="wallet">Wallet</string>
-    <string name="balance">Balance</string>
-    <string name="crypto">Crypto</string>
-    <string name="stock">Stock</string>
+    <string name="wallet">Кошелек</string>
+    <string name="balance">Балансe</string>
+    <string name="crypto">Крипто</string>
+    <string name="exchange">Биржа</string>
 </resources>

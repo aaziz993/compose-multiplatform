@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auth">Auth</string>
+    <string name="authentification">Authentification</string>
+    <string name="authorization">Authorization</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -15,11 +16,12 @@
     <string name="resend_code_in">Resend code in %1$s</string>
     <string name="resend_code">Resend code</string>
     <string name="pin_code">Pin code</string>
-    <string name="repeat_pin_code">Repeat pin code</string>
+    <string name="repeat_pin_code">Repeat PIN code</string>
     <string name="pin_codes_mismatch">Pin codes mismatch</string>
-    <string name="invalid_pin_code">Invalid pin code</string>
-    <string name="reset_pin_code">Reset pin code</string>
-    <string name="new_pin_code">New pin code</string>
+    <string name="invalid_pin_code">Invalid PIN code</string>
+    <string name="reset_pin_code">Reset PIN code</string>
+    <string name="new_pin_code">New PIN code</string>
+    <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
 </resources>

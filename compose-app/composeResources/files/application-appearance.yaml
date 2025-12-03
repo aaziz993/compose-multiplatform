@@ -1,4 +1,4 @@
-ui:
+ui1:
   theme:
     isDynamic: true
     isHighContrast: true

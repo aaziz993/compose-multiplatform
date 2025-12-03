@@ -41,7 +41,10 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.components.country.model.CountryPicker
 import compose_app.generated.resources.country
+import compose_app.generated.resources.email
+import compose_app.generated.resources.phone
 import compose_app.generated.resources.search
+import compose_app.generated.resources.username
 import ui.navigation.presentation.Profile
 import ui.navigation.presentation.Verification
 
@@ -83,7 +86,7 @@ public fun ProfileScreen(
         AdvancedTextField(
             value = user.username.orEmpty(),
             onValueChange = { },
-            label = { Text("Username") },
+            label = { Text(stringResource(Res.string.username)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -93,7 +96,7 @@ public fun ProfileScreen(
         AdvancedTextField(
             value = user.email.orEmpty(),
             onValueChange = { },
-            label = { Text("Email") },
+            label = { Text(stringResource(Res.string.email)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -104,7 +107,7 @@ public fun ProfileScreen(
             value = user.phone.orEmpty(),
             onValueChange = { _, _, _ -> },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Phone") },
+            label = { Text(stringResource(Res.string.phone)) },
             picker = CountryPicker(
                 headerTitle = stringResource(Res.string.country),
                 searchHint = stringResource(Res.string.search),

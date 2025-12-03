@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile">Profile</string>
-    <string name="user">User</string>
-    <string name="user_interface">User interface</string>
-    <string name="user_info">User info</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
+    <string name="profile">Профиль</string>
+    <string name="user">Пользователь</string>
+    <string name="user_interface">Интерфейс пользователя</string>
+    <string name="user_info">Информация о пользователе</string>
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="surname">Отчество</string>
     <string name="email">Email</string>
-    <string name="roles">Roles</string>
-    <string name="phone">Phone</string>
-    <string name="unverified">Unverified</string>
-    <string name="unverified_description">Your account is not verified yet.</string>
-    <string name="verification">Verification</string>
-    <string name="upload_id">Upload ID</string>
-    <string name="verify">Verify</string>
+    <string name="roles">/Роли</string>
+    <string name="phone">Телефон</string>
+    <string name="unverified">Неверифицированный</string>
+    <string name="unverified_description">Ваш аккаунт еще не верифицирован.</string>
+    <string name="verification">Верификация</string>
+    <string name="upload_id">Загрузить паспорт</string>
+    <string name="verify">Верифицировать</string>
 </resources>

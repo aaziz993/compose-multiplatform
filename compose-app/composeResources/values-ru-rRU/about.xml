@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about">About</string>
-    <string name="about_description">Compose multiplatform</string>
+    <string name="about">О</string>
+    <string name="app_description">описание приложения</string>
 </resources>

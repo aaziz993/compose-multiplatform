@@ -39,7 +39,7 @@ public class LoginViewModel(
                         roles = setOf("User"),
                     ),
                 )
-            else state.update { it.copy(error = "Invalid pin code") }
+            else state.update { it.copy(error = "Invalid PIN code") }
         }
     }
 }

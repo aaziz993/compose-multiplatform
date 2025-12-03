@@ -89,7 +89,7 @@ internal fun HSVColorPicker(
         }
 
         ColorSlider(
-            brightness,
+            alpha,
             controller.selectedColor.value,
             100,
             controller.alpha.value,

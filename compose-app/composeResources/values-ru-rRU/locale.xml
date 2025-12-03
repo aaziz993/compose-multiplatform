@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="country">Country</string>
-    <string name="country_flag">Country flag</string>
-    <string name="language">Language</string>
-    <string name="Russian">Russian</string>
-    <string name="English">English</string>
-    <string name="Tajik">Tajik</string>
+    <string name="country">Страна</string>
+    <string name="country_flag">Флаг страны</string>
+    <string name="language">Язык</string>
+    <string name="ru_ru">Русский</string>
+    <string name="en_us">Английский</string>
+    <string name="tg_tj">Таджикский</string>
 
-    <string name="location">Location</string>
-    <string name="latitude">Latitude</string>
-    <string name="longitude">Longitude</string>
-    <string name="map">Map</string>
-    <string name="virtual_earth_map">Virtual earth map</string>
-    <string name="open_street_map">OpenStreet map</string>
-    <string name="google_map">Google map</string>
+    <string name="location">Местоположение</string>
+    <string name="altitude">Высота</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Долгота</string>
+    <string name="map">Карта</string>
+    <string name="virtual_earth_map">Виртуальная карта Земли</string>
+    <string name="open_street_map">OpenStreet карта</string>
+    <string name="google_map">Google карта</string>
 </resources>

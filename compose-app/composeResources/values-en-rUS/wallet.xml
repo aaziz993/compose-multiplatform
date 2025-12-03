@@ -3,5 +3,5 @@
     <string name="wallet">Wallet</string>
     <string name="balance">Balance</string>
     <string name="crypto">Crypto</string>
-    <string name="stock">Stock</string>
+    <string name="exchange">Exchange</string>
 </resources>

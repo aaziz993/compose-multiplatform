@@ -2,10 +2,10 @@
 <resources>
     <!-- Number Strings -->
     <string-array name="number_suffixes">
-        <item>K</item>      <!-- thousand -->
-        <item>M</item>      <!-- million -->
-        <item>B</item>      <!-- billion -->
-        <item>T</item>      <!-- trillion -->
+        <item>тыс.</item>      <!-- thousand -->
+        <item>млн.</item>      <!-- million -->
+        <item>млрд.</item>      <!-- billion -->
+        <item>трлн.</item>      <!-- trillion -->
         <item>P</item>      <!-- peta -->
         <item>Z</item>      <!-- zetta -->
         <item>Y</item>      <!-- yotta -->

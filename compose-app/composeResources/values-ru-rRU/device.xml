@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="camera">Camera</string>
-    <string name="microphone">Microphone</string>
-    <string name="permissions">Permissions</string>
+    <string name="camera">Камера</string>
+    <string name="microphone">Микрофон</string>
+    <string name="permissions">Разрешения</string>
 </resources>

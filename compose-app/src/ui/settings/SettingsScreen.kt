@@ -29,11 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import arrow.core.left
+import arrow.core.right
+import arrow.optics.copy
 import clib.data.location.country.getEmojiFlag
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.components.color.ColorPickerBottomSheet
+import clib.presentation.components.color.model.ColorPicker
 import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
@@ -44,23 +48,42 @@ import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.alpha
 import compose_app.generated.resources.appearance
+import compose_app.generated.resources.blend
+import compose_app.generated.resources.blue
+import compose_app.generated.resources.brightness
 import compose_app.generated.resources.camera
+import compose_app.generated.resources.close
 import compose_app.generated.resources.color_palette
+import compose_app.generated.resources.confirm
 import compose_app.generated.resources.density
 import compose_app.generated.resources.dynamic_color_palette
 import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
+import compose_app.generated.resources.green
+import compose_app.generated.resources.grid
+import compose_app.generated.resources.hex
+import compose_app.generated.resources.copy
+import compose_app.generated.resources.left
+import compose_app.generated.resources.right
 import compose_app.generated.resources.high_contrast
+import compose_app.generated.resources.hsla
+import compose_app.generated.resources.hsv
 import compose_app.generated.resources.language
+import compose_app.generated.resources.lightness
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permissions
-import compose_app.generated.resources.quick_avatar
-import compose_app.generated.resources.quick_locale
-import compose_app.generated.resources.quick_support
-import compose_app.generated.resources.quick_theme
+import compose_app.generated.resources.pick_color
+import compose_app.generated.resources.quick_access_to_avatar
+import compose_app.generated.resources.quick_access_to_locales
+import compose_app.generated.resources.quick_access_to_support
+import compose_app.generated.resources.quick_access_to_themes
+import compose_app.generated.resources.red
 import compose_app.generated.resources.reset
+import compose_app.generated.resources.rgba
+import compose_app.generated.resources.saturation
 import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
 import data.type.primitives.string.asStringResource
@@ -70,6 +93,7 @@ import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
 import klib.data.type.auth.model.Auth
+import kotlin.String
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.country.LocalePickerDialog
@@ -182,6 +206,27 @@ public fun SettingsScreen(
                 {
                     showSheet = false
                 },
+                picker = ColorPicker(
+                    stringResource(Res.string.pick_color),
+                    stringResource(Res.string.rgba),
+                    stringResource(Res.string.red),
+                    stringResource(Res.string.green),
+                    stringResource(Res.string.blue),
+                    stringResource(Res.string.alpha),
+                    stringResource(Res.string.grid),
+                    stringResource(Res.string.hsla),
+                    stringResource(Res.string.saturation),
+                    stringResource(Res.string.lightness),
+                    stringResource(Res.string.hsv),
+                    stringResource(Res.string.brightness),
+                    stringResource(Res.string.blend),
+                    stringResource(Res.string.left),
+                    stringResource(Res.string.right),
+                    stringResource(Res.string.hex),
+                    stringResource(Res.string.copy),
+                    stringResource(Res.string.close),
+                    stringResource(Res.string.confirm),
+                ),
             )
 
         SettingsMenuLink(
@@ -270,13 +315,13 @@ public fun SettingsScreen(
 
         SettingsSwitch(
             state = quickAccess.isSupport,
-            title = { Text(text = stringResource(Res.string.quick_support)) },
+            title = { Text(text = stringResource(Res.string.quick_access_to_support)) },
             subtitle = {
                 quickAccess.isSupport.EnabledText()
             },
             modifier = Modifier,
             enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_support)) },
+            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_support)) },
             onCheckedChange = { state ->
                 onQuickAccessChange(quickAccess.copy(isSupport = !quickAccess.isSupport))
             },
@@ -284,13 +329,13 @@ public fun SettingsScreen(
 
         SettingsSwitch(
             state = quickAccess.isTheme,
-            title = { Text(text = stringResource(Res.string.quick_theme)) },
+            title = { Text(text = stringResource(Res.string.quick_access_to_themes)) },
             subtitle = {
                 quickAccess.isTheme.EnabledText()
             },
             modifier = Modifier,
             enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_theme)) },
+            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_themes)) },
             onCheckedChange = { state ->
                 onQuickAccessChange(quickAccess.copy(isTheme = !quickAccess.isTheme))
             },
@@ -298,13 +343,13 @@ public fun SettingsScreen(
 
         SettingsSwitch(
             state = quickAccess.isLocale,
-            title = { Text(text = stringResource(Res.string.quick_locale)) },
+            title = { Text(text = stringResource(Res.string.quick_access_to_locales)) },
             subtitle = {
                 quickAccess.isLocale.EnabledText()
             },
             modifier = Modifier,
             enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_locale)) },
+            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_locales)) },
             onCheckedChange = { state ->
                 onQuickAccessChange(quickAccess.copy(isLocale = !quickAccess.isLocale))
             },
@@ -312,13 +357,13 @@ public fun SettingsScreen(
 
         SettingsSwitch(
             state = quickAccess.isAvatar,
-            title = { Text(text = stringResource(Res.string.quick_avatar)) },
+            title = { Text(text = stringResource(Res.string.quick_access_to_avatar)) },
             subtitle = {
                 quickAccess.isAvatar.EnabledText()
             },
             modifier = Modifier,
             enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_avatar)) },
+            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_avatar)) },
             onCheckedChange = { state ->
                 onQuickAccessChange(quickAccess.copy(isAvatar = !quickAccess.isAvatar))
             },

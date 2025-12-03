@@ -3,11 +3,12 @@
     <string name="country">Country</string>
     <string name="country_flag">Country flag</string>
     <string name="language">Language</string>
-    <string name="Russian">Russian</string>
-    <string name="English">English</string>
-    <string name="Tajik">Tajik</string>
+    <string name="ru_ru">Russian</string>
+    <string name="en_us">English</string>
+    <string name="tg_tj">Tajik</string>
 
     <string name="location">Location</string>
+    <string name="altitude">Altitude</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="map">Map</string>

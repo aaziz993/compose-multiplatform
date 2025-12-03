@@ -6,6 +6,7 @@
     <string name="user_info">User info</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+    <string name="surname">Surname</string>
     <string name="email">Email</string>
     <string name="roles">Roles</string>
     <string name="phone">Phone</string>

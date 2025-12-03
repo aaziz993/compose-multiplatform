@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="news">News</string>
-    <string name="articles">Articles</string>
-    <string name="back_content_description">Back content description</string>
-    <string name="share_content_description">Share content description</string>
-    <string name="read_more_at">Read more at</string>
-</resources>
