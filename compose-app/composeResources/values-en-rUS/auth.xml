@@ -7,10 +7,10 @@
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>
     <string name="passwords_mismatch">Passwords mismatch</string>
-    <string name="invalid_user_or_password">Invalid user or password</string>
+    <string name="incorrect_username_or_password">Invalid user or password</string>
     <string name="reset_password">Reset password</string>
     <string name="new_password">New password</string>
-    <string name="remember_me">Remember me</string>
+    <string name="remember_sign_in">Remember sign in</string>
     <string name="otp">Otp</string>
     <string name="enter_code_sent_to">Enter code sent to %1$s</string>
     <string name="resend_code_in">Resend code in %1$s</string>
@@ -18,7 +18,7 @@
     <string name="pin_code">Pin code</string>
     <string name="repeat_pin_code">Repeat PIN code</string>
     <string name="pin_codes_mismatch">Pin codes mismatch</string>
-    <string name="invalid_pin_code">Invalid PIN code</string>
+    <string name="incorrect_pin_code">Invalid PIN code</string>
     <string name="reset_pin_code">Reset PIN code</string>
     <string name="new_pin_code">New PIN code</string>
     <string name="sign_up">Sign Up</string>

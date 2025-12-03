@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application name -->
+    <string name="app_name">Compose Multiplatform</string>
+
+    <!-- Tabs -->
+
+    <!-- Labels -->
+
+    <!-- Placeholders -->
+
+    <!-- Hints -->
+
+    <!-- Messages -->
+
+    <!-- Buttons -->
+
+    <!-- Toast messages -->
+    <string name="about">Оиди</string>
+    <string name="alpha">Алфа</string>
+    <string name="actions">Амалхо</string>
+    <string name="back">Бозгашт</string>
+    <string name="blend">Blend</string>
+    <string name="balance">Баланс</string>
+    <string name="crypto">Крипто</string>
+    <string name="copy">Copy</string>
+    <string name="close">Close</string>
+    <string name="cancel">Бекор</string>
+    <string name="confirm">Тасдик</string>
+    <string name="continue">Давом</string>
+    <string name="content">Мазмун</string>
+    <string name="description">Тавсир</string>
+    <string name="disabled">Гайрифаъол</string>
+    <string name="enabled">Фаъол</string>
+    <string name="exchange">Додугирифт</string>
+    <string name="file">Файл</string>
+    <string name="general">General</string>
+    <string name="grid">Grid</string>
+    <string name="hex">Hex</string>
+    <string name="home">Хона</string>
+    <string name="live_search">Чустучуи зинда</string>
+    <string name="left">Чап</string>
+    <string name="markers">Markers</string>
+    <string name="menu">Меню</string>
+    <string name="options">Options</string>
+    <string name="online">Онлайн</string>
+    <string name="offline">Оффлайн</string>
+    <string name="path">Рох</string>
+    <string name="pagination">Сахифагузори</string>
+    <string name="permission">Ичозат</string>
+    <string name="permissions">Ичозатхо</string>
+    <string name="retry">Такрор</string>
+    <string name="reset">Баркарор</string>
+    <string name="right">Рост</string>
+    <string name="search">Чустусу</string>
+    <string name="select">Интихоб</string>
+    <string name="submit">Равон</string>
+    <string name="services">Хизматрасонихо</string>
+    <string name="settings">Чур</string>
+    <string name="time">Вакт</string>
+    <string name="time_format">Time format</string>
+    <string name="header">Сарлавха</string>
+    <string name="help">Ердам</string>
+    <string name="identifier">Муайянкунанда</string>
+    <string name="id">ID</string>
+    <string name="image">Навор</string>
+    <string name="wallet">Wallet</string>
+</resources>

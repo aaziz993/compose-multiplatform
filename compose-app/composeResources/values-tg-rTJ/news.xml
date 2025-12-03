@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="news">Хабархо</string>
+    <string name="articles">Маколахо</string>
+    <string name="back_content_description">Тавсири мазмун</string>
+    <string name="share_content_description">Ирсоли тавсири мазмун</string>
+    <string name="read_more_at">Бисертар хонед аз</string>
+</resources>

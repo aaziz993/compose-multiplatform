@@ -2,5 +2,4 @@
 <resources>
     <string name="camera">Camera</string>
     <string name="microphone">Microphone</string>
-    <string name="permissions">Permissions</string>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="authentification">Аутентификатсия</string>
+    <string name="authorization">Авторизатсия</string>
+    <string name="login">Вуруд</string>
+    <string name="username">Номи истифодабаранда</string>
+    <string name="password">Рамзи убур</string>
+    <string name="repeat_password">Такрори рамзи убур</string>
+    <string name="passwords_mismatch">Рамзхои убур номувоффик</string>
+    <string name="incorrect_username_or_password">Номи истифодабаранда е рамзи убур нодуруст</string>
+    <string name="reset_password">Баркарори рамзи убур</string>
+    <string name="new_password">Рамзи убури нав</string>
+    <string name="remember_sign_in">Сабти вуруд</string>
+    <string name="otp">Рамзи убури муваккати</string>
+    <string name="enter_code_sent_to">Вориди рамзи ирсолшуда</string>
+    <string name="resend_code_in">Азнав равон кардани рамз баъд аз %1$s</string>
+    <string name="resend_code">Равон кардани рамз</string>
+    <string name="pin_code">Pin рамз</string>
+    <string name="repeat_pin_code">Такрори PIN рамз</string>
+    <string name="pin_codes_mismatch">Pin рамзхо номувоффик</string>
+    <string name="incorrect_pin_code">Ноудурст PIN рамз</string>
+    <string name="reset_pin_code">Баркарори PIN рамз</string>
+    <string name="new_pin_code">Нав PIN рамз</string>
+    <string name="sign_up">Бакайдгири</string>
+    <string name="sign_in">Вуруд</string>
+    <string name="sign_out">Хуруч</string>
+</resources>

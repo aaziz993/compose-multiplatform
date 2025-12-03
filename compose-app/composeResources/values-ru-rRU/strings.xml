@@ -1,48 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Application name -->
     <string name="app_name">Compose Multiplatform</string>
-
-    <!-- Tabs -->
-
-    <!-- Labels -->
-
-    <!-- Placeholders -->
-
-    <!-- Hints -->
-
-    <!-- Messages -->
-
-    <!-- Buttons -->
-
-    <!-- Toast messages -->
-    <string name="general">Общее</string>
+    <string name="about">О</string>
+    <string name="alpha">Альфа</string>
     <string name="actions">Действия</string>
     <string name="back">Назад</string>
     <string name="blend">Смесь</string>
+    <string name="balance">Баланс</string>
+    <string name="crypto">Крипто</string>
     <string name="copy">Копировать</string>
-    <string name="close">Закрыть</string>
+    <string name="close">закрыть</string>
     <string name="cancel">Отменить</string>
     <string name="confirm">Подтвердить</string>
     <string name="continue">Продолжить</string>
     <string name="content">Содержание</string>
     <string name="description">Описание</string>
+    <string name="disabled">Выключено</string>
+    <string name="enabled">Включено</string>
+    <string name="exchange">Обмен</string>
     <string name="file">Файл</string>
+    <string name="general">Общее</string>
     <string name="grid">Сетка</string>
     <string name="hex">Hex</string>
+    <string name="home">Дом</string>
     <string name="live_search">Живой поиск</string>
     <string name="left">Влево</string>
     <string name="markers">Маркеры</string>
     <string name="menu">Меню</string>
     <string name="options">Опции</string>
+    <string name="online">Онлайн</string>
+    <string name="offline">Оффлайн</string>
     <string name="path">Путь</string>
     <string name="pagination">Пагинация</string>
+    <string name="permission">Разрешение</string>
+    <string name="permissions">Разрешения</string>
     <string name="retry">Повторить</string>
     <string name="reset">Сбросить</string>
     <string name="right">Вправо</string>
     <string name="search">Поиск</string>
     <string name="select">Выбрать</string>
     <string name="submit">Отправить</string>
+    <string name="services">Сервисы</string>
+    <string name="settings">Настройки</string>
     <string name="time">Время</string>
     <string name="time_format">Формат времени</string>
     <string name="header">Заголовок</string>
@@ -50,4 +49,5 @@
     <string name="identifier">Идентификатор</string>
     <string name="id">ID</string>
     <string name="image">Изображение</string>
+    <string name="wallet">Кошелек</string>
 </resources>

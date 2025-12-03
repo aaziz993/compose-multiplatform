@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="country">Кишвар</string>
+    <string name="country_flag">Парчами кишвар</string>
+    <string name="language">Забон</string>
+    <string name="ru_ru">Уруси</string>
+    <string name="en_us">Англиси</string>
+    <string name="tg_tj">Точики</string>
+    <string name="location">Чойгиршави</string>
+    <string name="altitude">Баланди</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="map">Харита</string>
+    <string name="virtual_earth_map">Замини виртуали харита</string>
+    <string name="open_street_map">OpenStreet харита</string>
+    <string name="google_map">Google харита</string>
+</resources>

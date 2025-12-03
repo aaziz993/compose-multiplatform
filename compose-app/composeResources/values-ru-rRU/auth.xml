@@ -7,10 +7,10 @@
     <string name="password">Пароль</string>
     <string name="repeat_password">Повторить пароль</string>
     <string name="passwords_mismatch">Пароли не совпадают</string>
-    <string name="invalid_user_or_password">/Неправильное имя пользователя или пароль</string>
+    <string name="incorrect_username_or_password">Неправильное имя пользователя или пароль</string>
     <string name="reset_password">Сбросить пароль</string>
     <string name="new_password">Новый пароль</string>
-    <string name="remember_me">Запомнить меня</string>
+    <string name="remember_sign_in">Запомнить вход</string>
     <string name="otp">Одноразовый вход</string>
     <string name="enter_code_sent_to">Ввести отправленный код</string>
     <string name="resend_code_in">/Переслать код через %1$s</string>
@@ -18,7 +18,7 @@
     <string name="pin_code">PIN код</string>
     <string name="repeat_pin_code">Повторить PIN код</string>
     <string name="pin_codes_mismatch">PIN коды не совпадают</string>
-    <string name="invalid_pin_code">Неправильный PIN код</string>
+    <string name="incorrect_pin_code">Неправильный PIN код</string>
     <string name="reset_pin_code">Сбросить PIN код</string>
     <string name="new_pin_code">/Новый PIN код</string>
     <string name="sign_up">Регистрация</string>

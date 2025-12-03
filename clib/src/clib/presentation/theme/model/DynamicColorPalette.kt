@@ -1,10 +1,12 @@
 package clib.presentation.theme.model
 
+import androidx.compose.runtime.Immutable
 import clib.data.type.ColorSerial
 import com.materialkolor.Contrast
 import com.materialkolor.scheme.DynamicScheme
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 public data class DynamicColorPalette(
     val seedColor: ColorSerial,

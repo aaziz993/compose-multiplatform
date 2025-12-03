@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Number Strings -->
+    <string-array name="number_suffixes">
+        <item>хаз.</item>      <!-- thousand -->
+        <item>млн.</item>      <!-- million -->
+        <item>мррд.</item>      <!-- billion -->
+        <item>трлн.</item>      <!-- trillion -->
+        <item>п.</item>      <!-- peta -->
+        <item>з.</item>      <!-- zetta -->
+        <item>й.</item>      <!-- yotta -->
+        <item>к.</item>      <!-- quetta -->
+    </string-array>
+
+    <!-- Duration / Relative Time Strings -->
+    <string name="now">хозир</string>
+    <string name="time_in">дар доираи %1$s</string>
+    <string name="time_ago">%1$s пеш</string>
+
+    <plurals name="nanoseconds">
+        <item quantity="one">наносония</item>
+        <item quantity="other">наносония</item>
+    </plurals>
+
+    <plurals name="microseconds">
+        <item quantity="one">микросония</item>
+        <item quantity="other">микросония</item>
+    </plurals>
+
+    <plurals name="milliseconds">
+        <item quantity="one">миллисония</item>
+        <item quantity="other">миллисония</item>
+    </plurals>
+
+    <plurals name="seconds">
+        <item quantity="one">сония</item>
+        <item quantity="other">сония</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">дакика</item>
+        <item quantity="other">дакика</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">соат</item>
+        <item quantity="other">соат</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">руз</item>
+        <item quantity="other">руз</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">хафта</item>
+        <item quantity="other">хафта</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">мох</item>
+        <item quantity="other">мох</item>
+    </plurals>
+
+    <plurals name="years">
+        <item quantity="one">сол</item>
+        <item quantity="other">сол</item>
+    </plurals>
+
+    <!-- Size Strings -->
+    <string-array name="size_suffixes">
+        <item>Б</item>
+        <item>КБ</item>
+        <item>МБ</item>
+        <item>ГБ</item>
+        <item>ТБ</item>
+        <item>ПБ</item>
+        <item>ЭБ</item>
+    </string-array>
+</resources>
