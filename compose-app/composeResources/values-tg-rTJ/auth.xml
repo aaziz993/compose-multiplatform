@@ -12,8 +12,8 @@
     <string name="new_password">Рамзи убури нав</string>
     <string name="remember_sign_in">Сабти вуруд</string>
     <string name="otp">Рамзи убури муваккати</string>
-    <string name="enter_code_sent_to">Вориди рамзи ирсолшуда</string>
-    <string name="resend_code_in">Равон кардани рамз %1$s</string>
+    <string name="enter_code_sent_to">Вориди рамзи ба %1$s ирсолшуда</string>
+    <string name="resend_code">Равон кардани рамз %1$s</string>
     <string name="pin_code">Pin рамз</string>
     <string name="repeat_pin_code">Такрори PIN рамз</string>
     <string name="pin_codes_mismatch">Pin рамзхо номувоффик</string>
