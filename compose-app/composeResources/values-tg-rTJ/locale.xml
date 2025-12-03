@@ -2,10 +2,13 @@
 <resources>
     <string name="country">Кишвар</string>
     <string name="country_flag">Парчами кишвар</string>
-    <string name="language">Забон</string>
-    <string name="ru_ru">Уруси</string>
-    <string name="en_us">Англиси</string>
-    <string name="tg_tj">Точики</string>
+    <string name="country_us">МЯА</string>
+    <string name="country_ru">Руссия</string>
+    <string name="country_tj">Точикистон</string>
+    <string name="locale">Забон</string>
+    <string name="locale_ru_ru">Руси</string>
+    <string name="locale_en_us">Инглиси</string>
+    <string name="locale_tg_tj">Точики</string>
     <string name="location">Чойгиршави</string>
     <string name="altitude">Баланди</string>
     <string name="latitude">Latitude</string>

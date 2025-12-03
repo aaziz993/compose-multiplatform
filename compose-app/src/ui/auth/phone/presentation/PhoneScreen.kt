@@ -77,7 +77,7 @@ public fun PhoneScreen(
                 .padding(10.dp),
             selectedCountry = country,
             countries = Country.getCountries().toList().map { country ->
-                country.copy(name = country.toString().asStringResource { country.name })
+                country.copy(name = "country_$country".asStringResource { country.name })
             },
             enabled = true,
             textStyle = MaterialTheme.typography.bodyMedium,

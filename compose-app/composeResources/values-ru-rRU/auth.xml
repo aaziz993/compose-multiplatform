@@ -12,7 +12,7 @@
     <string name="new_password">Новый пароль</string>
     <string name="remember_sign_in">Запомнить вход</string>
     <string name="otp">Одноразовый вход</string>
-    <string name="enter_code_sent_to">Ввести код отправленный на %1$s</string>
+    <string name="code_sent_to">Код отправлен на %1$s</string>
     <string name="resend_code">Переслать код %1$s</string>
     <string name="pin_code">PIN код</string>
     <string name="repeat_pin_code">Повторить PIN код</string>

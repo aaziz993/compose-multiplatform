@@ -92,7 +92,6 @@ import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
 import klib.data.type.auth.model.Auth
-import klib.data.type.primitives.string.case.toSnakeCase
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.theme.model.IsDarkIcon
@@ -285,7 +284,16 @@ public fun SettingsScreen(
             modifier = Modifier,
             enabled = true,
             locales = locales,
-            country = { locale -> locale.country()!!.copy(name = locale.toString().toSnakeCase().asStringResource()) },
+            country = { locale ->
+                locale.country()!!.copy(
+                    name = "locale_${
+                        locale
+                            .toString()
+                            .replace('-', '_')
+                            .lowercase()
+                    }".asStringResource(),
+                )
+            },
             picker = CountryPicker(
                 headerTitle = stringResource(Res.string.language),
                 searchHint = stringResource(Res.string.search),
