@@ -6,13 +6,10 @@
     <string name="green">Зеленый</string>
     <string name="blue">Синий</string>
     <string name="alpha">Альфа</string>
-    <string name="grid">Сетка</string>
     <string name="hsla">Hsla</string>
     <string name="hue">Оттенок</string>
     <string name="saturation">Насыщенность</string>
     <string name="lightness">Освещенность</string>
     <string name="hsv">Hsv</string>
     <string name="brightness">Яркость</string>
-    <string name="blend">Смесь</string>
-    <string name="hex">Hex</string>
 </resources>

@@ -5,14 +5,10 @@
     <string name="red">Red</string>
     <string name="green">Green</string>
     <string name="blue">Blue</string>
-    <string name="alpha">Alpha</string>
-    <string name="grid">Grid</string>
     <string name="hsla">Hsla</string>
     <string name="hue">Hue</string>
     <string name="saturation">Saturation</string>
     <string name="lightness">Lightness</string>
     <string name="hsv">Hsv</string>
     <string name="brightness">Brightness</string>
-    <string name="blend">Blend</string>
-    <string name="hex">Hex</string>
 </resources>

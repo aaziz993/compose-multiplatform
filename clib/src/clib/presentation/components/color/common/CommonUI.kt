@@ -198,16 +198,15 @@ internal fun SelectedColorDetail(
                 .weight(.8f),
             label = { Text(text = title) },
             leadingIcon = {
-
                 // Show current color as a small box
                 Box(
                     modifier = Modifier
                         .size(24.dp)
-                        .background(value, shape = RoundedCornerShape(4.dp))
+                        .background(value, MaterialTheme.shapes.small)
                         .border(
                             1.dp,
                             MaterialTheme.colorScheme.onSurface,
-                            RoundedCornerShape(4.dp),
+                            MaterialTheme.shapes.small,
                         ),
                 )
             },

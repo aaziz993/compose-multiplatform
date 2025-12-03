@@ -5,20 +5,18 @@ package clib.presentation.components.color
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.common.ColorSlider
 import clib.presentation.components.color.common.SelectedColorDetail
-import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
+import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 /**
  * A composable function that creates a color picker UI for selecting HSV properties to get color. This component
@@ -26,7 +24,6 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
  * selected color's saturation, lightness and alpha values.
  * By adjusting these values, consumer can select or generate their desired color.
  *
- * @param controller [ColorPickerController].
  * @param value Color value.
  * @param onValueChange Callback on color value change.
  * @param modifier: The modifier to apply to this layout.
@@ -36,24 +33,16 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
  */
 @Composable
 internal fun HSVColorPicker(
-    controller: ColorPickerController,
     value: Color,
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
-    initialValue: Color? = null,
     title: String = "Select color hsv",
     brightness: String = "Brightness",
     alpha: String = "Alpha",
     hex: String = "Hex",
     copy: String = "Copy",
 ): Unit = Column(
-    modifier = Modifier
-        .shadow(
-            elevation = 10.dp,
-            shape = RoundedCornerShape(8.dp),
-        )
-        .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
-        .then(modifier),
+    modifier = modifier,
 ) {
     Text(
         text = title,
@@ -64,15 +53,17 @@ internal fun HSVColorPicker(
         fontSize = 12.sp,
     )
 
+    val controller = rememberColorPickerController()
+
     HsvColorPicker(
         modifier = Modifier
             .fillMaxWidth()
             .weight(.5f),
         controller = controller,
-        initialColor = initialValue,
         onColorChanged = { (color, _, fromUser) ->
             if (fromUser) onValueChange(color)
         },
+        initialColor = value,
     )
 
     Column(

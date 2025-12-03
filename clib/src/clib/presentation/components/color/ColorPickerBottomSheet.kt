@@ -22,12 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.model.ColorPicker
 import com.github.skydoves.colorpicker.compose.ColorPickerController
-import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 /**
  * This created a bottom sheet to pick color. As a content of this user can select their color using
@@ -51,7 +49,6 @@ public fun ColorPickerBottomSheet(
     onDismissRequest: () -> Unit,
     onSelect: (Color) -> Unit,
     onClose: () -> Unit = onDismissRequest,
-    controller: ColorPickerController = rememberColorPickerController(),
     initialColor: Color = Color.White,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
     picker: ColorPicker = ColorPicker()
@@ -71,16 +68,9 @@ public fun ColorPickerBottomSheet(
         picker.blend,
     )
 
-    Column {
-        Text(
-            text = picker.title,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
-            fontSize = 36.sp,
-        )
-
+    Column(
+        modifier = Modifier.padding(12.dp),
+    ) {
         PrimaryTabRow(
             modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp),
             selectedTabIndex = tabIndex,
@@ -145,7 +135,6 @@ public fun ColorPickerBottomSheet(
                 Modifier
                     .weight(.8f)
                     .padding(16.dp),
-                color,
                 picker.hsv,
                 picker.brightness,
                 picker.alpha,

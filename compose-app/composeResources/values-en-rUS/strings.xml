@@ -16,9 +16,10 @@
     <!-- Buttons -->
 
     <!-- Toast messages -->
-    <string name="general">General</string>
+    <string name="alpha">Alpha</string>
     <string name="actions">Actions</string>
     <string name="back">Back</string>
+    <string name="blend">Blend</string>
     <string name="copy">Copy</string>
     <string name="close">Close</string>
     <string name="cancel">Cancel</string>
@@ -27,6 +28,9 @@
     <string name="content">Content</string>
     <string name="description">Description</string>
     <string name="file">File</string>
+    <string name="general">General</string>
+    <string name="grid">Grid</string>
+    <string name="hex">Hex</string>
     <string name="live_search">Live search</string>
     <string name="left">Left</string>
     <string name="markers">Markers</string>

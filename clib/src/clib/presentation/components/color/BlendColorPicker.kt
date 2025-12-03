@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowLeft
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
@@ -27,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -65,13 +63,7 @@ internal fun BlendColorPicker(
     hex: String = "Hex",
     copy: String = "Copy",
 ) = Column(
-    modifier = Modifier
-        .shadow(
-            elevation = 10.dp,
-            shape = RoundedCornerShape(8.dp),
-        )
-        .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
-        .then(modifier),
+    modifier = modifier,
 ) {
     Text(
         text = title,

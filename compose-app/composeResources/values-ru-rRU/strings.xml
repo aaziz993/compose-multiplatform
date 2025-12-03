@@ -19,6 +19,7 @@
     <string name="general">Общее</string>
     <string name="actions">Действия</string>
     <string name="back">Назад</string>
+    <string name="blend">Смесь</string>
     <string name="copy">Копировать</string>
     <string name="close">Закрыть</string>
     <string name="cancel">Отменить</string>
@@ -27,6 +28,8 @@
     <string name="content">Содержание</string>
     <string name="description">Описание</string>
     <string name="file">Файл</string>
+    <string name="grid">Сетка</string>
+    <string name="hex">Hex</string>
     <string name="live_search">Живой поиск</string>
     <string name="left">Влево</string>
     <string name="markers">Маркеры</string>
