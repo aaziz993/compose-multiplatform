@@ -66,7 +66,7 @@ import compose_app.generated.resources.hex
 import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.hsla
 import compose_app.generated.resources.hsv
-import compose_app.generated.resources.language
+import compose_app.generated.resources.locale
 import compose_app.generated.resources.left
 import compose_app.generated.resources.lightness
 import compose_app.generated.resources.location
@@ -279,7 +279,7 @@ public fun SettingsScreen(
                 onLocaleChange(value)
                 true
             },
-            title = { Text(text = stringResource(Res.string.language)) },
+            title = { Text(text = stringResource(Res.string.locale)) },
             subtitle = { Text(text = locale.toString().asStringResource()) },
             modifier = Modifier,
             enabled = true,
@@ -295,7 +295,7 @@ public fun SettingsScreen(
                 )
             },
             picker = CountryPicker(
-                headerTitle = stringResource(Res.string.language),
+                headerTitle = stringResource(Res.string.locale),
                 searchHint = stringResource(Res.string.search),
             ),
         )

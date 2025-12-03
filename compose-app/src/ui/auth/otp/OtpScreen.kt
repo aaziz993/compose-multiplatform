@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.enter_code_sent_to
+import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.resend_code
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import kotlin.time.Duration
@@ -55,7 +55,7 @@ public fun OtpScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = stringResource(Res.string.enter_code_sent_to, route.phone),
+            text = stringResource(Res.string.code_sent_to, route.phone),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,

@@ -73,10 +73,7 @@ public abstract class ViewModel<T : Any>() : ViewModel() {
     protected fun <T, R> StateFlow<T>.map(initialValue: R, transform: suspend (data: T) -> R): StateFlow<R> =
         map(viewModelScope, initialValue, transform)
 
-    protected fun <T : Any> Flow<PagingData<T>>.cachedIn(): Flow<PagingData<T>> = cachedIn(viewModelScope)
-
-    protected val <T> Flow<T>.launch: Job
-        get() = launchIn(viewModelScope)
+    protected fun <T> Flow<T>.launch(): Job = launchIn(viewModelScope)
 
     protected fun <T> Flow<T>.stateIn(
         initialValue: T,
@@ -106,6 +103,8 @@ public abstract class ViewModel<T : Any>() : ViewModel() {
             override suspend fun collect(collector: FlowCollector<T>): Nothing = stateFlow.collect(collector)
         }
     }
+
+    protected fun <T : Any> Flow<PagingData<T>>.cachedIn(): Flow<PagingData<T>> = cachedIn(viewModelScope)
 
     protected fun <Value : Any> CoroutineCrudRepository<Value>.pager(
         predicate: BooleanOperand? = null,

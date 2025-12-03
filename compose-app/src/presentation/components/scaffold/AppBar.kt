@@ -47,7 +47,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.back
 import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.help
-import compose_app.generated.resources.language
+import compose_app.generated.resources.locale
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
@@ -192,13 +192,13 @@ public fun AppBar(
                                     )
                                 },
                                 picker = CountryPicker(
-                                    headerTitle = stringResource(Res.string.language),
+                                    headerTitle = stringResource(Res.string.locale),
                                     searchHint = stringResource(Res.string.search),
                                 ),
                             )
 
 
-                        AppTooltipBox(stringResource(Res.string.language)) {
+                        AppTooltipBox(stringResource(Res.string.locale)) {
                             Button(
                                 onClick = {
                                     isLocalePickerDialogOpen = true
