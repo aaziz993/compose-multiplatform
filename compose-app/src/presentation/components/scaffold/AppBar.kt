@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.country.LocalePickerDialog
+import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
@@ -49,6 +50,7 @@ import compose_app.generated.resources.help
 import compose_app.generated.resources.language
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.profile
+import compose_app.generated.resources.search
 import compose_app.generated.resources.theme
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
@@ -175,6 +177,10 @@ public fun AppBar(
                                     isLocalePickerDialogOpen = false
                                 },
                                 locales = locales,
+                                picker = CountryPicker(
+                                    headerTitle = stringResource(Res.string.language),
+                                    searchHint = stringResource(Res.string.search),
+                                ),
                             )
 
 

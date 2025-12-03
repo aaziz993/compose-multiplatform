@@ -19,51 +19,81 @@
 
     <plurals name="nanoseconds">
         <item quantity="one">nanosecond</item>
+        <item quantity="two">nanoseconds</item>
+        <item quantity="three">nanoseconds</item>
+        <item quantity="four">nanoseconds</item>
         <item quantity="other">nanoseconds</item>
     </plurals>
 
     <plurals name="microseconds">
         <item quantity="one">microsecond</item>
+        <item quantity="two">microseconds</item>
+        <item quantity="three">microseconds</item>
+        <item quantity="four">microseconds</item>
         <item quantity="other">microseconds</item>
     </plurals>
 
     <plurals name="milliseconds">
         <item quantity="one">millisecond</item>
+        <item quantity="two">milliseconds</item>
+        <item quantity="three">milliseconds</item>
+        <item quantity="four">milliseconds</item>
         <item quantity="other">milliseconds</item>
     </plurals>
 
     <plurals name="seconds">
         <item quantity="one">second</item>
+        <item quantity="two">seconds</item>
+        <item quantity="three">seconds</item>
+        <item quantity="four">seconds</item>
         <item quantity="other">seconds</item>
     </plurals>
 
     <plurals name="minutes">
         <item quantity="one">minute</item>
+        <item quantity="two">minutes</item>
+        <item quantity="three">minutes</item>
+        <item quantity="four">minutes</item>
         <item quantity="other">minutes</item>
     </plurals>
 
     <plurals name="hours">
         <item quantity="one">hour</item>
+        <item quantity="two">hours</item>
+        <item quantity="three">hours</item>
+        <item quantity="four">hours</item>
         <item quantity="other">hours</item>
     </plurals>
 
     <plurals name="days">
         <item quantity="one">day</item>
+        <item quantity="two">days</item>
+        <item quantity="three">days</item>
+        <item quantity="four">days</item>
         <item quantity="other">days</item>
     </plurals>
 
     <plurals name="weeks">
         <item quantity="one">week</item>
+        <item quantity="two">weeks</item>
+        <item quantity="three">weeks</item>
+        <item quantity="four">weeks</item>
         <item quantity="other">weeks</item>
     </plurals>
 
     <plurals name="months">
         <item quantity="one">month</item>
+        <item quantity="two">months</item>
+        <item quantity="three">months</item>
+        <item quantity="four">months</item>
         <item quantity="other">months</item>
     </plurals>
 
     <plurals name="years">
         <item quantity="one">year</item>
+        <item quantity="two">years</item>
+        <item quantity="three">years</item>
+        <item quantity="four">years</item>
         <item quantity="other">years</item>
     </plurals>
 

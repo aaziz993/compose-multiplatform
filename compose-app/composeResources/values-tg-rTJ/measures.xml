@@ -19,51 +19,81 @@
 
     <plurals name="nanoseconds">
         <item quantity="one">наносония</item>
+        <item quantity="two">наносония</item>
+        <item quantity="three">наносония</item>
+        <item quantity="four">наносония</item>
         <item quantity="other">наносония</item>
     </plurals>
 
     <plurals name="microseconds">
         <item quantity="one">микросония</item>
+        <item quantity="two">микросония</item>
+        <item quantity="three">микросония</item>
+        <item quantity="four">микросония</item>
         <item quantity="other">микросония</item>
     </plurals>
 
     <plurals name="milliseconds">
         <item quantity="one">миллисония</item>
+        <item quantity="two">миллисония</item>
+        <item quantity="three">миллисония</item>
+        <item quantity="four">миллисония</item>
         <item quantity="other">миллисония</item>
     </plurals>
 
     <plurals name="seconds">
         <item quantity="one">сония</item>
+        <item quantity="two">сония</item>
+        <item quantity="three">сония</item>
+        <item quantity="four">сония</item>
         <item quantity="other">сония</item>
     </plurals>
 
     <plurals name="minutes">
         <item quantity="one">дакика</item>
+        <item quantity="two">дакика</item>
+        <item quantity="three">дакика</item>
+        <item quantity="four">дакика</item>
         <item quantity="other">дакика</item>
     </plurals>
 
     <plurals name="hours">
         <item quantity="one">соат</item>
+        <item quantity="two">соат</item>
+        <item quantity="three">соат</item>
+        <item quantity="four">соат</item>
         <item quantity="other">соат</item>
     </plurals>
 
     <plurals name="days">
         <item quantity="one">руз</item>
+        <item quantity="two">руз</item>
+        <item quantity="three">руз</item>
+        <item quantity="four">руз</item>
         <item quantity="other">руз</item>
     </plurals>
 
     <plurals name="weeks">
         <item quantity="one">хафта</item>
+        <item quantity="two">хафта</item>
+        <item quantity="three">хафта</item>
+        <item quantity="four">хафта</item>
         <item quantity="other">хафта</item>
     </plurals>
 
     <plurals name="months">
         <item quantity="one">мох</item>
+        <item quantity="two">мох</item>
+        <item quantity="three">мох</item>
+        <item quantity="four">мох</item>
         <item quantity="other">мох</item>
     </plurals>
 
     <plurals name="years">
         <item quantity="one">сол</item>
+        <item quantity="two">сол</item>
+        <item quantity="three">сол</item>
+        <item quantity="four">сол</item>
         <item quantity="other">сол</item>
     </plurals>
 
