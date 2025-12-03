@@ -19,6 +19,7 @@ import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
+import klib.data.location.country.Country
 import klib.data.location.locale.Locale
 
 @Composable
@@ -36,6 +37,7 @@ public fun SettingsLocalePickerDialog(
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     locales: List<Locale> = Locale.getLocales().toList(),
+    country:@Composable (Locale) -> Country = { locale -> locale.country()!! },
     textStyle: TextStyle = TextStyle(),
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
@@ -51,6 +53,7 @@ public fun SettingsLocalePickerDialog(
                 isLocalePickerDialogOpen = false
             },
             locales = locales,
+            country = country,
             picker = picker,
         )
 

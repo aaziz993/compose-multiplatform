@@ -52,6 +52,7 @@ import compose_app.generated.resources.menu
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
 import compose_app.generated.resources.theme
+import data.type.primitives.string.asStringResource
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
 import dev.chrisbanes.haze.HazeProgressive
@@ -61,6 +62,7 @@ import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.type.auth.model.Auth
+import klib.data.type.primitives.string.case.toSnakeCase
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
@@ -180,6 +182,7 @@ public fun AppBar(
                                     isLocalePickerDialogOpen = false
                                 },
                                 locales = locales,
+                                country = { locale -> locale.country()!!.copy(name = locale.toString().toSnakeCase().asStringResource()) },
                                 picker = CountryPicker(
                                     headerTitle = stringResource(Res.string.language),
                                     searchHint = stringResource(Res.string.search),

@@ -56,10 +56,6 @@ private fun ArticleContent(
     }
 }
 
-@Preview
-@Composable
-public fun PreviewArticleScreen(): Unit = ArticlesScreen()
-
 @Composable
 private fun ArticleItem(
     article: Article,
@@ -121,3 +117,8 @@ private fun ArticleItem(
         }
     }
 }
+
+
+@Preview
+@Composable
+public fun PreviewArticleScreen(): Unit = ArticlesScreen()

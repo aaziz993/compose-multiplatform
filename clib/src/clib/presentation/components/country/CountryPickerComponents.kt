@@ -43,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 internal fun CountryHeaderDialog(
     title: String = "Select Country", onDismiss: () -> Unit
 ) {
-
     Row(
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -136,8 +135,7 @@ internal fun CountrySearch(
                 }
             }
         },
-
-        )
+    )
 }
 
 @Composable
@@ -161,18 +159,12 @@ internal fun CountryUI(
 
         ) {
 
-        val countryString = if (showCountryFlag && showCountryIso) {
+        val countryString = if (showCountryFlag && showCountryIso)
             country.alpha2.getEmojiFlag() + "  " + country.name + "  (" + country.toString() + ")"
-        }
-        else if (showCountryFlag) {
-            country.alpha2.getEmojiFlag() + "  " + country.name
-        }
-        else if (showCountryIso) {
-            country.name + "  (" + country.toString() + ")"
-        }
-        else {
-            country.name
-        }
+        else if (showCountryFlag) country.alpha2.getEmojiFlag() + "  " + country.name
+        else if (showCountryIso) country.name + "  (" + country.toString() + ")"
+        else country.name
+
 
         Text(
             text = countryString,
@@ -183,11 +175,10 @@ internal fun CountryUI(
             overflow = TextOverflow.Ellipsis,
         )
 
-        if (showCountryDial) {
+        if (showCountryDial)
             Text(
                 text = country.dial.orEmpty(), style = countryTextStyle,
             )
-        }
 
     }
 }
@@ -211,50 +202,42 @@ internal fun CountryView(
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-        if (showFlag) {
+        if (showFlag)
             Text(
                 text = country.alpha2.getEmojiFlag(),
                 modifier = Modifier.padding(start = 5.dp, end = 10.dp),
                 style = textStyle,
             )
-        }
 
-        if (showCountryName) {
+
+        if (showCountryName)
             Text(
                 text = country.name,
                 modifier = Modifier.padding(end = 10.dp),
                 style = textStyle,
             )
-        }
 
-        if (showCountryIso) {
+        if (showCountryIso)
             Text(
                 text = "($country)",
                 modifier = Modifier.padding(end = 20.dp),
                 style = textStyle,
             )
-        }
 
-        if (clipToFull) {
-            Spacer(modifier = Modifier.weight(1f))
-        }
+        if (clipToFull) Spacer(modifier = Modifier.weight(1f))
 
-
-        if (showCountryCode) {
+        if (showCountryCode)
             Text(
                 text = country.dial.orEmpty(),
                 modifier = Modifier.padding(end = 5.dp),
                 style = textStyle,
             )
-        }
 
-        if (showArrow) {
+        if (showArrow)
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
                 contentDescription = null,
             )
-        }
-
     }
 }
 

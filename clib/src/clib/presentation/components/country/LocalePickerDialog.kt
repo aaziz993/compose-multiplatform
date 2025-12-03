@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -15,6 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.country.model.CountryPicker
+import klib.data.location.country.Country
 import klib.data.location.locale.Locale
 import klib.data.type.collections.bimap.toBiMap
 
@@ -24,16 +22,13 @@ public fun LocalePickerDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     locales: List<Locale> = Locale.getLocales().toList(),
+    country: @Composable (Locale) -> Country = { locale -> locale.country()!! },
     textStyle: TextStyle = TextStyle(),
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     picker: CountryPicker = CountryPicker(),
 ) {
-    val localeCountryMap by remember(locales) {
-        derivedStateOf {
-            locales.associateWith { locale -> locale.country()!!.copy(name = locale.toString()) }.toBiMap()
-        }
-    }
+    val localeCountryMap = locales.associateWith{country(it)}.toBiMap()
 
     CountryPickerDialog(
         { country -> onItemClicked(localeCountryMap.inverse[country]!!) },
