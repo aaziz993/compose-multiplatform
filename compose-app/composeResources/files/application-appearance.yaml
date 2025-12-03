@@ -4,12 +4,12 @@ ui:
     isHighContrast: true
     isExpressive: true
     dynamicColorPalette:
-      seedColor: 4278255615
+      seedColor: 0xFF00FFFF
       animate: true
       animationSpec:
         spring: { }
     dynamicColorPaletteHighContrast:
-      seedColor: 4278190335
+      seedColor: 0xFF0000FF
       animate: true
       animationSpec:
         spring: { }
@@ -60,4 +60,3 @@ ui:
               size: 100
           smoothing: 48
     typography: { }
-

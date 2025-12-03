@@ -146,8 +146,8 @@ public open class TreeDecoder(
 
         override fun endStructure(descriptor: SerialDescriptor) {
             decodeUnknownKeys()?.let { unknownKeys ->
-                if (!consumeUnknownKeys(descriptor, unknownKeys) && this@TreeDecoder is StructureLikeDecoder)
-                    this@TreeDecoder.setChildUnknownKeys(unknownKeys)
+                if (!consumeUnknownKeys(descriptor, unknownKeys))
+                    (this@TreeDecoder as? StructureLikeDecoder)?.setChildUnknownKeys(unknownKeys)
             }
         }
 
@@ -246,10 +246,9 @@ public open class TreeDecoder(
 
         override fun decodeUnknownKeys(): Any? = unknownKeys.ifEmpty { null }
 
-        override fun setChildUnknownKeys(unknownKeys: Any?): Unit =
-            if (descriptor.kind is PolymorphicKind)
-                (this@TreeDecoder as StructureLikeDecoder).setChildUnknownKeys(unknownKeys)
-            else this.unknownKeys += descriptor.getElementName(decodeElementIndex()) to unknownKeys
+        override fun setChildUnknownKeys(unknownKeys: Any?) {
+            this.unknownKeys += descriptor.getElementName(decodeElementIndex()) to unknownKeys
+        }
     }
 
     public companion object {

@@ -44,48 +44,28 @@ public sealed interface ViewModelState<T> {
         elseBlock: (ViewModelState<T>) -> Unit = {},
         block: (ViewModelStateException?) -> Unit = {},
     ): ViewModelState<T> = also {
-        if (it is Idle) {
-            block(it.exception)
-        }
-        else {
-            elseBlock(it)
-        }
+        if (it is Idle) block(it.exception) else elseBlock(it)
     }
 
     public fun onLoading(
         elseBlock: (ViewModelState<T>) -> Unit = {},
         block: (T) -> Unit = {},
     ): ViewModelState<T> = also {
-        if (it is Loading) {
-            block(it.data)
-        }
-        else {
-            elseBlock(it)
-        }
+        if (it is Loading) block(it.data) else elseBlock(it)
     }
 
     public fun onSuccess(
         elseBlock: (ViewModelState<T>) -> Unit = {},
         block: (T) -> Unit = {},
     ): ViewModelState<T> = also {
-        if (it is Success) {
-            block(it.data)
-        }
-        else {
-            elseBlock(it)
-        }
+        if (it is Success) block(it.data) else elseBlock(it)
     }
 
     public fun onFailure(
         elseBlock: (ViewModelState<T>) -> Unit = { },
         block: (data: T, throwable: Throwable) -> Unit = { _, _ -> },
     ): ViewModelState<T> = also {
-        if (it is Failure) {
-            block(it.data, it.exception)
-        }
-        else {
-            elseBlock(it)
-        }
+        if (it is Failure) block(it.data, it.exception) else elseBlock(it)
     }
 
     @Composable
@@ -93,12 +73,7 @@ public sealed interface ViewModelState<T> {
         elseBlock: @Composable (ViewModelState<T>) -> Unit = {},
         block: @Composable (T) -> Unit = { LoadingCircle() },
     ): ViewModelState<T> = also {
-        if (it is Loading) {
-            block(it.data)
-        }
-        else {
-            elseBlock(it)
-        }
+        if (it is Loading) block(it.data) else elseBlock(it)
     }
 
     @Composable
@@ -106,12 +81,7 @@ public sealed interface ViewModelState<T> {
         elseBlock: @Composable (ViewModelState<T>) -> Unit = {},
         block: @Composable (T) -> Unit = {},
     ): ViewModelState<T> = also {
-        if (it is Success) {
-            block(it.data)
-        }
-        else {
-            elseBlock(it)
-        }
+        if (it is Success) block(it.data) else elseBlock(it)
     }
 
     @Composable
@@ -119,12 +89,7 @@ public sealed interface ViewModelState<T> {
         elseBlock: @Composable (ViewModelState<T>) -> Unit = { },
         block: @Composable (data: T, throwable: Throwable) -> Unit = { _, _ -> },
     ): ViewModelState<T> = also {
-        if (it is Failure) {
-            block(it.data, it.exception)
-        }
-        else {
-            elseBlock(it)
-        }
+        if (it is Failure) block(it.data, it.exception) else elseBlock(it)
     }
 }
 
@@ -134,4 +99,5 @@ public fun <T> loading(data: T): ViewModelState.Loading<T> = ViewModelState.Load
 
 public fun <T> success(data: T): ViewModelState.Success<T> = ViewModelState.Success(data)
 
-public fun <T> failure(data: T, exception: ViewModelStateException): ViewModelState.Failure<T> = ViewModelState.Failure(data, exception)
+public fun <T> failure(data: T, exception: ViewModelStateException): ViewModelState.Failure<T> =
+    ViewModelState.Failure(data, exception)

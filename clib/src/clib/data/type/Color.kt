@@ -5,6 +5,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
+import androidx.compose.ui.graphics.toArgb
 import com.github.ajalt.colormath.model.LABColorSpaces.LAB50
 import com.github.ajalt.colormath.model.Oklab
 import com.github.ajalt.colormath.model.RGB
@@ -28,8 +29,8 @@ import com.github.ajalt.colormath.model.HSL
 
 public object ColorSerializer : PrimitiveULongSerializer<ComposeColor>(
     ComposeColor::class.simpleName!!,
-    ComposeColor::value,
-    ::ComposeColor,
+    { color -> color.toArgb().toULong() },
+    { value -> ComposeColor(value.toInt()) },
 )
 
 public typealias ColorSerial = @Serializable(with = ColorSerializer::class) ComposeColor

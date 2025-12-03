@@ -194,8 +194,7 @@ public open class TreeDecoder(
         }
     }
 
-    public inner class StructureDecoder(descriptor: SerialDescriptor) :
-        StructureLikeDecoder(descriptor) {
+    public inner class StructureDecoder(descriptor: SerialDescriptor) : StructureLikeDecoder(descriptor) {
 
         @Suppress("UNCHECKED_CAST")
         private var unknownKeys = value as Map<Any?, Any?>
@@ -247,10 +246,9 @@ public open class TreeDecoder(
 
         override fun decodeUnknownKeys(): Any? = unknownKeys.ifEmpty { null }
 
-        override fun setChildUnknownKeys(unknownKeys: Any?): Unit =
-            if (descriptor.kind is PolymorphicKind)
-                (this@TreeDecoder as StructureLikeDecoder).setChildUnknownKeys(unknownKeys)
-            else this.unknownKeys += descriptor.getElementName(decodeElementIndex()) to unknownKeys
+        override fun setChildUnknownKeys(unknownKeys: Any?) {
+            this.unknownKeys += descriptor.getElementName(decodeElementIndex()) to unknownKeys
+        }
     }
 
     public companion object {
