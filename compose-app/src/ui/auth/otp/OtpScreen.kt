@@ -26,7 +26,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.enter_code_sent_to
 import compose_app.generated.resources.resend_code
 import compose_app.generated.resources.resend_code_in
-import data.type.primitives.string.humanreadable.toHumanReadable
+import data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import kotlin.time.Duration
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.textfield.otp.AppOtpInputField
@@ -73,7 +73,7 @@ public fun OtpScreen(
 
         Text(
             text = if (state.countdown == Duration.ZERO) stringResource(Res.string.resend_code)
-            else stringResource(Res.string.resend_code_in, state.countdown.toHumanReadable()),
+            else stringResource(Res.string.resend_code, state.countdown.unaryMinus().toRelativeHumanReadable()),
             color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
             textAlign = TextAlign.Center,
             modifier = Modifier

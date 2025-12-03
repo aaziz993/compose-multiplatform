@@ -1,23 +1,21 @@
 package clib.data.type.primitives.string.humanreadable
 
 import androidx.compose.runtime.Composable
-import klib.data.type.primitives.string.humanreadable.toHumanReadable
-import kotlin.time.Instant
+import klib.data.type.primitives.string.humanreadable.toRelativeHumanReadable
+import kotlin.time.Duration
 import org.jetbrains.compose.resources.PluralStringResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 /**
- * Returns the given duration in human-readable format.
- * For example: a duration of 3 seconds returns "3 seconds".
+ * Returns the duration difference, in human-readable format.
  *
  * @return a formatted string
  */
 @Suppress("ComposeUnstableReceiver")
 @Composable
-public fun Instant.toHumanReadable(
-    baseInstant: Instant,
+public fun Duration.toRelativeHumanReadable(
     nanoseconds: PluralStringResource,
     microseconds: PluralStringResource,
     milliseconds: PluralStringResource,
@@ -31,8 +29,7 @@ public fun Instant.toHumanReadable(
     timeInFuture: StringResource,
     now: StringResource,
     timeAgo: StringResource,
-): String = toHumanReadable(
-    baseInstant,
+): String = toRelativeHumanReadable(
     { quantity -> pluralStringResource(nanoseconds, quantity) },
     { quantity -> pluralStringResource(microseconds, quantity) },
     { quantity -> pluralStringResource(milliseconds, quantity) },

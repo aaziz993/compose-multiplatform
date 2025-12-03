@@ -12,7 +12,7 @@
         <item>к.</item>      <!-- quetta -->
     </string-array>
 
-    <!-- Time Strings -->
+    <!-- Duration Strings -->
     <plurals name="nanoseconds">
         <item quantity="one">наносония</item>
         <item quantity="two">наносония</item>

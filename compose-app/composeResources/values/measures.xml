@@ -12,7 +12,7 @@
         <item>Q</item>      <!-- quetta -->
     </string-array>
 
-    <!-- Time Strings -->
+    <!-- Duration Strings -->
     <plurals name="nanoseconds">
         <item quantity="one">nanosecond</item>
         <item quantity="two">nanoseconds</item>

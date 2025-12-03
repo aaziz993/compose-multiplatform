@@ -13,8 +13,7 @@
     <string name="remember_sign_in">Запомнить вход</string>
     <string name="otp">Одноразовый вход</string>
     <string name="enter_code_sent_to">Ввести отправленный код</string>
-    <string name="resend_code_in">/Переслать код через %1$s</string>
-    <string name="resend_code">Переслать код</string>
+    <string name="resend_code_in">Переслать код %1$s</string>
     <string name="pin_code">PIN код</string>
     <string name="repeat_pin_code">Повторить PIN код</string>
     <string name="pin_codes_mismatch">PIN коды не совпадают</string>

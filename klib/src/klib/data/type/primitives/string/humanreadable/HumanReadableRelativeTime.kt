@@ -1,16 +1,14 @@
 package klib.data.type.primitives.string.humanreadable
 
 import klib.data.type.primitives.string.format
-import kotlin.time.Instant
+import kotlin.time.Duration
 
 /**
- * Returns the difference between now and instant, in human-readable format. Also supports
- * instants in the future. For example: an instant that's 5 hours ago will return "5 hours ago".
+ * Returns the duration difference, in human-readable format.
  *
  * @return a formatted string
  */
-public inline fun Instant.toHumanReadable(
-    baseInstant: Instant,
+public inline fun Duration.toRelativeHumanReadable(
     nanoseconds: (quantity: Int) -> String = { quantity -> "nanosecond${if (quantity > 1) "s" else ""}" },
     microseconds: (quantity: Int) -> String = { quantity -> "microsecond${if (quantity > 1) "s" else ""}" },
     milliseconds: (quantity: Int) -> String = { quantity -> "millisecond${if (quantity > 1) "s" else ""}" },
@@ -25,12 +23,11 @@ public inline fun Instant.toHumanReadable(
     now: String = "now",
     timeAgo: String = $$"${time} ago",
 ): String {
-    val diff = baseInstant - this
-    val secondsAgo = diff.inWholeSeconds
+    val secondsAgo = inWholeSeconds
 
     return when {
         secondsAgo < 0 -> timeInFuture.format(
-            diff.absoluteValue.toHumanReadable(
+            absoluteValue.toHumanReadable(
                 nanoseconds,
                 microseconds,
                 milliseconds,
@@ -47,7 +44,7 @@ public inline fun Instant.toHumanReadable(
         secondsAgo <= 1 -> now
 
         else -> timeAgo.format(
-            diff.absoluteValue.toHumanReadable(
+            absoluteValue.toHumanReadable(
                 nanoseconds,
                 microseconds,
                 milliseconds,
