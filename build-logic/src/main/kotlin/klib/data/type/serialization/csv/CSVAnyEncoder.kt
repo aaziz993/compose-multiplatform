@@ -18,5 +18,5 @@ internal class CSVAnyEncoder(encoder: CSVEncoder) : AnyEncoder<CSVEncoder>(encod
             if (encoder.configuration.includeHeader) lists.drop() else lists
         }
 
-    override fun encodeValue(value: Any?): Unit = encoder.encodeLists(value!!.cast())
+    override fun encodeValue(value: Any?): Unit = encoder.encodeLists(value.cast())
 }

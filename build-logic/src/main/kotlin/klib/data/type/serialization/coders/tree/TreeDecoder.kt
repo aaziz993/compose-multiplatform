@@ -229,7 +229,7 @@ public open class TreeDecoder(
                 }
 
             is PolymorphicKind -> descriptor.toPolymorphicValues(
-                value!!.cast(),
+                value.cast(),
                 configuration.classDiscriminator(descriptor),
             ).withIndex().toList()
 

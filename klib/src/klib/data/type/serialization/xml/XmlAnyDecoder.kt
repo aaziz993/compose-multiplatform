@@ -15,5 +15,5 @@ internal class XmlAnyDecoder(decoder: XmlDecoder) : AnyDecoder<XmlDecoder>(decod
     override fun decodeValue(): Any = decoder.input.decodeMapFromReader()
 
     override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>, value: Any?): T =
-        xml.decodeFromMap(deserializer, value!!.cast())
+        xml.decodeFromMap(deserializer, value.cast())
 }

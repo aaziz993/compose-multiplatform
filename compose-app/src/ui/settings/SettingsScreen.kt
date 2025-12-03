@@ -52,10 +52,9 @@ import compose_app.generated.resources.blend
 import compose_app.generated.resources.blue
 import compose_app.generated.resources.brightness
 import compose_app.generated.resources.camera
-import compose_app.generated.resources.close
+import compose_app.generated.resources.cancel
 import compose_app.generated.resources.color
 import compose_app.generated.resources.color_palette
-import compose_app.generated.resources.confirm
 import compose_app.generated.resources.copy
 import compose_app.generated.resources.density
 import compose_app.generated.resources.dynamic_color_palette
@@ -83,6 +82,7 @@ import compose_app.generated.resources.rgba
 import compose_app.generated.resources.right
 import compose_app.generated.resources.saturation
 import compose_app.generated.resources.search
+import compose_app.generated.resources.select
 import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
 import data.type.primitives.string.asStringResource
@@ -220,8 +220,8 @@ public fun SettingsScreen(
                 stringResource(Res.string.right),
                 stringResource(Res.string.hex),
                 stringResource(Res.string.copy),
-                stringResource(Res.string.close),
-                stringResource(Res.string.confirm),
+                stringResource(Res.string.cancel),
+                stringResource(Res.string.select),
             ),
         )
 
@@ -275,7 +275,10 @@ public fun SettingsScreen(
 
         SettingsLocalePickerDialog(
             value = locale,
-            onValueChanged = onLocaleChange,
+            onValueChanged = { value ->
+                onLocaleChange(value)
+                true
+            },
             title = { Text(text = stringResource(Res.string.language)) },
             subtitle = { Text(text = locale.toString().asStringResource()) },
             modifier = Modifier,

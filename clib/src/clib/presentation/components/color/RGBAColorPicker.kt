@@ -91,7 +91,7 @@ internal fun RGBAColorPicker(
                 onValueChange(value.copy(blue = it))
             }
             ColorSlider(
-                blue,
+                alpha,
                 value,
                 255,
                 value.alpha,

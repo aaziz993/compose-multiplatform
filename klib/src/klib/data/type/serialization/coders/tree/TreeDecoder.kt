@@ -194,8 +194,7 @@ public open class TreeDecoder(
         }
     }
 
-    public inner class StructureDecoder(descriptor: SerialDescriptor) :
-        StructureLikeDecoder(descriptor) {
+    public inner class StructureDecoder(descriptor: SerialDescriptor) : StructureLikeDecoder(descriptor) {
 
         @Suppress("UNCHECKED_CAST")
         private var unknownKeys = value as Map<Any?, Any?>
@@ -229,7 +228,7 @@ public open class TreeDecoder(
                 }
 
             is PolymorphicKind -> descriptor.toPolymorphicValues(
-                value!!.cast(),
+                value.cast(),
                 configuration.classDiscriminator(descriptor),
             ).withIndex().toList()
 

@@ -48,9 +48,9 @@ internal fun HSLAColorPicker(
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     title: String = "Select color hsla",
-    saturationLabel: String = "Saturation",
-    lightnessLabel: String = "Lightness",
-    alphaLabel: String = "Alpha",
+    saturation: String = "Saturation",
+    lightness: String = "Lightness",
+    alpha: String = "Alpha",
     hex: String = "Hex",
     copy: String = "Copy",
 ): Unit = Column(
@@ -109,7 +109,7 @@ internal fun HSLAColorPicker(
         modifier = Modifier.weight(.3f),
     ) {
         ColorSlider(
-            saturationLabel,
+            saturation,
             value,
             100,
             hsl.s,
@@ -118,7 +118,7 @@ internal fun HSLAColorPicker(
             onValueChange(hsl.toColor())
         }
         ColorSlider(
-            lightnessLabel,
+            lightness,
             value,
             100,
             hsl.l,
@@ -127,7 +127,7 @@ internal fun HSLAColorPicker(
             onValueChange(hsl.toColor())
         }
         ColorSlider(
-            alphaLabel,
+            alpha,
             value,
             100,
             hsl.alpha,

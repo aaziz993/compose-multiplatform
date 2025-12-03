@@ -172,7 +172,10 @@ public fun AppBar(
 
                         if (isLocalePickerDialogOpen)
                             LocalePickerDialog(
-                                onItemClicked = onLocaleChange,
+                                onItemClicked = { item ->
+                                    onLocaleChange(item)
+                                    isLocalePickerDialogOpen = false
+                                },
                                 onDismissRequest = {
                                     isLocalePickerDialogOpen = false
                                 },

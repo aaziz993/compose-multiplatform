@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.model.ColorPicker
-import com.github.skydoves.colorpicker.compose.ColorPickerController
 
 /**
  * This created a bottom sheet to pick color. As a content of this user can select their color using
@@ -112,6 +111,8 @@ public fun ColorPickerBottomSheet(
                 picker.green,
                 picker.blue,
                 picker.alpha,
+                picker.hex,
+                picker.copy,
             )
 
             1 -> GridColorPicker(
@@ -123,6 +124,8 @@ public fun ColorPickerBottomSheet(
                     .weight(.8f)
                     .padding(16.dp),
                 picker.grid,
+                picker.hex,
+                picker.copy,
             )
 
             2 -> HSVColorPicker(
@@ -134,9 +137,10 @@ public fun ColorPickerBottomSheet(
                     .weight(.8f)
                     .padding(16.dp),
                 picker.hsv,
-                picker.hsv,
                 picker.brightness,
                 picker.alpha,
+                picker.hex,
+                picker.copy,
             )
 
             3 -> HSLAColorPicker(
@@ -151,6 +155,8 @@ public fun ColorPickerBottomSheet(
                 picker.saturation,
                 picker.lightness,
                 picker.alpha,
+                picker.hex,
+                picker.copy,
             )
 
             4 -> BlendColorPicker(
@@ -164,6 +170,8 @@ public fun ColorPickerBottomSheet(
                 picker.blend,
                 picker.left,
                 picker.right,
+                picker.hex,
+                picker.copy,
             )
         }
 
@@ -181,7 +189,7 @@ public fun ColorPickerBottomSheet(
                 onClick = onClose,
             ) {
                 Text(
-                    text = picker.close,
+                    text = picker.cancel,
                     color = MaterialTheme.colorScheme.secondary,
                 )
             }
@@ -194,7 +202,7 @@ public fun ColorPickerBottomSheet(
                 onClick = { onSelect(color) },
             ) {
                 Text(
-                    text = picker.confirm,
+                    text = picker.select,
                     color = MaterialTheme.colorScheme.secondary,
                 )
             }

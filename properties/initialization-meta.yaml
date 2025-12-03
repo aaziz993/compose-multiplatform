@@ -29,7 +29,7 @@ licenseHeaderFile:
   owner: ${developer.name}
   ownerPlaceholder: '[name of copyright owner]'
   licenseName: ${license.name}
-  licenseNamePlaceHolder: '[name of license]'
+  licenseNamePlaceholder: '[name of license]'
 contributingFile:
   projectNamePlaceholder: '[INSERT PROJECT NAME]'
   defaultBranch: main

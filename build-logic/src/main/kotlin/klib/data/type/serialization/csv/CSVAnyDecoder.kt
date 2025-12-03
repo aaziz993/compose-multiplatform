@@ -15,5 +15,5 @@ internal class CSVAnyDecoder(decoder: CSVDecoder) : AnyDecoder<CSVDecoder>(decod
     override fun decodeValue(): Any = decoder.decodeLists()
 
     override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>, value: Any?): T =
-        csv.decodeFromLists(deserializer, value!!.cast())
+        csv.decodeFromLists(deserializer, value.cast())
 }

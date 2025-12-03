@@ -1,4 +1,4 @@
-ui1:
+ui:
   theme:
     isDynamic: true
     isHighContrast: true
@@ -16,36 +16,48 @@ ui1:
     shapes:
       small:
         squircle:
-          topStartCorner:
-            dp: 16
-          topEndCorner:
-            dp: 16
-          bottomStartCorner:
-            dp: 16
-          bottomEndCorner:
-            dp: 16
+          topStart:
+            dp:
+              size: 16
+          topEnd:
+            dp:
+              size: 16
+          bottomStart:
+            dp:
+              size: 16
+          bottomEnd:
+            dp:
+              size: 16
           smoothing: 48
       medium:
         squircle:
-          topStartCorner:
-            dp: 32
-          topEndCorner:
-            dp: 32
-          bottomStartCorner:
-            dp: 32
-          bottomEndCorner:
-            dp: 32
+          topStart:
+            dp:
+              size: 32
+          topEnd:
+            dp:
+              size: 32
+          bottomStart:
+            dp:
+              size: 32
+          bottomEnd:
+            dp:
+              size: 32
           smoothing: 48
       large:
         squircle:
-          topStartCorner:
-            dp: 100
-          topEndCorner:
-            dp: 100
-          bottomStartCorner:
-            dp: 100
-          bottomEndCorner:
-            dp: 100
+          topStart:
+            dp:
+              size: 100
+          topEnd:
+            dp:
+              size: 100
+          bottomStart:
+            dp:
+              size: 100
+          bottomEnd:
+            dp:
+              size: 100
           smoothing: 48
     typography: { }
 

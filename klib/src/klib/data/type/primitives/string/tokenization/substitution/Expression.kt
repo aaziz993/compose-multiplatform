@@ -620,7 +620,7 @@ public class AddAll(
 ) : Member(arguments, optional) {
 
     override fun operate(arguments: List<Any?>): Any? = arguments[0]?.asMutableList<Any?>().runNullSafely {
-        if (arguments.size > 2) addAll(arguments[1] as Int, arguments[2]!!.cast()) else addAll(arguments[1]!!.cast())
+        if (arguments.size > 2) addAll(arguments[1] as Int, arguments[2].cast()) else addAll(arguments[1].cast())
     }
 }
 

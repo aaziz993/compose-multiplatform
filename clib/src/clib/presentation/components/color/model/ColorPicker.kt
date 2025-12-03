@@ -18,6 +18,6 @@ public data class ColorPicker(
     val right: String = "Right",
     val hex: String = "Hex",
     val copy: String = "Copy",
-    val close: String = "Close",
-    val confirm: String = "Confirm",
+    val cancel: String = "Cancel",
+    val select: String = "Select",
 )

@@ -9,5 +9,5 @@ internal class PropertiesAnyEncoder(encoder: PropertiesEncoder) : AnyEncoder<Pro
     override fun <T> encodeSerializableValue(serializer: SerializationStrategy<T>, value: T): Any? =
         encoder.properties.encodeToAny(serializer, value)
 
-    override fun encodeValue(value: Any?): Unit = encoder.encodeAny(value!!.cast())
+    override fun encodeValue(value: Any?): Unit = encoder.encodeAny(value.cast())
 }

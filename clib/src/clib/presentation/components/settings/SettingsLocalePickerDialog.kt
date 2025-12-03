@@ -24,7 +24,7 @@ import klib.data.location.locale.Locale
 @Composable
 public fun SettingsLocalePickerDialog(
     value: Locale,
-    onValueChanged: (Locale) -> Unit,
+    onValueChanged: (Locale) -> Boolean,
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
@@ -44,7 +44,9 @@ public fun SettingsLocalePickerDialog(
     var isLocalePickerDialogOpen by remember { mutableStateOf(false) }
     if (isLocalePickerDialogOpen)
         LocalePickerDialog(
-            onItemClicked = onValueChanged,
+            onItemClicked = { item ->
+                isLocalePickerDialogOpen = onValueChanged(item)
+            },
             onDismissRequest = {
                 isLocalePickerDialogOpen = false
             },
