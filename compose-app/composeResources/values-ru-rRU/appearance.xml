@@ -20,8 +20,8 @@
     <string name="line_height">Высота строки</string>
     <string name="line_spacing">Межстрочный интервал</string>
     <string name="quick_access">Быстрый доступ</string>
-    <string name="quick_support">Быстрый доступ к поддержке</string>
-    <string name="quick_theme">Быстрый доступ к темам</string>
+    <string name="quick_access_to_support">Быстрый доступ к поддержке</string>
+    <string name="quick_access_to_themes">Быстрый доступ к темам</string>
     <string name="quick access to_locales">Быстрый доступ к языкам</string>
     <string name="quick_access_to_avatar">Быстрый доступ к аватару</string>
 </resources>

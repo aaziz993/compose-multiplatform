@@ -37,7 +37,6 @@ import com.github.skydoves.colorpicker.compose.ColorPickerController
  * @param onDismissRequest: Executes when the user clicks outside of the bottom sheet, after sheet animates to Hidden.
  * @param onSelect: (selectedColor: Color) -> Unit: Callback to invoke when a color is selected.
  * @param onClose: Callback to invoke when user clicks close button.
- * @param controller [ColorPickerController].
  * @param sheetState: SheetState: State variable to control the bottom sheet.
  * @param picker: Picker visual configuration.
  *
@@ -127,7 +126,6 @@ public fun ColorPickerBottomSheet(
             )
 
             2 -> HSVColorPicker(
-                controller,
                 color,
                 { value ->
                     color = value
@@ -135,6 +133,7 @@ public fun ColorPickerBottomSheet(
                 Modifier
                     .weight(.8f)
                     .padding(16.dp),
+                picker.hsv,
                 picker.hsv,
                 picker.brightness,
                 picker.alpha,
