@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -30,12 +29,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import clib.data.location.country.getEmojiFlag
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
 import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.components.color.model.ColorPicker
-import clib.presentation.components.settings.SettingsColorMenuLink
+import clib.presentation.components.country.model.CountryPicker
+import clib.presentation.components.settings.SettingsColorPickerBottomSheet
+import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
@@ -82,6 +82,7 @@ import compose_app.generated.resources.reset
 import compose_app.generated.resources.rgba
 import compose_app.generated.resources.right
 import compose_app.generated.resources.saturation
+import compose_app.generated.resources.search
 import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
 import data.type.primitives.string.asStringResource
@@ -93,7 +94,6 @@ import klib.data.permission.model.Permission
 import klib.data.type.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import presentation.components.country.LocalePickerDialog
 import presentation.theme.model.IsDarkIcon
 import presentation.theme.model.isDarkStringResource
 import ui.navigation.presentation.Settings
@@ -195,7 +195,7 @@ public fun SettingsScreen(
             onClick = { },
         )
 
-        SettingsColorMenuLink(
+        SettingsColorPickerBottomSheet(
             value = Color.Cyan,
             onValueChanged = {},
             title = { Text(text = stringResource(Res.string.dynamic_color_palette)) },
@@ -273,29 +273,18 @@ public fun SettingsScreen(
             },
         )
 
-        var isLocalePickerDialogOpen by remember { mutableStateOf(false) }
-
-        if (isLocalePickerDialogOpen)
-            LocalePickerDialog(
-                locales,
-                onLocaleChange,
-            ) {
-                isLocalePickerDialogOpen = false
-            }
-
-        SettingsMenuLink(
+        SettingsLocalePickerDialog(
+            value = locale,
+            onValueChanged = onLocaleChange,
             title = { Text(text = stringResource(Res.string.language)) },
-            subtitle = {
-                Text(text = locale.toString().asStringResource())
-            },
+            subtitle = { Text(text = locale.toString().asStringResource()) },
             modifier = Modifier,
             enabled = true,
-            icon = {
-                Text(locale.country()!!.alpha2.getEmojiFlag())
-            },
-            onClick = {
-                isLocalePickerDialogOpen = true
-            },
+            locales = locales,
+            picker = CountryPicker(
+                headerTitle = stringResource(Res.string.language),
+                searchHint = stringResource(Res.string.search),
+            ),
         )
 
         SettingsSwitch(
@@ -436,5 +425,3 @@ public fun SettingsScreen(
 @Preview
 @Composable
 public fun PreviewSettingsScreen(): Unit = SettingsScreen()
-
-

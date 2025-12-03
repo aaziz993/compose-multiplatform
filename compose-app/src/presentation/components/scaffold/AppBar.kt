@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
 import clib.presentation.auth.AuthComposable
+import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
@@ -60,7 +61,6 @@ import klib.data.location.locale.current
 import klib.data.type.auth.model.Auth
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import presentation.components.country.LocalePickerDialog
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
 import presentation.theme.model.IsDarkIcon
@@ -170,11 +170,12 @@ public fun AppBar(
 
                         if (isLocalePickerDialogOpen)
                             LocalePickerDialog(
-                                locales,
-                                onLocaleChange,
-                            ) {
-                                isLocalePickerDialogOpen = false
-                            }
+                                onItemClicked = onLocaleChange,
+                                onDismissRequest = {
+                                    isLocalePickerDialogOpen = false
+                                },
+                                locales = locales,
+                            )
 
 
                         AppTooltipBox(stringResource(Res.string.language)) {

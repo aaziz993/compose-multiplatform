@@ -25,7 +25,7 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 
 @Composable
-public fun SettingsColorMenuLink(
+public fun SettingsColorPickerBottomSheet(
     value: Color,
     onValueChanged: (Color) -> Unit,
     title: @Composable () -> Unit,

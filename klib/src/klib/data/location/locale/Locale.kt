@@ -34,6 +34,8 @@ public data class Locale(
 
         public val root: Locale = Locale(LanguageTag.forLanguage(LanguageTag.UNDETERMINED_PREFIX))
 
+        public fun getLocales(): Sequence<Locale> = LanguageTag.getLanguageTags().map(::Locale)
+
         public fun forLanguage(
             language: String?,
             script: String? = null,
