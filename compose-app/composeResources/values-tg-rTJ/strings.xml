@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application name -->
+    <string name="app_name">Compose Multiplatform</string>
+
+    <!-- Tabs -->
+
+    <!-- Labels -->
+
+    <!-- Placeholders -->
+
+    <!-- Hints -->
+
+    <!-- Messages -->
+
+    <!-- Buttons -->
+
+    <!-- Toast messages -->
+    <string name="general">General</string>
+    <string name="actions">Actions</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="continue">Continue</string>
+    <string name="content">Content</string>
+    <string name="description">Description</string>
+    <string name="file">File</string>
+    <string name="live_search">Live search</string>
+    <string name="markers">Markers</string>
+    <string name="menu">Menu</string>
+    <string name="options">Options</string>
+    <string name="path">Path</string>
+    <string name="pagination">Pagination</string>
+    <string name="retry">Retry</string>
+    <string name="reset">Reset</string>
+    <string name="search">Search</string>
+    <string name="select">Select</string>
+    <string name="submit">Submit</string>
+    <string name="time">Time</string>
+    <string name="time_format">Time format</string>
+    <string name="header">Header</string>
+    <string name="help">Help</string>
+    <string name="identifier">Identifier</string>
+    <string name="id">ID</string>
+    <string name="image">Image</string>
+</resources>
