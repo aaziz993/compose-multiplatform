@@ -1,6 +1,5 @@
 package clib.presentation
 
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.Dp
  * @param color The color of the stroke.
  * @param strokeWidth The width of the stroke.
  */
-@Stable
 public fun Modifier.bottomStroke(color: Color, strokeWidth: Dp): Modifier =
     then(
         drawWithContent {
@@ -31,8 +29,15 @@ public fun Modifier.bottomStroke(color: Color, strokeWidth: Dp): Modifier =
         },
     )
 
-@Stable
-public fun Modifier.fadingEdge(brush: Brush) =
+/**
+ * Applies a fading edge effect to a composable using the given [brush].
+ *
+ * The content is drawn normally, then masked with the [brush] using
+ * [BlendMode.DstIn], creating a smooth fade at the edges.
+ *
+ * @param brush The [Brush] defining the fade gradient.
+ */
+public fun Modifier.fadingEdge(brush: Brush): Modifier =
     graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
         .drawWithContent {
             drawContent()

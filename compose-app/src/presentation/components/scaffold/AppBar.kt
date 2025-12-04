@@ -2,24 +2,31 @@ package presentation.components.scaffold
 
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.filled.NavigateBefore
+import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -38,6 +45,8 @@ import clib.data.location.country.flag
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
+import clib.presentation.components.dropdown.menu.DropDownMenu
+import clib.presentation.components.dropdown.menu.model.MenuItem
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
@@ -51,7 +60,9 @@ import compose_app.generated.resources.locale
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
+import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.theme
+import compose_app.generated.resources.navigate
 import data.type.primitives.string.asStringResource
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
@@ -133,7 +144,7 @@ public fun AppBar(
                                     onClick = { onNavigationAction(NavigationAction.Pop) },
                                 ) {
                                     Icon(
-                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                        imageVector = Icons.AutoMirrored.Default.NavigateBefore,
                                         contentDescription = stringResource(Res.string.back),
                                     )
                                 }
@@ -228,17 +239,65 @@ public fun AppBar(
                     if (quickAccess.isAvatar)
                         AuthComposable(auth) { user ->
                             AppTooltipBox(stringResource(Res.string.profile)) {
-                                IconButton(
-                                    onClick = {
-                                        onNavigationAction(NavigationAction.Push(Profile))
-                                    },
+                                var showMenu by remember { mutableStateOf(false) }
+                                Avatar(
+                                    user = user,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape)
+                                        .combinedClickable(
+                                            onLongClick = { showMenu = true },
+                                        ) {
+                                            onNavigationAction(NavigationAction.Push(Profile))
+                                        },
                                 ) {
-                                    Avatar(
-                                        user = user,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .clip(CircleShape),
-                                    )
+                                    if (showMenu)
+                                        DropDownMenu(
+                                            items = listOf(
+                                                MenuItem(
+                                                    title = {
+                                                        Text(text = stringResource(Res.string.navigate), color = MaterialTheme.colorScheme.onSurface)
+                                                    },
+                                                    leadingIcon = {
+                                                        Icon(
+                                                            imageVector = Icons.AutoMirrored.Default.NavigateNext,
+                                                            contentDescription = null,
+                                                            tint = MaterialTheme.colorScheme.onSurface,
+                                                        )
+                                                    },
+                                                    onAction = {
+                                                        onNavigationAction(NavigationAction.Push(Profile))
+                                                        showMenu = false
+                                                    },
+                                                ),
+                                                MenuItem(
+                                                    title = {
+                                                        Text(text = stringResource(Res.string.sign_out), color = MaterialTheme.colorScheme.onSurface)
+                                                    },
+                                                    leadingIcon = {
+                                                        Icon(
+                                                            imageVector = Icons.AutoMirrored.Default.Logout,
+                                                            contentDescription = null,
+                                                            tint = MaterialTheme.colorScheme.onSurface,
+                                                        )
+                                                    },
+                                                    onAction = {
+                                                        onAuthChange(Auth())
+                                                    },
+                                                ),
+                                            ),
+                                            modifier = Modifier
+                                                .padding(top = 40.dp)
+                                                .width(100.dp),
+                                            shape = RoundedCornerShape(4.dp),
+                                            elevation = CardDefaults.elevatedCardElevation(
+                                                defaultElevation = 8.dp, // Increased elevation for better visibility in dark theme.
+                                                pressedElevation = 12.dp,
+                                            ),
+                                            colors = CardDefaults.elevatedCardColors(
+                                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                                            ),
+                                        )
                                 }
                             }
                         }

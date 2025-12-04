@@ -14,83 +14,105 @@
 
     <!-- Duration Strings -->
     <plurals name="nanoseconds">
+        <item quantity="one">наносония</item>
         <item quantity="other">наносония</item>
     </plurals>
 
     <plurals name="microseconds">
+        <item quantity="one">микросония</item>
         <item quantity="other">микросония</item>
     </plurals>
 
     <plurals name="milliseconds">
+        <item quantity="one">миллисония</item>
         <item quantity="other">миллисония</item>
     </plurals>
 
     <plurals name="seconds">
+        <item quantity="one">сония</item>
         <item quantity="other">сония</item>
     </plurals>
 
     <plurals name="minutes">
+        <item quantity="one">дакика</item>
         <item quantity="other">дакика</item>
     </plurals>
 
     <plurals name="hours">
+        <item quantity="one">соат</item>
         <item quantity="other">соат</item>
     </plurals>
 
     <plurals name="days">
+        <item quantity="one">руз</item>
         <item quantity="other">руз</item>
     </plurals>
 
     <plurals name="weeks">
+        <item quantity="one">хафта</item>
         <item quantity="other">хафта</item>
     </plurals>
 
     <plurals name="months">
+        <item quantity="one">мох</item>
         <item quantity="other">мох</item>
     </plurals>
 
     <plurals name="years">
+        <item quantity="one">сол</item>
         <item quantity="other">сол</item>
     </plurals>
 
     <!-- Relative Time Strings -->
     <plurals name="relative_nanoseconds">
+        <item quantity="one">наносония</item>
         <item quantity="other">наносония</item>
     </plurals>
 
     <plurals name="relative_microseconds">
+        <item quantity="one">микросония</item>
         <item quantity="other">микросония</item>
     </plurals>
 
     <plurals name="relative_milliseconds">
+        <item quantity="one">миллисония</item>
         <item quantity="other">миллисония</item>
     </plurals>
 
     <plurals name="relative_seconds">
+        <item quantity="zero">сония</item>
+        <item quantity="one">сония</item>
         <item quantity="other">сония</item>
     </plurals>
 
     <plurals name="relative_minutes">
+        <item quantity="zero">дакика</item>
+        <item quantity="one">дакика</item>
         <item quantity="other">дакика</item>
     </plurals>
 
     <plurals name="relative_hours">
+        <item quantity="one">соат</item>
         <item quantity="other">соат</item>
     </plurals>
 
     <plurals name="relative_days">
+        <item quantity="one">руз</item>
         <item quantity="other">руз</item>
     </plurals>
 
     <plurals name="relative_weeks">
+        <item quantity="one">хафта</item>
         <item quantity="other">хафта</item>
     </plurals>
 
     <plurals name="relative_months">
+        <item quantity="one">мох</item>
         <item quantity="other">мох</item>
     </plurals>
 
     <plurals name="relative_years">
+        <item quantity="one">сол</item>
         <item quantity="other">сол</item>
     </plurals>
 

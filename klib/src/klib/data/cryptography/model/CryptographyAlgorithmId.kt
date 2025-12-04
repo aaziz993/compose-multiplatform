@@ -28,7 +28,9 @@ private sealed class CryptographyAlgorithmId<T : CryptographyAlgorithm> {
     abstract fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<T>
 }
 
-private object CryptographyAlgorithmIdSerializer : MapTransformingPolymorphicSerializer<CryptographyAlgorithmId>(
+private class CryptographyAlgorithmIdSerializer(
+    @Suppress("Unused") tSerializer: KSerializer<Nothing>
+) : MapTransformingPolymorphicSerializer<CryptographyAlgorithmId<*>>(
     baseClass = CryptographyAlgorithmId::class,
     subclasses = mapOf(
         MD5::class to MD5.serializer(),
@@ -129,6 +131,7 @@ public class CryptoCryptographyAlgorithmIdSerializer<T : CryptographyAlgorithm>(
     private val delegate = CryptographyAlgorithmId.serializer(tSerializer)
     override val descriptor: SerialDescriptor = delegate.descriptor
 
+    @Suppress("UNCHECKED_CAST")
     override fun serialize(encoder: Encoder, value: CryptoCryptographyAlgorithmId<T>): Unit =
         encoder.encodeSerializableValue(
             delegate,
