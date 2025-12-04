@@ -15,162 +15,122 @@
     <!-- Duration Strings -->
     <plurals name="nanoseconds">
         <item quantity="one">наносекунда</item>
-        <item quantity="two">наносекунды</item>
         <item quantity="few">наносекунды</item>
-        <item quantity="many">наносекунды</item>
         <item quantity="other">наносекунд</item>
     </plurals>
 
     <plurals name="microseconds">
         <item quantity="one">микросекунда</item>
-        <item quantity="two">микросекунды</item>
         <item quantity="few">микросекунды</item>
-        <item quantity="many">микросекунды</item>
         <item quantity="other">микросекунд</item>
     </plurals>
 
     <plurals name="milliseconds">
         <item quantity="one">миллисекунда</item>
-        <item quantity="two">миллисекунды</item>
         <item quantity="few">миллисекунды</item>
-        <item quantity="many">миллисекунды</item>
         <item quantity="other">миллисекунд</item>
     </plurals>
 
     <plurals name="seconds">
         <item quantity="one">секунда</item>
-        <item quantity="two">секунды</item>
         <item quantity="few">секунды</item>
-        <item quantity="many">секунды</item>
         <item quantity="other">секунд</item>
     </plurals>
 
     <plurals name="minutes">
         <item quantity="one">минута</item>
-        <item quantity="two">минуты</item>
         <item quantity="few">минуты</item>
-        <item quantity="many">минуты</item>
         <item quantity="other">минут</item>
     </plurals>
 
     <plurals name="hours">
         <item quantity="one">час</item>
-        <item quantity="two">часа</item>
         <item quantity="few">часа</item>
-        <item quantity="many">часа</item>
         <item quantity="other">часов</item>
     </plurals>
 
     <plurals name="days">
         <item quantity="one">день</item>
-        <item quantity="two">дня</item>
         <item quantity="few">дня</item>
-        <item quantity="many">дня</item>
         <item quantity="other">дней</item>
     </plurals>
 
     <plurals name="weeks">
         <item quantity="one">неделя</item>
-        <item quantity="two">недели</item>
         <item quantity="few">недели</item>
-        <item quantity="many">недели</item>
         <item quantity="other">недель</item>
     </plurals>
 
     <plurals name="months">
         <item quantity="one">месяц</item>
-        <item quantity="two">месяца</item>
         <item quantity="few">месяца</item>
-        <item quantity="many">месяца</item>
         <item quantity="other">месяцев</item>
     </plurals>
 
     <plurals name="years">
         <item quantity="one">год</item>
-        <item quantity="two">года</item>
         <item quantity="few">года</item>
-        <item quantity="many">года</item>
         <item quantity="other">лет</item>
     </plurals>
 
     <!-- Relative Time Strings -->
     <plurals name="relative_nanoseconds">
         <item quantity="one">наносекунду</item>
-        <item quantity="two">наносекунды</item>
         <item quantity="few">наносекунды</item>
-        <item quantity="many">наносекунды</item>
         <item quantity="other">наносекунд</item>
     </plurals>
 
     <plurals name="relative_microseconds">
         <item quantity="one">микросекунду</item>
-        <item quantity="two">микросекунды</item>
         <item quantity="few">микросекунды</item>
-        <item quantity="many">микросекунды</item>
         <item quantity="other">микросекунд</item>
     </plurals>
 
     <plurals name="relative_milliseconds">
         <item quantity="one">миллисекунду</item>
-        <item quantity="two">миллисекунды</item>
         <item quantity="few">миллисекунды</item>
-        <item quantity="many">миллисекунды</item>
         <item quantity="other">миллисекунд</item>
     </plurals>
 
     <plurals name="relative_seconds">
         <item quantity="one">секунду</item>
-        <item quantity="two">секунды</item>
         <item quantity="few">секунды</item>
-        <item quantity="many">секунды</item>
         <item quantity="other">секунд</item>
     </plurals>
 
     <plurals name="relative_minutes">
         <item quantity="one">минуту</item>
-        <item quantity="two">минуты</item>
         <item quantity="few">минуты</item>
-        <item quantity="many">минуты</item>
         <item quantity="other">минут</item>
     </plurals>
 
     <plurals name="relative_hours">
         <item quantity="one">час</item>
-        <item quantity="two">часа</item>
         <item quantity="few">часа</item>
-        <item quantity="many">часа</item>
         <item quantity="other">часов</item>
     </plurals>
 
     <plurals name="relative_days">
         <item quantity="one">день</item>
-        <item quantity="two">дня</item>
         <item quantity="few">дня</item>
-        <item quantity="many">дня</item>
         <item quantity="other">дней</item>
     </plurals>
 
     <plurals name="relative_weeks">
         <item quantity="one">неделю</item>
-        <item quantity="two">недели</item>
         <item quantity="few">недели</item>
-        <item quantity="many">недели</item>
         <item quantity="other">недель</item>
     </plurals>
 
     <plurals name="relative_months">
         <item quantity="one">месяц</item>
-        <item quantity="two">месяца</item>
         <item quantity="few">месяца</item>
-        <item quantity="many">месяца</item>
         <item quantity="other">месяцев</item>
     </plurals>
 
     <plurals name="relative_years">
         <item quantity="one">год</item>
-        <item quantity="two">года</item>
         <item quantity="few">года</item>
-        <item quantity="many">года</item>
         <item quantity="other">лет</item>
     </plurals>
 

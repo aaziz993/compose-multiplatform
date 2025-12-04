@@ -15,162 +15,102 @@
     <!-- Duration Strings -->
     <plurals name="nanoseconds">
         <item quantity="one">nanosecond</item>
-        <item quantity="two">nanoseconds</item>
-        <item quantity="few">nanoseconds</item>
-        <item quantity="many">nanoseconds</item>
         <item quantity="other">nanoseconds</item>
     </plurals>
 
     <plurals name="microseconds">
         <item quantity="one">microsecond</item>
-        <item quantity="two">microseconds</item>
-        <item quantity="few">microseconds</item>
-        <item quantity="many">microseconds</item>
         <item quantity="other">microseconds</item>
     </plurals>
 
     <plurals name="milliseconds">
         <item quantity="one">millisecond</item>
-        <item quantity="two">milliseconds</item>
-        <item quantity="few">milliseconds</item>
-        <item quantity="many">milliseconds</item>
         <item quantity="other">milliseconds</item>
     </plurals>
 
     <plurals name="seconds">
         <item quantity="one">second</item>
-        <item quantity="two">seconds</item>
-        <item quantity="few">seconds</item>
-        <item quantity="many">seconds</item>
         <item quantity="other">seconds</item>
     </plurals>
 
     <plurals name="minutes">
         <item quantity="one">minute</item>
-        <item quantity="two">minutes</item>
-        <item quantity="few">minutes</item>
-        <item quantity="many">minutes</item>
         <item quantity="other">minutes</item>
     </plurals>
 
     <plurals name="hours">
         <item quantity="one">hour</item>
-        <item quantity="two">hours</item>
-        <item quantity="few">hours</item>
-        <item quantity="many">hours</item>
         <item quantity="other">hours</item>
     </plurals>
 
     <plurals name="days">
         <item quantity="one">day</item>
-        <item quantity="two">days</item>
-        <item quantity="few">days</item>
-        <item quantity="many">days</item>
         <item quantity="other">days</item>
     </plurals>
 
     <plurals name="weeks">
         <item quantity="one">week</item>
-        <item quantity="two">weeks</item>
-        <item quantity="few">weeks</item>
-        <item quantity="many">weeks</item>
         <item quantity="other">weeks</item>
     </plurals>
 
     <plurals name="months">
         <item quantity="one">month</item>
-        <item quantity="two">months</item>
-        <item quantity="few">months</item>
-        <item quantity="many">months</item>
         <item quantity="other">months</item>
     </plurals>
 
     <plurals name="years">
         <item quantity="one">year</item>
-        <item quantity="two">years</item>
-        <item quantity="few">years</item>
-        <item quantity="many">years</item>
         <item quantity="other">years</item>
     </plurals>
 
     <!-- Relative Time Strings -->
     <plurals name="relative_nanoseconds">
         <item quantity="one">nanosecond</item>
-        <item quantity="two">nanoseconds</item>
-        <item quantity="few">nanoseconds</item>
-        <item quantity="many">nanoseconds</item>
         <item quantity="other">nanoseconds</item>
     </plurals>
 
     <plurals name="relative_microseconds">
         <item quantity="one">microsecond</item>
-        <item quantity="two">microseconds</item>
-        <item quantity="few">microseconds</item>
-        <item quantity="many">microseconds</item>
         <item quantity="other">microseconds</item>
     </plurals>
 
     <plurals name="relative_milliseconds">
         <item quantity="one">millisecond</item>
-        <item quantity="two">milliseconds</item>
-        <item quantity="few">milliseconds</item>
-        <item quantity="many">milliseconds</item>
         <item quantity="other">milliseconds</item>
     </plurals>
 
     <plurals name="relative_seconds">
         <item quantity="one">second</item>
-        <item quantity="two">seconds</item>
-        <item quantity="few">seconds</item>
-        <item quantity="many">seconds</item>
         <item quantity="other">seconds</item>
     </plurals>
 
     <plurals name="relative_minutes">
         <item quantity="one">minute</item>
-        <item quantity="two">minutes</item>
-        <item quantity="few">minutes</item>
-        <item quantity="many">minutes</item>
         <item quantity="other">minutes</item>
     </plurals>
 
     <plurals name="relative_hours">
         <item quantity="one">hour</item>
-        <item quantity="two">hours</item>
-        <item quantity="few">hours</item>
-        <item quantity="many">hours</item>
         <item quantity="other">hours</item>
     </plurals>
 
     <plurals name="relative_days">
         <item quantity="one">day</item>
-        <item quantity="two">days</item>
-        <item quantity="few">days</item>
-        <item quantity="many">days</item>
         <item quantity="other">days</item>
     </plurals>
 
     <plurals name="relative_weeks">
         <item quantity="one">week</item>
-        <item quantity="two">weeks</item>
-        <item quantity="few">weeks</item>
-        <item quantity="many">weeks</item>
         <item quantity="other">weeks</item>
     </plurals>
 
     <plurals name="relative_months">
         <item quantity="one">month</item>
-        <item quantity="two">months</item>
-        <item quantity="few">months</item>
-        <item quantity="many">months</item>
         <item quantity="other">months</item>
     </plurals>
 
     <plurals name="relative_years">
         <item quantity="one">year</item>
-        <item quantity="two">years</item>
-        <item quantity="few">years</item>
-        <item quantity="many">years</item>
         <item quantity="other">years</item>
     </plurals>
 
