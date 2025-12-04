@@ -4,13 +4,15 @@ import kotlinx.serialization.descriptors.PrimitiveKind
 
 public abstract class PrimitiveStringSerializer<T : Any>(
     serialName: String,
-    serializer: (T) -> String,
+    serializer: (T) -> String = { value -> value.toString() },
     deserializer: (String) -> T,
 ) : PrimitiveSerializer<T>(
     serialName,
     PrimitiveKind.STRING,
     { encoder, value ->
         encoder.encodeString(serializer(value))
-    }, {
+    },
+    {
         deserializer(it.decodeString())
-    })
+    },
+)
