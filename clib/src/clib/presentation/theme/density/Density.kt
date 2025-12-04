@@ -18,7 +18,7 @@ import kotlin.math.roundToInt
 
 // Those functions are designed to be used in lambdas.
 
-// DP
+// DP.
 public fun Density.dpToSp(dp: Dp): TextUnit = if (dp.isSpecified) dp.toSp() else TextUnit.Unspecified
 
 public fun Density.dpToFloatPx(dp: Dp): Float = if (dp.isSpecified) dp.toPx() else Float.NaN
@@ -43,7 +43,7 @@ public fun Dp.toRecDpSize(): DpSize = if (isSpecified) DpSize(this, this) else D
 
 public fun Dp.toRecDpOffset(): DpOffset = if (isSpecified) DpOffset(this, this) else DpOffset.Unspecified
 
-// TEXT UNIT
+// TEXT UNIT.
 public fun Density.spToDp(sp: TextUnit): Dp = if (sp.isSpecified) sp.toDp() else Dp.Unspecified
 
 public fun Density.spToFloatPx(sp: TextUnit): Float = if (sp.isSpecified) sp.toPx() else Float.NaN
@@ -64,7 +64,7 @@ public fun TextUnit.toIntPx(): Int = LocalDensity.current.spToIntPx(this)
 @Composable
 public fun TextUnit.roundToPx(): Int = LocalDensity.current.spRoundToPx(this)
 
-// FLOAT
+// FLOAT.
 public fun Density.floatPxToDp(px: Float): Dp = if (px.isFinite()) px.toDp() else Dp.Unspecified
 
 public fun Density.floatPxToSp(px: Float): TextUnit = if (px.isFinite()) px.toSp() else TextUnit.Unspecified
@@ -83,7 +83,7 @@ public fun Float.toRecSize(): Size = if (isFinite()) Size(this, this) else Size.
 
 public fun Float.toRecOffset(): Offset = if (isFinite()) Offset(this, this) else Offset.Unspecified
 
-// INT
+// INT.
 public fun Density.intPxToDp(px: Int): Dp = px.toDp()
 
 public fun Density.intPxToSp(px: Int): TextUnit = px.toSp()
@@ -100,7 +100,7 @@ public fun Int.toRecIntSize(): IntSize = IntSize(this, this)
 
 public fun Int.toRecIntOffset(): IntOffset = IntOffset(this, this)
 
-// DP SIZE
+// DP SIZE.
 public fun Density.dpSizeToIntSize(dpSize: DpSize): IntSize =
     if (dpSize.isSpecified) IntSize(dpSize.width.toPx().toInt(), dpSize.height.toPx().toInt())
     else IntSize.Zero
@@ -124,7 +124,7 @@ public fun DpSize.toSize(): Size = LocalDensity.current.dpSizeToSize(this)
 
 public fun DpSize.isSpaced(): Boolean = isSpecified && width > 0.dp && height > 0.dp
 
-// SIZE
+// SIZE.
 public fun Density.sizeToDpSize(size: Size): DpSize =
     if (size.isSpecified) DpSize(size.width.toDp(), size.height.toDp())
     else DpSize.Unspecified
@@ -140,7 +140,7 @@ public fun Size.toIntSize(): IntSize =
 
 public fun Size.isSpaced(): Boolean = isSpecified && width > 0F && height > 0F
 
-// INT SIZE
+// INT SIZE.
 public fun Density.intSizeToDpSize(intSize: IntSize): DpSize =
     DpSize(intSize.width.toDp(), intSize.height.toDp())
 
@@ -152,7 +152,7 @@ public fun IntSize.toSize(): Size = Size(width.toFloat(), height.toFloat())
 
 public fun IntSize.isSpaced(): Boolean = width > 0 && height > 0
 
-// DP OFFSET
+// DP OFFSET.
 public fun Density.dpOffsetToIntOffset(dpOffset: DpOffset): IntOffset =
     if (dpOffset.isSpecified) IntOffset(dpOffset.x.toPx().toInt(), dpOffset.y.toPx().toInt())
     else IntOffset.Zero
@@ -174,7 +174,7 @@ public fun DpOffset.roundToIntOffset(): IntOffset = LocalDensity.current.dpOffse
 @Composable
 public fun DpOffset.toOffset(): Offset = LocalDensity.current.dpOffsetToOffset(this)
 
-// OFFSET
+// OFFSET.
 public fun Density.offsetToDpOffset(offset: Offset): DpOffset =
     if (offset.isSpecified) DpOffset(offset.x.toDp(), offset.y.toDp())
     else DpOffset.Unspecified
@@ -186,7 +186,7 @@ public fun Offset.toIntOffset(): IntOffset =
     if (isSpecified) IntOffset(x.toInt(), y.toInt())
     else IntOffset.Zero
 
-// INT OFFSET
+// INT OFFSET.
 public fun Density.intOffsetToDpOffset(intOffset: IntOffset): DpOffset =
     DpOffset(intOffset.x.toDp(), intOffset.y.toDp())
 
