@@ -432,14 +432,10 @@ public fun SettingsScreen(
 
         Button(
             onClick = {
-                if (theme != defaultTheme)
-                    onThemeChange(defaultTheme)
-                if (density != defaultDensity)
-                    onDensityChange(defaultDensity)
-                if (locale != defaultLocale)
-                    onLocaleChange(defaultLocale)
-                if (quickAccess != defaultQuickAccess)
-                    onQuickAccessChange(defaultQuickAccess)
+                if (theme != defaultTheme) onThemeChange(defaultTheme)
+                if (density != defaultDensity) onDensityChange(defaultDensity)
+                if (locale != defaultLocale) onLocaleChange(defaultLocale)
+                if (quickAccess != defaultQuickAccess) onQuickAccessChange(defaultQuickAccess)
             },
             modifier = Modifier.fillMaxWidth(),
         ) {
