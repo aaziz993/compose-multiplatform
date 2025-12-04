@@ -1,4 +1,4 @@
-package presentation.components.app
+package presentation
 
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.fillMaxSize

@@ -43,14 +43,14 @@ public fun SettingsLocalePickerDialog(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     picker: CountryPicker = CountryPicker(),
 ) {
-    var isLocalePickerDialogOpen by remember { mutableStateOf(false) }
-    if (isLocalePickerDialogOpen)
+    var localePickerDialog by remember { mutableStateOf(false) }
+    if (localePickerDialog)
         LocalePickerDialog(
             onItemClicked = { item ->
-                isLocalePickerDialogOpen = onValueChanged(item)
+                localePickerDialog = onValueChanged(item)
             },
             onDismissRequest = {
-                isLocalePickerDialogOpen = false
+                localePickerDialog = false
             },
             locales = locales,
             country = country,
@@ -69,7 +69,7 @@ public fun SettingsLocalePickerDialog(
         shadowElevation,
         semanticProperties,
         {
-            isLocalePickerDialogOpen = true
+            localePickerDialog = true
         },
     )
 }

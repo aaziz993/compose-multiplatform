@@ -24,27 +24,32 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import clib.presentation.components.image.avatar.Avatar
-import clib.presentation.navigation.NavigationAction
-import clib.presentation.components.country.CountryCodePickerTextField
-import clib.presentation.components.textfield.AdvancedTextField
-import compose_app.generated.resources.Res
-import compose_app.generated.resources.sign_out
-import compose_app.generated.resources.verify
-import klib.data.auth.model.Auth
-import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import clib.presentation.components.country.CountryCodePickerTextField
 import clib.presentation.components.country.model.CountryPicker
+import clib.presentation.components.image.avatar.Avatar
+import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.navigation.NavigationAction
+import compose_app.generated.resources.Res
 import compose_app.generated.resources.country
 import compose_app.generated.resources.email
 import compose_app.generated.resources.phone
 import compose_app.generated.resources.search
+import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.username
+import compose_app.generated.resources.verify
+import klib.data.auth.model.Auth
+import org.jetbrains.compose.resources.stringResource
+import presentation.components.dialog.SignOutConfirmDialog
 import ui.navigation.presentation.Profile
 import ui.navigation.presentation.Verification
 
@@ -170,9 +175,20 @@ public fun ProfileScreen(
                 Text(text = stringResource(Res.string.verify))
             }
 
+        var singOutConfirmDialog by remember { mutableStateOf(false) }
+        if (singOutConfirmDialog)
+            SignOutConfirmDialog(
+                {
+                    singOutConfirmDialog = false
+                },
+                {
+                    onAuthChange(Auth())
+                },
+            )
+
         Button(
             onClick = {
-                onAuthChange(Auth())
+                singOutConfirmDialog = true
             },
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -184,3 +200,5 @@ public fun ProfileScreen(
 @Preview
 @Composable
 public fun PreviewProfileScreen(): Unit = ProfileScreen()
+
+

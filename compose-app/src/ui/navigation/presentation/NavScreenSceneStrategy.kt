@@ -33,12 +33,14 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
         val stateStore = LocalStateStore.current
         val router = currentRouter()
         router.backStack.lastOrNull()?.let { currentRoute ->
-            val layoutType = if (router.routes.isNavigationItems(authState.auth))
-                with(currentWindowAdaptiveInfo(true)) {
+            val layoutType = if (router.routes.isNavigationItems(authState.auth)) {
+                val adaptiveInfo = currentWindowAdaptiveInfo()
+                with(adaptiveInfo) {
                     if (windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
                         NavigationSuiteType.NavigationDrawer
                     else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(this)
                 }
+            }
             else NavigationSuiteType.None
 
             NavScreen(

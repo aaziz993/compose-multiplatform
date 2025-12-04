@@ -169,16 +169,16 @@ public fun AppBar(
                         }
 
                     if (quickAccess.isLocale) {
-                        var isLocalePickerDialogOpen by remember { mutableStateOf(false) }
+                        var localePickerDialog by remember { mutableStateOf(false) }
 
-                        if (isLocalePickerDialogOpen)
+                        if (localePickerDialog)
                             LocalePickerDialog(
                                 onItemClicked = { item ->
                                     onLocaleChange(item)
-                                    isLocalePickerDialogOpen = false
+                                    localePickerDialog = false
                                 },
                                 onDismissRequest = {
-                                    isLocalePickerDialogOpen = false
+                                    localePickerDialog = false
                                 },
                                 locales = locales,
                                 country = { locale ->
@@ -201,7 +201,7 @@ public fun AppBar(
                         AppTooltipBox(stringResource(Res.string.locale)) {
                             Button(
                                 onClick = {
-                                    isLocalePickerDialogOpen = true
+                                    localePickerDialog = true
                                 },
                                 modifier = Modifier.height(48.dp),
                                 shape = RoundedCornerShape(10.dp),

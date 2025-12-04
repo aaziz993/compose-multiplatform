@@ -280,7 +280,16 @@ public fun SettingsScreen(
                 true
             },
             title = { Text(text = stringResource(Res.string.locale)) },
-            subtitle = { Text(text = locale.toString().asStringResource()) },
+            subtitle = {
+                Text(
+                    text = "locale_${
+                        locale
+                            .toString()
+                            .replace('-', '_')
+                            .lowercase()
+                    }".asStringResource(),
+                )
+            },
             modifier = Modifier,
             enabled = true,
             locales = locales,

@@ -4,7 +4,7 @@ import clib.di.KoinApplicationPreview
 import clib.di.KoinMultiplatformApplication
 import di.koinConfiguration
 import org.koin.dsl.KoinConfiguration
-import presentation.components.app.AppComposable
+import presentation.AppComposable
 
 @Composable
 public fun App(): Unit = KoinMultiplatformApplication(KoinConfiguration(koinConfiguration())) {

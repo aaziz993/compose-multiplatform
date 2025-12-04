@@ -69,7 +69,6 @@ public fun CountryCodePickerTextField(
         )
     }
 
-
     OutlinedTextField(
         value = value,
         onValueChange = {
