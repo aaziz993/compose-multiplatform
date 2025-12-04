@@ -20,11 +20,12 @@ private data class Shapes(
 
 public object ShapesSerializer : KSerializer<ComposeShapes> {
 
-    override val descriptor: SerialDescriptor = Shapes.serializer().descriptor
+    private val delegate = Shapes.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeShapes): Unit =
         encoder.encodeSerializableValue(
-            Shapes.serializer(),
+            delegate,
             Shapes(
                 value.extraSmall,
                 value.small,
@@ -35,7 +36,7 @@ public object ShapesSerializer : KSerializer<ComposeShapes> {
         )
 
     override fun deserialize(decoder: Decoder): ComposeShapes =
-        decoder.decodeSerializableValue(Shapes.serializer()).let { value ->
+        decoder.decodeSerializableValue(delegate).let { value ->
             ComposeShapes(
                 value.extraSmall,
                 value.small,

@@ -26,7 +26,6 @@ public interface MergeSet<E> : Set<E> {
 public class MergeSetSerializer<E>(public val eSerializer: KSerializer<E>) : KSerializer<MergeSet<E>> {
 
     override val descriptor: SerialDescriptor = setSerialDescriptor(eSerializer.descriptor)
-
     private val delegate = ListSerializer(eSerializer)
 
     override fun serialize(encoder: Encoder, value: MergeSet<E>): Unit =

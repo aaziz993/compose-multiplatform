@@ -15,16 +15,17 @@ private data class Density(
 
 public object DensitySerializer : KSerializer<ComposeDensity> {
 
-    override val descriptor: SerialDescriptor = Density.serializer().descriptor
+    private val delegate = Density.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeDensity): Unit =
         encoder.encodeSerializableValue(
-            Density.serializer(),
+            delegate,
             Density(value.density, value.fontScale),
         )
 
     override fun deserialize(decoder: Decoder): ComposeDensity =
-        decoder.decodeSerializableValue(Density.serializer()).let { value ->
+        decoder.decodeSerializableValue(delegate).let { value ->
             ComposeDensity(value.density, value.fontScale)
         }
 }

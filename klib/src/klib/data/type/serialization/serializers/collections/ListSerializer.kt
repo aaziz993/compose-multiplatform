@@ -14,7 +14,6 @@ public open class ListSerializer<E, C : List<E>, B>(
 ) : KSerializer<C> where B : C, B : List<E> {
 
     private val delegate = ListSerializer(eSerializer)
-
     override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: C) {

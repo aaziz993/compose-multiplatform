@@ -75,11 +75,12 @@ private data class SquircleShape(
 
 public object ComposeCornerBasedShapeSerializer : KSerializer<ComposeCornerBasedShape> {
 
-    override val descriptor: SerialDescriptor = CornerBasedShape.serializer().descriptor
+    private val delegate = CornerBasedShape.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeCornerBasedShape): Unit =
         encoder.encodeSerializableValue(
-            CornerBasedShape.serializer(),
+            delegate,
             when (value) {
                 is ComposeRoundedCornerShape -> RoundedCornerShape(
                     value.topStart,
@@ -101,7 +102,7 @@ public object ComposeCornerBasedShapeSerializer : KSerializer<ComposeCornerBased
         )
 
     override fun deserialize(decoder: Decoder): ComposeCornerBasedShape =
-        decoder.decodeSerializableValue(CornerBasedShape.serializer()).toCornerBasedShape()
+        decoder.decodeSerializableValue(delegate).toCornerBasedShape()
 }
 
 public typealias CornerBasedShapeSerial = @Serializable(with = ComposeCornerBasedShapeSerializer::class) ComposeCornerBasedShape

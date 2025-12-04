@@ -61,7 +61,6 @@ private class TweenSpec<T>(
 public class ComposeAnimationSpecSerializer<T>(tSerializer: KSerializer<T>) : KSerializer<ComposeAnimationSpec<T>> {
 
     private val delegate = AnimationSpec.serializer(tSerializer)
-
     override val descriptor: SerialDescriptor = delegate.descriptor
 
     @Suppress("UNCHECKED_CAST")

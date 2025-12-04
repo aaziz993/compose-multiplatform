@@ -66,11 +66,12 @@ private object ZeroCornerSize : CornerSize() {
 
 public object ComposeCornerSizeSerializer : KSerializer<ComposeCornerSize> {
 
-    override val descriptor: SerialDescriptor = CornerSize.serializer().descriptor
+    private val delegate = CornerSize.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeCornerSize): Unit =
         encoder.encodeSerializableValue(
-            CornerSize.serializer(),
+            delegate,
             when (val valueOverride = (value as InspectableValue).valueOverride) {
                 is Dp -> DpCornerSize(valueOverride)
                 is String -> when {
@@ -88,7 +89,7 @@ public object ComposeCornerSizeSerializer : KSerializer<ComposeCornerSize> {
         )
 
     override fun deserialize(decoder: Decoder): ComposeCornerSize =
-        decoder.decodeSerializableValue(CornerSize.serializer()).toCornerSize()
+        decoder.decodeSerializableValue(delegate).toCornerSize()
 }
 
 public typealias CornerSizeSerial = @Serializable(with = ComposeCornerSizeSerializer::class) ComposeCornerSize

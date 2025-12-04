@@ -3,7 +3,6 @@
 package clib.presentation.theme.typography
 
 import androidx.compose.material3.tokens.DefaultTextStyle
-import androidx.compose.runtime.Immutable
 import clib.data.type.SpSerial
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -25,11 +24,12 @@ private data class TextStyle(
 
 public object TextStyleSerializer : KSerializer<ComposeTextStyle> {
 
-    override val descriptor: SerialDescriptor = TextStyle.serializer().descriptor
+    private val delegate = TextStyle.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeTextStyle): Unit =
         encoder.encodeSerializableValue(
-            TextStyle.serializer(),
+            delegate,
             TextStyle(
                 fontSize = value.fontSize,
                 fontWeight = value.fontWeight,
@@ -42,7 +42,7 @@ public object TextStyleSerializer : KSerializer<ComposeTextStyle> {
         )
 
     override fun deserialize(decoder: Decoder): ComposeTextStyle =
-        decoder.decodeSerializableValue(TextStyle.serializer()).let { value ->
+        decoder.decodeSerializableValue(delegate).let { value ->
             DefaultTextStyle.copy(
                 fontSize = value.fontSize,
                 fontWeight = value.fontWeight,

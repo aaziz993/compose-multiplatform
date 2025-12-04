@@ -37,11 +37,12 @@ private data class CubicBezierEasing(
 
 public object ComposeEasingSerializer : KSerializer<ComposeEasing> {
 
-    override val descriptor: SerialDescriptor = Easing.serializer().descriptor
+    private val delegate = Easing.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeEasing): Unit =
         encoder.encodeSerializableValue(
-            Easing.serializer(),
+            delegate,
             when (value) {
                 is ComposeCubicBezierEasing ->
                     value.toString()
@@ -58,7 +59,7 @@ public object ComposeEasingSerializer : KSerializer<ComposeEasing> {
         )
 
     override fun deserialize(decoder: Decoder): ComposeEasing =
-        decoder.decodeSerializableValue(Easing.serializer()).toEasing()
+        decoder.decodeSerializableValue(delegate).toEasing()
 }
 
 public typealias EasingSerial = @Serializable(with = ComposeEasingSerializer::class) ComposeEasing

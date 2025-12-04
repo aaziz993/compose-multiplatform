@@ -62,11 +62,12 @@ private data class ColorScheme(
 
 public object ColorSchemeSerializer : KSerializer<ComposeColorScheme> {
 
-    override val descriptor: SerialDescriptor = ColorScheme.serializer().descriptor
+    private val delegate = ColorScheme.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeColorScheme): Unit =
         encoder.encodeSerializableValue(
-            ColorScheme.serializer(),
+            delegate,
             ColorScheme(
                 value.primary,
                 value.onPrimary,
@@ -120,7 +121,7 @@ public object ColorSchemeSerializer : KSerializer<ComposeColorScheme> {
         )
 
     override fun deserialize(decoder: Decoder): ComposeColorScheme =
-        decoder.decodeSerializableValue(ColorScheme.serializer()).let { value ->
+        decoder.decodeSerializableValue(delegate).let { value ->
             ComposeColorScheme(
                 value.primary,
                 value.onPrimary,

@@ -45,11 +45,12 @@ private data class Typography(
 
 public object TypographySerializer : KSerializer<ComposeTypography> {
 
-    override val descriptor: SerialDescriptor = Typography.serializer().descriptor
+    private val delegate = Typography.serializer()
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: ComposeTypography): Unit =
         encoder.encodeSerializableValue(
-            Typography.serializer(),
+            delegate,
             Typography(
                 value.displayLarge,
                 value.displayMedium,
@@ -85,7 +86,7 @@ public object TypographySerializer : KSerializer<ComposeTypography> {
         )
 
     override fun deserialize(decoder: Decoder): ComposeTypography =
-        decoder.decodeSerializableValue(Typography.serializer()).let { value ->
+        decoder.decodeSerializableValue(delegate).let { value ->
             ComposeTypography(
                 value.displayLarge,
                 value.displayMedium,

@@ -14,7 +14,6 @@ public open class SetSerializer<E, C : Set<E>, B>(
 ) : KSerializer<C> where B : C, B : Set<E> {
 
     private val delegate = SetSerializer(eSerializer)
-
     override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: C) {

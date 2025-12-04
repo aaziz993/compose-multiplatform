@@ -73,59 +73,77 @@ private val HMAC_SHA3512_KEY: KeyDecoder<CryptoHMAC.Key.Format, CryptoHMAC.Key> 
     HMAC.keyDecoder(SHA3_512)
 }
 
-public suspend fun ByteArray.decodeHMACMd5Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA1_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACMd5Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA1_KEY.decodeFromByteArray(format, this)
 
-public suspend fun ByteArray.decodeHMACSha1Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_MD5_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha1Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_MD5_KEY.decodeFromByteArray(format, this)
 
-public suspend fun ByteArray.decodeHMACSha224Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA224_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha224Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA224_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha224KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA224_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha224KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA224_KEY.decodeFromByteArrayBlocking(format, this)
 
-public suspend fun ByteArray.decodeHMACSha256Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA256_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha256Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA256_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha256KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA256_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha256KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA256_KEY.decodeFromByteArrayBlocking(format, this)
 
-public suspend fun ByteArray.decodeHMACSha384Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA384_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha384Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA384_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha384KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA384_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha384KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA384_KEY.decodeFromByteArrayBlocking(format, this)
 
-public suspend fun ByteArray.decodeHMACSha512Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA512_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha512Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA512_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha512KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA512_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha512KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA512_KEY.decodeFromByteArrayBlocking(format, this)
 
-public suspend fun ByteArray.decodeHMACSha3224Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3224_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha3224Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3224_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha3224KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3224_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha3224KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3224_KEY.decodeFromByteArrayBlocking(format, this)
 
-public suspend fun ByteArray.decodeHMACSha3256Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3256_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha3256Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3256_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha3256KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3256_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha3256KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3256_KEY.decodeFromByteArrayBlocking(format, this)
 
-public suspend fun ByteArray.decodeHMACSha3384Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3384_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha3384Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3384_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha3384KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3384_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha3384KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3384_KEY.decodeFromByteArrayBlocking(format, this)
 
-public suspend fun ByteArray.decodeHMACSha3512Key(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3512_KEY.decodeFromByteArray(format, this)
+public suspend fun ByteArray.decodeHMACSha3512Key(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3512_KEY.decodeFromByteArray(format, this)
 
-public fun ByteArray.decodeHMACSha3512KeyBlocking(format: CryptoHMAC.Key.Format): CryptoHMAC.Key =
-    HMAC_SHA3512_KEY.decodeFromByteArrayBlocking(format, this)
+public fun ByteArray.decodeHMACSha3512KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA3512_KEY.decodeFromByteArrayBlocking(format, this)
 
 public suspend fun ByteArray.generateHMACSignature(key: CryptoHMAC.Key): ByteArray =
     key.signatureGenerator().generateSignature(this)

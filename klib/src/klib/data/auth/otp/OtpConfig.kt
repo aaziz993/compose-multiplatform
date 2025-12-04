@@ -1,14 +1,19 @@
 package klib.data.auth.otp
 
+import dev.whyoleg.cryptography.algorithms.Digest
+import dev.whyoleg.cryptography.algorithms.SHA1
+import klib.data.cryptography.model.CryptographyAlgorithmIdSerial
 import kotlinx.serialization.Serializable
 
 @Serializable
 public data class HotpConfig(
     val codeDigits: OtpDigits,
-    val hmacAlgorithm: HmacAlgorithm,
+    val hmacAlgorithm: CryptographyAlgorithmIdSerial<Digest>,
 ) {
+
     public companion object {
-        public val DEFAULT: HotpConfig get() = HotpConfig(OtpDigits.Six, HmacAlgorithm.SHA1)
+
+        public val DEFAULT: HotpConfig get() = HotpConfig(OtpDigits.Six, SHA1)
     }
 }
 
@@ -16,10 +21,12 @@ public data class HotpConfig(
 public data class TotpConfig(
     val period: TotpPeriod,
     val codeDigits: OtpDigits,
-    val hmacAlgorithm: HmacAlgorithm,
+    val hmacAlgorithm: CryptographyAlgorithmIdSerial<Digest>,
 ) {
+
     public companion object {
-        public val DEFAULT: TotpConfig get() = TotpConfig(TotpPeriod.Thirty, OtpDigits.Six, HmacAlgorithm.SHA1)
+
+        public val DEFAULT: TotpConfig get() = TotpConfig(TotpPeriod.Thirty, OtpDigits.Six, SHA1)
     }
 }
 
