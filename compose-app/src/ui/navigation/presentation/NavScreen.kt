@@ -27,7 +27,7 @@ import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.type.auth.model.Auth
+import klib.data.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import presentation.components.scaffold.AppBar

@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
-import klib.data.type.auth.model.Auth
+import klib.data.auth.model.Auth
 import klib.data.type.collections.replaceWith
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

@@ -36,7 +36,7 @@ import clib.presentation.components.textfield.AdvancedTextField
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.verify
-import klib.data.type.auth.model.Auth
+import klib.data.auth.model.Auth
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.components.country.model.CountryPicker

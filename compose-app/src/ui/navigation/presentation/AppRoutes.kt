@@ -57,7 +57,7 @@ import data.type.primitives.string.asStringResource
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
-import klib.data.type.auth.AuthResource
+import klib.data.auth.AuthResource
 import klib.data.type.primitives.string.case.toSnakeCase
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName

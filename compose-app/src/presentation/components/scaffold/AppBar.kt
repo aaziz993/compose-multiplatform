@@ -61,7 +61,7 @@ import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.type.auth.model.Auth
+import klib.data.auth.model.Auth
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode

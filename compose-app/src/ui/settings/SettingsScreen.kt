@@ -91,7 +91,7 @@ import klib.data.location.locale.current
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
-import klib.data.type.auth.model.Auth
+import klib.data.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.theme.model.IsDarkIcon

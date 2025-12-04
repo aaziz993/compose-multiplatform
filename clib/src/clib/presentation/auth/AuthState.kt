@@ -10,8 +10,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import clib.presentation.noLocalProvidedFor
-import klib.data.type.auth.model.Auth
-import klib.data.type.auth.model.User
+import klib.data.auth.model.Auth
+import klib.data.auth.model.User
 
 @Suppress("ComposeCompositionLocalUsage")
 public val LocalAuthState: ProvidableCompositionLocal<AuthState> =

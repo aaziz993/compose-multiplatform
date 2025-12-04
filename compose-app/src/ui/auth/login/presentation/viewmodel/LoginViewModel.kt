@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.ViewModel
-import klib.data.type.auth.model.User
+import klib.data.auth.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

@@ -3,9 +3,9 @@
 package clib.presentation.auth
 
 import androidx.compose.runtime.Composable
-import klib.data.type.auth.AuthResource
-import klib.data.type.auth.model.Auth
-import klib.data.type.auth.model.User
+import klib.data.auth.AuthResource
+import klib.data.auth.model.Auth
+import klib.data.auth.model.User
 
 @Composable
 public inline fun AuthComposable(

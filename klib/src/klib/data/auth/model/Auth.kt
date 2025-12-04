@@ -1,4 +1,4 @@
-package klib.data.type.auth.model
+package klib.data.auth.model
 
 import kotlinx.serialization.Serializable
 

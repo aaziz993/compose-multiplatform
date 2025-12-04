@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import clib.presentation.components.image.AdvancedImage
 import clib.presentation.components.image.avatar.model.AvatarLocalization
-import klib.data.type.auth.model.User
+import klib.data.auth.model.User
 import kotlin.math.absoluteValue
 
 @Composable

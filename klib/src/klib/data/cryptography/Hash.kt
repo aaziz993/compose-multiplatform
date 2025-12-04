@@ -24,23 +24,14 @@ private fun hasher(identifier: CryptographyAlgorithmId<Digest>): Hasher =
 public fun hasher(algorithm: HashAlgorithm): Hasher = hasher(
     when (algorithm) {
         HashAlgorithm.MD5 -> CRYPTO_MD5
-
         HashAlgorithm.SHA1 -> CRYPTO_SHA1
-
         HashAlgorithm.SHA224 -> CRYPTO_SHA224
-
         HashAlgorithm.SHA256 -> CRYPTO_SHA256
-
         HashAlgorithm.SHA384 -> CRYPTO_SHA384
-
         HashAlgorithm.SHA512 -> CRYPTO_SHA512
-
         HashAlgorithm.SHA3_224 -> CRYPTO_SHA3_224
-
         HashAlgorithm.SHA3_256 -> CRYPTO_SHA3_256
-
         HashAlgorithm.SHA3_384 -> CRYPTO_SHA3_384
-
         HashAlgorithm.SHA3_512 -> CRYPTO_SHA3_512
 
         else -> throw IllegalArgumentException("Unknown hash algorithm \"$algorithm\"")

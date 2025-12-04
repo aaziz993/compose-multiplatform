@@ -24,8 +24,8 @@ import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 import klib.data.net.http.urlPattern
-import klib.data.type.auth.AuthResource
-import klib.data.type.auth.model.Auth
+import klib.data.auth.AuthResource
+import klib.data.auth.model.Auth
 import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
