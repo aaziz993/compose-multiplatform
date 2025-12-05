@@ -2,7 +2,7 @@
 <resources>
     <string name="news">Хабархо</string>
     <string name="articles">Маколахо</string>
-    <string name="back_content_description">Тавсири мазмун</string>
-    <string name="share_content_description">Ирсоли тавсири мазмун</string>
-    <string name="read_more_at">Бисертар хонед аз</string>
+    <string name="back_content_description">Тавсиф мазмун</string>
+    <string name="share_content_description">Ирсоли тавсифи мазмун</string>
+    <string name="read_more_at">Бисертар хонед дар</string>
 </resources>

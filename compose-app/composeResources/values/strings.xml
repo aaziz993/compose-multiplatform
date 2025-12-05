@@ -21,6 +21,8 @@
     <string name="file">File</string>
     <string name="general">General</string>
     <string name="grid">Grid</string>
+    <string name="header">Header</string>
+    <string name="help">Help</string>
     <string name="hex">Hex</string>
     <string name="home">Home</string>
     <string name="live_search">Live search</string>
@@ -38,6 +40,7 @@
     <string name="retry">Retry</string>
     <string name="reset">Reset</string>
     <string name="right">Right</string>
+    <string name="source">Source</string>
     <string name="search">Search</string>
     <string name="select">Select</string>
     <string name="submit">Submit</string>
@@ -45,8 +48,6 @@
     <string name="settings">Settings</string>
     <string name="time">Time</string>
     <string name="time_format">Time format</string>
-    <string name="header">Header</string>
-    <string name="help">Help</string>
     <string name="identifier">Identifier</string>
     <string name="id">ID</string>
     <string name="image">Image</string>

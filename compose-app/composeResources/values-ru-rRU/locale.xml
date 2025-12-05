@@ -16,5 +16,5 @@
     <string name="map">Карта</string>
     <string name="virtual_earth_map">Виртуальная карта Земли</string>
     <string name="open_street_map">OpenStreet карта</string>
-    <string name="google_map">Google карта</string>
+    <string name="google_map">Гугл карта</string>
 </resources>

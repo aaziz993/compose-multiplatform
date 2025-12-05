@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +49,9 @@ import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.username
 import compose_app.generated.resources.verify
 import klib.data.auth.model.Auth
+import klib.data.location.country.Country
+import klib.data.location.country.getCountries
+import klib.data.type.primitives.string.ifNotEmpty
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.dialog.SignOutConfirmDialog
 import ui.navigation.presentation.Profile
@@ -108,10 +112,19 @@ public fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        val country by remember(user.phone) {
+            derivedStateOf {
+                Country.getCountries().filter { country ->
+                    user.phone.orEmpty().startsWith("+${country.dial}")
+                }.maxByOrNull { country -> country.dial!!.length }
+            }
+        }
+
         CountryCodePickerTextField(
-            value = user.phone.orEmpty(),
+            value = user.phone.orEmpty().removePrefix(country?.dial.orEmpty().ifNotEmpty { "+$it" }),
             onValueChange = { _, _, _ -> },
             modifier = Modifier.fillMaxWidth(),
+            selectedCountry = country ?: Country.getCountries().first(),
             label = { Text(stringResource(Res.string.phone)) },
             picker = CountryPicker(
                 headerTitle = stringResource(Res.string.country),

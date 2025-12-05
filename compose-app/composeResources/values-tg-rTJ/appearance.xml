@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="appearance">Намуд</string>
-    <string name="theme">Намоиш</string>
-    <string name="dark_theme">Намоиши торик</string>
-    <string name="light_theme">Намоиши равшан</string>
-    <string name="system_theme">Намоиши низоми</string>
-    <string name="dynamic_color_palette">Dynamic color palette</string>
+    <string name="appearance">Намоиш</string>
+    <string name="theme">Намуд</string>
+    <string name="dark_theme">Намуд торик</string>
+    <string name="light_theme">Намуд равшан</string>
+    <string name="system_theme">Намуд низоми</string>
+    <string name="dynamic_color_palette">Рангхои тагйиребанда</string>
     <string name="high_contrast">High contrast</string>
-    <string name="color_palette">Color palette</string>
+    <string name="color_palette">Рангхо</string>
     <string name="expressive">Expressive</string>
     <string name="density">Density</string>
     <string name="font">Font</string>

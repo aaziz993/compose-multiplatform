@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile">Профил</string>
+    <string name="profile">Ҳуҷра</string>
     <string name="user">Истифодабаранда</string>
     <string name="user_interface">Интерфейси истифодабаранда</string>
     <string name="user_info">Маълумот дар бораи истифодабарада</string>
     <string name="first_name">Ном</string>
-    <string name="last_name">Фамилия</string>
+    <string name="last_name">Насаб</string>
     <string name="surname">Номи падар</string>
     <string name="email">Email</string>
-    <string name="roles">Макомхо</string>
+    <string name="roles">Нақшҳо</string>
     <string name="phone">Телефон</string>
     <string name="unverified">Тасдикнашуда</string>
     <string name="unverified_description">Аккаунти шумо тасдик нашудааст.</string>
