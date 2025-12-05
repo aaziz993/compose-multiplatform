@@ -59,6 +59,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         sharedTransitionScope: SharedTransitionScope,
     )
 
+    @Composable
     public open fun isNavigationItem(auth: Auth): Boolean = navigationItem != null && isAuth(auth)
 
     @Composable
@@ -225,6 +226,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         }
     }
 
+    @Composable
     public fun isNavigationItems(auth: Auth): Boolean = routes.any { route -> route.isNavigationItem(auth) }
 
     @Composable

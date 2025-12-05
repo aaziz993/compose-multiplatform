@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Newspaper
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Newspaper
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -36,6 +38,7 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import clib.di.koinViewModel
+import clib.di.navigation.KoinRoute
 import clib.di.navigation.KoinRoutes
 import clib.di.navigation.rememberKoinScopeNavEntryDecorator
 import clib.presentation.auth.LocalAuthState
@@ -116,7 +119,7 @@ public data object App : KoinRoutes() {
 
 @Serializable
 @SerialName("home")
-public data object Home : Route<Home>(), NavRoute {
+public data object Home : KoinRoute<Home>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -185,7 +188,7 @@ public data object News : KoinRoutes() {
 
 @Serializable
 @SerialName("articles")
-public data object Articles : Route<Articles>(), NavRoute {
+public data object Articles : KoinRoute<Articles>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -225,7 +228,7 @@ public data object Articles : Route<Articles>(), NavRoute {
 
 @Serializable
 @SerialName("services")
-public data object Services : Route<Services>(), NavRoute {
+public data object Services : KoinRoute<Services>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -262,7 +265,7 @@ public data object Services : Route<Services>(), NavRoute {
 
 @Serializable
 @SerialName("map")
-public data object Map : Route<Map>(), NavRoute {
+public data object Map : KoinRoute<Map>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -299,7 +302,7 @@ public data object Map : Route<Map>(), NavRoute {
 
 @Serializable
 @SerialName("settings")
-public data object Settings : Route<Settings>(), NavRoute {
+public data object Settings : KoinRoute<Settings>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -358,7 +361,7 @@ public data object Settings : Route<Settings>(), NavRoute {
 
 @Serializable
 @SerialName("about")
-public data object About : Route<About>(), NavRoute {
+public data object About : KoinRoute<About>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -423,7 +426,7 @@ public data object Auth : KoinRoutes(), AuthRoute {
 
 @Serializable
 @SerialName("phone")
-public data object Phone : Route<Phone>(), NavRoute, AuthRoute {
+public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -486,7 +489,7 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("pinCode")
-public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
+public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -511,7 +514,7 @@ public data object PinCode : Route<PinCode>(), NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("login")
-public data object Login : Route<Login>(), NavRoute, AuthRoute {
+public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -536,7 +539,7 @@ public data object Login : Route<Login>(), NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("forgotPinCode")
-public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
+public data object ForgotPinCode : KoinRoute<ForgotPinCode>(), NavRoute, AuthRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -557,7 +560,7 @@ public data object ForgotPinCode : Route<ForgotPinCode>(), NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("verification")
-public data object Verification : Route<Verification>(), NavRoute {
+public data object Verification : KoinRoute<Verification>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -587,9 +590,23 @@ public data object Verification : Route<Verification>(), NavRoute {
 
 @Serializable
 @SerialName("profile")
-public data object Profile : Route<Profile>(), NavRoute {
+public data object Profile : KoinRoute<Profile>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Person, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Person, text) },
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
@@ -609,6 +626,12 @@ public data object Profile : Route<Profile>(), NavRoute {
             { auth -> authState.auth = auth },
             router::actions,
         )
+    }
+
+    @Composable
+    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
+        val isAvatar = LocalStateStore.current.get<QuickAccess>().isAvatar
+        return super.isNavigationItem(auth) && !isAvatar
     }
 }
 
@@ -642,7 +665,7 @@ public data object Wallet : KoinRoutes() {
 
 @Serializable
 @SerialName("balance")
-public data object Balance : Route<Balance>(), NavRoute {
+public data object Balance : KoinRoute<Balance>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -679,7 +702,7 @@ public data object Balance : Route<Balance>(), NavRoute {
 
 @Serializable
 @SerialName("crypto")
-public data object Crypto : Route<Crypto>(), NavRoute {
+public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -716,7 +739,7 @@ public data object Crypto : Route<Crypto>(), NavRoute {
 
 @Serializable
 @SerialName("stock")
-public data object Stock : Route<Stock>(), NavRoute {
+public data object Stock : KoinRoute<Stock>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 

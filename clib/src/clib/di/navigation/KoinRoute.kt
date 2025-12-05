@@ -5,8 +5,11 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import clib.presentation.navigation.NavRoute
+import clib.presentation.navigation.Route
 import clib.presentation.navigation.Routes
 import org.koin.core.component.KoinComponent
+
+public abstract class KoinRoute<T : NavRoute> : Route<T>(), KoinComponent
 
 public abstract class KoinRoutes : Routes(), KoinComponent {
 
