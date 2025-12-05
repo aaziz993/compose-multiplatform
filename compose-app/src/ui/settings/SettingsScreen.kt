@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.Button
@@ -72,6 +73,7 @@ import compose_app.generated.resources.lightness
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permissions
+import compose_app.generated.resources.recovery
 import compose_app.generated.resources.quick_access_to_avatar
 import compose_app.generated.resources.quick_access_to_locales
 import compose_app.generated.resources.quick_access_to_support
@@ -430,16 +432,32 @@ public fun SettingsScreen(
             },
         )
 
-        Button(
-            onClick = {
-                if (theme != defaultTheme) onThemeChange(defaultTheme)
-                if (density != defaultDensity) onDensityChange(defaultDensity)
-                if (locale != defaultLocale) onLocaleChange(defaultLocale)
-                if (quickAccess != defaultQuickAccess) onQuickAccessChange(defaultQuickAccess)
-            },
-            modifier = Modifier.fillMaxWidth(),
+        SettingsGroup(
+            modifier = Modifier,
+            enabled = true,
+            title = { Text(text = stringResource(Res.string.recovery)) },
+            contentPadding = PaddingValues(16.dp),
         ) {
-            Text(text = stringResource(Res.string.reset))
+            SettingsMenuLink(
+                title = { Text(text = stringResource(Res.string.reset)) },
+                subtitle = {
+                    if (
+                        theme != defaultTheme ||
+                        density != defaultDensity ||
+                        locale != defaultLocale ||
+                        quickAccess != defaultQuickAccess
+                    ) Text(text = stringResource(Res.string.reset))
+                },
+                modifier = Modifier,
+                enabled = true,
+                icon = { Icon(Icons.Default.Restore, stringResource(Res.string.reset)) },
+                onClick = {
+                    if (theme != defaultTheme) onThemeChange(defaultTheme)
+                    if (density != defaultDensity) onDensityChange(defaultDensity)
+                    if (locale != defaultLocale) onLocaleChange(defaultLocale)
+                    if (quickAccess != defaultQuickAccess) onQuickAccessChange(defaultQuickAccess)
+                },
+            )
         }
     }
 }

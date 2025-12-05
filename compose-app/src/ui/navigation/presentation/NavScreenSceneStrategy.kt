@@ -46,9 +46,9 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                     if (windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
                         NavigationSuiteType.NavigationDrawer
                     else {
-                        if (navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible)
+                        if (navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Hidden)
                             coroutineScope.launch {
-                                navigationSuiteScaffoldState.hide()
+                                navigationSuiteScaffoldState.show()
                             }
                         NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(this)
                     }

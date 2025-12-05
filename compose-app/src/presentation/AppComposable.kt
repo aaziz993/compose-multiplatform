@@ -31,6 +31,7 @@ import clib.presentation.theme.density.rememberDensityState
 import clib.presentation.theme.model.DynamicColorPalette
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.rememberThemeState
+import dev.jordond.connectivity.Connectivity
 import presentation.theme.SquircleShapes
 import presentation.theme.Typography
 import presentation.theme.colorPalette
@@ -65,6 +66,7 @@ public fun AppComposable(
     densityState: DensityState = rememberDensityState(),
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = koinInject(),
+    connectivity: Connectivity = koinInject(),
     stateStore: StateStore = rememberStateStore(
         mapOf(
             QuickAccess::class.toString() to mutableStateOf(QuickAccess()),
@@ -89,6 +91,7 @@ public fun AppComposable(
         densityState,
         localeState,
         authState,
+        connectivity,
         stateStore,
         eventBus,
         routerFactory,

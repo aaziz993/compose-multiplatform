@@ -76,9 +76,9 @@ public fun NavScreen(
         layoutType = layoutType,
         state = navigationSuiteScaffoldState,
     ) {
-        GlobalSnackbar()
-
         GlobalAlertDialog()
+
+        GlobalSnackbar()
 
         Connectivity(
             koinInject(),

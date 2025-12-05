@@ -2,19 +2,19 @@
 <resources>
     <string name="country">Кишвар</string>
     <string name="country_flag">Парчами кишвар</string>
-    <string name="country_us">МЯА</string>
+    <string name="country_us">ШМА</string>
     <string name="country_ru">Руссия</string>
-    <string name="country_tj">Точикистон</string>
+    <string name="country_tj">Тоҷикистон</string>
     <string name="locale">Забон</string>
+    <string name="locale_en_us">Инглисӣ</string>
     <string name="locale_ru_ru">Русӣ</string>
-    <string name="locale_en_us">Инглиси</string>
-    <string name="locale_tg_tj">Точики</string>
-    <string name="location">Чойгиршави</string>
-    <string name="altitude">Баланди</string>
+    <string name="locale_tg_tj">Тоҷикӣ</string>
+    <string name="location">Макон</string>
+    <string name="altitude">Авҷи географӣ</string>
     <string name="latitude">Арзи географӣ</string>
     <string name="longitude">Тӯли географӣ</string>
     <string name="map">Харита</string>
-    <string name="virtual_earth_map">Мавҳуми Замин харита</string>
+    <string name="virtual_earth_map">Харитаи виртуалии Замин</string>
     <string name="open_street_map">OpenStreet харита</string>
     <string name="google_map">Гугл харита</string>
 </resources>

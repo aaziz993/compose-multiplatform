@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="value_is_empty">Сутуни холӣ</string>
-    <string name="value_length_is_incorrect">Дарозии маълумот нодуруст аст</string>
-    <string name="value_is_incorrect">Маълумоти нодуруст</string>
+    <string name="value_is_empty">Маълумоти холӣ</string>
+    <string name="value_length_is_incorrect">Дарозии маълумот нодуруст</string>
+    <string name="value_is_incorrect">Маълумот нодуруст</string>
     <string name="value_has_whitespace">Маълумот фосила дорад</string>
-    <string name="prefix_is_incorrect">Пешрянди нодуруст</string>
+    <string name="value_prefix_is_incorrect">Пешоянди маълумот нодуруст</string>
     <string name="value_has_no_digits">Маълумот рақам надорад</string>
     <string name="value_has_letters">Маълумот ҳарф дорад</string>
-    <string name="value_is_negative">Маълумоти манфӣ</string>
+    <string name="value_is_negative">Маълумот манфӣ</string>
 </resources>

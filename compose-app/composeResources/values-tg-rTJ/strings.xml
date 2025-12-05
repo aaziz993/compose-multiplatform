@@ -23,7 +23,7 @@
     <string name="blend">Blend</string>
     <string name="balance">Баланс</string>
     <string name="crypto">Крипто</string>
-    <string name="copy">Copy</string>
+    <string name="copy">Нусха</string>
     <string name="close">Close</string>
     <string name="cancel">Бекор</string>
     <string name="confirm">Тасдик</string>
@@ -52,6 +52,7 @@
     <string name="pagination">Саҳифабандӣ</string>
     <string name="permission">Ичозат</string>
     <string name="permissions">Ичозатхо</string>
+    <string name="recovery">Баркакоркуни</string>
     <string name="retry">Такрор</string>
     <string name="reset">Баркарор</string>
     <string name="right">Рост</string>

@@ -42,6 +42,8 @@ import com.materialkolor.LocalDynamicMaterialThemeSeed
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
+import dev.jordond.connectivity.Connectivity
+import klib.data.net.createConnectivity
 
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
@@ -51,6 +53,7 @@ public fun AppEnvironment(
     densityState: DensityState = rememberDensityState(),
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = rememberAuthState(),
+    connectivity: Connectivity = createConnectivity(),
     stateStore: StateStore = rememberStateStore(
         mapOf(
             QuickAccess::class.toString() to mutableStateOf(QuickAccess()),

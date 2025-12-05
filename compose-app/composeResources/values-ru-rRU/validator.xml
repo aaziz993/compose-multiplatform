@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="value_is_empty">Пустое поле</string>
-    <string name="value_length_is_incorrect">Количество символов некорректно</string>
+    <string name="value_is_empty">Пустое значение</string>
+    <string name="value_length_is_incorrect">Длина значения некорректно</string>
     <string name="value_is_incorrect">Значение некооректно</string>
     <string name="value_has_whitespace">Значение содержит пробел</string>
-    <string name="prefix_is_incorrect">Префикс некорректен</string>
+    <string name="value_prefix_is_incorrect">Префикс значения некорректен</string>
     <string name="value_has_no_digits">Значение не имеет цифр</string>
-    <string name="value_has_letters">Значение имеет буквы</string>
+    <string name="value_has_letters">Значение имеет символҷ</string>
     <string name="value_is_negative">Значение отрицательно</string>
 </resources>

@@ -1,7 +1,7 @@
 ui:
   theme:
-    isDynamic: true
-    isHighContrast: true
+    isDynamic: false
+    isHighContrast: false
     isExpressive: true
     dynamicColorPalette:
       seedColor: 0xFF00FFFF

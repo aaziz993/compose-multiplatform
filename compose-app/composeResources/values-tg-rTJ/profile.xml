@@ -10,9 +10,9 @@
     <string name="email">Email</string>
     <string name="roles">Нақшҳо</string>
     <string name="phone">Телефон</string>
-    <string name="unverified">Тасдикнашуда</string>
-    <string name="unverified_description">Аккаунти шумо тасдик нашудааст.</string>
-    <string name="verification">Тасдиккуни</string>
-    <string name="upload_id">Upload ID</string>
-    <string name="verify">Тасдик</string>
+    <string name="unverified">Тасдиқнашуда</string>
+    <string name="unverified_description">Аккаунти шумо тасдиқ нашудааст.</string>
+    <string name="verification">Тасдиқкуни</string>
+    <string name="upload_id">Ирсоли ID</string>
+    <string name="verify">Тасдиқ</string>
 </resources>
