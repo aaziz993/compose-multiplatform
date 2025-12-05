@@ -36,7 +36,6 @@ import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.navigation.rememberRouter
-import clib.presentation.navigation.slideTransition
 import clib.presentation.state.LocalStateStore
 import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
@@ -53,17 +52,15 @@ import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.net.createConnectivity
-import klib.data.type.collections.map.tryPlus
-import klib.data.type.functions.tryInvokeIf
-import klib.data.type.reflection.trySet
+import kotlinx.coroutines.MainScope
 
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
 public fun AppEnvironment(
     config: Config = Config(),
-    connectivity: Status = rememberConnectivity(createConnectivity()),
-    connectedText: String = "Connected",
-    disconnectedText: String = "Disconnected",
+    connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
+    onlineText: String = "Online",
+    offlineText: String = "Offline",
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
@@ -95,22 +92,22 @@ public fun AppEnvironment(
             if (isConnectivityAlert)
                 when (connectivity) {
                     is Status.Connected -> GlobalAlertEventController.sendEvent(
-                        AlertEvent(connectedText),
+                        AlertEvent(onlineText),
                     )
 
                     is Status.Disconnected -> GlobalAlertEventController.sendEvent(
-                        AlertEvent(disconnectedText),
+                        AlertEvent(offlineText),
                     )
                 }
 
             if (isConnectivitySnackbar)
                 when (connectivity) {
                     is Status.Connected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(connectedText),
+                        SnackbarEvent(onlineText),
                     )
 
                     is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(disconnectedText),
+                        SnackbarEvent(offlineText),
                     )
                 }
         }
@@ -153,13 +150,6 @@ public fun AppEnvironment(
         (if (isSystemInDarkTheme()) colorPalette.darkColorScheme
         else colorPalette.lightColorScheme) to Color.Transparent
     }
-
-//    routes.forEach { route ->
-//        val routeConfig = config.ui.routes[route.name] ?: return@forEach
-//        route::urls trySet routeConfig.urls
-//        route::metadata trySet routeConfig.metadata
-//        route::authResource trySet routeConfig.authResource
-//    }
 
     CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
         MaterialExpressiveTheme(

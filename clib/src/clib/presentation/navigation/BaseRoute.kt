@@ -39,7 +39,9 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
 
-    public val urls: List<Url> = listOf(navRoute.serializer().urlPattern())
+    public open val urls: List<Url> by lazy {
+        listOf(navRoute.serializer().urlPattern())
+    }
 
     public open val metadata: Map<String, Any> = slideTransition()
 

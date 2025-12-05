@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connectivity_alert">Предупреждение соединения</string>
+    <string name="connectivity_snackbar">Оповещение соединения</string>
+    <string name="connectivity_indicator">Индикатор соединения</string>
+    <string name="avatar_connectivity_indicator">Индикатор соединения аватара</string>
+</resources>

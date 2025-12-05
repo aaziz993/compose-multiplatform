@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connectivity_alert">Огоҳиномаи алоқа</string>
+    <string name="connectivity_snackbar">Паемаки алоқа</string>
+    <string name="connectivity_indicator">Аломати алоқа</string>
+    <string name="avatar_connectivity_indicator">Аломати алокаи аватар</string>
+</resources>

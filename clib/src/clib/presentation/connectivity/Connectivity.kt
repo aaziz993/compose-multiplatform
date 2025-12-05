@@ -6,16 +6,15 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import clib.presentation.noLocalProvidedFor
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.Connectivity.Status
 
 @Suppress("ComposeCompositionLocalUsage")
-public val LocalConnectivity: ProvidableCompositionLocal<Status> =
-    staticCompositionLocalOf { noLocalProvidedFor("LocalConnectivityStatus") }
+public val LocalConnectivity: ProvidableCompositionLocal<Status> = staticCompositionLocalOf { Status.Disconnected }
 
 @Composable
 public fun rememberConnectivity(connectivity: Connectivity): Status {
+
     val connectivityStatus by connectivity.statusUpdates
         .collectAsStateWithLifecycle(Status.Disconnected)
 

@@ -20,6 +20,7 @@ import klib.data.net.createConnectivity
 import klib.data.net.http.client.createHttpClient
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.encodeAnyToString
+import kotlinx.coroutines.MainScope
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Configuration
@@ -37,6 +38,17 @@ public class CommonModule {
     }
 
     @Single
+    public fun provideCache(json: Json): Cache<String, Any> =
+        SettingsCache(
+            valueKClass = Any::class,
+            valueEncoder = { value -> json.encodeAnyToString(value) },
+            valueDecoder = { value -> json.decodeAnyFromString(value)!! },
+        )
+
+    @Single
+    public fun provideConnectivity(): Connectivity = createConnectivity(MainScope())
+
+    @Single
     public fun provideAuthState(): AuthState = AuthState()
 
     @Single
@@ -44,14 +56,6 @@ public class CommonModule {
         isLenient = true
         ignoreUnknownKeys = true
     }
-
-    @Single
-    public fun provideCache(json: Json): Cache<String, Any> =
-        SettingsCache(
-            valueKClass = Any::class,
-            valueEncoder = { value -> json.encodeAnyToString(value) },
-            valueDecoder = { value -> json.decodeAnyFromString(value)!! },
-        )
 
     @Single
     public fun provideHttpClient(config: Config, json: Json): HttpClient = with(config.httpClient) {
@@ -88,7 +92,4 @@ public class CommonModule {
             }
         }
     }
-
-    @Single
-    public fun provideConnectivity(): Connectivity = createConnectivity()
 }

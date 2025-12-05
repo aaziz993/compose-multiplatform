@@ -329,6 +329,7 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
     ) {
         val scrollState = rememberScrollState()
         val config = LocalConfig.current
+        val connectivity = LocalConnectivity.current
         val componentsState = LocalComponentsState.current
         val themeState = LocalThemeState.current
         val densityState = LocalDensityState.current
@@ -339,6 +340,7 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
+            connectivity,
             config.ui.components,
             componentsState.components,
             { value -> componentsState.components = value },

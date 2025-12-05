@@ -12,6 +12,8 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.SignalCellular0Bar
+import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.outlined.Accessibility
@@ -20,6 +22,8 @@ import androidx.compose.material.icons.outlined.FlashOn
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.SignalCellular0Bar
+import androidx.compose.material.icons.outlined.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
@@ -88,6 +92,8 @@ import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permission
 import compose_app.generated.resources.quick_access_to_avatar
 import compose_app.generated.resources.quick_access_to_locales
+import compose_app.generated.resources.connectivity_alert
+import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.connectivity_indicator
 import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.quick_access_to_support
@@ -104,6 +110,7 @@ import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
 import data.type.primitives.SettingsSwitch
 import data.type.primitives.string.asStringResource
+import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
@@ -122,6 +129,7 @@ import ui.navigation.presentation.Settings
 public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
+    connectivity: Status = Status.Disconnected,
     defaultComponents: Components = Components(),
     components: Components = defaultComponents,
     onComponentsChange: (Components) -> Unit = {},
@@ -315,10 +323,18 @@ public fun SettingsScreen(
             ),
         )
 
-        components.connectivity.isConnectivityIndicator.SettingsSwitch(
-            title = stringResource(Res.string.connectivity_indicator),
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+        val connectivityTrueIcon =
+            if (connectivity.isConnected) Icons.Filled.SignalCellular0Bar
+            else Icons.Filled.SignalCellularConnectedNoInternet4Bar
+
+        val connectivityFalseIcon =
+            if (connectivity.isConnected) Icons.Outlined.SignalCellular0Bar
+            else Icons.Outlined.SignalCellularConnectedNoInternet4Bar
+
+        components.connectivity.isConnectivityAlert.SettingsSwitch(
+            title = stringResource(Res.string.connectivity_alert),
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
@@ -328,10 +344,10 @@ public fun SettingsScreen(
             },
         )
 
-        components.connectivity.isConnectivityIndicator.SettingsSwitch(
-            title = stringResource(Res.string.connectivity_indicator),
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+        components.connectivity.isConnectivitySnackbar.SettingsSwitch(
+            title = stringResource(Res.string.connectivity_snackbar),
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
@@ -343,8 +359,8 @@ public fun SettingsScreen(
 
         components.connectivity.isConnectivityIndicator.SettingsSwitch(
             title = stringResource(Res.string.connectivity_indicator),
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
@@ -356,8 +372,8 @@ public fun SettingsScreen(
 
         components.connectivity.isAvatarConnectivityIndicator.SettingsSwitch(
             title = stringResource(Res.string.avatar_connectivity_indicator),
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
