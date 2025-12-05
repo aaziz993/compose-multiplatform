@@ -50,6 +50,7 @@ public fun NavScreen(
 ): Unit = AppBar(
     modifier = modifier,
     title = title,
+    connectivity = connectivity,
     components = components,
     theme = theme,
     onThemeChange = onThemeChange,
