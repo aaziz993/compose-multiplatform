@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -198,16 +199,10 @@ internal fun SelectedColorDetail(
                 .weight(.8f),
             label = { Text(text = title) },
             leadingIcon = {
-                // Show current color as a small box
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .background(value, MaterialTheme.shapes.small)
-                        .border(
-                            1.dp,
-                            MaterialTheme.colorScheme.onSurface,
-                            MaterialTheme.shapes.small,
-                        ),
+                Icon(
+                    imageVector = Icons.Filled.Circle,
+                    contentDescription = title,
+                    tint = value,
                 )
             },
             trailingIcon = {

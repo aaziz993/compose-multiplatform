@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="avatar_connectivity_indicator">Нишонаки алокаи аватар</string>
     <string name="profile">Ҳуҷра</string>
     <string name="user">Истифодабаранда</string>
     <string name="user_interface">Интерфейси истифодабаранда</string>

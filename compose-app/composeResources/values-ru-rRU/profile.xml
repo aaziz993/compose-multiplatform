@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="avatar_connectivity_indicator">Индикатор соединения аватара</string>
     <string name="profile">Профиль</string>
     <string name="user">Пользователь</string>
     <string name="user_interface">Интерфейс пользователя</string>

@@ -14,8 +14,17 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material.icons.outlined.Accessibility
+import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.FlashOn
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -25,8 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.data.permission.BindEffect
 import clib.data.permission.rememberPermissions
@@ -44,6 +56,9 @@ import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
+import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
+import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
+import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.alpha
 import compose_app.generated.resources.appearance
@@ -73,6 +88,8 @@ import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permission
 import compose_app.generated.resources.quick_access_to_avatar
 import compose_app.generated.resources.quick_access_to_locales
+import compose_app.generated.resources.connectivity_indicator
+import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.quick_access_to_support
 import compose_app.generated.resources.quick_access_to_themes
 import compose_app.generated.resources.recovery
@@ -85,13 +102,16 @@ import compose_app.generated.resources.search
 import compose_app.generated.resources.select
 import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
+import data.type.primitives.SettingsSwitch
 import data.type.primitives.string.asStringResource
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
+import klib.data.permission.PermissionsController
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.theme.model.IsDarkIcon
@@ -149,32 +169,18 @@ public fun SettingsScreen(
             },
         )
 
-        SettingsSwitch(
-            state = theme.isDynamic,
-            title = { Text(text = stringResource(Res.string.dynamic_color_palette)) },
-            subtitle = {
-                theme.isDynamic.EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.Palette, stringResource(Res.string.dynamic_color_palette)) },
-            onCheckedChange = { state ->
-                onThemeChange(theme.copy(isDynamic = !theme.isDynamic))
-            },
+        theme.isDynamic.SettingsSwitch(
+            title = stringResource(Res.string.dynamic_color_palette),
+            trueIcon = Icons.Outlined.Palette,
+            falseIcon = Icons.Filled.Palette,
+            onCheckedChange = { value -> onThemeChange(theme.copy(isDark = value)) },
         )
 
-        SettingsSwitch(
-            state = theme.isHighContrast,
-            title = { Text(text = stringResource(Res.string.high_contrast)) },
-            subtitle = {
-                theme.isHighContrast.EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.Accessibility, stringResource(Res.string.high_contrast)) },
-            onCheckedChange = { state ->
-                onThemeChange(theme.copy(isHighContrast = !theme.isHighContrast))
-            },
+        theme.isHighContrast.SettingsSwitch(
+            title = stringResource(Res.string.high_contrast),
+            trueIcon = Icons.Outlined.Accessibility,
+            falseIcon = Icons.Filled.Accessibility,
+            onCheckedChange = { value -> onThemeChange(theme.copy(isHighContrast = value)) },
         )
 
         SettingsMenuLink(
@@ -309,60 +315,46 @@ public fun SettingsScreen(
             ),
         )
 
-        SettingsSwitch(
-            state = quickAccess.isSupport,
-            title = { Text(text = stringResource(Res.string.quick_access_to_support)) },
-            subtitle = {
-                quickAccess.isSupport.EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_support)) },
-            onCheckedChange = { state ->
-                onQuickAccessChange(quickAccess.copy(isSupport = !quickAccess.isSupport))
-            },
+        quickAccess.isConnectivityIndicator.SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isConnectivityIndicator = value)) },
         )
 
-        SettingsSwitch(
-            state = quickAccess.isTheme,
-            title = { Text(text = stringResource(Res.string.quick_access_to_themes)) },
-            subtitle = {
-                quickAccess.isTheme.EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_themes)) },
-            onCheckedChange = { state ->
-                onQuickAccessChange(quickAccess.copy(isTheme = !quickAccess.isTheme))
-            },
+        quickAccess.isSupport.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_support),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isSupport = value)) },
         )
 
-        SettingsSwitch(
-            state = quickAccess.isLocale,
-            title = { Text(text = stringResource(Res.string.quick_access_to_locales)) },
-            subtitle = {
-                quickAccess.isLocale.EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_locales)) },
-            onCheckedChange = { state ->
-                onQuickAccessChange(quickAccess.copy(isLocale = !quickAccess.isLocale))
-            },
+        quickAccess.isTheme.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_themes),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isTheme = value)) },
         )
 
-        SettingsSwitch(
-            state = quickAccess.isAvatar,
-            title = { Text(text = stringResource(Res.string.quick_access_to_avatar)) },
-            subtitle = {
-                quickAccess.isAvatar.EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.FlashOn, stringResource(Res.string.quick_access_to_avatar)) },
-            onCheckedChange = { state ->
-                onQuickAccessChange(quickAccess.copy(isAvatar = !quickAccess.isAvatar))
-            },
+        quickAccess.isLocale.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_locales),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isLocale = value)) },
+        )
+
+        quickAccess.isAvatar.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_avatar),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isAvatar = value)) },
+        )
+
+        quickAccess.isAvatarConnectivityIndicator.SettingsSwitch(
+            title = stringResource(Res.string.avatar_connectivity_indicator),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isAvatarConnectivityIndicator = value)) },
         )
     }
 
@@ -372,94 +364,113 @@ public fun SettingsScreen(
         title = { Text(text = stringResource(Res.string.permission)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        SettingsSwitch(
-            state = Permission.CAMERA in permissions,
-            title = { Text(text = stringResource(Res.string.camera)) },
-            subtitle = {
-                (Permission.CAMERA in permissions).EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.CameraAlt, stringResource(Res.string.camera)) },
-            onCheckedChange = { state: Boolean ->
-                coroutineScope.launch {
-                    permissionsController.providePermission(Permission.CAMERA)
-
-                    try {
-                        permissionsController.providePermission(Permission.GALLERY)
-                    }
-                    catch (deniedAlways: PermissionDeniedAlwaysException) {
-                        GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
-                    }
-                    catch (denied: PermissionDeniedException) {
-                        GlobalSnackbarEventController.sendEvent(SnackbarEvent(denied.message.orEmpty()))
-                    }
-                }
-            },
+        Permission.CAMERA.SettingsSwitch(
+            title = stringResource(Res.string.camera),
+            trueIcon = Icons.Outlined.CameraAlt,
+            falseIcon = Icons.Filled.CameraAlt,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            permissionsController = permissionsController,
         )
 
-        SettingsSwitch(
-            state = Permission.RECORD_AUDIO in permissions,
-            title = { Text(text = stringResource(Res.string.microphone)) },
-            subtitle = {
-                (Permission.RECORD_AUDIO in permissions).EnabledText()
-            },
-            modifier = Modifier,
-            enabled = true,
-            icon = { Icon(Icons.Default.Mic, stringResource(Res.string.microphone)) },
-            onCheckedChange = { state: Boolean ->
-                coroutineScope.launch {
-                    permissionsController.providePermission(Permission.RECORD_AUDIO)
-                }
-            },
+        Permission.RECORD_AUDIO.SettingsSwitch(
+            title = stringResource(Res.string.microphone),
+            trueIcon = Icons.Outlined.Mic,
+            falseIcon = Icons.Filled.Mic,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            permissionsController = permissionsController,
         )
 
-        SettingsSwitch(
-            state = Permission.LOCATION in permissions,
-            title = { Text(text = stringResource(Res.string.location)) },
+        Permission.LOCATION.SettingsSwitch(
+            title = stringResource(Res.string.location),
+            trueIcon = Icons.Outlined.LocationOn,
+            falseIcon = Icons.Filled.LocationOn,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            permissionsController = permissionsController,
+        )
+    }
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.recovery)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        SettingsMenuLink(
+            title = { Text(text = stringResource(Res.string.reset)) },
             subtitle = {
-                (Permission.LOCATION in permissions).EnabledText()
+                if (
+                    theme != defaultTheme ||
+                    density != defaultDensity ||
+                    locale != defaultLocale ||
+                    quickAccess != defaultQuickAccess
+                ) Text(text = stringResource(Res.string.reset))
             },
             modifier = Modifier,
             enabled = true,
-            icon = { Icon(Icons.Default.LocationOn, stringResource(Res.string.location)) },
-            onCheckedChange = { state: Boolean ->
-                coroutineScope.launch {
-                    permissionsController.providePermission(Permission.LOCATION)
-                }
+            icon = { Icon(Icons.Default.Restore, stringResource(Res.string.reset)) },
+            onClick = {
+                if (theme != defaultTheme) onThemeChange(defaultTheme)
+                if (density != defaultDensity) onDensityChange(defaultDensity)
+                if (locale != defaultLocale) onLocaleChange(defaultLocale)
+                if (quickAccess != defaultQuickAccess) onQuickAccessChange(defaultQuickAccess)
             },
         )
-
-        SettingsGroup(
-            modifier = Modifier,
-            enabled = true,
-            title = { Text(text = stringResource(Res.string.recovery)) },
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            SettingsMenuLink(
-                title = { Text(text = stringResource(Res.string.reset)) },
-                subtitle = {
-                    if (
-                        theme != defaultTheme ||
-                        density != defaultDensity ||
-                        locale != defaultLocale ||
-                        quickAccess != defaultQuickAccess
-                    ) Text(text = stringResource(Res.string.reset))
-                },
-                modifier = Modifier,
-                enabled = true,
-                icon = { Icon(Icons.Default.Restore, stringResource(Res.string.reset)) },
-                onClick = {
-                    if (theme != defaultTheme) onThemeChange(defaultTheme)
-                    if (density != defaultDensity) onDensityChange(defaultDensity)
-                    if (locale != defaultLocale) onLocaleChange(defaultLocale)
-                    if (quickAccess != defaultQuickAccess) onQuickAccessChange(defaultQuickAccess)
-                },
-            )
-        }
     }
 }
 
 @Preview
 @Composable
 public fun PreviewSettingsScreen(): Unit = SettingsScreen()
+
+@Suppress("ComposeParameterOrder")
+@Composable
+private fun Permission.SettingsSwitch(
+    permissions: Set<Permission>,
+    coroutineScope: CoroutineScope,
+    permissionsController: PermissionsController,
+    title: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = LocalSettingsGroupEnabled.current,
+    trueIcon: ImageVector,
+    falseIcon: ImageVector,
+    colors: SettingsTileColors = SettingsTileDefaults.colors(),
+    switchColors: SwitchColors =
+        SwitchDefaults.colors(
+            checkedTrackColor = colors.actionColor(enabled),
+            checkedThumbColor = contentColorFor(colors.actionColor(enabled)),
+            disabledCheckedTrackColor = colors.actionColor(enabled),
+            disabledCheckedThumbColor = contentColorFor(colors.actionColor(enabled)),
+        ),
+    tonalElevation: Dp = SettingsTileDefaults.Elevation,
+    shadowElevation: Dp = SettingsTileDefaults.Elevation,
+    semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+) = (this in permissions).SettingsSwitch(
+    title,
+    modifier,
+    enabled,
+    trueIcon,
+    falseIcon,
+    colors,
+    switchColors,
+    tonalElevation,
+    shadowElevation,
+    semanticProperties,
+    onCheckedChange = { value ->
+        if (!value)
+            coroutineScope.launch {
+                permissionsController.providePermission(this@SettingsSwitch)
+
+                try {
+                    permissionsController.providePermission(this@SettingsSwitch)
+                }
+                catch (deniedAlways: PermissionDeniedAlwaysException) {
+                    GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
+                }
+                catch (denied: PermissionDeniedException) {
+                    GlobalSnackbarEventController.sendEvent(SnackbarEvent(denied.message.orEmpty()))
+                }
+            }
+    },
+)

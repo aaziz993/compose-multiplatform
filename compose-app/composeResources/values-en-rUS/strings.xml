@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Application name -->
     <string name="app_name">Compose Multiplatform</string>
-
-    <!-- Tabs -->
-
-    <!-- Labels -->
-
-    <!-- Placeholders -->
-
-    <!-- Hints -->
-
-    <!-- Messages -->
-
-    <!-- Buttons -->
-
-    <!-- Toast messages -->
     <string name="about">About</string>
     <string name="alpha">Alpha</string>
     <string name="actions">Actions</string>
@@ -29,6 +14,7 @@
     <string name="confirm">Confirm</string>
     <string name="continue">Continue</string>
     <string name="content">Content</string>
+    <string name="connectivity_indicator">Connectivity indicator</string>
     <string name="description">Description</string>
     <string name="disabled">Disabled</string>
     <string name="enabled">Enabled</string>

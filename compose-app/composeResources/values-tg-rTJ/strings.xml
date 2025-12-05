@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Application name -->
     <string name="app_name">Compose Multiplatform</string>
-
-    <!-- Tabs -->
-
-    <!-- Labels -->
-
-    <!-- Placeholders -->
-
-    <!-- Hints -->
-
-    <!-- Messages -->
-
-    <!-- Buttons -->
-
-    <!-- Toast messages -->
     <string name="about">Оиди</string>
     <string name="alpha">Алфа</string>
     <string name="actions">Амалхо</string>
@@ -29,6 +14,7 @@
     <string name="confirm">Тасдиқ</string>
     <string name="continue">Давом</string>
     <string name="content">Таркиб</string>
+    <string name="connectivity_indicator">Нишонаки алоқа</string>
     <string name="description">Тавсиф</string>
     <string name="disabled">Гайрифаъол</string>
     <string name="enabled">Фаъол</string>

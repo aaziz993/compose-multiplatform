@@ -3,10 +3,12 @@ package presentation.components.scaffold
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -16,10 +18,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
-import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
-import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,7 +47,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
-import clib.data.type.LGreen
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
@@ -68,6 +68,8 @@ import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.theme
+import data.type.primitives.ConnectivityIcon
+import data.type.primitives.ConnectivityText
 import data.type.primitives.string.asStringResource
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
@@ -130,7 +132,16 @@ public fun AppBar(
             },
         topBar = {
             TopAppBar(
-                title = title,
+                title = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        title()
+
+                        if (quickAccess.isConnectivityIndicator) connectivityStatus.isConnected.ConnectivityText()
+                    }
+                },
                 navigationIcon = {
                     Row {
                         if (hasDrawer)
@@ -258,25 +269,15 @@ public fun AppBar(
                                                 onNavigationAction(NavigationAction.Push(Profile))
                                             },
                                     )
-                                    when (connectivityStatus) {
-                                        is Status.Connected -> Icon(
-                                            Icons.Filled.Circle,
-                                            stringResource(Res.string.online),
+                                    if (quickAccess.isAvatarConnectivityIndicator)
+                                        connectivityStatus.isConnected.ConnectivityIcon(
                                             Modifier
-                                                .align(Alignment.BottomEnd)
+                                                .align(Alignment.TopEnd)
                                                 .size(14.dp),
-                                            Color.LGreen,
-                                        )
-
-                                        is Status.Disconnected -> Icon(
-                                            Icons.Outlined.Circle,
-                                            stringResource(Res.string.offline),
                                             Modifier
-                                                .align(Alignment.BottomEnd)
+                                                .align(Alignment.TopEnd)
                                                 .size(14.dp),
-                                            MaterialTheme.colorScheme.error,
                                         )
-                                    }
                                 }
 
                                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
