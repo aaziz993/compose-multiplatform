@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldValue
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldState
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.di.koinInject
@@ -25,10 +24,9 @@ import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
+import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.auth.model.Auth
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import presentation.components.scaffold.AppBar
 
@@ -45,64 +43,58 @@ public fun NavScreen(
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
     quickAccess: QuickAccess = QuickAccess(),
-    hasDrawer: Boolean = true,
     hasBack: Boolean = true,
+    hasDrawer: Boolean = true,
+    isDrawerOpen: Boolean = true,
+    onDrawerToggle: () -> Unit = {},
     layoutType: NavigationSuiteType =
         NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo(true)),
+    navigationSuiteScaffoldState: NavigationSuiteScaffoldState = rememberNavigationSuiteScaffoldState(),
     onNavigationAction: (NavigationAction) -> Unit = {},
     navigationSuiteItems: NavigationSuiteScope.() -> Unit = {},
     content: @Composable () -> Unit = {},
-) {
-    val navigationSuiteScaffoldState = rememberNavigationSuiteScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
+): Unit = AppBar(
+    modifier = modifier,
+    title = title,
+    theme = theme,
+    onThemeChange = onThemeChange,
+    locales = locales,
+    locale = locale,
+    onLocaleChange = onLocaleChange,
+    auth = auth,
+    onAuthChange = onAuthChange,
+    quickAccess = quickAccess,
+    hasBack = hasBack,
+    hasDrawer = hasDrawer,
+    isDrawerOpen = isDrawerOpen,
+    onDrawerToggle = onDrawerToggle,
+    onNavigationAction = onNavigationAction,
+) { innerPadding ->
+    NavigationSuiteScaffold(
+        navigationSuiteItems = navigationSuiteItems,
+        modifier = Modifier.fillMaxSize().padding(innerPadding),
+        layoutType = layoutType,
+        state = navigationSuiteScaffoldState,
+    ) {
+        GlobalSnackbar()
 
-    AppBar(
-        modifier = modifier,
-        title = title,
-        theme = theme,
-        onThemeChange = onThemeChange,
-        locales = locales,
-        locale = locale,
-        onLocaleChange = onLocaleChange,
-        auth = auth,
-        onAuthChange = onAuthChange,
-        quickAccess = quickAccess,
-        hasDrawer = hasDrawer,
-        isDrawerOpen = navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible,
-        onDrawerToggle = {
-            coroutineScope.launch {
-                navigationSuiteScaffoldState.toggle()
-            }
-        },
-        hasBack = hasBack,
-        onNavigationAction = onNavigationAction,
-    ) { innerPadding ->
-        NavigationSuiteScaffold(
-            navigationSuiteItems = navigationSuiteItems,
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
-            layoutType = layoutType,
-            state = navigationSuiteScaffoldState,
-        ) {
-            GlobalSnackbar()
+        GlobalAlertDialog()
 
-            GlobalAlertDialog()
+        Connectivity(
+            koinInject(),
+            {
+                GlobalSnackbarEventController.sendEvent(
+                    SnackbarEvent(getString(Res.string.online)),
+                )
+            },
+            {
+                GlobalSnackbarEventController.sendEvent(
+                    SnackbarEvent(getString(Res.string.offline)),
+                )
+            },
+        )
 
-            Connectivity(
-                koinInject(),
-                {
-                    GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(getString(Res.string.online)),
-                    )
-                },
-                {
-                    GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(getString(Res.string.offline)),
-                    )
-                },
-            )
-
-            content()
-        }
+        content()
     }
 }
 

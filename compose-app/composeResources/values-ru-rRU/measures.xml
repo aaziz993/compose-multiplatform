@@ -6,10 +6,10 @@
         <item>млн.</item>      <!-- million -->
         <item>млрд.</item>      <!-- billion -->
         <item>трлн.</item>      <!-- trillion -->
-        <item>п.</item>      <!-- peta -->
-        <item>з.</item>      <!-- zetta -->
-        <item>й.</item>      <!-- yotta -->
-        <item>к.</item>      <!-- quetta -->
+        <item>птлн.</item>      <!-- peta -->
+        <item>зтлн.</item>      <!-- zetta -->
+        <item>йтлн.</item>      <!-- yotta -->
+        <item>ктлн.</item>      <!-- quetta -->
     </string-array>
 
     <!-- Duration Strings -->
