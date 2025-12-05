@@ -88,7 +88,7 @@ public fun AppEnvironment(
     val theme = themeState.theme
 
     with(componentsState.components.connectivity) {
-        LaunchedEffect(this) {
+        LaunchedEffect(connectivity) {
             if (isConnectivityAlert)
                 when (connectivity) {
                     is Status.Connected -> GlobalAlertEventController.sendEvent(
