@@ -132,7 +132,7 @@ public fun AppBar(
                 title = {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         title()
 

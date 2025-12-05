@@ -36,6 +36,7 @@ import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.navigation.rememberRouter
+import clib.presentation.navigation.slideTransition
 import clib.presentation.state.LocalStateStore
 import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
@@ -52,6 +53,9 @@ import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.net.createConnectivity
+import klib.data.type.collections.map.tryPlus
+import klib.data.type.functions.tryInvokeIf
+import klib.data.type.reflection.trySet
 
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
@@ -149,6 +153,13 @@ public fun AppEnvironment(
         (if (isSystemInDarkTheme()) colorPalette.darkColorScheme
         else colorPalette.lightColorScheme) to Color.Transparent
     }
+
+//    routes.forEach { route ->
+//        val routeConfig = config.ui.routes[route.name] ?: return@forEach
+//        route::urls trySet routeConfig.urls
+//        route::metadata trySet routeConfig.metadata
+//        route::authResource trySet routeConfig.authResource
+//    }
 
     CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
         MaterialExpressiveTheme(

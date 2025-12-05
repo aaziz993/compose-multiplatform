@@ -4,7 +4,6 @@ import androidx.compose.ui.unit.Density
 import clib.presentation.components.Components
 import clib.presentation.theme.density.model.DensitySerial
 import clib.presentation.theme.model.Theme
-import klib.data.config.RouteConfig
 import klib.data.config.UIConfig
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current

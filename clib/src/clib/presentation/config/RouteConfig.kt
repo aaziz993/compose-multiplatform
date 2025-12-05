@@ -1,0 +1,14 @@
+package clib.presentation.config
+
+import io.ktor.http.Url
+import klib.data.auth.AuthResource
+import kotlinx.serialization.Serializable
+import klib.data.config.RouteConfig
+import klib.data.type.serialization.serializers.collections.SerializableAnyMap
+
+@Serializable
+public data class RouteConfig(
+    override val urls: List<Url> = emptyList(),
+    public val metadata: SerializableAnyMap = emptyMap(),
+    override val authResource: AuthResource? = null,
+) : RouteConfig

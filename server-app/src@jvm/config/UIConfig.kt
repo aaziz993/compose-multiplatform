@@ -1,8 +1,9 @@
 package config
 
-import klib.data.config.RouteConfig
 import klib.data.config.UIConfig
+import kotlinx.serialization.Serializable
 
+@Serializable
 public data class UIConfig(
     override val startRoute: String? = null,
     override val authRedirectRoute: String? = null,

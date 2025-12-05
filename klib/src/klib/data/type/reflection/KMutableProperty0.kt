@@ -1,5 +1,3 @@
-@file:Suppress("UNCHECKED_CAST")
-
 package klib.data.type.reflection
 
 import kotlin.reflect.KMutableProperty0
