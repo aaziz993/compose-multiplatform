@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import clib.presentation.components.Components
 import clib.presentation.components.country.CountryCodePickerTextField
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
@@ -49,6 +50,8 @@ import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.username
 import compose_app.generated.resources.verify
+import data.type.primitives.ConnectivityIcon
+import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
@@ -62,6 +65,8 @@ import ui.navigation.presentation.Verification
 public fun ProfileScreen(
     modifier: Modifier = Modifier,
     route: Profile = Profile,
+    connectivity: Status = Status.Disconnected,
+    components: Components = Components(),
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
@@ -77,6 +82,15 @@ public fun ProfileScreen(
                 modifier = Modifier.size(80.dp)
                     .clip(CircleShape),
             )
+            if (components.connectivity.isAvatarConnectivityIndicator)
+                connectivity.isConnected.ConnectivityIcon(
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .size(14.dp),
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .size(14.dp),
+                )
             IconButton(
                 onClick = {},
                 modifier = Modifier

@@ -51,7 +51,7 @@ import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.quickaccess.QuickAccess
+import clib.presentation.components.Components
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsMenuLink
@@ -122,6 +122,9 @@ import ui.navigation.presentation.Settings
 public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
+    defaultComponents: Components = Components(),
+    components: Components = defaultComponents,
+    onComponentsChange: (Components) -> Unit = {},
     defaultTheme: Theme = Theme(),
     theme: Theme = defaultTheme,
     onThemeChange: (Theme) -> Unit = {},
@@ -134,9 +137,6 @@ public fun SettingsScreen(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    defaultQuickAccess: QuickAccess = QuickAccess(),
-    quickAccess: QuickAccess = defaultQuickAccess,
-    onQuickAccessChange: (QuickAccess) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
@@ -315,46 +315,108 @@ public fun SettingsScreen(
             ),
         )
 
-        quickAccess.isConnectivityIndicator.SettingsSwitch(
+        components.connectivity.isConnectivityIndicator.SettingsSwitch(
             title = stringResource(Res.string.connectivity_indicator),
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
-            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isConnectivityIndicator = value)) },
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        connectivity = components.connectivity.copy(isConnectivityAlert = value),
+                    ),
+                )
+            },
         )
 
-        quickAccess.isSupport.SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_support),
+        components.connectivity.isConnectivityIndicator.SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator),
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
-            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isSupport = value)) },
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        connectivity = components.connectivity.copy(isConnectivitySnackbar = value),
+                    ),
+                )
+            },
         )
 
-        quickAccess.isTheme.SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_themes),
+        components.connectivity.isConnectivityIndicator.SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator),
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
-            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isTheme = value)) },
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        connectivity = components.connectivity.copy(isConnectivityIndicator = value),
+                    ),
+                )
+            },
         )
 
-        quickAccess.isLocale.SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_locales),
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
-            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isLocale = value)) },
-        )
-
-        quickAccess.isAvatar.SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_avatar),
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
-            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isAvatar = value)) },
-        )
-
-        quickAccess.isAvatarConnectivityIndicator.SettingsSwitch(
+        components.connectivity.isAvatarConnectivityIndicator.SettingsSwitch(
             title = stringResource(Res.string.avatar_connectivity_indicator),
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
-            onCheckedChange = { value -> onQuickAccessChange(quickAccess.copy(isAvatarConnectivityIndicator = value)) },
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        connectivity = components.connectivity.copy(isAvatarConnectivityIndicator = value),
+                    ),
+                )
+            },
+        )
+
+        components.quickAccess.isSupport.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_support),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        quickAccess = components.quickAccess.copy(isSupport = value),
+                    ),
+                )
+            },
+        )
+
+        components.quickAccess.isTheme.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_themes),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        quickAccess = components.quickAccess.copy(isTheme = value),
+                    ),
+                )
+            },
+        )
+
+        components.quickAccess.isLocale.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_locales),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        quickAccess = components.quickAccess.copy(isLocale = value),
+                    ),
+                )
+            },
+        )
+
+        components.quickAccess.isAvatar.SettingsSwitch(
+            title = stringResource(Res.string.quick_access_to_avatar),
+            trueIcon = Icons.Outlined.FlashOn,
+            falseIcon = Icons.Filled.FlashOn,
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        quickAccess = components.quickAccess.copy(isAvatar = value),
+                    ),
+                )
+            },
         )
     }
 
@@ -404,7 +466,7 @@ public fun SettingsScreen(
                     theme != defaultTheme ||
                     density != defaultDensity ||
                     locale != defaultLocale ||
-                    quickAccess != defaultQuickAccess
+                    components != defaultComponents
                 ) Text(text = stringResource(Res.string.reset))
             },
             modifier = Modifier,
@@ -414,7 +476,7 @@ public fun SettingsScreen(
                 if (theme != defaultTheme) onThemeChange(defaultTheme)
                 if (density != defaultDensity) onDensityChange(defaultDensity)
                 if (locale != defaultLocale) onLocaleChange(defaultLocale)
-                if (quickAccess != defaultQuickAccess) onQuickAccessChange(defaultQuickAccess)
+                if (components != defaultComponents) onComponentsChange(defaultComponents)
             },
         )
     }

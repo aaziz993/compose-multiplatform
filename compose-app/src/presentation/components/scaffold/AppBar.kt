@@ -32,7 +32,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,7 +52,7 @@ import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.quickaccess.QuickAccess
+import clib.presentation.components.Components
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.back
@@ -62,8 +61,6 @@ import compose_app.generated.resources.help
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate
-import compose_app.generated.resources.offline
-import compose_app.generated.resources.online
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
@@ -92,6 +89,8 @@ import ui.navigation.presentation.Profile
 public fun AppBar(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
+    connectivity: Status = Status.Disconnected,
+    components: Components = Components(),
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
@@ -102,8 +101,6 @@ public fun AppBar(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    connectivityStatus: Status = Status.Disconnected,
-    quickAccess: QuickAccess = QuickAccess(),
     hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
     onDrawerToggle: () -> Unit = {},
@@ -135,11 +132,11 @@ public fun AppBar(
                 title = {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
+                        horizontalArrangement = Arrangement.Start,
                     ) {
                         title()
 
-                        if (quickAccess.isConnectivityIndicator) connectivityStatus.isConnected.ConnectivityText()
+                        if (components.connectivity.isConnectivityIndicator) connectivity.isConnected.ConnectivityText()
                     }
                 },
                 navigationIcon = {
@@ -170,7 +167,7 @@ public fun AppBar(
                     }
                 },
                 actions = {
-                    if (quickAccess.isSupport)
+                    if (components.quickAccess.isSupport)
                         AuthComposable(auth) {
                             AppTooltipBox(stringResource(Res.string.help)) {
                                 IconButton(
@@ -186,7 +183,7 @@ public fun AppBar(
                             }
                         }
 
-                    if (quickAccess.isTheme)
+                    if (components.quickAccess.isTheme)
                         AppTooltipBox(stringResource(Res.string.theme)) {
                             IconButton(
                                 onClick = {
@@ -197,7 +194,7 @@ public fun AppBar(
                             }
                         }
 
-                    if (quickAccess.isLocale) {
+                    if (components.quickAccess.isLocale) {
                         var localePickerDialog by remember { mutableStateOf(false) }
 
                         if (localePickerDialog)
@@ -253,7 +250,7 @@ public fun AppBar(
                         }
                     }
 
-                    if (quickAccess.isAvatar) {
+                    if (components.quickAccess.isAvatar) {
                         AuthComposable(auth) { user ->
                             AppTooltipBox(stringResource(Res.string.profile)) {
                                 var expanded by remember { mutableStateOf(false) }
@@ -269,8 +266,8 @@ public fun AppBar(
                                                 onNavigationAction(NavigationAction.Push(Profile))
                                             },
                                     )
-                                    if (quickAccess.isAvatarConnectivityIndicator)
-                                        connectivityStatus.isConnected.ConnectivityIcon(
+                                    if (components.connectivity.isAvatarConnectivityIndicator)
+                                        connectivity.isConnected.ConnectivityIcon(
                                             Modifier
                                                 .align(Alignment.TopEnd)
                                                 .size(14.dp),

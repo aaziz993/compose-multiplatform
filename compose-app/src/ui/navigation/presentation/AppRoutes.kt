@@ -42,8 +42,10 @@ import clib.di.navigation.KoinRoute
 import clib.di.navigation.KoinRoutes
 import clib.di.navigation.rememberKoinScopeNavEntryDecorator
 import clib.presentation.auth.LocalAuthState
+import clib.presentation.components.LocalComponentsState
 import clib.presentation.components.model.item.Item
 import clib.presentation.config.LocalConfig
+import clib.presentation.connectivity.LocalConnectivity
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
@@ -52,15 +54,13 @@ import clib.presentation.navigation.Route
 import clib.presentation.navigation.currentRouter
 import clib.presentation.navigation.model.NavigationItem
 import clib.presentation.navigation.scene.DelegatedScreenStrategy
-import clib.presentation.quickaccess.QuickAccess
-import clib.presentation.state.LocalStateStore
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
 import data.type.primitives.string.asStringResource
+import klib.data.auth.AuthResource
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
-import klib.data.auth.AuthResource
 import klib.data.type.primitives.string.case.toSnakeCase
 import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
@@ -329,16 +329,19 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
     ) {
         val scrollState = rememberScrollState()
         val config = LocalConfig.current
+        val componentsState = LocalComponentsState.current
         val themeState = LocalThemeState.current
         val densityState = LocalDensityState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
-        val stateStore = LocalStateStore.current
         val router = currentRouter()
 
         SettingsScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
+            config.ui.components,
+            componentsState.components,
+            { value -> componentsState.components = value },
             config.ui.theme,
             themeState.theme,
             { value -> themeState.theme = value },
@@ -351,9 +354,6 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
             { value -> localeState.locale = value },
             authState.auth,
             { value -> authState.auth = value },
-            config.ui.quickAccess,
-            stateStore.get<QuickAccess>(),
-            onQuickAccessChange = { value -> stateStore.set<QuickAccess>(value = value) },
             router::actions,
         )
     }
@@ -616,12 +616,16 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
+        val connectivity = LocalConnectivity.current
+        val componentsState = LocalComponentsState.current
         val authState = LocalAuthState.current
         val router = currentRouter()
 
         ProfileScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
+            connectivity,
+            componentsState.components,
             authState.auth,
             { auth -> authState.auth = auth },
             router::actions,
@@ -630,7 +634,7 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
 
     @Composable
     override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
-        val isAvatar = LocalStateStore.current.get<QuickAccess>().isAvatar
+        val isAvatar = LocalComponentsState.current.components.quickAccess.isAvatar
         return super.isNavigationItem(auth) && !isAvatar
     }
 }

@@ -12,14 +12,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowSizeClass
 import clib.presentation.auth.LocalAuthState
+import clib.presentation.components.LocalComponentsState
 import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivity
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.currentRouter
 import clib.presentation.navigation.scene.WrapperSceneStrategy
-import clib.presentation.quickaccess.QuickAccess
-import clib.presentation.state.LocalStateStore
 import clib.presentation.theme.LocalThemeState
 import data.type.primitives.string.asStringResource
 import kotlin.collections.Map
@@ -32,11 +31,11 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
     @Composable
     override fun Content(content: @Composable () -> Unit) {
         val config = LocalConfig.current
+        val componentsState = LocalComponentsState.current
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
         val connectivity = LocalConnectivity.current
-        val stateStore = LocalStateStore.current
         val router = currentRouter()
         val navigationSuiteScaffoldState = rememberNavigationSuiteScaffoldState()
         val coroutineScope = rememberCoroutineScope()
@@ -61,6 +60,8 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
             NavScreen(
                 Modifier.fillMaxSize(),
                 { Text(text = currentRoute.route.name.asStringResource()) },
+                connectivity,
+                componentsState.components,
                 themeState.theme,
                 { value -> themeState.theme = value },
                 config.localization.locales,
@@ -68,8 +69,6 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 { value -> localeState.locale = value },
                 authState.auth,
                 { value -> authState.auth = value },
-                connectivity,
-                stateStore.get<QuickAccess>(),
                 router.hasBack,
                 layoutType == NavigationSuiteType.NavigationDrawer,
                 navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible,

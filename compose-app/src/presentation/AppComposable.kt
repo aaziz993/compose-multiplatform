@@ -1,18 +1,17 @@
 package presentation
 
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ComposeFoundationFlags
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
+import clib.presentation.components.ComponentsState
+import clib.presentation.components.rememberComponentsState
 import clib.presentation.config.Config
 import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.event.EventBus
@@ -23,20 +22,17 @@ import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.navigation.rememberRouter
-import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.density.DensityState
 import clib.presentation.theme.density.rememberDensityState
-import clib.presentation.theme.model.DynamicColorPalette
-import clib.presentation.theme.model.Theme
 import clib.presentation.theme.rememberThemeState
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.offline
+import compose_app.generated.resources.online
 import dev.jordond.connectivity.Connectivity
-import presentation.theme.SquircleShapes
-import presentation.theme.Typography
-import presentation.theme.colorPalette
-import presentation.theme.colorPaletteHighContrast
+import org.jetbrains.compose.resources.stringResource
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services
@@ -46,33 +42,15 @@ import ui.navigation.presentation.Services
 public fun AppComposable(
     modifier: Modifier = Modifier.fillMaxSize(),
     config: Config = koinInject(),
-    themeState: ThemeState = rememberThemeState(
-        Theme(
-            colorPalette = colorPalette,
-            colorPaletteHighContrast = colorPaletteHighContrast,
-            dynamicColorPalette = DynamicColorPalette(
-                seedColor = Color.Cyan,
-                animate = true,
-                animationSpec = spring(),
-            ),
-            dynamicColorPaletteHighContrast = DynamicColorPalette(
-                seedColor = Color.Blue,
-                animate = true,
-                animationSpec = spring(),
-            ),
-            shapes = SquircleShapes,
-            typography = Typography,
-        ),
-    ),
-    densityState: DensityState = rememberDensityState(),
-    localeState: LocaleState = rememberLocaleState(),
-    authState: AuthState = koinInject(),
     connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
-    stateStore: StateStore = rememberStateStore(
-        mapOf(
-            QuickAccess::class.toString() to mutableStateOf(QuickAccess()),
-        ),
-    ),
+    connectedText: String = stringResource(Res.string.online),
+    disconnectedText: String = stringResource(Res.string.offline),
+    componentsState: ComponentsState = rememberComponentsState(config.ui.components),
+    themeState: ThemeState = rememberThemeState(config.ui.theme),
+    densityState: DensityState = rememberDensityState(config.ui.density),
+    localeState: LocaleState = rememberLocaleState(config.ui.locale),
+    authState: AuthState = koinInject(),
+    stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
     routes: Routes = App,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
@@ -88,11 +66,14 @@ public fun AppComposable(
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     AppEnvironment(
         config,
+        connectivity,
+        connectedText,
+        disconnectedText,
+        componentsState,
         themeState,
         densityState,
         localeState,
         authState,
-        connectivity,
         stateStore,
         eventBus,
         routerFactory,

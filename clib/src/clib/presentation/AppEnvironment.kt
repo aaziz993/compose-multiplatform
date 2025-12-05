@@ -7,19 +7,26 @@ import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
+import clib.presentation.components.ComponentsState
+import clib.presentation.components.LocalComponentsState
+import clib.presentation.components.rememberComponentsState
 import clib.presentation.config.Config
 import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivity
 import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.event.EventBus
 import clib.presentation.event.LocalEventBus
+import clib.presentation.event.alert.GlobalAlertEventController
+import clib.presentation.event.alert.model.AlertEvent
+import clib.presentation.event.snackbar.GlobalSnackbarEventController
+import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocalAppLocale
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.LocaleState
@@ -29,7 +36,6 @@ import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.navigation.rememberRouter
-import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.state.LocalStateStore
 import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
@@ -44,29 +50,29 @@ import com.materialkolor.LocalDynamicMaterialThemeSeed
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
-import dev.jordond.connectivity.Connectivity
+import dev.jordond.connectivity.Connectivity.Status
 import klib.data.net.createConnectivity
 
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
 public fun AppEnvironment(
     config: Config = Config(),
-    themeState: ThemeState = rememberThemeState(),
-    densityState: DensityState = rememberDensityState(),
-    localeState: LocaleState = rememberLocaleState(),
+    connectivity: Status = rememberConnectivity(createConnectivity()),
+    connectedText: String = "Connected",
+    disconnectedText: String = "Disconnected",
+    componentsState: ComponentsState = rememberComponentsState(config.ui.components),
+    themeState: ThemeState = rememberThemeState(config.ui.theme),
+    densityState: DensityState = rememberDensityState(config.ui.density),
+    localeState: LocaleState = rememberLocaleState(config.ui.locale),
     authState: AuthState = rememberAuthState(),
-    connectivity: Connectivity.Status = rememberConnectivity(createConnectivity()),
-    stateStore: StateStore = rememberStateStore(
-        mapOf(
-            QuickAccess::class.toString() to mutableStateOf(QuickAccess()),
-        ),
-    ),
+    stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
 ): Unit = CompositionLocalProvider(
     LocalConfig provides config,
+    LocalComponentsState provides componentsState,
     LocalThemeState provides themeState,
     LocalAppTheme provides themeState.theme.isDark,
     LocalDensityState provides densityState,
@@ -79,6 +85,32 @@ public fun AppEnvironment(
     LocalEventBus provides eventBus,
 ) {
     val theme = themeState.theme
+
+    with(componentsState.components.connectivity) {
+        LaunchedEffect(this) {
+            if (isConnectivityAlert)
+                when (connectivity) {
+                    is Status.Connected -> GlobalAlertEventController.sendEvent(
+                        AlertEvent(connectedText),
+                    )
+
+                    is Status.Disconnected -> GlobalAlertEventController.sendEvent(
+                        AlertEvent(disconnectedText),
+                    )
+                }
+
+            if (isConnectivitySnackbar)
+                when (connectivity) {
+                    is Status.Connected -> GlobalSnackbarEventController.sendEvent(
+                        SnackbarEvent(connectedText),
+                    )
+
+                    is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
+                        SnackbarEvent(disconnectedText),
+                    )
+                }
+        }
+    }
 
     val (colorScheme, seedColor) = if (theme.isDynamic) {
         val dynamicColorPalette =

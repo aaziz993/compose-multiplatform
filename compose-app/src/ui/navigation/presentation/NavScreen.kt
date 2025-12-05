@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.event.alert.GlobalAlertDialog
 import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.quickaccess.QuickAccess
+import clib.presentation.components.Components
 import clib.presentation.theme.model.Theme
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
@@ -28,6 +28,8 @@ import presentation.components.scaffold.AppBar
 public fun NavScreen(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
+    connectivity: Status = Status.Disconnected,
+    components: Components = Components(),
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
     locales: List<Locale> = emptyList(),
@@ -35,8 +37,6 @@ public fun NavScreen(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    connectivity: Status = Status.Disconnected,
-    quickAccess: QuickAccess = QuickAccess(),
     hasBack: Boolean = true,
     hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
@@ -50,6 +50,7 @@ public fun NavScreen(
 ): Unit = AppBar(
     modifier = modifier,
     title = title,
+    components = components,
     theme = theme,
     onThemeChange = onThemeChange,
     locales = locales,
@@ -57,7 +58,6 @@ public fun NavScreen(
     onLocaleChange = onLocaleChange,
     auth = auth,
     onAuthChange = onAuthChange,
-    quickAccess = quickAccess,
     hasBack = hasBack,
     hasDrawer = hasDrawer,
     isDrawerOpen = isDrawerOpen,
