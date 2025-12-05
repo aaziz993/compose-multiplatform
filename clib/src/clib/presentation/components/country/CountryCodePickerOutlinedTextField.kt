@@ -5,8 +5,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +28,7 @@ import klib.data.location.country.getCountries
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-public fun CountryCodePickerOutlinedTextField(
+public fun CountryCodePickerTextField(
     value: String,
     onValueChange: (countryCode: String, value: String, isValid: Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -69,7 +69,7 @@ public fun CountryCodePickerOutlinedTextField(
         )
     }
 
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             isNumberValid = validatePhoneNumber(
@@ -115,10 +115,10 @@ public fun CountryCodePickerOutlinedTextField(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountryCodePickerOutlinedTextFieldPreview() {
+public fun CountryCodePickerTextFieldPreview() {
     var value by remember { mutableStateOf("") }
 
-    CountryCodePickerOutlinedTextField(
+    CountryCodePickerTextField(
         value = value,
         onValueChange = { _, number, _ -> value = number },
     )

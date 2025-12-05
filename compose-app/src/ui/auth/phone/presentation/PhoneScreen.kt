@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.components.country.CountryCodePickerTextField
+import clib.presentation.components.country.CountryCodePickerOutlinedTextField
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
@@ -61,7 +61,7 @@ public fun PhoneScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        CountryCodePickerTextField(
+        CountryCodePickerOutlinedTextField(
             value = state.number,
             onValueChange = { countryCode, value, isValid ->
                 onAction(
