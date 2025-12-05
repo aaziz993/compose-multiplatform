@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import clib.data.permission.LocalPermissionsState
 import clib.di.koinViewModel
 import clib.di.navigation.KoinRoute
 import clib.di.navigation.KoinRoutes
@@ -63,6 +65,7 @@ import klib.data.location.country.current
 import klib.data.location.country.getCountries
 import klib.data.type.primitives.string.case.toSnakeCase
 import kotlin.reflect.KClass
+import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
@@ -327,9 +330,11 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
         route: Settings,
         sharedTransitionScope: SharedTransitionScope,
     ) {
+        val coroutineScope = rememberCoroutineScope()
         val scrollState = rememberScrollState()
         val config = LocalConfig.current
         val connectivity = LocalConnectivity.current
+        val permissionsState = LocalPermissionsState.current
         val componentsState = LocalComponentsState.current
         val themeState = LocalThemeState.current
         val densityState = LocalDensityState.current
@@ -341,6 +346,12 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             connectivity,
+            permissionsState.permissions,
+            { value ->
+                coroutineScope.launch {
+                    permissionsState.providePermission(value)
+                }
+            },
             config.ui.components,
             componentsState.components,
             { value -> componentsState.components = value },

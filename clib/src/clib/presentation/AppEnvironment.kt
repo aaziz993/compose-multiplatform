@@ -11,6 +11,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import clib.data.permission.LocalPermissionsState
+import clib.data.permission.PermissionsState
+import clib.data.permission.rememberPermissionsState
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
@@ -61,6 +64,7 @@ public fun AppEnvironment(
     connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
     onlineText: String = "Online",
     offlineText: String = "Offline",
+    permissionsState: PermissionsState = rememberPermissionsState(),
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
@@ -73,6 +77,8 @@ public fun AppEnvironment(
     routes: Routes,
 ): Unit = CompositionLocalProvider(
     LocalConfig provides config,
+    LocalConnectivity provides connectivity,
+    LocalPermissionsState provides permissionsState,
     LocalComponentsState provides componentsState,
     LocalThemeState provides themeState,
     LocalAppTheme provides themeState.theme.isDark,

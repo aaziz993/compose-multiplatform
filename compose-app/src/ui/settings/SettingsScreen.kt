@@ -44,9 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import clib.data.permission.BindEffect
-import clib.data.permission.rememberPermissions
-import clib.data.permission.rememberPermissionsControllerFactory
+import clib.presentation.components.Components
 import clib.presentation.components.color.model.ColorPicker
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsColorPickerBottomSheet
@@ -55,7 +53,6 @@ import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.components.Components
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsMenuLink
@@ -66,6 +63,7 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.alpha
 import compose_app.generated.resources.appearance
+import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.blend
 import compose_app.generated.resources.blue
 import compose_app.generated.resources.brightness
@@ -73,6 +71,9 @@ import compose_app.generated.resources.camera
 import compose_app.generated.resources.cancel
 import compose_app.generated.resources.color
 import compose_app.generated.resources.color_palette
+import compose_app.generated.resources.connectivity_alert
+import compose_app.generated.resources.connectivity_indicator
+import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.copy
 import compose_app.generated.resources.density
 import compose_app.generated.resources.dynamic_color_palette
@@ -92,10 +93,6 @@ import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permission
 import compose_app.generated.resources.quick_access_to_avatar
 import compose_app.generated.resources.quick_access_to_locales
-import compose_app.generated.resources.connectivity_alert
-import compose_app.generated.resources.connectivity_snackbar
-import compose_app.generated.resources.connectivity_indicator
-import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.quick_access_to_support
 import compose_app.generated.resources.quick_access_to_themes
 import compose_app.generated.resources.recovery
@@ -130,6 +127,8 @@ public fun SettingsScreen(
     modifier: Modifier = Modifier,
     route: Settings = Settings,
     connectivity: Status = Status.Disconnected,
+    permissions: Set<Permission> = emptySet(),
+    onPermissionChange: (Permission?) -> Unit = { true },
     defaultComponents: Components = Components(),
     components: Components = defaultComponents,
     onComponentsChange: (Components) -> Unit = {},
@@ -152,14 +151,6 @@ public fun SettingsScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val permissionFactory = rememberPermissionsControllerFactory()
-    val permissionsController = remember(permissionFactory) {
-        permissionFactory.createPermissionsController()
-    }
-    val permissions = rememberPermissions(permissionsController)
-
-    BindEffect(permissionsController)
-
     SettingsGroup(
         modifier = Modifier,
         enabled = true,
@@ -443,12 +434,12 @@ public fun SettingsScreen(
         contentPadding = PaddingValues(16.dp),
     ) {
         Permission.CAMERA.SettingsSwitch(
+            permissions = permissions,
+            coroutineScope = coroutineScope,
             title = stringResource(Res.string.camera),
             trueIcon = Icons.Outlined.CameraAlt,
             falseIcon = Icons.Filled.CameraAlt,
-            permissions = permissions,
-            coroutineScope = coroutineScope,
-            permissionsController = permissionsController,
+            onCheckedChange = onPermissionChange,
         )
 
         Permission.RECORD_AUDIO.SettingsSwitch(
@@ -457,7 +448,7 @@ public fun SettingsScreen(
             falseIcon = Icons.Filled.Mic,
             permissions = permissions,
             coroutineScope = coroutineScope,
-            permissionsController = permissionsController,
+            onCheckedChange = onPermissionChange,
         )
 
         Permission.LOCATION.SettingsSwitch(
@@ -466,7 +457,7 @@ public fun SettingsScreen(
             falseIcon = Icons.Filled.LocationOn,
             permissions = permissions,
             coroutineScope = coroutineScope,
-            permissionsController = permissionsController,
+            onCheckedChange = onPermissionChange,
         )
     }
     SettingsGroup(
@@ -507,7 +498,6 @@ public fun PreviewSettingsScreen(): Unit = SettingsScreen()
 private fun Permission.SettingsSwitch(
     permissions: Set<Permission>,
     coroutineScope: CoroutineScope,
-    permissionsController: PermissionsController,
     title: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
@@ -524,6 +514,7 @@ private fun Permission.SettingsSwitch(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+    onCheckedChange: (Permission?) -> Unit,
 ) = (this in permissions).SettingsSwitch(
     title,
     modifier,
@@ -536,12 +527,11 @@ private fun Permission.SettingsSwitch(
     shadowElevation,
     semanticProperties,
     onCheckedChange = { value ->
-        if (!value)
+        if (value) onCheckedChange(null)
+        else {
             coroutineScope.launch {
-                permissionsController.providePermission(this@SettingsSwitch)
-
                 try {
-                    permissionsController.providePermission(this@SettingsSwitch)
+                    onCheckedChange(this@SettingsSwitch)
                 }
                 catch (deniedAlways: PermissionDeniedAlwaysException) {
                     GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
@@ -550,5 +540,7 @@ private fun Permission.SettingsSwitch(
                     GlobalSnackbarEventController.sendEvent(SnackbarEvent(denied.message.orEmpty()))
                 }
             }
+        }
+
     },
 )

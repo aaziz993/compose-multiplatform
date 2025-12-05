@@ -268,8 +268,7 @@ public open class Nav3Navigator(
         value: List<NavRoute>,
     ) {
         Snapshot.withMutableSnapshot {
-            backStack.clear()
-            backStack.addAll(value)
+            backStack.replaceWith(value)
         }
     }
 

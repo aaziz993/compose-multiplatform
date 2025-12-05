@@ -11,11 +11,15 @@ public expect class PermissionsController {
 
     public suspend fun getPermissionState(permission: Permission): PermissionState
 
-    @Throws(CancellationException::class, PermissionDeniedAlwaysException::class, PermissionDeniedException::class, PermissionRequestCanceledException::class)
+    @Throws(
+        CancellationException::class,
+        PermissionDeniedAlwaysException::class,
+        PermissionDeniedException::class,
+        PermissionRequestCanceledException::class,
+    )
     public suspend fun providePermission(permission: Permission)
 
     public fun openAppSettings()
 }
 
-public suspend fun PermissionsController.isPermissionGranted(permission: Permission): Boolean =
-    getPermissionState(permission) == PermissionState.GRANTED
+public suspend fun PermissionsController.isPermissionGranted(permission: Permission): Boolean = getPermissionState(permission) == PermissionState.GRANTED

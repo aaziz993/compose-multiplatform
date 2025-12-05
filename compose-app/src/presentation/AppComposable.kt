@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import clib.data.permission.PermissionsState
+import clib.data.permission.rememberPermissionsState
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
@@ -45,6 +47,7 @@ public fun AppComposable(
     connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
     onlineText: String = stringResource(Res.string.online),
     offlineText: String = stringResource(Res.string.offline),
+    permissionsState: PermissionsState = rememberPermissionsState(),
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
@@ -69,6 +72,7 @@ public fun AppComposable(
         connectivity,
         onlineText,
         offlineText,
+        permissionsState,
         componentsState,
         themeState,
         densityState,
