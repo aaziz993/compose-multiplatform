@@ -3,10 +3,12 @@ package presentation.components.scaffold
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
@@ -15,8 +17,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
+import androidx.compose.material.icons.outlined.Circle
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -42,6 +48,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
+import clib.data.type.LGreen
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
@@ -57,6 +64,8 @@ import compose_app.generated.resources.help
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate
+import compose_app.generated.resources.offline
+import compose_app.generated.resources.online
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
@@ -68,6 +77,7 @@ import dev.chrisbanes.haze.HazeProgressive
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
+import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
@@ -92,6 +102,7 @@ public fun AppBar(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
+    connectivityStatus: Status = Status.Disconnected,
     quickAccess: QuickAccess = QuickAccess(),
     hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
@@ -237,17 +248,40 @@ public fun AppBar(
                         AuthComposable(auth) { user ->
                             AppTooltipBox(stringResource(Res.string.profile)) {
                                 var expanded by remember { mutableStateOf(false) }
-                                Avatar(
-                                    user = user,
-                                    modifier = Modifier
-                                        .size(48.dp)
-                                        .clip(CircleShape)
-                                        .combinedClickable(
-                                            onLongClick = { expanded = true },
-                                        ) {
-                                            onNavigationAction(NavigationAction.Push(Profile))
-                                        },
-                                )
+                                Box {
+                                    Avatar(
+                                        user = user,
+                                        modifier = Modifier
+                                            .size(48.dp)
+                                            .clip(CircleShape)
+                                            .combinedClickable(
+                                                onLongClick = { expanded = true },
+                                            ) {
+                                                onNavigationAction(NavigationAction.Push(Profile))
+                                            },
+                                    )
+                                    when (connectivityStatus) {
+                                        is Status.Connected -> Icon(
+                                            Icons.Filled.Circle,
+                                            stringResource(Res.string.online),
+                                            Modifier
+                                                .align(Alignment.BottomEnd)
+                                                .offset(20.dp, 5.dp)
+                                                .size(24.dp),
+                                            Color.LGreen,
+                                        )
+
+                                        is Status.Disconnected -> Icon(
+                                            Icons.Outlined.Circle,
+                                            stringResource(Res.string.offline),
+                                            Modifier
+                                                .align(Alignment.BottomEnd)
+                                                .offset(20.dp, 5.dp)
+                                                .size(24.dp),
+                                            MaterialTheme.colorScheme.error,
+                                        )
+                                    }
+                                }
 
                                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                                     DropdownMenuItem(

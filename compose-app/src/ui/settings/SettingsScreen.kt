@@ -3,7 +3,6 @@ package ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material.icons.filled.CameraAlt
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.TouchApp
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,17 +65,17 @@ import compose_app.generated.resources.hex
 import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.hsla
 import compose_app.generated.resources.hsv
-import compose_app.generated.resources.locale
 import compose_app.generated.resources.left
 import compose_app.generated.resources.lightness
+import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
-import compose_app.generated.resources.permissions
-import compose_app.generated.resources.recovery
+import compose_app.generated.resources.permission
 import compose_app.generated.resources.quick_access_to_avatar
 import compose_app.generated.resources.quick_access_to_locales
 import compose_app.generated.resources.quick_access_to_support
 import compose_app.generated.resources.quick_access_to_themes
+import compose_app.generated.resources.recovery
 import compose_app.generated.resources.red
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.rgba
@@ -88,12 +86,12 @@ import compose_app.generated.resources.select
 import compose_app.generated.resources.theme
 import data.type.primitives.EnabledText
 import data.type.primitives.string.asStringResource
+import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
-import klib.data.auth.model.Auth
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.theme.model.IsDarkIcon
@@ -371,7 +369,7 @@ public fun SettingsScreen(
     SettingsGroup(
         modifier = Modifier,
         enabled = true,
-        title = { Text(text = stringResource(Res.string.permissions)) },
+        title = { Text(text = stringResource(Res.string.permission)) },
         contentPadding = PaddingValues(16.dp),
     ) {
         SettingsSwitch(

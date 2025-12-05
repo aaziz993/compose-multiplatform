@@ -14,6 +14,7 @@ import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
 import clib.presentation.config.Config
+import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.event.EventBus
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
@@ -66,7 +67,7 @@ public fun AppComposable(
     densityState: DensityState = rememberDensityState(),
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = koinInject(),
-    connectivity: Connectivity = koinInject(),
+    connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
     stateStore: StateStore = rememberStateStore(
         mapOf(
             QuickAccess::class.toString() to mutableStateOf(QuickAccess()),

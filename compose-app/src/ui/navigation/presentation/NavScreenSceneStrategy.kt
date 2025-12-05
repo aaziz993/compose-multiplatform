@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowSizeClass
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.config.LocalConfig
+import clib.presentation.connectivity.LocalConnectivity
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.currentRouter
@@ -34,6 +35,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
+        val connectivity = LocalConnectivity.current
         val stateStore = LocalStateStore.current
         val router = currentRouter()
         val navigationSuiteScaffoldState = rememberNavigationSuiteScaffoldState()
@@ -66,6 +68,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 { value -> localeState.locale = value },
                 authState.auth,
                 { value -> authState.auth = value },
+                connectivity,
                 stateStore.get<QuickAccess>(),
                 router.hasBack,
                 layoutType == NavigationSuiteType.NavigationDrawer,

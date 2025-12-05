@@ -11,11 +11,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import clib.presentation.config.Config
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
+import clib.presentation.config.Config
 import clib.presentation.config.LocalConfig
+import clib.presentation.connectivity.LocalConnectivity
+import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.event.EventBus
 import clib.presentation.event.LocalEventBus
 import clib.presentation.locale.LocalAppLocale
@@ -53,7 +55,7 @@ public fun AppEnvironment(
     densityState: DensityState = rememberDensityState(),
     localeState: LocaleState = rememberLocaleState(),
     authState: AuthState = rememberAuthState(),
-    connectivity: Connectivity = createConnectivity(),
+    connectivity: Connectivity.Status = rememberConnectivity(createConnectivity()),
     stateStore: StateStore = rememberStateStore(
         mapOf(
             QuickAccess::class.toString() to mutableStateOf(QuickAccess()),
@@ -72,6 +74,7 @@ public fun AppEnvironment(
     LocalLocaleState provides localeState,
     LocalAppLocale provides localeState.locale,
     LocalAuthState provides authState,
+    LocalConnectivity provides connectivity,
     LocalStateStore provides stateStore,
     LocalEventBus provides eventBus,
 ) {
@@ -82,7 +85,7 @@ public fun AppEnvironment(
             if (theme.isHighContrast) theme.dynamicColorPaletteHighContrast else theme.dynamicColorPalette
 
         val state = rememberDynamicMaterialThemeState(
-            seedColor = dynamicColorPalette!!.seedColor,
+            seedColor = dynamicColorPalette.seedColor,
             isDark = isSystemInDarkTheme(),
             isAmoled = dynamicColorPalette.isAmoled,
             primary = dynamicColorPalette.primary,

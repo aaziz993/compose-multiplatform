@@ -12,22 +12,15 @@ import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import clib.di.koinInject
-import clib.presentation.components.connectivity.Connectivity
 import clib.presentation.event.alert.GlobalAlertDialog
 import clib.presentation.event.snackbar.GlobalSnackbar
-import clib.presentation.event.snackbar.GlobalSnackbarEventController
-import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.quickaccess.QuickAccess
 import clib.presentation.theme.model.Theme
-import compose_app.generated.resources.Res
-import compose_app.generated.resources.offline
-import compose_app.generated.resources.online
+import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import org.jetbrains.compose.resources.getString
 import presentation.components.scaffold.AppBar
 
 @Suppress("UNCHECKED_CAST")
@@ -42,6 +35,7 @@ public fun NavScreen(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
+    connectivity: Status = Status.Disconnected,
     quickAccess: QuickAccess = QuickAccess(),
     hasBack: Boolean = true,
     hasDrawer: Boolean = true,
@@ -77,22 +71,7 @@ public fun NavScreen(
         state = navigationSuiteScaffoldState,
     ) {
         GlobalAlertDialog()
-
         GlobalSnackbar()
-
-        Connectivity(
-            koinInject(),
-            {
-                GlobalSnackbarEventController.sendEvent(
-                    SnackbarEvent(getString(Res.string.online)),
-                )
-            },
-            {
-                GlobalSnackbarEventController.sendEvent(
-                    SnackbarEvent(getString(Res.string.offline)),
-                )
-            },
-        )
 
         content()
     }
