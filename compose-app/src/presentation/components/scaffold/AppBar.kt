@@ -17,6 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -129,7 +130,7 @@ public fun AppBar(
                                     onClick = onDrawerToggle,
                                 ) {
                                     Icon(
-                                        imageVector = if (isDrawerOpen) Icons.Default.Menu else Icons.Default.Menu,
+                                        imageVector = if (isDrawerOpen) Icons.Outlined.Menu else Icons.Filled.Menu,
                                         contentDescription = stringResource(Res.string.menu),
                                     )
                                 }
