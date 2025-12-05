@@ -23,8 +23,7 @@ public fun Avatar(
     imageSource: Any? = null,
     contentDescription: String = "",
     view: AvatarView = AvatarView(),
-    content: (@Composable BoxScope.() -> Unit)? = null
-): Unit = Box {
+): Unit =
     if (imageSource == null) InitialsAvatar(
         firstName,
         lastName,
@@ -35,8 +34,6 @@ public fun Avatar(
         contentDescription,
         modifier,
     )
-    content?.invoke(this)
-}
 
 @Composable
 internal fun InitialsAvatar(
@@ -73,7 +70,6 @@ public fun Avatar(
     modifier: Modifier = Modifier,
     contentDescription: String = "",
     view: AvatarView = AvatarView(),
-    content: (@Composable BoxScope.() -> Unit)? = null
 ): Unit = Avatar(
     user.firstName.orEmpty(),
     user.lastName.orEmpty(),
@@ -81,5 +77,4 @@ public fun Avatar(
     user.image,
     contentDescription,
     view,
-    content,
 )

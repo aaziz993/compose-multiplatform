@@ -1,6 +1,7 @@
 package ui.auth.profile.presentation
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
@@ -70,11 +71,12 @@ public fun ProfileScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     auth.user?.let { user ->
-        Avatar(
-            user = user,
-            modifier = Modifier.size(80.dp)
-                .clip(CircleShape),
-        ) {
+        Box {
+            Avatar(
+                user = user,
+                modifier = Modifier.size(80.dp)
+                    .clip(CircleShape),
+            )
             IconButton(
                 onClick = {},
                 modifier = Modifier

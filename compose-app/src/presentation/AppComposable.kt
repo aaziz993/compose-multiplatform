@@ -1,6 +1,8 @@
 package presentation
 
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ComposeFoundationFlags
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +39,7 @@ import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun AppComposable(
     modifier: Modifier = Modifier.fillMaxSize(),
@@ -78,18 +81,21 @@ public fun AppComposable(
             if (it == routes) Services else null,
         )
     },
-): Unit = AppEnvironment(
-    config,
-    themeState,
-    densityState,
-    localeState,
-    authState,
-    stateStore,
-    eventBus,
-    routerFactory,
-    navigatorFactory,
-    routes,
-)
+) {
+    ComposeFoundationFlags.isNewContextMenuEnabled = true
+    AppEnvironment(
+        config,
+        themeState,
+        densityState,
+        localeState,
+        authState,
+        stateStore,
+        eventBus,
+        routerFactory,
+        navigatorFactory,
+        routes,
+    )
+}
 
 @Preview
 @Composable

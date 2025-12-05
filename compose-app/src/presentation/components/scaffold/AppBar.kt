@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +19,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -45,8 +44,6 @@ import clib.data.location.country.flag
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
-import clib.presentation.components.dropdown.menu.DropDownMenu
-import clib.presentation.components.dropdown.menu.model.MenuItem
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
@@ -58,11 +55,11 @@ import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.help
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.menu
+import compose_app.generated.resources.navigate
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.theme
-import compose_app.generated.resources.navigate
 import data.type.primitives.string.asStringResource
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
@@ -70,9 +67,9 @@ import dev.chrisbanes.haze.HazeProgressive
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
+import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.auth.model.Auth
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
@@ -235,71 +232,59 @@ public fun AppBar(
                         }
                     }
 
-                    if (quickAccess.isAvatar)
+                    if (quickAccess.isAvatar) {
                         AuthComposable(auth) { user ->
                             AppTooltipBox(stringResource(Res.string.profile)) {
-                                var showMenu by remember { mutableStateOf(false) }
+                                var expanded by remember { mutableStateOf(false) }
                                 Avatar(
                                     user = user,
                                     modifier = Modifier
                                         .size(48.dp)
                                         .clip(CircleShape)
                                         .combinedClickable(
-                                            onLongClick = { showMenu = true },
+                                            onLongClick = { expanded = true },
                                         ) {
                                             onNavigationAction(NavigationAction.Push(Profile))
                                         },
-                                ) {
-                                    if (showMenu)
-                                        DropDownMenu(
-                                            items = listOf(
-                                                MenuItem(
-                                                    title = {
-                                                        Text(text = stringResource(Res.string.navigate), color = MaterialTheme.colorScheme.onSurface)
-                                                    },
-                                                    leadingIcon = {
-                                                        Icon(
-                                                            imageVector = Icons.AutoMirrored.Default.NavigateNext,
-                                                            contentDescription = null,
-                                                            tint = MaterialTheme.colorScheme.onSurface,
-                                                        )
-                                                    },
-                                                    onAction = {
-                                                        onNavigationAction(NavigationAction.Push(Profile))
-                                                        showMenu = false
-                                                    },
-                                                ),
-                                                MenuItem(
-                                                    title = {
-                                                        Text(text = stringResource(Res.string.sign_out), color = MaterialTheme.colorScheme.onSurface)
-                                                    },
-                                                    leadingIcon = {
-                                                        Icon(
-                                                            imageVector = Icons.AutoMirrored.Default.Logout,
-                                                            contentDescription = null,
-                                                            tint = MaterialTheme.colorScheme.onSurface,
-                                                        )
-                                                    },
-                                                    onAction = {
-                                                        onAuthChange(Auth())
-                                                    },
-                                                ),
-                                            ),
-                                            modifier = Modifier
-                                                .padding(top = 40.dp)
-                                                .width(200.dp),
-                                            shape = RoundedCornerShape(4.dp),
-                                            elevation = CardDefaults.elevatedCardElevation(
-                                                defaultElevation = 8.dp, // Increased elevation for better visibility in dark theme.
-                                                pressedElevation = 12.dp,
-                                            ),
-                                            colors = CardDefaults.elevatedCardColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                                            ),
-                                        )
+                                )
+
+                                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(text = stringResource(Res.string.navigate), color = MaterialTheme.colorScheme.onSurface)
+                                        },
+                                        onClick = {
+                                            onNavigationAction(NavigationAction.Push(Profile))
+                                            expanded = false
+                                        },
+                                        leadingIcon = {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Default.NavigateNext,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurface,
+                                            )
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(text = stringResource(Res.string.sign_out), color = MaterialTheme.colorScheme.onSurface)
+                                        },
+                                        onClick = {
+                                            onAuthChange(Auth())
+                                            expanded = false
+                                        },
+                                        leadingIcon = {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Default.Logout,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurface,
+                                            )
+                                        },
+                                    )
                                 }
                             }
                         }
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,
