@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material.icons.outlined.Circle
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -266,8 +264,7 @@ public fun AppBar(
                                             stringResource(Res.string.online),
                                             Modifier
                                                 .align(Alignment.BottomEnd)
-                                                .offset(20.dp, 5.dp)
-                                                .size(24.dp),
+                                                .size(14.dp),
                                             Color.LGreen,
                                         )
 
@@ -276,8 +273,7 @@ public fun AppBar(
                                             stringResource(Res.string.offline),
                                             Modifier
                                                 .align(Alignment.BottomEnd)
-                                                .offset(20.dp, 5.dp)
-                                                .size(24.dp),
+                                                .size(14.dp),
                                             MaterialTheme.colorScheme.error,
                                         )
                                     }
