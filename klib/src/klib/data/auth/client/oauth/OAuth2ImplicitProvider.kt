@@ -26,7 +26,6 @@ import io.ktor.util.NonceManager
 import io.ktor.util.encodeBase64
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
-import klib.data.auth.client.CredentialAuthProvider
 import klib.data.auth.client.oauth.model.AuthenticationFailedCause
 import klib.data.auth.client.oauth.model.OAuth2Exception
 import klib.data.auth.client.oauth.model.OAuth2RedirectError
@@ -34,7 +33,6 @@ import klib.data.auth.client.oauth.model.OAuth2RequestParameters
 import klib.data.auth.client.oauth.model.OAuth2ResponseParameters
 import klib.data.auth.client.oauth.model.OAuthAccessTokenResponse
 import klib.data.auth.client.oauth.model.OAuthGrantTypes
-import klib.data.cache.CoroutineCache
 import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -57,42 +55,39 @@ public abstract class OAuth2Implicit(
     public val extraTokenParameters: List<Pair<String, String>> = emptyList(),
     public val accessTokenInterceptor: HttpRequestBuilder.() -> Unit = {},
     callbackRedirectUrl: String,
-    onRedirectAuthenticateOAuth2: suspend (url: Url) -> Unit
+    onRedirectAuthenticateOAuth2: suspend (url: Url) -> Unit,
 ) : AbstractOAuth2Provider(
     name,
     httpClient,
     callbackRedirectUrl,
     onRedirectAuthenticateOAuth2,
-), CredentialAuthProvider {
+) {
 
     // Implements Resource Owner Password Credentials Grant.
     // Takes UserPasswordCredential and validates it using OAuth2 sequence, provides OAuthAccessTokenResponse.
     // OAuth2 if succeeds.
-    override suspend fun signIn(
+    public suspend fun requestToken(
         username: String,
         password: String,
-    ): Unit =
-        setToken(
-            oauth2RequestAccessToken(
-                httpClient,
-                HttpMethod.Post,
-                usedRedirectUrl = null,
-                baseUrl = accessTokenUrl,
-                clientId = clientId,
-                clientSecret = clientSecret,
-                code = null,
-                state = null,
-                configure = accessTokenInterceptor,
-                extraParameters = listOf(
-                    OAuth2RequestParameters.UserName to username,
-                    OAuth2RequestParameters.Password to password,
-                ),
-                useBasicAuth = true,
-                nonceManager = nonceManager,
-                passParamsInURL = passParamsInURL,
-                grantType = OAuthGrantTypes.Password,
-            ),
-        )
+    ): OAuthAccessTokenResponse.OAuth2 = oauth2RequestAccessToken(
+        httpClient,
+        HttpMethod.Post,
+        usedRedirectUrl = null,
+        baseUrl = accessTokenUrl,
+        clientId = clientId,
+        clientSecret = clientSecret,
+        code = null,
+        state = null,
+        configure = accessTokenInterceptor,
+        extraParameters = listOf(
+            OAuth2RequestParameters.UserName to username,
+            OAuth2RequestParameters.Password to password,
+        ),
+        useBasicAuth = true,
+        nonceManager = nonceManager,
+        passParamsInURL = passParamsInURL,
+        grantType = OAuthGrantTypes.Password,
+    )
 
     override suspend fun getRedirectUrl(): Url = redirectAuthenticateOAuth2(
         authorizeUrl,

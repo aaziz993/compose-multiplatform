@@ -49,7 +49,7 @@ public class OAuth1aImplicitProvider(
     public val accessTokenInterceptor: HttpRequestBuilder.() -> Unit = {},
     public val nonce: String = generateNonce(),
     callbackRedirectUrl: String,
-    onRedirectAuthenticate: suspend (url: Url) -> Unit
+    onRedirectAuthenticate: suspend (url: Url) -> Unit,
 ) : AbstractOAuthProvider<OAuthAccessTokenResponse.OAuth1a>(
     name,
     httpClient,

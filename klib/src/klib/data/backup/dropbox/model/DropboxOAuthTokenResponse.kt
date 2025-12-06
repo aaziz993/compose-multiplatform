@@ -1,11 +1,11 @@
-package klib.data.backup.onedrive.model
+package klib.data.backup.dropbox.model
 
 import klib.data.auth.client.model.BearerToken
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Serializable
-internal data class OneDriveOAuth2TokenResponse(
+internal data class DropboxOAuthTokenResponse(
     @SerialName("access_token")
     override val accessToken: String,
     @SerialName("expires_in")

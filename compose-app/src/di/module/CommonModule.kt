@@ -25,6 +25,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Configuration
+import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 
@@ -58,7 +59,7 @@ public class CommonModule {
         ignoreUnknownKeys = true
     }
 
-    @Single
+    @Factory
     public fun provideHttpClient(config: Config, json: Json): HttpClient = with(config.httpClient) {
         createHttpClient {
             this@with.timeout?.takeIf(EnabledConfig::enabled)?.let { timeout ->

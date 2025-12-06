@@ -1,13 +1,12 @@
 package klib.data.backup.dropbox.model
 
-import klib.data.backup.dropbox.BACKUP_PATH
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 @Serializable
 internal data class DropboxUploadArg(
     @SerialName("content_hash") val contentHash: String,
-    @SerialName("path") val path: String = BACKUP_PATH,
+    @SerialName("path") val path: String,
     @SerialName("autorename") val autoRename: Boolean = false,
     @SerialName("mode") val mode: WriteMode = WriteMode.overwrite,
     @SerialName("mute") val mute: Boolean = true,

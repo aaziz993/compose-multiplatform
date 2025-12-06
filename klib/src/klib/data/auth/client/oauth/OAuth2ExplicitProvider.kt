@@ -16,7 +16,7 @@ public class OAuth2ExplicitProvider(
     httpClient: HttpClient,
     public val loginUrl: Url,
     callbackRedirectUrl: String,
-    onRedirectAuthenticate: suspend (url: Url) -> Unit
+    onRedirectAuthenticate: suspend (url: Url) -> Unit,
 ) : AbstractOAuth2Provider(
     name,
     httpClient,
@@ -25,7 +25,7 @@ public class OAuth2ExplicitProvider(
 ) {
 
     override suspend fun getRedirectUrl(): Url =
-        httpClient.get(loginUrl).headers[HttpHeaders.Location]!!.let(::Url)
+        Url(httpClient.get(loginUrl).headers[HttpHeaders.Location]!!)
 
     override suspend fun callback(parameters: Parameters): AuthenticationFailedCause? =
         try {

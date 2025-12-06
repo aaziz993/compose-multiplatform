@@ -2,16 +2,16 @@ package klib.data.auth.keycloak.client.token
 
 import io.ktor.client.*
 import klib.data.auth.keycloak.client.token.model.TokenResponse
-import klib.data.net.http.client.KtorfitClient
+import klib.data.net.http.client.ktorfit
 
 public class KeycloakTokenClient(
     baseUrl: String,
     httpClient: HttpClient,
     public val realm: String,
     public val clientId: String
-) : KtorfitClient(baseUrl, httpClient) {
+) {
 
-    private val api = ktorfit.createKeycloakTokenApi()
+    private val api = httpClient.ktorfit { baseUrl(baseUrl) }.createKeycloakTokenApi()
 
     public suspend fun getToken(username: String, password: String): TokenResponse =
         api.getToken(

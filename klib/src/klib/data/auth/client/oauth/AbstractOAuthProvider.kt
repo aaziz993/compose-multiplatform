@@ -16,7 +16,7 @@ public abstract class AbstractOAuthProvider<T : BearerToken>(
     public val name: String? = null,
     protected val httpClient: HttpClient,
     public val callbackRedirectUrl: String,
-    protected val onRedirectAuthenticate: suspend (url: Url) -> Unit
+    protected val onRedirectAuthenticate: suspend (url: Url) -> Unit,
 ) {
 
     protected var continuation: CancellableContinuation<T>? = null
