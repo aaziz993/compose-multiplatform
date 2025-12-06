@@ -3,9 +3,9 @@ package klib.data.backup.dropbox
 import io.ktor.client.HttpClient
 import io.ktor.client.statement.readRawBytes
 import klib.data.backup.Backup
-import klib.data.backup.dropbox.model.DropboxDownloadArg
-import klib.data.backup.dropbox.model.DropboxDownloadResponse
-import klib.data.backup.dropbox.model.DropboxUploadArg
+import klib.data.backup.dropbox.model.DownloadArg
+import klib.data.backup.dropbox.model.DownloadResponse
+import klib.data.backup.dropbox.model.UploadArg
 import klib.data.cryptography.hashSha256Blocking
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.createHttpClient
@@ -29,17 +29,17 @@ public class DropboxFilesService(
     override suspend fun download(path: String): ByteArray? =
         dropboxGraphApi.download(downloadApiArg(path)).let { response ->
             val header = response.headers[DropboxApiResult] ?: return null
-            val downloadResponse = HTTP_CLIENT_JSON.decodeFromString<DropboxDownloadResponse>(header)
+            val downloadResponse = HTTP_CLIENT_JSON.decodeFromString<DownloadResponse>(header)
             val bytes = response.readRawBytes()
             bytes.takeIf { it.dropboxContentHash() == downloadResponse.contentHash }
         }
 }
 
 private fun ByteArray.toUploadApiArg(path: String): String =
-    HTTP_CLIENT_JSON.encodeToString(DropboxUploadArg(contentHash = dropboxContentHash(), path = path))
+    HTTP_CLIENT_JSON.encodeToString(UploadArg(contentHash = dropboxContentHash(), path = path))
 
 private fun downloadApiArg(path: String): String =
-    HTTP_CLIENT_JSON.encodeToString(DropboxDownloadArg(path = path))
+    HTTP_CLIENT_JSON.encodeToString(DownloadArg(path = path))
 
 private fun ByteArray.dropboxContentHash(blockSize: Int = 4_194_304): String {
     var offset = 0

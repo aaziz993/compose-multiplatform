@@ -4,6 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class DropboxDownloadResponse(
+internal data class DownloadResponse(
     @SerialName("content_hash") val contentHash: String,
 )

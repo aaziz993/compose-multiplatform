@@ -3,7 +3,7 @@ package klib.data.backup.onedrive
 import de.jensklingenberg.ktorfit.http.Field
 import de.jensklingenberg.ktorfit.http.FormUrlEncoded
 import de.jensklingenberg.ktorfit.http.POST
-import klib.data.backup.onedrive.model.OneDriveOAuth2TokenResponse
+import klib.data.backup.onedrive.model.TokenResponse
 
 internal interface OneDriveAuthApi {
 
@@ -16,7 +16,7 @@ internal interface OneDriveAuthApi {
         @Field("client_id") clientId: String,
         @Field("redirect_uri") redirectUri: String,
         @Field("scope") scope: String,
-    ): OneDriveOAuth2TokenResponse
+    ): TokenResponse
 
     @FormUrlEncoded
     @POST("common/oauth2/v2.0/token")
@@ -25,5 +25,5 @@ internal interface OneDriveAuthApi {
         @Field("refresh_token") refreshToken: String,
         @Field("client_id") clientId: String,
         @Field("scope") scope: String,
-    ): OneDriveOAuth2TokenResponse
+    ): TokenResponse
 }

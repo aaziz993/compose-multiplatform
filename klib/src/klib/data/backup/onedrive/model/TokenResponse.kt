@@ -5,11 +5,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class OneDriveOAuth2TokenResponse(
+internal data class TokenResponse(
     @SerialName("access_token")
     override val accessToken: String,
     @SerialName("expires_in")
-    val expiresInSeconds: Int,
+    val expiresIn: Int, // In seconds.
     @SerialName("token_type")
     val tokenType: String,
     @SerialName("refresh_token")

@@ -1,15 +1,15 @@
 package klib.data.auth.keycloak.client.token.model
 
-import klib.data.auth.client.bearer.model.BearerToken
+import klib.data.auth.client.model.BearerToken
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 public data class TokenResponse(
     @SerialName("access_token")
-    override val token: String,
+    override val accessToken: String,
     @SerialName("expires_in")
-    val expiresIn: Int,
+    val expiresIn: Int, // In seconds.
     @SerialName("refresh_expires_in")
     val refreshExpiresIn: Int?,
     @SerialName("refresh_token")

@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 @Serializable
-internal data class DropboxOAuthTokenResponse(
+internal data class TokenResponse(
     @SerialName("access_token")
     override val accessToken: String,
     @SerialName("expires_in")
-    val expiresInSeconds: Int,
+    val expiresIn: Int, // In seconds.
     @SerialName("token_type")
     val tokenType: String,
     @SerialName("refresh_token")

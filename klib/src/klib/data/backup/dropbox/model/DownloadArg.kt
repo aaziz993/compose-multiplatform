@@ -4,6 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class DropboxDownloadArg(
+internal data class DownloadArg(
     @SerialName("path") val path: String,
 )

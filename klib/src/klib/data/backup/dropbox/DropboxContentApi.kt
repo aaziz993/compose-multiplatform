@@ -5,7 +5,7 @@ import de.jensklingenberg.ktorfit.http.Header
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
 import io.ktor.client.statement.HttpResponse
-import klib.data.backup.dropbox.model.DropboxUploadResponse
+import klib.data.backup.dropbox.model.UploadResponse
 
 private const val DropboxApiArg: String = "Dropbox-Api-Arg"
 
@@ -16,7 +16,7 @@ internal interface DropboxContentApi {
     suspend fun upload(
         @Header(DropboxApiArg) apiArg: String,
         @Body body: ByteArray,
-    ): DropboxUploadResponse
+    ): UploadResponse
 
     @POST("2/files/download")
     suspend fun download(@Header(DropboxApiArg) apiArg: String): HttpResponse

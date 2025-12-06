@@ -2,7 +2,7 @@ package klib.data.backup.onedrive
 
 import io.ktor.client.HttpClient
 import io.ktor.util.encodeBase64
-import klib.data.backup.onedrive.model.OneDriveAccessData
+import klib.data.backup.onedrive.model.AccessData
 import klib.data.cryptography.hashSha256Blocking
 import klib.data.cryptography.randomBytes
 import klib.data.net.http.client.bearer
@@ -12,7 +12,7 @@ public class OneDriveAuthService(
     private val httpClient: HttpClient,
     private val clientId: String,
     private val redirectUri: String,
-    private val accessData: OneDriveAccessData = oneDriveAccessData(),
+    private val accessData: AccessData = oneDriveAccessData(),
 ) {
 
     private val api: OneDriveAuthApi =
@@ -51,11 +51,11 @@ public class OneDriveAuthService(
         }
 }
 
-private fun oneDriveAccessData(): OneDriveAccessData {
+private fun oneDriveAccessData(): AccessData {
     val bytes = randomBytes(32)
     val codeVerifier = bytes.oneDriveEncodeBase64()
     val codeChallenge = codeVerifier.encodeToByteArray().hashSha256Blocking().oneDriveEncodeBase64()
-    val accessData = OneDriveAccessData(codeVerifier, codeChallenge)
+    val accessData = AccessData(codeVerifier, codeChallenge)
     return accessData
 }
 

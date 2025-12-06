@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class TokenResponse(
     @SerialName("id_token")
-    override val token: String,
+    override val accessToken: String,
     @SerialName("refresh_token")
     override val refreshToken: String,
     @SerialName("expires_in")
-    val expiresIn: String,
+    val expiresIn: String, // In seconds.
     @SerialName("token_type")
     val tokenType: String, // always Bearer
     @SerialName("user_id")

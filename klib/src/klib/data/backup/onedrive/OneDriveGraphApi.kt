@@ -6,7 +6,7 @@ import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.PUT
 import de.jensklingenberg.ktorfit.http.Path
 import io.ktor.client.statement.HttpResponse
-import klib.data.backup.onedrive.model.OneDriveUploadResponse
+import klib.data.backup.onedrive.model.UploadResponse
 
 internal interface OneDriveGraphApi {
 
@@ -15,7 +15,7 @@ internal interface OneDriveGraphApi {
     suspend fun upload(
         @Path("path") path: String,
         @Body body: ByteArray,
-    ): OneDriveUploadResponse
+    ): UploadResponse
 
     @GET("v1.0/me/drive/root:/{path}:/content")
     suspend fun downloadMeta(@Path("path") path: String): HttpResponse
