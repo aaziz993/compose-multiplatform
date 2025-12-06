@@ -27,17 +27,23 @@ public class OneDriveAuthService(
 
     public suspend fun authenticateUser(userCode: String): DropboxFilesService =
         api.getToken(
-            code = userCode,
-            codeVerifier = accessData.codeVerifier,
-            clientId = clientId,
+            mapOf(
+                "code" to userCode,
+                "grant_type" to "authorization_code",
+                "code_verifier" to accessData.codeVerifier,
+                "client_id" to clientId,
+            ),
         ).let { token ->
             DropboxFilesService(
                 httpClient.bearer(
                     { token },
                     refreshToken = {
                         api.refreshToken(
-                            refreshToken = token.refreshToken!!,
-                            clientId = clientId,
+                            mapOf(
+                                "grant_type" to "refresh_token",
+                                "refresh_token" to token.refreshToken!!,
+                                "client_id" to clientId,
+                            ),
                         )
                     },
                 ),

@@ -9,7 +9,7 @@ import klib.data.backup.dropbox.model.DropboxUploadResponse
 
 private const val DropboxApiArg: String = "Dropbox-Api-Arg"
 
-internal interface DropboxFilesApi {
+internal interface DropboxContentApi {
 
     @Headers("Content-Type: application/octet-stream")
     @POST("2/files/upload")

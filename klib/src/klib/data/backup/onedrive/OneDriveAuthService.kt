@@ -9,7 +9,6 @@ import klib.data.net.http.client.bearer
 import klib.data.net.http.client.ktorfit
 
 public class OneDriveAuthService(
-    baseUrl: String,
     private val httpClient: HttpClient,
     private val clientId: String,
     private val redirectUri: String,
@@ -17,7 +16,7 @@ public class OneDriveAuthService(
 ) {
 
     private val api: OneDriveAuthApi =
-        httpClient.ktorfit { baseUrl(baseUrl) }.createOneDriveAuthApi()
+        httpClient.ktorfit { baseUrl("https://login.microsoftonline.com") }.createOneDriveAuthApi()
 
     public fun generateVerifyUri(): String =
         "https://login.microsoftonline.com/common/oauth2/v2.0/authorize" +

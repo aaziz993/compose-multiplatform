@@ -20,8 +20,8 @@ public class DropboxFilesService(
     httpClient: HttpClient = createHttpClient(),
 ) : Backup {
 
-    private val dropboxGraphApi: DropboxFilesApi =
-        httpClient.ktorfit { baseUrl("https://www.dropbox.com") }.createDropboxFilesApi()
+    private val dropboxGraphApi: DropboxContentApi =
+        httpClient.ktorfit { baseUrl("https://content.dropboxapi.com") }.createDropboxContentApi()
 
     override suspend fun upload(path: String, data: ByteArray): Boolean =
         dropboxGraphApi.upload(data.toUploadApiArg(path), data).contentHash == data.dropboxContentHash()
