@@ -108,10 +108,10 @@ import data.type.primitives.EnabledText
 import data.type.primitives.SettingsSwitch
 import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
+import io.ktor.http.HttpStatusCode
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.permission.PermissionsController
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
@@ -541,6 +541,5 @@ private fun Permission.SettingsSwitch(
                 }
             }
         }
-
     },
 )

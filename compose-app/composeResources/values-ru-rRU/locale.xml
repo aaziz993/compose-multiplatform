@@ -2,13 +2,7 @@
 <resources>
     <string name="country">Страна</string>
     <string name="country_flag">Флаг страны</string>
-    <string name="country_us">США</string>
-    <string name="country_ru">Россия</string>
-    <string name="country_tj">Таджикистан</string>
     <string name="locale">Язык</string>
-    <string name="locale_ru_ru">Русский</string>
-    <string name="locale_en_us">Английский</string>
-    <string name="locale_tg_tj">Таджикский</string>
     <string name="location">Местоположение</string>
     <string name="altitude">Высота</string>
     <string name="latitude">Широта</string>

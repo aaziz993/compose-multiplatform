@@ -10,14 +10,10 @@ import kotlinx.serialization.json.Json
 
 public abstract class KtorfitClient(
     baseUrl: String,
-    httpClient: HttpClient = HttpClient()
+    httpClient: HttpClient = createHttpClient()
 ) {
 
-    protected open val json: Json = Json {
-        isLenient = true
-        ignoreUnknownKeys = true
-        explicitNulls = false
-    }
+    protected open val json: Json = HTTP_CLIENT_JSON
 
     protected val httpClient: HttpClient = httpClient.config {
         defaultRequest {

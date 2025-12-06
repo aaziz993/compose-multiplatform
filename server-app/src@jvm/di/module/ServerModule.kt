@@ -11,8 +11,8 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.config.Config
 import klib.data.config.EnabledConfig
+import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.createHttpClient
-import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.Module
@@ -42,13 +42,7 @@ public class ServerModule {
                 }
 
                 install(ContentNegotiation) {
-                    json(
-                        Json {
-                            isLenient = true
-                            ignoreUnknownKeys = true
-                            explicitNulls = false
-                        },
-                    )
+                    json(HTTP_CLIENT_JSON)
                 }
 
                 log?.takeIf(EnabledConfig::enabled)?.let {

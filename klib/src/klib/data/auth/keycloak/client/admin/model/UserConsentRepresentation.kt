@@ -1,0 +1,11 @@
+package klib.data.auth.keycloak.client.admin.model
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+public data class UserConsentRepresentation(
+    val clientId: String,
+    val createdDate: String? = null,
+    val grantedClientScopes: List<String>? = null,
+    val lastUpdatedDate: String? = null,
+)

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    <string name="camera">Camera</string>-->
+    <string name="gallery">Gallery</string>
+    <string name="storage">Storage</string>
+    <string name="write_storage">Write storage</string>
+<!--    <string name="location">Location</string>-->
+    <string name="coarse_location">Coarse location</string>
+    <string name="background_location">Background location</string>
+    <string name="bluetooth_le">Bluetooth_le</string>
+    <string name="remote_notification">Remote notification</string>
+<!--    <string name="record_audio">Record audio</string>-->
+    <string name="bluetooth_scan">Bluetooth scan</string>
+    <string name="bluetooth_advertise">Bluetooth advertise</string>
+    <string name="bluetooth_connect">Bluetooth connect</string>
+    <string name="contact">Contact</string>
+    <string name="sensors">Sensors</string>
+    <string name="local_fonts">Local_fonts</string>
+    <string name="background_sync">Background sync</string>
+    <string name="compute_pressure">Compute pressure</string>
+    <string name="accessibility_events">Accessibility events</string>
+    <string name="clipboard_read">Clipboard read</string>
+    <string name="clipboard_write">Clipboard write</string>
+    <string name="midi">Midi</string>
+    <string name="payment_handler">Payment handler</string>
+    <string name="screen_wake_lock">Screen wake lock</string>
+    <string name="window_management">Window management</string>
+</resources>

@@ -17,6 +17,7 @@ import klib.data.cache.Cache
 import klib.data.cache.SettingsCache
 import klib.data.config.EnabledConfig
 import klib.data.net.createConnectivity
+import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.createHttpClient
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.encodeAnyToString
@@ -75,13 +76,7 @@ public class CommonModule {
             }
 
             install(ContentNegotiation) {
-                json(
-                    Json {
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                        explicitNulls = false
-                    },
-                )
+                json(HTTP_CLIENT_JSON)
             }
 
             log?.takeIf(EnabledConfig::enabled)?.let {

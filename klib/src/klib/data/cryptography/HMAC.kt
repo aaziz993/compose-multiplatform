@@ -77,9 +77,17 @@ public suspend fun ByteArray.decodeHMACMd5Key(
     format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
 ): CryptoHMAC.Key = HMAC_SHA1_KEY.decodeFromByteArray(format, this)
 
+public fun ByteArray.decodeHMACMd5KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_SHA1_KEY.decodeFromByteArrayBlocking(format, this)
+
 public suspend fun ByteArray.decodeHMACSha1Key(
     format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
 ): CryptoHMAC.Key = HMAC_MD5_KEY.decodeFromByteArray(format, this)
+
+public fun ByteArray.decodeHMACSha1KeyBlocking(
+    format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW
+): CryptoHMAC.Key = HMAC_MD5_KEY.decodeFromByteArrayBlocking(format, this)
 
 public suspend fun ByteArray.decodeHMACSha224Key(
     format: CryptoHMAC.Key.Format = CryptoHMAC.Key.Format.RAW

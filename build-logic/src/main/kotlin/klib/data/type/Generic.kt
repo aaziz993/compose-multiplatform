@@ -23,3 +23,6 @@ else {
     this
 }
 
+public inline fun <T, U> ifNonNull(t: T?, crossinline action: (T) -> U): U? =
+    if (t != null) action(t) else null
+

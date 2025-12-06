@@ -1,0 +1,55 @@
+package klib.data.auth.keycloak.client.admin
+
+import klib.data.auth.keycloak.client.admin.model.ExecuteActionsEmail
+import klib.data.auth.keycloak.client.admin.model.ResetPassword
+import klib.data.auth.keycloak.client.admin.model.RoleRepresentation
+import klib.data.auth.keycloak.client.admin.model.UserInfo
+import klib.data.auth.keycloak.client.admin.model.UserRepresentation
+import io.ktor.client.*
+import klib.data.net.http.client.KtorfitClient
+import klib.data.type.serialization.json.encodeAnyToString
+import klib.data.type.serialization.json.encodeToAny
+
+public class KeycloakAdminClient(
+    baseUrl: String,
+    httpClient: HttpClient,
+    public val realm: String
+) : KtorfitClient(baseUrl, httpClient) {
+
+    private val api = ktorfit.createKeycloakAdminApi()
+
+    public suspend fun createUser(userRepresentation: UserRepresentation): Unit =
+        api.createUser(realm, userRepresentation)
+
+    public suspend fun getUsers(userRepresentation: UserRepresentation? = null, exact: Boolean? = null): Set<UserRepresentation> =
+        api.getUsers(
+            realm,
+            userRepresentation?.let {
+                listOfNotNull(
+                    exact?.let { "exact" to it.toString() },
+                    (it.attributes as Map<*, *>?)?.let {
+                        "q" to it.entries.joinToString(" ") { (k, v) -> "$k:${json.encodeAnyToString(v)}" }
+                    },
+                ) + (json.encodeToAny(it) as Map<*, *>).filter { (k, v) -> k !== "attributes" && v != null }
+                    .map { (k, v) ->
+                        k.toString() to json.encodeAnyToString(v)
+                    }
+            }?.toMap().orEmpty(),
+        )
+
+    public suspend fun updateUser(userRepresentation: UserRepresentation): Unit =
+        api.updateUser(realm, userRepresentation.id!!, userRepresentation)
+
+    public suspend fun deleteUser(userId: String): Unit = api.deleteUser(realm, userId)
+
+    public suspend fun getUserInfo(): UserInfo = api.getUserInfo(realm)
+
+    public suspend fun getUserRealmRoles(userId: String): Set<RoleRepresentation> =
+        api.getUserRealmRoles(realm, userId)
+
+    public suspend fun resetPassword(userId: String, resetPassword: ResetPassword): Unit =
+        api.resetPassword(realm, userId, resetPassword)
+
+    public suspend fun executeActionsEmail(userId: String, executeActionsEmail: ExecuteActionsEmail): Unit =
+        api.updatePassword(realm, userId, executeActionsEmail)
+}

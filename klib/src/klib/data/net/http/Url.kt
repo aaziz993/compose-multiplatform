@@ -41,6 +41,8 @@ public val Regex.Companion.PATH_PARAM_REGEX: String
 public val Regex.Companion.PATH_PARAM: Regex
     get() = PATH_PARAM_REGEX.toRegex()
 
+public fun String.isHttpUrl(): Boolean = matches(Regex.HTTP)
+
 public fun String.isGithubUrl(): Boolean = matches(Regex.GITHUB_HTTP)
 
 public fun Url.Companion.parseOrNull(urlString: String): Url? = parseUrl(urlString)
@@ -48,14 +50,12 @@ public fun Url.Companion.parseOrNull(urlString: String): Url? = parseUrl(urlStri
 public fun Url.Companion.parse(urlString: String): Url =
     parseOrNull(urlString) ?: throw IllegalArgumentException("Invalid URL: $this")
 
-public fun String.toHttpUrlOrNull(): Url? = Url.parseOrNull(this)
+public fun String.toUrlOrNull(): Url? = Url.parseOrNull(this)
 
-public fun String.toHttpUrl(): Url = Url.parse(this)
-
-public fun String.isHttpUrl(): Boolean = matches(Regex.HTTP)
+public fun String.toUrl(): Url = Url.parse(this)
 
 public fun String.isValidHttpUrl(): Boolean =
-    toHttpUrlOrNull()?.let { it.protocol == URLProtocol.HTTP || it.protocol == URLProtocol.HTTPS } == true
+    toUrlOrNull()?.let { it.protocol == URLProtocol.HTTP || it.protocol == URLProtocol.HTTPS } == true
 
 public fun String.encodeHttpUrl(): String = URLBuilder().apply { encodedPath = this@encodeHttpUrl }.buildString()
 

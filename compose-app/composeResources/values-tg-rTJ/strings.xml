@@ -36,9 +36,9 @@
     <string name="path">Роҳ</string>
     <string name="pagination">Саҳифабандӣ</string>
     <string name="permission">Иҷозат</string>
-    <string name="recovery">Барқакоркуни</string>
+    <string name="recovery">Барқакор</string>
     <string name="retry">Такрор</string>
-    <string name="reset">Барқарор</string>
+    <string name="reset">Партоф</string>
     <string name="right">Рост</string>
     <string name="source">Манбаъ</string>
     <string name="search">Ҷустуҷӯ</string>
@@ -51,5 +51,5 @@
     <string name="identifier">Мушаххаскунанда</string>
     <string name="id">ID</string>
     <string name="image">Тасвир</string>
-    <string name="wallet">Wallet</string>
+    <string name="wallet">Тангадон</string>
 </resources>
