@@ -8,10 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.components.color.model.ColorPicker
 import clib.presentation.components.settings.SettingsColorPickerBottomSheet
 import clib.presentation.theme.model.Theme
-import com.materialkolor.ktx.toHex
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.alpha
 import compose_app.generated.resources.blend
@@ -68,7 +68,6 @@ import compose_app.generated.resources.color_scheme_tertiary_container
 import compose_app.generated.resources.color_scheme_tertiary_fixed
 import compose_app.generated.resources.color_scheme_tertiary_fixed_dim
 import compose_app.generated.resources.copy
-import compose_app.generated.resources.dynamic_color_palette
 import compose_app.generated.resources.green
 import compose_app.generated.resources.grid
 import compose_app.generated.resources.hex
@@ -451,6 +450,10 @@ private fun Theme.copyColorPalette(block: (ColorScheme) -> ColorScheme): Theme =
                 )
             },
     )
+
+@Preview
+@Composable
+public fun PreviewSettingsColorPaletteScreen(): Unit = SettingsColorPaletteScreen()
 
 @Composable
 private fun SettingsColorSchemeColor(
