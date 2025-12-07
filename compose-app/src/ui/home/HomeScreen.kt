@@ -35,4 +35,4 @@ public fun HomeScreen(
 
 @Preview
 @Composable
-public fun PreviewHomeScreen(): Unit = HomeScreen()
+private fun PreviewHomeScreen(): Unit = HomeScreen()

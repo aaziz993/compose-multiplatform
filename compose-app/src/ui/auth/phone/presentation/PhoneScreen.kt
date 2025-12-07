@@ -115,4 +115,4 @@ public fun PhoneScreen(
 
 @Preview
 @Composable
-public fun PreviewPhoneScreen(): Unit = PhoneScreen()
+private fun PreviewPhoneScreen(): Unit = PhoneScreen()

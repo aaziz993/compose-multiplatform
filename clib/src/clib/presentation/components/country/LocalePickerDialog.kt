@@ -44,7 +44,7 @@ public fun LocalePickerDialog(
 
 @Preview(showBackground = true)
 @Composable
-public fun LocalePickerDialogPreview(): Unit =
+private fun PreviewLocalePickerDialog(): Unit =
     LocalePickerDialog(
         modifier = Modifier
             .fillMaxWidth()

@@ -115,7 +115,7 @@ public fun CountryCodePickerTextField(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountryCodePickerTextFieldPreview() {
+private fun PreviewCountryCodePickerTextField() {
     var value by remember { mutableStateOf("") }
 
     CountryCodePickerTextField(

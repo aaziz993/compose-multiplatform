@@ -332,7 +332,7 @@ private fun getVisualTransformation(textType: KeyboardType) =
 
 @Preview
 @Composable
-public fun PreviewOtpInputField(): Unit =
+private fun PreviewOtpInputField(): Unit =
     OtpInputField(
         otp = remember { mutableStateOf("123") },
         count = 4,

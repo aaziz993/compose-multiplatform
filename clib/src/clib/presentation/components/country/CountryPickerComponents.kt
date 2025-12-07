@@ -243,19 +243,19 @@ internal fun CountryView(
 
 @Preview(showBackground = true)
 @Composable
-private fun CountryHeaderDialogPreview() {
+private fun PreviewCountryHeaderDialog() {
     CountryHeaderDialog(onDismiss = { })
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CountryHeaderSheetPreview() {
+private fun PreviewCountryHeaderSheet() {
     CountryHeaderSheet()
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CountrySearchPreview() {
+private fun PreviewCountrySearch() {
     var value by remember { mutableStateOf("") }
     CountrySearch(
         value,
@@ -281,7 +281,7 @@ private fun PreviewCountryUI() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CountryViewPreview() {
+private fun PreviewCountryView() {
     CountryView(
         country = Country.getCountries().first(),
         textStyle = TextStyle(),

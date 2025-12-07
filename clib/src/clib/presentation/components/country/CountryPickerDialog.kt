@@ -100,7 +100,7 @@ public fun CountryPickerDialog(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountryPickerDialogPreview(): Unit =
+private fun PreviewCountryPickerDialog(): Unit =
     CountryPickerDialog(
         modifier = Modifier
             .fillMaxWidth()

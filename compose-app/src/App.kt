@@ -13,6 +13,6 @@ public fun App(): Unit = KoinMultiplatformApplication(KoinConfiguration(koinConf
 
 @Preview
 @Composable
-public fun PreviewApp(): Unit = KoinApplicationPreview(koinConfiguration()) {
+private fun PreviewApp(): Unit = KoinApplicationPreview(koinConfiguration()) {
     AppComposable()
 }

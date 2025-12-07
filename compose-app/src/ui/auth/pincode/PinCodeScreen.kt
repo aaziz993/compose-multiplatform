@@ -90,6 +90,6 @@ public fun PinCodeScreen(
 
 @Preview
 @Composable
-public fun PreviewPinCodeScreen(): Unit = PinCodeScreen()
+private fun PreviewPinCodeScreen(): Unit = PinCodeScreen()
 
 

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import clib.presentation.components.country.CountryCodePickerPreview
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.amoled
@@ -111,7 +112,7 @@ public fun SettingsDynamicColorSchemeScreen(
 
 //    val contrastLevel: Double = Contrast.Default.value
 //    val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
-
+    CountryCodePickerPreview()
     SettingsSwitch(
         title = stringResource(Res.string.animate),
         value = theme.currentDynamicColorScheme.animate,
@@ -127,4 +128,4 @@ public fun SettingsDynamicColorSchemeScreen(
 
 @Preview
 @Composable
-public fun PreviewSettingsDynamicColorSchemeScreen(): Unit = SettingsDynamicColorSchemeScreen()
+private fun PreviewSettingsDynamicColorSchemeScreen(): Unit = SettingsDynamicColorSchemeScreen()

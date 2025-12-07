@@ -106,4 +106,4 @@ public fun CountryCodePicker(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountryCodePickerPreview(): Unit = CountryCodePicker(onCountrySelected = {})
+private fun PreviewCountryCodePicker(): Unit = CountryCodePicker(onCountrySelected = {})

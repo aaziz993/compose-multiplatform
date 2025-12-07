@@ -112,7 +112,7 @@ public fun CountryPickerBottomSheet(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountryPickerBottomSheetPreview(): Unit =
+private fun PreviewCountryPickerBottomSheet(): Unit =
     CountryPickerBottomSheet(
         modifier = Modifier
             .fillMaxWidth()

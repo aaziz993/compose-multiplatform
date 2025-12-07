@@ -415,4 +415,4 @@ private fun Theme.copyColorScheme(block: (ColorScheme) -> ColorScheme): Theme {
 
 @Preview
 @Composable
-public fun PreviewSettingsColorSchemeScreen(): Unit = SettingsColorSchemeScreen()
+private fun PreviewSettingsColorSchemeScreen(): Unit = SettingsColorSchemeScreen()

@@ -64,4 +64,4 @@ public fun MapScreen(
 
 @Preview
 @Composable
-public fun PreviewMapScreen(): Unit = MapScreen()
+private fun PreviewMapScreen(): Unit = MapScreen()

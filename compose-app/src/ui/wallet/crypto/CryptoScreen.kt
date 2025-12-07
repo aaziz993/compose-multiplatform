@@ -16,4 +16,4 @@ public fun CryptoScreen(
 
 @Preview
 @Composable
-public fun PreviewCryptoScreen(): Unit = CryptoScreen()
+private fun PreviewCryptoScreen(): Unit = CryptoScreen()

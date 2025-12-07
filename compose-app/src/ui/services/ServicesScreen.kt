@@ -16,4 +16,4 @@ public fun ServicesScreen(
 
 @Preview
 @Composable
-public fun PreviewServicesScreen(): Unit = ServicesScreen()
+private fun PreviewServicesScreen(): Unit = ServicesScreen()

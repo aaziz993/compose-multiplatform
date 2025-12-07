@@ -417,7 +417,7 @@ public fun SettingsMainScreen(
 
 @Preview
 @Composable
-public fun PreviewSettingsMainScreen(): Unit = SettingsMainScreen()
+private fun PreviewSettingsMainScreen(): Unit = SettingsMainScreen()
 
 @Suppress("ComposeParameterOrder")
 @Composable

@@ -115,7 +115,7 @@ public fun CountryCodePickerOutlinedTextField(
 
 @Preview(showBackground = true)
 @Composable
-public fun CountryCodePickerOutlinedTextFieldPreview() {
+private fun PreviewCountryCodePickerOutlinedTextField() {
     var value by remember { mutableStateOf("") }
 
     CountryCodePickerOutlinedTextField(

@@ -16,4 +16,4 @@ public fun BalanceScreen(
 
 @Preview
 @Composable
-public fun PreviewBalanceScreen(): Unit = BalanceScreen()
+private fun PreviewBalanceScreen(): Unit = BalanceScreen()

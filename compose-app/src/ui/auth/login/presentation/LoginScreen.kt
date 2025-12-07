@@ -97,4 +97,4 @@ public fun LoginScreen(
 
 @Preview
 @Composable
-public fun PreviewLoginScreen(): Unit = LoginScreen()
+private fun PreviewLoginScreen(): Unit = LoginScreen()

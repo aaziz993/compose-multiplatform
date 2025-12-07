@@ -16,4 +16,4 @@ public fun ForgotPinCodeScreen(
 
 @Preview
 @Composable
-public fun PreviewForgotPinCodeScreen(): Unit = ForgotPinCodeScreen()
+private fun PreviewForgotPinCodeScreen(): Unit = ForgotPinCodeScreen()

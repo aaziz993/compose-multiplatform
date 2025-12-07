@@ -320,4 +320,4 @@ public fun AppBar(
 
 @Preview
 @Composable
-public fun PreviewAppBar(): Unit = AppBar()
+private fun PreviewAppBar(): Unit = AppBar()

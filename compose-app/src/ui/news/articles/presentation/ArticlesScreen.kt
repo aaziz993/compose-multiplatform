@@ -121,4 +121,4 @@ private fun ArticleItem(
 
 @Preview
 @Composable
-public fun PreviewArticleScreen(): Unit = ArticlesScreen()
+private fun PreviewArticleScreen(): Unit = ArticlesScreen()

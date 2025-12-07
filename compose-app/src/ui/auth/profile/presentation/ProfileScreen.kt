@@ -228,6 +228,6 @@ public fun ProfileScreen(
 
 @Preview
 @Composable
-public fun PreviewProfileScreen(): Unit = ProfileScreen()
+private fun PreviewProfileScreen(): Unit = ProfileScreen()
 
 

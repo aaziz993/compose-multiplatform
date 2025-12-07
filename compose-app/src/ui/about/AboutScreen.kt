@@ -16,4 +16,4 @@ public fun AboutScreen(
 
 @Preview
 @Composable
-public fun PreviewAboutScreen(): Unit = AboutScreen()
+private fun PreviewAboutScreen(): Unit = AboutScreen()

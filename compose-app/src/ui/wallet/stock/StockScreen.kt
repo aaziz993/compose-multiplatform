@@ -16,4 +16,4 @@ public fun StockScreen(
 
 @Preview
 @Composable
-public fun PreviewStockScreen(): Unit = StockScreen()
+private fun PreviewStockScreen(): Unit = StockScreen()

@@ -92,4 +92,4 @@ public fun OtpScreen(
 
 @Preview
 @Composable
-public fun PreviewOtpScreen(): Unit = OtpScreen()
+private fun PreviewOtpScreen(): Unit = OtpScreen()

@@ -88,4 +88,4 @@ public fun AppComposable(
 
 @Preview
 @Composable
-public fun PreviewAppComposable(): Unit = AppComposable()
+private fun PreviewAppComposable(): Unit = AppComposable()
