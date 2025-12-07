@@ -13,6 +13,7 @@ import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -90,7 +91,7 @@ internal fun CountryHeaderSheet(
 internal fun CountrySearch(
     value: String,
     onValueChange: (String) -> Unit,
-    textStyle: TextStyle = TextStyle(),
+    textStyle: TextStyle = LocalTextStyle.current,
     hint: String = "Search Country",
     clear: String = "Clear",
     showClearIcon: Boolean = true,
@@ -267,7 +268,7 @@ private fun PreviewCountryUI() {
         showCountryFlag = true,
         showCountryIso = true,
         showCountryDial = true,
-        countryTextStyle = TextStyle(),
+        countryTextStyle = LocalTextStyle.current,
     )
 }
 

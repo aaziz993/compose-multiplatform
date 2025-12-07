@@ -138,7 +138,7 @@ public fun SettingsDynamicColorSchemeScreen(
     val platforms = DynamicScheme.Platform.entries.toList()
 
     SettingsListPickerDialog(
-        title = { Text(text = stringResource(Res.string.locale)) },
+        title = { Text(text = stringResource(Res.string.platform)) },
         values = platforms,
         icon = { Icon(Icons.Default.Devices, theme.currentDynamicColorScheme.platform.name) },
         subtitle = { Text(theme.currentDynamicColorScheme.platform.name) },

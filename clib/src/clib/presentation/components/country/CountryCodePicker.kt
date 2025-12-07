@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,7 +34,7 @@ public fun CountryCodePicker(
     view: CountryView = CountryView(),
     picker: CountryPicker = CountryPicker(),
     backgroundColor: Color = MaterialTheme.colorScheme.background,
-    textStyle: TextStyle = TextStyle(),
+    textStyle: TextStyle = LocalTextStyle.current,
     showSheet: Boolean = false,
     itemPadding: Int = 10,
 ) {

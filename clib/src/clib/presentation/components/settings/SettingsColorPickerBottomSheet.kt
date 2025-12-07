@@ -34,6 +34,18 @@ public fun SettingsColorPickerBottomSheet(
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     subtitle: (@Composable () -> Unit)? = { Text(text = value.toHex()) },
+    icon: (@Composable () -> Unit)? = {
+        Icon(
+            imageVector = Icons.Filled.Circle,
+            contentDescription = value.toHex(),
+            Modifier.border(
+                2.dp,
+                MaterialTheme.colorScheme.onSurface,
+                CircleShape,
+            ),
+            tint = value,
+        )
+    },
     action: (@Composable () -> Unit)? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
@@ -41,17 +53,15 @@ public fun SettingsColorPickerBottomSheet(
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     sheetState: SheetState = rememberModalBottomSheetState(),
     picker: ColorPicker = ColorPicker(),
-    onValueChanged: (Color) -> Unit,
+    onValueChanged: (Color) -> Boolean,
 ) {
-
     var showSheet by remember { mutableStateOf(false) }
 
     if (showSheet)
         ColorPickerBottomSheet(
             { showSheet = false },
             { value ->
-                onValueChanged(value)
-                showSheet = false
+                showSheet = onValueChanged(value)
             },
             initialColor = value,
             sheetState = sheetState,
@@ -62,18 +72,7 @@ public fun SettingsColorPickerBottomSheet(
         title,
         modifier,
         enabled,
-        {
-            Icon(
-                imageVector = Icons.Filled.Circle,
-                contentDescription = value.toHex(),
-                Modifier.border(
-                    2.dp,
-                    MaterialTheme.colorScheme.onSurface,
-                    CircleShape,
-                ),
-                tint = value,
-            )
-        },
+        icon,
         subtitle,
         action,
         colors,

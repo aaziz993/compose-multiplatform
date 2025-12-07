@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +32,7 @@ public fun <E> ListPickerDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     item: (E) -> Item = { value -> Item(text = { Text(value.toString()) }) },
-    textStyle: TextStyle = TextStyle(),
+    textStyle: TextStyle = LocalTextStyle.current,
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     picker: Picker = Picker(),

@@ -3,6 +3,7 @@ package clib.presentation.components.country
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +24,7 @@ public fun LocalePickerDialog(
     modifier: Modifier = Modifier,
     locales: List<Locale> = Locale.getLocales().toList(),
     country: @Composable (Locale) -> Country = { locale -> locale.country()!! },
-    textStyle: TextStyle = TextStyle(),
+    textStyle: TextStyle = LocalTextStyle.current,
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     picker: CountryPicker = CountryPicker(),

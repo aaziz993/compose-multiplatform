@@ -35,7 +35,10 @@ internal fun SettingsColorSchemeColor(
     onValueChanged: (Color) -> Unit,
 ): Unit = SettingsColorPickerBottomSheet(
     value = value,
-    onValueChanged = onValueChanged,
+    onValueChanged = { value ->
+        onValueChanged(value)
+        false
+    },
     title = { Text(text = title) },
     modifier = Modifier,
     enabled = true,

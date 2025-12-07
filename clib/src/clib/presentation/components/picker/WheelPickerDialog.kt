@@ -24,7 +24,7 @@ import clib.presentation.components.picker.model.Picker
 public fun <E> WheelPickerDialog(
     initialValue: E,
     values: List<E>,
-    onValueChange: (E) -> Unit,
+    onItemClicked: (E) -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     itemPadding: Int = 10,
@@ -53,7 +53,7 @@ public fun <E> WheelPickerDialog(
     WheelPicker(
         initialValue = initialValue,
         values = values,
-        onValueChange = onValueChange,
+        onValueChange = onItemClicked,
         wrapSelectorWheel = wrapSelectorWheel,
         format = format,
         parse = parse,
@@ -76,7 +76,7 @@ private fun PreviewCountryPickerDialog() {
     WheelPickerDialog(
         initialValue = value,
         values = list,
-        onValueChange = {},
+        onItemClicked = {},
         onDismissRequest = {},
         modifier = Modifier
             .fillMaxWidth()
