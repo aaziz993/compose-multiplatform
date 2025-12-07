@@ -22,7 +22,7 @@ import klib.data.cryptography.pgp.model.PGPVerifiedResult
 import klib.data.cryptography.pgp.model.RSA
 import klib.data.cryptography.pgp.model.SYMMETRIC_ALGORITHM_MAP
 import klib.data.type.await
-import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.collections.takeUnlessEmpty
 import klib.data.type.primitives.string.decodeToString
 import kotlin.Array
 import kotlin.Boolean
@@ -89,7 +89,7 @@ public actual suspend fun generatePGPKey(
             type = keyType
             curve?.let { this.curve = it }
             rsaBits?.let { rsaBits = it }
-            subKeys.takeIfNotEmpty()?.let { subKeys ->
+            subKeys.takeUnlessEmpty()?.let { subKeys ->
                 this.subkeys = subKeys.map { subKey ->
                     unsafeJso<SubkeyOptions> {
                         when (subKey.key) {

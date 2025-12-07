@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 @Serializable
-internal data class TokenResponse(
+public data class TokenResponse(
     @SerialName("access_token")
     override val accessToken: String,
     @SerialName("expires_in")

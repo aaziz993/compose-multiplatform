@@ -12,7 +12,9 @@ import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
 import kotlin.math.min
 
-private const val DropboxApiResult: String = "Dropbox-Api-Result"
+private const val BASE_URL = "https://content.dropboxapi.com"
+
+private const val DROPBOX_API_RESULT: String = "Dropbox-Api-Result"
 
 private const val SHA256_BITS_COUNT: Int = 32
 
@@ -20,15 +22,15 @@ public class DropboxFilesService(
     httpClient: HttpClient = createHttpClient(),
 ) : Backup {
 
-    private val dropboxGraphApi: DropboxContentApi =
-        httpClient.ktorfit { baseUrl("https://content.dropboxapi.com") }.createDropboxContentApi()
+    private val dropboxGraphApi =
+        httpClient.ktorfit { baseUrl(BASE_URL) }.createDropboxContentApi()
 
     override suspend fun upload(path: String, data: ByteArray): Boolean =
         dropboxGraphApi.upload(data.toUploadApiArg(path), data).contentHash == data.dropboxContentHash()
 
     override suspend fun download(path: String): ByteArray? =
         dropboxGraphApi.download(downloadApiArg(path)).let { response ->
-            val header = response.headers[DropboxApiResult] ?: return null
+            val header = response.headers[DROPBOX_API_RESULT] ?: return null
             val downloadResponse = HTTP_CLIENT_JSON.decodeFromString<DownloadResponse>(header)
             val bytes = response.readRawBytes()
             bytes.takeIf { it.dropboxContentHash() == downloadResponse.contentHash }

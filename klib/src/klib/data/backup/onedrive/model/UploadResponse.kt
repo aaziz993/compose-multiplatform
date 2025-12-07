@@ -5,12 +5,12 @@ import kotlinx.serialization.SerialName
 
 @Serializable
 internal data class UploadResponse(
-    @SerialName("file") val file: klib.data.backup.onedrive.model.OneDriveUploadResponse.File,
+    @SerialName("file") val file: File,
 ) {
 
     @Serializable
     data class File(
-        @SerialName("hashes") val hashes: klib.data.backup.onedrive.model.OneDriveUploadResponse.File.Hashes,
+        @SerialName("hashes") val hashes: Hashes,
     ) {
 
         @Serializable

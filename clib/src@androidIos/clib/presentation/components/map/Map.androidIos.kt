@@ -19,7 +19,7 @@ import clib.presentation.components.map.model.MapView
 import clib.presentation.components.map.model.Marker
 import clib.presentation.components.map.model.toFeature
 import klib.data.location.Location
-import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.collections.takeUnlessEmpty
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
 import org.maplibre.compose.expressions.dsl.Feature.get
@@ -78,7 +78,7 @@ public actual fun Map(
                     if (view.ornamentOptions.isAttributionEnabled) OrnamentOptions.AllEnabled else OrnamentOptions.AllDisabled,
             ),
         ) {
-            markers?.takeIfNotEmpty()?.let { markers ->
+            markers?.takeUnlessEmpty()?.let { markers ->
                 val features = FeatureCollection(markers.map(Marker::toFeature))
                 val markerSource = rememberGeoJsonSource(GeoJsonData.Features(features))
 
@@ -117,7 +117,7 @@ public actual fun Map(
                 )
             }
 
-            routes?.takeIfNotEmpty()?.forEachIndexed { index, route ->
+            routes?.takeUnlessEmpty()?.forEachIndexed { index, route ->
                 val lineString = LineString(route.map(Location::toPosition))
                 val routeSource = rememberGeoJsonSource(GeoJsonData.Features(lineString))
 

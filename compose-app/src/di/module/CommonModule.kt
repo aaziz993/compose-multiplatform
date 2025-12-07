@@ -54,10 +54,7 @@ public class CommonModule {
     public fun provideAuthState(): AuthState = AuthState()
 
     @Single
-    public fun provideJson(): Json = Json {
-        isLenient = true
-        ignoreUnknownKeys = true
-    }
+    public fun provideJson(): Json = HTTP_CLIENT_JSON
 
     @Factory
     public fun provideHttpClient(config: Config, json: Json): HttpClient = with(config.httpClient) {
@@ -77,7 +74,7 @@ public class CommonModule {
             }
 
             install(ContentNegotiation) {
-                json(HTTP_CLIENT_JSON)
+                json(json)
             }
 
             log?.takeIf(EnabledConfig::enabled)?.let {

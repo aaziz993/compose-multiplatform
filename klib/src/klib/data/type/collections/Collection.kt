@@ -11,7 +11,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
+public fun <T : Collection<E>, E> T.takeUnlessEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
 public val Any.entriesOrNull: Collection<Map.Entry<Any?, Any?>>?
     get() = when (this) {

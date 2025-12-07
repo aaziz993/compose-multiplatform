@@ -1,22 +1,32 @@
 package klib.data.backup.onedrive
 
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.encodeBase64
 import klib.data.backup.onedrive.model.AccessData
+import klib.data.backup.onedrive.model.TokenResponse
 import klib.data.cryptography.hashSha256Blocking
 import klib.data.cryptography.randomBytes
+import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.bearer
+import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
 
+private const val BASE_URL = "https://login.microsoftonline.com"
+
 public class OneDriveAuthService(
-    private val httpClient: HttpClient,
     private val clientId: String,
     private val redirectUri: String,
+    private val httpClient: HttpClient = createHttpClient {
+        install(ContentNegotiation) {
+            json(HTTP_CLIENT_JSON)
+        }
+    },
     private val accessData: AccessData = oneDriveAccessData(),
 ) {
 
-    private val api: OneDriveAuthApi =
-        httpClient.ktorfit { baseUrl("https://login.microsoftonline.com") }.createOneDriveAuthApi()
+    private val api = httpClient.ktorfit { baseUrl(BASE_URL) }.createOneDriveAuthApi()
 
     public fun generateVerifyUri(): String =
         "https://login.microsoftonline.com/common/oauth2/v2.0/authorize" +
@@ -29,26 +39,31 @@ public class OneDriveAuthService(
             "&code_challenge_method=S256"
 
     public suspend fun authenticateUser(userCode: String): OneDriveGraphService =
-        api.getToken(
-            code = userCode,
-            codeVerifier = accessData.codeVerifier,
-            clientId = clientId,
-            redirectUri = redirectUri,
-            scope = "files.readwrite.all",
-        ).let { token ->
-            OneDriveGraphService(
-                httpClient.bearer(
-                    { token },
-                    refreshToken = {
-                        api.refreshToken(
-                            refreshToken = token.refreshToken!!,
-                            clientId = clientId,
-                            scope = "files.readwrite.all",
-                        )
-                    },
-                ),
-            )
-        }
+        authenticateUser(
+            api.getToken(
+                userCode,
+                accessData.codeVerifier,
+                clientId,
+                redirectUri,
+                "files.readwrite.all",
+            ),
+        )
+
+    public suspend fun authenticateUser(initialToken: TokenResponse): OneDriveGraphService {
+        var token = initialToken
+        return OneDriveGraphService(
+            httpClient.bearer(
+                loadTokens = { token },
+                refreshToken = {
+                    api.refreshToken(
+                        clientId,
+                        token.refreshToken!!,
+                        "files.readwrite.all",
+                    ).also { newToken -> token = newToken.copy(refreshToken = token.refreshToken) }
+                },
+            ),
+        )
+    }
 }
 
 private fun oneDriveAccessData(): AccessData {
