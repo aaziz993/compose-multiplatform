@@ -4,8 +4,8 @@ import klib.data.type.serialization.serializers.collections.SerializableAnyMap
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class RoleRepresentation(
-    public val attributes: SerializableAnyMap? = null,
+public  data class RoleRepresentation(
+    val attributes: SerializableAnyMap? = null,
     val clientRole: Boolean? = null,
     val composite: Boolean? = null,
     val containerId: String? = null,

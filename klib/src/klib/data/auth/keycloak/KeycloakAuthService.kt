@@ -3,7 +3,7 @@ package klib.data.auth.keycloak
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
-import klib.data.auth.keycloak.model.TokenResponse
+import klib.data.auth.model.BearerToken
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.bearer
 import klib.data.net.http.client.createHttpClient
@@ -40,7 +40,7 @@ public class KeycloakAuthService(
             ),
         )
 
-    public fun authenticateUser(initialToken: TokenResponse): KeycloakAdminService {
+    public fun authenticateUser(initialToken: BearerToken): KeycloakAdminService {
         var token = initialToken
         return KeycloakAdminService(
             baseUrl,
@@ -49,7 +49,7 @@ public class KeycloakAuthService(
                 refreshToken = {
                     api.refreshToken(
                         clientId,
-                        token.refreshToken,
+                        token.refreshToken!!,
                     ).also { newToken -> token = newToken }
                 },
             ),

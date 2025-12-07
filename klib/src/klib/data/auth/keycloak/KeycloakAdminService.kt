@@ -37,8 +37,7 @@ public open class KeycloakAdminService(
     public suspend fun executeActionsEmail(executeActionsEmail: ExecuteActionsEmail): Unit =
         api.updatePassword(realm, getUserInfo().sub, executeActionsEmail)
 
-    public suspend fun getUsers(): Set<User> =
-        getUserRepresentations().map(UserRepresentation::toUser).toSet()
+    public suspend fun getUsers(): List<User> = getUserRepresentations().map(UserRepresentation::toUser)
 
     public suspend fun createUsers(users: Set<User>): Unit =
         users.forEach { user -> api.createUser(realm, user.toUserRepresentation()) }

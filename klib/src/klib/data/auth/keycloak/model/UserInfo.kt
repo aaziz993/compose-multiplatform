@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class UserInfo(
+public  data class UserInfo(
     val sub: String,
     @SerialName("email_verified")
 val emailVerified: Boolean,

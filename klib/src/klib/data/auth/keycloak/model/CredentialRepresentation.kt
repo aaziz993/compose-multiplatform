@@ -3,7 +3,7 @@ package klib.data.auth.keycloak.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class CredentialRepresentation(
+public  data class CredentialRepresentation(
     val createdDate: Long? = null,
     val credentialData: String? = null,
     val id: String? = null,

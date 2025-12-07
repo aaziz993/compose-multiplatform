@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.encodeBase64
+import klib.data.auth.model.BearerToken
 import klib.data.backup.dropbox.model.AccessData
 import klib.data.backup.dropbox.model.RefreshTokenRequest
 import klib.data.backup.dropbox.model.TokenRequest
@@ -48,7 +49,7 @@ public class OneDriveAuthService(
             ),
         )
 
-    public suspend fun authenticateUser(initialToken: TokenResponse): DropboxFilesService {
+    public fun authenticateUser(initialToken: BearerToken): DropboxFilesService {
         var token = initialToken
         return DropboxFilesService(
             httpClient.bearer(

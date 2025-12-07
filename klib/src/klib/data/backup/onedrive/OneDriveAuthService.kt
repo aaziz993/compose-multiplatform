@@ -4,8 +4,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.encodeBase64
+import klib.data.auth.model.BearerToken
 import klib.data.backup.onedrive.model.AccessData
-import klib.data.backup.onedrive.model.TokenResponse
 import klib.data.cryptography.hashSha256Blocking
 import klib.data.cryptography.randomBytes
 import klib.data.net.http.client.HTTP_CLIENT_JSON
@@ -49,7 +49,7 @@ public class OneDriveAuthService(
             ),
         )
 
-    public suspend fun authenticateUser(initialToken: TokenResponse): OneDriveGraphService {
+    public fun authenticateUser(initialToken: BearerToken): OneDriveGraphService {
         var token = initialToken
         return OneDriveGraphService(
             httpClient.bearer(

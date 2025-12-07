@@ -3,7 +3,7 @@ package klib.data.auth.keycloak.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class UserConsentRepresentation(
+public  data class UserConsentRepresentation(
     val clientId: String,
     val createdDate: String? = null,
     val grantedClientScopes: List<String>? = null,

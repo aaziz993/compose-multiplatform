@@ -14,49 +14,49 @@ import de.jensklingenberg.ktorfit.http.PUT
 import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.QueryMap
 
-internal interface KeycloakAdminApi {
+public interface KeycloakAdminApi {
 
     @Headers("Content-Type: application/json")
     @POST("admin/realms/{realm}/users")
-    suspend fun createUser(
+    public suspend fun createUser(
         @Path("realm") realm: String,
         @Body userRepresentation: UserRepresentation,
     )
 
     @GET("admin/realms/{realm}/users")
-    suspend fun getUsers(
+    public suspend fun getUsers(
         @Path("realm") realm: String,
         @QueryMap parameters: Map<String, String>,
     ): Set<UserRepresentation>
 
     @Headers("Content-Type: application/json")
     @PUT("admin/realms/{realm}/users/{userId}")
-    suspend fun updateUser(
+    public suspend fun updateUser(
         @Path("realm") realm: String,
         @Path("userId") userId: String,
         @Body userRepresentation: UserRepresentation,
     )
 
     @DELETE("admin/realms/{realm}/users/{userId}")
-    suspend fun deleteUser(
+    public suspend fun deleteUser(
         @Path("realm") realm: String,
         @Path("userId") userId: String,
     )
 
     @GET("realms/{realm}/protocol/openid-connect/userinfo")
-    suspend fun getUserInfo(
+    public suspend fun getUserInfo(
         @Path("realm") realm: String,
     ): UserInfo
 
     @GET("admin/realms/{realm}/users/{userId}/role-mappings/realm")
-    suspend fun getUserRealmRoles(
+    public suspend fun getUserRealmRoles(
         @Path("realm") realm: String,
         @Path("userId") userId: String,
     ): Set<RoleRepresentation>
 
     @Headers("Content-Type: application/json")
     @PUT("admin/realms/{realm}/users/{userId}/reset-password")
-    suspend fun resetPassword(
+    public suspend fun resetPassword(
         @Path("realm") realm: String,
         @Path("userId") userId: String,
         @Body resetPassword: ResetPassword,
@@ -64,7 +64,7 @@ internal interface KeycloakAdminApi {
 
     @Headers("Content-Type: application/json")
     @POST("admin/realms/{realm}/users/{userId}/execute-actions-email")
-    suspend fun updatePassword(
+    public suspend fun updatePassword(
         @Path("realm") realm: String,
         @Path("userId") userId: String,
         @Body executeActionsEmail: ExecuteActionsEmail,
