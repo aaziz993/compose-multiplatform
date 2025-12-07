@@ -32,7 +32,7 @@ public class WeblateApiService(
     }.ktorfit { baseUrl(baseUrl) }.createWeblateApi()
 
     override suspend fun getLocales(): List<Locale> =
-        api.getTranslations().toList().flatMap { response ->
+        api.getAllTranslations().toList().flatMap { response ->
             response.results.filter { translation -> translation.component.project.name == project }
         }.mapNotNull { translation ->
             (translation.language.aliases + translation.language.code)
@@ -42,7 +42,7 @@ public class WeblateApiService(
 
     override suspend fun setLocale(locale: Locale) {
         super.setLocale(locale)
-        translations = api.getUnits().toList().flatMap { response ->
+        translations = api.getAllUnits().toList().flatMap { response ->
             response.results.mapNotNull { unit ->
                 val segments = Url(unit.translation).segments
                 if (segments[2] == project) "${segments[3]}_${unit.context}" to listOf(unit.target.first()) else null

@@ -25,14 +25,14 @@ public interface WeblateApi {
     ): WeblateUnitsResponse
 }
 
-public fun WeblateApi.getTranslations(): Flow<WeblateTranslationsResponse> = flow {
+public fun WeblateApi.getAllTranslations(): Flow<WeblateTranslationsResponse> = flow {
     var path: String? = "api/translations"
     while (path != null) {
         emit(getTranslations(path).also { response -> path = response.next })
     }
 }
 
-public fun WeblateApi.getUnits(): Flow<WeblateUnitsResponse> = flow {
+public fun WeblateApi.getAllUnits(): Flow<WeblateUnitsResponse> = flow {
     var path: String? = "api/units"
     while (path != null) {
         emit(getUnits(path).also { response -> path = response.next })
