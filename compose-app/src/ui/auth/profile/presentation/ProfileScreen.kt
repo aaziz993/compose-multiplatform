@@ -50,7 +50,6 @@ import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.username
 import compose_app.generated.resources.verify
-import data.type.primitives.ConnectivityIcon
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.country.Country
@@ -58,6 +57,7 @@ import klib.data.location.country.getCountries
 import klib.data.type.primitives.string.ifNotEmpty
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.dialog.SignOutConfirmDialog
+import presentation.connectivity.ConnectivityIcon
 import ui.navigation.presentation.Profile
 import ui.navigation.presentation.Verification
 
@@ -83,7 +83,7 @@ public fun ProfileScreen(
                     .clip(CircleShape),
             )
             if (components.connectivity.isAvatarConnectivityIndicator)
-                connectivity.isConnected.ConnectivityIcon(
+                connectivity.ConnectivityIcon(
                     Modifier
                         .align(Alignment.TopEnd)
                         .size(14.dp),

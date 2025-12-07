@@ -88,6 +88,7 @@ import ui.news.articles.presentation.ArticlesScreen
 import ui.news.articles.presentation.viewmodel.ArticleViewModel
 import ui.services.ServicesScreen
 import ui.settings.SettingsColorPaletteScreen
+import ui.settings.SettingsDynamicColorPaletteScreen
 import ui.settings.SettingsMainScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
@@ -421,7 +422,32 @@ public data object SettingsColorPalette : KoinRoute<SettingsColorPalette>(), Nav
         SettingsColorPaletteScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
+            config.ui.theme,
+            themeState.theme,
+        ) { value -> themeState.theme = value }
+    }
+}
 
+@Serializable
+@SerialName("settings_dynamic_color_palette")
+public data object SettingsDynamicColorPalette : KoinRoute<SettingsDynamicColorPalette>(), NavRoute {
+
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+    override val authResource: AuthResource? = AuthResource()
+
+    @Composable
+    override fun Content(
+        route: SettingsDynamicColorPalette,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val scrollState = rememberScrollState()
+        val config = LocalConfig.current
+        val themeState = LocalThemeState.current
+
+        SettingsDynamicColorPaletteScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
+            route,
             config.ui.theme,
             themeState.theme,
         ) { value -> themeState.theme = value }

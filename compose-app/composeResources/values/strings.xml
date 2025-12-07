@@ -52,4 +52,18 @@
     <string name="id">ID</string>
     <string name="image">Image</string>
     <string name="wallet">Wallet</string>
+
+
+    <string name="true">True</string>
+    <string name="false">False</string>
+    <string name="primary">Primary</string>
+    <string name="secondary">Secondary</string>
+    <string name="tertiary">Tertiary</string>
+    <string name="neutral">Neutral</string>
+    <string name="neutral_variant">Neutral variant</string>
+    <string name="error">Error</string>
+    <string name="amoled">Amoled</string>
+    <string name="contrast">Contrast</string>
+    <string name="platform">Platform</string>
+    <string name="animate">Animate</string>
 </resources>

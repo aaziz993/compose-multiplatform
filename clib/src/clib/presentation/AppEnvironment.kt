@@ -151,8 +151,8 @@ public fun AppEnvironment(
     }
     else {
         val (lightColorScheme, darkColorScheme) =
-            if (theme.isHighContrast) theme.lightColorScheme to theme.lightColorSchemeHighContrast
-            else theme.darkColorScheme to theme.darkColorSchemeHighContrast
+            if (theme.isHighContrast) theme.lightColorSchemeHighContrast to theme.darkColorSchemeHighContrast
+            else theme.lightColorScheme to theme.darkColorScheme
 
         (if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme) to Color.Transparent
     }

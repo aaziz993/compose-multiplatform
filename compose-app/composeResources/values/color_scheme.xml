@@ -48,4 +48,5 @@
     <string name="color_scheme_tertiary_fixed_dim">Tertiary Fixed Dim</string>
     <string name="color_scheme_on_tertiary_fixed">On Tertiary Fixed</string>
     <string name="color_scheme_on_tertiary_fixed_variant">On Tertiary Fixed Variant</string>
+    <string name="color_scheme_seed_color">Seed color</string>
 </resources>

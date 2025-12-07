@@ -66,8 +66,6 @@ import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.theme
 import data.location.locale.asStringResource
-import data.type.primitives.ConnectivityIcon
-import data.type.primitives.ConnectivityText
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
 import dev.chrisbanes.haze.HazeProgressive
@@ -82,6 +80,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
+import presentation.connectivity.ConnectivityIcon
+import presentation.connectivity.ConnectivityText
 import presentation.theme.model.IsDarkIcon
 import ui.navigation.presentation.Profile
 
@@ -136,7 +136,7 @@ public fun AppBar(
                     ) {
                         title()
 
-                        if (components.connectivity.isConnectivityIndicator) connectivity.isConnected.ConnectivityText()
+                        if (components.connectivity.isConnectivityIndicator) connectivity.ConnectivityText()
                     }
                 },
                 navigationIcon = {
@@ -260,7 +260,7 @@ public fun AppBar(
                                             },
                                     )
                                     if (components.connectivity.isAvatarConnectivityIndicator)
-                                        connectivity.isConnected.ConnectivityIcon(
+                                        connectivity.ConnectivityIcon(
                                             Modifier
                                                 .align(Alignment.TopEnd)
                                                 .size(14.dp),

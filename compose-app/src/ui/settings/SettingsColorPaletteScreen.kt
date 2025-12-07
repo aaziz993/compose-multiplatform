@@ -76,357 +76,342 @@ public fun SettingsColorPaletteScreen(
         stringResource(Res.string.color_scheme_primary),
         theme.currentColorScheme.primary,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(primary = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primary = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_primary),
         theme.currentColorScheme.onPrimary,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onPrimary = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimary = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_primary_container),
         theme.currentColorScheme.primaryContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(primaryContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_primary_container),
         theme.currentColorScheme.onPrimaryContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onPrimaryContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_inverse_primary),
         theme.currentColorScheme.inversePrimary,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(inversePrimary = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inversePrimary = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_secondary),
         theme.currentColorScheme.secondary,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(secondary = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondary = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_secondary),
         theme.currentColorScheme.onSecondary,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onSecondary = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondary = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_secondary_container),
         theme.currentColorScheme.secondaryContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(secondaryContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_secondary_container),
         theme.currentColorScheme.onSecondaryContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onSecondaryContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_tertiary),
         theme.currentColorScheme.tertiary,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(tertiary = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiary = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_tertiary),
         theme.currentColorScheme.onTertiary,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onTertiary = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiary = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_tertiary_container),
         theme.currentColorScheme.tertiaryContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(tertiaryContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_tertiary_container),
         theme.currentColorScheme.onTertiaryContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onTertiaryContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_background),
         theme.currentColorScheme.background,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(background = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(background = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_background),
         theme.currentColorScheme.onBackground,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onBackground = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onBackground = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface),
         theme.currentColorScheme.surface,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surface = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surface = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_surface),
         theme.currentColorScheme.onSurface,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onSurface = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSurface = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_variant),
         theme.currentColorScheme.surfaceVariant,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceVariant = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceVariant = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_surface_variant),
         theme.currentColorScheme.onSurfaceVariant,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onSurfaceVariant = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSurfaceVariant = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_tint),
         theme.currentColorScheme.surfaceTint,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceTint = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceTint = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_inverse_surface),
         theme.currentColorScheme.inverseSurface,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(inverseSurface = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inverseSurface = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_inverse_on_surface),
         theme.currentColorScheme.inverseOnSurface,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(inverseOnSurface = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inverseOnSurface = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_error),
         theme.currentColorScheme.error,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(error = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(error = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_error),
         theme.currentColorScheme.onError,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onError = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onError = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_error_container),
         theme.currentColorScheme.errorContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(errorContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(errorContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_error_container),
         theme.currentColorScheme.onErrorContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onErrorContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onErrorContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_outline),
         theme.currentColorScheme.outline,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(outline = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(outline = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_outline_variant),
         theme.currentColorScheme.outlineVariant,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(outlineVariant = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(outlineVariant = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_scrim),
         theme.currentColorScheme.scrim,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(scrim = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(scrim = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_bright),
         theme.currentColorScheme.surfaceBright,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceBright = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceBright = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_dim),
         theme.currentColorScheme.surfaceDim,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceDim = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceDim = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_container),
         theme.currentColorScheme.surfaceContainer,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceContainer = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainer = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_container_high),
         theme.currentColorScheme.surfaceContainerHigh,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceContainerHigh = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerHigh = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_container_highest),
         theme.currentColorScheme.surfaceContainerHighest,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceContainerHighest = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerHighest = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_container_low),
         theme.currentColorScheme.surfaceContainerLow,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceContainerLow = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerLow = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_surface_container_lowest),
         theme.currentColorScheme.surfaceContainerLowest,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(surfaceContainerLowest = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerLowest = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_primary_fixed),
         theme.currentColorScheme.primaryFixed,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(primaryFixed = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryFixed = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_primary_fixed_dim),
         theme.currentColorScheme.primaryFixedDim,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(primaryFixedDim = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryFixedDim = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_primary_fixed),
         theme.currentColorScheme.onPrimaryFixed,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onPrimaryFixed = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryFixed = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_primary_fixed_variant),
         theme.currentColorScheme.onPrimaryFixedVariant,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onPrimaryFixedVariant = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryFixedVariant = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_secondary_fixed),
         theme.currentColorScheme.secondaryFixed,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(secondaryFixed = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryFixed = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_secondary_fixed_dim),
         theme.currentColorScheme.secondaryFixedDim,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(secondaryFixedDim = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryFixedDim = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_secondary_fixed),
         theme.currentColorScheme.onSecondaryFixed,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onSecondaryFixed = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryFixed = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_secondary_fixed_variant),
         theme.currentColorScheme.onSecondaryFixedVariant,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onSecondaryFixedVariant = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryFixedVariant = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_tertiary_fixed),
         theme.currentColorScheme.tertiaryFixed,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(tertiaryFixed = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryFixed = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_tertiary_fixed_dim),
         theme.currentColorScheme.tertiaryFixedDim,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(tertiaryFixedDim = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryFixedDim = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_tertiary_fixed),
         theme.currentColorScheme.onTertiaryFixed,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onTertiaryFixed = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryFixed = value) })
     }
 
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_on_tertiary_fixed_variant),
         theme.currentColorScheme.onTertiaryFixedVariant,
     ) { value ->
-        theme.copyColorPalette { colorScheme -> colorScheme.copy(onTertiaryFixedVariant = value) }
+        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryFixedVariant = value) })
     }
 }
 
-private fun Theme.copyColorPalette(block: (ColorScheme) -> ColorScheme): Theme =
-    copy(
-        colorPalette =
-            if (isDark != true) {
-                colorPalette.copy(
-                    lightColorScheme = block(
-                        colorPalette.lightColorScheme,
-                    ),
-                )
-            }
-            else {
-                colorPalette.copy(
-                    darkColorScheme = block(
-                        colorPalette.lightColorScheme,
-                    ),
-                )
-            },
-    )
+private fun Theme.copyColorScheme(block: (ColorScheme) -> ColorScheme): Theme {
+    return this
+}
 
 @Preview
 @Composable

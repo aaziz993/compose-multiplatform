@@ -76,7 +76,6 @@ import compose_app.generated.resources.reset
 import compose_app.generated.resources.search
 import compose_app.generated.resources.theme
 import data.location.locale.asStringResource
-import data.type.primitives.SettingsSwitch
 import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
@@ -90,9 +89,9 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderPostpone
+import presentation.components.settings.SettingsSwitch
 import presentation.theme.model.isDarkIcon
 import presentation.theme.model.isDarkStringResource
-import ui.navigation.presentation.Settings
 import ui.navigation.presentation.SettingsColorPalette
 import ui.navigation.presentation.SettingsMain
 
@@ -140,16 +139,18 @@ public fun SettingsMainScreen(
             onThemeChange(theme.copyIsDarkToggled())
         }
 
-        theme.isDynamic.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.dynamic_color_palette),
+            value = theme.isDynamic,
             trueIcon = Icons.Outlined.Palette,
             falseIcon = Icons.Filled.Palette,
         ) { value ->
             onThemeChange(theme.copy(isDynamic = value))
         }
 
-        theme.isHighContrast.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.high_contrast),
+            value = theme.isHighContrast,
             trueIcon = Icons.Outlined.Accessibility,
             falseIcon = Icons.Filled.Accessibility,
         ) { value ->
@@ -169,11 +170,12 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.ColorLens,
         ) {
-
+            onNavigationAction(NavigationAction.Push(SettingsColorPalette))
         }
 
-        theme.isExpressive.SettingsSwitch(
+        SettingsSwitch(
             stringResource(Res.string.expressive),
+            value = theme.isExpressive,
             trueIcon = Icons.Outlined.Palette,
             falseIcon = Icons.Filled.Palette,
         ) { state ->
@@ -238,8 +240,9 @@ public fun SettingsMainScreen(
             if (connectivity.isConnected) Icons.Outlined.SignalCellular0Bar
             else Icons.Outlined.SignalCellularConnectedNoInternet4Bar
 
-        components.connectivity.isConnectivityAlert.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.connectivity_alert),
+            value = components.connectivity.isConnectivityAlert,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
@@ -251,8 +254,9 @@ public fun SettingsMainScreen(
             },
         )
 
-        components.connectivity.isConnectivitySnackbar.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.connectivity_snackbar),
+            value = components.connectivity.isConnectivitySnackbar,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
@@ -264,8 +268,9 @@ public fun SettingsMainScreen(
             },
         )
 
-        components.connectivity.isConnectivityIndicator.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.connectivity_indicator),
+            value = components.connectivity.isConnectivityIndicator,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
@@ -277,8 +282,9 @@ public fun SettingsMainScreen(
             },
         )
 
-        components.connectivity.isAvatarConnectivityIndicator.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.avatar_connectivity_indicator),
+            value = components.connectivity.isAvatarConnectivityIndicator,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
@@ -290,8 +296,9 @@ public fun SettingsMainScreen(
             },
         )
 
-        components.quickAccess.isSupport.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_support),
+            value = components.quickAccess.isSupport,
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
             onCheckedChange = { value ->
@@ -303,8 +310,9 @@ public fun SettingsMainScreen(
             },
         )
 
-        components.quickAccess.isTheme.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_themes),
+            value = components.quickAccess.isTheme,
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
             onCheckedChange = { value ->
@@ -316,8 +324,9 @@ public fun SettingsMainScreen(
             },
         )
 
-        components.quickAccess.isLocale.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_locales),
+            value = components.quickAccess.isLocale,
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
             onCheckedChange = { value ->
@@ -329,8 +338,9 @@ public fun SettingsMainScreen(
             },
         )
 
-        components.quickAccess.isAvatar.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_avatar),
+            value = components.quickAccess.isAvatar,
             trueIcon = Icons.Outlined.FlashOn,
             falseIcon = Icons.Filled.FlashOn,
             onCheckedChange = { value ->
@@ -349,17 +359,19 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.permission)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        Permission.CAMERA.SettingsSwitch(
-            permissions = permissions,
-            coroutineScope = coroutineScope,
+        SettingsSwitch(
             title = stringResource(Res.string.camera),
+            value = Permission.CAMERA,
             trueIcon = Icons.Outlined.CameraAlt,
             falseIcon = Icons.Filled.CameraAlt,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
-        Permission.RECORD_AUDIO.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.microphone),
+            value = Permission.RECORD_AUDIO,
             trueIcon = Icons.Outlined.Mic,
             falseIcon = Icons.Filled.Mic,
             permissions = permissions,
@@ -367,8 +379,9 @@ public fun SettingsMainScreen(
             onCheckedChange = onPermissionChange,
         )
 
-        Permission.LOCATION.SettingsSwitch(
+        SettingsSwitch(
             title = stringResource(Res.string.location),
+            value = Permission.LOCATION,
             trueIcon = Icons.Outlined.LocationOn,
             falseIcon = Icons.Filled.LocationOn,
             permissions = permissions,
@@ -407,10 +420,9 @@ public fun PreviewSettingsMainScreen(): Unit = SettingsMainScreen()
 
 @Suppress("ComposeParameterOrder")
 @Composable
-private fun Permission.SettingsSwitch(
-    permissions: Set<Permission>,
-    coroutineScope: CoroutineScope,
+private fun SettingsSwitch(
     title: String,
+    value: Permission,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     trueIcon: ImageVector,
@@ -426,9 +438,12 @@ private fun Permission.SettingsSwitch(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+    permissions: Set<Permission>,
+    coroutineScope: CoroutineScope,
     onCheckedChange: (Permission?) -> Unit,
-) = (this in permissions).SettingsSwitch(
+) = SettingsSwitch(
     title,
+    value in permissions,
     modifier,
     enabled,
     trueIcon,
@@ -438,12 +453,12 @@ private fun Permission.SettingsSwitch(
     tonalElevation,
     shadowElevation,
     semanticProperties,
-    onCheckedChange = { value ->
-        if (value) onCheckedChange(null)
+    onCheckedChange = {
+        if (it) onCheckedChange(null)
         else {
             coroutineScope.launch {
                 try {
-                    onCheckedChange(this@SettingsSwitch)
+                    onCheckedChange(value)
                 }
                 catch (deniedAlways: PermissionDeniedAlwaysException) {
                     GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
