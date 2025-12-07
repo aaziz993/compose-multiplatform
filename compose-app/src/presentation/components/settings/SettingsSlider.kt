@@ -25,10 +25,13 @@ import pro.respawn.kmmutils.common.signChar
 
 @Suppress("ComposeParameterOrder")
 @Composable
-public fun SettingsSliderPostpone(
+public fun SettingsSliderFinished(
     title: String,
     initialValue: Float,
     modifier: Modifier = Modifier,
+    subtitle: @Composable ((value: Float) -> Unit)? = { value ->
+        Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
+    },
     icon: ImageVector,
     enabled: Boolean = true,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
@@ -61,7 +64,7 @@ public fun SettingsSliderPostpone(
         value,
         modifier,
         {
-            Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
+            subtitle?.invoke(value)
         },
         { Icon(icon, title) },
         enabled,

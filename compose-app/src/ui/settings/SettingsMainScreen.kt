@@ -30,11 +30,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -46,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
 import clib.presentation.components.Components
 import clib.presentation.components.country.model.CountryPicker
-import clib.presentation.components.picker.ListPickerDialog
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
@@ -83,7 +78,6 @@ import compose_app.generated.resources.search
 import compose_app.generated.resources.clear
 import compose_app.generated.resources.theme
 import data.location.locale.asStringResource
-import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
@@ -95,7 +89,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsMenuLink
-import presentation.components.settings.SettingsSliderPostpone
+import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
 import presentation.theme.model.isDarkIcon
 import presentation.theme.model.isDarkStringResource
@@ -190,7 +184,7 @@ public fun SettingsMainScreen(
             onThemeChange(theme.copy(isExpressive = !theme.isExpressive))
         }
 
-        SettingsSliderPostpone(
+        SettingsSliderFinished(
             title = stringResource(Res.string.density),
             initialValue = density.density,
             icon = Icons.Default.TouchApp,
@@ -201,7 +195,7 @@ public fun SettingsMainScreen(
             onDensityChange(Density(value, density.fontScale))
         }
 
-        SettingsSliderPostpone(
+        SettingsSliderFinished(
             title = stringResource(Res.string.font_scale),
             initialValue = density.fontScale,
             icon = Icons.Default.TextFields,

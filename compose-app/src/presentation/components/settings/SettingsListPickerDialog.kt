@@ -1,44 +1,78 @@
 package presentation.components.settings
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Devices
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.picker.model.Picker
 import clib.presentation.components.settings.SettingsListPickerDialog
+import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
+import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
+import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.clear
-import compose_app.generated.resources.platform
 import compose_app.generated.resources.search
-import data.type.primitives.asStringResource
+import data.type.primitives.string.asStringResource
 import org.jetbrains.compose.resources.stringResource
 
+@Suppress("ComposeParameterOrder")
 @Composable
-public fun SettingsListPickerDialog(
-
-): Unit =
+public fun <E> SettingsListPickerDialog(
+    value: E,
+    values: List<E>,
+    title: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = LocalSettingsGroupEnabled.current,
+    icon: ImageVector,
+    subtitle: (@Composable () -> Unit)? = { Text(value.toString().asStringResource()) },
+    action: (@Composable () -> Unit)? = null,
+    colors: SettingsTileColors = SettingsTileDefaults.colors(),
+    tonalElevation: Dp = SettingsTileDefaults.Elevation,
+    shadowElevation: Dp = SettingsTileDefaults.Elevation,
+    semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+    item: (E) -> Item = { value ->
+        Item(
+            text = { Text(value.toString().asStringResource()) },
+            icon = { Icon(icon, value.toString().asStringResource()) },
+        )
+    },
+    textStyle: TextStyle = LocalTextStyle.current,
+    itemPadding: Int = 10,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    picker: Picker = Picker(
+        headerTitle = title,
+        searchHint = stringResource(Res.string.search),
+        clear = stringResource(Res.string.clear),
+    ),
+    onItemClicked: (E) -> Boolean,
+) {
     SettingsListPickerDialog(
-        title = { Text(text = stringResource(Res.string.platform)) },
-        values = platforms,
-        icon = { Icon(Icons.Default.Devices, theme.currentDynamicColorScheme.platform.name) },
-        subtitle = { Text(theme.currentDynamicColorScheme.platform.name) },
-        modifier = Modifier,
-        enabled = true,
-        item = { value ->
-            Item(
-                text = { Text(value.asStringResource()) },
-                icon = { Icon(Icons.Default.Devices, value.asStringResource()) },
-            )
+        values,
+        { Text(title) },
+        modifier,
+        enabled,
+        {
+            Icon(icon, value.toString().asStringResource())
         },
-        picker = Picker(
-            headerTitle = stringResource(Res.string.platform),
-            searchHint = stringResource(Res.string.search),
-            clear = stringResource(Res.string.clear),
-        ),
-    ) { value ->
-        onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(platform = value) })
-        false
-    }
+        {},
+        action,
+        colors,
+        tonalElevation,
+        shadowElevation,
+        semanticProperties,
+        item,
+        textStyle,
+        itemPadding,
+        backgroundColor,
+        picker,
+        onItemClicked,
+    )
+}

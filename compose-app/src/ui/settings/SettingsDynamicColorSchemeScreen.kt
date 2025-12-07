@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.picker.model.Picker
-import clib.presentation.components.settings.SettingsListPickerDialog
 import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.theme.model.Theme
 import com.materialkolor.scheme.DynamicScheme
@@ -39,6 +38,7 @@ import compose_app.generated.resources.tertiary
 import data.type.primitives.asStringResource
 import data.type.primitives.string.asStringResource
 import org.jetbrains.compose.resources.stringResource
+import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSwitch
 import ui.navigation.presentation.SettingsDynamicColorScheme
 
@@ -54,16 +54,18 @@ public fun SettingsDynamicColorSchemeScreen(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
+    val colorScheme = theme.currentDynamicColorScheme
+
     SettingsColorSchemeColor(
         stringResource(Res.string.color_scheme_seed_color),
-        theme.currentDynamicColorScheme.seedColor,
+        colorScheme.seedColor,
     ) { value ->
         onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(seedColor = value) })
     }
 
     SettingsSwitch(
         title = stringResource(Res.string.amoled),
-        value = theme.currentDynamicColorScheme.isAmoled,
+        value = colorScheme.isAmoled,
         trueIcon = Icons.Outlined.SmartDisplay,
         falseIcon = Icons.Filled.SmartDisplay,
         onCheckedChange = { value ->
@@ -71,7 +73,7 @@ public fun SettingsDynamicColorSchemeScreen(
         },
     )
 
-    theme.currentDynamicColorScheme.primary?.let { primary ->
+    colorScheme.primary?.let { primary ->
         SettingsColorSchemeColor(
             stringResource(Res.string.primary),
             primary,
@@ -80,7 +82,7 @@ public fun SettingsDynamicColorSchemeScreen(
         }
     }
 
-    theme.currentDynamicColorScheme.secondary?.let { secondary ->
+    colorScheme.secondary?.let { secondary ->
         SettingsColorSchemeColor(
             stringResource(Res.string.secondary),
             secondary,
@@ -89,7 +91,7 @@ public fun SettingsDynamicColorSchemeScreen(
         }
     }
 
-    theme.currentDynamicColorScheme.tertiary?.let { tertiary ->
+    colorScheme.tertiary?.let { tertiary ->
         SettingsColorSchemeColor(
             stringResource(Res.string.tertiary),
             tertiary,
@@ -98,7 +100,7 @@ public fun SettingsDynamicColorSchemeScreen(
         }
     }
 
-    theme.currentDynamicColorScheme.neutral?.let { neutral ->
+    colorScheme.neutral?.let { neutral ->
         SettingsColorSchemeColor(
             stringResource(Res.string.neutral),
             neutral,
@@ -107,7 +109,7 @@ public fun SettingsDynamicColorSchemeScreen(
         }
     }
 
-    theme.currentDynamicColorScheme.neutralVariant?.let { neutralVariant ->
+    colorScheme.neutralVariant?.let { neutralVariant ->
         SettingsColorSchemeColor(
             stringResource(Res.string.neutral_variant),
             neutralVariant,
@@ -116,7 +118,7 @@ public fun SettingsDynamicColorSchemeScreen(
         }
     }
 
-    theme.currentDynamicColorScheme.error?.let { error ->
+    colorScheme.error?.let { error ->
         SettingsColorSchemeColor(
             stringResource(Res.string.error),
             error,
@@ -127,7 +129,7 @@ public fun SettingsDynamicColorSchemeScreen(
 
     SettingsSlider(
         title = { Text(stringResource(Res.string.contrast)) },
-        value = theme.currentDynamicColorScheme.contrastLevel.toFloat(),
+        value = colorScheme.contrastLevel.toFloat(),
         icon = { Icon(Icons.Default.Contrast, "") },
         enabled = true,
         valueRange = -1f..1f,
@@ -138,23 +140,12 @@ public fun SettingsDynamicColorSchemeScreen(
     val platforms = DynamicScheme.Platform.entries.toList()
 
     SettingsListPickerDialog(
-        title = { Text(text = stringResource(Res.string.platform)) },
+        colorScheme.platform,
         values = platforms,
-        icon = { Icon(Icons.Default.Devices, theme.currentDynamicColorScheme.platform.name) },
-        subtitle = { Text(theme.currentDynamicColorScheme.platform.name) },
+        title = stringResource(Res.string.platform),
+        icon = Icons.Default.Devices,
         modifier = Modifier,
         enabled = true,
-        item = { value ->
-            Item(
-                text = { Text(value.asStringResource()) },
-                icon = { Icon(Icons.Default.Devices, value.asStringResource()) },
-            )
-        },
-        picker = Picker(
-            headerTitle = stringResource(Res.string.platform),
-            searchHint = stringResource(Res.string.search),
-            clear = stringResource(Res.string.clear),
-        ),
     ) { value ->
         onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(platform = value) })
         false
@@ -162,13 +153,27 @@ public fun SettingsDynamicColorSchemeScreen(
 
     SettingsSwitch(
         title = stringResource(Res.string.animate),
-        value = theme.currentDynamicColorScheme.animate,
+        value = colorScheme.animate,
         trueIcon = Icons.Outlined.Animation,
         falseIcon = Icons.Filled.Animation,
         onCheckedChange = { value ->
             onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(animate = value) })
         },
     )
+
+    colorScheme.animationSpec?.let { animationSpec ->
+//        SettingsListPickerDialog(
+//            animationSpec,
+//            values = platforms,
+//            title = stringResource(Res.string.platform),
+//            icon = Icons.Default.Devices,
+//            modifier = Modifier,
+//            enabled = true,
+//        ) { value ->
+//            onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(platform = value) })
+//            false
+//        }
+    }
 
 //    val animationSpec: AnimationSpecSerial<ColorSerial>? = null,
 }
