@@ -1,7 +1,7 @@
 package klib.data.cryptography.model
 
 import dev.whyoleg.cryptography.CryptographyAlgorithm
-import dev.whyoleg.cryptography.algorithms.Digest
+import klib.data.type.cast
 import klib.data.type.serialization.serializers.transform.MapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -23,14 +23,12 @@ import dev.whyoleg.cryptography.algorithms.SHA3_512 as CryptoSHA3_512
 import dev.whyoleg.cryptography.algorithms.RIPEMD160 as CryptoRIPEMD160
 
 @Serializable(CryptographyAlgorithmIdSerializer::class)
-private sealed class CryptographyAlgorithmId<T : CryptographyAlgorithm> {
+private sealed class CryptographyAlgorithmId {
 
-    abstract fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<T>
+    abstract fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*>
 }
 
-private class CryptographyAlgorithmIdSerializer(
-    @Suppress("Unused") tSerializer: KSerializer<Nothing>
-) : MapTransformingPolymorphicSerializer<CryptographyAlgorithmId<*>>(
+private object CryptographyAlgorithmIdSerializer : MapTransformingPolymorphicSerializer<CryptographyAlgorithmId>(
     baseClass = CryptographyAlgorithmId::class,
     subclasses = mapOf(
         MD5::class to MD5.serializer(),
@@ -49,86 +47,86 @@ private class CryptographyAlgorithmIdSerializer(
 
 @Serializable
 @SerialName("md5")
-private data object MD5 : CryptographyAlgorithmId<Digest>() {
+private data object MD5 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoMD5
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoMD5
 }
 
 @Serializable
 @SerialName("sha1")
-private data object SHA1 : CryptographyAlgorithmId<Digest>() {
+private data object SHA1 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA1
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA1
 }
 
 @Serializable
 @SerialName("sha224")
-private data object SHA224 : CryptographyAlgorithmId<Digest>() {
+private data object SHA224 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA224
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA224
 }
 
 @Serializable
 @SerialName("sha256")
-private data object SHA256 : CryptographyAlgorithmId<Digest>() {
+private data object SHA256 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA256
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA256
 }
 
 @Serializable
 @SerialName("sha384")
-private data object SHA384 : CryptographyAlgorithmId<Digest>() {
+private data object SHA384 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA384
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA384
 }
 
 @Serializable
 @SerialName("sha512")
-private data object SHA512 : CryptographyAlgorithmId<Digest>() {
+private data object SHA512 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA512
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA512
 }
 
 @Serializable
 @SerialName("sha3224")
-private data object SHA3224 : CryptographyAlgorithmId<Digest>() {
+private data object SHA3224 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA3_224
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA3_224
 }
 
 @Serializable
 @SerialName("sha3256")
-private data object SHA3256 : CryptographyAlgorithmId<Digest>() {
+private data object SHA3256 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA3_256
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA3_256
 }
 
 @Serializable
 @SerialName("sha3384")
-private data object SHA3384 : CryptographyAlgorithmId<Digest>() {
+private data object SHA3384 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA3_384
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA3_384
 }
 
 @Serializable
 @SerialName("sha3512")
-private data object SHA3512 : CryptographyAlgorithmId<Digest>() {
+private data object SHA3512 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoSHA3_512
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoSHA3_512
 }
 
 @Serializable
 @SerialName("ripemd160")
-private data object RIPEMD160 : CryptographyAlgorithmId<Digest>() {
+private data object RIPEMD160 : CryptographyAlgorithmId() {
 
-    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<Digest> = CryptoRIPEMD160
+    override fun toCryptographyAlgorithmId(): CryptoCryptographyAlgorithmId<*> = CryptoRIPEMD160
 }
 
 public class CryptoCryptographyAlgorithmIdSerializer<T : CryptographyAlgorithm>(
-    tSerializer: KSerializer<T>
+    @Suppress("Unused") tSerializer: KSerializer<T>
 ) : KSerializer<CryptoCryptographyAlgorithmId<T>> {
 
-    private val delegate = CryptographyAlgorithmId.serializer(tSerializer)
+    private val delegate = CryptographyAlgorithmId.serializer()
     override val descriptor: SerialDescriptor = delegate.descriptor
 
     @Suppress("UNCHECKED_CAST")
@@ -149,11 +147,11 @@ public class CryptoCryptographyAlgorithmIdSerializer<T : CryptographyAlgorithm>(
                 CryptoRIPEMD160 -> RIPEMD160
 
                 else -> throw IllegalArgumentException("Unknown corner shape '$value'")
-            } as CryptographyAlgorithmId<T>,
+            },
         )
 
     override fun deserialize(decoder: Decoder): CryptoCryptographyAlgorithmId<T> =
-        decoder.decodeSerializableValue(delegate).toCryptographyAlgorithmId()
+        decoder.decodeSerializableValue(delegate).toCryptographyAlgorithmId().cast()
 }
 
 public typealias CryptographyAlgorithmIdSerial<T> = @Serializable(with = CryptoCryptographyAlgorithmIdSerializer::class) CryptoCryptographyAlgorithmId<T>
