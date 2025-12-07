@@ -92,7 +92,8 @@ import presentation.components.settings.SettingsSliderPostpone
 import presentation.components.settings.SettingsSwitch
 import presentation.theme.model.isDarkIcon
 import presentation.theme.model.isDarkStringResource
-import ui.navigation.presentation.SettingsColorPalette
+import ui.navigation.presentation.SettingsColorScheme
+import ui.navigation.presentation.SettingsDynamicColorScheme
 import ui.navigation.presentation.SettingsMain
 
 @Composable
@@ -162,7 +163,7 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.ColorLens,
         ) {
-            onNavigationAction(NavigationAction.Push(SettingsColorPalette))
+            onNavigationAction(NavigationAction.Push(SettingsColorScheme))
         }
 
         SettingsMenuLink(
@@ -170,7 +171,7 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.ColorLens,
         ) {
-            onNavigationAction(NavigationAction.Push(SettingsColorPalette))
+            onNavigationAction(NavigationAction.Push(SettingsDynamicColorScheme))
         }
 
         SettingsSwitch(

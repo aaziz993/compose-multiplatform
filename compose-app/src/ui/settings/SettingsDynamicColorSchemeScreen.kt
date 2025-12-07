@@ -11,26 +11,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import clib.presentation.theme.model.DynamicColorScheme
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.amoled
+import compose_app.generated.resources.animate
 import compose_app.generated.resources.color_scheme_seed_color
 import compose_app.generated.resources.error
 import compose_app.generated.resources.neutral
 import compose_app.generated.resources.neutral_variant
 import compose_app.generated.resources.primary
-import compose_app.generated.resources.quick_access_to_locales
 import compose_app.generated.resources.secondary
 import compose_app.generated.resources.tertiary
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsSwitch
-import ui.navigation.presentation.SettingsDynamicColorPalette
+import ui.navigation.presentation.SettingsDynamicColorScheme
 
 @Composable
-public fun SettingsDynamicColorPaletteScreen(
+public fun SettingsDynamicColorSchemeScreen(
     modifier: Modifier = Modifier,
-    route: SettingsDynamicColorPalette = SettingsDynamicColorPalette,
+    route: SettingsDynamicColorScheme = SettingsDynamicColorScheme,
     defaultTheme: Theme = Theme(),
     theme: Theme = defaultTheme,
     onThemeChange: (Theme) -> Unit = {},
@@ -114,7 +113,7 @@ public fun SettingsDynamicColorPaletteScreen(
 //    val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
 
     SettingsSwitch(
-        title = stringResource(Res.string.quick_access_to_locales),
+        title = stringResource(Res.string.animate),
         value = theme.currentDynamicColorScheme.animate,
         trueIcon = Icons.Outlined.Animation,
         falseIcon = Icons.Filled.Animation,
@@ -128,8 +127,4 @@ public fun SettingsDynamicColorPaletteScreen(
 
 @Preview
 @Composable
-public fun PreviewSettingsDynamicColorPaletteScreen(): Unit = SettingsDynamicColorPaletteScreen()
-
-private fun Theme.copyDynamicColorScheme(block: (DynamicColorScheme) -> DynamicColorScheme): Theme {
-    return this
-}
+public fun PreviewSettingsDynamicColorSchemeScreen(): Unit = SettingsDynamicColorSchemeScreen()

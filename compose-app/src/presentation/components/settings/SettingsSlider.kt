@@ -22,7 +22,7 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
 import kotlin.math.roundToInt
 
-@Suppress("ComposeModifierMissing", "ComposeParameterOrder")
+@Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsSliderPostpone(
     title: String,

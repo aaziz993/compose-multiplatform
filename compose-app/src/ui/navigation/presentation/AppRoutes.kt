@@ -87,8 +87,8 @@ import ui.map.MapScreen
 import ui.news.articles.presentation.ArticlesScreen
 import ui.news.articles.presentation.viewmodel.ArticleViewModel
 import ui.services.ServicesScreen
-import ui.settings.SettingsColorPaletteScreen
-import ui.settings.SettingsDynamicColorPaletteScreen
+import ui.settings.SettingsColorSchemeScreen
+import ui.settings.SettingsDynamicColorSchemeScreen
 import ui.settings.SettingsMainScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
@@ -310,7 +310,7 @@ public data object Map : KoinRoute<Map>(), NavRoute {
 public data object Settings : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(SettingsMain, SettingsColorPalette)
+        listOf(SettingsMain, SettingsColorScheme, SettingsDynamicColorScheme)
     }
 
     @Composable
@@ -403,8 +403,8 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
 }
 
 @Serializable
-@SerialName("settings_color_palette")
-public data object SettingsColorPalette : KoinRoute<SettingsColorPalette>(), NavRoute {
+@SerialName("settings_color_scheme")
+public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -412,14 +412,14 @@ public data object SettingsColorPalette : KoinRoute<SettingsColorPalette>(), Nav
 
     @Composable
     override fun Content(
-        route: SettingsColorPalette,
+        route: SettingsColorScheme,
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
         val config = LocalConfig.current
         val themeState = LocalThemeState.current
 
-        SettingsColorPaletteScreen(
+        SettingsColorSchemeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.theme,
@@ -429,8 +429,8 @@ public data object SettingsColorPalette : KoinRoute<SettingsColorPalette>(), Nav
 }
 
 @Serializable
-@SerialName("settings_dynamic_color_palette")
-public data object SettingsDynamicColorPalette : KoinRoute<SettingsDynamicColorPalette>(), NavRoute {
+@SerialName("settings_dynamic_color_scheme")
+public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorScheme>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -438,14 +438,14 @@ public data object SettingsDynamicColorPalette : KoinRoute<SettingsDynamicColorP
 
     @Composable
     override fun Content(
-        route: SettingsDynamicColorPalette,
+        route: SettingsDynamicColorScheme,
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
         val config = LocalConfig.current
         val themeState = LocalThemeState.current
 
-        SettingsDynamicColorPaletteScreen(
+        SettingsDynamicColorSchemeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.theme,

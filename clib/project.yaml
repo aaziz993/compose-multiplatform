@@ -34,6 +34,6 @@ script:
         - named: |
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
-                api(project(":klib"))
+                implementation(project(":klib"))
               }
             }

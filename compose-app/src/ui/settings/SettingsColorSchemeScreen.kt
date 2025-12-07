@@ -58,12 +58,12 @@ import compose_app.generated.resources.color_scheme_tertiary_container
 import compose_app.generated.resources.color_scheme_tertiary_fixed
 import compose_app.generated.resources.color_scheme_tertiary_fixed_dim
 import org.jetbrains.compose.resources.stringResource
-import ui.navigation.presentation.SettingsColorPalette
+import ui.navigation.presentation.SettingsColorScheme
 
 @Composable
-public fun SettingsColorPaletteScreen(
+public fun SettingsColorSchemeScreen(
     modifier: Modifier = Modifier,
-    route: SettingsColorPalette = SettingsColorPalette,
+    route: SettingsColorScheme = SettingsColorScheme,
     defaultTheme: Theme = Theme(),
     theme: Theme = defaultTheme,
     onThemeChange: (Theme) -> Unit = {},
@@ -415,4 +415,4 @@ private fun Theme.copyColorScheme(block: (ColorScheme) -> ColorScheme): Theme {
 
 @Preview
 @Composable
-public fun PreviewSettingsColorPaletteScreen(): Unit = SettingsColorPaletteScreen()
+public fun PreviewSettingsColorSchemeScreen(): Unit = SettingsColorSchemeScreen()

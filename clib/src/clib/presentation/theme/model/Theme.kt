@@ -49,5 +49,9 @@ public data class Theme(
         false -> copy(isDark = true)
         true -> copy(isDark = null)
     }
+
+    public fun copyDynamicColorScheme(block: (DynamicColorScheme) -> DynamicColorScheme): Theme =
+        if (isHighContrast) copy(dynamicColorSchemeHighContrast = block(dynamicColorSchemeHighContrast))
+        else copy(dynamicColorScheme = block(dynamicColorScheme))
 }
 

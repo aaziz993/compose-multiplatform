@@ -1,9 +1,10 @@
 package clib.presentation.components.settings
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -62,15 +63,15 @@ public fun SettingsColorPickerBottomSheet(
         modifier,
         enabled,
         {
-            Box(
-                modifier = Modifier
-                    .size(24.dp)
-                    .background(value, MaterialTheme.shapes.small)
-                    .border(
-                        1.dp,
-                        MaterialTheme.colorScheme.onSurface,
-                        MaterialTheme.shapes.small,
-                    ),
+            Icon(
+                imageVector = Icons.Filled.Circle,
+                contentDescription = value.toHex(),
+                Modifier.border(
+                    2.dp,
+                    MaterialTheme.colorScheme.onSurface,
+                    CircleShape,
+                ),
+                tint = value,
             )
         },
         subtitle,
