@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.theme.model.Theme
 import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
@@ -33,6 +32,7 @@ import compose_app.generated.resources.tertiary
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog
+import presentation.components.settings.SettingsSlider
 import presentation.components.settings.SettingsSwitch
 import ui.navigation.presentation.SettingsDynamicColorScheme
 
@@ -122,9 +122,9 @@ public fun SettingsDynamicColorSchemeScreen(
     }
 
     SettingsSlider(
-        title = { Text(stringResource(Res.string.contrast)) },
+        title = stringResource(Res.string.contrast),
         value = colorScheme.contrastLevel.toFloat(),
-        icon = { Icon(Icons.Default.Contrast, "") },
+        icon = Icons.Default.Contrast,
         enabled = true,
         valueRange = -1f..1f,
     ) { value, _ ->
