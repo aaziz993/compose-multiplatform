@@ -150,8 +150,7 @@ public fun AppEnvironment(
         )) to state.seedColor
     }
     else {
-        val colorPalette =
-            if (theme.isHighContrast) theme.colorPaletteHighContrast else theme.colorPalette
+        val colorPalette = if (theme.isHighContrast) theme.colorPaletteHighContrast else theme.colorPalette
 
         (if (isSystemInDarkTheme()) colorPalette.darkColorScheme
         else colorPalette.lightColorScheme) to Color.Transparent

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -22,15 +23,18 @@ import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import com.alorma.compose.settings.ui.base.internal.SettingsTileScaffold
+import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
+import kotlin.math.roundToInt
 
 @Composable
 @Suppress("LongParameterList")
 public fun SettingsSlider(
     title: @Composable () -> Unit,
     value: Float,
-    onValueChange: (Float, Offset) -> Unit,
     modifier: Modifier = Modifier,
-    subtitle: @Composable (() -> Unit)? = null,
+    subtitle: @Composable (() -> Unit)? = {
+        Text(DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue)
+    },
     icon: @Composable (() -> Unit)? = null,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
@@ -56,6 +60,7 @@ public fun SettingsSlider(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
+    onValueChange: (Float, Offset) -> Unit,
 ) {
     SettingsTileScaffold(
         modifier = modifier,

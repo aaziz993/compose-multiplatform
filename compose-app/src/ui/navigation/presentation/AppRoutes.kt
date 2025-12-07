@@ -87,7 +87,8 @@ import ui.map.MapScreen
 import ui.news.articles.presentation.ArticlesScreen
 import ui.news.articles.presentation.viewmodel.ArticleViewModel
 import ui.services.ServicesScreen
-import ui.settings.SettingsScreen
+import ui.settings.SettingsColorPaletteScreen
+import ui.settings.SettingsMainScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
@@ -305,7 +306,35 @@ public data object Map : KoinRoute<Map>(), NavRoute {
 
 @Serializable
 @SerialName("settings")
-public data object Settings : KoinRoute<Settings>(), NavRoute {
+public data object Settings : KoinRoutes() {
+
+    override val routes: List<BaseRoute> by lazy {
+        listOf(SettingsMain, SettingsColorPalette)
+    }
+
+    @Composable
+    override fun NavDisplay(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>
+    ): Unit = androidx.navigation3.ui.NavDisplay(
+        backStack = backStack,
+        onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+            rememberKoinScopeNavEntryDecorator(),
+        ),
+        sceneStrategy = DelegatedScreenStrategy(
+            NavScreenSceneStrategy().delegate(),
+        ),
+        entryProvider = entryProvider,
+    )
+}
+
+@Serializable
+@SerialName("settings")
+public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
@@ -327,7 +356,7 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
 
     @Composable
     override fun Content(
-        route: Settings,
+        route: SettingsMain,
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val coroutineScope = rememberCoroutineScope()
@@ -342,7 +371,7 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
         val authState = LocalAuthState.current
         val router = currentRouter()
 
-        SettingsScreen(
+        SettingsMainScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             connectivity,
@@ -369,6 +398,33 @@ public data object Settings : KoinRoute<Settings>(), NavRoute {
             { value -> authState.auth = value },
             router::actions,
         )
+    }
+}
+
+@Serializable
+@SerialName("settings_color_palette")
+public data object SettingsColorPalette : KoinRoute<SettingsColorPalette>(), NavRoute {
+
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+    override val authResource: AuthResource? = AuthResource()
+
+    @Composable
+    override fun Content(
+        route: SettingsColorPalette,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val scrollState = rememberScrollState()
+        val config = LocalConfig.current
+        val themeState = LocalThemeState.current
+
+        SettingsColorPaletteScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
+            route,
+
+            config.ui.theme,
+            themeState.theme,
+        ) { value -> themeState.theme = value }
     }
 }
 
@@ -501,7 +557,7 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
 }
 
 @Serializable
-@SerialName("pinCode")
+@SerialName("pin_code")
 public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
@@ -551,7 +607,7 @@ public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
 }
 
 @Serializable
-@SerialName("forgotPinCode")
+@SerialName("forgot_pin_code")
 public data object ForgotPinCode : KoinRoute<ForgotPinCode>(), NavRoute, AuthRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()

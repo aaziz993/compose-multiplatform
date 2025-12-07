@@ -1,7 +1,10 @@
 package clib.presentation.theme.model
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import clib.presentation.theme.shapes.ShapesSerial
@@ -22,6 +25,13 @@ public data class Theme(
     val shapes: ShapesSerial = Shapes(),
     val typography: TypographySerial = Typography(),
 ) {
+
+    public val colorScheme: ColorScheme
+        @Composable
+        get() {
+            val colorPalette = if (isHighContrast) colorPaletteHighContrast else colorPalette
+            return if (isSystemInDarkTheme()) colorPalette.darkColorScheme else colorPalette.lightColorScheme
+        }
 
     public fun copyIsDarkToggled(): Theme = when (isDark) {
         null -> copy(isDark = false)

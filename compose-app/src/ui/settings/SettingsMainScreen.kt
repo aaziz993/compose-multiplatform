@@ -93,11 +93,13 @@ import presentation.components.settings.SettingsSliderPostpone
 import presentation.theme.model.isDarkIcon
 import presentation.theme.model.isDarkStringResource
 import ui.navigation.presentation.Settings
+import ui.navigation.presentation.SettingsColorPalette
+import ui.navigation.presentation.SettingsMain
 
 @Composable
-public fun SettingsScreen(
+public fun SettingsMainScreen(
     modifier: Modifier = Modifier,
-    route: Settings = Settings,
+    route: SettingsMain = SettingsMain,
     connectivity: Status = Status.Disconnected,
     permissions: Set<Permission> = emptySet(),
     onPermissionChange: (Permission?) -> Unit = { true },
@@ -159,7 +161,7 @@ public fun SettingsScreen(
             enabled = true,
             icon = Icons.Default.ColorLens,
         ) {
-
+            onNavigationAction(NavigationAction.Push(SettingsColorPalette))
         }
 
         SettingsMenuLink(
@@ -201,12 +203,8 @@ public fun SettingsScreen(
         }
 
         SettingsLocalePickerDialog(
-            value = locale,
-            onValueChanged = { value ->
-                onLocaleChange(value)
-                true
-            },
             title = { Text(text = stringResource(Res.string.locale)) },
+            value = locale,
             subtitle = {
                 Text(
                     text = "locale_${
@@ -227,7 +225,10 @@ public fun SettingsScreen(
                 headerTitle = stringResource(Res.string.locale),
                 searchHint = stringResource(Res.string.search),
             ),
-        )
+        ) { value ->
+            onLocaleChange(value)
+            true
+        }
 
         val connectivityTrueIcon =
             if (connectivity.isConnected) Icons.Filled.SignalCellular0Bar
@@ -402,7 +403,7 @@ public fun SettingsScreen(
 
 @Preview
 @Composable
-public fun PreviewSettingsScreen(): Unit = SettingsScreen()
+public fun PreviewSettingsMainScreen(): Unit = SettingsMainScreen()
 
 @Suppress("ComposeParameterOrder")
 @Composable

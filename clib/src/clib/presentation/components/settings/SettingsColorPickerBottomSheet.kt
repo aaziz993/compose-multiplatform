@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,15 +24,15 @@ import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
+import com.materialkolor.ktx.toHex
 
 @Composable
 public fun SettingsColorPickerBottomSheet(
-    value: Color,
-    onValueChanged: (Color) -> Unit,
     title: @Composable () -> Unit,
+    value: Color,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
-    subtitle: (@Composable () -> Unit)? = null,
+    subtitle: (@Composable () -> Unit)? = { Text(text = value.toHex()) },
     action: (@Composable () -> Unit)? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
@@ -39,6 +40,7 @@ public fun SettingsColorPickerBottomSheet(
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     sheetState: SheetState = rememberModalBottomSheetState(),
     picker: ColorPicker = ColorPicker(),
+    onValueChanged: (Color) -> Unit,
 ) {
 
     var showSheet by remember { mutableStateOf(false) }

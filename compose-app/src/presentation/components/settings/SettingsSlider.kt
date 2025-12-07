@@ -58,7 +58,6 @@ public fun SettingsSliderPostpone(
     SettingsSlider(
         { Text(title) },
         densityValue,
-        { value, _ -> densityValue = value },
         modifier,
         {
             Text(DecimalFormatter.DefaultFormatter.format((densityValue * 100).roundToInt()).displayValue)
@@ -78,5 +77,5 @@ public fun SettingsSliderPostpone(
         interactionSource,
         tonalElevation,
         shadowElevation,
-    )
+    ) { value, _ -> densityValue = value }
 }

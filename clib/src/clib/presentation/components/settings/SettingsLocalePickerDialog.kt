@@ -24,12 +24,11 @@ import klib.data.location.locale.Locale
 
 @Composable
 public fun SettingsLocalePickerDialog(
-    value: Locale,
-    onValueChanged: (Locale) -> Boolean,
     title: @Composable () -> Unit,
+    value: Locale,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
-    icon: (@Composable () -> Unit)? = null,
+    icon: (@Composable () -> Unit)? = { Text(value.country()!!.alpha2.getEmojiFlag()) },
     subtitle: (@Composable () -> Unit)? = null,
     action: (@Composable () -> Unit)? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
@@ -37,11 +36,12 @@ public fun SettingsLocalePickerDialog(
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     locales: List<Locale> = Locale.getLocales().toList(),
-    country:@Composable (Locale) -> Country = { locale -> locale.country()!! },
+    country: @Composable (Locale) -> Country = { locale -> locale.country()!! },
     textStyle: TextStyle = TextStyle(),
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     picker: CountryPicker = CountryPicker(),
+    onValueChanged: (Locale) -> Boolean,
 ) {
     var localePickerDialog by remember { mutableStateOf(false) }
     if (localePickerDialog)
@@ -61,15 +61,14 @@ public fun SettingsLocalePickerDialog(
         title,
         modifier,
         enabled,
-        { Text(value.country()!!.alpha2.getEmojiFlag()) },
+        icon,
         subtitle,
         action,
         colors,
         tonalElevation,
         shadowElevation,
         semanticProperties,
-        {
-            localePickerDialog = true
-        },
-    )
+    ) {
+        localePickerDialog = true
+    }
 }
