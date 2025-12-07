@@ -49,7 +49,7 @@ public fun <E> ListPickerDialog(
             HorizontalDivider(color = picker.dividerColor)
             ItemUI(
                 item(value),
-                {},
+                { onItemClicked(value) },
                 textStyle,
                 itemPadding,
             )

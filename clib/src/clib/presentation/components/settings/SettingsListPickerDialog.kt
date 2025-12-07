@@ -1,7 +1,5 @@
 package clib.presentation.components.settings
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,28 +10,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.picker.ListPickerDialog
 import clib.presentation.components.picker.model.Picker
+import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
-import com.alorma.compose.settings.ui.base.internal.SettingsTileScaffold
 
 @Composable
 public fun <E> SettingsListPickerDialog(
     values: List<E>,
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    subtitle: @Composable (() -> Unit)? = null,
-    icon: @Composable (() -> Unit)? = null,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
+    icon: (@Composable () -> Unit)? = null,
+    subtitle: (@Composable () -> Unit)? = null,
+    action: (@Composable () -> Unit)? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
+    semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     item: (E) -> Item = { value -> Item(text = { Text(value.toString()) }) },
     textStyle: TextStyle = TextStyle(),
     itemPadding: Int = 10,
@@ -45,8 +46,8 @@ public fun <E> SettingsListPickerDialog(
     if (pickerDialog)
         ListPickerDialog(
             values,
-            { item ->
-                pickerDialog = onItemClicked(item)
+            { value ->
+                pickerDialog = onItemClicked(value)
             },
             {
                 pickerDialog = false
@@ -59,20 +60,18 @@ public fun <E> SettingsListPickerDialog(
             picker,
         )
 
-    SettingsTileScaffold(
-        modifier = modifier,
-        enabled = enabled,
-        title = title,
-        subtitle = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                subtitle?.invoke()
-            }
-        },
-        icon = icon,
-        colors = colors,
-        tonalElevation = tonalElevation,
-        shadowElevation = shadowElevation,
-    )
+    SettingsMenuLink(
+        title,
+        modifier,
+        enabled,
+        icon,
+        subtitle,
+        action,
+        colors,
+        tonalElevation,
+        shadowElevation,
+        semanticProperties,
+    ) {
+        pickerDialog = true
+    }
 }

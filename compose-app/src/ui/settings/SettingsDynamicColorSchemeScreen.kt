@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import clib.presentation.components.model.item.Item
 import clib.presentation.components.picker.model.Picker
 import clib.presentation.components.settings.SettingsListPickerDialog
 import clib.presentation.components.settings.SettingsSlider
@@ -30,10 +31,13 @@ import compose_app.generated.resources.error
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.neutral
 import compose_app.generated.resources.neutral_variant
+import compose_app.generated.resources.platform
 import compose_app.generated.resources.primary
 import compose_app.generated.resources.search
 import compose_app.generated.resources.secondary
 import compose_app.generated.resources.tertiary
+import data.type.primitives.asStringResource
+import data.type.primitives.string.asStringResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsSwitch
 import ui.navigation.presentation.SettingsDynamicColorScheme
@@ -135,13 +139,19 @@ public fun SettingsDynamicColorSchemeScreen(
 
     SettingsListPickerDialog(
         title = { Text(text = stringResource(Res.string.locale)) },
+        values = platforms,
         icon = { Icon(Icons.Default.Devices, theme.currentDynamicColorScheme.platform.name) },
         subtitle = { Text(theme.currentDynamicColorScheme.platform.name) },
         modifier = Modifier,
         enabled = true,
-        values = platforms,
+        item = { value ->
+            Item(
+                text = { Text(value.asStringResource()) },
+                icon = { Icon(Icons.Default.Devices, value.asStringResource()) },
+            )
+        },
         picker = Picker(
-            headerTitle = stringResource(Res.string.locale),
+            headerTitle = stringResource(Res.string.platform),
             searchHint = stringResource(Res.string.search),
             clear = stringResource(Res.string.clear),
         ),

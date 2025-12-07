@@ -2,7 +2,6 @@ package clib.presentation.components.settings
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +13,6 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import clib.data.location.country.getEmojiFlag
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
 import com.alorma.compose.settings.ui.SettingsMenuLink
@@ -47,8 +45,8 @@ public fun SettingsLocalePickerDialog(
     var localePickerDialog by remember { mutableStateOf(false) }
     if (localePickerDialog)
         LocalePickerDialog(
-            { item ->
-                localePickerDialog = onItemClicked(item)
+            { value ->
+                localePickerDialog = onItemClicked(value)
             },
             {
                 localePickerDialog = false
