@@ -9,7 +9,4 @@ public data class Picker(
     var searchHint: String = "Search item",
     var clear: String = "Clear",
     var showSearchClearIcon: Boolean = true,
-    var showCountryCode: Boolean = true,
-    var showFlag: Boolean = true,
-    var showCountryIso: Boolean = false,
 )

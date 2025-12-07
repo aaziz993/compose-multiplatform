@@ -46,8 +46,6 @@ import androidx.compose.ui.unit.dp
 import clib.presentation.components.Components
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.picker.ListPickerDialog
-import clib.presentation.components.picker.WheelPickerDialog
-import clib.presentation.components.picker.model.PickerItem
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent

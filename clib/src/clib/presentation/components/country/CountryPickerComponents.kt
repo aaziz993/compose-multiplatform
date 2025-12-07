@@ -143,17 +143,14 @@ internal fun CountryUI(
     showCountryDial: Boolean = true,
     itemPadding: Int = 10
 ) {
-
     Row(
         Modifier
-            .clickable(onClick = { onCountryClicked() })
+            .clickable(onClick = onCountryClicked)
             .padding(itemPadding.dp, (itemPadding * 1.5).dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
-
-        ) {
-
+    ) {
         val countryString = if (showCountryFlag && showCountryIso)
             country.alpha2.getEmojiFlag() + "  " + country.name + "  (" + country.toString() + ")"
         else if (showCountryFlag) country.alpha2.getEmojiFlag() + "  " + country.name
