@@ -158,7 +158,6 @@ internal fun CountryUI(
         else if (showCountryIso) country.name + "  (" + country.toString() + ")"
         else country.name
 
-
         Text(
             text = countryString,
             modifier = Modifier

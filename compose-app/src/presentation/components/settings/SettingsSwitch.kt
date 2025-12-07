@@ -16,15 +16,14 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import data.type.primitives.asStringResource
 
-@Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsSwitch(
     title: String,
     value: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
-    trueIcon: ImageVector,
-    falseIcon: ImageVector,
+    trueIcon: ImageVector? = null,
+    falseIcon: ImageVector? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
     switchColors: SwitchColors =
         SwitchDefaults.colors(
@@ -42,7 +41,7 @@ public fun SettingsSwitch(
     { Text(title) },
     modifier,
     enabled,
-    { Icon(if (value) trueIcon else falseIcon, title) },
+    (if (value) trueIcon else falseIcon)?.let { { Icon(it, value.asStringResource()) } },
     { Text(value.asStringResource()) },
     colors,
     switchColors,

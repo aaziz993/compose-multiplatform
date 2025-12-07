@@ -32,7 +32,7 @@ public fun SettingsSliderFinished(
     subtitle: @Composable ((value: Float) -> Unit)? = { value ->
         Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
     },
-    icon: ImageVector,
+    icon: (value: Float) -> ImageVector? = { null },
     enabled: Boolean = true,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     steps: Int = 0,
@@ -63,10 +63,8 @@ public fun SettingsSliderFinished(
         { Text(title) },
         value,
         modifier,
-        {
-            subtitle?.invoke(value)
-        },
-        { Icon(icon, title) },
+        subtitle?.let { { it(value) } },
+        icon(value)?.let { { Icon(it, title) } },
         enabled,
         valueRange,
         steps,

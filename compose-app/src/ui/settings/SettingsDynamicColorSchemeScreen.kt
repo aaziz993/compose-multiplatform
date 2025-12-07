@@ -15,29 +15,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import clib.presentation.components.model.item.Item
-import clib.presentation.components.picker.model.Picker
 import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.theme.model.Theme
 import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.amoled
 import compose_app.generated.resources.animate
-import compose_app.generated.resources.clear
 import compose_app.generated.resources.color_scheme_seed_color
 import compose_app.generated.resources.contrast
 import compose_app.generated.resources.error
-import compose_app.generated.resources.locale
 import compose_app.generated.resources.neutral
 import compose_app.generated.resources.neutral_variant
 import compose_app.generated.resources.platform
 import compose_app.generated.resources.primary
-import compose_app.generated.resources.search
 import compose_app.generated.resources.secondary
 import compose_app.generated.resources.tertiary
-import data.type.primitives.asStringResource
-import data.type.primitives.string.asStringResource
 import org.jetbrains.compose.resources.stringResource
+import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSwitch
 import ui.navigation.presentation.SettingsDynamicColorScheme
@@ -56,7 +50,7 @@ public fun SettingsDynamicColorSchemeScreen(
 ) {
     val colorScheme = theme.currentDynamicColorScheme
 
-    SettingsColorSchemeColor(
+    SettingsColorPickerBottomSheet(
         stringResource(Res.string.color_scheme_seed_color),
         colorScheme.seedColor,
     ) { value ->
@@ -74,7 +68,7 @@ public fun SettingsDynamicColorSchemeScreen(
     )
 
     colorScheme.primary?.let { primary ->
-        SettingsColorSchemeColor(
+        SettingsColorPickerBottomSheet(
             stringResource(Res.string.primary),
             primary,
         ) { value ->
@@ -83,7 +77,7 @@ public fun SettingsDynamicColorSchemeScreen(
     }
 
     colorScheme.secondary?.let { secondary ->
-        SettingsColorSchemeColor(
+        SettingsColorPickerBottomSheet(
             stringResource(Res.string.secondary),
             secondary,
         ) { value ->
@@ -92,7 +86,7 @@ public fun SettingsDynamicColorSchemeScreen(
     }
 
     colorScheme.tertiary?.let { tertiary ->
-        SettingsColorSchemeColor(
+        SettingsColorPickerBottomSheet(
             stringResource(Res.string.tertiary),
             tertiary,
         ) { value ->
@@ -101,7 +95,7 @@ public fun SettingsDynamicColorSchemeScreen(
     }
 
     colorScheme.neutral?.let { neutral ->
-        SettingsColorSchemeColor(
+        SettingsColorPickerBottomSheet(
             stringResource(Res.string.neutral),
             neutral,
         ) { value ->
@@ -110,7 +104,7 @@ public fun SettingsDynamicColorSchemeScreen(
     }
 
     colorScheme.neutralVariant?.let { neutralVariant ->
-        SettingsColorSchemeColor(
+        SettingsColorPickerBottomSheet(
             stringResource(Res.string.neutral_variant),
             neutralVariant,
         ) { value ->
@@ -119,7 +113,7 @@ public fun SettingsDynamicColorSchemeScreen(
     }
 
     colorScheme.error?.let { error ->
-        SettingsColorSchemeColor(
+        SettingsColorPickerBottomSheet(
             stringResource(Res.string.error),
             error,
         ) { value ->

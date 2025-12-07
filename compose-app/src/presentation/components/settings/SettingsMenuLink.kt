@@ -12,14 +12,14 @@ import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 
-@Suppress("ComposeModifierMissing", "ComposeParameterOrder")
+@Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsMenuLink(
     title: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
-    icon: ImageVector,
-    subtitle: String = title,
+    icon: ImageVector? = null,
+    subtitle: String? = null,
     action: (@Composable () -> Unit)? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
@@ -30,8 +30,8 @@ public fun SettingsMenuLink(
     { Text(title) },
     modifier,
     enabled,
-    { Icon(icon, subtitle) },
-    { Text(subtitle) },
+    icon?.let { { Icon(it, subtitle ?: title) } },
+    subtitle?.let { { Text(it) } },
     action,
     colors,
     tonalElevation,
