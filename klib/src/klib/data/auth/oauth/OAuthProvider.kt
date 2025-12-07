@@ -1,6 +1,5 @@
 package klib.data.auth.oauth
 
-import io.ktor.client.HttpClient
 import io.ktor.http.Parameters
 import io.ktor.http.Url
 import io.ktor.util.logging.KtorSimpleLogger
@@ -12,12 +11,9 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 private val Logger: Logger = KtorSimpleLogger("io.ktor.auth.oauth")
 
-public abstract class AbstractOAuthProvider<T : BearerToken>(
-    public val name: String? = null,
-    protected val httpClient: HttpClient,
-    public val callbackRedirectUrl: String,
-    protected val onRedirectAuthenticate: suspend (url: Url) -> Unit,
-) {
+public abstract class OAuthProvider<T : BearerToken> {
+
+    public abstract val onRedirectAuthenticate: suspend (url: Url) -> Unit
 
     protected var continuation: CancellableContinuation<T>? = null
 
@@ -27,7 +23,7 @@ public abstract class AbstractOAuthProvider<T : BearerToken>(
         onRedirectAuthenticate(getRedirectUrl())
 
         val accessToken = suspendCancellableCoroutine { continuation ->
-            this@AbstractOAuthProvider.continuation = continuation
+            this@OAuthProvider.continuation = continuation
         }
 
         continuation = null

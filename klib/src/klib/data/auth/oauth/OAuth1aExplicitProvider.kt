@@ -1,28 +1,33 @@
 package klib.data.auth.oauth
 
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import io.ktor.http.Url
 import io.ktor.http.auth.HttpAuthHeader
+import io.ktor.serialization.kotlinx.json.json
 import klib.data.auth.oauth.model.AuthenticationFailedCause
 import klib.data.auth.oauth.model.OAuth1aException
 import klib.data.auth.oauth.model.OAuthAccessTokenResponse
+import klib.data.net.http.client.HTTP_CLIENT_JSON
+import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.toUrl
 
 public class OAuth1aExplicitProvider(
-    name: String?,
-    httpClient: HttpClient,
     public val loginUrl: Url,
-    callbackRedirectUrl: String,
-    onRedirectAuthenticate: suspend (url: Url) -> Unit,
-) : AbstractOAuthProvider<OAuthAccessTokenResponse.OAuth1a>(
-    name,
-    httpClient,
-    callbackRedirectUrl,
-    onRedirectAuthenticate,
-) {
+    public val callbackRedirectUrl: String,
+    override val onRedirectAuthenticate: suspend (url: Url) -> Unit,
+    private val httpClient: HttpClient = createHttpClient {
+        install(ContentNegotiation) {
+            json(HTTP_CLIENT_JSON)
+        }
+    },
+) : OAuthProvider<OAuthAccessTokenResponse.OAuth1a>() {
+
+    override suspend fun getRedirectUrl(): Url =
+        httpClient.get(loginUrl).headers[HttpHeaders.Location]!!.toUrl()
 
     override suspend fun callback(parameters: Parameters): AuthenticationFailedCause? =
         try {
@@ -40,7 +45,4 @@ public class OAuth1aExplicitProvider(
         catch (e: OAuth1aException) {
             AuthenticationFailedCause.Error(e.message.orEmpty())
         }
-
-    override suspend fun getRedirectUrl(): Url =
-        httpClient.get(loginUrl).headers[HttpHeaders.Location]!!.toUrl()
 }

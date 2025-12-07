@@ -2,6 +2,7 @@ package klib.data.auth.oauth
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -23,6 +24,7 @@ import io.ktor.http.formUrlEncode
 import io.ktor.http.formUrlEncodeTo
 import io.ktor.http.parseUrlEncodedParameters
 import io.ktor.http.toHeaderParamsList
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.encodeBase64
 import io.ktor.util.generateNonce
 import io.ktor.util.toUpperCasePreservingASCIIRules
@@ -33,12 +35,12 @@ import klib.data.auth.oauth.model.OAuth1aException
 import klib.data.auth.oauth.model.OAuthAccessTokenResponse
 import klib.data.cryptography.decodeHMACSha1KeyBlocking
 import klib.data.cryptography.generateHMACSignatureBlocking
+import klib.data.net.http.client.HTTP_CLIENT_JSON
+import klib.data.net.http.client.createHttpClient
 import klib.data.type.primitives.time.nowEpochMillis
 import kotlinx.io.IOException
 
 public class OAuth1aImplicitProvider(
-    name: String?,
-    httpClient: HttpClient,
     public val requestTokenUrl: String,
     public val authorizeUrl: String,
     public val accessTokenUrl: String,
@@ -48,14 +50,14 @@ public class OAuth1aImplicitProvider(
     public val extraTokenParameters: List<Pair<String, String>> = emptyList(),
     public val accessTokenInterceptor: HttpRequestBuilder.() -> Unit = {},
     public val nonce: String = generateNonce(),
-    callbackRedirectUrl: String,
-    onRedirectAuthenticate: suspend (url: Url) -> Unit,
-) : AbstractOAuthProvider<OAuthAccessTokenResponse.OAuth1a>(
-    name,
-    httpClient,
-    callbackRedirectUrl,
-    onRedirectAuthenticate,
-) {
+    public val callbackRedirectUrl: String,
+    override val onRedirectAuthenticate: suspend (url: Url) -> Unit,
+    private val httpClient: HttpClient = createHttpClient {
+        install(ContentNegotiation) {
+            json(HTTP_CLIENT_JSON)
+        }
+    },
+) : OAuthProvider<OAuthAccessTokenResponse.OAuth1a>() {
 
     override suspend fun getRedirectUrl(): Url {
         val (token, _) = simpleOAuth1aStep1(

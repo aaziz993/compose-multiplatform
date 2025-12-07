@@ -1,6 +1,7 @@
 package klib.data.auth.oauth
 
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.request
@@ -21,6 +22,7 @@ import io.ktor.http.formUrlEncode
 import io.ktor.http.isSuccess
 import io.ktor.http.parseUrlEncodedParameters
 import io.ktor.http.takeFrom
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.GenerateOnlyNonceManager
 import io.ktor.util.NonceManager
 import io.ktor.util.encodeBase64
@@ -33,14 +35,14 @@ import klib.data.auth.oauth.model.OAuth2RequestParameters
 import klib.data.auth.oauth.model.OAuth2ResponseParameters
 import klib.data.auth.oauth.model.OAuthAccessTokenResponse
 import klib.data.auth.oauth.model.OAuthGrantTypes
+import klib.data.net.http.client.HTTP_CLIENT_JSON
+import klib.data.net.http.client.createHttpClient
 import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
 public class OAuth2Implicit(
-    name: String?,
-    httpClient: HttpClient,
     public val authorizeUrl: String,
     public val accessTokenUrl: String,
     public val requestMethod: HttpMethod = HttpMethod.Get,
@@ -54,14 +56,14 @@ public class OAuth2Implicit(
     public val extraAuthParameters: List<Pair<String, String>> = emptyList(),
     public val extraTokenParameters: List<Pair<String, String>> = emptyList(),
     public val accessTokenInterceptor: HttpRequestBuilder.() -> Unit = {},
-    callbackRedirectUrl: String,
-    onRedirectAuthenticateOAuth2: suspend (url: Url) -> Unit,
-) : AbstractOAuth2Provider(
-    name,
-    httpClient,
-    callbackRedirectUrl,
-    onRedirectAuthenticateOAuth2,
-) {
+    public val callbackRedirectUrl: String,
+    override val onRedirectAuthenticate: suspend (url: Url) -> Unit,
+    private val httpClient: HttpClient = createHttpClient {
+        install(ContentNegotiation) {
+            json(HTTP_CLIENT_JSON)
+        }
+    },
+) : OAuthProvider<OAuthAccessTokenResponse.OAuth2>() {
 
     // Implements Resource Owner Password Credentials Grant.
     // Takes UserPasswordCredential and validates it using OAuth2 sequence, provides OAuthAccessTokenResponse.

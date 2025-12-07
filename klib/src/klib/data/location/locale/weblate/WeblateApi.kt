@@ -17,24 +17,24 @@ public interface WeblateApi {
         @QueryName page: Int? = null,
     ): WeblateTranslationsResponse
 
-    public fun getTranslations(): Flow<WeblateTranslationsResponse> = flow {
-        var path: String? = "api/translations"
-        while (path != null) {
-            emit(getTranslations(path).also { response -> path = response.next })
-        }
-    }
-
     @GET("{path}")
     public suspend fun getUnits(
         @Path("path") path: String = "api/units",
         @QueryName format: String? = null,
         @QueryName page: Int? = null,
     ): WeblateUnitsResponse
+}
 
-    public fun getUnits(): Flow<WeblateUnitsResponse> = flow {
-        var path: String? = "api/units"
-        while (path != null) {
-            emit(getUnits(path).also { response -> path = response.next })
-        }
+public fun WeblateApi.getTranslations(): Flow<WeblateTranslationsResponse> = flow {
+    var path: String? = "api/translations"
+    while (path != null) {
+        emit(getTranslations(path).also { response -> path = response.next })
+    }
+}
+
+public fun WeblateApi.getUnits(): Flow<WeblateUnitsResponse> = flow {
+    var path: String? = "api/units"
+    while (path != null) {
+        emit(getUnits(path).also { response -> path = response.next })
     }
 }
