@@ -1,10 +1,20 @@
 package clib.data.location.country
 
+import androidx.compose.runtime.Composable
+import clib.data.type.primitives.string.asStringResource
 import clib.generated.resources.Res
 import clib.generated.resources.allDrawableResources
 import clib.generated.resources.image_load_error
 import klib.data.iso.Alpha2Letter
+import klib.data.location.country.Country
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+
+@Suppress("ComposeUnstableReceiver")
+@Composable
+public fun Country.asStringResource(resources: Map<String, StringResource>): String =
+    "country_${toString().replace('-', '_').lowercase()}"
+        .asStringResource(resources) { toString() }
 
 public val Alpha2Letter.flag: DrawableResource
     get() = Res.allDrawableResources["flag_${toString().lowercase()}"] ?: Res.drawable.image_load_error

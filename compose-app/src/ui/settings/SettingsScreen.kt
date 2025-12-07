@@ -75,6 +75,7 @@ import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.search
 import compose_app.generated.resources.theme
+import data.location.locale.asStringResource
 import data.type.primitives.SettingsSwitch
 import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
@@ -220,14 +221,7 @@ public fun SettingsScreen(
             enabled = true,
             locales = locales,
             country = { locale ->
-                locale.country()!!.copy(
-                    name = "locale_${
-                        locale
-                            .toString()
-                            .replace('-', '_')
-                            .lowercase()
-                    }".asStringResource(),
-                )
+                locale.country()!!.copy(name = locale.asStringResource())
             },
             picker = CountryPicker(
                 headerTitle = stringResource(Res.string.locale),

@@ -65,9 +65,9 @@ import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.theme
+import data.location.locale.asStringResource
 import data.type.primitives.ConnectivityIcon
 import data.type.primitives.ConnectivityText
-import data.type.primitives.string.asStringResource
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeInputScale
 import dev.chrisbanes.haze.HazeProgressive
@@ -208,14 +208,7 @@ public fun AppBar(
                                 },
                                 locales = locales,
                                 country = { locale ->
-                                    locale.country()!!.copy(
-                                        name = "locale_${
-                                            locale
-                                                .toString()
-                                                .replace('-', '_')
-                                                .lowercase()
-                                        }".asStringResource(),
-                                    )
+                                    locale.country()!!.copy(name = locale.asStringResource())
                                 },
                                 picker = CountryPicker(
                                     headerTitle = stringResource(Res.string.locale),
