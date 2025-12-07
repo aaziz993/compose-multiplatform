@@ -21,6 +21,7 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
 import kotlin.math.roundToInt
+import pro.respawn.kmmutils.common.signChar
 
 @Suppress("ComposeParameterOrder")
 @Composable
@@ -54,19 +55,19 @@ public fun SettingsSliderPostpone(
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     onValueChange: (Float) -> Unit,
 ) {
-    var densityValue by remember { mutableFloatStateOf(initialValue) }
+    var value by remember { mutableFloatStateOf(initialValue) }
     SettingsSlider(
         { Text(title) },
-        densityValue,
+        value,
         modifier,
         {
-            Text(DecimalFormatter.DefaultFormatter.format((densityValue * 100).roundToInt()).displayValue)
+            Text("${value.signChar}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
         },
         { Icon(icon, title) },
         enabled,
         valueRange,
         steps,
-        { onValueChange(densityValue) },
+        { onValueChange(value) },
         trackHeight,
         thumbRadius,
         colors,
@@ -77,5 +78,5 @@ public fun SettingsSliderPostpone(
         interactionSource,
         tonalElevation,
         shadowElevation,
-    ) { value, _ -> densityValue = value }
+    ) { it, _ -> value = it }
 }

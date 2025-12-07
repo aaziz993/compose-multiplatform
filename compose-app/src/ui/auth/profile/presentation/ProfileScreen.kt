@@ -57,7 +57,7 @@ import klib.data.location.country.getCountries
 import klib.data.type.primitives.string.ifNotEmpty
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.dialog.SignOutConfirmDialog
-import presentation.connectivity.ConnectivityIcon
+import presentation.connectivity.ConnectivityCircleIcon
 import ui.navigation.presentation.Profile
 import ui.navigation.presentation.Verification
 
@@ -83,7 +83,7 @@ public fun ProfileScreen(
                     .clip(CircleShape),
             )
             if (components.connectivity.isAvatarConnectivityIndicator)
-                connectivity.ConnectivityIcon(
+                connectivity.ConnectivityCircleIcon(
                     Modifier
                         .align(Alignment.TopEnd)
                         .size(14.dp),

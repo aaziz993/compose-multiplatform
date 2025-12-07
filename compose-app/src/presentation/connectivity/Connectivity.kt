@@ -74,7 +74,7 @@ public fun Status.ConnectivityText(
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-public fun Status.ConnectivityIcon(
+public fun Status.ConnectivityCircleIcon(
     onlineModifier: Modifier = Modifier,
     offlineModifier: Modifier = Modifier,
 ): Unit =

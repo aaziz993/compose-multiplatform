@@ -25,15 +25,15 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import com.alorma.compose.settings.ui.base.internal.SettingsTileScaffold
 import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
 import kotlin.math.roundToInt
+import pro.respawn.kmmutils.common.signChar
 
 @Composable
-@Suppress("LongParameterList")
 public fun SettingsSlider(
     title: @Composable () -> Unit,
     value: Float,
     modifier: Modifier = Modifier,
     subtitle: @Composable (() -> Unit)? = {
-        Text(DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue)
+        Text("${value.signChar}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
     },
     icon: @Composable (() -> Unit)? = null,
     enabled: Boolean = LocalSettingsGroupEnabled.current,

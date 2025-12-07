@@ -17,7 +17,7 @@ public class DecimalFormatter(private val configuration: DecimalFormatterConfigu
     public companion object {
 
         public val DefaultFormatter: DecimalFormatter
-            get() = DecimalFormatter(DecimalFormatterConfiguration.Companion.us())
+            get() = DecimalFormatter(DecimalFormatterConfiguration.us())
     }
 
     public fun createEmptyValue(): FormattedDecimal {

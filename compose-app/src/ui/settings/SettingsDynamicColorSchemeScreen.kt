@@ -4,18 +4,25 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Animation
+import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material.icons.outlined.Animation
 import androidx.compose.material.icons.outlined.SmartDisplay
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.theme.model.Theme
+import com.materialkolor.Contrast
+import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.amoled
 import compose_app.generated.resources.animate
 import compose_app.generated.resources.color_scheme_seed_color
+import compose_app.generated.resources.contrast
 import compose_app.generated.resources.error
 import compose_app.generated.resources.neutral
 import compose_app.generated.resources.neutral_variant
@@ -109,8 +116,17 @@ public fun SettingsDynamicColorSchemeScreen(
         }
     }
 
-//    val contrastLevel: Double = Contrast.Default.value
-//    val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
+    SettingsSlider(
+        title = { Text(stringResource(Res.string.contrast)) },
+        value = theme.currentDynamicColorScheme.contrastLevel.toFloat(),
+        icon = { Icon(Icons.Default.Contrast, "") },
+        enabled = true,
+        valueRange = -1f..1f,
+    ) { value, _ ->
+        onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(contrastLevel = value.toDouble()) })
+    }
+
+    val platform = DynamicScheme.Platform.Default
 
     SettingsSwitch(
         title = stringResource(Res.string.animate),

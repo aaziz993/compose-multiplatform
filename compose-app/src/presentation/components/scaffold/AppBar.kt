@@ -81,7 +81,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
-import presentation.connectivity.ConnectivityIcon
+import presentation.connectivity.ConnectivityCircleIcon
 import presentation.connectivity.ConnectivityText
 import presentation.theme.model.IsDarkIcon
 import ui.navigation.presentation.Profile
@@ -262,7 +262,7 @@ public fun AppBar(
                                             },
                                     )
                                     if (components.connectivity.isAvatarConnectivityIndicator)
-                                        connectivity.ConnectivityIcon(
+                                        connectivity.ConnectivityCircleIcon(
                                             Modifier
                                                 .align(Alignment.TopEnd)
                                                 .size(14.dp),
