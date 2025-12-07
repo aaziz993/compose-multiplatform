@@ -3,8 +3,8 @@
 package clib.presentation.auth
 
 import androidx.compose.runtime.Composable
-import klib.data.auth.AuthResource
 import klib.data.auth.model.Auth
+import klib.data.auth.model.AuthResource
 import klib.data.auth.model.User
 
 @Composable

@@ -1,4 +1,4 @@
-package klib.data.auth.client.oauth.model
+package klib.data.auth.oauth.model
 
 /**
  * Represents a cause for an authentication challenge request.

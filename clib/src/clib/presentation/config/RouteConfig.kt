@@ -1,7 +1,7 @@
 package clib.presentation.config
 
 import io.ktor.http.Url
-import klib.data.auth.AuthResource
+import klib.data.auth.model.AuthResource
 import kotlinx.serialization.Serializable
 import klib.data.config.RouteConfig
 import klib.data.type.serialization.serializers.collections.SerializableAnyMap

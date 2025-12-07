@@ -1,6 +1,6 @@
 package klib.data.backup.dropbox.model
 
-import klib.data.auth.client.model.BearerToken
+import klib.data.auth.model.BearerToken
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 

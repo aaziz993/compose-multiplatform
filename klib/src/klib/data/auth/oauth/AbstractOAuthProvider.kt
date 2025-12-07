@@ -1,12 +1,12 @@
-package klib.data.auth.client.oauth
+package klib.data.auth.oauth
 
 import io.ktor.client.HttpClient
 import io.ktor.http.Parameters
 import io.ktor.http.Url
 import io.ktor.util.logging.KtorSimpleLogger
 import io.ktor.util.logging.Logger
-import klib.data.auth.client.model.BearerToken
-import klib.data.auth.client.oauth.model.AuthenticationFailedCause
+import klib.data.auth.model.BearerToken
+import klib.data.auth.oauth.model.AuthenticationFailedCause
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 
@@ -23,7 +23,7 @@ public abstract class AbstractOAuthProvider<T : BearerToken>(
 
     protected abstract suspend fun getRedirectUrl(): Url
 
-    protected suspend fun requestToken(): T {
+    public suspend fun requestToken(): T {
         onRedirectAuthenticate(getRedirectUrl())
 
         val accessToken = suspendCancellableCoroutine { continuation ->

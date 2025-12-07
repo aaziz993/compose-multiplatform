@@ -1,7 +1,7 @@
-package klib.data.auth.client.oauth.model
+package klib.data.auth.oauth.model
 
 import io.ktor.http.*
-import klib.data.auth.client.model.BearerToken
+import klib.data.auth.model.BearerToken
 import kotlinx.serialization.Serializable
 
 /**

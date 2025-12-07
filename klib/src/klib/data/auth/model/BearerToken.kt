@@ -1,4 +1,4 @@
-package klib.data.auth.client.model
+package klib.data.auth.model
 
 public interface BearerToken {
 

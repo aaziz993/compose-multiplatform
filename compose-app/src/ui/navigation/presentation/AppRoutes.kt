@@ -59,7 +59,7 @@ import clib.presentation.navigation.scene.DelegatedScreenStrategy
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
 import data.type.primitives.string.asStringResource
-import klib.data.auth.AuthResource
+import klib.data.auth.model.AuthResource
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries

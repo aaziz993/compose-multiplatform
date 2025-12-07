@@ -1,6 +1,6 @@
 package klib.data.auth.firebase.model
 
-import klib.data.auth.client.model.BearerToken
+import klib.data.auth.model.BearerToken
 
 public interface SignResponse : BearerToken {
 

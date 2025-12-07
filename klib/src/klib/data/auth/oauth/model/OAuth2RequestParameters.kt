@@ -1,4 +1,4 @@
-package klib.data.auth.client.oauth.model
+package klib.data.auth.oauth.model
 
 /**
  * List of OAuth2 request parameters for both peers.

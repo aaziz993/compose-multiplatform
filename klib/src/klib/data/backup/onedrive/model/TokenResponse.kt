@@ -1,6 +1,6 @@
 package klib.data.backup.onedrive.model
 
-import klib.data.auth.client.model.BearerToken
+import klib.data.auth.model.BearerToken
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

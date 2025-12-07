@@ -1,8 +1,8 @@
-package klib.data.auth.client.oauth
+package klib.data.auth.oauth
 
 import io.ktor.client.HttpClient
 import io.ktor.http.Url
-import klib.data.auth.client.oauth.model.OAuthAccessTokenResponse
+import klib.data.auth.oauth.model.OAuthAccessTokenResponse
 
 public abstract class AbstractOAuth2Provider(
     name: String?,

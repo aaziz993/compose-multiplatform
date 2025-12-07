@@ -1,4 +1,4 @@
-package klib.data.auth.client.oauth
+package klib.data.auth.oauth
 
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequestBuilder
@@ -26,19 +26,19 @@ import io.ktor.util.NonceManager
 import io.ktor.util.encodeBase64
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
-import klib.data.auth.client.oauth.model.AuthenticationFailedCause
-import klib.data.auth.client.oauth.model.OAuth2Exception
-import klib.data.auth.client.oauth.model.OAuth2RedirectError
-import klib.data.auth.client.oauth.model.OAuth2RequestParameters
-import klib.data.auth.client.oauth.model.OAuth2ResponseParameters
-import klib.data.auth.client.oauth.model.OAuthAccessTokenResponse
-import klib.data.auth.client.oauth.model.OAuthGrantTypes
+import klib.data.auth.oauth.model.AuthenticationFailedCause
+import klib.data.auth.oauth.model.OAuth2Exception
+import klib.data.auth.oauth.model.OAuth2RedirectError
+import klib.data.auth.oauth.model.OAuth2RequestParameters
+import klib.data.auth.oauth.model.OAuth2ResponseParameters
+import klib.data.auth.oauth.model.OAuthAccessTokenResponse
+import klib.data.auth.oauth.model.OAuthGrantTypes
 import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-public abstract class OAuth2Implicit(
+public class OAuth2Implicit(
     name: String?,
     httpClient: HttpClient,
     public val authorizeUrl: String,

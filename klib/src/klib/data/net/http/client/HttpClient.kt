@@ -19,21 +19,18 @@ import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.DigestAuthConfig
 import io.ktor.client.plugins.auth.providers.DigestAuthCredentials
 import io.ktor.client.plugins.auth.providers.DigestAuthProvider
-import io.ktor.client.plugins.auth.providers.RefreshTokensParams
 import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.auth.providers.digest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
-import io.ktor.http.parameters
 import io.ktor.serialization.ContentConverter
 import io.ktor.util.AttributeKey
 import io.ktor.utils.io.InternalAPI
-import klib.data.auth.client.model.BearerToken
+import klib.data.auth.model.BearerToken
 import klib.data.net.http.client.model.Pin
 import kotlinx.serialization.json.Json
 
@@ -99,20 +96,6 @@ public fun HttpClient.auth(block: AuthConfig.() -> Unit): HttpClient = config {
     install(Auth, block)
 }
 
-@OptIn(InternalAPI::class)
-public fun HttpClient.clearBasicToken() {
-    authProvider<BasicAuthProvider>()?.clearToken()
-}
-
-@OptIn(InternalAPI::class)
-public fun HttpClient.clearDigestToken() {
-    authProvider<DigestAuthProvider>()?.clearToken()
-}
-
-public fun HttpClient.clearBearerToken() {
-    authProvider<BearerAuthProvider>()?.clearToken()
-}
-
 public fun HttpClient.basic(
     credentials: suspend () -> BasicAuthCredentials?,
     block: BasicAuthConfig.() -> Unit = {},
@@ -126,6 +109,11 @@ public fun HttpClient.basic(
 
         block()
     }
+}
+
+@OptIn(InternalAPI::class)
+public fun HttpClient.clearBasicToken() {
+    authProvider<BasicAuthProvider>()?.clearToken()
 }
 
 public fun HttpClient.digest(
@@ -143,9 +131,14 @@ public fun HttpClient.digest(
     }
 }
 
-public inline fun <reified T : BearerToken> HttpClient.bearer(
-    crossinline loadTokens: suspend () -> T?,
-    crossinline block: BearerAuthConfig.() -> Unit = {},
+@OptIn(InternalAPI::class)
+public fun HttpClient.clearDigestToken() {
+    authProvider<DigestAuthProvider>()?.clearToken()
+}
+
+public fun HttpClient.bearer(
+    loadTokens: suspend () -> BearerToken?,
+    block: BearerAuthConfig.() -> Unit = {},
 ): HttpClient = auth {
     bearer {
         loadTokens {
@@ -158,11 +151,11 @@ public inline fun <reified T : BearerToken> HttpClient.bearer(
     }
 }
 
-public inline fun <reified T : BearerToken> HttpClient.bearer(
-    crossinline loadTokens: suspend () -> T?,
-    crossinline refreshToken: suspend () -> T,
-    crossinline invalidRefreshToken: suspend () -> Unit = {},
-    crossinline block: BearerAuthConfig.() -> Unit = {},
+public fun HttpClient.bearer(
+    loadTokens: suspend () -> BearerToken?,
+    refreshToken: suspend () -> BearerToken,
+    invalidRefreshToken: suspend () -> Unit = {},
+    block: BearerAuthConfig.() -> Unit = {},
 ): HttpClient = bearer(loadTokens) {
     refreshTokens {
         try {
@@ -181,16 +174,6 @@ public inline fun <reified T : BearerToken> HttpClient.bearer(
     block()
 }
 
-public suspend inline fun <reified T : BearerToken> RefreshTokensParams.refreshToken(
-    url: String,
-    clientId: String
-): T = client.submitForm(
-    url,
-    parameters {
-        append("grant_type", "refresh_token")
-        append("client_id", clientId)
-        append("refresh_token", requireNotNull(oldTokens?.refreshToken))
-    },
-) { markAsRefreshTokenRequest() }.body<T>()
-
-
+public fun HttpClient.clearBearerToken() {
+    authProvider<BearerAuthProvider>()?.clearToken()
+}

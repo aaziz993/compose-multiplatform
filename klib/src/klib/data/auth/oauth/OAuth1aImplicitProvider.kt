@@ -1,4 +1,4 @@
-package klib.data.auth.client.oauth
+package klib.data.auth.oauth
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -28,9 +28,9 @@ import io.ktor.util.generateNonce
 import io.ktor.util.toUpperCasePreservingASCIIRules
 import io.ktor.utils.io.core.toByteArray
 import io.ktor.utils.io.writeStringUtf8
-import klib.data.auth.client.oauth.model.AuthenticationFailedCause
-import klib.data.auth.client.oauth.model.OAuth1aException
-import klib.data.auth.client.oauth.model.OAuthAccessTokenResponse
+import klib.data.auth.oauth.model.AuthenticationFailedCause
+import klib.data.auth.oauth.model.OAuth1aException
+import klib.data.auth.oauth.model.OAuthAccessTokenResponse
 import klib.data.cryptography.decodeHMACSha1KeyBlocking
 import klib.data.cryptography.generateHMACSignatureBlocking
 import klib.data.type.primitives.time.nowEpochMillis

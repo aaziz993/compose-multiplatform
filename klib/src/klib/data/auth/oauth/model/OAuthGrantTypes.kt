@@ -1,4 +1,4 @@
-package klib.data.auth.client.oauth.model
+package klib.data.auth.oauth.model
 
 /**
  * OAuth grant types constants.
