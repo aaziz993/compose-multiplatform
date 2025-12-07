@@ -187,7 +187,7 @@ public fun SettingsMainScreen(
         SettingsSliderFinished(
             title = stringResource(Res.string.density),
             initialValue = density.density,
-            icon = Icons.Default.TouchApp,
+            icon = { Icons.Default.TouchApp },
             enabled = true,
             valueRange = 1.5f..2.5f,
             steps = 1,
@@ -198,7 +198,7 @@ public fun SettingsMainScreen(
         SettingsSliderFinished(
             title = stringResource(Res.string.font_scale),
             initialValue = density.fontScale,
-            icon = Icons.Default.TextFields,
+            icon = { Icons.Default.TextFields },
             enabled = true,
             valueRange = 1f..2f,
             steps = 1,
