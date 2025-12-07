@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.runtime.staticCompositionLocalOf
 import clib.presentation.noLocalProvidedFor
 import klib.data.permission.PermissionsController
@@ -29,19 +30,21 @@ public class PermissionsState(private val delegate: PermissionsController) {
     public fun openAppSettings(): Unit = delegate.openAppSettings()
 
     internal suspend fun update() {
-        permissions.replaceWith(
-            Permission.entries.filter { delegate.isPermissionGranted(it) }.toSet(),
-        )
+        Snapshot.withMutableSnapshot {
+            permissions.replaceWith(
+                Permission.entries.filter { delegate.isPermissionGranted(it) }.toSet(),
+            )
+        }
     }
 }
 
 @Composable
-public fun rememberPermissionsState(): PermissionsState {
-    val permissionFactory = rememberPermissionsControllerFactory()
-    val permissionsController = remember(permissionFactory) {
-        permissionFactory.createPermissionsController()
+public fun rememberPermissionsState(
+    permissionControllerFactory: PermissionsControllerFactory = rememberPermissionsControllerFactory(),
+    permissionsController: PermissionsController = remember(permissionControllerFactory) {
+        permissionControllerFactory.createPermissionsController()
     }
-
+): PermissionsState {
     BindEffect(permissionsController)
 
     val permissionsState = remember(permissionsController) {
