@@ -25,7 +25,7 @@ import clib.presentation.components.model.item.Item
 import clib.presentation.components.picker.model.Picker
 
 @Composable
-public fun <E : Any> ListPickerDialog(
+public fun <E> ListPickerDialog(
     values: List<E>,
     onItemClicked: (E) -> Unit,
     onDismissRequest: () -> Unit,

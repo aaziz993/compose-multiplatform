@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import clib.data.location.country.getEmojiFlag
 import clib.presentation.components.Components
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.picker.ListPickerDialog
@@ -137,36 +138,6 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.appearance)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-
-        var dialog by remember { mutableStateOf(false) }
-        val testList = listOf(
-            "One",
-            "Two",
-            "Three",
-            "Four",
-            "Five",
-            "Six",
-            "Seven",
-            "Seven",
-        )
-        if (dialog)
-            ListPickerDialog(
-                testList,
-                {
-                },
-                {
-                    dialog = false
-                },
-            )
-
-        SettingsMenuLink(
-            title = stringResource(Res.string.theme),
-            enabled = true,
-            icon = theme.isDarkIcon(),
-            subtitle = theme.isDarkStringResource(),
-        ) {
-            dialog = true
-        }
         SettingsMenuLink(
             title = stringResource(Res.string.theme),
             enabled = true,
@@ -243,17 +214,8 @@ public fun SettingsMainScreen(
 
         SettingsLocalePickerDialog(
             title = { Text(text = stringResource(Res.string.locale)) },
-            value = locale,
-            subtitle = {
-                Text(
-                    text = "locale_${
-                        locale
-                            .toString()
-                            .replace('-', '_')
-                            .lowercase()
-                    }".asStringResource(),
-                )
-            },
+            icon = { Text(locale.country()!!.alpha2.getEmojiFlag()) },
+            subtitle = { Text(locale.asStringResource()) },
             modifier = Modifier,
             enabled = true,
             locales = locales,
@@ -267,7 +229,7 @@ public fun SettingsMainScreen(
             ),
         ) { value ->
             onLocaleChange(value)
-            true
+            false
         }
 
         val connectivityTrueIcon =

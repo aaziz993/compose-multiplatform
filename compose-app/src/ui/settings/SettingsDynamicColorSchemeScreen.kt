@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Animation
 import androidx.compose.material.icons.filled.Contrast
+import androidx.compose.material.icons.filled.Devices
 import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material.icons.outlined.Animation
 import androidx.compose.material.icons.outlined.SmartDisplay
@@ -14,19 +15,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import clib.presentation.components.picker.model.Picker
+import clib.presentation.components.settings.SettingsListPickerDialog
 import clib.presentation.components.settings.SettingsSlider
 import clib.presentation.theme.model.Theme
-import com.materialkolor.Contrast
 import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.amoled
 import compose_app.generated.resources.animate
+import compose_app.generated.resources.clear
 import compose_app.generated.resources.color_scheme_seed_color
 import compose_app.generated.resources.contrast
 import compose_app.generated.resources.error
+import compose_app.generated.resources.locale
 import compose_app.generated.resources.neutral
 import compose_app.generated.resources.neutral_variant
 import compose_app.generated.resources.primary
+import compose_app.generated.resources.search
 import compose_app.generated.resources.secondary
 import compose_app.generated.resources.tertiary
 import org.jetbrains.compose.resources.stringResource
@@ -126,7 +131,24 @@ public fun SettingsDynamicColorSchemeScreen(
         onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(contrastLevel = value.toDouble()) })
     }
 
-    val platform = DynamicScheme.Platform.Default
+    val platforms = DynamicScheme.Platform.entries.toList()
+
+    SettingsListPickerDialog(
+        title = { Text(text = stringResource(Res.string.locale)) },
+        icon = { Icon(Icons.Default.Devices, theme.currentDynamicColorScheme.platform.name) },
+        subtitle = { Text(theme.currentDynamicColorScheme.platform.name) },
+        modifier = Modifier,
+        enabled = true,
+        values = platforms,
+        picker = Picker(
+            headerTitle = stringResource(Res.string.locale),
+            searchHint = stringResource(Res.string.search),
+            clear = stringResource(Res.string.clear),
+        ),
+    ) { value ->
+        onThemeChange(theme.copyDynamicColorScheme { colorScheme -> colorScheme.copy(platform = value) })
+        false
+    }
 
     SettingsSwitch(
         title = stringResource(Res.string.animate),

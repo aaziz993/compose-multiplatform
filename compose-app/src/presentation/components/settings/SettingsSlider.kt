@@ -61,7 +61,7 @@ public fun SettingsSliderPostpone(
         value,
         modifier,
         {
-            Text("${value.signChar}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
+            Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
         },
         { Icon(icon, title) },
         enabled,
