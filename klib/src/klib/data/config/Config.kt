@@ -2,6 +2,7 @@ package klib.data.config
 
 import klib.data.config.di.KoinConfig
 import klib.data.config.http.client.HttpClientConfig
+import klib.data.config.locale.Localization
 import klib.data.config.validator.ValidatorConfig
 
 public interface Config {

@@ -4,7 +4,7 @@ import com.github.ajalt.colormath.model.Ansi16
 import io.ktor.server.config.yaml.*
 import java.io.File
 import klib.data.config.Config
-import klib.data.config.Localization
+import klib.data.config.locale.Localization
 import klib.data.config.LogConfig
 import klib.data.config.di.KoinConfig
 import klib.data.config.http.client.HttpClientConfig

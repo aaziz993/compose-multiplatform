@@ -1,4 +1,4 @@
-package klib.data.config
+package klib.data.config.locale
 
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current

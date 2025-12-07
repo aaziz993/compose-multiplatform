@@ -4,7 +4,7 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import clib.presentation.noLocalProvidedFor
 import com.charleskorn.kaml.Yaml
-import klib.data.config.Localization
+import klib.data.config.locale.Localization
 import klib.data.config.LogConfig
 import klib.data.config.ServerConfig
 import klib.data.config.di.KoinConfig
