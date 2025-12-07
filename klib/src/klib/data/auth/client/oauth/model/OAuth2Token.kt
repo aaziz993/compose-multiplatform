@@ -12,20 +12,20 @@ public sealed class OAuthAccessTokenResponse : BearerToken {
 
     /**
      * OAuth1a access token acquired from the server
-     * @property token itself
-     * @property tokenSecret token secret to be used with [token]
+     * @property accessToken itself
+     * @property tokenSecret token secret to be used with [accessToken]
      * @property extraParameters contains additional parameters provided by the server
      */
     @Serializable
     public data class OAuth1a(
-        override val token: String,
+        override val accessToken: String,
         val tokenSecret: String,
         val extraParameters: Parameters = Parameters.Empty
     ) : OAuthAccessTokenResponse()
 
     /**
      * OAuth2 access token acquired from the server
-     * @property token access token from server
+     * @property accessToken access token from server
      * @property tokenType OAuth2 token type (usually Bearer)
      * @property expiresIn token expiration timestamp
      * @property refreshToken to be used to refresh access token after expiration
@@ -34,7 +34,7 @@ public sealed class OAuthAccessTokenResponse : BearerToken {
      */
     @Serializable
     public data class OAuth2(
-        override val token: String,
+        override val accessToken: String,
         val tokenType: String,
         val expiresIn: Long,
         override val refreshToken: String?,

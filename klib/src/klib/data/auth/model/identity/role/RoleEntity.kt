@@ -1,6 +1,6 @@
 package klib.data.auth.model.identity.role
 
-import ai.tech.core.data.crud.model.entity.EntityWithMetadata
+import klib.data.entity.EntityWithMetadata
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 

@@ -1,7 +1,7 @@
 package klib.data.auth.model.identity.principal
 
-import ai.tech.core.data.crud.model.entity.EntityWithMetadata
-import ai.tech.core.misc.model.NullableJsonValue
+import klib.data.entity.EntityWithMetadata
+import klib.data.entity.annotation.Json
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -16,12 +16,10 @@ public data class PrincipalEntity(
     val email: String? = null,
     val image: String? = null,
     val roles: Set<String>? = null,
+    @Json
     var attributes: Map<String, List<String>>? = null,
     override val createdBy: String? = null,
     override val createdAt: LocalDateTime? = null,
     override val updatedBy: String? = null,
     override val updatedAt: LocalDateTime? = null,
-) : EntityWithMetadata<Long, LocalDateTime, LocalDateTime> {
-
-    var attributesAsText: String? by NullableJsonValue(attributes)
-}
+) : EntityWithMetadata<Long, LocalDateTime, LocalDateTime>

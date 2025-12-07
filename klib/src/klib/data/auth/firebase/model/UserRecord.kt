@@ -28,17 +28,15 @@ public data class UserRecord(
     val passwordSalt: String? = null,
     val customAuth: Boolean? = null,
     val updateRequest: UpdateRequest,
-) {
+)
 
-    public val asUser: User
-        get() = User(
-            username = email,
-            firstName = null,
-            lastName = null,
-            phone = phoneNumber,
-            email = email,
-            imageUrl = photoUrl,
-            roles = null,
-            attributes = null,
-        )
-}
+public fun UserRecord.toUser(): User = User(
+    username = email,
+    firstName = null,
+    lastName = null,
+    phone = phoneNumber,
+    email = email,
+    image = photoUrl,
+    roles = null,
+    attributes = null,
+)

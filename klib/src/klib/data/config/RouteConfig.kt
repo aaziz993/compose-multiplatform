@@ -1,7 +1,7 @@
 package klib.data.config
 
 import io.ktor.http.Url
-import klib.data.auth.AuthResource
+import klib.data.auth.model.AuthResource
 
 public interface RouteConfig {
 

@@ -4,15 +4,19 @@ package klib.data.crud.http.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.statement.HttpResponse
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.utils.io.InternalAPI
 import klib.data.crud.CoroutineCrudRepository
 import klib.data.crud.http.model.HttpCrud
-import klib.data.net.http.client.KtorfitClient
+import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.bodyAsAnyFlow
 import klib.data.net.http.client.bodyAsFlow
 import klib.data.net.http.client.bodyAsPolymorphic
+import klib.data.net.http.client.createHttpClient
+import klib.data.net.http.client.ktorfit
 import klib.data.query.AggregateExpression
 import klib.data.query.BooleanOperand
 import klib.data.query.LimitOffset
@@ -24,12 +28,16 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 public class HttpCoroutineCrudRepository<T : Any>(
-    baseUrl: String,
-    httpClient: HttpClient,
     private val typeInfo: TypeInfo,
-) : KtorfitClient(baseUrl, httpClient), CoroutineCrudRepository<T> {
+    baseUrl: String,
+    httpClient: HttpClient = createHttpClient {
+        install(ContentNegotiation) {
+            json(HTTP_CLIENT_JSON)
+        }
+    },
+) : CoroutineCrudRepository<T> {
 
-    private val api: CrudApi = ktorfit.createCrudApi()
+    private val api: CrudApi = httpClient.ktorfit { baseUrl(baseUrl) }.createCrudApi()
 
     @Suppress("UNCHECKED_CAST")
     override suspend fun <R> transactional(block: suspend CoroutineCrudRepository<T>.(CoroutineTransaction) -> R): R {

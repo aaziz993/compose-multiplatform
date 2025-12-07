@@ -1,6 +1,6 @@
 package klib.data.config.auth
 
-import klib.data.auth.client.model.config.oauth.ClientOAuthConfig
+import klib.data.config.auth.oauth.ClientOAuthConfig
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 

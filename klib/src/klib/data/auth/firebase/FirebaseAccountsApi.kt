@@ -25,7 +25,7 @@ import klib.data.auth.firebase.model.UserRecord
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.POST
 
-internal interface FirebaseAuthApi {
+internal interface FirebaseAccountsApi {
 
     @POST("accounts:signInWithCustomToken")
     suspend fun signInWithCustomToken(@Body request: SignInWithCustomTokenRequest): SignInWithCustomTokenResponse

@@ -7,7 +7,7 @@ import klib.data.auth.keycloak.model.TokenResponse
 
 internal interface KeycloakAuthApi {
 
-    @POST
+    @POST("/")
     @FormUrlEncoded
     suspend fun getToken(
         @Field("client_id") clientId: String,
@@ -16,7 +16,7 @@ internal interface KeycloakAuthApi {
         @Field("grant_type") grantType: String = "password",
     ): TokenResponse
 
-    @POST
+    @POST("/")
     @FormUrlEncoded
     suspend fun getToken(
         @Field("client_id") clientId: String,
@@ -24,7 +24,7 @@ internal interface KeycloakAuthApi {
         @Field("grant_type") grantType: String = "client_credentials",
     ): TokenResponse
 
-    @POST
+    @POST("/")
     @FormUrlEncoded
     suspend fun refreshToken(
         @Field("client_id") clientId: String,

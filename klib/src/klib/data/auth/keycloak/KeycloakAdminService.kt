@@ -1,7 +1,6 @@
 package klib.data.auth.keycloak
 
 import io.ktor.client.HttpClient
-import klib.data.auth.keycloak.client.admin.createKeycloakAdminApi
 import klib.data.auth.keycloak.model.ExecuteActionsEmail
 import klib.data.auth.keycloak.model.ResetPassword
 import klib.data.auth.keycloak.model.UserInfo

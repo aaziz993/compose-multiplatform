@@ -3,7 +3,6 @@ package klib.data.auth.keycloak
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
-import klib.data.auth.keycloak.client.token.createKeycloakTokenApi
 import klib.data.auth.keycloak.model.TokenResponse
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.bearer
@@ -22,7 +21,7 @@ public class KeycloakAuthService(
 ) {
 
     private val api = httpClient.ktorfit { baseUrl("$baseUrl/realms/$realm/protocol/openid-connect/token") }
-        .createKeycloakTokenApi()
+        .createKeycloakAuthApi()
 
     public suspend fun authenticateUser(username: String, password: String): KeycloakAdminService =
         authenticateUser(

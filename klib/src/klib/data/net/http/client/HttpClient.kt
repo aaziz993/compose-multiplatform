@@ -150,7 +150,7 @@ public inline fun <reified T : BearerToken> HttpClient.bearer(
     bearer {
         loadTokens {
             loadTokens()?.let { token ->
-                BearerTokens(token.token, token.refreshToken)
+                BearerTokens(token.accessToken, token.refreshToken)
             }
         }
 
@@ -167,7 +167,7 @@ public inline fun <reified T : BearerToken> HttpClient.bearer(
     refreshTokens {
         try {
             refreshToken().let { token ->
-                BearerTokens(token.token, token.refreshToken ?: oldTokens?.refreshToken)
+                BearerTokens(token.accessToken, token.refreshToken ?: oldTokens?.refreshToken)
             }
         }
         catch (_: Throwable) {
