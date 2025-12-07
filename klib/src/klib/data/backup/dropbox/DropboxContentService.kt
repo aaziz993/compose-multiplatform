@@ -2,7 +2,7 @@ package klib.data.backup.dropbox
 
 import io.ktor.client.HttpClient
 import io.ktor.client.statement.readRawBytes
-import klib.data.backup.Backup
+import klib.data.backup.BackupService
 import klib.data.backup.dropbox.model.DownloadArg
 import klib.data.backup.dropbox.model.DownloadResponse
 import klib.data.backup.dropbox.model.UploadArg
@@ -20,7 +20,7 @@ private const val SHA256_BITS_COUNT: Int = 32
 
 public class DropboxFilesService(
     httpClient: HttpClient = createHttpClient(),
-) : Backup {
+) : BackupService {
 
     private val dropboxGraphApi =
         httpClient.ktorfit { baseUrl(BASE_URL) }.createDropboxContentApi()

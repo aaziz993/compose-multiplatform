@@ -15,7 +15,7 @@ import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
 import kotlinx.coroutines.flow.toList
 
-public class WeblateLocalizationService(
+public class WeblateApiService(
     baseUrl: String,
     apiKey: String,
     private val project: String,

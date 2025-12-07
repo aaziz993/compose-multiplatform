@@ -6,7 +6,7 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.readRawBytes
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import klib.data.backup.Backup
+import klib.data.backup.BackupService
 import klib.data.cryptography.hashSha256Blocking
 import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
@@ -15,7 +15,7 @@ private const val BASE_URL = "https://graph.microsoft.com"
 
 public class OneDriveGraphService(
     private val httpClient: HttpClient = createHttpClient(),
-) : Backup {
+) : BackupService {
 
     private val oneDriveGraphApi =
         httpClient.ktorfit { baseUrl(BASE_URL) }.createOneDriveGraphApi()

@@ -1,6 +1,6 @@
 package klib.data.backup
 
-public interface Backup {
+public interface BackupService {
 
 //    public fun updateUserLinkedAccounts(linkedAccounts: UserLinkedAccountsModel): UserLinkedAccountsModel
 

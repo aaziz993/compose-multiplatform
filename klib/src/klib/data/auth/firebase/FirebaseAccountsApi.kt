@@ -25,47 +25,47 @@ import klib.data.auth.firebase.model.UserRecord
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.POST
 
-internal interface FirebaseAccountsApi {
+public interface FirebaseAccountsApi {
 
     @POST("accounts:signInWithCustomToken")
-    suspend fun signInWithCustomToken(@Body request: SignInWithCustomTokenRequest): SignInWithCustomTokenResponse
+    public suspend fun signInWithCustomToken(@Body request: SignInWithCustomTokenRequest): SignInWithCustomTokenResponse
 
     @POST("token")
-    suspend fun getToken(@Body request: TokenRequest): TokenResponse
+    public suspend fun getToken(@Body request: TokenRequest): TokenResponse
 
     @POST("accounts:signUp")
-    suspend fun signUp(@Body request: SignRequest): SignUpResponse
+    public suspend fun signUp(@Body request: SignRequest): SignUpResponse
 
     @POST("accounts:signInWithPassword")
-    suspend fun signInWithPassword(@Body request: SignRequest): SignInResponse
+    public suspend fun signInWithPassword(@Body request: SignRequest): SignInResponse
 
     @POST("accounts:signInWithIdp")
-    suspend fun signInWithIdp(@Body request: SignInWithIdpRequest): SignInWithIdpResponse
+    public suspend fun signInWithIdp(@Body request: SignInWithIdpRequest): SignInWithIdpResponse
 
     @POST("accounts:lookup")
-    suspend fun lookup(@Body request: LookupRequest): LookupResponse
+    public suspend fun lookup(@Body request: LookupRequest): LookupResponse
 
     @POST("accounts")
-    suspend fun create(@Body request: CreateRequest): UserRecord
+    public suspend fun create(@Body request: CreateRequest): UserRecord
 
     @POST("accounts:update")
-    suspend fun update(@Body request: UpdateRequest): UpdateResponse
+    public suspend fun update(@Body request: UpdateRequest): UpdateResponse
 
     @POST("accounts:delete")
-    suspend fun delete(@Body request: DeleteRequest)
+    public suspend fun delete(@Body request: DeleteRequest)
 
     @POST("accounts:createAuthUri")
-    suspend fun createAuthUri(@Body request: CreateAuthUriRequest): CreateAuthUriResponse
+    public suspend fun createAuthUri(@Body request: CreateAuthUriRequest): CreateAuthUriResponse
 
     @POST("accounts:sendOobCode")
-    suspend fun sendOobCode(@Body request: SendOobRequest): SendOobResponse
+    public suspend fun sendOobCode(@Body request: SendOobRequest): SendOobResponse
 
     @POST("accounts:resetPassword")
-    suspend fun resetPassword(@Body request: ResetPasswordRequest): ResetPasswordResponse
+    public suspend fun resetPassword(@Body request: ResetPasswordRequest): ResetPasswordResponse
 
-    companion object {
+    public companion object {
 
-        val reservedClaims: List<String> = listOf(
+        public val RESERVED_CLAIMS: List<String> = listOf(
             "amr", "at_hash", "aud", "auth_time", "azp", "cnf", "c_hash", "exp", "iat",
             "iss", "jti", "nbf", "nonce", "sub", "firebase",
         )
