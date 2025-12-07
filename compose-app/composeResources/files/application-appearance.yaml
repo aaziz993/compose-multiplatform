@@ -3,12 +3,12 @@ ui:
     isDynamic: false
     isHighContrast: false
     isExpressive: true
-    dynamicColorPalette:
+    dynamicColorScheme:
       seedColor: 0xFF00FFFF
       animate: true
       animationSpec:
         spring: { }
-    dynamicColorPaletteHighContrast:
+    dynamicColorSchemeHighContrast:
       seedColor: 0xFF0000FF
       animate: true
       animationSpec:

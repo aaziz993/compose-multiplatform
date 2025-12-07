@@ -4,9 +4,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import clib.presentation.theme.darkHighContrast
+import clib.presentation.theme.lightHighContrast
 import clib.presentation.theme.shapes.ShapesSerial
 import clib.presentation.theme.typography.TypographySerial
 import kotlinx.serialization.Serializable
@@ -18,20 +22,27 @@ public data class Theme(
     val isDynamic: Boolean = false,
     val isHighContrast: Boolean = false,
     val isExpressive: Boolean = true,
-    val colorPalette: ColorPalette = ColorPalette(),
-    val colorPaletteHighContrast: ColorPalette = ColorPalette(),
-    val dynamicColorPalette: DynamicColorPalette = DynamicColorPalette(Color.Cyan),
-    val dynamicColorPaletteHighContrast: DynamicColorPalette = DynamicColorPalette(Color.Blue),
+    val lightColorScheme: ColorSchemeSerial = lightColorScheme(),
+    val lightColorSchemeHighContrast: ColorSchemeSerial = lightColorScheme.lightHighContrast(),
+    val darkColorScheme: ColorSchemeSerial = darkColorScheme(),
+    val darkColorSchemeHighContrast: ColorSchemeSerial = darkColorScheme.darkHighContrast(),
+    val dynamicColorScheme: DynamicColorScheme = DynamicColorScheme(Color.Cyan),
+    val dynamicColorSchemeHighContrast: DynamicColorScheme = DynamicColorScheme(Color.Blue),
     val shapes: ShapesSerial = Shapes(),
     val typography: TypographySerial = Typography(),
 ) {
 
-    public val colorScheme: ColorScheme
+    public val currentColorScheme: ColorScheme
         @Composable
         get() {
-            val colorPalette = if (isHighContrast) colorPaletteHighContrast else colorPalette
-            return if (isSystemInDarkTheme()) colorPalette.darkColorScheme else colorPalette.lightColorScheme
+            val (lightColorScheme, darkColorScheme) =
+                if (isHighContrast) lightColorScheme to lightColorSchemeHighContrast
+                else darkColorScheme to darkColorSchemeHighContrast
+            return if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
         }
+
+    public val currentDynamicColorScheme: DynamicColorScheme
+        get() = if (isHighContrast) dynamicColorSchemeHighContrast else dynamicColorScheme
 
     public fun copyIsDarkToggled(): Theme = when (isDark) {
         null -> copy(isDark = false)

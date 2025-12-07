@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Immutable
 @Serializable
-public data class DynamicColorPalette(
+public data class DynamicColorScheme(
     val seedColor: ColorSerial,
     val isAmoled: Boolean = false,
     val primary: ColorSerial? = null,

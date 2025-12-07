@@ -120,40 +120,41 @@ public fun AppEnvironment(
     }
 
     val (colorScheme, seedColor) = if (theme.isDynamic) {
-        val dynamicColorPalette =
-            if (theme.isHighContrast) theme.dynamicColorPaletteHighContrast else theme.dynamicColorPalette
+        val dynamicColorScheme =
+            if (theme.isHighContrast) theme.dynamicColorSchemeHighContrast else theme.dynamicColorScheme
 
         val state = rememberDynamicMaterialThemeState(
-            seedColor = dynamicColorPalette.seedColor,
+            seedColor = dynamicColorScheme.seedColor,
             isDark = isSystemInDarkTheme(),
-            isAmoled = dynamicColorPalette.isAmoled,
-            primary = dynamicColorPalette.primary,
-            secondary = dynamicColorPalette.secondary,
-            tertiary = dynamicColorPalette.tertiary,
-            neutral = dynamicColorPalette.neutral,
-            neutralVariant = dynamicColorPalette.neutralVariant,
-            error = dynamicColorPalette.error,
-            contrastLevel = dynamicColorPalette.contrastLevel,
+            isAmoled = dynamicColorScheme.isAmoled,
+            primary = dynamicColorScheme.primary,
+            secondary = dynamicColorScheme.secondary,
+            tertiary = dynamicColorScheme.tertiary,
+            neutral = dynamicColorScheme.neutral,
+            neutralVariant = dynamicColorScheme.neutralVariant,
+            error = dynamicColorScheme.error,
+            contrastLevel = dynamicColorScheme.contrastLevel,
             specVersion = ColorSpec.SpecVersion.SPEC_2025,
-            platform = dynamicColorPalette.platform,
+            platform = dynamicColorScheme.platform,
         )
 
         Surface { }
 
         val colorScheme = state.colorScheme
-        (if (!dynamicColorPalette.animate) colorScheme
+        (if (!dynamicColorScheme.animate) colorScheme
         else animateColorScheme(
             colorScheme = colorScheme,
             animationSpec = {
-                dynamicColorPalette.animationSpec as FiniteAnimationSpec<Color>
+                dynamicColorScheme.animationSpec as FiniteAnimationSpec<Color>
             },
         )) to state.seedColor
     }
     else {
-        val colorPalette = if (theme.isHighContrast) theme.colorPaletteHighContrast else theme.colorPalette
+        val (lightColorScheme, darkColorScheme) =
+            if (theme.isHighContrast) theme.lightColorScheme to theme.lightColorSchemeHighContrast
+            else theme.darkColorScheme to theme.darkColorSchemeHighContrast
 
-        (if (isSystemInDarkTheme()) colorPalette.darkColorScheme
-        else colorPalette.lightColorScheme) to Color.Transparent
+        (if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme) to Color.Transparent
     }
 
     CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {

@@ -8,7 +8,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-public fun ColorScheme.lightColorsHighContrast(): ColorScheme = copy(
+public fun ColorScheme.lightHighContrast(): ColorScheme = copy(
     primary = Color.Black,
     onPrimary = Color.White,
     primaryContainer = Color.Black,
@@ -21,7 +21,7 @@ public fun ColorScheme.lightColorsHighContrast(): ColorScheme = copy(
     outlineVariant = Color.Black,
 )
 
-public fun ColorScheme.darkColorsHighContrast(): ColorScheme = copy(
+public fun ColorScheme.darkHighContrast(): ColorScheme = copy(
     primary = Color.White,
     onPrimary = Color.Black,
     primaryContainer = Color.White,
