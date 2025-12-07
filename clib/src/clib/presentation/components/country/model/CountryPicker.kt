@@ -3,12 +3,13 @@ package clib.presentation.components.country.model
 import androidx.compose.ui.graphics.Color
 
 public data class CountryPicker(
-    var itemPadding: Int = 10,
-    var dividerColor: Color = Color.LightGray,
-    var headerTitle: String = "Select Country",
-    var searchHint: String = "Search Country",
-    var showSearchClearIcon: Boolean = true,
-    var showCountryCode: Boolean = true,
-    var showFlag: Boolean = true,
-    var showCountryIso: Boolean = false,
+  val itemPadding: Int = 10,
+  val dividerColor: Color = Color.LightGray,
+  val headerTitle: String = "Select Country",
+  val searchHint: String = "Search Country",
+  val clear: String = "Clear",
+  val showSearchClearIcon: Boolean = true,
+  val showCountryCode: Boolean = true,
+  val showFlag: Boolean = true,
+  val showCountryIso: Boolean = false,
 )

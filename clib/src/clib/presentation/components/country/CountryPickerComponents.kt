@@ -41,7 +41,9 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun CountryHeaderDialog(
-    title: String = "Select Country", onDismiss: () -> Unit
+    title: String = "Select Country",
+    clear: String = "Clear",
+    onDismiss: () -> Unit,
 ) {
     Row(
         Modifier.fillMaxWidth(),
@@ -58,7 +60,7 @@ internal fun CountryHeaderDialog(
         Spacer(modifier = Modifier.weight(1f))
 
         IconButton(onClick = { onDismiss() }) {
-            Icon(Icons.Outlined.Clear, contentDescription = "Close")
+            Icon(Icons.Outlined.Clear, contentDescription = clear)
 
         }
     }
@@ -90,21 +92,14 @@ internal fun CountrySearch(
     onValueChange: (String) -> Unit,
     textStyle: TextStyle = TextStyle(),
     hint: String = "Search Country",
+    clear: String = "Clear",
     showClearIcon: Boolean = true,
     requestFocus: Boolean = true,
     onFocusChanged: (FocusState) -> Unit = {}
 ) {
-
-    val requester = remember {
-        FocusRequester()
-    }
+    val requester = remember { FocusRequester() }
     LaunchedEffect(Unit) {
-        if (requestFocus) {
-            requester.requestFocus()
-        }
-        else {
-            requester.freeFocus()
-        }
+        if (requestFocus) requester.requestFocus() else requester.freeFocus()
     }
 
     TextField(
@@ -126,12 +121,12 @@ internal fun CountrySearch(
             Text(text = hint)
         },
         leadingIcon = {
-            Icon(Icons.Outlined.Search, contentDescription = "Search")
+            Icon(Icons.Outlined.Search, contentDescription = hint)
         },
         trailingIcon = {
             if (showClearIcon && value.isNotEmpty()) {
                 IconButton(onClick = { onValueChange("") }) {
-                    Icon(Icons.Outlined.Clear, contentDescription = "Clear")
+                    Icon(Icons.Outlined.Clear, contentDescription = clear)
                 }
             }
         },

@@ -30,7 +30,11 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,6 +45,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.Components
 import clib.presentation.components.country.model.CountryPicker
+import clib.presentation.components.picker.ListPickerDialog
+import clib.presentation.components.picker.WheelPickerDialog
+import clib.presentation.components.picker.model.PickerItem
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
@@ -74,6 +81,7 @@ import compose_app.generated.resources.quick_access_to_themes
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.search
+import compose_app.generated.resources.clear
 import compose_app.generated.resources.theme
 import data.location.locale.asStringResource
 import data.type.primitives.string.asStringResource
@@ -131,6 +139,36 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.appearance)) },
         contentPadding = PaddingValues(16.dp),
     ) {
+
+        var dialog by remember { mutableStateOf(false) }
+        val testList = listOf(
+            "One",
+            "Two",
+            "Three",
+            "Four",
+            "Five",
+            "Six",
+            "Seven",
+            "Seven",
+        )
+        if (dialog)
+            ListPickerDialog(
+                testList,
+                {
+                },
+                {
+                    dialog = false
+                },
+            )
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.theme),
+            enabled = true,
+            icon = theme.isDarkIcon(),
+            subtitle = theme.isDarkStringResource(),
+        ) {
+            dialog = true
+        }
         SettingsMenuLink(
             title = stringResource(Res.string.theme),
             enabled = true,
@@ -227,6 +265,7 @@ public fun SettingsMainScreen(
             picker = CountryPicker(
                 headerTitle = stringResource(Res.string.locale),
                 searchHint = stringResource(Res.string.search),
+                clear = stringResource(Res.string.clear),
             ),
         ) { value ->
             onLocaleChange(value)

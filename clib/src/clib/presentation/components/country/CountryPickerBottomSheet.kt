@@ -72,6 +72,7 @@ public fun CountryPickerBottomSheet(
                     onValueChange = { value = it },
                     textStyle = textStyle,
                     hint = picker.searchHint,
+                    clear = picker.clear,
                     showClearIcon = picker.showSearchClearIcon,
                     requestFocus = false,
                     onFocusChanged = {

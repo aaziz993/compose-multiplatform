@@ -63,6 +63,7 @@ import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
+import compose_app.generated.resources.clear
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.theme
 import data.location.locale.asStringResource
@@ -213,6 +214,7 @@ public fun AppBar(
                                 picker = CountryPicker(
                                     headerTitle = stringResource(Res.string.locale),
                                     searchHint = stringResource(Res.string.search),
+                                    clear = stringResource(Res.string.clear),
                                 ),
                             )
 

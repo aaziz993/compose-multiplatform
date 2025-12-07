@@ -39,18 +39,18 @@ public fun CountryPickerDialog(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     picker: CountryPicker = CountryPicker()
 ) {
-    var value by remember { mutableStateOf("") }
+    var searchQuery by remember { mutableStateOf("") }
 
-    val filteredCountries by remember(value) {
+    val filteredCountries by remember(searchQuery) {
         derivedStateOf {
-            if (value.isEmpty()) countries else countries.searchCountry(value)
+            if (searchQuery.isEmpty()) countries else countries.searchCountry(searchQuery)
         }
     }
 
-
-    Dialog(onDismissRequest = { onDismissRequest() }) {
+    Dialog(onDismissRequest = onDismissRequest) {
         Surface(
-            color = backgroundColor, modifier = modifier,
+            modifier = modifier,
+            color = backgroundColor,
         ) {
 
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -59,21 +59,22 @@ public fun CountryPickerDialog(
 
                 CountryHeaderDialog(
                     title = picker.headerTitle,
+                    clear = picker.clear,
                     onDismiss = { onDismissRequest() },
                 )
 
                 Spacer(modifier = Modifier.height(itemPadding.dp))
 
                 CountrySearch(
-                    value = value,
-                    onValueChange = { value = it },
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
                     textStyle = textStyle,
                     hint = picker.searchHint,
+                    clear = picker.clear,
                     showClearIcon = picker.showSearchClearIcon,
                 )
 
                 Spacer(modifier = Modifier.height(itemPadding.dp))
-
 
                 LazyColumn {
                     items(filteredCountries, key = { it.name }) { countryItem ->
@@ -88,13 +89,9 @@ public fun CountryPickerDialog(
                             showCountryFlag = picker.showFlag,
                         )
                     }
-
                 }
-
             }
-
         }
-
     }
 }
 
