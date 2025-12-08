@@ -7,5 +7,6 @@ import kotlinx.serialization.Serializable
 public data class WeblateConfig(
     val baseUrl: String,
     val apiKey: String,
+    val projectName: String,
     override val enabled: Boolean = true,
 ) : EnabledConfig

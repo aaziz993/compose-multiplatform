@@ -3,15 +3,15 @@ package klib.data.location.locale
 import com.diamondedge.logging.logging
 import klib.data.type.primitives.string.format
 
-public abstract class LocaleService {
+public open class LocaleService {
 
-    public open lateinit var locale: Locale
+    public open var locale: Locale = Locale.current
         protected set
 
-    public open lateinit var translations: Map<String, List<String>>
+    public open var translations: Map<String, List<String>> = emptyMap()
         protected set
 
-    public abstract suspend fun getLocales(): List<Locale>
+    public open suspend fun getLocales(): List<Locale> = emptyList()
 
     public open suspend fun setLocale(locale: Locale) {
         this.locale = locale

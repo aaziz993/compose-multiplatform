@@ -12,6 +12,8 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.config.Config
 import klib.data.config.EnabledConfig
+import klib.data.location.locale.LocaleService
+import klib.data.location.locale.weblate.WeblateApiService
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.createHttpClient
 import kotlinx.serialization.json.Json
@@ -62,4 +64,15 @@ public class ServerModule {
                 }
             }
         }
+
+    @Single
+    public fun provideWeblate(config: Config, httpClient: HttpClient): LocaleService =
+        config.localization.weblate?.takeIf(EnabledConfig::enabled)?.let { weblate ->
+            WeblateApiService(
+                weblate.baseUrl,
+                weblate.apiKey,
+                config.appName,
+                httpClient,
+            )
+        } ?: LocaleService()
 }

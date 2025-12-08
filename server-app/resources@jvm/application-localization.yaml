@@ -5,7 +5,7 @@ localization:
     - tg-TJ
   locale: en-US
   weblate:
-    app:
-      enable: true
-      baseUrl: 'http://localhost:8090'
-      api-key: wlu_aiwHaV8hd99eJeHgc5LPznz20croHxo2C22z
+    enable: true
+    baseUrl: http://localhost:8090
+    projectName: application
+    apiKey: wlu_aiwHaV8hd99eJeHgc5LPznz20croHxo2C22z
