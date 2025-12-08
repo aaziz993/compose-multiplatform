@@ -5,6 +5,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkInteractionListener
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
+import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.case.toSnakeCase
 import org.jetbrains.compose.resources.PluralStringResource
 import org.jetbrains.compose.resources.ResourceEnvironment
@@ -25,6 +26,19 @@ public fun String.asStringResource(
     defaultValue: () -> String = { this }
 ): String =
     resources[lowercase().toSnakeCase()]?.let { stringResource -> stringResource(stringResource) } ?: defaultValue()
+
+@Suppress("ComposeUnstableReceiver")
+@Composable
+public fun <T> T.asStringResource(
+    resources: Map<String, StringResource>,
+    defaultValue: () -> String = { toString() }
+): String = toString().let { string ->
+    "${
+        string.substringBefore("(").substringAfterLast(".").asStringResource(resources, defaultValue)
+    }${
+        string.substringAfter("(", "").addPrefixIfNotEmpty("(")
+    }"
+}
 
 public fun String.toHtmlString(
     compactMode: Boolean = false,

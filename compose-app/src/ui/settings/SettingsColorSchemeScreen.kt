@@ -9,54 +9,54 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.color_scheme_background
-import compose_app.generated.resources.color_scheme_error
-import compose_app.generated.resources.color_scheme_error_container
-import compose_app.generated.resources.color_scheme_inverse_on_surface
-import compose_app.generated.resources.color_scheme_inverse_primary
-import compose_app.generated.resources.color_scheme_inverse_surface
-import compose_app.generated.resources.color_scheme_on_background
-import compose_app.generated.resources.color_scheme_on_error
-import compose_app.generated.resources.color_scheme_on_error_container
-import compose_app.generated.resources.color_scheme_on_primary
-import compose_app.generated.resources.color_scheme_on_primary_container
-import compose_app.generated.resources.color_scheme_on_primary_fixed
-import compose_app.generated.resources.color_scheme_on_primary_fixed_variant
-import compose_app.generated.resources.color_scheme_on_secondary
-import compose_app.generated.resources.color_scheme_on_secondary_container
-import compose_app.generated.resources.color_scheme_on_secondary_fixed
-import compose_app.generated.resources.color_scheme_on_secondary_fixed_variant
-import compose_app.generated.resources.color_scheme_on_surface
-import compose_app.generated.resources.color_scheme_on_surface_variant
-import compose_app.generated.resources.color_scheme_on_tertiary
-import compose_app.generated.resources.color_scheme_on_tertiary_container
-import compose_app.generated.resources.color_scheme_on_tertiary_fixed
-import compose_app.generated.resources.color_scheme_on_tertiary_fixed_variant
-import compose_app.generated.resources.color_scheme_outline
-import compose_app.generated.resources.color_scheme_outline_variant
-import compose_app.generated.resources.color_scheme_primary
-import compose_app.generated.resources.color_scheme_primary_container
-import compose_app.generated.resources.color_scheme_primary_fixed
-import compose_app.generated.resources.color_scheme_primary_fixed_dim
-import compose_app.generated.resources.color_scheme_scrim
-import compose_app.generated.resources.color_scheme_secondary
-import compose_app.generated.resources.color_scheme_secondary_container
-import compose_app.generated.resources.color_scheme_secondary_fixed
-import compose_app.generated.resources.color_scheme_secondary_fixed_dim
-import compose_app.generated.resources.color_scheme_surface
-import compose_app.generated.resources.color_scheme_surface_bright
-import compose_app.generated.resources.color_scheme_surface_container
-import compose_app.generated.resources.color_scheme_surface_container_high
-import compose_app.generated.resources.color_scheme_surface_container_highest
-import compose_app.generated.resources.color_scheme_surface_container_low
-import compose_app.generated.resources.color_scheme_surface_container_lowest
-import compose_app.generated.resources.color_scheme_surface_dim
-import compose_app.generated.resources.color_scheme_surface_tint
-import compose_app.generated.resources.color_scheme_surface_variant
-import compose_app.generated.resources.color_scheme_tertiary
-import compose_app.generated.resources.color_scheme_tertiary_container
-import compose_app.generated.resources.color_scheme_tertiary_fixed
-import compose_app.generated.resources.color_scheme_tertiary_fixed_dim
+import compose_app.generated.resources.background
+import compose_app.generated.resources.error
+import compose_app.generated.resources.error_container
+import compose_app.generated.resources.inverse_on_surface
+import compose_app.generated.resources.inverse_primary
+import compose_app.generated.resources.inverse_surface
+import compose_app.generated.resources.on_background
+import compose_app.generated.resources.on_error
+import compose_app.generated.resources.on_error_container
+import compose_app.generated.resources.on_primary
+import compose_app.generated.resources.on_primary_container
+import compose_app.generated.resources.on_primary_fixed
+import compose_app.generated.resources.on_primary_fixed_variant
+import compose_app.generated.resources.on_secondary
+import compose_app.generated.resources.on_secondary_container
+import compose_app.generated.resources.on_secondary_fixed
+import compose_app.generated.resources.on_secondary_fixed_variant
+import compose_app.generated.resources.on_surface
+import compose_app.generated.resources.on_surface_variant
+import compose_app.generated.resources.on_tertiary
+import compose_app.generated.resources.on_tertiary_container
+import compose_app.generated.resources.on_tertiary_fixed
+import compose_app.generated.resources.on_tertiary_fixed_variant
+import compose_app.generated.resources.outline
+import compose_app.generated.resources.outline_variant
+import compose_app.generated.resources.primary
+import compose_app.generated.resources.primary_container
+import compose_app.generated.resources.primary_fixed
+import compose_app.generated.resources.primary_fixed_dim
+import compose_app.generated.resources.scrim
+import compose_app.generated.resources.secondary
+import compose_app.generated.resources.secondary_container
+import compose_app.generated.resources.secondary_fixed
+import compose_app.generated.resources.secondary_fixed_dim
+import compose_app.generated.resources.surface
+import compose_app.generated.resources.surface_bright
+import compose_app.generated.resources.surface_container
+import compose_app.generated.resources.surface_container_high
+import compose_app.generated.resources.surface_container_highest
+import compose_app.generated.resources.surface_container_low
+import compose_app.generated.resources.surface_container_lowest
+import compose_app.generated.resources.surface_dim
+import compose_app.generated.resources.surface_tint
+import compose_app.generated.resources.surface_variant
+import compose_app.generated.resources.tertiary
+import compose_app.generated.resources.tertiary_container
+import compose_app.generated.resources.tertiary_fixed
+import compose_app.generated.resources.tertiary_fixed_dim
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import ui.navigation.presentation.SettingsColorScheme
@@ -75,336 +75,336 @@ public fun SettingsColorSchemeScreen(
 ) {
     val colorScheme = theme.currentColorScheme
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_primary),
+        stringResource(Res.string.primary),
         colorScheme.primary,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primary = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_primary),
+        stringResource(Res.string.on_primary),
         colorScheme.onPrimary,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimary = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_primary_container),
+        stringResource(Res.string.primary_container),
         colorScheme.primaryContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_primary_container),
+        stringResource(Res.string.on_primary_container),
         colorScheme.onPrimaryContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_inverse_primary),
+        stringResource(Res.string.inverse_primary),
         colorScheme.inversePrimary,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inversePrimary = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_secondary),
+        stringResource(Res.string.secondary),
         colorScheme.secondary,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondary = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_secondary),
+        stringResource(Res.string.on_secondary),
         colorScheme.onSecondary,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondary = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_secondary_container),
+        stringResource(Res.string.secondary_container),
         colorScheme.secondaryContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_secondary_container),
+        stringResource(Res.string.on_secondary_container),
         colorScheme.onSecondaryContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_tertiary),
+        stringResource(Res.string.tertiary),
         colorScheme.tertiary,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiary = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_tertiary),
+        stringResource(Res.string.on_tertiary),
         colorScheme.onTertiary,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiary = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_tertiary_container),
+        stringResource(Res.string.tertiary_container),
         colorScheme.tertiaryContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_tertiary_container),
+        stringResource(Res.string.on_tertiary_container),
         colorScheme.onTertiaryContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_background),
+        stringResource(Res.string.background),
         colorScheme.background,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(background = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_background),
+        stringResource(Res.string.on_background),
         colorScheme.onBackground,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onBackground = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface),
+        stringResource(Res.string.surface),
         colorScheme.surface,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surface = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_surface),
+        stringResource(Res.string.on_surface),
         colorScheme.onSurface,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSurface = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_variant),
+        stringResource(Res.string.surface_variant),
         colorScheme.surfaceVariant,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceVariant = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_surface_variant),
+        stringResource(Res.string.on_surface_variant),
         colorScheme.onSurfaceVariant,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSurfaceVariant = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_tint),
+        stringResource(Res.string.surface_tint),
         colorScheme.surfaceTint,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceTint = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_inverse_surface),
+        stringResource(Res.string.inverse_surface),
         colorScheme.inverseSurface,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inverseSurface = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_inverse_on_surface),
+        stringResource(Res.string.inverse_on_surface),
         colorScheme.inverseOnSurface,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inverseOnSurface = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_error),
+        stringResource(Res.string.error),
         colorScheme.error,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(error = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_error),
+        stringResource(Res.string.on_error),
         colorScheme.onError,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onError = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_error_container),
+        stringResource(Res.string.error_container),
         colorScheme.errorContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(errorContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_error_container),
+        stringResource(Res.string.on_error_container),
         colorScheme.onErrorContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onErrorContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_outline),
+        stringResource(Res.string.outline),
         colorScheme.outline,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(outline = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_outline_variant),
+        stringResource(Res.string.outline_variant),
         colorScheme.outlineVariant,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(outlineVariant = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_scrim),
+        stringResource(Res.string.scrim),
         colorScheme.scrim,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(scrim = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_bright),
+        stringResource(Res.string.surface_bright),
         colorScheme.surfaceBright,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceBright = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_dim),
+        stringResource(Res.string.surface_dim),
         colorScheme.surfaceDim,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceDim = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_container),
+        stringResource(Res.string.surface_container),
         colorScheme.surfaceContainer,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainer = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_container_high),
+        stringResource(Res.string.surface_container_high),
         colorScheme.surfaceContainerHigh,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerHigh = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_container_highest),
+        stringResource(Res.string.surface_container_highest),
         colorScheme.surfaceContainerHighest,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerHighest = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_container_low),
+        stringResource(Res.string.surface_container_low),
         colorScheme.surfaceContainerLow,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerLow = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_surface_container_lowest),
+        stringResource(Res.string.surface_container_lowest),
         colorScheme.surfaceContainerLowest,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerLowest = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_primary_fixed),
+        stringResource(Res.string.primary_fixed),
         colorScheme.primaryFixed,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryFixed = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_primary_fixed_dim),
+        stringResource(Res.string.primary_fixed_dim),
         colorScheme.primaryFixedDim,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryFixedDim = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_primary_fixed),
+        stringResource(Res.string.on_primary_fixed),
         colorScheme.onPrimaryFixed,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryFixed = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_primary_fixed_variant),
+        stringResource(Res.string.on_primary_fixed_variant),
         colorScheme.onPrimaryFixedVariant,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryFixedVariant = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_secondary_fixed),
+        stringResource(Res.string.secondary_fixed),
         colorScheme.secondaryFixed,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryFixed = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_secondary_fixed_dim),
+        stringResource(Res.string.secondary_fixed_dim),
         colorScheme.secondaryFixedDim,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryFixedDim = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_secondary_fixed),
+        stringResource(Res.string.on_secondary_fixed),
         colorScheme.onSecondaryFixed,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryFixed = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_secondary_fixed_variant),
+        stringResource(Res.string.on_secondary_fixed_variant),
         colorScheme.onSecondaryFixedVariant,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryFixedVariant = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_tertiary_fixed),
+        stringResource(Res.string.tertiary_fixed),
         colorScheme.tertiaryFixed,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryFixed = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_tertiary_fixed_dim),
+        stringResource(Res.string.tertiary_fixed_dim),
         colorScheme.tertiaryFixedDim,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryFixedDim = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_tertiary_fixed),
+        stringResource(Res.string.on_tertiary_fixed),
         colorScheme.onTertiaryFixed,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryFixed = value) })
     }
 
     SettingsColorPickerBottomSheet(
-        stringResource(Res.string.color_scheme_on_tertiary_fixed_variant),
+        stringResource(Res.string.on_tertiary_fixed_variant),
         colorScheme.onTertiaryFixedVariant,
     ) { value ->
         onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryFixedVariant = value) })

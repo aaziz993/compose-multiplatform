@@ -10,6 +10,7 @@ ui:
         spring: { }
     dynamicColorSchemeHighContrast:
       seedColor: 0xFF0000FF
+      amoled: true
       animate: true
       animationSpec:
         spring: { }

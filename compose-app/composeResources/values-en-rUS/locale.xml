@@ -3,7 +3,6 @@
     <string name="country">Country</string>
     <string name="country_flag">Country flag</string>
     <string name="locale">Locale</string>
-    <string name="location">Location</string>
     <string name="altitude">Altitude</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>

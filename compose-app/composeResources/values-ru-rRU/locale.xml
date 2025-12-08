@@ -3,7 +3,6 @@
     <string name="country">Страна</string>
     <string name="country_flag">Флаг страны</string>
     <string name="locale">Язык</string>
-    <string name="location">Местоположение</string>
     <string name="altitude">Высота</string>
     <string name="latitude">Широта</string>
     <string name="longitude">Долгота</string>
