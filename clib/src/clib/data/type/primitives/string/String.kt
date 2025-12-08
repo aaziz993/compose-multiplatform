@@ -25,7 +25,7 @@ public fun String.asStringResource(
     resources: Map<String, StringResource>,
     defaultValue: () -> String = { this }
 ): String =
-    resources[lowercase().toSnakeCase()]?.let { stringResource -> stringResource(stringResource) } ?: defaultValue()
+    resources[toSnakeCase()]?.let { stringResource -> stringResource(stringResource) } ?: defaultValue()
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
