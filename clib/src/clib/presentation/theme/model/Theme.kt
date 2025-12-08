@@ -50,8 +50,16 @@ public data class Theme(
         true -> copy(isDark = null)
     }
 
-    public fun copyDynamicColorScheme(block: (DynamicColorScheme) -> DynamicColorScheme): Theme =
-        if (isHighContrast) copy(dynamicColorSchemeHighContrast = block(dynamicColorSchemeHighContrast))
-        else copy(dynamicColorScheme = block(dynamicColorScheme))
+    public fun copyColorScheme(colorScheme: ColorScheme) {
+        if (isHighContrast) {
+
+        }
+        else {
+
+        }
+    }
+
+    public fun copyDynamicColorScheme(colorScheme: DynamicColorScheme): Theme =
+        if (isHighContrast) copy(dynamicColorSchemeHighContrast = colorScheme) else copy(dynamicColorScheme = colorScheme)
 }
 

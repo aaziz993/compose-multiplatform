@@ -6,6 +6,7 @@
     <string name="actions">Actions</string>
     <string name="amoled">Amoled</string>
     <string name="animate">Animate</string>
+    <string name="animation_spec">Animation specification</string>
     <string name="back">Back</string>
     <string name="blend">Blend</string>
     <string name="balance">Balance</string>
@@ -59,4 +60,14 @@
     <string name="id">ID</string>
     <string name="image">Image</string>
     <string name="wallet">Wallet</string>
+
+
+    <string name="spring">Spring</string>
+    <string name="damping_ratio">Damping ratio</string>
+    <string name="stiffness">Stiffness</string>
+    <string name="visibility_threshold">Visibility threshold</string>
+    <string name="tween">Tween</string>
+    <string name="duration">Duration</string>
+    <string name="delay">Delay</string>
+    <string name="easing">Easing</string>
 </resources>

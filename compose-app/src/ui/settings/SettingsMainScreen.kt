@@ -25,36 +25,26 @@ import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.SignalCellular0Bar
 import androidx.compose.material.icons.outlined.SignalCellularConnectedNoInternet4Bar
-import androidx.compose.material3.SwitchColors
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
 import clib.presentation.components.Components
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
-import clib.presentation.event.snackbar.GlobalSnackbarEventController
-import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
-import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
-import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
-import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.appearance
 import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.camera
+import compose_app.generated.resources.clear
 import compose_app.generated.resources.color_palette
 import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
@@ -75,18 +65,13 @@ import compose_app.generated.resources.quick_access_to_themes
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.search
-import compose_app.generated.resources.clear
 import compose_app.generated.resources.theme
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.permission.exception.PermissionDeniedAlwaysException
-import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
@@ -411,56 +396,3 @@ public fun SettingsMainScreen(
 @Preview
 @Composable
 private fun PreviewSettingsMainScreen(): Unit = SettingsMainScreen()
-
-@Suppress("ComposeParameterOrder")
-@Composable
-private fun SettingsSwitch(
-    title: String,
-    value: Permission,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = LocalSettingsGroupEnabled.current,
-    trueIcon: ImageVector,
-    falseIcon: ImageVector,
-    colors: SettingsTileColors = SettingsTileDefaults.colors(),
-    switchColors: SwitchColors =
-        SwitchDefaults.colors(
-            checkedTrackColor = colors.actionColor(enabled),
-            checkedThumbColor = contentColorFor(colors.actionColor(enabled)),
-            disabledCheckedTrackColor = colors.actionColor(enabled),
-            disabledCheckedThumbColor = contentColorFor(colors.actionColor(enabled)),
-        ),
-    tonalElevation: Dp = SettingsTileDefaults.Elevation,
-    shadowElevation: Dp = SettingsTileDefaults.Elevation,
-    semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
-    permissions: Set<Permission>,
-    coroutineScope: CoroutineScope,
-    onCheckedChange: (Permission?) -> Unit,
-) = SettingsSwitch(
-    title,
-    value in permissions,
-    modifier,
-    enabled,
-    trueIcon,
-    falseIcon,
-    colors,
-    switchColors,
-    tonalElevation,
-    shadowElevation,
-    semanticProperties,
-    onCheckedChange = {
-        if (it) onCheckedChange(null)
-        else {
-            coroutineScope.launch {
-                try {
-                    onCheckedChange(value)
-                }
-                catch (deniedAlways: PermissionDeniedAlwaysException) {
-                    GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
-                }
-                catch (denied: PermissionDeniedException) {
-                    GlobalSnackbarEventController.sendEvent(SnackbarEvent(denied.message.orEmpty()))
-                }
-            }
-        }
-    },
-)

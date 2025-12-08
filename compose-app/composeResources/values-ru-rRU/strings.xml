@@ -6,6 +6,7 @@
     <string name="actions">Действия</string>
     <string name="amoled">Амолед</string>
     <string name="animate">Анимировать</string>
+    <string name="animation_spec">Спецификация анимации</string>
     <string name="back">Назад</string>
     <string name="blend">Смесь</string>
     <string name="balance">Баланс</string>
