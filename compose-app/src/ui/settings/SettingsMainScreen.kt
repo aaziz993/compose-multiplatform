@@ -6,13 +6,16 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Highlight
+import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material.icons.filled.SignalCellular0Bar
 import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material.icons.filled.TextFields
@@ -195,7 +198,7 @@ public fun SettingsMainScreen(
         SettingsSliderFinished(
             title = stringResource(Res.string.density),
             initialValue = density.density,
-            icon = { Icons.Default.TouchApp },
+            icon = { Icons.Default.DensityMedium },
             enabled = true,
             valueRange = 1.5f..2.5f,
             steps = 1,
@@ -206,7 +209,7 @@ public fun SettingsMainScreen(
         SettingsSliderFinished(
             title = stringResource(Res.string.font_scale),
             initialValue = density.fontScale,
-            icon = { Icons.Default.TextFields },
+            icon = { Icons.Default.LinearScale },
             enabled = true,
             valueRange = 1f..2f,
             steps = 1,
