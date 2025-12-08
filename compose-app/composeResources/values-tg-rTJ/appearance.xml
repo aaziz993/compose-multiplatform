@@ -5,11 +5,6 @@
     <string name="dark_theme">Намуди торик</string>
     <string name="light_theme">Намуди равшан</string>
     <string name="system_theme">Намуди низомӣ</string>
-    <string name="dynamic_color_scheme">Рангҳои таҳаррук</string>
-    <string name="high_contrast">Авҷи акс</string>
-    <string name="color_scheme">Рангҳо</string>
-    <string name="expressive">Равшанӣ</string>
-    <string name="density">Миқес</string>
     <string name="quick_access">Дастрасии зуд</string>
     <string name="quick_access_to_support">Дастрасии зуд ба дастгирӣ</string>
     <string name="quick_access_to_themes">Дастрасии зуд ба намоишҳо</string>

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="color_scheme">Цветовая схема</string>
+    <string name="dynamic_color_scheme">Динамическая цветовая схема</string>
+    <string name="contrast">Контраст</string>
+    <string name="high_contrast">Высокий контраст</string>
     <string name="primary">Основной</string>
     <string name="on_primary">На основном</string>
     <string name="primary_container">Контейнер основного</string>
@@ -47,5 +51,4 @@
     <string name="tertiary_fixed_dim">Тёмный фиксированный третичный</string>
     <string name="on_tertiary_fixed">На фиксированном третичном</string>
     <string name="on_tertiary_fixed_variant">На варианте фиксированного третичного</string>
-    <string name="contrast">Контраст</string>
 </resources>

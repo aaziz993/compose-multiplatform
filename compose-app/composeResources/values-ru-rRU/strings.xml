@@ -20,9 +20,11 @@
     <string name="done">Выполнено</string>
     <string name="description">Описание</string>
     <string name="disabled">Выключено</string>
+    <string name="density">Масштаб</string>
     <string name="enabled">Включено</string>
     <string name="error">Ошибка</string>
     <string name="exchange">Обмен</string>
+    <string name="expressive">Выразительный</string>
     <string name="false">Ложно</string>
     <string name="file">Файл</string>
     <string name="general">Общее</string>

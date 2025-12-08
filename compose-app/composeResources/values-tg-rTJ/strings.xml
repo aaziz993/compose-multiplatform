@@ -20,10 +20,12 @@
     <string name="done">Анҷомдод</string>
     <string name="description">Тавсиф</string>
     <string name="disabled">Гайрифаъол</string>
+    <string name="density">Миқес</string>
     <string name="enabled">Фаъол</string>
     <string name="error">Хато</string>
     <string name="false">Ноҳақ</string>
     <string name="exchange">Додугирифт</string>
+    <string name="expressive">Равшанӣ</string>
     <string name="file">Файл</string>
     <string name="general">Умумӣ</string>
     <string name="grid">Тӯр</string>

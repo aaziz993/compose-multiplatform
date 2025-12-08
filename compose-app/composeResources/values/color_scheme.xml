@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="color_scheme">Color scheme</string>
+    <string name="dynamic_color_scheme">Dynamic color scheme</string>
+    <string name="contrast">Contrast</string>
+    <string name="high_contrast">High contrast</string>
     <string name="primary">Primary</string>
     <string name="on_primary">On Primary</string>
     <string name="primary_container">Primary Container</string>
@@ -49,5 +53,4 @@
     <string name="on_tertiary_fixed_variant">On Tertiary Fixed Variant</string>
     <string name="neutral">Neutral</string>
     <string name="neutral_variant">Neutral variant</string>
-    <string name="contrast">Contrast</string>
 </resources>

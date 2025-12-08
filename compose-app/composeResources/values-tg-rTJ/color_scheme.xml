@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="color_scheme">Рангҳо</string>
+    <string name="dynamic_color_scheme">Рангҳои таҳаррук</string>
+    <string name="contrast">Акс</string>
+    <string name="high_contrast">Авҷи акс</string>
     <string name="primary">Аслӣ</string>
     <string name="on_primary">Дар аслӣ</string>
     <string name="primary_container">Контейнери аслӣ</string>
@@ -47,5 +51,4 @@
     <string name="tertiary_fixed_dim">Сеюмӣ собити торик</string>
     <string name="on_tertiary_fixed">Дар сеюмӣ собит</string>
     <string name="on_tertiary_fixed_variant">Дар намуди сеюмӣ собит</string>
-    <string name="contrast">Акс</string>
 </resources>

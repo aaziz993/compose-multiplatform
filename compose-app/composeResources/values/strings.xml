@@ -21,9 +21,11 @@
     <string name="done">Done</string>
     <string name="description">Description</string>
     <string name="disabled">Disabled</string>
+    <string name="density">Density</string>
     <string name="enabled">Enabled</string>
     <string name="error">Error</string>
     <string name="exchange">Exchange</string>
+    <string name="expressive">Expressive</string>
     <string name="false">False</string>
     <string name="file">File</string>
     <string name="general">General</string>
@@ -71,7 +73,6 @@
     <string name="duration">Duration</string>
     <string name="delay">Delay</string>
     <string name="easing">Easing</string>
-
 
 
 </resources>
