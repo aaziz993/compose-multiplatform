@@ -227,6 +227,7 @@ private fun SettingsGroupSpringSpec(
         icon = Icons.Default.AspectRatio,
         enabled = true,
         valueRange = 0.2f..1f,
+        steps = 2,
     ) { it, _ ->
         onValueChange(
             spring(
