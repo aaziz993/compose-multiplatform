@@ -2,13 +2,13 @@ package klib.data.config
 
 import klib.data.config.http.client.HttpClientConfig
 import klib.data.config.locale.Localization
-import klib.data.config.validator.ValidatorConfig
+import klib.data.validator.Validator
 
 public interface Config {
 
     public val log: LogConfig
     public val localization: Localization
-    public val validator: ValidatorConfig
+    public val validator: Map<String, Map<String, Validator>>
     public val httpClient: HttpClientConfig
     public val ui: UIConfig
     public val server: ServerConfig

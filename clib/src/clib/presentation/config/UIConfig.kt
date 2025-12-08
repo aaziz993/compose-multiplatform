@@ -14,8 +14,6 @@ public data class UIConfig(
     val components: Components = Components(),
     val theme: Theme = Theme(),
     val density: DensitySerial = Density(2f),
-    val locales: List<Locale> = emptyList(),
-    val locale: Locale = Locale.current,
     val quickAccess: Components = Components(),
     override val startRoute: String? = null,
     override val authRoute: String? = null,

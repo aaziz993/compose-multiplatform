@@ -1,4 +1,5 @@
 imports:
+  - application-log.yaml
   - application-appearance.yaml
   - application-localization.yaml
   - application-validator.yaml

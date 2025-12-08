@@ -2,7 +2,6 @@ package clib.presentation.config
 
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
-import clib.presentation.config.validator.ValidatorConfig
 import clib.presentation.noLocalProvidedFor
 import com.charleskorn.kaml.Yaml
 import klib.data.config.LogConfig
@@ -20,6 +19,7 @@ import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.yaml.decodeAnyFromString
+import klib.data.validator.Validator
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -31,10 +31,10 @@ public val LocalConfig: ProvidableCompositionLocal<Config> =
 public data class Config(
     override val log: LogConfig = LogConfig(),
     override val localization: Localization = Localization(),
-    override val validator: ValidatorConfig = ValidatorConfig(),
+    override val validator: Map<String, Map<String, Validator>> = emptyMap(),
+    override val httpClient: HttpClientConfig = HttpClientConfig(),
     override val ui: UIConfig = UIConfig(),
-    override val server: ServerConfig = ServerConfig(),
-    override val httpClient: HttpClientConfig = HttpClientConfig()
+    override val server: ServerConfig = ServerConfig()
 ) : klib.data.config.Config {
 
     public companion object {

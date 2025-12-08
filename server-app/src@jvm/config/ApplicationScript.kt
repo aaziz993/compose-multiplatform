@@ -1,7 +1,6 @@
 package config
 
 import com.github.ajalt.colormath.model.Ansi16
-import config.validator.ValidatorConfig
 import io.ktor.server.config.yaml.YamlConfig
 import java.io.File
 import klib.data.config.Config
@@ -14,6 +13,7 @@ import klib.data.type.primitives.string.ifNotEmpty
 import klib.data.type.primitives.string.scripting.Script
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny
+import klib.data.validator.Validator
 import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
@@ -56,7 +56,7 @@ public lateinit var applicationScript: ApplicationScript
 public class ApplicationScript(
     override val log: LogConfig = LogConfig(),
     override val localization: Localization = Localization(),
-    override val validator: ValidatorConfig = ValidatorConfig(),
+    override val validator: Map<String, Map<String, Validator>> = emptyMap(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),
     override val ui: klib.data.config.UIConfig = UIConfig(),
     override val server: klib.data.config.ServerConfig = klib.data.config.ServerConfig(),

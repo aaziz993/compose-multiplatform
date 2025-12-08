@@ -68,7 +68,7 @@ public fun AppEnvironment(
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
-    localeState: LocaleState = rememberLocaleState(config.ui.locale),
+    localeState: LocaleState = rememberLocaleState(config.localization.locale),
     authState: AuthState = rememberAuthState(),
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
