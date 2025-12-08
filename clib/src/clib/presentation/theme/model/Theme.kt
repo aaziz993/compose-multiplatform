@@ -36,9 +36,9 @@ public data class Theme(
         @Composable
         get() {
             val (lightColorScheme, darkColorScheme) =
-                if (isHighContrast) lightColorScheme to lightColorSchemeHighContrast
-                else darkColorScheme to darkColorSchemeHighContrast
-            return if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
+                if (isHighContrast) lightColorSchemeHighContrast to darkColorSchemeHighContrast
+                else lightColorScheme to darkColorScheme
+            return if (isDark ?: isSystemInDarkTheme()) darkColorScheme else lightColorScheme
         }
 
     public val currentDynamicColorScheme: DynamicColorScheme
@@ -53,12 +53,12 @@ public data class Theme(
     @Composable
     public fun copyColorScheme(): (ColorScheme) -> Theme {
         val isDark = isDark ?: isSystemInDarkTheme()
-        return if (isDark) {
-            if (isHighContrast) { colorScheme -> copy(darkColorSchemeHighContrast = colorScheme) }
-            else { colorScheme -> copy(darkColorScheme = colorScheme) }
+        return if (isHighContrast) {
+            if (isDark) { colorScheme -> copy(darkColorSchemeHighContrast = colorScheme) }
+            else { colorScheme -> copy(lightColorSchemeHighContrast = colorScheme) }
         }
         else {
-            if (isHighContrast) { colorScheme -> copy(lightColorSchemeHighContrast = colorScheme) }
+            if (isDark) { colorScheme -> copy(darkColorScheme = colorScheme) }
             else { colorScheme -> copy(lightColorScheme = colorScheme) }
         }
     }

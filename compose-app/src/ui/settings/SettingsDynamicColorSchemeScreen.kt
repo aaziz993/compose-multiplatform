@@ -17,12 +17,12 @@ import androidx.compose.material.icons.filled.AspectRatio
 import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.Devices
 import androidx.compose.material.icons.filled.Functions
+import androidx.compose.material.icons.filled.Monitor
 import androidx.compose.material.icons.filled.Scale
-import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material.icons.filled.Timelapse
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.outlined.Animation
-import androidx.compose.material.icons.outlined.SmartDisplay
+import androidx.compose.material.icons.outlined.Monitor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -81,8 +81,8 @@ public fun SettingsDynamicColorSchemeScreen(
     SettingsSwitch(
         title = stringResource(Res.string.amoled),
         value = colorScheme.isAmoled,
-        trueIcon = Icons.Filled.SmartDisplay,
-        falseIcon = Icons.Outlined.SmartDisplay,
+        trueIcon = Icons.Filled.Monitor,
+        falseIcon = Icons.Outlined.Monitor,
         onCheckedChange = { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(isAmoled = value)))
         },
