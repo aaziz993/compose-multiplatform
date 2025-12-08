@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="typography">/Типография</string>
+    <string name="typography">Типография</string>
     <string name="font">Шрифт</string>
     <string name="font_scale">Растяжение фонта</string>
     <string name="font_size">/Размер шрифта</string>

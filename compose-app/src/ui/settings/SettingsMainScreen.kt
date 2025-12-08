@@ -217,7 +217,7 @@ public fun SettingsMainScreen(
         SettingsSliderFinished(
             title = stringResource(Res.string.font_scale),
             initialValue = density.fontScale,
-            icon = { Icons.Default.Scale },
+            icon = { Icons.Default.LinearScale },
             enabled = true,
             valueRange = 1f..2f,
             steps = 1,
