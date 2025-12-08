@@ -65,10 +65,13 @@ import compose_app.generated.resources.title_small_emphasized
 import compose_app.generated.resources.body_large_emphasized
 import compose_app.generated.resources.body_medium_emphasized
 import compose_app.generated.resources.body_small_emphasized
+import compose_app.generated.resources.font_family
 import compose_app.generated.resources.label_large_emphasized
 import compose_app.generated.resources.label_medium_emphasized
 import compose_app.generated.resources.label_small_emphasized
 import compose_app.generated.resources.font_size
+import compose_app.generated.resources.font_style
+import compose_app.generated.resources.font_synthesis
 import compose_app.generated.resources.font_weight
 import compose_app.generated.resources.letter_spacing
 import compose_app.generated.resources.line_height
@@ -573,7 +576,7 @@ private fun SettingsTextStyle(
         SettingsListPickerDialog(
             fontStyle,
             values = fontStyles,
-            title = title,
+            title = stringResource(Res.string.font_style),
             icon = Icons.Default.FormatShapes,
             modifier = Modifier,
             enabled = true,
@@ -587,7 +590,7 @@ private fun SettingsTextStyle(
         SettingsListPickerDialog(
             _fontSynthesis,
             values = fontSynthesis,
-            title = title,
+            title = stringResource(Res.string.font_synthesis),
             icon = Icons.Default.FormatPaint,
             modifier = Modifier,
             enabled = true,
@@ -601,7 +604,7 @@ private fun SettingsTextStyle(
         SettingsListPickerDialog(
             fontFamily,
             values = fontFamilies,
-            title = title,
+            title = stringResource(Res.string.font_family),
             icon = Icons.Default.TextFormat,
             modifier = Modifier,
             enabled = true,
