@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_color_scheme">Танзими рангхо</string>
+    <string name="settings_dynamic_color_scheme">Танзими рангҳои таҳаррук</string>
+    <string name="settings_shapes">Танзими шакл</string>
+    <string name="settings_typography">Танзими матбаа</string>
+</resources>

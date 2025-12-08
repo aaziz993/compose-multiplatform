@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.textfield.otp.OtpInputField
 
+@Suppress("ComposeModifierMissing")
 @Composable
 public fun AppOtpInputField(
     otp: MutableState<String>,
