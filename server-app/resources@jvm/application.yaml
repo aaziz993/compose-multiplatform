@@ -1,7 +1,8 @@
 imports:
-  - application-log.yaml
   - application-koin.yaml
+  - application-log.yaml
   - application-localization.yaml
+  - application-validator.yaml
   - application-server.yaml
   - application-serialization.yaml
   - application-https-redirect.yaml
