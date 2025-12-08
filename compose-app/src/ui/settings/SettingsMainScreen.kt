@@ -48,12 +48,12 @@ import compose_app.generated.resources.appearance
 import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.clear
-import compose_app.generated.resources.color_palette
+import compose_app.generated.resources.color_scheme
 import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
 import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.density
-import compose_app.generated.resources.dynamic_color_palette
+import compose_app.generated.resources.dynamic_color_scheme
 import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.high_contrast
@@ -136,7 +136,7 @@ public fun SettingsMainScreen(
         }
 
         SettingsSwitch(
-            title = stringResource(Res.string.dynamic_color_palette),
+            title = stringResource(Res.string.dynamic_color_scheme),
             value = theme.isDynamic,
             trueIcon = Icons.Filled.Palette,
             falseIcon = Icons.Outlined.Palette,
@@ -154,7 +154,7 @@ public fun SettingsMainScreen(
         }
 
         SettingsMenuLink(
-            title = stringResource(Res.string.color_palette),
+            title = stringResource(Res.string.color_scheme),
             enabled = true,
             icon = Icons.Default.Palette,
         ) {
@@ -162,7 +162,7 @@ public fun SettingsMainScreen(
         }
 
         SettingsMenuLink(
-            title = stringResource(Res.string.dynamic_color_palette),
+            title = stringResource(Res.string.dynamic_color_scheme),
             enabled = true,
             icon = Icons.Default.Palette,
         ) {
