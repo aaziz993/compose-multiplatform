@@ -90,7 +90,6 @@ public fun AppEnvironment(
         LocalLocaleState provides localeState,
         LocalAppLocale provides localeState.locale,
         LocalAuthState provides authState,
-        LocalConnectivity provides connectivity,
         LocalStateStore provides stateStore,
         LocalEventBus provides eventBus,
     ) {
@@ -123,8 +122,7 @@ public fun AppEnvironment(
         }
 
         val (colorScheme, seedColor) = if (theme.isDynamic) {
-            val dynamicColorScheme =
-                if (theme.isHighContrast) theme.dynamicColorSchemeHighContrast else theme.dynamicColorScheme
+            val dynamicColorScheme = theme.currentDynamicColorScheme
 
             val state = rememberDynamicMaterialThemeState(
                 seedColor = dynamicColorScheme.seedColor,
@@ -152,13 +150,7 @@ public fun AppEnvironment(
                 },
             )) to state.seedColor
         }
-        else {
-            val (lightColorScheme, darkColorScheme) =
-                if (theme.isHighContrast) theme.lightColorSchemeHighContrast to theme.darkColorSchemeHighContrast
-                else theme.lightColorScheme to theme.darkColorScheme
-
-            (if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme) to Color.Transparent
-        }
+        else theme.currentColorScheme to Color.Transparent
 
         CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
             MaterialExpressiveTheme(
