@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
 public data class Localization(
     val locales: List<Locale> = emptyList(),
     val locale: Locale = Locale.current,
-    val weblates: WeblateConfig? = null,
+    val weblate: WeblateConfig? = null,
 )

@@ -94,7 +94,7 @@ public class CommonModule {
             WeblateApiService(
                 weblate.baseUrl,
                 weblate.apiKey,
-                config.appName,
+                weblate.projectName,
                 httpClient,
             )
         } ?: LocaleService()
