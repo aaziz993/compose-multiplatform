@@ -1,7 +1,6 @@
 package ui.settings
 
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -32,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.components.model.item.Item
-import clib.presentation.theme.model.EasingSerial
 import clib.presentation.theme.model.Theme
 import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
@@ -55,8 +53,6 @@ import compose_app.generated.resources.tertiary
 import compose_app.generated.resources.visibility_threshold
 import data.type.primitives.string.asStringResource
 import klib.data.type.cast
-import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.case.toSnakeCase
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog
@@ -196,10 +192,8 @@ public fun SettingsDynamicColorSchemeScreen(
             values = animationSpecs,
             title = stringResource(Res.string.animate),
             icon = Icons.Default.Animation,
-            subtitle = { Text(animationSpec.asStringResource()) },
             modifier = Modifier,
             enabled = true,
-            item = { value -> Item(text = { Text(value.asStringResource()) }) },
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(animationSpec = value)))
             false
@@ -329,10 +323,8 @@ private fun SettingsGroupTweenSpec(
         values = easings,
         title = stringResource(Res.string.easing),
         icon = Icons.Default.Functions,
-        subtitle = { Text(value.easing.asStringResource()) },
         modifier = Modifier,
         enabled = true,
-        item = { value -> Item(text = { Text(value.asStringResource()) }) },
     ) {
         onValueChange(
             tween(

@@ -32,7 +32,7 @@ public fun <E> SettingsListPickerDialog(
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: ImageVector? = null,
-    subtitle: (@Composable () -> Unit)? = { Text(value.toString().asStringResource()) },
+    subtitle: (@Composable () -> Unit)? = { Text(value.asStringResource()) },
     action: (@Composable () -> Unit)? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
@@ -40,8 +40,8 @@ public fun <E> SettingsListPickerDialog(
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     item: (E) -> Item = { value ->
         Item(
-            text = { Text(value.toString().asStringResource()) },
-            icon = { icon?.let { Icon(it, value.toString().asStringResource()) } },
+            text = { Text(value.asStringResource()) },
+            icon = { icon?.let { Icon(it, value.asStringResource()) } },
         )
     },
     textStyle: TextStyle = LocalTextStyle.current,
@@ -58,7 +58,7 @@ public fun <E> SettingsListPickerDialog(
     { Text(title) },
     modifier,
     enabled,
-    icon?.let { { Icon(it, value.toString().asStringResource()) } },
+    icon?.let { { Icon(it, value.asStringResource()) } },
     subtitle,
     action,
     colors,
