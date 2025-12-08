@@ -226,7 +226,7 @@ private fun SettingsGroupSpringSpec(
         value = value.dampingRatio,
         icon = Icons.Default.AspectRatio,
         enabled = true,
-        valueRange = 0.01f..1f,
+        valueRange = 0.2f..1f,
     ) { it, _ ->
         onValueChange(
             spring(
@@ -242,7 +242,7 @@ private fun SettingsGroupSpringSpec(
         value = value.stiffness,
         icon = Icons.Default.Scale,
         enabled = true,
-        valueRange = 200f..10_000f,
+        valueRange = 50f..10_000f,
     ) { it, _ ->
         onValueChange(
             spring(
@@ -279,7 +279,7 @@ private fun SettingsGroupTweenSpec(
         value = value.durationMillis.toFloat(),
         icon = Icons.Default.Timelapse,
         enabled = true,
-        valueRange = 100f..5_000f,
+        valueRange = 0f..5_000f,
     ) { it, _ ->
         onValueChange(
             tween(
@@ -295,7 +295,7 @@ private fun SettingsGroupTweenSpec(
         value = value.delay.toFloat(),
         icon = Icons.Default.Timer,
         enabled = true,
-        valueRange = 100f..5_000f,
+        valueRange = 0f..5_000f,
     ) { it, _ ->
         onValueChange(
             tween(
