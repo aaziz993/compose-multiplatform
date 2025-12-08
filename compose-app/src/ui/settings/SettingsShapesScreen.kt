@@ -154,7 +154,7 @@ private fun SettingsCornerSize(
     initialValue = value.toPx(Size(50), LocalDensity.current),
     icon = { Icons.Default.RoundedCorner },
     enabled = true,
-    valueRange = 0f..50f,
+    valueRange = 8f..200f,
     onValueChanged = { value ->
         onValueChange(CornerSize(value))
     },
