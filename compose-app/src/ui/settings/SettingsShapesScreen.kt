@@ -20,7 +20,6 @@ import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.bottom_end
 import compose_app.generated.resources.bottom_start
-import compose_app.generated.resources.density
 import compose_app.generated.resources.extra_large
 import compose_app.generated.resources.extra_small
 import compose_app.generated.resources.large
