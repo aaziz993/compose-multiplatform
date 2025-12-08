@@ -1,13 +1,12 @@
 package config
 
 import com.github.ajalt.colormath.model.Ansi16
-import io.ktor.server.config.yaml.*
+import io.ktor.server.config.yaml.YamlConfig
 import java.io.File
 import klib.data.config.Config
-import klib.data.config.locale.Localization
 import klib.data.config.LogConfig
-import klib.data.config.di.KoinConfig
 import klib.data.config.http.client.HttpClientConfig
+import klib.data.config.locale.Localization
 import klib.data.config.validator.ValidatorConfig
 import klib.data.type.primitives.string.ansi.Attribute
 import klib.data.type.primitives.string.ansi.ansiSpan
@@ -56,7 +55,6 @@ public lateinit var applicationScript: ApplicationScript
 @Serializable
 public class ApplicationScript(
     override val log: LogConfig = LogConfig(),
-    override val koin: KoinConfig = KoinConfig(),
     override val localization: Localization = Localization(),
     override val validator: ValidatorConfig = ValidatorConfig(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),

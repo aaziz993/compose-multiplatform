@@ -2,10 +2,15 @@ config:
   imports:
     - org.koin.core.KoinApplication
     - org.koin.ktor.plugin.Koin
+    - org.koin.logger.slf4jLogger
+    - org.koin.core.logger.Level
+    - org.koin.dsl.module
+    - config.applicationScript
 script:
   - module: |
       {
         install(Koin) {
-          modules()
+          slf4jLogger(Level.INFO)
+          modules(module { single { applicationScript } })
         }
       }
