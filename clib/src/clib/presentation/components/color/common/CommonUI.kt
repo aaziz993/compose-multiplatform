@@ -187,51 +187,49 @@ internal fun SelectedColorDetail(
         if (hex != newHex) hex = newHex
     }
 
-    Row {
-        OutlinedTextField(
-            value = hex,
-            onValueChange = {
-                hex = it
-                if (Regex.HEX_COLOR.matches(it))
-                    onValueChange(it.hexToColor())
-            },
-            modifier = Modifier
-                .padding(2.dp)
-                .weight(.8f),
-            label = { Text(text = title) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Circle,
-                    contentDescription = title,
-                    Modifier.border(
-                        2.dp,
-                        MaterialTheme.colorScheme.onSurface,
-                        CircleShape,
-                    ),
-                    tint = value,
-                )
-            },
-            trailingIcon = {
-                // Retrieve a ClipboardManager object.
-                val clipboard = LocalClipboard.current
-                val coroutineScope = rememberCoroutineScope()
+    OutlinedTextField(
+        value = hex,
+        onValueChange = {
+            hex = it
+            if (Regex.HEX_COLOR.matches(it))
+                onValueChange(it.hexToColor())
+        },
+        modifier = Modifier
+            .padding(2.dp)
+            .fillMaxWidth(),
+        label = { Text(text = title) },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Circle,
+                contentDescription = title,
+                Modifier.border(
+                    2.dp,
+                    MaterialTheme.colorScheme.onSurface,
+                    CircleShape,
+                ),
+                tint = value,
+            )
+        },
+        trailingIcon = {
+            // Retrieve a ClipboardManager object.
+            val clipboard = LocalClipboard.current
+            val coroutineScope = rememberCoroutineScope()
 
-                IconButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            clipboard.setClipEntry(hex.toClipEntry())
-                        }
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.CopyAll,
-                        contentDescription = copy,
-                    )
-                }
-            },
-            singleLine = true,
-        )
-    }
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        clipboard.setClipEntry(hex.toClipEntry())
+                    }
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.CopyAll,
+                    contentDescription = copy,
+                )
+            }
+        },
+        singleLine = true,
+    )
 }
 
 /**

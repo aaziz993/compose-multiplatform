@@ -150,8 +150,8 @@ private fun SettingsCornerSize(
     value: CornerSize,
     onValueChange: (CornerSize) -> Unit,
 ) = SettingsSliderFinished(
-    title = stringResource(Res.string.density),
-    initialValue = value.toPx(Size(50), LocalDensity.current),
+    title = title,
+    initialValue = value.toPx(Size(200), LocalDensity.current),
     icon = { Icons.Default.RoundedCorner },
     enabled = true,
     valueRange = 8f..200f,

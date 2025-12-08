@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shapes">Shapes</string>
+    <string name="corner_size">Corner size</string>
+    <string name="display_point">Display point</string>
+    <string name="pixel">Percent</string>
+    <string name="percent">Percent</string>
+    <string name="extra_small">Extra small</string>
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
+    <string name="extra_large">Extra large</string>
+    <string name="top_start">Top start</string>
+    <string name="top_end">Top end</string>
+    <string name="bottom_end">Bottom end</string>
+    <string name="bottom_start">Bottom start</string>
+</resources>

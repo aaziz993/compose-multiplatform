@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shapes">Шакл</string>
+    <string name="corner_size">Чени бӯчак</string>
+    <string name="display_point">Ченаки дисплей</string>
+    <string name="pixel">Пиксел</string>
+    <string name="percent">Просент</string>
+    <string name="extra_small">Аз ҳад хурд</string>
+    <string name="small">Хурд</string>
+    <string name="medium">Миена</string>
+    <string name="large">Калон</string>
+    <string name="extra_large">Аз ҳад калон</string>
+    <string name="top_start">Аввали боло</string>
+    <string name="top_end">Охири боло</string>
+    <string name="bottom_end">Охири поен</string>
+    <string name="bottom_start">Аввали поен</string>
+</resources>

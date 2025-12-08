@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shapes">Форма</string>
+    <string name="corner_size">Размер угла</string>
+    <string name="display_point">Дисплей единица</string>
+    <string name="pixel">Пиксель</string>
+    <string name="percent">Процент</string>
+    <string name="extra_small">Эстра малый</string>
+    <string name="small">Малый</string>
+    <string name="medium">Средний</string>
+    <string name="large">Большой</string>
+    <string name="extra_large">Экстра большой</string>
+    <string name="top_start">Верхнее начало</string>
+    <string name="top_end">Верхний конец</string>
+    <string name="bottom_end">Нижний конец</string>
+    <string name="bottom_start">Нижнее начало</string>
+</resources>
