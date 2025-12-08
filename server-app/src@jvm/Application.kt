@@ -34,8 +34,10 @@ public fun main(): Unit = SuspendApp {
     }
 }
 
-private fun Application.module() {
-}
+/**
+ * Additional module configurations maybe done here.
+ */
+private fun Application.module() = Unit
 
 public fun Application.ping(): Routing = routing {
     get(

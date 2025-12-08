@@ -15,12 +15,9 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
-import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material.icons.filled.SignalCellular0Bar
 import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4Bar
-import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.TextFormat
-import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.FlashOn
@@ -121,6 +118,7 @@ public fun SettingsMainScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val coroutineScope = rememberCoroutineScope()
+
     SettingsGroup(
         modifier = Modifier,
         enabled = true,
@@ -400,7 +398,7 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.recovery)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        val canReset = theme != defaultTheme ||
+        val resettable = theme != defaultTheme ||
             density != defaultDensity ||
             locale != defaultLocale ||
             components != defaultComponents
@@ -408,8 +406,8 @@ public fun SettingsMainScreen(
         SettingsMenuLink(
             title = stringResource(Res.string.reset),
             enabled = true,
-            icon = if (canReset) Icons.Outlined.Restore else Icons.Filled.Restore,
-            subtitle = if (canReset) stringResource(Res.string.reset) else "",
+            icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
+            subtitle = if (resettable) stringResource(Res.string.reset) else "",
         ) {
             if (theme != defaultTheme) onThemeChange(defaultTheme)
             if (density != defaultDensity) onDensityChange(defaultDensity)

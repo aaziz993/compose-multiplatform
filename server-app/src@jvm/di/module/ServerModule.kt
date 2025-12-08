@@ -1,5 +1,6 @@
 package di.module
 
+import config.applicationScript
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.cache.HttpCache
@@ -24,6 +25,9 @@ import org.koin.core.annotation.Single
 @Configuration
 @ComponentScan
 public class ServerModule {
+
+    @Single
+    public fun provideConfig(): Config = applicationScript
 
     @Single
     public fun provideJson(): Json = HTTP_CLIENT_JSON
