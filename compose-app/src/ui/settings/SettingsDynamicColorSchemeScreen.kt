@@ -81,8 +81,8 @@ public fun SettingsDynamicColorSchemeScreen(
     SettingsSwitch(
         title = stringResource(Res.string.amoled),
         value = colorScheme.isAmoled,
-        trueIcon = Icons.Outlined.SmartDisplay,
-        falseIcon = Icons.Filled.SmartDisplay,
+        trueIcon = Icons.Filled.SmartDisplay,
+        falseIcon = Icons.Outlined.SmartDisplay,
         onCheckedChange = { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(isAmoled = value)))
         },
@@ -169,8 +169,8 @@ public fun SettingsDynamicColorSchemeScreen(
     SettingsSwitch(
         title = stringResource(Res.string.animate),
         value = colorScheme.animate,
-        trueIcon = Icons.Outlined.Animation,
-        falseIcon = Icons.Filled.Animation,
+        trueIcon = Icons.Filled.Animation,
+        falseIcon = Icons.Outlined.Animation,
         onCheckedChange = { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(animate = value)))
         },

@@ -4,13 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Accessibility
+import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.FormatShapes
+import androidx.compose.material.icons.filled.Highlight
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Looks
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
@@ -19,9 +18,10 @@ import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.filled.TouchApp
-import androidx.compose.material.icons.outlined.Accessibility
+import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.FlashOn
+import androidx.compose.material.icons.outlined.Highlight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Palette
@@ -136,8 +136,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.dynamic_color_palette),
             value = theme.isDynamic,
-            trueIcon = Icons.Outlined.Palette,
-            falseIcon = Icons.Filled.Palette,
+            trueIcon = Icons.Filled.Palette,
+            falseIcon = Icons.Outlined.Palette,
         ) { value ->
             onThemeChange(theme.copy(isDynamic = value))
         }
@@ -145,8 +145,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.high_contrast),
             value = theme.isHighContrast,
-            trueIcon = Icons.Outlined.Accessibility,
-            falseIcon = Icons.Filled.Accessibility,
+            trueIcon = Icons.Filled.Highlight,
+            falseIcon = Icons.Outlined.Highlight,
         ) { value ->
             onThemeChange(theme.copy(isHighContrast = value))
         }
@@ -154,7 +154,7 @@ public fun SettingsMainScreen(
         SettingsMenuLink(
             title = stringResource(Res.string.color_palette),
             enabled = true,
-            icon = Icons.Default.ColorLens,
+            icon = Icons.Default.Palette,
         ) {
             onNavigationAction(NavigationAction.Push(SettingsColorScheme))
         }
@@ -162,7 +162,7 @@ public fun SettingsMainScreen(
         SettingsMenuLink(
             title = stringResource(Res.string.dynamic_color_palette),
             enabled = true,
-            icon = Icons.Default.ColorLens,
+            icon = Icons.Default.Palette,
         ) {
             onNavigationAction(NavigationAction.Push(SettingsDynamicColorScheme))
         }
@@ -170,8 +170,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             stringResource(Res.string.expressive),
             value = theme.isExpressive,
-            trueIcon = Icons.Outlined.Palette,
-            falseIcon = Icons.Filled.Palette,
+            trueIcon = Icons.Filled.AutoAwesomeMotion,
+            falseIcon = Icons.Outlined.AutoAwesomeMotion,
         ) { state ->
             onThemeChange(theme.copy(isExpressive = !theme.isExpressive))
         }
@@ -301,8 +301,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_support),
             value = components.quickAccess.isSupport,
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
@@ -315,8 +315,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_themes),
             value = components.quickAccess.isTheme,
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
@@ -329,8 +329,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_locales),
             value = components.quickAccess.isLocale,
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
@@ -343,8 +343,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.quick_access_to_avatar),
             value = components.quickAccess.isAvatar,
-            trueIcon = Icons.Outlined.FlashOn,
-            falseIcon = Icons.Filled.FlashOn,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
@@ -364,8 +364,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.camera),
             value = Permission.CAMERA,
-            trueIcon = Icons.Outlined.CameraAlt,
-            falseIcon = Icons.Filled.CameraAlt,
+            trueIcon = Icons.Filled.CameraAlt,
+            falseIcon = Icons.Outlined.CameraAlt,
             permissions = permissions,
             coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
@@ -374,8 +374,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.microphone),
             value = Permission.RECORD_AUDIO,
-            trueIcon = Icons.Outlined.Mic,
-            falseIcon = Icons.Filled.Mic,
+            trueIcon = Icons.Filled.Mic,
+            falseIcon = Icons.Outlined.Mic,
             permissions = permissions,
             coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
@@ -384,8 +384,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.location),
             value = Permission.LOCATION,
-            trueIcon = Icons.Outlined.LocationOn,
-            falseIcon = Icons.Filled.LocationOn,
+            trueIcon = Icons.Filled.LocationOn,
+            falseIcon = Icons.Outlined.LocationOn,
             permissions = permissions,
             coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
