@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.FormatPaint
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Height
+import androidx.compose.material.icons.filled.LineAxis
 import androidx.compose.material.icons.filled.LineWeight
 import androidx.compose.material.icons.filled.Style
 import androidx.compose.material.icons.filled.TextFormat
@@ -551,26 +552,28 @@ private fun SettingsTextStyle(
 ) {
     SettingsSliderFinished(
         title = stringResource(Res.string.font_size),
-        initialValue = 0f,
+        initialValue = value.fontSize.toFloatPx(),
         icon = { Icons.Default.FormatSize },
         enabled = true,
-        valueRange = 8f..72f,
+        valueRange = 1f..72f,
         onValueChanged = {
             onValueChanged(value.copy(fontSize = it.sp))
         },
     )
 
-    SettingsSliderFinished(
-        title = stringResource(Res.string.font_weight),
-        initialValue = 0f,
-        icon = { Icons.Default.FormatBold },
-        enabled = true,
-        valueRange = 100f..900f,
-        steps = 7,
-        onValueChanged = {
-            onValueChanged(value.copy(fontWeight = FontWeight(it.roundToInt())))
-        },
-    )
+    value.fontWeight?.let { fontWeight ->
+        SettingsSliderFinished(
+            title = stringResource(Res.string.font_weight),
+            initialValue = fontWeight.weight.toFloatPx(),
+            icon = { Icons.Default.FormatBold },
+            enabled = true,
+            valueRange = 1f..1000f,
+            steps = 7,
+            onValueChanged = {
+                onValueChanged(value.copy(fontWeight = FontWeight(it.roundToInt())))
+            },
+        )
+    }
 
     value.fontStyle?.let { fontStyle ->
         SettingsListPickerDialog(
@@ -619,7 +622,7 @@ private fun SettingsTextStyle(
         initialValue = value.lineHeight.toFloatPx(),
         icon = { Icons.Default.Height },
         enabled = true,
-        valueRange = 8f..72f,
+        valueRange = 32f..128f,
         onValueChanged = {
             onValueChanged(value.copy(lineHeight = it.sp))
         },
@@ -628,9 +631,9 @@ private fun SettingsTextStyle(
     SettingsSliderFinished(
         title = stringResource(Res.string.letter_spacing),
         initialValue = value.letterSpacing.toFloatPx(),
-        icon = { Icons.Default.FormatLineSpacing },
+        icon = { Icons.Default.LineAxis },
         enabled = true,
-        valueRange = 0f..72f,
+        valueRange = 0f..100f,
         onValueChanged = {
             onValueChanged(value.copy(letterSpacing = it.sp))
         },
