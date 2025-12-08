@@ -34,6 +34,7 @@ import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.amoled
 import compose_app.generated.resources.animate
+import compose_app.generated.resources.animation_spec
 import compose_app.generated.resources.contrast
 import compose_app.generated.resources.damping_ratio
 import compose_app.generated.resources.delay
@@ -187,7 +188,7 @@ public fun SettingsDynamicColorSchemeScreen(
         SettingsListPickerDialog(
             animationSpec,
             values = animationSpecs,
-            title = stringResource(Res.string.animate),
+            title = stringResource(Res.string.animation_spec),
             icon = Icons.Default.Animation,
             modifier = Modifier,
             enabled = true,

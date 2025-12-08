@@ -59,4 +59,13 @@
     <string name="id">ID</string>
     <string name="image">Изображение</string>
     <string name="wallet">Кошелек</string>
+
+    <string name="spring">Пружина</string>
+    <string name="damping_ratio">Коэффициент затухания</string>
+    <string name="stiffness">Жесткость</string>
+    <string name="visibility_threshold">Порог видимости</string>
+    <string name="tween">Tween</string>
+    <string name="duration">Продолжительность</string>
+    <string name="delay">Задержка</string>
+    <string name="easing">Расслабление</string>
 </resources>

@@ -47,4 +47,5 @@
     <string name="tertiary_fixed_dim">Сеюмӣ собити торик</string>
     <string name="on_tertiary_fixed">Дар сеюмӣ собит</string>
     <string name="on_tertiary_fixed_variant">Дар намуди сеюмӣ собит</string>
+    <string name="contrast">Акс</string>
 </resources>

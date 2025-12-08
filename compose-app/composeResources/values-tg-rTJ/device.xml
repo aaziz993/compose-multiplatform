@@ -3,8 +3,8 @@
     <string name="camera">Наворгир</string>
     <string name="microphone">Садогир</string>
     <string name="gallery">Суратхона</string>
-    <string name="storage">Хранилище</string>
-    <string name="write_storage">Записываемое хранилище</string>
+    <string name="storage">Маҳзан</string>
+    <string name="write_storage">Маҳзани сабткунанда</string>
     <string name="location">Макон</string>
     <string name="coarse_location">Приблизительная местоположение</string>
     <string name="background_location">Фоновое местоположение</string>

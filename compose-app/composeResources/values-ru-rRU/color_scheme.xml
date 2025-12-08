@@ -47,4 +47,5 @@
     <string name="tertiary_fixed_dim">Тёмный фиксированный третичный</string>
     <string name="on_tertiary_fixed">На фиксированном третичном</string>
     <string name="on_tertiary_fixed_variant">На варианте фиксированного третичного</string>
+    <string name="contrast">Контраст</string>
 </resources>
