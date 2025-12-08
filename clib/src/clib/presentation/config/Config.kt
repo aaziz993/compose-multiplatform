@@ -2,13 +2,13 @@ package clib.presentation.config
 
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
+import clib.presentation.config.validator.ValidatorConfig
 import clib.presentation.noLocalProvidedFor
 import com.charleskorn.kaml.Yaml
 import klib.data.config.LogConfig
 import klib.data.config.ServerConfig
 import klib.data.config.http.client.HttpClientConfig
 import klib.data.config.locale.Localization
-import klib.data.config.validator.ValidatorConfig
 import klib.data.coroutines.runBlocking
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList

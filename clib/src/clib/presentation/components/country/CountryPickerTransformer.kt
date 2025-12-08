@@ -17,13 +17,11 @@ public class CountryPickerTransformer(phoneNumberUtil: PhoneNumberUtil, countryC
         return TransformedText(
             AnnotatedString(transformation.formatted.orEmpty()),
             object : OffsetMapping {
-                override fun originalToTransformed(offset: Int): Int {
-                    return transformation.originalToTransformed[offset.coerceIn(transformation.originalToTransformed.indices)]
-                }
+                override fun originalToTransformed(offset: Int): Int =
+                    transformation.originalToTransformed[offset.coerceIn(transformation.originalToTransformed.indices)]
 
-                override fun transformedToOriginal(offset: Int): Int {
-                    return transformation.transformedToOriginal[offset.coerceIn(transformation.transformedToOriginal.indices)]
-                }
+                override fun transformedToOriginal(offset: Int): Int =
+                    transformation.transformedToOriginal[offset.coerceIn(transformation.transformedToOriginal.indices)]
             },
         )
     }

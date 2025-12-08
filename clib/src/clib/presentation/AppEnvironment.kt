@@ -75,96 +75,100 @@ public fun AppEnvironment(
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
-): Unit = CompositionLocalProvider(
-    LocalConfig provides config,
-    LocalConnectivity provides connectivity,
-    LocalPermissionsState provides permissionsState,
-    LocalComponentsState provides componentsState,
-    LocalThemeState provides themeState,
-    LocalAppTheme provides themeState.theme.isDark,
-    LocalDensityState provides densityState,
-    LocalDensity provides densityState.density,
-    LocalLocaleState provides localeState,
-    LocalAppLocale provides localeState.locale,
-    LocalAuthState provides authState,
-    LocalConnectivity provides connectivity,
-    LocalStateStore provides stateStore,
-    LocalEventBus provides eventBus,
 ) {
-    val theme = themeState.theme
+    config.log.configureKmLogging()
 
-    with(componentsState.components.connectivity) {
-        LaunchedEffect(connectivity) {
-            if (isConnectivityAlert)
-                when (connectivity) {
-                    is Status.Connected -> GlobalAlertEventController.sendEvent(
-                        AlertEvent(onlineText),
-                    )
+    CompositionLocalProvider(
+        LocalConfig provides config,
+        LocalConnectivity provides connectivity,
+        LocalPermissionsState provides permissionsState,
+        LocalComponentsState provides componentsState,
+        LocalThemeState provides themeState,
+        LocalAppTheme provides themeState.theme.isDark,
+        LocalDensityState provides densityState,
+        LocalDensity provides densityState.density,
+        LocalLocaleState provides localeState,
+        LocalAppLocale provides localeState.locale,
+        LocalAuthState provides authState,
+        LocalConnectivity provides connectivity,
+        LocalStateStore provides stateStore,
+        LocalEventBus provides eventBus,
+    ) {
+        val theme = themeState.theme
 
-                    is Status.Disconnected -> GlobalAlertEventController.sendEvent(
-                        AlertEvent(offlineText),
-                    )
-                }
+        with(componentsState.components.connectivity) {
+            LaunchedEffect(connectivity) {
+                if (isConnectivityAlert)
+                    when (connectivity) {
+                        is Status.Connected -> GlobalAlertEventController.sendEvent(
+                            AlertEvent(onlineText),
+                        )
 
-            if (isConnectivitySnackbar)
-                when (connectivity) {
-                    is Status.Connected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(onlineText),
-                    )
+                        is Status.Disconnected -> GlobalAlertEventController.sendEvent(
+                            AlertEvent(offlineText),
+                        )
+                    }
 
-                    is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(offlineText),
-                    )
-                }
+                if (isConnectivitySnackbar)
+                    when (connectivity) {
+                        is Status.Connected -> GlobalSnackbarEventController.sendEvent(
+                            SnackbarEvent(onlineText),
+                        )
+
+                        is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
+                            SnackbarEvent(offlineText),
+                        )
+                    }
+            }
         }
-    }
 
-    val (colorScheme, seedColor) = if (theme.isDynamic) {
-        val dynamicColorScheme =
-            if (theme.isHighContrast) theme.dynamicColorSchemeHighContrast else theme.dynamicColorScheme
+        val (colorScheme, seedColor) = if (theme.isDynamic) {
+            val dynamicColorScheme =
+                if (theme.isHighContrast) theme.dynamicColorSchemeHighContrast else theme.dynamicColorScheme
 
-        val state = rememberDynamicMaterialThemeState(
-            seedColor = dynamicColorScheme.seedColor,
-            isDark = isSystemInDarkTheme(),
-            isAmoled = dynamicColorScheme.isAmoled,
-            primary = dynamicColorScheme.primary,
-            secondary = dynamicColorScheme.secondary,
-            tertiary = dynamicColorScheme.tertiary,
-            neutral = dynamicColorScheme.neutral,
-            neutralVariant = dynamicColorScheme.neutralVariant,
-            error = dynamicColorScheme.error,
-            contrastLevel = dynamicColorScheme.contrastLevel,
-            specVersion = ColorSpec.SpecVersion.SPEC_2025,
-            platform = dynamicColorScheme.platform,
-        )
+            val state = rememberDynamicMaterialThemeState(
+                seedColor = dynamicColorScheme.seedColor,
+                isDark = isSystemInDarkTheme(),
+                isAmoled = dynamicColorScheme.isAmoled,
+                primary = dynamicColorScheme.primary,
+                secondary = dynamicColorScheme.secondary,
+                tertiary = dynamicColorScheme.tertiary,
+                neutral = dynamicColorScheme.neutral,
+                neutralVariant = dynamicColorScheme.neutralVariant,
+                error = dynamicColorScheme.error,
+                contrastLevel = dynamicColorScheme.contrastLevel,
+                specVersion = ColorSpec.SpecVersion.SPEC_2025,
+                platform = dynamicColorScheme.platform,
+            )
 
-        Surface { }
+            Surface { }
 
-        val colorScheme = state.colorScheme
-        (if (!dynamicColorScheme.animate) colorScheme
-        else animateColorScheme(
-            colorScheme = colorScheme,
-            animationSpec = {
-                dynamicColorScheme.animationSpec as FiniteAnimationSpec<Color>
-            },
-        )) to state.seedColor
-    }
-    else {
-        val (lightColorScheme, darkColorScheme) =
-            if (theme.isHighContrast) theme.lightColorSchemeHighContrast to theme.darkColorSchemeHighContrast
-            else theme.lightColorScheme to theme.darkColorScheme
+            val colorScheme = state.colorScheme
+            (if (!dynamicColorScheme.animate) colorScheme
+            else animateColorScheme(
+                colorScheme = colorScheme,
+                animationSpec = {
+                    dynamicColorScheme.animationSpec as FiniteAnimationSpec<Color>
+                },
+            )) to state.seedColor
+        }
+        else {
+            val (lightColorScheme, darkColorScheme) =
+                if (theme.isHighContrast) theme.lightColorSchemeHighContrast to theme.darkColorSchemeHighContrast
+                else theme.lightColorScheme to theme.darkColorScheme
 
-        (if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme) to Color.Transparent
-    }
+            (if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme) to Color.Transparent
+        }
 
-    CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
-        MaterialExpressiveTheme(
-            colorScheme,
-            if (theme.isExpressive) MotionScheme.expressive() else MotionScheme.standard(),
-            theme.shapes,
-            theme.typography,
-        ) {
-            routes.Nav3Host(routerFactory, navigatorFactory)
+        CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
+            MaterialExpressiveTheme(
+                colorScheme,
+                if (theme.isExpressive) MotionScheme.expressive() else MotionScheme.standard(),
+                theme.shapes,
+                theme.typography,
+            ) {
+                routes.Nav3Host(routerFactory, navigatorFactory)
+            }
         }
     }
 }

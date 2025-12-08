@@ -1,13 +1,13 @@
 package config
 
 import com.github.ajalt.colormath.model.Ansi16
+import config.validator.ValidatorConfig
 import io.ktor.server.config.yaml.YamlConfig
 import java.io.File
 import klib.data.config.Config
 import klib.data.config.LogConfig
 import klib.data.config.http.client.HttpClientConfig
 import klib.data.config.locale.Localization
-import klib.data.config.validator.ValidatorConfig
 import klib.data.type.primitives.string.ansi.Attribute
 import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.ifNotEmpty

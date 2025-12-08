@@ -1,8 +1,6 @@
 package klib.data.config.validator
 
-import kotlinx.serialization.Serializable
+public interface ValidatorConfig {
 
-@Serializable
-public data class ValidatorConfig(
-    val user: UserValidatorConfig = UserValidatorConfig(),
-)
+   public val user: UserValidatorConfig
+}
