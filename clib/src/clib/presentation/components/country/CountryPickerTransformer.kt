@@ -42,26 +42,17 @@ public class CountryPickerTransformer(phoneNumberUtil: PhoneNumberUtil, countryC
                 }
                 lastNonSeparator = char
             }
-            if (index == curIndex) {
-                hasCursor = true
-            }
+            if (index == curIndex) hasCursor = true
         }
 
-        if (lastNonSeparator.code != 0) {
-            formatted = getFormattedNumber(lastNonSeparator, hasCursor)
-        }
+        if (lastNonSeparator.code != 0) formatted = getFormattedNumber(lastNonSeparator, hasCursor)
         val originalToTransformed = mutableListOf<Int>()
         val transformedToOriginal = mutableListOf<Int>()
         var specialCharsCount = 0
         formatted?.forEachIndexed { index, char ->
-            if (ValidatorRule.isDelimitedPhoneSeparator(char)) {
-                specialCharsCount++
-                transformedToOriginal.add(index - specialCharsCount)
-            }
-            else {
-                originalToTransformed.add(index)
-                transformedToOriginal.add(index - specialCharsCount)
-            }
+            transformedToOriginal.add(index - specialCharsCount)
+            if (ValidatorRule.isDelimitedPhoneSeparator(char)) specialCharsCount++
+            else originalToTransformed.add(index)
         }
         originalToTransformed.add(originalToTransformed.maxOrNull()?.plus(1) ?: 0)
         transformedToOriginal.add(transformedToOriginal.maxOrNull()?.plus(1) ?: 0)
