@@ -102,7 +102,7 @@ public fun VerificationScreen(
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(5.dp))
 
         Button(
             onClick = {
