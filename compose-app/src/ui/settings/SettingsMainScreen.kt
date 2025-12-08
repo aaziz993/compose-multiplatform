@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
-import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material.icons.filled.SignalCellular0Bar
 import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material.icons.filled.TextFormat
@@ -56,6 +55,7 @@ import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
 import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.density
+import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
 import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
@@ -70,7 +70,6 @@ import compose_app.generated.resources.quick_access_to_support
 import compose_app.generated.resources.quick_access_to_themes
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
-import compose_app.generated.resources.done
 import compose_app.generated.resources.search
 import compose_app.generated.resources.shapes
 import compose_app.generated.resources.theme
