@@ -39,6 +39,7 @@
     <string name="markers">Markers</string>
     <string name="menu">Menu</string>
     <string name="navigate">Navigate</string>
+    <string name="not_selected">Not selected</string>
     <string name="options">Options</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>

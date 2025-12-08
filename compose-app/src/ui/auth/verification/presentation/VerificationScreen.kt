@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,11 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.data.permission.rememberPermissionsControllerFactory
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.confirm
+import compose_app.generated.resources.not_selected
+import compose_app.generated.resources.select
 import compose_app.generated.resources.upload_id
 import klib.data.auth.model.Auth
 import kotlinx.coroutines.launch
@@ -53,11 +53,7 @@ public fun VerificationScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    // Initialize MOKO Permissions controller
-    val permissionFactory = rememberPermissionsControllerFactory()
-    val permissionController = remember(permissionFactory) {
-        permissionFactory.createPermissionsController()
-    }
+
 
     Column(
         modifier = modifier,
@@ -78,8 +74,8 @@ public fun VerificationScreen(
                 .background(Color.Gray.copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
             contentAlignment = Alignment.Center,
         ) {
-            state.idImage?.let { Text("Document selected", color = Color.Black) }
-                ?: Text("No document selected", color = Color.Gray)
+            state.idImage?.let { Text("", color = Color.Black) }
+                ?: Text(stringResource(Res.string.not_selected), color = Color.Gray)
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -93,7 +89,7 @@ public fun VerificationScreen(
                 }
             },
         ) {
-            Text("Select from files")
+            Text(stringResource(Res.string.select))
         }
 
         AppTooltipBox(stringResource(Res.string.camera)) {
@@ -102,7 +98,7 @@ public fun VerificationScreen(
                     onAction(VerificationAction.SetUserImage(""))
                 },
             ) {
-                Icon(imageVector = Icons.Default.CameraFront, contentDescription = stringResource(Res.string.camera))
+                Icon(Icons.Default.CameraFront, stringResource(Res.string.camera))
             }
         }
 
@@ -112,7 +108,6 @@ public fun VerificationScreen(
             onClick = {
                 onNavigationAction(NavigationAction.Push(Services))
             },
-            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(Res.string.confirm))
         }
