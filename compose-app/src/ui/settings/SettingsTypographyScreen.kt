@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.LineAxis
 import androidx.compose.material.icons.filled.LineWeight
+import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.Style
 import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.filled.TypeSpecimen
@@ -555,7 +556,7 @@ private fun SettingsTextStyle(
         initialValue = value.fontSize.toFloatPx(),
         icon = { Icons.Default.FormatSize },
         enabled = true,
-        valueRange = 1f..72f,
+        valueRange = 22f..114f,
         onValueChanged = {
             onValueChanged(value.copy(fontSize = it.sp))
         },
@@ -631,9 +632,9 @@ private fun SettingsTextStyle(
     SettingsSliderFinished(
         title = stringResource(Res.string.letter_spacing),
         initialValue = value.letterSpacing.toFloatPx(),
-        icon = { Icons.Default.LineAxis },
+        icon = { Icons.Default.LinearScale },
         enabled = true,
-        valueRange = 0f..100f,
+        valueRange = -0.4f..1f,
         onValueChanged = {
             onValueChanged(value.copy(letterSpacing = it.sp))
         },
