@@ -12,6 +12,5 @@ public fun String.asStringResource(defaultValue: () -> String = { this }): Strin
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-public fun <T> T.asStringResource(defaultValue: () -> String = { toString() }): String =
-    asStringResource(Res.allStringResources, defaultValue)
+public fun <T> T.asStringResource(): String = asStringResource(Res.allStringResources)
 

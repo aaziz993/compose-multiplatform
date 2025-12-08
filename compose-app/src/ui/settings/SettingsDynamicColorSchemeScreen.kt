@@ -23,14 +23,12 @@ import androidx.compose.material.icons.filled.Timelapse
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.outlined.Animation
 import androidx.compose.material.icons.outlined.SmartDisplay
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import clib.presentation.components.model.item.Item
 import clib.presentation.theme.model.Theme
 import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
@@ -51,7 +49,6 @@ import compose_app.generated.resources.seed_color
 import compose_app.generated.resources.stiffness
 import compose_app.generated.resources.tertiary
 import compose_app.generated.resources.visibility_threshold
-import data.type.primitives.string.asStringResource
 import klib.data.type.cast
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsColorPickerBottomSheet

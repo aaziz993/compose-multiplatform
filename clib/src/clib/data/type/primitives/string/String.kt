@@ -29,13 +29,9 @@ public fun String.asStringResource(
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-public fun <T> T.asStringResource(
-    resources: Map<String, StringResource>,
-    defaultValue: () -> String = { toString() }
-): String = toString().let { string ->
-    "${
-        string.substringBefore("(").substringAfterLast(".").asStringResource(resources, defaultValue)
-    }${
+public fun <T> T.asStringResource(resources: Map<String, StringResource>): String = toString().let { string ->
+    val base = string.substringAfterLast(".").substringBefore("(")
+    "${base.asStringResource(resources) { base }}${
         string.substringAfter("(", "").addPrefixIfNotEmpty("(")
     }"
 }
