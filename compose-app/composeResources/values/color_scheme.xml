@@ -22,7 +22,6 @@
     <string name="surface_tint">Surface Tint</string>
     <string name="inverse_surface">Inverse Surface</string>
     <string name="inverse_on_surface">Inverse On Surface</string>
-    <string name="error">Error</string>
     <string name="on_error">On Error</string>
     <string name="error_container">Error Container</string>
     <string name="on_error_container">On Error Container</string>

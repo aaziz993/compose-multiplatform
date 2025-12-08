@@ -50,12 +50,16 @@ public data class Theme(
         true -> copy(isDark = null)
     }
 
-    public fun copyColorScheme(colorScheme: ColorScheme) {
-        if (isHighContrast) {
-
+    @Composable
+    public fun copyColorScheme(): (ColorScheme) -> Theme {
+        val isDark = isDark ?: isSystemInDarkTheme()
+        return if (isHighContrast) {
+            if (isDark) { colorScheme -> copy(darkColorSchemeHighContrast = colorScheme) }
+            else { colorScheme -> copy(lightColorSchemeHighContrast = colorScheme) }
         }
         else {
-
+            if (isDark) { colorScheme -> copy(darkColorScheme = colorScheme) }
+            else { colorScheme -> copy(lightColorScheme = colorScheme) }
         }
     }
 

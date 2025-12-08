@@ -22,7 +22,6 @@
     <string name="surface_tint">Оттенок поверхности</string>
     <string name="inverse_surface">Обратная поверхность</string>
     <string name="inverse_on_surface">На обратной поверхности</string>
-    <string name="error">Ошибка</string>
     <string name="on_error">На ошибке</string>
     <string name="error_container">Контейнер ошибки</string>
     <string name="on_error_container">На контейнере ошибки</string>

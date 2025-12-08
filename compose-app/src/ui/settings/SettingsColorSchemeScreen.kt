@@ -2,7 +2,6 @@ package ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -74,345 +73,343 @@ public fun SettingsColorSchemeScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val colorScheme = theme.currentColorScheme
+    val copyColorScheme = theme.copyColorScheme()
+
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.primary),
         colorScheme.primary,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primary = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(primary = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_primary),
         colorScheme.onPrimary,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimary = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onPrimary = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.primary_container),
         colorScheme.primaryContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(primaryContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_primary_container),
         colorScheme.onPrimaryContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onPrimaryContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.inverse_primary),
         colorScheme.inversePrimary,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inversePrimary = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(inversePrimary = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.secondary),
         colorScheme.secondary,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondary = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(secondary = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_secondary),
         colorScheme.onSecondary,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondary = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onSecondary = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.secondary_container),
         colorScheme.secondaryContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(secondaryContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_secondary_container),
         colorScheme.onSecondaryContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onSecondaryContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.tertiary),
         colorScheme.tertiary,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiary = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(tertiary = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_tertiary),
         colorScheme.onTertiary,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiary = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onTertiary = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.tertiary_container),
         colorScheme.tertiaryContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(tertiaryContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_tertiary_container),
         colorScheme.onTertiaryContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onTertiaryContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.background),
         colorScheme.background,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(background = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(background = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_background),
         colorScheme.onBackground,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onBackground = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onBackground = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface),
         colorScheme.surface,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surface = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surface = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_surface),
         colorScheme.onSurface,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSurface = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onSurface = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_variant),
         colorScheme.surfaceVariant,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceVariant = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceVariant = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_surface_variant),
         colorScheme.onSurfaceVariant,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSurfaceVariant = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onSurfaceVariant = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_tint),
         colorScheme.surfaceTint,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceTint = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceTint = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.inverse_surface),
         colorScheme.inverseSurface,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inverseSurface = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(inverseSurface = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.inverse_on_surface),
         colorScheme.inverseOnSurface,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(inverseOnSurface = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(inverseOnSurface = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.error),
         colorScheme.error,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(error = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(error = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_error),
         colorScheme.onError,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onError = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onError = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.error_container),
         colorScheme.errorContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(errorContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(errorContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_error_container),
         colorScheme.onErrorContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onErrorContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onErrorContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.outline),
         colorScheme.outline,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(outline = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(outline = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.outline_variant),
         colorScheme.outlineVariant,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(outlineVariant = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(outlineVariant = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.scrim),
         colorScheme.scrim,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(scrim = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(scrim = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_bright),
         colorScheme.surfaceBright,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceBright = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceBright = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_dim),
         colorScheme.surfaceDim,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceDim = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceDim = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_container),
         colorScheme.surfaceContainer,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainer = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainer = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_container_high),
         colorScheme.surfaceContainerHigh,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerHigh = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerHigh = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_container_highest),
         colorScheme.surfaceContainerHighest,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerHighest = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerHighest = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_container_low),
         colorScheme.surfaceContainerLow,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerLow = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerLow = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.surface_container_lowest),
         colorScheme.surfaceContainerLowest,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(surfaceContainerLowest = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerLowest = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.primary_fixed),
         colorScheme.primaryFixed,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryFixed = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(primaryFixed = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.primary_fixed_dim),
         colorScheme.primaryFixedDim,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(primaryFixedDim = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(primaryFixedDim = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_primary_fixed),
         colorScheme.onPrimaryFixed,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryFixed = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onPrimaryFixed = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_primary_fixed_variant),
         colorScheme.onPrimaryFixedVariant,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onPrimaryFixedVariant = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onPrimaryFixedVariant = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.secondary_fixed),
         colorScheme.secondaryFixed,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryFixed = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(secondaryFixed = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.secondary_fixed_dim),
         colorScheme.secondaryFixedDim,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(secondaryFixedDim = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(secondaryFixedDim = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_secondary_fixed),
         colorScheme.onSecondaryFixed,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryFixed = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onSecondaryFixed = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_secondary_fixed_variant),
         colorScheme.onSecondaryFixedVariant,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onSecondaryFixedVariant = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onSecondaryFixedVariant = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.tertiary_fixed),
         colorScheme.tertiaryFixed,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryFixed = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(tertiaryFixed = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.tertiary_fixed_dim),
         colorScheme.tertiaryFixedDim,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(tertiaryFixedDim = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(tertiaryFixedDim = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_tertiary_fixed),
         colorScheme.onTertiaryFixed,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryFixed = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onTertiaryFixed = value)))
     }
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.on_tertiary_fixed_variant),
         colorScheme.onTertiaryFixedVariant,
     ) { value ->
-        onThemeChange(theme.copyColorScheme { colorScheme -> colorScheme.copy(onTertiaryFixedVariant = value) })
+        onThemeChange(copyColorScheme(colorScheme.copy(onTertiaryFixedVariant = value)))
     }
-}
-
-private fun Theme.copyColorScheme(block: (ColorScheme) -> ColorScheme): Theme {
-    return this
 }
 
 @Preview

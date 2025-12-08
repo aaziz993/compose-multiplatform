@@ -10,15 +10,6 @@
     <string name="color_palette">Цветовая палитра</string>
     <string name="expressive">Выразительный</string>
     <string name="density">Масштаб</string>
-    <string name="font">Шрифт</string>
-    <string name="font_scale">Растяжение фонта</string>
-    <string name="font_size">/Размер шрифта</string>
-    <string name="font_weight">Толщина шрифта</string>
-    <string name="font_style">Стиль шрифта</string>
-    <string name="font_synthesis">Синтез шрифта</string>
-    <string name="font_family">Семейство шрифта</string>
-    <string name="line_height">Высота строки</string>
-    <string name="line_spacing">Межстрочный интервал</string>
     <string name="quick_access">Быстрый доступ</string>
     <string name="quick_access_to_support">Быстрый доступ к поддержке</string>
     <string name="quick_access_to_themes">Быстрый доступ к темам</string>

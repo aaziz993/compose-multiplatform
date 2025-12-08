@@ -22,7 +22,6 @@
     <string name="surface_tint">Ранги сатҳ</string>
     <string name="inverse_surface">Сатҳ баръакс</string>
     <string name="inverse_on_surface">Дар сатҳи баръакс</string>
-    <string name="error">Хато</string>
     <string name="on_error">Дар хато</string>
     <string name="error_container">Контейнери хато</string>
     <string name="on_error_container">Дар контейнери хато</string>

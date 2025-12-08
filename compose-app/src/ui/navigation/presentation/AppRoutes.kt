@@ -90,6 +90,8 @@ import ui.services.ServicesScreen
 import ui.settings.SettingsColorSchemeScreen
 import ui.settings.SettingsDynamicColorSchemeScreen
 import ui.settings.SettingsMainScreen
+import ui.settings.SettingsShapesScreen
+import ui.settings.SettingsTypographyScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.stock.StockScreen
@@ -310,7 +312,7 @@ public data object Map : KoinRoute<Map>(), NavRoute {
 public data object Settings : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(SettingsMain, SettingsColorScheme, SettingsDynamicColorScheme)
+        listOf(SettingsMain, SettingsColorScheme, SettingsDynamicColorScheme, SettingsShapes, SettingsTypography)
     }
 
     @Composable
@@ -446,6 +448,58 @@ public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorSc
         val themeState = LocalThemeState.current
 
         SettingsDynamicColorSchemeScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
+            route,
+            config.ui.theme,
+            themeState.theme,
+        ) { value -> themeState.theme = value }
+    }
+}
+
+@Serializable
+@SerialName("settings_shapes")
+public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
+
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+    override val authResource: AuthResource? = AuthResource()
+
+    @Composable
+    override fun Content(
+        route: SettingsShapes,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val scrollState = rememberScrollState()
+        val config = LocalConfig.current
+        val themeState = LocalThemeState.current
+
+        SettingsShapesScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
+            route,
+            config.ui.theme,
+            themeState.theme,
+        ) { value -> themeState.theme = value }
+    }
+}
+
+@Serializable
+@SerialName("settings_typography")
+public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRoute {
+
+    override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+    override val authResource: AuthResource? = AuthResource()
+
+    @Composable
+    override fun Content(
+        route: SettingsTypography,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val scrollState = rememberScrollState()
+        val config = LocalConfig.current
+        val themeState = LocalThemeState.current
+
+        SettingsTypographyScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.theme,

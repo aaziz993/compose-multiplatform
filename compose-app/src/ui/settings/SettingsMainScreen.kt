@@ -8,13 +8,16 @@ import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Looks
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.SignalCellular0Bar
 import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.outlined.Accessibility
 import androidx.compose.material.icons.outlined.CameraAlt
@@ -65,7 +68,9 @@ import compose_app.generated.resources.quick_access_to_themes
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.search
+import compose_app.generated.resources.shapes
 import compose_app.generated.resources.theme
+import compose_app.generated.resources.typography
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
@@ -81,6 +86,8 @@ import presentation.theme.model.isDarkStringResource
 import ui.navigation.presentation.SettingsColorScheme
 import ui.navigation.presentation.SettingsDynamicColorScheme
 import ui.navigation.presentation.SettingsMain
+import ui.navigation.presentation.SettingsShapes
+import ui.navigation.presentation.SettingsTypography
 
 @Composable
 public fun SettingsMainScreen(
@@ -167,6 +174,22 @@ public fun SettingsMainScreen(
             falseIcon = Icons.Filled.Palette,
         ) { state ->
             onThemeChange(theme.copy(isExpressive = !theme.isExpressive))
+        }
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.shapes),
+            enabled = true,
+            icon = Icons.Default.FormatShapes,
+        ) {
+            onNavigationAction(NavigationAction.Push(SettingsShapes))
+        }
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.typography),
+            enabled = true,
+            icon = Icons.Default.TextFormat,
+        ) {
+            onNavigationAction(NavigationAction.Push(SettingsTypography))
         }
 
         SettingsSliderFinished(

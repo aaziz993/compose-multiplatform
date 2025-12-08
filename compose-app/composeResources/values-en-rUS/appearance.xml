@@ -10,15 +10,6 @@
     <string name="color_palette">Color palette</string>
     <string name="expressive">Expressive</string>
     <string name="density">Density</string>
-    <string name="font">Font</string>
-    <string name="font_scale">Font scale</string>
-    <string name="font_size">Font size</string>
-    <string name="font_weight">Font weight</string>
-    <string name="font_style">Font style</string>
-    <string name="font_synthesis">Font synthesis</string>
-    <string name="font_family">Font family</string>
-    <string name="line_height">Line height</string>
-    <string name="line_spacing">Line spacing</string>
     <string name="quick_access">Quick access</string>
     <string name="quick_access_to_support">Quick access to support</string>
     <string name="quick_access_to_themes">Quick access to themes</string>

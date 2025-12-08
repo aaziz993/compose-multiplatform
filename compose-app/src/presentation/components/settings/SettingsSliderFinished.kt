@@ -56,7 +56,7 @@ public fun SettingsSliderFinished(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
-    onValueChange: (Float) -> Unit,
+    onValueChanged: (Float) -> Unit,
 ) {
     var value by remember { mutableFloatStateOf(initialValue) }
     SettingsSlider(
@@ -68,7 +68,7 @@ public fun SettingsSliderFinished(
         enabled,
         valueRange,
         steps,
-        { onValueChange(value) },
+        { onValueChanged(value) },
         trackHeight,
         thumbRadius,
         colors,

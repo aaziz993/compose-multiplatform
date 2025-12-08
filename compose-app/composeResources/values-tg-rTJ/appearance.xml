@@ -10,15 +10,6 @@
     <string name="color_palette">Рангҳо</string>
     <string name="expressive">Равшанӣ</string>
     <string name="density">Миқес</string>
-    <string name="font">Ҳуруф</string>
-    <string name="font_scale">Миқеси ҳуруф</string>
-    <string name="font_size">Андозаи ҳуруф</string>
-    <string name="font_weight">Қутри ҳуруф</string>
-    <string name="font_style">Услуби ҳуруф</string>
-    <string name="font_synthesis">Синтези ҳуруф</string>
-    <string name="font_family">Оилаи ҳуруф</string>
-    <string name="line_height">Бӯъди сатр</string>
-    <string name="line_spacing">Фосилаи байнисатри</string>
     <string name="quick_access">Дастрасии зуд</string>
     <string name="quick_access_to_support">Дастрасии зуд ба дастгирӣ</string>
     <string name="quick_access_to_themes">Дастрасии зуд ба намоишҳо</string>
