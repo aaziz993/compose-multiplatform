@@ -71,14 +71,9 @@ public class CountryPickerTransformer(phoneNumberUtil: PhoneNumberUtil, countryC
         return Transformation(formatted, originalToTransformed, transformedToOriginal)
     }
 
-    private fun getFormattedNumber(lastNonSeparator: Char, hasCursor: Boolean): String? {
-        return if (hasCursor) {
-            phoneNumberFormatter.inputDigitAndRememberPosition(lastNonSeparator)
-        }
-        else {
-            phoneNumberFormatter.inputDigit(lastNonSeparator)
-        }
-    }
+    private fun getFormattedNumber(lastNonSeparator: Char, hasCursor: Boolean): String? =
+        if (hasCursor) phoneNumberFormatter.inputDigitAndRememberPosition(lastNonSeparator)
+        else phoneNumberFormatter.inputDigit(lastNonSeparator)
 
     private data class Transformation(
         val formatted: String?,

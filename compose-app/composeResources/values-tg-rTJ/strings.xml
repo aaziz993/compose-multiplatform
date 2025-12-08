@@ -63,11 +63,11 @@
     <string name="image">Тасвир</string>
     <string name="wallet">Тангадон</string>
 
-    <string name="spring">Spring</string>
+    <string name="spring_spec">Spring specification</string>
     <string name="damping_ratio">Damping ratio</string>
     <string name="stiffness">Stiffness</string>
     <string name="visibility_threshold">Visibility threshold</string>
-    <string name="tween">Tween</string>
+    <string name="tween_spec">Tween specification</string>
     <string name="duration">Duration</string>
     <string name="delay">Delay</string>
     <string name="easing">Easing</string>
