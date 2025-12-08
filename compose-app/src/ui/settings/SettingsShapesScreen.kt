@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.presentation.theme.model.Theme
@@ -30,7 +32,6 @@ import compose_app.generated.resources.medium
 import compose_app.generated.resources.small
 import compose_app.generated.resources.top_end
 import compose_app.generated.resources.top_start
-import kotlin.math.roundToInt
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSliderFinished
@@ -183,19 +184,12 @@ private fun SettingsCornerSize(
 
     SettingsSliderFinished(
         title = stringResource(Res.string.density),
-        initialValue = 0f,
+        initialValue = value.toPx(Size(50), LocalDensity.current),
         icon = { Icons.Default.RoundedCorner },
         enabled = true,
         valueRange = 0f..50f,
         onValueChanged = { value ->
-            onValueChange(
-                when (cornerSize) {
-                    "dp" -> CornerSize(value.dp)
-                    "px" -> CornerSize(value)
-                    "percent" -> CornerSize((value / 50).roundToInt())
-                    else -> error("Unknown corner size '$cornerSize'")
-                },
-            )
+            onValueChange(CornerSize(value))
         },
     )
 }
