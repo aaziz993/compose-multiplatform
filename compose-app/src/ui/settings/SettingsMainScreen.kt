@@ -67,6 +67,7 @@ import compose_app.generated.resources.quick_access_to_support
 import compose_app.generated.resources.quick_access_to_themes
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
+import compose_app.generated.resources.done
 import compose_app.generated.resources.search
 import compose_app.generated.resources.shapes
 import compose_app.generated.resources.theme
@@ -407,7 +408,7 @@ public fun SettingsMainScreen(
             title = stringResource(Res.string.reset),
             enabled = true,
             icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
-            subtitle = if (resettable) stringResource(Res.string.reset) else "",
+            subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
         ) {
             if (theme != defaultTheme) onThemeChange(defaultTheme)
             if (density != defaultDensity) onDensityChange(defaultDensity)
