@@ -9,10 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RoundedCorner
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -33,7 +29,6 @@ import compose_app.generated.resources.small
 import compose_app.generated.resources.top_end
 import compose_app.generated.resources.top_start
 import org.jetbrains.compose.resources.stringResource
-import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSliderFinished
 import ui.navigation.presentation.SettingsShapes
 
@@ -49,11 +44,8 @@ public fun SettingsShapesScreen(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    val cornerSizes = remember { listOf("dp", "px", "percent") }
-
     SettingsCornerBasedShape(
         stringResource(Res.string.extra_small),
-        cornerSizes,
         theme.shapes.extraSmall,
     ) { value ->
         onThemeChange(
@@ -65,7 +57,6 @@ public fun SettingsShapesScreen(
 
     SettingsCornerBasedShape(
         stringResource(Res.string.small),
-        cornerSizes,
         theme.shapes.small,
     ) { value ->
         onThemeChange(
@@ -77,7 +68,6 @@ public fun SettingsShapesScreen(
 
     SettingsCornerBasedShape(
         stringResource(Res.string.medium),
-        cornerSizes,
         theme.shapes.medium,
     ) { value ->
         onThemeChange(
@@ -89,7 +79,6 @@ public fun SettingsShapesScreen(
 
     SettingsCornerBasedShape(
         stringResource(Res.string.large),
-        cornerSizes,
         theme.shapes.large,
     ) { value ->
         onThemeChange(
@@ -101,7 +90,6 @@ public fun SettingsShapesScreen(
 
     SettingsCornerBasedShape(
         stringResource(Res.string.extra_large),
-        cornerSizes,
         theme.shapes.extraLarge,
     ) { value ->
         onThemeChange(
@@ -119,7 +107,6 @@ private fun PreviewSettingsShapesScreen(): Unit = SettingsShapesScreen()
 @Composable
 private fun SettingsCornerBasedShape(
     title: String,
-    cornerSizes: List<String>,
     value: CornerBasedShape,
     onValueChange: (CornerBasedShape) -> Unit,
 ) = SettingsGroup(
@@ -130,7 +117,6 @@ private fun SettingsCornerBasedShape(
 ) {
     SettingsCornerSize(
         stringResource(Res.string.top_start),
-        cornerSizes,
         value.topStart,
     ) {
         onValueChange(value.copy(topStart = it))
@@ -138,7 +124,6 @@ private fun SettingsCornerBasedShape(
 
     SettingsCornerSize(
         stringResource(Res.string.top_end),
-        cornerSizes,
         value.topEnd,
     ) {
         onValueChange(value.copy(topEnd = it))
@@ -146,7 +131,6 @@ private fun SettingsCornerBasedShape(
 
     SettingsCornerSize(
         stringResource(Res.string.bottom_end),
-        cornerSizes,
         value.bottomEnd,
     ) {
         onValueChange(value.copy(bottomEnd = it))
@@ -154,7 +138,6 @@ private fun SettingsCornerBasedShape(
 
     SettingsCornerSize(
         stringResource(Res.string.bottom_start),
-        cornerSizes,
         value.bottomStart,
     ) {
         onValueChange(value.copy(bottomStart = it))
@@ -164,32 +147,15 @@ private fun SettingsCornerBasedShape(
 @Composable
 private fun SettingsCornerSize(
     title: String,
-    cornerSizes: List<String>,
     value: CornerSize,
     onValueChange: (CornerSize) -> Unit,
-) {
-    var cornerSize by remember { mutableStateOf("dp") }
-
-    SettingsListPickerDialog(
-        cornerSize,
-        values = cornerSizes,
-        title = title,
-        icon = Icons.Default.RoundedCorner,
-        modifier = Modifier,
-        enabled = true,
-    ) { value ->
-        cornerSize = value
-        false
-    }
-
-    SettingsSliderFinished(
-        title = stringResource(Res.string.density),
-        initialValue = value.toPx(Size(50), LocalDensity.current),
-        icon = { Icons.Default.RoundedCorner },
-        enabled = true,
-        valueRange = 0f..50f,
-        onValueChanged = { value ->
-            onValueChange(CornerSize(value))
-        },
-    )
-}
+) = SettingsSliderFinished(
+    title = stringResource(Res.string.density),
+    initialValue = value.toPx(Size(50), LocalDensity.current),
+    icon = { Icons.Default.RoundedCorner },
+    enabled = true,
+    valueRange = 0f..50f,
+    onValueChanged = { value ->
+        onValueChange(CornerSize(value))
+    },
+)
