@@ -2,10 +2,19 @@ package ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FormatBold
+import androidx.compose.material.icons.filled.FormatLineSpacing
+import androidx.compose.material.icons.filled.FormatPaint
+import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.FormatSize
+import androidx.compose.material.icons.filled.Height
+import androidx.compose.material.icons.filled.LineWeight
 import androidx.compose.material.icons.filled.Style
+import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.filled.TypeSpecimen
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,12 +29,14 @@ import androidx.compose.ui.text.font.FontSynthesis.Companion.Style
 import androidx.compose.ui.text.font.FontSynthesis.Companion.Weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.theme.density.toFloatPx
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.typography.FontFamilySerial
 import clib.presentation.theme.typography.FontStyleSerial
 import clib.presentation.theme.typography.FontSynthesisSerial
+import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.display_large
 import compose_app.generated.resources.display_medium
@@ -529,6 +540,11 @@ private fun SettingsTextStyle(
     fontFamilies: List<FontFamilySerial>,
     value: TextStyle,
     onValueChanged: (TextStyle) -> Unit,
+) = SettingsGroup(
+    modifier = Modifier,
+    enabled = true,
+    title = { Text(title) },
+    contentPadding = PaddingValues(16.dp),
 ) {
     SettingsSliderFinished(
         title = stringResource(Res.string.font_size),
@@ -544,7 +560,7 @@ private fun SettingsTextStyle(
     SettingsSliderFinished(
         title = stringResource(Res.string.font_weight),
         initialValue = 0f,
-        icon = { Icons.Default.FormatSize },
+        icon = { Icons.Default.FormatBold },
         enabled = true,
         valueRange = 100f..900f,
         steps = 7,
@@ -558,7 +574,7 @@ private fun SettingsTextStyle(
             fontStyle,
             values = fontStyles,
             title = title,
-            icon = Icons.Default.Style,
+            icon = Icons.Default.FormatShapes,
             modifier = Modifier,
             enabled = true,
         ) {
@@ -572,7 +588,7 @@ private fun SettingsTextStyle(
             _fontSynthesis,
             values = fontSynthesis,
             title = title,
-            icon = Icons.Default.Style,
+            icon = Icons.Default.FormatPaint,
             modifier = Modifier,
             enabled = true,
         ) {
@@ -586,7 +602,7 @@ private fun SettingsTextStyle(
             fontFamily,
             values = fontFamilies,
             title = title,
-            icon = Icons.Default.TypeSpecimen,
+            icon = Icons.Default.TextFormat,
             modifier = Modifier,
             enabled = true,
         ) {
@@ -598,7 +614,7 @@ private fun SettingsTextStyle(
     SettingsSliderFinished(
         title = stringResource(Res.string.line_height),
         initialValue = value.lineHeight.toFloatPx(),
-        icon = { Icons.Default.FormatSize },
+        icon = { Icons.Default.Height },
         enabled = true,
         valueRange = 8f..72f,
         onValueChanged = {
@@ -609,7 +625,7 @@ private fun SettingsTextStyle(
     SettingsSliderFinished(
         title = stringResource(Res.string.letter_spacing),
         initialValue = value.letterSpacing.toFloatPx(),
-        icon = { Icons.Default.FormatSize },
+        icon = { Icons.Default.FormatLineSpacing },
         enabled = true,
         valueRange = 0f..72f,
         onValueChanged = {
