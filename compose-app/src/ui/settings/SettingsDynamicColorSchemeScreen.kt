@@ -159,7 +159,7 @@ public fun SettingsDynamicColorSchemeScreen(
         onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(contrastLevel = value.toDouble())))
     }
 
-    val platforms = DynamicScheme.Platform.entries.toList()
+    val platforms = remember { DynamicScheme.Platform.entries.toList() }
 
     SettingsListPickerDialog(
         colorScheme.platform,
