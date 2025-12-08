@@ -7,5 +7,5 @@ localization:
   weblate:
     app:
       enable: true
-      address: 'http://localhost:8090'
+      baseUrl: 'http://localhost:8090'
       api-key: wlu_aiwHaV8hd99eJeHgc5LPznz20croHxo2C22z
