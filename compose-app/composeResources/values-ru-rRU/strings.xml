@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Compose Multiplatform</string>
+    <string name="app_name">Компоус мултиплатформ</string>
     <string name="about">О</string>
     <string name="alpha">Альфа</string>
     <string name="actions">Действия</string>
+    <string name="amoled">Амолед</string>
+    <string name="animate">Анимировать</string>
     <string name="back">Назад</string>
     <string name="blend">Смесь</string>
     <string name="balance">Баланс</string>
@@ -17,7 +19,9 @@
     <string name="description">Описание</string>
     <string name="disabled">Выключено</string>
     <string name="enabled">Включено</string>
+    <string name="error">Ошибка</string>
     <string name="exchange">Обмен</string>
+    <string name="false">Ложно</string>
     <string name="file">Файл</string>
     <string name="general">Общее</string>
     <string name="grid">Сетка</string>
@@ -33,6 +37,7 @@
     <string name="options">Опции</string>
     <string name="online">Онлайн</string>
     <string name="offline">Оффлайн</string>
+    <string name="platform">Платформа</string>
     <string name="path">Путь</string>
     <string name="pagination">Пагинация</string>
     <string name="permission">Разрешение</string>
@@ -46,6 +51,7 @@
     <string name="submit">Отправить</string>
     <string name="services">Сервисы</string>
     <string name="settings">Настройки</string>
+    <string name="true">Правдиво</string>
     <string name="time">Время</string>
     <string name="time_format">Формат времени</string>
     <string name="identifier">Идентификатор</string>

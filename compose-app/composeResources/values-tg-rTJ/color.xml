@@ -11,4 +11,5 @@
     <string name="lightness">Мунавварӣ</string>
     <string name="hsv">Hsv</string>
     <string name="brightness">Фурӯзонӣ</string>
+    <string name="seed_color">Seed color</string>
 </resources>

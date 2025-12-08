@@ -2,4 +2,28 @@
 <resources>
     <string name="camera">Камера</string>
     <string name="microphone">Микрофон</string>
+    <string name="gallery">Галерея</string>
+    <string name="storage">Хранилище</string>
+    <string name="write_storage">Записываемое хранилище</string>
+    <string name="location">Местоположение</string>
+    <string name="coarse_location">Приблизительная местоположение</string>
+    <string name="background_location">Фоновое местоположение</string>
+    <string name="bluetooth_le">Bluetooth_le</string>
+    <string name="remote_notification">Удаленное оповещение</string>
+    <string name="record_audio">Запись аудио</string>
+    <string name="bluetooth_scan">Блютус скан</string>
+    <string name="bluetooth_advertise">Блютус предложение</string>
+    <string name="bluetooth_connect">Блютус соединение</string>
+    <string name="contact">Контак</string>
+    <string name="sensors">Сенсоры</string>
+    <string name="local_fonts">Локальные шрифты</string>
+    <string name="background_sync">Фоновая синхронизация</string>
+    <string name="compute_pressure">Вычислить давление</string>
+    <string name="accessibility_events">События специальных возможностей</string>
+    <string name="clipboard_read">Буфер чтение</string>
+    <string name="clipboard_write">Буфер запись</string>
+    <string name="midi">Миди</string>
+    <string name="payment_handler">Обработчик плажежа</string>
+    <string name="screen_wake_lock">Блокировка включения экрана</string>
+    <string name="window_management">Управление окном</string>
 </resources>

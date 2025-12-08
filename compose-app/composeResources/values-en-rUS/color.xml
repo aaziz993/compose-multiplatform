@@ -11,4 +11,5 @@
     <string name="lightness">Lightness</string>
     <string name="hsv">Hsv</string>
     <string name="brightness">Brightness</string>
+    <string name="seed_color">Seed color</string>
 </resources>

@@ -10,65 +10,72 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
-import clib.presentation.components.model.item.Item
+import androidx.compose.ui.unit.dp
 import clib.presentation.components.picker.model.Picker
-import clib.presentation.components.settings.SettingsListPickerDialog
+import clib.presentation.components.settings.SettingsWheelPickerDialog
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
-import compose_app.generated.resources.Res
-import compose_app.generated.resources.clear
-import compose_app.generated.resources.search
 import data.type.primitives.string.asStringResource
-import org.jetbrains.compose.resources.stringResource
 
 @Suppress("ComposeParameterOrder")
 @Composable
-public fun <E> SettingsListPickerDialog(
-    value: E,
+public fun <E> SettingsWheelPickerDialog(
+    initialValue: E,
     values: List<E>,
     title: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: ImageVector? = null,
-    subtitle: (@Composable () -> Unit)? = { Text(value.toString().asStringResource()) },
+    subtitle: (@Composable () -> Unit)? = { Text(initialValue.toString().asStringResource()) },
     action: (@Composable () -> Unit)? = null,
     colors: SettingsTileColors = SettingsTileDefaults.colors(),
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
-    item: (E) -> Item = { value ->
-        Item(
-            text = { Text(value.toString().asStringResource()) },
-            icon = { icon?.let { Icon(it, value.toString().asStringResource()) } },
-        )
-    },
-    textStyle: TextStyle = LocalTextStyle.current,
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    picker: Picker = Picker(
-        headerTitle = title,
-        searchHint = stringResource(Res.string.search),
-        clear = stringResource(Res.string.clear),
-    ),
+    wrapSelectorWheel: Boolean = false,
+    format: E.() -> String = { toString() },
+    parse: (String.() -> E?)? = null,
+    onIsErrorChange: (Boolean) -> Unit = {},
+    enableEdition: Boolean = parse != null,
+    beyondViewportPageCount: Int = 1,
+    textStyle: TextStyle = LocalTextStyle.current,
+    verticalPadding: Dp = 16.dp,
+    dividerColor: Color = MaterialTheme.colorScheme.outline,
+    dividerThickness: Dp = 1.dp,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    picker: Picker = Picker(),
     onItemClicked: (E) -> Boolean,
-): Unit = SettingsListPickerDialog(
+): Unit = SettingsWheelPickerDialog(
+    initialValue,
     values,
     { Text(title) },
     modifier,
     enabled,
-    icon?.let { { Icon(it, value.toString().asStringResource()) } },
+    icon?.let { { Icon(it, initialValue.toString().asStringResource()) } },
     subtitle,
     action,
     colors,
     tonalElevation,
     shadowElevation,
     semanticProperties,
-    item,
-    textStyle,
     itemPadding,
     backgroundColor,
+    wrapSelectorWheel,
+    format,
+    parse,
+    onIsErrorChange,
+    enableEdition,
+    beyondViewportPageCount,
+    textStyle,
+    verticalPadding,
+    dividerColor,
+    dividerThickness,
+    keyboardType,
     picker,
     onItemClicked,
 )

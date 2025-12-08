@@ -48,7 +48,4 @@
     <string name="tertiary_fixed_dim">Tertiary Fixed Dim</string>
     <string name="on_tertiary_fixed">On Tertiary Fixed</string>
     <string name="on_tertiary_fixed_variant">On Tertiary Fixed Variant</string>
-    <string name="neutral">Neutral</string>
-    <string name="neutral_variant">Neutral variant</string>
-    <string name="contrast">Contrast</string>
 </resources>

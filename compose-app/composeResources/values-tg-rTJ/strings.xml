@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Compose Multiplatform</string>
+    <string name="app_name">Компоус мултиплатформ</string>
     <string name="about">Оиди</string>
     <string name="alpha">Алфа</string>
     <string name="actions">Амалхо</string>
+    <string name="amoled">Амолед</string>
+    <string name="animate">Аниматсиякард</string>
     <string name="back">Бозгашт</string>
     <string name="blend">Омехт</string>
     <string name="balance">Баланс</string>
@@ -17,6 +19,8 @@
     <string name="description">Тавсиф</string>
     <string name="disabled">Гайрифаъол</string>
     <string name="enabled">Фаъол</string>
+    <string name="error">Хатогӣ</string>
+    <string name="false">Ноҳақ</string>
     <string name="exchange">Додугирифт</string>
     <string name="file">Файл</string>
     <string name="general">Умумӣ</string>
@@ -33,6 +37,7 @@
     <string name="options">Имкониятҳо</string>
     <string name="online">Пайваст</string>
     <string name="offline">Пайваст нест</string>
+    <string name="platform">Платформа</string>
     <string name="path">Роҳ</string>
     <string name="pagination">Саҳифабандӣ</string>
     <string name="permission">Иҷозат</string>
@@ -46,6 +51,7 @@
     <string name="submit">Равон</string>
     <string name="services">Хизматрасониҳо</string>
     <string name="settings">Танзимот</string>
+    <string name="true">Хақ</string>
     <string name="time">Вақт</string>
     <string name="time_format">Қолаби вақт</string>
     <string name="identifier">Мушаххаскунанда</string>
