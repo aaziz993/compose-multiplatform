@@ -10,7 +10,7 @@ import ui.news.articles.data.net.http.ArticlesApiService
 public class ArticleViewModel(private val apiService: ArticlesApiService) : ViewModel<ArticlesAction>() {
 
     public val state: StateFlow<LoadingResult<ArticlesState>>
-        field = loadStateFlow(
+        field = stateFlow(
             fetcher = { result ->
                 ArticlesState(apiService.getArticles())
             },

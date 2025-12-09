@@ -27,10 +27,10 @@ import coil3.compose.AsyncImage
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.retry
 import klib.data.load.LoadingResult
-import klib.data.load.idle
+import klib.data.load.loading
 import klib.data.load.onFailure
-import klib.data.load.onIdle
 import klib.data.load.onLoading
+import klib.data.load.onReloading
 import klib.data.load.onSuccess
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -47,33 +47,30 @@ import ui.news.articles.presentation.viewmodel.ArticlesState
 public fun ArticlesScreen(
     modifier: Modifier = Modifier,
     route: Articles = Articles,
-    state: LoadingResult<ArticlesState> = idle(),
+    state: LoadingResult<ArticlesState> = loading(),
     onAction: (ArticlesAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
-    state.onIdle {
-        LoadingIndicator()
-    }
-    state.onLoading {
-        LoadingIndicator()
-    }
-    state.onSuccess {
-        ArticleContent(
-            articles = it.articles,
-        )
-    }
+    state
+        .onLoading {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                LoadingIndicator()
+            }
+        }.onReloading {
+            LoadingIndicator()
+        }.onSuccess {
+            ArticleContent(articles = it.articles)
+        }.onFailure { _, _ ->
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                TextButton(
+                    onClick = {
 
-    state.onFailure { _, _ ->
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            TextButton(
-                onClick = {
-
-                },
-            ) {
-                Text(stringResource(Res.string.retry))
+                    },
+                ) {
+                    Text(stringResource(Res.string.retry))
+                }
             }
         }
-    }
 }
 
 @Composable

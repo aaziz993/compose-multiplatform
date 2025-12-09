@@ -21,7 +21,7 @@ import clib.data.type.collections.restartableflow.restartableStateIn
 import klib.data.crud.CoroutineCrudRepository
 import klib.data.load.LoadingResult
 import klib.data.load.Refresher
-import klib.data.load.idle
+import klib.data.load.loading
 import klib.data.load.load
 import klib.data.load.loadEither
 import klib.data.load.loadResult
@@ -80,8 +80,8 @@ public abstract class ViewModel<T : Any>() : ViewModel() {
         }
     }
 
-    protected fun <T> loadStateFlow(
-        initialValue: LoadingResult<T> = idle(),
+    protected fun <T> stateFlow(
+        initialValue: LoadingResult<T> = loading(),
         fetcher: suspend (LoadingResult<T>) -> T,
         observer: (T) -> Flow<T> = { emptyFlow() },
         refresh: Refresher? = null,
@@ -93,8 +93,8 @@ public abstract class ViewModel<T : Any>() : ViewModel() {
         refresh,
     ).stateIn(started, initialValue)
 
-    protected fun <T> loadResultStateFlow(
-        initialValue: LoadingResult<T> = idle(),
+    protected fun <T> resultStateFlow(
+        initialValue: LoadingResult<T> = loading(),
         fetcher: suspend (LoadingResult<T>) -> Result<T>,
         observer: (T) -> Flow<T> = { emptyFlow() },
         refresh: Refresher? = null,
@@ -106,8 +106,8 @@ public abstract class ViewModel<T : Any>() : ViewModel() {
         refresh,
     ).stateIn(started, initialValue)
 
-    protected fun <T> loadEitherStateFlow(
-        initialValue: LoadingResult<T> = idle(),
+    protected fun <T> eitherStateFlow(
+        initialValue: LoadingResult<T> = loading(),
         fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
         observer: (T) -> Flow<T> = { emptyFlow() },
         refresh: Refresher? = null,
