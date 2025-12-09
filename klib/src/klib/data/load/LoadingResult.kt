@@ -33,6 +33,65 @@ public sealed interface LoadingResult<T> {
         }
 
     public fun toFailure(throwable: Throwable): Failure<T> = Failure(throwable, value)
+
+    public fun <R> map(block: (T) -> R): LoadingResult<R> = when (this) {
+        is Loading -> Loading(value?.let(block))
+        is Success -> Success(block(value))
+        is Failure -> Failure(throwable, value?.let(block))
+    }
+
+    public suspend fun load(block: suspend () -> T): LoadingResult<T> =
+        try {
+            success(block())
+        }
+        catch (e: Throwable) {
+            toFailure(e)
+        }
+
+    public suspend fun loadResult(block: suspend () -> Result<T>): LoadingResult<T> =
+        block().fold(
+            onSuccess = { value -> success(value) },
+            onFailure = { throwable -> toFailure(throwable) },
+        )
+
+    public suspend fun loadEither(block: suspend () -> Either<Throwable, T>): LoadingResult<T> =
+        block().fold(
+            ifRight = { value -> success(value) },
+            ifLeft = { throwable -> toFailure(throwable) },
+        )
+
+    public fun load(
+        fetcher: suspend (LoadingResult<T>) -> T,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresh: Refresher? = null,
+    ): Flow<LoadingResult<T>> = loadHelper(
+        this,
+        { result -> result.load { fetcher(result) } },
+        observer,
+        refresh,
+    )
+
+    public fun loadResult(
+        fetcher: suspend (LoadingResult<T>) -> Result<T>,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresh: Refresher? = null,
+    ): Flow<LoadingResult<T>> = loadHelper(
+        this,
+        { result -> result.loadResult { fetcher(result) } },
+        observer,
+        refresh,
+    )
+
+    public fun loadEither(
+        fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresh: Refresher? = null,
+    ): Flow<LoadingResult<T>> = loadHelper(
+        this,
+        { result -> result.loadEither { fetcher(result) } },
+        observer,
+        refresh,
+    )
 }
 
 public fun <T> loading(value: T? = null): LoadingResult<T> = Loading(value)
@@ -40,12 +99,6 @@ public fun <T> loading(value: T? = null): LoadingResult<T> = Loading(value)
 public fun <T> success(value: T): Success<T> = Success(value)
 
 public fun <T> failure(throwable: Throwable, value: T? = null): Failure<T> = Failure(throwable, value)
-
-public inline fun <T, R> LoadingResult<T>.map(block: (T) -> R): LoadingResult<R> = when (this) {
-    is Loading -> Loading(value?.let(block))
-    is Success -> Success(block(value))
-    is Failure -> Failure(throwable, value?.let(block))
-}
 
 public fun <T> Result<T>.toLoadingResult(): LoadingResult<T> = fold(
     onSuccess = { value -> success(value) },
@@ -57,62 +110,6 @@ public fun <T> Either<Throwable, T>.toLoadingResult(): LoadingResult<T> =
         ifRight = { value -> success(value) },
         ifLeft = { throwable -> failure(throwable) },
     )
-
-public suspend fun <T> LoadingResult<T>.run(block: suspend () -> T): LoadingResult<T> =
-    try {
-        success(block())
-    }
-    catch (e: Throwable) {
-        toFailure(e)
-    }
-
-public suspend fun <T> LoadingResult<T>.runResult(block: suspend () -> Result<T>): LoadingResult<T> =
-    block().fold(
-        onSuccess = { value -> success(value) },
-        onFailure = { throwable -> toFailure(throwable) },
-    )
-
-public suspend fun <T> LoadingResult<T>.runEither(block: suspend () -> Either<Throwable, T>): LoadingResult<T> =
-    block().fold(
-        ifRight = { value -> success(value) },
-        ifLeft = { throwable -> toFailure(throwable) },
-    )
-
-public fun <T> load(
-    initialValue: LoadingResult<T> = loading(),
-    fetcher: suspend (LoadingResult<T>) -> T,
-    observer: (T) -> Flow<T> = { emptyFlow() },
-    refresh: Refresher? = null,
-): Flow<LoadingResult<T>> = loadHelper(
-    initialValue,
-    { result -> result.run { fetcher(result) } },
-    observer,
-    refresh,
-)
-
-public fun <T> loadResult(
-    initialValue: LoadingResult<T> = loading(),
-    fetcher: suspend (LoadingResult<T>) -> Result<T>,
-    observer: (T) -> Flow<T> = { emptyFlow() },
-    refresh: Refresher? = null,
-): Flow<LoadingResult<T>> = loadHelper(
-    initialValue,
-    { result -> result.runResult { fetcher(result) } },
-    observer,
-    refresh,
-)
-
-public fun <T> loadEither(
-    initialValue: LoadingResult<T> = loading(),
-    fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
-    observer: (T) -> Flow<T> = { emptyFlow() },
-    refresh: Refresher? = null,
-): Flow<LoadingResult<T>> = loadHelper(
-    initialValue,
-    { result -> result.runEither { fetcher(result) } },
-    observer,
-    refresh,
-)
 
 private fun <T> loadHelper(
     initialValue: LoadingResult<T>,
