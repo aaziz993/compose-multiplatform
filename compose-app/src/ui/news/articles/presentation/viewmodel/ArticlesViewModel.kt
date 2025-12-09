@@ -2,6 +2,7 @@ package ui.news.articles.presentation.viewmodel
 
 import clib.presentation.viewmodel.ViewModel
 import klib.data.load.LoadingResult
+import klib.data.load.loading
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.android.annotation.KoinViewModel
 import ui.news.articles.data.net.http.ArticlesApiService
@@ -10,7 +11,7 @@ import ui.news.articles.data.net.http.ArticlesApiService
 public class ArticleViewModel(private val apiService: ArticlesApiService) : ViewModel<ArticlesAction>() {
 
     public val state: StateFlow<LoadingResult<ArticlesState>>
-        field = stateFlow(
+        field = loading<ArticlesState>().loadStateFlow(
             fetcher = { result -> ArticlesState(apiService.getArticles()) },
         )
 
