@@ -228,6 +228,7 @@ public data object Articles : KoinRoute<Articles>(), NavRoute {
             Modifier,
             route,
             state,
+            viewModel::action,
             router::actions,
         )
     }

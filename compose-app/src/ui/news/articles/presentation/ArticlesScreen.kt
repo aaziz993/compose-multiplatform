@@ -1,6 +1,7 @@
 package ui.news.articles.presentation
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -10,9 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
@@ -20,24 +24,57 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.presentation.navigation.NavigationAction
 import coil3.compose.AsyncImage
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.retry
+import klib.data.load.LoadingResult
+import klib.data.load.idle
+import klib.data.load.onFailure
+import klib.data.load.onIdle
+import klib.data.load.onLoading
+import klib.data.load.onSuccess
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringResource
 import ui.navigation.presentation.Articles
 import ui.news.articles.data.model.Article
+import ui.news.articles.presentation.viewmodel.ArticlesAction
 import ui.news.articles.presentation.viewmodel.ArticlesState
 
 @Composable
 public fun ArticlesScreen(
     modifier: Modifier = Modifier,
     route: Articles = Articles,
-    state: ArticlesState = ArticlesState(),
+    state: LoadingResult<ArticlesState> = idle(),
+    onAction: (ArticlesAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
-): Unit = ArticleContent(
-    articles = state.articles,
-)
+) {
+    state.onIdle {
+        LoadingIndicator()
+    }
+    state.onLoading {
+        LoadingIndicator()
+    }
+    state.onSuccess {
+        ArticleContent(
+            articles = it.articles,
+        )
+    }
+
+    state.onFailure { _, _ ->
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            TextButton(
+                onClick = {
+
+                },
+            ) {
+                Text(stringResource(Res.string.retry))
+            }
+        }
+    }
+}
 
 @Composable
 private fun ArticleContent(
@@ -117,7 +154,6 @@ private fun ArticleItem(
         }
     }
 }
-
 
 @Preview
 @Composable

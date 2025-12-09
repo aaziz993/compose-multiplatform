@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.RemoteMediator
 import androidx.paging.cachedIn
+import arrow.core.Either
 import clib.data.crud.CRUDProjectionRefreshablePager
 import clib.data.crud.CRUDRefreshableMutablePager
 import clib.data.crud.CRUDRefreshablePager
@@ -18,6 +19,12 @@ import clib.data.type.collections.restartableflow.RestartableMutableStateFlow
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.data.type.collections.restartableflow.restartableStateIn
 import klib.data.crud.CoroutineCrudRepository
+import klib.data.load.LoadingResult
+import klib.data.load.Refresher
+import klib.data.load.idle
+import klib.data.load.load
+import klib.data.load.loadEither
+import klib.data.load.loadResult
 import klib.data.query.BooleanOperand
 import klib.data.query.Order
 import klib.data.query.Variable
@@ -27,6 +34,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -71,6 +79,45 @@ public abstract class ViewModel<T : Any>() : ViewModel() {
             override suspend fun collect(collector: FlowCollector<T>): Nothing = stateFlow.collect(collector)
         }
     }
+
+    protected fun <T> loadStateFlow(
+        initialValue: LoadingResult<T> = idle(),
+        fetcher: suspend (LoadingResult<T>) -> T,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresh: Refresher? = null,
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
+    ): RestartableStateFlow<LoadingResult<T>> = load(
+        initialValue,
+        fetcher,
+        observer,
+        refresh,
+    ).stateIn(started, initialValue)
+
+    protected fun <T> loadResultStateFlow(
+        initialValue: LoadingResult<T> = idle(),
+        fetcher: suspend (LoadingResult<T>) -> Result<T>,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresh: Refresher? = null,
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
+    ): RestartableStateFlow<LoadingResult<T>> = loadResult(
+        initialValue,
+        fetcher,
+        observer,
+        refresh,
+    ).stateIn(started, initialValue)
+
+    protected fun <T> loadEitherStateFlow(
+        initialValue: LoadingResult<T> = idle(),
+        fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresh: Refresher? = null,
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
+    ): RestartableStateFlow<LoadingResult<T>> = loadEither(
+        initialValue,
+        fetcher,
+        observer,
+        refresh,
+    ).stateIn(started, initialValue)
 
     protected fun <T : Any> Flow<PagingData<T>>.cachedIn(): Flow<PagingData<T>> = cachedIn(viewModelScope)
 

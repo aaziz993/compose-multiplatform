@@ -106,34 +106,51 @@ public fun <T> Either<Throwable, T>.toLoadingResult(): LoadingResult<T> =
         ifLeft = { throwable -> idle(throwable) },
     )
 
-public inline fun <T> LoadingResult<T>.loadResult(
+public inline fun <T> load(
+    initialValue: LoadingResult<T> = idle(),
+    crossinline fetcher: suspend (LoadingResult<T>) -> T,
+    crossinline observer: (T) -> Flow<T> = { emptyFlow() },
+    refresh: Refresher? = null,
+): Flow<LoadingResult<T>> = loadResult(
+    initialValue,
+    { result -> runCatching { fetcher(result) } },
+    observer,
+    refresh,
+)
+
+public inline fun <T> loadResult(
+    initialValue: LoadingResult<T> = idle(),
     crossinline fetcher: suspend (LoadingResult<T>) -> Result<T>,
     crossinline observer: (T) -> Flow<T> = { emptyFlow() },
     refresh: Refresher? = null,
-): Flow<LoadingResult<T>> = load(
+): Flow<LoadingResult<T>> = loadHelper(
+    initialValue,
     { result -> fetcher(result).toLoadingResult() },
     observer,
     refresh,
 )
 
-public inline fun <T> LoadingResult<T>.loadEither(
+public inline fun <T> loadEither(
+    initialValue: LoadingResult<T> = idle(),
     crossinline fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
     crossinline observer: (T) -> Flow<T> = { emptyFlow() },
     refresh: Refresher? = null,
-): Flow<LoadingResult<T>> = load(
+): Flow<LoadingResult<T>> = loadHelper(
+    initialValue,
     { result -> fetcher(result).toLoadingResult() },
     observer,
     refresh,
 )
 
 @PublishedApi
-internal inline fun <T> LoadingResult<T>.load(
+internal inline fun <T> loadHelper(
+    initialValue: LoadingResult<T>,
     crossinline fetcher: suspend (LoadingResult<T>) -> LoadingResult<T>,
-    crossinline observer: (T) -> Flow<T> = { emptyFlow() },
-    refresh: Refresher? = null,
+    crossinline observer: (T) -> Flow<T>,
+    refresh: Refresher?,
 ): Flow<LoadingResult<T>> {
     // Store the latest emitted value in the lastValue.
-    var lastValue = this
+    var lastValue = initialValue
 
     val refresherFlow = refresh?.flow ?: emptyFlow()
     return flow {

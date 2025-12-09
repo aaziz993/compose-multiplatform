@@ -1,28 +1,25 @@
 package ui.news.articles.presentation.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import clib.presentation.viewmodel.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import klib.data.load.LoadingResult
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import ui.news.articles.data.net.http.ArticlesApiService
 
 @KoinViewModel
-public class ArticleViewModel(private val apiService: ArticlesApiService) : ViewModel<Unit>() {
+public class ArticleViewModel(private val apiService: ArticlesApiService) : ViewModel<ArticlesAction>() {
 
-    public val state: StateFlow<ArticlesState>
-        field = MutableStateFlow(ArticlesState())
+    public val state: StateFlow<LoadingResult<ArticlesState>>
+        field = loadStateFlow(
+            fetcher = { result ->
+                ArticlesState(apiService.getArticles())
+            },
+        )
 
-    init {
-        viewModelScope.launch {
-            val articles = apiService.getArticles()
-            state.update { it.copy(articles = articles.filter { article -> !article.imageUrl.isEmpty() }) }
+    override fun action(action: ArticlesAction): Unit =
+        when (action) {
+            ArticlesAction.Retry -> state.restart()
         }
-    }
-
-    override fun action(action: Unit): Unit = Unit
 }
 
 
