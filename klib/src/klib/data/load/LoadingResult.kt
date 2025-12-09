@@ -135,6 +135,27 @@ public sealed interface LoadingResult<T> {
     ).restartableStateIn(scope, started, this)
 }
 
+public inline fun <T> LoadingResult<T>.handle(
+    onLoading: (T?) -> Unit = {},
+    onSuccess: (T) -> Unit = {},
+    onFailure: (Throwable, T?) -> Unit = { _, _ -> },
+): Unit = when (this) {
+    is Loading -> onLoading(value)
+    is Success -> onSuccess(value)
+    is Failure -> onFailure(throwable, value)
+}
+
+public inline fun <T> LoadingResult<T>.handleSuccess(
+    onLoading: (T?) -> Unit = {},
+    onSuccess: (T) -> Unit = {},
+    onFailure: (Throwable) -> Unit = {},
+): Unit {
+    if (this is Loading) return onLoading(value)
+    val result = toSuccess()
+    if (result is Success) return onSuccess(result.value)
+    if (result is Failure) return onFailure(result.throwable)
+}
+
 public fun <T> loading(value: T? = null): LoadingResult<T> = Loading(value)
 
 public fun <T> success(value: T): Success<T> = Success(value)

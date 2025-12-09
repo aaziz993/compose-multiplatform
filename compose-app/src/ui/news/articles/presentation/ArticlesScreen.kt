@@ -27,6 +27,7 @@ import coil3.compose.AsyncImage
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.retry
 import klib.data.load.LoadingResult
+import klib.data.load.handleSuccess
 import klib.data.load.loading
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -47,14 +48,17 @@ public fun ArticlesScreen(
     onAction: (ArticlesAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
-    when (state) {
-        is LoadingResult.Loading -> Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            LoadingIndicator()
-        }
-
-        is LoadingResult.Success -> ArticleContent(articles = state.value.articles)
-
-        else -> RetryTextButton(onAction)
+    state.handleSuccess(
+        onLoading = {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                LoadingIndicator()
+            }
+        },
+        onSuccess = { value ->
+            ArticleContent(articles = value.articles)
+        },
+    ) {
+        RetryTextButton(onAction)
     }
 }
 
