@@ -2,7 +2,6 @@ package klib.data.auth.oauth.model
 
 import io.ktor.util.internal.initCauseBridge
 import kotlinx.coroutines.CopyableThrowable
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * Represents an error during communicating to OAuth2 server.
@@ -32,7 +31,6 @@ public sealed class OAuth2Exception(message: String, public val errorCode: Strin
      * Thrown when an OAuth2 server responds with the "unsupported_grant_type" error.
      * @param grantType that was passed to the server
      */
-    @OptIn(ExperimentalCoroutinesApi::class)
     public class UnsupportedGrantType(public val grantType: String) :
         OAuth2Exception(
             "OAuth2 server doesn't support grant type $grantType",
@@ -48,7 +46,6 @@ public sealed class OAuth2Exception(message: String, public val errorCode: Strin
      * Thrown when an OAuth2 server responds with [errorCode].
      * @param errorCode the OAuth2 server replied with
      */
-    @OptIn(ExperimentalCoroutinesApi::class)
     public class UnknownException(
         private val details: String,
         errorCode: String

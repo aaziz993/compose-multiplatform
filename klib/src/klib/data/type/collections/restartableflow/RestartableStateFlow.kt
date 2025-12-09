@@ -1,9 +1,6 @@
-@file:OptIn(ExperimentalForInheritanceCoroutinesApi::class)
-
-package clib.data.type.collections.restartableflow
+package klib.data.type.collections.restartableflow
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

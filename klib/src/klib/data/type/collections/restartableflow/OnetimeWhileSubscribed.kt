@@ -1,6 +1,5 @@
-package clib.data.type.collections.restartableflow
+package klib.data.type.collections.restartableflow
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

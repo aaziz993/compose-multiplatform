@@ -4,7 +4,13 @@ import arrow.core.Either
 import klib.data.load.LoadingResult.Failure
 import klib.data.load.LoadingResult.Loading
 import klib.data.load.LoadingResult.Success
+import klib.data.type.collections.SHARING_STARTED_STOP_TIMEOUT_MILLIS
+import klib.data.type.collections.restartableflow.RestartableStateFlow
+import klib.data.type.collections.restartableflow.restartableStateIn
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.emptyFlow
@@ -63,35 +69,71 @@ public sealed interface LoadingResult<T> {
     public fun load(
         fetcher: suspend (LoadingResult<T>) -> T,
         observer: (T) -> Flow<T> = { emptyFlow() },
-        refresh: Refresher? = null,
-    ): Flow<LoadingResult<T>> = loadHelper(
+        refresher: Refresher? = null,
+    ): Flow<LoadingResult<T>> = load(
         this,
         { result -> result.load { fetcher(result) } },
         observer,
-        refresh,
+        refresher,
     )
 
     public fun loadResult(
         fetcher: suspend (LoadingResult<T>) -> Result<T>,
         observer: (T) -> Flow<T> = { emptyFlow() },
-        refresh: Refresher? = null,
-    ): Flow<LoadingResult<T>> = loadHelper(
+        refresher: Refresher? = null,
+    ): Flow<LoadingResult<T>> = load(
         this,
         { result -> result.loadResult { fetcher(result) } },
         observer,
-        refresh,
+        refresher,
     )
 
     public fun loadEither(
         fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
         observer: (T) -> Flow<T> = { emptyFlow() },
-        refresh: Refresher? = null,
-    ): Flow<LoadingResult<T>> = loadHelper(
+        refresher: Refresher? = null,
+    ): Flow<LoadingResult<T>> = load(
         this,
         { result -> result.loadEither { fetcher(result) } },
         observer,
-        refresh,
+        refresher,
     )
+
+    public fun loadStateFlow(
+        fetcher: suspend (LoadingResult<T>) -> T,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresher: Refresher? = null,
+        scope: CoroutineScope,
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
+    ): RestartableStateFlow<LoadingResult<T>> = load(
+        fetcher,
+        observer,
+        refresher,
+    ).restartableStateIn(scope, started, this)
+
+    public fun loadResultStateFlow(
+        fetcher: suspend (LoadingResult<T>) -> Result<T>,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresher: Refresher? = null,
+        scope: CoroutineScope,
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
+    ): RestartableStateFlow<LoadingResult<T>> = loadResult(
+        fetcher,
+        observer,
+        refresher,
+    ).restartableStateIn(scope, started, this)
+
+    public fun loadEitherStateFlow(
+        fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
+        observer: (T) -> Flow<T> = { emptyFlow() },
+        refresher: Refresher? = null,
+        scope: CoroutineScope,
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
+    ): RestartableStateFlow<LoadingResult<T>> = loadEither(
+        fetcher,
+        observer,
+        refresher,
+    ).restartableStateIn(scope, started, this)
 }
 
 public fun <T> loading(value: T? = null): LoadingResult<T> = Loading(value)
@@ -111,7 +153,7 @@ public fun <T> Either<Throwable, T>.toLoadingResult(): LoadingResult<T> =
         ifLeft = { throwable -> failure(throwable) },
     )
 
-private fun <T> loadHelper(
+private fun <T> load(
     initialValue: LoadingResult<T>,
     fetcher: suspend (LoadingResult<T>) -> LoadingResult<T>,
     observer: (T) -> Flow<T>,

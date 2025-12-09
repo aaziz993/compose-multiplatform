@@ -14,20 +14,17 @@ import clib.data.crud.CRUDRefreshablePager
 import clib.data.crud.model.EntityProperty
 import clib.data.crud.mutablePager
 import clib.data.crud.pager
-import clib.data.type.collections.map
-import clib.data.type.collections.restartableflow.RestartableMutableStateFlow
-import clib.data.type.collections.restartableflow.RestartableStateFlow
-import clib.data.type.collections.restartableflow.restartableStateIn
+import klib.data.type.collections.restartableflow.RestartableMutableStateFlow
+import klib.data.type.collections.restartableflow.RestartableStateFlow
+import klib.data.type.collections.restartableflow.restartableStateIn
 import klib.data.crud.CoroutineCrudRepository
 import klib.data.load.LoadingResult
 import klib.data.load.Refresher
-import klib.data.load.loading
-import klib.data.load.load
-import klib.data.load.loadEither
-import klib.data.load.loadResult
 import klib.data.query.BooleanOperand
 import klib.data.query.Order
 import klib.data.query.Variable
+import klib.data.type.collections.SHARING_STARTED_STOP_TIMEOUT_MILLIS
+import klib.data.type.collections.map
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -38,9 +35,6 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-
-// The reasoning 5_000 was chosen for the stopTimeoutMillis can be found in the official Android documentation, which discusses the ANR (Application Not Responding) timeout threshold.
-public const val SHARING_STARTED_STOP_TIMEOUT_MILLIS: Long = 5_000
 
 public abstract class ViewModel<T : Any>() : ViewModel() {
 
@@ -80,44 +74,44 @@ public abstract class ViewModel<T : Any>() : ViewModel() {
         }
     }
 
-    protected fun <T> stateFlow(
-        initialValue: LoadingResult<T> = loading(),
+    protected fun <T> LoadingResult<T>.loadStateFlow(
         fetcher: suspend (LoadingResult<T>) -> T,
         observer: (T) -> Flow<T> = { emptyFlow() },
-        refresh: Refresher? = null,
+        refresher: Refresher? = null,
         started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
-    ): RestartableStateFlow<LoadingResult<T>> = load(
-        initialValue,
+    ): RestartableStateFlow<LoadingResult<T>> = loadStateFlow(
         fetcher,
         observer,
-        refresh,
-    ).stateIn(started, initialValue)
+        refresher,
+        viewModelScope,
+        started,
+    )
 
-    protected fun <T> resultStateFlow(
-        initialValue: LoadingResult<T> = loading(),
+    protected fun <T> LoadingResult<T>.loadResultStateFlow(
         fetcher: suspend (LoadingResult<T>) -> Result<T>,
         observer: (T) -> Flow<T> = { emptyFlow() },
-        refresh: Refresher? = null,
+        refresher: Refresher? = null,
         started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
-    ): RestartableStateFlow<LoadingResult<T>> = loadResult(
-        initialValue,
+    ): RestartableStateFlow<LoadingResult<T>> = loadResultStateFlow(
         fetcher,
         observer,
-        refresh,
-    ).stateIn(started, initialValue)
+        refresher,
+        viewModelScope,
+        started,
+    )
 
-    protected fun <T> eitherStateFlow(
-        initialValue: LoadingResult<T> = loading(),
+    protected fun <T> LoadingResult<T>.eitherStateFlow(
         fetcher: suspend (LoadingResult<T>) -> Either<Throwable, T>,
         observer: (T) -> Flow<T> = { emptyFlow() },
-        refresh: Refresher? = null,
+        refresher: Refresher? = null,
         started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
-    ): RestartableStateFlow<LoadingResult<T>> = loadEither(
-        initialValue,
+    ): RestartableStateFlow<LoadingResult<T>> = loadEitherStateFlow(
         fetcher,
         observer,
-        refresh,
-    ).stateIn(started, initialValue)
+        refresher,
+        viewModelScope,
+        started,
+    )
 
     protected fun <T : Any> Flow<PagingData<T>>.cachedIn(): Flow<PagingData<T>> = cachedIn(viewModelScope)
 
