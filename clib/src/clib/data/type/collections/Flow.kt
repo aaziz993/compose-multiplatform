@@ -18,14 +18,8 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalCoroutinesApi::class)
 public fun <T, R> StateFlow<T>.map(
     scope: CoroutineScope,
-    transform: (data: T) -> R
-): StateFlow<R> = mapLatest(transform).stateIn(scope, SharingStarted.Eagerly, transform(value))
-
-@OptIn(ExperimentalCoroutinesApi::class)
-public fun <T, R> StateFlow<T>.map(
-    scope: CoroutineScope,
     initialValue: R,
-    transform: suspend (data: T) -> R
+    transform: suspend (value: T) -> R
 ): StateFlow<R> = mapLatest(transform).stateIn(scope, SharingStarted.Eagerly, initialValue)
 
 @Suppress("ComposeUnstableReceiver")

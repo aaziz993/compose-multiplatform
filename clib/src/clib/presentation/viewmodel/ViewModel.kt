@@ -7,9 +7,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.RemoteMediator
 import androidx.paging.cachedIn
-import arrow.core.Either
-import arrow.core.raise.Raise
-import arrow.core.raise.either
 import clib.data.crud.CRUDProjectionRefreshablePager
 import clib.data.crud.CRUDRefreshableMutablePager
 import clib.data.crud.CRUDRefreshablePager
@@ -20,12 +17,10 @@ import clib.data.type.collections.map
 import clib.data.type.collections.restartableflow.RestartableMutableStateFlow
 import clib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.data.type.collections.restartableflow.restartableStateIn
-import clib.presentation.viewmodel.ViewModelState.Success
-import clib.presentation.viewmodel.model.exception.ViewModelStateException
-import klib.data.query.Variable
 import klib.data.crud.CoroutineCrudRepository
 import klib.data.query.BooleanOperand
 import klib.data.query.Order
+import klib.data.query.Variable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -37,58 +32,31 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 
 // The reasoning 5_000 was chosen for the stopTimeoutMillis can be found in the official Android documentation, which discusses the ANR (Application Not Responding) timeout threshold.
-public const val STATE_STARTED_STOP_TIMEOUT_MILLIS: Long = 5_000
+public const val SHARING_STARTED_STOP_TIMEOUT_MILLIS: Long = 5_000
 
 public abstract class ViewModel<T : Any>() : ViewModel() {
 
     protected open val savedStateHandle: SavedStateHandle = SavedStateHandle()
 
-    public open fun exceptionTransform(exception: Throwable): ViewModelStateException = ViewModelStateException(exception)
-
-    public suspend fun <T : Any> ViewModelState<T>.map(block: suspend () -> T): ViewModelState<T> = try {
-        Success(block())
-    }
-    catch (e: Throwable) {
-        toFailure(exceptionTransform(e))
-    }
-
-    public suspend fun <T : Any> ViewModelState<T>.mapResult(block: suspend () -> Result<T>): ViewModelState<T> =
-        block().fold(
-            onSuccess = { Success(it) },
-            onFailure = { toFailure(exceptionTransform(it)) },
-        )
-
-    public suspend fun <T : Any> ViewModelState<T>.mapEither(block: suspend () -> Either<Throwable, T>): ViewModelState<T> =
-        block().fold(
-            ifLeft = { toFailure(exceptionTransform(it)) },
-            ifRight = { Success(it) },
-        )
-
-    public suspend fun <T : Any> ViewModelState<T>.mapRaise(block: suspend Raise<Throwable>.() -> T): ViewModelState<T> =
-        mapEither { either { block() } }
-
-    protected fun <T, R> StateFlow<T>.map(transform: (data: T) -> R): StateFlow<R> =
-        map(scope = viewModelScope, transform)
-
-    protected fun <T, R> StateFlow<T>.map(initialValue: R, transform: suspend (data: T) -> R): StateFlow<R> =
-        map(viewModelScope, initialValue, transform)
-
-    protected fun <T> Flow<T>.launch(): Job = launchIn(viewModelScope)
+    protected fun <T> Flow<T>.launchIn(): Job = launchIn(viewModelScope)
 
     protected fun <T> Flow<T>.stateIn(
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
         initialValue: T,
-        started: SharingStarted = SharingStarted.WhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
     ): RestartableStateFlow<T> = restartableStateIn(
         viewModelScope,
         started,
         initialValue,
     )
 
+    protected fun <T, R> StateFlow<T>.map(initialValue: R, transform: suspend (data: T) -> R): StateFlow<R> =
+        map(viewModelScope, initialValue, transform)
+
     protected fun <T> MutableStateFlow<T>.onStartStateIn(
-        started: SharingStarted = SharingStarted.WhileSubscribed(STATE_STARTED_STOP_TIMEOUT_MILLIS),
+        started: SharingStarted = SharingStarted.WhileSubscribed(SHARING_STARTED_STOP_TIMEOUT_MILLIS),
         block: suspend (T) -> T,
     ): RestartableMutableStateFlow<T> {
-        val stateFlow = onStart { update { value -> block(value) } }.stateIn(value, started)
+        val stateFlow = onStart { update { value -> block(value) } }.stateIn(started, value)
 
         return object : RestartableMutableStateFlow<T>, RestartableStateFlow<T> by stateFlow, MutableStateFlow<T> by this {
             override var value: T

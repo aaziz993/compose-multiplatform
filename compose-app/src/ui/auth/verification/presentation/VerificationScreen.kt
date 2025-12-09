@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraFront
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -98,7 +98,7 @@ public fun VerificationScreen(
                     onAction(VerificationAction.SetUserImage(""))
                 },
             ) {
-                Icon(Icons.Default.CameraFront, stringResource(Res.string.camera))
+                Icon(Icons.Default.CameraAlt, stringResource(Res.string.camera))
             }
         }
 
