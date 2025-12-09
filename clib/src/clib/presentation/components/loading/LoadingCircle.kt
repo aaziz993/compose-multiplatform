@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-public fun LoadingCircle(modifier: Modifier = Modifier): Unit = Box(
+public fun CenterCircularProgressIndicator(modifier: Modifier = Modifier): Unit = Box(
     Modifier.fillMaxSize(),
     Alignment.Center,
 ) {
