@@ -1,7 +1,7 @@
 package ui.auth.pincode.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.data.type.collections.restartableflow.RestartableStateFlow
+import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

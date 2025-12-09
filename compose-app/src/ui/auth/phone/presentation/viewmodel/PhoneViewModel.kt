@@ -1,7 +1,7 @@
 package ui.auth.phone.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.data.type.collections.restartableflow.RestartableStateFlow
+import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.navigation.Router
 import clib.presentation.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers

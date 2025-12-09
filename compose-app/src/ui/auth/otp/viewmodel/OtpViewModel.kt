@@ -1,7 +1,7 @@
 package ui.auth.otp.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import clib.data.type.collections.restartableflow.RestartableStateFlow
+import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.ViewModel
 import klib.data.auth.model.User
