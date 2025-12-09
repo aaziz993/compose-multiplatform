@@ -11,9 +11,7 @@ public class ArticleViewModel(private val apiService: ArticlesApiService) : View
 
     public val state: StateFlow<LoadingResult<ArticlesState>>
         field = stateFlow(
-            fetcher = { result ->
-                ArticlesState(apiService.getArticles())
-            },
+            fetcher = { result -> ArticlesState(apiService.getArticles()) },
         )
 
     override fun action(action: ArticlesAction): Unit =
