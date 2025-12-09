@@ -30,9 +30,9 @@ public sealed interface LoadingResult<T> {
 
     public fun toLoading(): Loading<T> = Loading(value)
 
-    public fun toSuccess(): LoadingResult<T> =
+    public fun toSuccess(preserveLoading: Boolean = true): LoadingResult<T> =
         when (this) {
-            is Loading -> Loading(value)
+            is Loading -> if (preserveLoading || value == null) Loading(value) else Success(value)
             is Success -> Success(value)
             is Failure -> value?.let(::Success) ?: Failure(throwable)
         }
