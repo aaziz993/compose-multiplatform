@@ -17,7 +17,7 @@ import clib.presentation.icons.Google
 import clib.presentation.icons.Instagram
 import clib.presentation.icons.Microsoft
 import clib.presentation.icons.OneDrive
-import clib.presentation.icons.OpenOtp
+import clib.presentation.icons.Otp
 import clib.presentation.icons.Reddit
 import clib.presentation.icons.Twitter
 import ui.navigation.presentation.Services
@@ -39,7 +39,7 @@ public fun ServicesScreen(
         Icon(Icons.Default.Instagram, "Instagram")
         Icon(Icons.Default.Microsoft, "Microsoft")
         Icon(Icons.Default.OneDrive, "OneDrive")
-        Icon(Icons.Default.OpenOtp, "OpenOtp")
+        Icon(Icons.Default.Otp, "Otp")
         Icon(Icons.Default.Reddit, "Reddit")
         Icon(Icons.Default.Twitter, "Twitter")
     }
