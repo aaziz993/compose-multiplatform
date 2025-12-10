@@ -54,9 +54,9 @@ public class HotpGenerator(
         if (counter < 0) return false
 
         for (i in 0..window) {
-            val c = counter + i
-            if (c < 0) continue
-            if (constantTimeEquals(generate(c), code)) return true
+            val count = counter + i
+            if (count < 0) continue
+            if (constantTimeEquals(generate(count), code)) return true
         }
         return false
     }

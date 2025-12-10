@@ -51,9 +51,9 @@ public class TotpGenerator(
         val currentCounter = counter(timestamp)
 
         for (i in -window..window) {
-            val c = currentCounter + i
-            if (c < 0) continue
-            if (hotpGenerator.verify(code, c)) return true
+            val counter = currentCounter + i
+            if (counter < 0) continue
+            if (hotpGenerator.verify(code, counter)) return true
         }
         return false
     }
