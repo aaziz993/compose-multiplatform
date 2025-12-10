@@ -2,5 +2,6 @@
 <resources>
     <string name="news">Новости</string>
     <string name="articles">Статьи</string>
+    <string name="article_details">Детали статьи</string>
     <string name="read_more_at">Читать далее</string>
 </resources>

@@ -2,5 +2,6 @@
 <resources>
     <string name="news">Хабарҳо</string>
     <string name="articles">Мақолахо</string>
+    <string name="article_details">Мушаххас мақола</string>
     <string name="read_more_at">Бисертар хонед дар</string>
 </resources>

@@ -60,7 +60,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
             NavScreen(
                 Modifier.fillMaxSize(),
-                { Text(text = currentRoute.route.name.asStringResource(), overflow = TextOverflow.Clip) },
+                { Text(text = currentRoute.route.name.asStringResource(), overflow = TextOverflow.Clip, maxLines = 1) },
                 connectivity,
                 componentsState.components,
                 themeState.theme,

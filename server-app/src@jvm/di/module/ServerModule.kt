@@ -12,10 +12,12 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.config.Config
 import klib.data.config.EnabledConfig
+import klib.data.location.locale.AggregateLocaleService
 import klib.data.location.locale.LocaleService
 import klib.data.location.locale.weblate.WeblateApiService
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.createHttpClient
+import klib.data.type.collections.takeUnlessEmpty
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Configuration
@@ -67,12 +69,12 @@ public class ServerModule {
 
     @Single
     public fun provideWeblate(config: Config, httpClient: HttpClient): LocaleService =
-        config.localization.weblate?.takeIf(EnabledConfig::enabled)?.let { weblate ->
+        config.localization.weblates.filter(EnabledConfig::enabled).map { weblate ->
             WeblateApiService(
                 weblate.baseUrl,
                 weblate.apiKey,
                 weblate.projectName,
                 httpClient,
             )
-        } ?: LocaleService()
+        }.takeUnlessEmpty()?.let(::AggregateLocaleService) ?: LocaleService()
 }

@@ -4,8 +4,8 @@ localization:
     - ru-RU
     - tg-TJ
   locale: en-US
-  weblate:
-    enable: true
-    baseUrl: http://localhost:8090
-    projectName: application
-    apiKey: wlu_aiwHaV8hd99eJeHgc5LPznz20croHxo2C22z
+  weblates:
+    - enable: true
+      baseUrl: http://localhost:8090
+      projectName: application
+      apiKey: wlu_aiwHaV8hd99eJeHgc5LPznz20croHxo2C22z

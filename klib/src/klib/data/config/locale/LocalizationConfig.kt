@@ -5,8 +5,8 @@ import klib.data.location.locale.current
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class Localization(
+public data class LocalizationConfig(
     val locales: List<Locale> = emptyList(),
     val locale: Locale = Locale.current,
-    val weblate: WeblateConfig? = null,
+    val weblates: List<WeblateConfig> = emptyList(),
 )

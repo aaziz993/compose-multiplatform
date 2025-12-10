@@ -257,12 +257,13 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
             route: ArticleDetails,
             sharedTransitionScope: SharedTransitionScope,
         ) {
+            val scrollState = rememberScrollState()
             val router = currentRouter()
             val viewModel: ArticleDetailsViewModel = koinViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             ArticleDetailsScreen(
-                Modifier,
+                Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
                 route,
                 state,
                 viewModel::action,

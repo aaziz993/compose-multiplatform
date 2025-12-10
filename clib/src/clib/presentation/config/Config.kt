@@ -8,7 +8,7 @@ import klib.data.config.LogConfig
 import klib.data.config.ServerConfig
 import klib.data.config.auth.AuthConfig
 import klib.data.config.http.client.HttpClientConfig
-import klib.data.config.locale.Localization
+import klib.data.config.locale.LocalizationConfig
 import klib.data.coroutines.runBlocking
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
@@ -31,7 +31,7 @@ public val LocalConfig: ProvidableCompositionLocal<Config> =
 @Serializable
 public data class Config(
     override val log: LogConfig = LogConfig(),
-    override val localization: Localization = Localization(),
+    override val localization: LocalizationConfig = LocalizationConfig(),
     override val validator: Map<String, Map<String, Validator>> = emptyMap(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),
     override val auth: AuthConfig = AuthConfig(),

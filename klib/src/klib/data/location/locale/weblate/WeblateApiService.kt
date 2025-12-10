@@ -42,10 +42,11 @@ public class WeblateApiService(
 
     override suspend fun setLocale(locale: Locale) {
         super.setLocale(locale)
+        val languageTag = locale.toString()
         translations = api.getAllUnits().toList().flatMap { response ->
             response.results.mapNotNull { unit ->
                 val segments = Url(unit.translation).segments
-                if (segments[2] == project) "${segments[3]}_${unit.context}" to listOf(unit.target.first()) else null
+                if (segments[2] == project && segments[3] == languageTag) unit.context to unit.target else null
             }
         }.toMap()
     }

@@ -2,5 +2,6 @@
 <resources>
     <string name="news">News</string>
     <string name="articles">Articles</string>
+    <string name="article_details">Article details</string>
     <string name="read_more_at">Read more at</string>
 </resources>

@@ -133,14 +133,14 @@ public fun AppBar(
             TopAppBar(
                 title = {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
                     ) {
                         title()
 
                         if (components.connectivity.isConnectivityIndicator)
-                            connectivity.ConnectivityText(overflow = TextOverflow.Clip)
+                            connectivity.ConnectivityText(overflow = TextOverflow.Clip, maxLines = 1)
                     }
                 },
                 navigationIcon = {

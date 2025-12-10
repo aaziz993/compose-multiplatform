@@ -64,14 +64,15 @@ public fun ArticleDetailsScreen(
         is LoadingResult.Loading -> CenterLoadingIndicator()
 
         is LoadingResult.Success -> ArticleDetailsSuccessContent(
-            article = result.value,
-            onBackClick = {
+            modifier,
+            result.value,
+            {
                 onNavigationAction(NavigationAction.Pop)
             },
-            onReadMoreClick = {
+            {
                 onAction(ArticleDetailsAction.ReadMore(route.articleId))
             },
-            onShareClick = {
+            {
                 onAction(ArticleDetailsAction.Share(route.articleId))
             },
         )
@@ -96,6 +97,7 @@ private fun RetryTextButton(
 
 @Composable
 private fun ArticleDetailsSuccessContent(
+    @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
     article: Article,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -103,7 +105,7 @@ private fun ArticleDetailsSuccessContent(
 ) {
     Column(
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(

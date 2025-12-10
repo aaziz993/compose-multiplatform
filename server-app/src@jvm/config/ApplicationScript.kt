@@ -7,7 +7,7 @@ import klib.data.config.Config
 import klib.data.config.LogConfig
 import klib.data.config.auth.AuthConfig
 import klib.data.config.http.client.HttpClientConfig
-import klib.data.config.locale.Localization
+import klib.data.config.locale.LocalizationConfig
 import klib.data.type.primitives.string.ansi.Attribute
 import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.ifNotEmpty
@@ -56,7 +56,7 @@ public lateinit var applicationScript: ApplicationScript
 @Serializable
 public class ApplicationScript(
     override val log: LogConfig = LogConfig(),
-    override val localization: Localization = Localization(),
+    override val localization: LocalizationConfig = LocalizationConfig(),
     override val validator: Map<String, Map<String, Validator>> = emptyMap(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),
     override val auth: AuthConfig = AuthConfig(),
