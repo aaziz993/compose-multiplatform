@@ -29,12 +29,20 @@
     </plurals>
 
     <plurals name="seconds">
+        <item quantity="zero">сония</item>
         <item quantity="one">сония</item>
+        <item quantity="two">сония</item>
+        <item quantity="few">сония</item>
+        <item quantity="many">сония</item>
         <item quantity="other">сония</item>
     </plurals>
 
     <plurals name="minutes">
+        <item quantity="zero">дакика</item>
         <item quantity="one">дакика</item>
+        <item quantity="two">дакика</item>
+        <item quantity="few">дакика</item>
+        <item quantity="many">дакика</item>
         <item quantity="other">дакика</item>
     </plurals>
 

@@ -131,7 +131,7 @@ public fun OtpInputField(
         repeat(count) { index ->
             // For each OTP box, manage its value, focus, and what happens on value change.
             OtpBox(
-                modifier = otpBoxModifier,
+                modifier = Modifier.weight(1f).then(otpBoxModifier),
                 otpValue = otpFieldsValues[index].value,
                 enabled = enabled,
                 textType = otpTextType,
