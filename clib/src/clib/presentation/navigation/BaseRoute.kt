@@ -16,7 +16,6 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import clib.presentation.config.LocalConfig
 import clib.presentation.event.EventBus
 import clib.presentation.navigation.deeplink.DeepLinkListener
 import clib.presentation.navigation.model.NavigationItem
@@ -24,9 +23,9 @@ import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
-import klib.data.net.http.urlPattern
-import klib.data.auth.model.AuthResource
 import klib.data.auth.model.Auth
+import klib.data.auth.model.AuthResource
+import klib.data.net.http.url
 import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
@@ -40,7 +39,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
 
     public open val urls: List<Url> by lazy {
-        listOf(navRoute.serializer().urlPattern())
+        listOf(navRoute.serializer().url())
     }
 
     public open val metadata: Map<String, Any> = slideTransition()

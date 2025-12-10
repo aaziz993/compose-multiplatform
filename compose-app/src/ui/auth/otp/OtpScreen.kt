@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,9 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import clib.presentation.icons.Otp
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.code_sent_to
+import compose_app.generated.resources.otp
 import compose_app.generated.resources.resend_code
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import kotlin.time.Duration
@@ -54,6 +58,8 @@ public fun OtpScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Icon(Icons.Default.Otp, stringResource(Res.string.otp))
+
         Text(
             text = stringResource(Res.string.code_sent_to, route.phone),
             fontSize = 28.sp,

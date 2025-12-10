@@ -13,12 +13,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 
 @Suppress("UnusedReceiverParameter")
-public val Icons.Filled.OpenOtp: ImageVector
+public val Icons.Filled.Otp: ImageVector
     get() {
-        if (_openOtp != null) {
-            return _openOtp!!
+        if (_otp != null) {
+            return _otp!!
         }
-        _openOtp = Builder(
+        _otp = Builder(
             name = "Icon", defaultWidth = 108.0.dp, defaultHeight = 108.0.dp,
             viewportWidth = 24.0f, viewportHeight = 24.0f
         ).apply {
@@ -80,7 +80,7 @@ public val Icons.Filled.OpenOtp: ImageVector
             }
         }
             .build()
-        return _openOtp!!
+        return _otp!!
     }
 
-private var _openOtp: ImageVector? = null
+private var _otp: ImageVector? = null
