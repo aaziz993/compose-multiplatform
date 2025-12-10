@@ -1,6 +1,5 @@
 package ui.auth.phone.presentation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,7 +55,7 @@ public fun PhoneScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
+        Icon(
             imageVector = Icons.Default.Phone,
             contentDescription = stringResource(Res.string.phone),
             modifier = Modifier.size(128.dp),
