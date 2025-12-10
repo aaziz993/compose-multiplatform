@@ -75,7 +75,7 @@ public fun PhoneScreen(
                 onAction(
                     PhoneAction.SetPhone(
                         countryCode,
-                        if ("${Regex.DIGIT_PATTERN}+".toRegex().matches(value)) value else state.number,
+                        if (value.isEmpty() || "${Regex.DIGIT_PATTERN}+".toRegex().matches(value)) value else state.number,
                         isValid,
                     ),
                 )
