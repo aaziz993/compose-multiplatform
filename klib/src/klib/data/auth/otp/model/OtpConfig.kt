@@ -26,6 +26,9 @@ private object OtpConfigSerializer : MapTransformingPolymorphicSerializer<OtpCon
     ),
 )
 
+public fun OtpConfig.isValidCode(code: String): Boolean =
+    code.length == codeDigits && code.all { it.isDigit() }
+
 @Serializable
 @SerialName("hotp")
 public data class HotpConfig(

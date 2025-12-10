@@ -10,6 +10,8 @@ import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import klib.data.cryptography.secureRandomBytes
 import klib.data.type.collections.restartableflow.RestartableStateFlow
+import klib.data.type.primitives.string.encoding.encodeBase32ToString
+import klib.data.type.primitives.time.nowEpochMillis
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -40,20 +42,19 @@ public class PhoneViewModel(
 
     private fun confirm() {
         viewModelScope.launch(Dispatchers.Main) {
-            if (state.value.isValid) {
-                testOtpCode = when (otpConfig) {
-                    is TotpConfig -> TotpGenerator(
-                        "WHGCNUJ7GAZ37EEYYC356BDOM2J5DFPF",
-                        otpConfig,
-                    ).generate(9223372036854775807L)
+            if (!state.value.isValid) return@launch
 
-                    is HotpConfig -> HotpGenerator(
-                        secureRandomBytes(10).decodeToString(),
-                        otpConfig,
-                    ).generate(10)
-                }
-                router.push(Otp("${state.value.countryCode}${state.value.phone}"))
+            val secret = secureRandomBytes(20).encodeBase32ToString()
+
+            testOtpCode = when (otpConfig) {
+                is TotpConfig -> TotpGenerator(secret, otpConfig)
+                    .generate(nowEpochMillis)
+
+                is HotpConfig -> HotpGenerator(secret, otpConfig)
+                    .generate(10)
             }
+
+            router.push(Otp("${state.value.countryCode}${state.value.phone}"))
         }
     }
 }

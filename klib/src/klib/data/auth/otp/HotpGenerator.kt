@@ -1,6 +1,7 @@
 package klib.data.auth.otp
 
 import klib.data.auth.otp.model.HotpConfig
+import klib.data.auth.otp.model.isValidCode
 import klib.data.cryptography.HMAC
 import klib.data.type.primitives.number.toByteArray
 import klib.data.type.primitives.number.toInt
@@ -9,18 +10,21 @@ import kotlin.experimental.and
 import kotlin.math.pow
 import dev.whyoleg.cryptography.algorithms.HMAC as CryptoHMAC
 
+public typealias HotpCounter = Long
+
 public class HotpGenerator(
     secret: String,
     private val config: HotpConfig
 ) {
 
-    private val secret: ByteArray = secret.decodeBase32ToBytes()!!
+    private val hmacKey = HMAC.keyDecoder(config.hmacAlgorithm)
+        .decodeFromByteArrayBlocking(CryptoHMAC.Key.Format.RAW, secret.decodeBase32ToBytes()!!)
 
-    public fun generate(count: Long): String {
+    private val otpModulus = 10.0.pow(config.codeDigits).toInt()
+
+    public fun generate(count: HotpCounter): String {
         val message = count.toByteArray(8)
 
-        val hmacKey = HMAC.keyDecoder(config.hmacAlgorithm)
-            .decodeFromByteArrayBlocking(CryptoHMAC.Key.Format.RAW, secret)
         val hash = hmacKey.signatureGenerator().generateSignatureBlocking(message)
 
         val offset = hash.last().and(0x0F).toInt()
@@ -29,9 +33,40 @@ public class HotpGenerator(
 
         binary[0] = binary[0] and 0x7F
 
-        val digits = config.codeDigits
-        val codeInt = binary.toInt() % 10.0.pow(digits).toInt()
+        val codeInt = binary.toInt() % otpModulus
 
-        return codeInt.toString().padStart(digits, '0')
+        return codeInt.toString().padStart(config.codeDigits, '0')
+    }
+
+    /**
+     * RFC 4226 HOTP verification
+     *
+     * @param code user provided OTP.
+     * @param counter current counter.
+     * @param window allowed counter drift.
+     */
+    public fun verify(
+        code: String,
+        counter: Long,
+        window: Int = 0,
+    ): Boolean {
+        if (!config.isValidCode(code)) return false
+        if (counter < 0) return false
+
+        for (i in 0..window) {
+            val c = counter + i
+            if (c < 0) continue
+            if (constantTimeEquals(generate(c), code)) return true
+        }
+        return false
+    }
+
+    private fun constantTimeEquals(a: String, b: String): Boolean {
+        if (a.length != b.length) return false
+        var result = 0
+        for (i in a.indices) {
+            result = result or (a[i].code xor b[i].code)
+        }
+        return result == 0
     }
 }
