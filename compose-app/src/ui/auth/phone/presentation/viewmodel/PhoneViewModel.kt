@@ -47,11 +47,8 @@ public class PhoneViewModel(
             val secret = secureRandomBytes(20).encodeBase32ToString()
 
             testOtpCode = when (otpConfig) {
-                is TotpConfig -> TotpGenerator(secret, otpConfig)
-                    .generate(nowEpochMillis)
-
-                is HotpConfig -> HotpGenerator(secret, otpConfig)
-                    .generate(10)
+                is TotpConfig -> TotpGenerator(secret, otpConfig).generate(nowEpochMillis)
+                is HotpConfig -> HotpGenerator(secret, otpConfig).generate(10)
             }
 
             router.push(Otp("${state.value.countryCode}${state.value.phone}"))
