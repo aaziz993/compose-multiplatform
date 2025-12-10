@@ -3,6 +3,7 @@ imports:
   - application-log.yaml
   - application-localization.yaml
   - application-validator.yaml
+  - application-auth.yaml
   - application-server.yaml
   - application-serialization.yaml
   - application-https-redirect.yaml
