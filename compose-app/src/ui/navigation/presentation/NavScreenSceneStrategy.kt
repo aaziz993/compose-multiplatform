@@ -10,6 +10,7 @@ import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.window.core.layout.WindowSizeClass
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.LocalComponentsState
@@ -59,7 +60,7 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
             NavScreen(
                 Modifier.fillMaxSize(),
-                { Text(text = currentRoute.route.name.asStringResource()) },
+                { Text(text = currentRoute.route.name.asStringResource(), overflow = TextOverflow.Clip) },
                 connectivity,
                 componentsState.components,
                 themeState.theme,

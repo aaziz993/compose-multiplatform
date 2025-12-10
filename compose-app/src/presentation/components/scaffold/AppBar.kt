@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
@@ -134,10 +135,12 @@ public fun AppBar(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         title()
 
-                        if (components.connectivity.isConnectivityIndicator) connectivity.ConnectivityText()
+                        if (components.connectivity.isConnectivityIndicator)
+                            connectivity.ConnectivityText(overflow = TextOverflow.Clip)
                     }
                 },
                 navigationIcon = {

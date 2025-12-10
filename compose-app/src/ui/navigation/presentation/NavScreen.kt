@@ -47,7 +47,7 @@ public fun NavScreen(
     onNavigationAction: (NavigationAction) -> Unit = {},
     navigationSuiteItems: NavigationSuiteScope.() -> Unit = {},
     content: @Composable () -> Unit = {},
-): Unit = AppBar(
+): Unit =  AppBar(
     modifier = modifier,
     title = title,
     connectivity = connectivity,
