@@ -1,7 +1,7 @@
-package ui.news.articles.data.net.http.model
+package ui.news.data.net.http.model
 
 import kotlinx.serialization.Serializable
-import ui.news.articles.data.model.Article
+import ui.news.data.model.Article
 
 @Serializable
 public data class ArticlesResponse(

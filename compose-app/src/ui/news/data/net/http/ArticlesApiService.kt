@@ -1,11 +1,11 @@
-package ui.news.articles.data.net.http
+package ui.news.data.net.http
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import org.koin.core.annotation.Single
-import ui.news.articles.data.model.Article
-import ui.news.articles.data.net.http.model.ArticlesResponse
+import ui.news.data.model.Article
+import ui.news.data.net.http.model.ArticlesResponse
 
 private const val BASE_URL = "https://api.spaceflightnewsapi.net/v4"
 

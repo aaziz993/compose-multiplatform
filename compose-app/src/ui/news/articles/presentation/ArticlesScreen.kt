@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -22,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import clib.presentation.components.loading.CenterLoadingIndicator
 import clib.presentation.navigation.NavigationAction
 import coil3.compose.AsyncImage
 import compose_app.generated.resources.Res
@@ -35,27 +35,27 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import ui.navigation.presentation.Articles
-import ui.news.articles.data.model.Article
+import ui.news.data.model.Article
 import ui.news.articles.presentation.viewmodel.ArticlesAction
-import ui.news.articles.presentation.viewmodel.ArticlesState
 
 @Composable
 public fun ArticlesScreen(
     modifier: Modifier = Modifier,
     route: Articles = Articles,
-    state: LoadingResult<ArticlesState> = loading(),
+    state: LoadingResult<List<Article>> = loading(),
     onAction: (ArticlesAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
-) {
-    when (val result = state.toSuccess()) {
-        is LoadingResult.Loading -> Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            LoadingIndicator()
-        }
+): Unit = when (val result = state.toSuccess()) {
+    is LoadingResult.Loading -> CenterLoadingIndicator()
 
-        is LoadingResult.Success -> ArticleContent(articles = result.value.articles)
+    is LoadingResult.Success -> ArticleListContent(
+        articles = result.value,
+        onArticleClick = { articleId ->
+            onAction(ArticlesAction.ArticleDetails(articleId))
+        },
+    )
 
-        else -> RetryTextButton(onAction)
-    }
+    else -> RetryTextButton(onAction)
 }
 
 @Composable
@@ -64,7 +64,7 @@ private fun RetryTextButton(
 ) = Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
     TextButton(
         onClick = {
-            onAction(ArticlesAction.Retry)
+            onAction(ArticlesAction.Fetch)
         },
     ) {
         Text(stringResource(Res.string.retry))
@@ -72,28 +72,30 @@ private fun RetryTextButton(
 }
 
 @Composable
-private fun ArticleContent(
+private fun ArticleListContent(
     articles: List<Article>,
+    onArticleClick: (Long) -> Unit
+) = LazyColumn(
+    contentPadding = PaddingValues(16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+    modifier = Modifier.fillMaxSize(),
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        items(articles) { article ->
-            ArticleItem(
-                article = article,
-            )
-        }
+    items(articles) { article ->
+        ArticleItem(
+            article = article,
+            onArticleClick = onArticleClick,
+        )
     }
 }
 
 @Composable
 private fun ArticleItem(
     article: Article,
+    onArticleClick: (Long) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
+        onClick = { onArticleClick(article.id) },
     ) {
         Column(
             verticalArrangement = Arrangement.Top,

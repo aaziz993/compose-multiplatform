@@ -126,6 +126,7 @@ public fun <E> WheelPicker(
         },
     )
     LaunchedEffect(key1 = values) {
+        lazyListState.scrollToItem(scrollOfItem(initialValue) ?: 0)   // +
         snapshotFlow { lazyListState.firstVisibleItemIndex }.collectLatest {
             onValueChange(values[it % listSize])
         }

@@ -2,7 +2,5 @@
 <resources>
     <string name="news">Хабарҳо</string>
     <string name="articles">Мақолахо</string>
-    <string name="back_content_description">Тавсиф мазмун</string>
-    <string name="share_content_description">Ирсоли тавсифи мазмун</string>
     <string name="read_more_at">Бисертар хонед дар</string>
 </resources>

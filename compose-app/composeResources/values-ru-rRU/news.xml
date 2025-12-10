@@ -2,7 +2,5 @@
 <resources>
     <string name="news">Новости</string>
     <string name="articles">Статьи</string>
-    <string name="back_content_description">Описание содержимого</string>
-    <string name="share_content_description">Поделиться описанием содержания</string>
     <string name="read_more_at">Читать далее</string>
 </resources>

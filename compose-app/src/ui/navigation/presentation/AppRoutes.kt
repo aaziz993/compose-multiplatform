@@ -84,6 +84,8 @@ import ui.auth.verification.presentation.VerificationScreen
 import ui.auth.verification.presentation.viewmodel.VerificationViewModel
 import ui.home.HomeScreen
 import ui.map.MapScreen
+import ui.news.articledetails.ArticleDetailsScreen
+import ui.news.articledetails.viewmodel.ArticleDetailsViewModel
 import ui.news.articles.presentation.ArticlesScreen
 import ui.news.articles.presentation.viewmodel.ArticleViewModel
 import ui.services.ServicesScreen
@@ -170,7 +172,7 @@ public data object Home : KoinRoute<Home>(), NavRoute {
 public data object News : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Articles)
+        listOf(Articles, ArticleDetails)
     }
 
     @Composable
@@ -231,6 +233,39 @@ public data object Articles : KoinRoute<Articles>(), NavRoute {
             viewModel::action,
             router::actions,
         )
+    }
+}
+
+@Serializable
+@SerialName("article_details")
+public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute {
+
+    override val route: Route<out NavRoute>
+        get() = ArticleDetails
+
+    public companion object : KoinRoute<ArticleDetails>(), NavRoute {
+
+        override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+        override val authResource: AuthResource? = AuthResource()
+
+        @Composable
+        override fun Content(
+            route: ArticleDetails,
+            sharedTransitionScope: SharedTransitionScope,
+        ) {
+            val router = currentRouter()
+            val viewModel: ArticleDetailsViewModel = koinViewModel()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            ArticleDetailsScreen(
+                Modifier,
+                route,
+                state,
+                viewModel::action,
+                router::actions,
+            )
+        }
     }
 }
 
@@ -611,7 +646,7 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
     override val route: Route<out NavRoute>
         get() = Otp
 
-    public companion object : Route<Otp>() {
+    public companion object : KoinRoute<Otp>() {
 
         override val navRoute: KClass<out NavRoute>
             get() = Otp::class

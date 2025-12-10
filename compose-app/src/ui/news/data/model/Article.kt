@@ -1,4 +1,4 @@
-package ui.news.articles.data.model
+package ui.news.data.model
 
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
