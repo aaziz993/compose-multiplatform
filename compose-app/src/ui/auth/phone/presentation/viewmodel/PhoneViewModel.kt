@@ -1,18 +1,15 @@
 package ui.auth.phone.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.navigation.Router
 import clib.presentation.viewmodel.ViewModel
-import dev.whyoleg.cryptography.algorithms.SHA1
 import klib.data.auth.otp.HotpGenerator
-import klib.data.auth.otp.model.TotpConfig
 import klib.data.auth.otp.TotpGenerator
 import klib.data.auth.otp.model.HotpConfig
 import klib.data.auth.otp.model.OtpConfig
+import klib.data.auth.otp.model.TotpConfig
 import klib.data.cryptography.secureRandomBytes
-import klib.data.type.primitives.time.nowEpochMillis
-import kotlin.time.Duration.Companion.seconds
+import klib.data.type.collections.restartableflow.RestartableStateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -47,7 +44,7 @@ public class PhoneViewModel(
                 testOtpCode = when (otpConfig) {
                     is TotpConfig -> TotpGenerator(
                         "WHGCNUJ7GAZ37EEYYC356BDOM2J5DFPF",
-                        TotpConfig(30.seconds, 6, SHA1),
+                        otpConfig,
                     ).generate(9223372036854775807L)
 
                     is HotpConfig -> HotpGenerator(

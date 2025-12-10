@@ -3,6 +3,7 @@ package klib.data.location
 import klib.data.iso.Alpha2Letter
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
+import klib.data.location.country.toCountry
 import klib.data.type.serialization.serializers.transform.TransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -10,11 +11,11 @@ import kotlinx.serialization.Serializable
 @KeepGeneratedSerializer
 @Serializable(PhoneSerializer::class)
 public data class Phone(
-    val dial: Alpha2Letter,
+    val countryCode: Alpha2Letter,
     val number: String,
 ) {
 
-    override fun toString(): String = "$dial$number"
+    override fun toString(): String = "+${countryCode.toCountry().dial}$number"
 }
 
 public fun String.toPhoneOrNull(): Phone? {

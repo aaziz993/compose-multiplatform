@@ -1,0 +1,7 @@
+auth:
+  otp:
+    totp:
+      period: 60s
+      codeDigits: 4
+      hmacAlgorithm: sha512
+

@@ -37,7 +37,6 @@ import klib.data.auth.otp.model.TotpConfig
 import kotlin.time.Duration
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.textfield.otp.AppOtpInputField
-import ui.auth.otp.viewmodel.OTP_CODE_LENGTH
 import ui.auth.otp.viewmodel.OtpAction
 import ui.auth.otp.viewmodel.OtpState
 import ui.navigation.presentation.Otp
@@ -57,7 +56,7 @@ public fun OtpScreen(
 
     LaunchedEffect(otpValue.value) {
         if (otpValue.value != state.code) onAction(OtpAction.SetCode(otpValue.value))
-        if (otpValue.value.length == OTP_CODE_LENGTH) onAction(OtpAction.Confirm)
+        if (otpValue.value.length == config.codeDigits) onAction(OtpAction.Confirm)
     }
 
     Column(

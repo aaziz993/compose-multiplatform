@@ -9,6 +9,7 @@ import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import klib.data.type.primitives.time.CountDownTimer
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -28,7 +29,7 @@ public class OtpViewModel(
 ) : ViewModel<OtpAction>() {
 
     public val state: RestartableStateFlow<OtpState>
-        field = MutableStateFlow(OtpState()).onStartStateIn { it }
+        field = MutableStateFlow(OtpState(countdown = (config as? TotpConfig)?.period ?: 0.seconds))
 
     private var countDownTimer: CountDownTimer? = null
 

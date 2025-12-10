@@ -17,7 +17,7 @@ public class HotpGenerator(
     private val secret: ByteArray = secret.decodeBase32ToBytes()!!
 
     public fun generate(count: Long): String {
-        val message = count.toByteArray(8).reversedArray()
+        val message = count.toByteArray(8)
 
         val hmacKey = HMAC.keyDecoder(config.hmacAlgorithm)
             .decodeFromByteArrayBlocking(CryptoHMAC.Key.Format.RAW, secret)
