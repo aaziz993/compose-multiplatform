@@ -6,6 +6,7 @@ import clib.presentation.noLocalProvidedFor
 import com.charleskorn.kaml.Yaml
 import klib.data.config.LogConfig
 import klib.data.config.ServerConfig
+import klib.data.config.auth.AuthConfig
 import klib.data.config.http.client.HttpClientConfig
 import klib.data.config.locale.Localization
 import klib.data.coroutines.runBlocking
@@ -33,6 +34,7 @@ public data class Config(
     override val localization: Localization = Localization(),
     override val validator: Map<String, Map<String, Validator>> = emptyMap(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),
+    override val auth: AuthConfig = AuthConfig(),
     override val ui: UIConfig = UIConfig(),
     override val server: ServerConfig = ServerConfig()
 ) : klib.data.config.Config {

@@ -5,6 +5,7 @@ import io.ktor.server.config.yaml.YamlConfig
 import java.io.File
 import klib.data.config.Config
 import klib.data.config.LogConfig
+import klib.data.config.auth.AuthConfig
 import klib.data.config.http.client.HttpClientConfig
 import klib.data.config.locale.Localization
 import klib.data.type.primitives.string.ansi.Attribute
@@ -58,6 +59,7 @@ public class ApplicationScript(
     override val localization: Localization = Localization(),
     override val validator: Map<String, Map<String, Validator>> = emptyMap(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),
+    override val auth: AuthConfig = AuthConfig(),
     override val ui: klib.data.config.UIConfig = UIConfig(),
     override val server: klib.data.config.ServerConfig = klib.data.config.ServerConfig(),
     override val config: ScriptConfig = ScriptConfig(),

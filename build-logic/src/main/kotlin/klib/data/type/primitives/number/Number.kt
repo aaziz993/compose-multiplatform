@@ -703,7 +703,7 @@ public fun UInt.toByteArray(): ByteArray =
         sliceByte(24).toByte(),
     )
 
-public fun UInt.toByteArray(size: Int): ByteArray = ByteArray(size) { sliceByte(it * 8).toByte() }
+public fun UInt.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
 
 public fun Int.toBitArray(): BooleanArray =
     BooleanArray(Int.SIZE_BITS) {
@@ -718,7 +718,7 @@ public fun Int.toByteArray(): ByteArray =
         sliceByte(24).toByte(),
     )
 
-public fun Int.toByteArray(size: Int): ByteArray = ByteArray(size) { sliceByte(it * 8).toByte() }
+public fun Int.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
 
 public fun ULong.toBitArray(): BooleanArray =
     BooleanArray(ULong.SIZE_BITS) {
@@ -737,7 +737,7 @@ public fun ULong.toByteArray(): ByteArray =
         sliceByte(56).toByte(),
     )
 
-public fun ULong.toByteArray(size: Int): ByteArray = ByteArray(size) { sliceByte(it * 8).toByte() }
+public fun ULong.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
 
 public fun Long.toBitArray(): BooleanArray =
     BooleanArray(Long.SIZE_BITS) {
@@ -756,7 +756,7 @@ public fun Long.toByteArray(): ByteArray =
         sliceByte(56).toByte(),
     )
 
-public fun Long.toByteArray(size: Int): ByteArray = ByteArray(size) { sliceByte(it * 8).toByte() }
+public fun Long.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
 
 public fun minOf(a: Long, b: Int): Long = minOf(a, b.toLong())
 

@@ -1,5 +1,7 @@
-package klib.data.auth.otp
+package klib.data.auth.otp.model
 
+import klib.data.auth.otp.HotpGenerator
+import klib.data.auth.otp.TotpGenerator
 import kotlin.uuid.Uuid
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -85,7 +87,7 @@ public data class TotpData(
 
     @Transient
     val periodMillis: Int =
-        authenticator.config.period.millis.coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+        authenticator.config.period.totpMillis.coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
 
     override fun code(timestamp: Long): String =
         authenticator.generate(timestamp)

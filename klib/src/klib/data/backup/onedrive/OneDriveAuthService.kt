@@ -7,7 +7,7 @@ import io.ktor.util.encodeBase64
 import klib.data.auth.model.BearerToken
 import klib.data.backup.onedrive.model.AccessData
 import klib.data.cryptography.hashSha256Blocking
-import klib.data.cryptography.randomBytes
+import klib.data.cryptography.secureRandomBytes
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.bearer
 import klib.data.net.http.client.createHttpClient
@@ -67,7 +67,7 @@ public class OneDriveAuthService(
 }
 
 private fun oneDriveAccessData(): AccessData {
-    val bytes = randomBytes(32)
+    val bytes = secureRandomBytes(32)
     val codeVerifier = bytes.oneDriveEncodeBase64()
     val codeChallenge = codeVerifier.encodeToByteArray().hashSha256Blocking().oneDriveEncodeBase64()
     val accessData = AccessData(codeVerifier, codeChallenge)

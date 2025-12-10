@@ -31,6 +31,9 @@ import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.otp
 import compose_app.generated.resources.resend_code
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
+import klib.data.auth.otp.model.HotpConfig
+import klib.data.auth.otp.model.OtpConfig
+import klib.data.auth.otp.model.TotpConfig
 import kotlin.time.Duration
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.textfield.otp.AppOtpInputField
@@ -39,10 +42,13 @@ import ui.auth.otp.viewmodel.OtpAction
 import ui.auth.otp.viewmodel.OtpState
 import ui.navigation.presentation.Otp
 
+public var testOtpCode: String = ""
+
 @Composable
 public fun OtpScreen(
     modifier: Modifier = Modifier,
     route: Otp = Otp(),
+    config: OtpConfig = TotpConfig.DEFAULT,
     state: OtpState = OtpState(),
     onAction: (OtpAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
@@ -73,31 +79,42 @@ public fun OtpScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        AppOtpInputField(
-            otp = otpValue,
-            count = OTP_CODE_LENGTH,
-            enabled = state.countdown > Duration.ZERO,
-        )
+        Text("Test code-$testOtpCode")
 
-        Spacer(modifier = Modifier.height(16.dp))
+        when (config) {
+            is TotpConfig -> {
+                AppOtpInputField(
+                    otp = otpValue,
+                    count = config.codeDigits,
+                    enabled = state.countdown > Duration.ZERO,
+                )
 
-        Text(
-            text = stringResource(
-                Res.string.resend_code,
-                if (state.countdown == Duration.ZERO) ""
-                else state.countdown.unaryMinus().toRelativeHumanReadable(),
-            ),
-            color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .clickable(enabled = state.countdown == Duration.ZERO) {
-                    onAction(OtpAction.ResendCode)
-                }
-                .padding(vertical = 8.dp),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-        )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = stringResource(
+                        Res.string.resend_code,
+                        if (state.countdown == Duration.ZERO) ""
+                        else state.countdown.unaryMinus().toRelativeHumanReadable(),
+                    ),
+                    color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .clickable(enabled = state.countdown == Duration.ZERO) {
+                            onAction(OtpAction.ResendCode)
+                        }
+                        .padding(vertical = 8.dp),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
+
+            is HotpConfig -> AppOtpInputField(
+                otp = otpValue,
+                count = config.codeDigits,
+            )
+        }
     }
 }
 

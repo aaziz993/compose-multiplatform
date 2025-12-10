@@ -8,9 +8,8 @@ import klib.data.auth.model.BearerToken
 import klib.data.backup.dropbox.model.AccessData
 import klib.data.backup.dropbox.model.RefreshTokenRequest
 import klib.data.backup.dropbox.model.TokenRequest
-import klib.data.backup.dropbox.model.TokenResponse
 import klib.data.cryptography.hashSha256Blocking
-import klib.data.cryptography.randomBytes
+import klib.data.cryptography.secureRandomBytes
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.bearer
 import klib.data.net.http.client.createHttpClient
@@ -68,7 +67,7 @@ public class OneDriveAuthService(
 }
 
 private fun dropboxAccessData(): AccessData {
-    val bytes = randomBytes(32)
+    val bytes = secureRandomBytes(32)
     val codeVerifier = bytes.dropboxEncodeBase64()
     val codeChallenge = codeVerifier.encodeToByteArray().hashSha256Blocking().dropboxEncodeBase64()
     val accessData = AccessData(codeVerifier, codeChallenge)

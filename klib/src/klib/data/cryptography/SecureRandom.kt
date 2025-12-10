@@ -29,7 +29,7 @@ public fun Double.Companion.secureRandom(from: Double, until: Double): Double =
 
 public fun ByteArray.secureRandom(): ByteArray = CryptographyRandom.nextBytes(this)
 
-public fun randomBytes(count: Int): ByteArray = ByteArray(count).secureRandom()
+public fun secureRandomBytes(count: Int): ByteArray = ByteArray(count).secureRandom()
 
 public fun ByteArray.secureRandom(fromIndex: Int, toIndex: Int): ByteArray =
     CryptographyRandom.nextBytes(this, fromIndex, toIndex)

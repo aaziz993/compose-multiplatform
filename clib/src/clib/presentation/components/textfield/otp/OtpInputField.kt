@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -84,10 +85,10 @@ public fun OtpInputField(
         .size(48.dp)
         .border(1.dp, Color.Gray)
         .background(Color.White),
-    count: Int = 5,
+    count: Int = 6,
     enabled: Boolean = true,
     otpTextType: KeyboardType = KeyboardType.Number,
-    textColor: Color = Color.Black
+    textColor: Color = MaterialTheme.colorScheme.primary,
 ) {
 
     val scope = rememberCoroutineScope()
@@ -249,7 +250,7 @@ private fun focusNextBox(
 
 @Composable
 private fun OtpBox(
-    modifier: Modifier,
+    @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
     otpValue: OtpField,
     enabled: Boolean,
     isLastItem: Boolean,
@@ -257,21 +258,12 @@ private fun OtpBox(
     onValueChange: (String) -> Unit,
     onFocusSet: (FocusRequester) -> Unit,
     textType: KeyboardType = KeyboardType.Number,
-    textColor: Color = Color.Black,
+    textColor: Color = MaterialTheme.colorScheme.primary,
     onNext: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val focusRequest = otpValue.focusRequester ?: FocusRequester()
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    // Calculate the size of the box based on screen width and total count.
-    // If you're using this in Kotlin multiplatform mobile
-    // val screenWidth = LocalWindowInfo.current.containerSize.width
-    // If you're using this in Android
-    // val screenWidth = LocalConfiguration.current.screenWidthDp.dp.dpToPx().toInt()
-//    val screenWidth = LocalWindowInfo.current.containerSize.width
-//    val paddingValue = 5
-//    val totalBoxSize = (screenWidth / totalBoxCount) - paddingValue * totalBoxCount
 
     Box(
         modifier = modifier,
@@ -281,9 +273,7 @@ private fun OtpBox(
             value = TextFieldValue(otpValue.text, TextRange(maxOf(0, otpValue.text.length))),
             onValueChange = {
                 // Logic to prevent re-triggering onValueChange when focusing.
-                if (!it.text.equals(otpValue)) {
-                    onValueChange(it.text)
-                }
+                if (!it.text.equals(otpValue)) onValueChange(it.text)
             },
             // Setup for focus and keyboard behavior.
             modifier = Modifier
@@ -313,6 +303,7 @@ private fun OtpBox(
             ),
             singleLine = true,
             visualTransformation = getVisualTransformation(textType),
+            cursorBrush = SolidColor(textColor),
         )
     }
 }

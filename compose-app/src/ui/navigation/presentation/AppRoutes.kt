@@ -585,8 +585,9 @@ public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
         route: Phone,
         sharedTransitionScope: SharedTransitionScope,
     ) {
+        val config = LocalConfig.current
         val router = currentRouter()
-        val viewModel: PhoneViewModel = koinViewModel { parametersOf(router) }
+        val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
         val state by viewModel.state.collectAsStateWithLifecycle()
         val country = Country.getCountries().find { country -> country.dial == state.countryCode }
             ?: (if (!LocalInspectionMode.current) Country.current else null)
@@ -622,13 +623,15 @@ public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
             route: Otp,
             sharedTransitionScope: SharedTransitionScope,
         ) {
+            val config = LocalConfig.current
             val router = currentRouter()
-            val viewModel: OtpViewModel = koinViewModel { parametersOf(route) }
+            val viewModel: OtpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             OtpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
                 route,
+                config.auth.otp,
                 state,
                 viewModel::action,
                 router::actions,

@@ -27,9 +27,9 @@ public fun AppOtpInputField(
     count: Int = 4,
     enabled: Boolean = true,
     otpTextType: KeyboardType = KeyboardType.Number,
-    textColor: Color = Color.Black,
-    maxWidth: Dp = 300.dp,          // maximum total width
-    spacing: Dp = 8.dp,             // spacing between boxes
+    textColor: Color = MaterialTheme.colorScheme.primary,
+    maxWidth: Dp = 300.dp,          // maximum total width.
+    spacing: Dp = 8.dp,             // spacing between boxes.
 ) {
     Box(
         modifier = Modifier

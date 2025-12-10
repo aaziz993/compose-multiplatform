@@ -4,33 +4,59 @@ import androidx.lifecycle.viewModelScope
 import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.navigation.Router
 import clib.presentation.viewmodel.ViewModel
+import dev.whyoleg.cryptography.algorithms.SHA1
+import klib.data.auth.otp.HotpGenerator
+import klib.data.auth.otp.model.TotpConfig
+import klib.data.auth.otp.TotpGenerator
+import klib.data.auth.otp.model.HotpConfig
+import klib.data.auth.otp.model.OtpConfig
+import klib.data.cryptography.secureRandomBytes
+import klib.data.type.primitives.time.nowEpochMillis
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Provided
+import ui.auth.otp.testOtpCode
 import ui.navigation.presentation.Otp
 
 @KoinViewModel
 public class PhoneViewModel(
-    @Provided private val router: Router
+    @Provided
+    private val router: Router,
+    @Provided
+    private val otpConfig: OtpConfig,
 ) : ViewModel<PhoneAction>() {
 
     public val state: RestartableStateFlow<PhoneState>
         field = MutableStateFlow(PhoneState()).onStartStateIn { it }
 
     override fun action(action: PhoneAction): Unit = when (action) {
-        is PhoneAction.SetPhone -> setPhone(action.countryCode, action.number, action.isValid)
+        is PhoneAction.SetPhone -> setPhone(action.countryCode, action.phone, action.isValid)
         PhoneAction.Confirm -> confirm()
     }
 
-    private fun setPhone(countryCode: String, number: String, isValid: Boolean) =
-        state.update { it.copy(countryCode = countryCode, number = number, isValid = isValid) }
+    private fun setPhone(countryCode: String, phone: String, isValid: Boolean) =
+        state.update { it.copy(countryCode = countryCode, phone = phone, isValid = isValid) }
 
     private fun confirm() {
         viewModelScope.launch(Dispatchers.Main) {
-            if (state.value.isValid) router.push(Otp("${state.value.countryCode}${state.value.phone}"))
+            if (state.value.isValid) {
+                testOtpCode = when (otpConfig) {
+                    is TotpConfig -> TotpGenerator(
+                        "WHGCNUJ7GAZ37EEYYC356BDOM2J5DFPF",
+                        TotpConfig(30.seconds, 6, SHA1),
+                    ).generate(9223372036854775807L)
+
+                    is HotpConfig -> HotpGenerator(
+                        secureRandomBytes(10).decodeToString(),
+                        otpConfig,
+                    ).generate(10)
+                }
+                router.push(Otp("${state.value.countryCode}${state.value.phone}"))
+            }
         }
     }
 }
