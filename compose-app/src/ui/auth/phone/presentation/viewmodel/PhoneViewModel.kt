@@ -30,7 +30,7 @@ public class PhoneViewModel(
 
     private fun confirm() {
         viewModelScope.launch(Dispatchers.Main) {
-            if (state.value.isValid) router.push(Otp("${state.value.countryCode}${state.value.number}"))
+            if (state.value.isValid) router.push(Otp("${state.value.countryCode}${state.value.phone}"))
         }
     }
 }
