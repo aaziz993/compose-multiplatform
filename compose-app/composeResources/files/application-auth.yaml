@@ -1,6 +1,6 @@
 auth:
   otp:
-    hotp:
+    totp:
       period: PT60S
       codeDigits: 8
       hmacAlgorithm: sha512
