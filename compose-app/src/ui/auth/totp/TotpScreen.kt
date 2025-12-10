@@ -1,4 +1,4 @@
-package ui.auth.otp
+package ui.auth.totp
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,32 +31,34 @@ import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.otp
 import compose_app.generated.resources.resend_code
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
-import klib.data.auth.otp.model.HotpConfig
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import kotlin.time.Duration
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.textfield.otp.AppOtpInputField
-import ui.auth.otp.viewmodel.OtpAction
-import ui.auth.otp.viewmodel.OtpState
-import ui.navigation.presentation.Otp
-
-public var testOtpCode: String = ""
+import ui.auth.hotp.testOtpCode
+import ui.auth.totp.viewmodel.TotpAction
+import ui.auth.totp.viewmodel.TotpState
+import ui.navigation.presentation.Totp
 
 @Composable
-public fun OtpScreen(
+public fun TotpScreen(
     modifier: Modifier = Modifier,
-    route: Otp = Otp(),
+    route: Totp = Totp(),
     config: OtpConfig = TotpConfig.DEFAULT,
-    state: OtpState = OtpState(),
-    onAction: (OtpAction) -> Unit = {},
+    state: TotpState = TotpState(),
+    onAction: (TotpAction) -> Unit = {},
     onNavigationAction: (NavigationAction) -> Unit = {},
 ) {
     val otpValue = remember(state.code) { mutableStateOf(state.code) }
 
+    LaunchedEffect(Unit) {
+        onAction(TotpAction.SendCode)
+    }
+
     LaunchedEffect(otpValue.value) {
-        if (otpValue.value != state.code) onAction(OtpAction.SetCode(otpValue.value))
-        if (otpValue.value.length == config.codeDigits) onAction(OtpAction.Confirm)
+        if (otpValue.value != state.code) onAction(TotpAction.SetCode(otpValue.value))
+        if (otpValue.value.length == config.codeDigits) onAction(TotpAction.Confirm)
     }
 
     Column(
@@ -71,7 +73,7 @@ public fun OtpScreen(
         )
 
         Text(
-            text = stringResource(Res.string.code_sent_to, route.phone),
+            text = stringResource(Res.string.code_sent_to, route.contact),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -80,43 +82,35 @@ public fun OtpScreen(
 
         Text("Test code-$testOtpCode")
 
-        when (config) {
-            is TotpConfig -> {
-                AppOtpInputField(
-                    otp = otpValue,
-                    count = config.codeDigits,
-                    enabled = state.countdown > Duration.ZERO,
-                )
 
-                Spacer(modifier = Modifier.height(16.dp))
+        AppOtpInputField(
+            otp = otpValue,
+            count = config.codeDigits,
+            enabled = state.countdown > Duration.ZERO,
+        )
 
-                Text(
-                    text = stringResource(
-                        Res.string.resend_code,
-                        if (state.countdown == Duration.ZERO) ""
-                        else state.countdown.unaryMinus().toRelativeHumanReadable(),
-                    ),
-                    color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .clickable(enabled = state.countdown == Duration.ZERO) {
-                            onAction(OtpAction.ResendCode)
-                        }
-                        .padding(vertical = 8.dp),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                )
-            }
+        Spacer(modifier = Modifier.height(16.dp))
 
-            is HotpConfig -> AppOtpInputField(
-                otp = otpValue,
-                count = config.codeDigits,
-            )
-        }
+        Text(
+            text = stringResource(
+                Res.string.resend_code,
+                if (state.countdown == Duration.ZERO) ""
+                else state.countdown.unaryMinus().toRelativeHumanReadable(),
+            ),
+            color = if (state.countdown == Duration.ZERO) MaterialTheme.colorScheme.primary else Color.Gray,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable(enabled = state.countdown == Duration.ZERO) {
+                    onAction(TotpAction.SendCode)
+                }
+                .padding(vertical = 8.dp),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+        )
     }
 }
 
 @Preview
 @Composable
-private fun PreviewOtpScreen(): Unit = OtpScreen()
+private fun PreviewTotpScreen(): Unit = TotpScreen()

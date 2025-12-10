@@ -10,8 +10,6 @@ import kotlin.experimental.and
 import kotlin.math.pow
 import dev.whyoleg.cryptography.algorithms.HMAC as CryptoHMAC
 
-public typealias HotpCounter = Long
-
 public class HotpGenerator(
     secret: String,
     private val config: HotpConfig
@@ -22,7 +20,7 @@ public class HotpGenerator(
 
     private val otpModulus = 10.0.pow(config.codeDigits).toInt()
 
-    public fun generate(count: HotpCounter): String {
+    public fun generate(count: Long): String {
         val message = count.toByteArray(8)
 
         val hash = hmacKey.signatureGenerator().generateSignatureBlocking(message)
@@ -43,12 +41,12 @@ public class HotpGenerator(
      *
      * @param code user provided OTP.
      * @param counter current counter.
-     * @param window allowed counter drift.
+     * @param window allowed counter drift. Default 5.
      */
     public fun verify(
         code: String,
         counter: Long,
-        window: Int = 0,
+        window: Int = 5,
     ): Boolean {
         if (!config.isValidCode(code)) return false
         if (counter < 0) return false

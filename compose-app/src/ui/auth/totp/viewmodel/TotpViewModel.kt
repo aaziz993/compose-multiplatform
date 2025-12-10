@@ -1,48 +1,46 @@
-package ui.auth.otp.viewmodel
+package ui.auth.totp.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.ViewModel
 import klib.data.auth.model.User
-import klib.data.auth.otp.model.OtpConfig
+import klib.data.auth.otp.TotpGenerator
 import klib.data.auth.otp.model.TotpConfig
+import klib.data.cryptography.secureRandomBytes
+import klib.data.type.collections.restartableflow.RestartableStateFlow
+import klib.data.type.primitives.string.encoding.encodeBase32ToString
 import klib.data.type.primitives.time.CountDownTimer
+import klib.data.type.primitives.time.nowEpochMillis
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Provided
-import ui.auth.otp.testOtpCode
-import ui.navigation.presentation.Otp
+import ui.auth.hotp.testOtpCode
+import ui.navigation.presentation.Totp
 
 @KoinViewModel
-public class OtpViewModel(
+public class TotpViewModel(
     private val authState: AuthState,
     @Provided
-    private val otp: Otp,
+    private val totp: Totp,
     @Provided
-    private val config: OtpConfig,
-) : ViewModel<OtpAction>() {
+    private val config: TotpConfig,
+) : ViewModel<TotpAction>() {
 
-    public val state: RestartableStateFlow<OtpState>
+    public val state: RestartableStateFlow<TotpState>
         field =
-        MutableStateFlow(OtpState(countdown = (config as? TotpConfig)?.period ?: 0.seconds)).onStartStateIn { it }
+        MutableStateFlow(TotpState(countdown = config.period)).onStartStateIn { it }
 
     private var countDownTimer: CountDownTimer? = null
-
-    init {
-        if (config is TotpConfig) startTimer()
-    }
 
     private fun startTimer() {
         countDownTimer?.cancel()
 
         countDownTimer = CountDownTimer(
-            initial = (config as TotpConfig).period,
+            initial = state.value.countdown,
             onTick = { remaining ->
                 state.update { it.copy(countdown = remaining) }
             },
@@ -59,18 +57,20 @@ public class OtpViewModel(
         }
     }
 
-    override fun action(action: OtpAction) {
+    override fun action(action: TotpAction) {
         when (action) {
-            is OtpAction.SetCode -> setCode(action.value)
-            is OtpAction.ResendCode -> resendCode()
-            is OtpAction.Confirm -> confirm()
+            is TotpAction.SetCode -> setCode(action.value)
+            is TotpAction.SendCode -> resendCode()
+            is TotpAction.Confirm -> confirm()
         }
     }
 
     private fun setCode(value: String): Unit = state.update { it.copy(code = value) }
 
-    public fun resendCode() {
-        state.update { OtpState() }
+    private fun resendCode() {
+        state.update { TotpState() }
+        val secret = secureRandomBytes(20).encodeBase32ToString()
+        testOtpCode = TotpGenerator(secret, config).generate(nowEpochMillis)
         startTimer()
     }
 
@@ -82,7 +82,7 @@ public class OtpViewModel(
                         username = "jogn.doe@gmail.com",
                         firstName = "John",
                         lastName = "Doe",
-                        phone = otp.phone,
+                        phone = totp.contact,
                         roles = setOf("User"),
                     ),
                 )

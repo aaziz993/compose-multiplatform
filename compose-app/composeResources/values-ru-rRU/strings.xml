@@ -28,6 +28,7 @@
     <string name="false">Ложно</string>
     <string name="file">Файл</string>
     <string name="general">Общее</string>
+    <string name="generate">Генерировать</string>
     <string name="grid">Сетка</string>
     <string name="header">Заголовок</string>
     <string name="help">Помощь</string>

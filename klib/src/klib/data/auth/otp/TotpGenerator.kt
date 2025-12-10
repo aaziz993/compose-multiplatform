@@ -39,7 +39,7 @@ public class TotpGenerator(
      *
      * @param code user provided OTP
      * @param timestamp current time in millis
-     * @param window allowed time-step drift (±window)
+     * @param window allowed time-step drift (±window). Default 1.
      */
     public fun verify(
         code: String,

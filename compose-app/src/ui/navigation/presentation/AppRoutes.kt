@@ -71,15 +71,17 @@ import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import ui.about.AboutScreen
 import ui.auth.forgotpassword.presentation.ForgotPinCodeScreen
+import ui.auth.hotp.HotpScreen
+import ui.auth.hotp.viewmodel.HotpViewModel
 import ui.auth.login.presentation.LoginScreen
 import ui.auth.login.presentation.viewmodel.LoginViewModel
-import ui.auth.otp.OtpScreen
-import ui.auth.otp.viewmodel.OtpViewModel
+import ui.auth.totp.viewmodel.TotpViewModel
 import ui.auth.phone.presentation.PhoneScreen
 import ui.auth.phone.presentation.viewmodel.PhoneViewModel
 import ui.auth.pincode.PinCodeScreen
 import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
+import ui.auth.totp.TotpScreen
 import ui.auth.verification.presentation.VerificationScreen
 import ui.auth.verification.presentation.viewmodel.VerificationViewModel
 import ui.home.HomeScreen
@@ -590,7 +592,7 @@ public data object About : KoinRoute<About>(), NavRoute {
 public data object Auth : KoinRoutes(), AuthRoute {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Phone, Otp, PinCode, ForgotPinCode)
+        listOf(Phone, Hotp, Totp, PinCode, ForgotPinCode)
     }
 
     @Composable
@@ -645,29 +647,65 @@ public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("otp")
-public data class Otp(val phone: String = "") : NavRoute, AuthRoute {
+public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
 
     override val route: Route<out NavRoute>
-        get() = Otp
+        get() = Hotp
 
-    public companion object : KoinRoute<Otp>() {
+    public companion object : KoinRoute<Hotp>() {
 
         override val navRoute: KClass<out NavRoute>
-            get() = Otp::class
+            get() = Hotp::class
 
         override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
         @Composable
         override fun Content(
-            route: Otp,
+            route: Hotp,
             sharedTransitionScope: SharedTransitionScope,
         ) {
             val config = LocalConfig.current
             val router = currentRouter()
-            val viewModel: OtpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
+            val viewModel: HotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
-            OtpScreen(
+            HotpScreen(
+                Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                route,
+                config.auth.otp,
+                state,
+                viewModel::action,
+                router::actions,
+            )
+        }
+    }
+}
+
+@Serializable
+@SerialName("totp")
+public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
+
+    override val route: Route<out NavRoute>
+        get() = Totp
+
+    public companion object : KoinRoute<Totp>() {
+
+        override val navRoute: KClass<out NavRoute>
+            get() = Totp::class
+
+        override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+        @Composable
+        override fun Content(
+            route: Totp,
+            sharedTransitionScope: SharedTransitionScope,
+        ) {
+            val config = LocalConfig.current
+            val router = currentRouter()
+            val viewModel: TotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            TotpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
                 route,
                 config.auth.otp,

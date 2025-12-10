@@ -29,6 +29,7 @@
     <string name="false">False</string>
     <string name="file">File</string>
     <string name="general">General</string>
+    <string name="generate">Generate</string>
     <string name="grid">Grid</string>
     <string name="header">Header</string>
     <string name="help">Help</string>
