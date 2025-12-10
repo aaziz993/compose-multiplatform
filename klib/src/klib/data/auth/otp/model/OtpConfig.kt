@@ -8,6 +8,7 @@ import klib.data.type.serialization.serializers.transform.MapTransformingPolymor
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable(OtpConfigSerializer::class)
@@ -26,6 +27,7 @@ private object OtpConfigSerializer : MapTransformingPolymorphicSerializer<OtpCon
 )
 
 @Serializable
+@SerialName("hotp")
 public data class HotpConfig(
     override val codeDigits: Int,
     override val hmacAlgorithm: CryptographyAlgorithmIdSerial<Digest>,
@@ -38,6 +40,7 @@ public data class HotpConfig(
 }
 
 @Serializable
+@SerialName("totp")
 public data class TotpConfig(
     val period: Duration,
     override val codeDigits: Int,

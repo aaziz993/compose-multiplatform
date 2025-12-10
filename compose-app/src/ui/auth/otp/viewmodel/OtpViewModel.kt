@@ -29,7 +29,8 @@ public class OtpViewModel(
 ) : ViewModel<OtpAction>() {
 
     public val state: RestartableStateFlow<OtpState>
-        field = MutableStateFlow(OtpState(countdown = (config as? TotpConfig)?.period ?: 0.seconds))
+        field =
+        MutableStateFlow(OtpState(countdown = (config as? TotpConfig)?.period ?: 0.seconds)).onStartStateIn { it }
 
     private var countDownTimer: CountDownTimer? = null
 

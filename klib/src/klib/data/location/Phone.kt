@@ -23,11 +23,11 @@ public fun String.toPhoneOrNull(): Phone? {
 
     return Country
         .getCountries()
-        .filterNot { country -> country.dial == null }
-        .sortedBy { country -> country.dial!!.length }
+        .filterNot { country -> country.dial.isNullOrEmpty() }
+        .sortedByDescending { country -> country.dial!!.length }
         .find { country -> number.startsWith(country.dial!!) }
         ?.let { country ->
-            Phone(country.alpha2, number.removePrefix(country.alpha2.toString()))
+            Phone(country.alpha2, number.removePrefix(country.dial!!))
         }
 }
 
