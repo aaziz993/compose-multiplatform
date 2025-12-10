@@ -35,7 +35,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.back
 import compose_app.generated.resources.read_more_at
 import compose_app.generated.resources.retry
-import compose_app.generated.resources.share_content_description
+import compose_app.generated.resources.share
 import klib.data.load.LoadingResult
 import klib.data.load.loading
 import kotlinx.datetime.LocalDateTime
@@ -126,7 +126,7 @@ private fun ArticleDetailsSuccessContent(
             IconButton(onClick = onShareClick, modifier = Modifier.align(Alignment.TopEnd)) {
                 Icon(
                     Icons.Default.Share,
-                    contentDescription = stringResource(Res.string.share_content_description),
+                    contentDescription = stringResource(Res.string.share),
                     tint = Color.White,
                 )
             }

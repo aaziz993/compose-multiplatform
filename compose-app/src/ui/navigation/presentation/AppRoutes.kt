@@ -223,7 +223,7 @@ public data object Articles : KoinRoute<Articles>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
-        val viewModel: ArticleViewModel = koinViewModel()
+        val viewModel: ArticleViewModel = koinViewModel { parametersOf(router) }
         val state by viewModel.state.collectAsStateWithLifecycle()
 
         ArticlesScreen(
@@ -244,6 +244,9 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
         get() = ArticleDetails
 
     public companion object : KoinRoute<ArticleDetails>(), NavRoute {
+
+        override val navRoute: KClass<out NavRoute>
+            get() = ArticleDetails::class
 
         override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
