@@ -431,6 +431,9 @@ liquid = "1.0.1"
 htmlconverter = "1.1.0"
 # a rich text editor library for both Jetpack Compose and Compose Multiplatform, fully customizable and supports the common rich text editor features.
 richeditor-compose = "1.0.0-rc13"
+# animated wavy Material Slider and progress/seek bar similar to the one used in Android 13 media controls.
+# It has curly, wobbly, squiggly, wiggly, jiggly, wriggly, dancing movements.
+wavy-slider = "2.2.0"
 # setting ui.
 compose-settings = "2.15.0"
 # repository paging.
@@ -671,6 +674,7 @@ stately-concurrency = { module = "co.touchlab:stately-concurrency", version.ref 
 stately-concurrent-collections = { module = "co.touchlab:stately-concurrent-collections", version.ref = "stately-concurrency" }
 # cryptography.
 cryptography-core = { module = "dev.whyoleg.cryptography:cryptography-core", version.ref = "cryptography" }
+cryptography-provider-optimal = { module = "dev.whyoleg.cryptography:cryptography-provider-optimal", version.ref = "cryptography" }
 cryptography-provider-jdk = { module = "dev.whyoleg.cryptography:cryptography-provider-jdk", version.ref = "cryptography" }
 cryptography-provider-webcrypto = { module = "dev.whyoleg.cryptography:cryptography-provider-webcrypto", version.ref = "cryptography" }
 cryptography-provider-openssl3 = { module = "dev.whyoleg.cryptography:cryptography-provider-openssl3-prebuilt", version.ref = "cryptography" }
@@ -957,7 +961,10 @@ liquid = { module = "io.github.fletchmckee.liquid:liquid", version.ref = "liquid
 htmlconverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlconverter" }
 # a rich text editor library for both Jetpack Compose and Compose Multiplatform, fully customizable and supports the common rich text editor features.
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor-compose" }
-# settings ui.
+# slider.
+wavy-slider = { module = "ir.mahozad.multiplatform:wavy-slider", version.ref = "wavy-slider" }
+# animated wavy Material Slider and progress/seek bar similar to the one used in Android 13 media controls.
+# It has curly, wobbly, squiggly, wiggly, jiggly, wriggly, dancing movements.
 compose-settings-ui = { module = "com.github.alorma.compose-settings:ui-tiles", version.ref = "compose-settings" }
 compose-settings-ui-extended = { module = "com.github.alorma.compose-settings:ui-tiles-extended", version.ref = "compose-settings" }
 # paging.
@@ -1197,6 +1204,7 @@ coroutines = [
 # cryptograhpy.
 cryptography = [
     "cryptography-core",
+    "cryptography-provider-optimal",
     "cryptography-random",
     "cryptography-serialization-asn1",
     "cryptography-serialization-asn1-modules",

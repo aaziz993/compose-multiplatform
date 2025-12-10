@@ -4,8 +4,6 @@ import klib.data.auth.otp.model.HotpConfig
 import klib.data.cryptography.HMAC
 import klib.data.type.primitives.number.toByteArray
 import klib.data.type.primitives.number.toInt
-import klib.data.type.primitives.string.encodeToByteArray
-import klib.data.type.primitives.string.encoding.decodeBase32
 import klib.data.type.primitives.string.encoding.decodeBase32ToBytes
 import kotlin.experimental.and
 import kotlin.math.pow
@@ -19,7 +17,7 @@ public class HotpGenerator(
     private val secret: ByteArray = secret.decodeBase32ToBytes()!!
 
     public fun generate(count: Long): String {
-        val message = count.toByteArray(8)
+        val message = count.toByteArray(8).reversedArray()
 
         val hmacKey = HMAC.keyDecoder(config.hmacAlgorithm)
             .decodeFromByteArrayBlocking(CryptoHMAC.Key.Format.RAW, secret)

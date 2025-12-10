@@ -220,18 +220,17 @@ public fun UInt.assignBits(
     set: Boolean,
 ): UInt =
     intSetBits(lowIndex, highIndex).toUInt().let {
-        if (set) {
-            this or it
-        }
-        else {
-            this and it.inv()
-        }
+        if (set) this or it else this and it.inv()
     }
 
 public fun UInt.sliceBits(
     lowIndex: Int,
     highIndex: Int,
-): UInt = (this and (-1 ushr (Int.SIZE_BITS - highIndex - 1)).toUInt()) shr lowIndex
+): UInt {
+    val width = highIndex - lowIndex + 1
+    val mask = (1u shl width) - 1u
+    return (this shr lowIndex) and mask
+}
 
 public fun UInt.sliceByte(lowIndex: Int = 0): UInt = sliceBits(lowIndex, lowIndex + 7)
 
@@ -243,17 +242,17 @@ public fun List<UInt>.toUInt(base: UInt): UInt =
 public fun BooleanArray.toUInt(): UInt = map { if (it) 1u else 0u }.foldIndexed(0u) { i, acc, v -> acc or (v shl i) }
 
 public fun ByteArray.toUInt(offset: Int = 0): UInt =
-    this[offset].toUIntLSB() or
-        (this[offset + 1].toUIntLSB() shl 8) or
-        (this[offset + 2].toUIntLSB() shl 16) or
-        (this[offset + 3].toUIntLSB() shl 24)
+    (this[offset].toUIntLSB() shl 24) or
+        (this[offset + 1].toUIntLSB() shl 16) or
+        (this[offset + 2].toUIntLSB() shl 8) or
+        this[offset + 3].toUIntLSB()
 
 public fun ByteArray.toUInt(
     size: Int,
     offset: Int = 0,
 ): UInt {
     var value = 0u
-    (0 until size).forEach { value = value or (this[offset + it].toUIntLSB() shl (it * 8)) }
+    (0 until size).forEach { index -> value = value or (this[offset + index].toUIntLSB() shl ((size - index - 1) * 8)) }
     return value
 }
 
@@ -282,35 +281,34 @@ public fun Int.assignBits(
     set: Boolean,
 ): Int =
     intSetBits(lowIndex, highIndex).let {
-        if (set) {
-            this or it
-        }
-        else {
-            this and it.inv()
-        }
+        if (set) this or it else this and it.inv()
     }
 
 public fun Int.sliceBits(
     lowIndex: Int,
     highIndex: Int,
-): Int = (this and (-1 ushr (Int.SIZE_BITS - highIndex - 1))) ushr lowIndex
+): Int {
+    val width = highIndex - lowIndex + 1
+    val mask = (1 shl width) - 1
+    return (this shr lowIndex) and mask
+}
 
 public fun Int.sliceByte(lowIndex: Int = 0): Int = sliceBits(lowIndex, lowIndex + 7)
 
 public fun BooleanArray.toInt(): Int = map { if (it) 1 else 0 }.foldIndexed(0) { i, acc, v -> acc or (v shl i) }
 
 public fun ByteArray.toInt(offset: Int = 0): Int =
-    this[offset].toIntLSB() or
-        (this[offset + 1].toIntLSB() shl 8) or
-        (this[offset + 2].toIntLSB() shl 16) or
-        (this[offset + 3].toIntLSB() shl 24)
+    (this[offset].toIntLSB() shl 24) or
+        (this[offset + 1].toIntLSB() shl 16) or
+        (this[offset + 2].toIntLSB() shl 8) or
+        this[offset + 3].toIntLSB()
 
 public fun ByteArray.toInt(
     size: Int,
     offset: Int = 0,
 ): Int {
     var value = 0
-    (0 until size).forEach { value = value or (this[offset + it].toIntLSB() shl (it * 8)) }
+    (0 until size).forEach { index -> value = value or (this[offset + index].toIntLSB() shl ((size - index - 1) * 8)) }
     return value
 }
 
@@ -387,18 +385,17 @@ public fun ULong.assignBits(
     set: Boolean,
 ): ULong =
     longSetBits(lowIndex, highIndex).toULong().let {
-        if (set) {
-            this or it
-        }
-        else {
-            this and it.inv()
-        }
+        if (set) this or it else this and it.inv()
     }
 
 public fun ULong.sliceBits(
     lowIndex: Int,
     highIndex: Int,
-): ULong = (this and (-1L ushr (Long.SIZE_BITS - highIndex - 1)).toULong()) shr lowIndex
+): ULong {
+    val width = highIndex - lowIndex + 1
+    val mask = (1uL shl width) - 1uL
+    return (this shr lowIndex) and mask
+}
 
 public fun ULong.sliceByte(lowIndex: Int = 0): ULong = sliceBits(lowIndex, lowIndex + 7)
 
@@ -414,21 +411,21 @@ public fun ByteArray.toULong(
     offset: Int =
         0,
 ): ULong =
-    this[offset].toULongLSB() or
-        (this[offset + 1].toULongLSB() shl 8) or
-        (this[offset + 2].toULongLSB() shl 16) or
-        (this[offset + 3].toULongLSB() shl 24) or
-        (this[offset + 4].toULongLSB() shl 32) or
-        (this[offset + 5].toULongLSB() shl 40) or
-        (this[offset + 6].toULongLSB() shl 48) or
-        (this[offset + 7].toULongLSB() shl 56)
+    (this[offset].toULongLSB() shl 56) or
+        (this[offset + 1].toULongLSB() shl 48) or
+        (this[offset + 2].toULongLSB() shl 40) or
+        (this[offset + 3].toULongLSB() shl 32) or
+        (this[offset + 4].toULongLSB() shl 24) or
+        (this[offset + 5].toULongLSB() shl 16) or
+        (this[offset + 6].toULongLSB() shl 8) or
+        this[offset + 7].toULongLSB()
 
 public fun ByteArray.toULong(
     size: Int,
     offset: Int = 0,
 ): ULong {
     var value = 0uL
-    (0 until size).forEach { value = value or (this[offset + it].toULongLSB() shl (it * 8)) }
+    (0 until size).forEach { index -> value = value or (this[offset + index].toULongLSB() shl ((size - index - 1) * 8)) }
     return value
 }
 
@@ -445,7 +442,7 @@ public fun Long.toLSB(): Long = this and 0xff
 public fun longSetBits(
     lowIndex: Int,
     highIndex: Int,
-): Long = (-1L ushr (Int.SIZE_BITS - (highIndex - lowIndex + 1))) shl lowIndex
+): Long = (-1L ushr (Long.SIZE_BITS - (highIndex - lowIndex + 1))) shl lowIndex
 
 public fun Long.assignBits(
     lowIndex: Int,
@@ -453,42 +450,40 @@ public fun Long.assignBits(
     set: Boolean,
 ): Long =
     longSetBits(lowIndex, highIndex).let {
-        if (set) {
-            this or it
-        }
-        else {
-            this and it.inv()
-        }
+        if (set) this or it else this and it.inv()
     }
 
 public fun Long.sliceBits(
     lowIndex: Int,
     highIndex: Int,
-): Long = (this and (-1L ushr (Int.SIZE_BITS - highIndex - 1))) ushr lowIndex
+): Long {
+    val width = highIndex - lowIndex + 1
+    val mask = (1L shl width) - 1L
+    return (this shr lowIndex) and mask
+}
 
 public fun Long.sliceByte(lowIndex: Int = 0): Long = sliceBits(lowIndex, lowIndex + 7)
 
 public fun BooleanArray.toLong(): Long = map { if (it) 1L else 0L }.foldIndexed(0L) { i, acc, v -> acc or (v shl i) }
 
 public fun ByteArray.toLong(
-    offset: Int =
-        0,
+    offset: Int = 0,
 ): Long =
-    this[offset].toLongLSB() or
-        (this[offset + 1].toLongLSB() shl 8) or
-        (this[offset + 2].toLongLSB() shl 16) or
-        (this[offset + 3].toLongLSB() shl 24) or
-        (this[offset + 4].toLongLSB() shl 32) or
-        (this[offset + 5].toLongLSB() shl 40) or
-        (this[offset + 6].toLongLSB() shl 48) or
-        (this[offset + 7].toLongLSB() shl 56)
+    (this[offset].toLongLSB() shl 56) or
+        (this[offset + 1].toLongLSB() shl 48) or
+        (this[offset + 2].toLongLSB() shl 40) or
+        (this[offset + 3].toLongLSB() shl 32) or
+        (this[offset + 4].toLongLSB() shl 24) or
+        (this[offset + 5].toLongLSB() shl 16) or
+        (this[offset + 6].toLongLSB() shl 8) or
+        this[offset + 7].toLongLSB()
 
 public fun ByteArray.toLong(
     size: Int,
     offset: Int = 0,
 ): Long {
     var value = 0L
-    (0 until size).forEach { value = value or (this[offset + it].toLongLSB() shl (it * 8)) }
+    (0 until size).forEach { index -> value = value or (this[offset + index].toLongLSB() shl ((size - index - 1) * 8)) }
     return value
 }
 
@@ -541,10 +536,11 @@ public fun Long.toHexString(): String {
 public val Float.Companion.DEFAULT: Float
     get() = 0F
 
-public fun Float.partition(): Pair<Int, Float> =
-    "$absoluteValue".split(".").let {
-        it[0].toInt() to it[1].toFloat()
-    }
+public fun Float.partition(): Pair<Int, Float> {
+    val intPart = toInt()
+    val fracPart = this - intPart
+    return intPart to fracPart
+}
 
 public fun Float.denormalizeByte(max: Byte = Byte.MAX_VALUE): Byte = (this * max).toInt().toByte()
 
@@ -559,10 +555,11 @@ public fun Float.denormalizeLong(max: Long = Long.MAX_VALUE): Long = (this * max
 public val Double.Companion.DEFAULT: Double
     get() = 0.0
 
-public fun Double.partition(): Pair<Int, Float> =
-    "$absoluteValue".split(".").let {
-        it[0].toInt() to ".${it[1]}".toFloat()
-    }
+public fun Double.partition(): Pair<Int, Double> {
+    val intPart = toInt()
+    val fracPart = this - intPart
+    return intPart to fracPart
+}
 
 public fun Double.denormalizeByte(max: Byte = Byte.MAX_VALUE): Byte = (this * max).toInt().toByte()
 
@@ -591,7 +588,11 @@ public fun BigInteger.normalize(maxValue: BigInteger): BigDecimal =
 public fun BigInteger.sliceBits(
     lowIndex: Int,
     highIndex: Int,
-): BigInteger = (this and BigInteger.TWO.pow(highIndex)) shr lowIndex
+): BigInteger {
+    val width = highIndex - lowIndex + 1
+    val mask = (BigInteger.ONE shl width) - BigInteger.ONE
+    return (this shr lowIndex) and mask
+}
 
 public fun BigInteger.sliceByte(lowIndex: Int = 0): BigInteger = sliceBits(lowIndex, lowIndex + 7)
 
@@ -697,13 +698,13 @@ public fun UInt.toBitArray(): BooleanArray =
 
 public fun UInt.toByteArray(): ByteArray =
     byteArrayOf(
-        sliceByte().toByte(),
-        sliceByte(8).toByte(),
-        sliceByte(16).toByte(),
         sliceByte(24).toByte(),
+        sliceByte(16).toByte(),
+        sliceByte(8).toByte(),
+        sliceByte().toByte(),
     )
 
-public fun UInt.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
+public fun UInt.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte((size - index - 1) * 8).toByte() }
 
 public fun Int.toBitArray(): BooleanArray =
     BooleanArray(Int.SIZE_BITS) {
@@ -712,13 +713,13 @@ public fun Int.toBitArray(): BooleanArray =
 
 public fun Int.toByteArray(): ByteArray =
     byteArrayOf(
-        sliceByte().toByte(),
-        sliceByte(8).toByte(),
-        sliceByte(16).toByte(),
         sliceByte(24).toByte(),
+        sliceByte(16).toByte(),
+        sliceByte(8).toByte(),
+        sliceByte().toByte(),
     )
 
-public fun Int.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
+public fun Int.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte((size - index - 1) * 8).toByte() }
 
 public fun ULong.toBitArray(): BooleanArray =
     BooleanArray(ULong.SIZE_BITS) {
@@ -727,17 +728,17 @@ public fun ULong.toBitArray(): BooleanArray =
 
 public fun ULong.toByteArray(): ByteArray =
     byteArrayOf(
-        sliceByte().toByte(),
-        sliceByte(8).toByte(),
-        sliceByte(16).toByte(),
-        sliceByte(24).toByte(),
-        sliceByte(32).toByte(),
-        sliceByte(40).toByte(),
-        sliceByte(48).toByte(),
         sliceByte(56).toByte(),
+        sliceByte(48).toByte(),
+        sliceByte(40).toByte(),
+        sliceByte(32).toByte(),
+        sliceByte(24).toByte(),
+        sliceByte(16).toByte(),
+        sliceByte(8).toByte(),
+        sliceByte().toByte(),
     )
 
-public fun ULong.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
+public fun ULong.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte((size - index - 1) * 8).toByte() }
 
 public fun Long.toBitArray(): BooleanArray =
     BooleanArray(Long.SIZE_BITS) {
@@ -746,17 +747,17 @@ public fun Long.toBitArray(): BooleanArray =
 
 public fun Long.toByteArray(): ByteArray =
     byteArrayOf(
-        sliceByte().toByte(),
-        sliceByte(8).toByte(),
-        sliceByte(16).toByte(),
-        sliceByte(24).toByte(),
-        sliceByte(32).toByte(),
-        sliceByte(40).toByte(),
-        sliceByte(48).toByte(),
         sliceByte(56).toByte(),
+        sliceByte(48).toByte(),
+        sliceByte(40).toByte(),
+        sliceByte(32).toByte(),
+        sliceByte(24).toByte(),
+        sliceByte(16).toByte(),
+        sliceByte(8).toByte(),
+        sliceByte().toByte(),
     )
 
-public fun Long.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte(index * 8).toByte() }
+public fun Long.toByteArray(size: Int): ByteArray = ByteArray(size) { index -> sliceByte((size - index - 1) * 8).toByte() }
 
 public fun minOf(a: Long, b: Int): Long = minOf(a, b.toLong())
 
