@@ -23,11 +23,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -39,10 +34,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.textfield.otp.model.OtpField
 import kotlinx.coroutines.launch
-import androidx.compose.ui.tooling.preview.Preview
 
 /**
  * A Composable function that creates a row of OTP input fields based on the specified count.
@@ -136,7 +131,6 @@ public fun OtpInputField(
         repeat(count) { index ->
             // For each OTP box, manage its value, focus, and what happens on value change.
             OtpBox(
-                otpFieldsValues,
                 modifier = otpBoxModifier,
                 otpValue = otpFieldsValues[index].value,
                 enabled = enabled,
@@ -256,7 +250,6 @@ private fun focusNextBox(
 
 @Composable
 private fun OtpBox(
-    otpFieldsValues: List<MutableState<OtpField>>, // pass the full list for navigation
     @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
     otpValue: OtpField,
     enabled: Boolean,
@@ -288,31 +281,6 @@ private fun OtpBox(
                 .focusRequester(focusRequest)
                 .onGloballyPositioned {
                     onFocusSet(focusRequest)
-                }.onKeyEvent { keyEvent ->
-                    if (keyEvent.type == KeyEventType.KeyDown) {
-                        when (keyEvent.key) {
-                            Key.Backspace -> {
-                                if (otpValue.text.isEmpty() && otpValue.index > 0)
-                                    otpFieldsValues[otpValue.index - 1].value.focusRequester?.requestFocus()
-                                true // consume event
-                            }
-
-                            Key.DirectionLeft -> {
-                                if (otpValue.index > 0)
-                                    otpFieldsValues[otpValue.index - 1].value.focusRequester?.requestFocus()
-                                true
-                            }
-
-                            Key.DirectionRight -> {
-                                if (otpValue.index < totalBoxCount - 1)
-                                    otpFieldsValues[otpValue.index + 1].value.focusRequester?.requestFocus()
-                                true
-                            }
-
-                            else -> false
-                        }
-                    }
-                    else false
                 },
             enabled = enabled,
             textStyle = MaterialTheme.typography.titleLarge.copy(
