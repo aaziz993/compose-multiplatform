@@ -62,19 +62,19 @@ public fun String.encodeHttpUrl(): String = URLBuilder().apply { encodedPath = t
 public fun String.decodeHttpUrl(): String = URLBuilder().apply { path(this@decodeHttpUrl) }.buildString()
 
 /**
- * Match a [Url] to a [urlPattern].
+ * Match a [Url] to a [url].
  *
- * @param urlPattern The pattern to match against.
+ * @param url The pattern to match against.
  * @returns a [Map] of parameters if this matches the pattern, returns null otherwise.
  */
-public fun Url.matchParameters(urlPattern: Url): Map<String, Any>? {
+public fun Url.matchParameters(url: Url): Map<String, Any>? {
     if (
-        protocol.name != urlPattern.protocol.name ||
-        rawSegments.size != urlPattern.rawSegments.size
+        protocol.name != url.protocol.name ||
+        rawSegments.size != url.rawSegments.size
     ) return null
 
     // exact match (url does not contain any arguments).
-    if (this == urlPattern) return mapOf()
+    if (this == url) return mapOf()
 
     val args = mutableMapOf<String, Any>()
 
@@ -83,7 +83,7 @@ public fun Url.matchParameters(urlPattern: Url): Map<String, Any>? {
         .asSequence()
         // zip to compare the two objects side by side, order matters here so we
         // need to make sure the compared segments are at the same position within the url
-        .zip(urlPattern.rawSegments.asSequence())
+        .zip(url.rawSegments.asSequence())
         .forEach { (requestedSegment, candidateSegment) ->
             // if the potential match expects a path arg for this segment, try to parse the.
             // requested segment into the expected type.
@@ -96,7 +96,7 @@ public fun Url.matchParameters(urlPattern: Url): Map<String, Any>? {
             }
         }
 
-    val urlPatternParameterNames = urlPattern.parameters.names().map { name ->
+    val urlPatternParameterNames = url.parameters.names().map { name ->
         name.removeSurrounding("{", "}")
     }
 
@@ -115,12 +115,12 @@ public fun Url.matchParameters(urlPattern: Url): Map<String, Any>? {
  * Example:
  * ```
  * data class User(val id: Int, val name: String?)
- * User.serializer().urlPattern() // "/User/{id}?{name}"
+ * User.serializer().url() // "/User/{id}?{name}"
  * ```
  *
  * @return [Url] representing the url pattern for this type.
  */
-public fun <T : Any> KSerializer<T>.urlPattern(basePath: String = ""): Url {
+public fun <T : Any> KSerializer<T>.url(basePath: String = ""): Url {
     val (pathParams, queryParams) = descriptor.elementNames.partition { name ->
         val elementDescriptor = descriptor.getElementDescriptor(name)!!
         descriptor.hasElementAnnotation<UrlParam>(name) == false &&
@@ -143,34 +143,34 @@ public fun <T : Any> KSerializer<T>.urlPattern(basePath: String = ""): Url {
 /**
  * Generates a url pattern [Url] for the specified type [T].
  *
- * This is a reified inline version of [KSerializer.urlPattern].
+ * This is a reified inline version of [KSerializer.url].
  *
  * Example:
  * ```
- * urlPattern<User>() // "/User/{id}?{name}"
+ * url<User>() // "/User/{id}?{name}"
  * ```
  *
  * @return [Url] representing the url pattern for type [T].
  */
-public inline fun <reified T : Any> urlPattern(basePath: String = ""): Url =
-    T::class.serializer().urlPattern(basePath)
+public inline fun <reified T : Any> url(basePath: String = ""): Url =
+    T::class.serializer().url(basePath)
 
 /**
  * Attempts to decode the current [Url] into a strongly-typed route object.
  *
  * This function:
- * 1. Matches the current url against the provided [urlPattern].
+ * 1. Matches the current url against the provided [url].
  * 2. Extracts all path and query arguments defined in the pattern (e.g. `/user/{id}` or `?name={name}`).
  * 3. Deserializes the extracted argument map into an instance of type [T] using the given [kSerializer].
  *
  * @param kSerializer The serializer used to construct an instance of [T] from the extracted arguments.
- * @param urlPattern A pattern describing how to interpret the current url.
+ * @param url A pattern describing how to interpret the current url.
  * @return An instance of [T] if the url matches the pattern, or `null` if it does not.
  *
  * @see matchParameters for the argument-extraction logic.
  */
-public fun <T : Any> Url.toRoute(kSerializer: KSerializer<T>, urlPattern: Url): T? =
-    matchParameters(urlPattern)?.let { result ->
+public fun <T : Any> Url.toRoute(kSerializer: KSerializer<T>, url: Url): T? =
+    matchParameters(url)?.let { result ->
         kSerializer.deserialize(
             result.mapValues { (paramName, value) ->
                 if (kSerializer.descriptor.getElementDescriptor(paramName)!!.kind == StructureKind.LIST) {
@@ -196,13 +196,13 @@ public fun <T : Any> Url.toRoute(kSerializer: KSerializer<T>, urlPattern: Url): 
  * ```
  *
  * It behaves exactly like [toRoute] with an explicitly provided serializer:
- * - Matches the url against [urlPattern].
+ * - Matches the url against [url].
  * - Extracts arguments from path/query placeholders.
  * - Deserializes them into an instance of [T].
  *
- * @param urlPattern A pattern describing the url structure for type [T].
+ * @param url A pattern describing the url structure for type [T].
  * @return An instance of [T], or `null` if the url does not match the pattern.
  */
-public inline fun <reified T : Any> Url.toRoute(urlPattern: Url): T? =
-    toRoute(T::class.serializer(), urlPattern)
+public inline fun <reified T : Any> Url.toRoute(url: Url): T? =
+    toRoute(T::class.serializer(), url)
 
