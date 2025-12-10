@@ -39,10 +39,10 @@ public class PhoneViewModel(
         viewModelScope.launch(Dispatchers.Main) {
             if (state.value.isValid)
                 router.push(
-                        when (otpConfig) {
-                            is HotpConfig -> Hotp("${state.value.countryCode}${state.value.phone}")
-                            is TotpConfig -> Totp("${state.value.countryCode}${state.value.phone}")
-                        },
+                    when (otpConfig) {
+                        is HotpConfig -> Hotp("${state.value.countryCode}${state.value.phone}")
+                        is TotpConfig -> Totp("${state.value.countryCode}${state.value.phone}")
+                    },
                 )
         }
     }
