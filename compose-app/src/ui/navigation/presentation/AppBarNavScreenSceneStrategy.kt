@@ -2,6 +2,7 @@ package ui.navigation.presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -103,7 +104,9 @@ public class AppBarNavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 )
 
                 GlobalAlertDialog()
-                GlobalSnackbar()
+                GlobalSnackbar { snackbarData ->
+                    Snackbar(snackbarData, Modifier.padding(innerPadding))
+                }
             }
         }
     }
