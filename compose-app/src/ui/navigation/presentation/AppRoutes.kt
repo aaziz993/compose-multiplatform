@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.TextFormat
+import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CurrencyExchange
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.TextFormat
+import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -176,6 +178,20 @@ public data object Home : KoinRoute<Home>(), NavRoute {
 @SerialName("news")
 public data object News : KoinRoutes() {
 
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Newspaper, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Newspaper, text) },
+            ),
+        )
+    }
+
     override val routes: List<BaseRoute> by lazy {
         listOf(Articles, ArticleDetails)
     }
@@ -203,20 +219,6 @@ public data object News : KoinRoutes() {
 @Serializable
 @SerialName("articles")
 public data object Articles : KoinRoute<Articles>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Newspaper, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.Newspaper, text) },
-            ),
-        )
-    }
 
     @Composable
     override fun Content(
@@ -871,6 +873,20 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
 @Serializable()
 @SerialName("wallet")
 public data object Wallet : KoinRoutes() {
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Wallet, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Wallet, text) },
+            ),
+        )
+    }
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Balance, Crypto, Stock)

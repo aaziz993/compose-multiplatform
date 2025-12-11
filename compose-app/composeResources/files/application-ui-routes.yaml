@@ -10,7 +10,7 @@ ui:
       authResource: { }
     article_details:
       metadata:
-        appBarNavScreen: true
+        navScreen: true
       authResource: { }
     services:
       metadata:
@@ -52,6 +52,12 @@ ui:
       metadata:
         appBarNavScreen: true
       authResource: { }
+    totp:
+      metadata:
+        appBarNavScreen: true
+    hotp:
+      metadata:
+        appBarNavScreen: true
     phone:
       metadata:
         appBarNavScreen: true
