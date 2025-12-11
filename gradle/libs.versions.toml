@@ -295,8 +295,10 @@ kotysa = "3.2.2"
 store = "5.1.0-alpha07"
 # network connectivity.
 connectivity = "2.3.0"
+# kotlin Multiplatform Library for OpenId Connect / OAuth 2.0.
+oidc = "0.16.2"
 # simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
-kmpauth = "2.3.1"
+kmpauth = "2.4.0-alpha05"
 # ktor.
 ktor = "3.3.2"
 ktor-cache = "0.55.3"
@@ -785,6 +787,10 @@ connectivity-http = { module = "dev.jordond.connectivity:connectivity-http", ver
 connectivity-compose = { module = "dev.jordond.connectivity:connectivity-compose", version.ref = "connectivity" }
 connectivity-compose-device = { module = "dev.jordond.connectivity:connectivity-compose-device", version.ref = "connectivity" }
 connectivity-compose-http = { module = "dev.jordond.connectivity:connectivity-compose-http", version.ref = "connectivity" }
+# kotlin Multiplatform Library for OpenId Connect / OAuth 2.0.
+oidc-appsupport = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-appsupport", version.ref = "oidc" }
+oidc-okhttp4 = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-okhttp4", version.ref = "oidc" }
+oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", version.ref = "oidc" }
 # simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
 kmpauth-google = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "kmpauth" }
 kmpauth-firebase = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "kmpauth" }
@@ -1299,7 +1305,12 @@ connectivity-compose-multiplatform = [
     "connectivity-compose",
     "connectivity-compose-http",
 ]
-# # simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
+# kotlin Multiplatform Library for OpenId Connect / OAuth 2.0.
+oidc = [
+    "oidc-appsupport",
+    "oidc-ktor",
+]
+# simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
 kmpauth = [
     "kmpauth-google",
     "kmpauth-firebase",

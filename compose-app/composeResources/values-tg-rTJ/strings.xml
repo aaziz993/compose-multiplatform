@@ -29,7 +29,8 @@
     <string name="false">Ноҳақ</string>
     <string name="exchange">Додугирифт</string>
     <string name="expressive">Равшанӣ</string>
-    <string name="easing">Сатҳи ҳамворшавӣ</string>
+    <string name="easing">Оромшавӣ</string>
+    <string name="cubic_bezier_easing">Оромшавии кубии Безе</string>
     <string name="file">Файл</string>
     <string name="general">Умумӣ</string>
     <string name="generate">Сохт</string>

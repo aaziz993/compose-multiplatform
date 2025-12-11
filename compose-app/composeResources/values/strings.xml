@@ -30,6 +30,7 @@
     <string name="exchange">Exchange</string>
     <string name="expressive">Expressive</string>
     <string name="easing">Easing</string>
+    <string name="cubic_bezier_easing">Cubic Bezier easing</string>
     <string name="false">False</string>
     <string name="file">File</string>
     <string name="general">General</string>

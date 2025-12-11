@@ -1,29 +1,10 @@
 import SwiftUI
 import clib
 
-@main
-struct IOSApp: App {
-
-    // Shared KMM deep link handler
-    let deepLinkHandler = DeepLinkStateIos()
-
-    // Bridge to AppDelegate for Universal Links
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                // Handle custom URL schemes
-                .onOpenURL { url in
-                    deepLinkHandler.onDeepLinkReceived(url: url.absoluteString)
-                }
-        }
-    }
-}
-
-// MARK: - AppDelegate for Universal Links
+// AppDelegate.
 class AppDelegate: NSObject, UIApplicationDelegate {
 
+    // Shared KMM deep link handler.
     let deepLinkHandler = DeepLinkStateIos()
 
     // Handle URL schemes.
@@ -40,5 +21,25 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         deepLinkHandler.onDeepLinkReceived(userActivity: userActivity)
         return true
+    }
+}
+
+@main
+struct IOSApp: App {
+
+    // Shared KMM deep link handler.
+    let deepLinkHandler = DeepLinkStateIos()
+
+    // Bridge to AppDelegate.
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                // Handle custom URL schemes
+                .onOpenURL { url in
+                    deepLinkHandler.onDeepLinkReceived(url: url.absoluteString)
+                }
+        }
     }
 }

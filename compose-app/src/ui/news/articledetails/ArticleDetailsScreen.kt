@@ -199,10 +199,11 @@ private fun ArticleDetailsSuccessContent(
             article.url?.let { url ->
                 Text(
                     text = annotatedStringResource(
-                        Res.string.read_more_at,
-                        article.newsSite,
+                        resource = Res.string.read_more_at,
+                        formatArgs = arrayOf(article.newsSite),
                         linkInteractionListener = { onReadMoreClick(url) },
                     ),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
         }
