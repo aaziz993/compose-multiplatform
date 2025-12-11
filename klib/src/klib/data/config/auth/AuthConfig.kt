@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 public data class AuthConfig(
-    val otp: OtpConfig = TotpConfig.DEFAULT,
     val components: Map<String?, AuthResource> = mapOf(null to AuthResource()),
+    val otp: OtpConfig = TotpConfig.DEFAULT,
 )
