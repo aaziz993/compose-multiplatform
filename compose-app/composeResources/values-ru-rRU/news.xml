@@ -3,5 +3,5 @@
     <string name="news">Новости</string>
     <string name="articles">Статьи</string>
     <string name="article_details">Детали статьи</string>
-    <string name="read_more_at">Читать далее</string>
+    <string name="read_more_at">Читать больше на &lt;a href="%1$s"&gt;%1$s&lt;/a&gt;</string>
 </resources>

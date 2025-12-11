@@ -3,5 +3,5 @@
     <string name="news">News</string>
     <string name="articles">Articles</string>
     <string name="article_details">Article details</string>
-    <string name="read_more_at">Read more at</string>
+    <string name="read_more_at">Read more at &lt;a href="%1$s"&gt;%1$s&lt;/a&gt;</string>
 </resources>

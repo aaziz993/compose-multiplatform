@@ -295,6 +295,8 @@ kotysa = "3.2.2"
 store = "5.1.0-alpha07"
 # network connectivity.
 connectivity = "2.3.0"
+# simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
+kmpauth = "2.3.1"
 # ktor.
 ktor = "3.3.2"
 ktor-cache = "0.55.3"
@@ -783,6 +785,10 @@ connectivity-http = { module = "dev.jordond.connectivity:connectivity-http", ver
 connectivity-compose = { module = "dev.jordond.connectivity:connectivity-compose", version.ref = "connectivity" }
 connectivity-compose-device = { module = "dev.jordond.connectivity:connectivity-compose-device", version.ref = "connectivity" }
 connectivity-compose-http = { module = "dev.jordond.connectivity:connectivity-compose-http", version.ref = "connectivity" }
+# simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
+kmpauth-google = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "kmpauth" }
+kmpauth-firebase = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "kmpauth" }
+kmpauth-uihelper = { module = "io.github.mirzemehdi:kmpauth-uihelper", version.ref = "kmpauth" }
 ##Ktor server.
 ktor-version-catalog = { module = "io.ktor:ktor-version-catalog", version.ref = "ktor" }
 # host.
@@ -1292,6 +1298,11 @@ connectivity-kotlin-multiplatform = [
 connectivity-compose-multiplatform = [
     "connectivity-compose",
     "connectivity-compose-http",
+]
+# # simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
+kmpauth = [
+    "kmpauth-google",
+    "kmpauth-firebase",
 ]
 ##Ktor.
 # server.

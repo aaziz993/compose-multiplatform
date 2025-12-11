@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import clib.data.type.primitives.string.annotatedStringResource
 import clib.presentation.components.loading.CenterLoadingIndicator
 import clib.presentation.navigation.NavigationAction
 import coil3.compose.AsyncImage
@@ -196,14 +197,13 @@ private fun ArticleDetailsSuccessContent(
             )
 
             article.url?.let { url ->
-                TextButton(
-                    onClick = {
-                        onReadMoreClick(url)
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(text = stringResource(Res.string.read_more_at, article.newsSite))
-                }
+                Text(
+                    text = annotatedStringResource(
+                        Res.string.read_more_at,
+                        article.newsSite,
+                        linkInteractionListener = { onReadMoreClick(url) },
+                    ),
+                )
             }
         }
     }
