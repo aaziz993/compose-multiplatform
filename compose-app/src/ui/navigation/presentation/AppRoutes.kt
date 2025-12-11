@@ -443,7 +443,7 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             ArticleDetailsScreen(
-                Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
+                Modifier.fillMaxSize().verticalScroll(scrollState),
                 route,
                 state,
                 viewModel::action,
