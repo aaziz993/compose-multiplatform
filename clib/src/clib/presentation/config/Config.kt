@@ -26,9 +26,6 @@ import kotlinx.serialization.json.Json
 @Suppress("ComposeCompositionLocalUsage")
 public val LocalConfig: ProvidableCompositionLocal<Config> = staticCompositionLocalOf(::Config)
 
-@Suppress("ComposeCompositionLocalUsage")
-public val LocalConfig1: ProvidableCompositionLocal<Config> = staticCompositionLocalOf(::Config)
-
 @Serializable
 public data class Config(
     override val log: LogConfig = LogConfig(),

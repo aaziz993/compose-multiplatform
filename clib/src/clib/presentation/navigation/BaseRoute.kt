@@ -16,6 +16,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import clib.presentation.config.LocalConfig
 import clib.presentation.config.LocalConfig1
 import clib.presentation.event.EventBus
 import clib.presentation.navigation.deeplink.DeepLinkListener
@@ -39,7 +40,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
 
-    public var urls: List<Url> = listOf(navRoute.serializer().url())
+    public var urls: List<Url> = emptyList()
 
     public var metadata: Map<String, Any> = slideTransition()
 
@@ -186,7 +187,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     ) {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
-        val config = LocalConfig1.current
+        val config = LocalConfig.current
         config.ui.routes[name]?.configure(this)
         routes.forEach { route -> config.ui.routes[route.name]?.configure(route) }
 
