@@ -21,11 +21,15 @@
     <string name="description">Тавсиф</string>
     <string name="disabled">Гайрифаъол</string>
     <string name="density">Миқес</string>
+    <string name="damping_ratio">Сатҳи сустшавӣ</string>
+    <string name="duration">Муддат</string>
+    <string name="delay">Таъхир</string>
     <string name="enabled">Фаъол</string>
     <string name="error">Хато</string>
     <string name="false">Ноҳақ</string>
     <string name="exchange">Додугирифт</string>
     <string name="expressive">Равшанӣ</string>
+    <string name="easing">Сатҳи ҳамворшавӣ</string>
     <string name="file">Файл</string>
     <string name="general">Умумӣ</string>
     <string name="generate">Сохт</string>
@@ -58,20 +62,15 @@
     <string name="share">Ирсол</string>
     <string name="services">Хизматрасониҳо</string>
     <string name="settings">Танзим</string>
+    <string name="spring_spec">Мушаххасоти пружина</string>
+    <string name="stiffness">Сахтӣ</string>
     <string name="true">Ҳақ</string>
     <string name="time">Вақт</string>
     <string name="time_format">Қолаби вақт</string>
+    <string name="tween_spec">Мушаххасоти аниматсияи миёнаравӣ</string>
     <string name="identifier">Мушаххаскунанда</string>
     <string name="id">ID</string>
     <string name="image">Тасвир</string>
+    <string name="visibility_threshold">Ҳудуди намоёнӣ</string>
     <string name="wallet">Тангадон</string>
-
-    <string name="spring_spec">Spring specification</string>
-    <string name="damping_ratio">Damping ratio</string>
-    <string name="stiffness">Stiffness</string>
-    <string name="visibility_threshold">Visibility threshold</string>
-    <string name="tween_spec">Tween specification</string>
-    <string name="duration">Duration</string>
-    <string name="delay">Delay</string>
-    <string name="easing">Easing</string>
 </resources>

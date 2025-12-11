@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="shapes">Шакл</string>
-    <string name="corner_size">Чени бӯчак</string>
+    <string name="corner_size">Чени кунҷ</string>
     <string name="display_point">Ченаки дисплей</string>
     <string name="pixel">Пиксел</string>
     <string name="percent">Просент</string>

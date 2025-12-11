@@ -21,10 +21,14 @@
     <string name="description">Описание</string>
     <string name="disabled">Выключено</string>
     <string name="density">Масштаб</string>
+    <string name="damping_ratio">Коэффициент демпфирования</string>
+    <string name="duration">Длительность</string>
+    <string name="delay">Задержка</string>
     <string name="enabled">Включено</string>
     <string name="error">Ошибка</string>
     <string name="exchange">Обмен</string>
     <string name="expressive">Выразительный</string>
+    <string name="easing">Сглаживание</string>
     <string name="false">Ложно</string>
     <string name="file">Файл</string>
     <string name="general">Общее</string>
@@ -58,20 +62,15 @@
     <string name="share">Поделиться</string>
     <string name="services">Сервисы</string>
     <string name="settings">Настройки</string>
+    <string name="spring_spec">Спецификация пружины</string>
+    <string name="stiffness">Жесткость</string>
     <string name="true">Правдиво</string>
     <string name="time">Время</string>
     <string name="time_format">Формат времени</string>
+    <string name="tween_spec">Спецификация анимации перехода</string>
     <string name="identifier">Идентификатор</string>
     <string name="id">ID</string>
     <string name="image">Изображение</string>
-    <string name="wallet">Кошелек</string>
-
-    <string name="spring_spec">Пружинная спецификация</string>
-    <string name="damping_ratio">Коэффициент затухания</string>
-    <string name="stiffness">Жесткость</string>
     <string name="visibility_threshold">Порог видимости</string>
-    <string name="tween_spec">Tween specification</string>
-    <string name="duration">Продолжительность</string>
-    <string name="delay">Задержка</string>
-    <string name="easing">Расслабление</string>
+    <string name="wallet">Кошелек</string>
 </resources>

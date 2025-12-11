@@ -935,7 +935,7 @@
     <string name="locale_syr_iq">Syriac (Iraq)</string>
     <string name="locale_syr_sy">Syriac (Syria)</string>
     <string name="locale_szl">Silesian</string>
-    <string name="locale_szl_pl">Silesian (Poland)</string><!--TODO -->
+    <string name="locale_szl_pl">Silesian (Poland)</string>
     <string name="locale_ta">Tamil</string>
     <string name="locale_ta_in">Tamil (India)</string>
     <string name="locale_ta_lk">Tamil (Sri Lanka)</string>
