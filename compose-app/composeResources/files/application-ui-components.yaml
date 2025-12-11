@@ -1,0 +1,12 @@
+ui:
+  components:
+    quickAccess:
+      isSupport: true
+      isTheme: true
+      isLocale: true
+      isAvatar: true
+    connectivity:
+      isConnectivityAlert: false,
+      isConnectivitySnackbar: false,
+      isConnectivityIndicator: true,
+      isAvatarConnectivityIndicator: true,

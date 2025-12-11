@@ -1,7 +1,9 @@
 imports:
   - application-log.yaml
-  - application-appearance.yaml
   - application-localization.yaml
   - application-validator.yaml
   - application-auth.yaml
-  - application-routes.yaml
+  - application-ui-components.yaml
+  - application-ui-theme.yaml
+  - application-ui-density.yaml
+  - application-ui-routes.yaml

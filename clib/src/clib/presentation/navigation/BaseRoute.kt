@@ -17,7 +17,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import clib.presentation.config.LocalConfig
-import clib.presentation.config.LocalConfig1
 import clib.presentation.event.EventBus
 import clib.presentation.navigation.deeplink.DeepLinkListener
 import clib.presentation.navigation.model.NavigationItem
@@ -190,7 +189,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         val config = LocalConfig.current
         config.ui.routes[name]?.configure(this)
         routes.forEach { route -> config.ui.routes[route.name]?.configure(route) }
-
         val isRoot = LocalRouter.current == null
 
         Nav3Host(
