@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.DensityLarge
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
+import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Highlight
@@ -22,11 +23,11 @@ import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4
 import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.FlashOn
 import androidx.compose.material.icons.outlined.Highlight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
-import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.SignalCellular0Bar
 import androidx.compose.material.icons.outlined.SignalCellularConnectedNoInternet4Bar
@@ -140,8 +141,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.dynamic_color_scheme),
             value = theme.isDynamic,
-            trueIcon = Icons.Filled.Palette,
-            falseIcon = Icons.Outlined.Palette,
+            trueIcon = Icons.Filled.DynamicForm,
+            falseIcon = Icons.Outlined.DynamicForm,
         ) { value ->
             onThemeChange(theme.copy(isDynamic = value))
         }
@@ -166,7 +167,7 @@ public fun SettingsMainScreen(
         SettingsMenuLink(
             title = stringResource(Res.string.dynamic_color_scheme),
             enabled = true,
-            icon = Icons.Default.Palette,
+            icon = Icons.Default.DynamicForm,
         ) {
             onNavigationAction(NavigationAction.Push(SettingsDynamicColorScheme))
         }

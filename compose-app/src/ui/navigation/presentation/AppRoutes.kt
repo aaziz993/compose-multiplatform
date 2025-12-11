@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.CurrencyExchange
+import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.EnhancedEncryption
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Home
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CurrencyExchange
+import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.EnhancedEncryption
 import androidx.compose.material.icons.outlined.FormatShapes
 import androidx.compose.material.icons.outlined.Home
@@ -501,11 +503,11 @@ public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorSc
         NavigationItem(
             item = Item(
                 text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Palette, text) },
+                icon = { Icon(Icons.Outlined.DynamicForm, text) },
             ),
             selectedItem = Item(
                 text = { Text(text) },
-                icon = { Icon(Icons.Filled.Palette, text) },
+                icon = { Icon(Icons.Filled.DynamicForm, text) },
             ),
         )
     }
@@ -706,7 +708,7 @@ public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
 }
 
 @Serializable
-@SerialName("otp")
+@SerialName("hotp")
 public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
 
     override val route: Route<out NavRoute>
