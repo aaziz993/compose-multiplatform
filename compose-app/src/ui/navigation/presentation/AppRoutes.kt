@@ -10,12 +10,14 @@ import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.EnhancedEncryption
+import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CurrencyExchange
@@ -24,6 +26,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Newspaper
+import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
@@ -250,8 +253,6 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
         override val navRoute: KClass<out NavRoute>
             get() = ArticleDetails::class
 
-        override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
-
         override val authResource: AuthResource? = AuthResource()
 
         @Composable
@@ -452,6 +453,20 @@ public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRo
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Palette, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Palette, text) },
+            ),
+        )
+    }
+
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
@@ -477,6 +492,20 @@ public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRo
 public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorScheme>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Palette, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Palette, text) },
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
@@ -504,6 +533,20 @@ public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
 
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.FormatShapes, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.FormatShapes, text) },
+            ),
+        )
+    }
+
     override val authResource: AuthResource? = AuthResource()
 
     @Composable
@@ -529,6 +572,20 @@ public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
 public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRoute {
 
     override val metadata: kotlin.collections.Map<String, Any> = super.metadata + NavScreenSceneStrategy.navScreen()
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.TextFormat, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.TextFormat, text) },
+            ),
+        )
+    }
 
     override val authResource: AuthResource? = AuthResource()
 
