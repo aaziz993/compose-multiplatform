@@ -204,7 +204,7 @@
     <string name="locale_en_001">English (Latin, World)</string>
     <string name="locale_en_150">English (Latin, Europe)</string>
     <string name="locale_en_ae">English (Latin, UAE)</string>
-    <string name="locale_en_ag">English (Latin, Antigua & Barbuda)</string>
+    <string name="locale_en_ag">English (Latin, Antigua &amp; Barbuda)</string>
     <string name="locale_en_ai">English (Latin, Anguilla)</string>
     <string name="locale_en_as">English (Latin, American Samoa)</string>
     <string name="locale_en_at">English (Latin, Austria)</string>
@@ -253,7 +253,7 @@
     <string name="locale_en_jm">English (Latin, Jamaica)</string>
     <string name="locale_en_ke">English (Latin, Kenya)</string>
     <string name="locale_en_ki">English (Latin, Kiribati)</string>
-    <string name="locale_en_kn">English (Latin, Saint Kitts & Nevis)</string>
+    <string name="locale_en_kn">English (Latin, Saint Kitts &amp; Nevis)</string>
     <string name="locale_en_ky">English (Latin, Cayman Islands)</string>
     <string name="locale_en_lc">English (Latin, Saint Lucia)</string>
     <string name="locale_en_lr">English (Latin, Liberia)</string>
@@ -295,10 +295,10 @@
     <string name="locale_en_sz">English (Latin, Eswatini)</string>
     <string name="locale_en_shaw">English (Latin, Shaw)</string>
     <string name="locale_en_shaw_gb">English (Latin, Shaw, UK)</string>
-    <string name="locale_en_tc">English (Latin, Turks & Caicos)</string>
+    <string name="locale_en_tc">English (Latin, Turks &amp; Caicos)</string>
     <string name="locale_en_tk">English (Latin, Tokelau)</string>
     <string name="locale_en_to">English (Latin, Tonga)</string>
-    <string name="locale_en_tt">English (Latin, Trinidad & Tobago)</string>
+    <string name="locale_en_tt">English (Latin, Trinidad &amp; Tobago)</string>
     <string name="locale_en_tv">English (Latin, Tuvalu)</string>
     <string name="locale_en_tz">English (Tanzania)</string>
     <string name="locale_en_ug">English (Uganda)</string>
@@ -708,7 +708,7 @@
     <string name="locale_naq_na">Nama (Namibia)</string>
     <string name="locale_nb">Norwegian Bokmål</string>
     <string name="locale_nb_no">Norwegian Bokmål (Norway)</string>
-    <string name="locale_nb_sj">Norwegian Bokmål (Svalbard & Jan Mayen)</string>
+    <string name="locale_nb_sj">Norwegian Bokmål (Svalbard &amp; Jan Mayen)</string>
     <string name="locale_nd">North Ndebele</string>
     <string name="locale_nd_zw">North Ndebele (Zimbabwe)</string>
     <string name="locale_nds">Low German</string>
@@ -789,7 +789,7 @@
     <string name="locale_pt_mo">Portuguese (Macau)</string>
     <string name="locale_pt_mz">Portuguese (Mozambique)</string>
     <string name="locale_pt_pt">Portuguese (Portugal)</string>
-    <string name="locale_pt_st">Portuguese (São Tomé & Príncipe)</string>
+    <string name="locale_pt_st">Portuguese (São Tomé &amp; Príncipe)</string>
     <string name="locale_pt_tl">Portuguese (Timor-Leste)</string>
     <string name="locale_qu">Quechua</string>
     <string name="locale_qu_bo">Quechua (Bolivia)</string>
@@ -902,12 +902,12 @@
     <string name="locale_sq_xk">Albanian (Kosovo)</string>
     <string name="locale_sr">Serbian</string>
     <string name="locale_sr_cyrl">Serbian (Cyrillic)</string>
-    <string name="locale_sr_cyrl_ba">Serbian (Cyrillic, Bosnia & Herzegovina)</string>
+    <string name="locale_sr_cyrl_ba">Serbian (Cyrillic, Bosnia &amp; Herzegovina)</string>
     <string name="locale_sr_cyrl_me">Serbian (Cyrillic, Montenegro)</string>
     <string name="locale_sr_cyrl_rs">Serbian (Cyrillic, Serbia)</string>
     <string name="locale_sr_cyrl_xk">Serbian (Cyrillic, Kosovo)</string>
     <string name="locale_sr_latn">Serbian (Latin)</string>
-    <string name="locale_sr_latn_ba">Serbian (Latin, Bosnia & Herzegovina)</string>
+    <string name="locale_sr_latn_ba">Serbian (Latin, Bosnia &amp; Herzegovina)</string>
     <string name="locale_sr_latn_me">Serbian (Latin, Montenegro)</string>
     <string name="locale_sr_latn_rs">Serbian (Latin, Serbia)</string>
     <string name="locale_sr_latn_xk">Serbian (Latin, Kosovo)</string>
