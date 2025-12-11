@@ -2,7 +2,6 @@ package clib.presentation.config
 
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
-import clib.presentation.noLocalProvidedFor
 import com.charleskorn.kaml.Yaml
 import klib.data.config.LogConfig
 import klib.data.config.ServerConfig
@@ -25,8 +24,10 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 @Suppress("ComposeCompositionLocalUsage")
-public val LocalConfig: ProvidableCompositionLocal<Config> =
-    staticCompositionLocalOf { noLocalProvidedFor("LocalConfig") }
+public val LocalConfig: ProvidableCompositionLocal<Config> = staticCompositionLocalOf(::Config)
+
+@Suppress("ComposeCompositionLocalUsage")
+public val LocalConfig1: ProvidableCompositionLocal<Config> = staticCompositionLocalOf(::Config)
 
 @Serializable
 public data class Config(

@@ -4,3 +4,4 @@ imports:
   - application-localization.yaml
   - application-validator.yaml
   - application-auth.yaml
+  - application-routes.yaml

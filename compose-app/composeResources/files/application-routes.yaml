@@ -1,0 +1,34 @@
+ui:
+  routes:
+    home:
+      authResource: { }
+    articles:
+      authResource: { }
+    article_details:
+      authResource: { }
+    services:
+      authResource: { }
+    map:
+      authResource: { }
+    settings:
+      authResource: { }
+    settings_color_scheme:
+      authResource: { }
+    settings_dynamic_color_scheme:
+      authResource: { }
+    settings_shapes:
+      authResource: { }
+    settings_typography:
+      authResource: { }
+    about:
+      authResource: { }
+    verification:
+      authResource: { }
+    profile:
+      authResource: { }
+    balance:
+      authResource: { }
+    crypto:
+      authResource: { }
+    stock:
+      authResource: { }

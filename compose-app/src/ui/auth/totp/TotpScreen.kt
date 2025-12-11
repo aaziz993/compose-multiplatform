@@ -28,7 +28,7 @@ import clib.presentation.icons.Otp
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.code_sent_to
-import compose_app.generated.resources.otp
+import compose_app.generated.resources.totp
 import compose_app.generated.resources.send_code
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import klib.data.auth.otp.model.OtpConfig
@@ -68,7 +68,7 @@ public fun TotpScreen(
     ) {
         Icon(
             imageVector = Icons.Default.Otp,
-            contentDescription = stringResource(Res.string.otp),
+            contentDescription = stringResource(Res.string.totp),
             modifier = Modifier.size(128.dp),
         )
 

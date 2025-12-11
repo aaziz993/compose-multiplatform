@@ -16,6 +16,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import clib.presentation.config.LocalConfig1
 import clib.presentation.event.EventBus
 import clib.presentation.navigation.deeplink.DeepLinkListener
 import clib.presentation.navigation.model.NavigationItem
@@ -38,16 +39,14 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
 
-    public open val urls: List<Url> by lazy {
-        listOf(navRoute.serializer().url())
-    }
+    public var urls: List<Url> = listOf(navRoute.serializer().url())
 
-    public open val metadata: Map<String, Any> = slideTransition()
+    public var metadata: Map<String, Any> = slideTransition()
 
     public open val name: String
         get() = navRoute.serializer().descriptor.serialName
     public open val navigationItem: (@Composable (name: String) -> NavigationItem)? = null
-    public open val authResource: AuthResource? = null
+    public var authResource: AuthResource? = null
 
     public fun isAuth(auth: Auth): Boolean =
         authResource?.validate(auth.provider, auth.user) != false
@@ -186,6 +185,10 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     ) {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
+
+        val config = LocalConfig1.current
+        config.ui.routes[name]?.configure(this)
+        routes.forEach { route -> config.ui.routes[route.name]?.configure(route) }
 
         val isRoot = LocalRouter.current == null
 
