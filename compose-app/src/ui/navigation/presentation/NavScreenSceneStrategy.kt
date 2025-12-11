@@ -61,12 +61,11 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 modifier = Modifier.fillMaxSize(),
                 layoutType = layoutType,
                 state = navigationSuiteScaffoldState,
-            ) {
-                GlobalAlertDialog()
-                GlobalSnackbar()
+                content = content,
+            )
 
-                content()
-            }
+            GlobalAlertDialog()
+            GlobalSnackbar()
         }
     }
 
