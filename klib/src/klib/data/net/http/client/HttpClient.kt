@@ -10,20 +10,10 @@ import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.AuthConfig
 import io.ktor.client.plugins.auth.authProvider
-import io.ktor.client.plugins.auth.providers.BasicAuthConfig
-import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
 import io.ktor.client.plugins.auth.providers.BasicAuthProvider
-import io.ktor.client.plugins.auth.providers.BearerAuthConfig
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
-import io.ktor.client.plugins.auth.providers.BearerTokens
-import io.ktor.client.plugins.auth.providers.DigestAuthConfig
-import io.ktor.client.plugins.auth.providers.DigestAuthCredentials
 import io.ktor.client.plugins.auth.providers.DigestAuthProvider
-import io.ktor.client.plugins.auth.providers.basic
-import io.ktor.client.plugins.auth.providers.bearer
-import io.ktor.client.plugins.auth.providers.digest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.pluginOrNull
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
@@ -31,7 +21,6 @@ import io.ktor.http.ContentType
 import io.ktor.serialization.ContentConverter
 import io.ktor.util.AttributeKey
 import io.ktor.utils.io.InternalAPI
-import klib.data.auth.model.BearerToken
 import klib.data.net.http.client.model.Pin
 import kotlinx.serialization.json.Json
 
