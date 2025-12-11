@@ -674,10 +674,6 @@ public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
         override val navRoute: KClass<out NavRoute>
             get() = Hotp::class
 
-        init {
-            metadata += AppBarNavScreenSceneStrategy.screen()
-        }
-
         @Composable
         override fun Content(
             route: Hotp,
@@ -711,10 +707,6 @@ public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
 
         override val navRoute: KClass<out NavRoute>
             get() = Totp::class
-
-        init {
-            metadata += AppBarNavScreenSceneStrategy.screen()
-        }
 
         @Composable
         override fun Content(

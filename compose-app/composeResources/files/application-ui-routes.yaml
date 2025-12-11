@@ -52,6 +52,9 @@ ui:
       metadata:
         appBarNavScreen: true
       authResource: { }
+    phone:
+      metadata:
+        appBarNavScreen: true
     balance:
       metadata:
         appBarNavScreen: true

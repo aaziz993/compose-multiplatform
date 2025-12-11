@@ -43,9 +43,11 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     public var metadata: Map<String, Any> = slideTransition()
 
-    public open val name: String
+    public val name: String
         get() = navRoute.serializer().descriptor.serialName
+
     public open val navigationItem: (@Composable (name: String) -> NavigationItem)? = null
+
     public var authResource: AuthResource? = null
 
     public fun isAuth(auth: Auth): Boolean =
@@ -146,11 +148,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public val startRoute: NavRoute by lazy {
         checkNotNull(routes.firstOrNull() as? NavRoute) { "No start route" }
     }
-
-    override val name: String
-        get() = startRoute.route.name
-    override val navigationItem: (@Composable (name: String) -> NavigationItem)?
-        get() = startRoute.route.navigationItem
 
     @Composable
     protected open fun NavDisplay(
