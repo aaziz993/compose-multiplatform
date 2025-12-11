@@ -809,7 +809,7 @@ public data object Settings : KoinRoutes() {
 }
 
 @Serializable
-@SerialName("settings")
+@SerialName("settings_main")
 public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
 
     @Composable

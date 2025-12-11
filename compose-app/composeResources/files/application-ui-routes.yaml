@@ -62,6 +62,10 @@ ui:
       metadata:
         appBarNavScreen: true
       authResource: { }
+    settings_main:
+      metadata:
+        appBarNavScreen: true
+      authResource: { }
     settings_color_scheme:
       metadata:
         appBarNavScreen: true
