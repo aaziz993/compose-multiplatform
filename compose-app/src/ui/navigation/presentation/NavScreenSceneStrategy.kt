@@ -1,5 +1,6 @@
 package ui.navigation.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -9,6 +10,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowSizeClass
 import clib.presentation.auth.LocalAuthState
@@ -49,23 +51,24 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
             }
             else NavigationSuiteType.None
 
-            NavigationSuiteScaffold(
-                navigationSuiteItems = router.routes.items(
-                    router = router,
-                    alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
-                        { true }
-                    }
-                    else BaseRoute::enabled,
-                    auth = authState.auth,
-                ),
-                modifier = Modifier.fillMaxSize(),
-                layoutType = layoutType,
-                state = navigationSuiteScaffoldState,
-                content = content,
-            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                NavigationSuiteScaffold(
+                    navigationSuiteItems = router.routes.items(
+                        router = router,
+                        alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
+                            { true }
+                        }
+                        else BaseRoute::enabled,
+                        auth = authState.auth,
+                    ),
+                    layoutType = layoutType,
+                    state = navigationSuiteScaffoldState,
+                    content = content,
+                )
 
-            GlobalAlertDialog()
-            GlobalSnackbar()
+                GlobalAlertDialog()
+                GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
+            }
         }
     }
 
