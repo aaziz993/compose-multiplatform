@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_main">Настройки основные</string>
     <string name="settings_color_scheme">Настройки цветовой схемы</string>
     <string name="settings_dynamic_color_scheme">Настройки динамической цветовой схемы</string>
     <string name="settings_shapes">Настройки формы</string>

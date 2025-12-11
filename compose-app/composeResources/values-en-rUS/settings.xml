@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_main">Settings main</string>
     <string name="settings_color_scheme">Settings color scheme</string>
     <string name="settings_dynamic_color_scheme">Settings dynamic color scheme</string>
     <string name="settings_shapes">Settings shapes</string>
