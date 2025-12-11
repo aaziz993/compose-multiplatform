@@ -60,7 +60,7 @@ public class TotpViewModel(
     override fun action(action: TotpAction) {
         when (action) {
             is TotpAction.SetCode -> setCode(action.value)
-            is TotpAction.SendCode -> resendCode()
+            is TotpAction.SendNewCode -> resendCode()
             is TotpAction.Confirm -> confirm()
         }
     }

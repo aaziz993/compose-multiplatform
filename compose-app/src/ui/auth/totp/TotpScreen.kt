@@ -29,7 +29,7 @@ import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.otp
-import compose_app.generated.resources.resend_code
+import compose_app.generated.resources.send_code
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
@@ -53,7 +53,7 @@ public fun TotpScreen(
     val otpValue = remember(state.code) { mutableStateOf(state.code) }
 
     LaunchedEffect(Unit) {
-        onAction(TotpAction.SendCode)
+        onAction(TotpAction.SendNewCode)
     }
 
     LaunchedEffect(otpValue.value) {
@@ -93,7 +93,7 @@ public fun TotpScreen(
 
         Text(
             text = stringResource(
-                Res.string.resend_code,
+                Res.string.send_code,
                 if (state.countdown == Duration.ZERO) ""
                 else state.countdown.unaryMinus().toRelativeHumanReadable(),
             ),
@@ -102,7 +102,7 @@ public fun TotpScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable(enabled = state.countdown == Duration.ZERO) {
-                    onAction(TotpAction.SendCode)
+                    onAction(TotpAction.SendNewCode)
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

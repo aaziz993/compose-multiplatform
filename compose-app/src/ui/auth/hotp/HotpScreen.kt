@@ -24,8 +24,8 @@ import clib.presentation.icons.Otp
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.code_sent_to
-import compose_app.generated.resources.generate
 import compose_app.generated.resources.otp
+import compose_app.generated.resources.send_code
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import org.jetbrains.compose.resources.stringResource
@@ -48,7 +48,7 @@ public fun HotpScreen(
     val otpValue = remember(state.code) { mutableStateOf(state.code) }
 
     LaunchedEffect(Unit) {
-        onAction(HotpAction.GenerateCode)
+        onAction(HotpAction.SendNewCode)
     }
 
     LaunchedEffect(otpValue.value) {
@@ -83,12 +83,12 @@ public fun HotpScreen(
         )
 
         Text(
-            text = stringResource(Res.string.generate),
+            text = stringResource(Res.string.send_code),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    onAction(HotpAction.GenerateCode)
+                    onAction(HotpAction.SendNewCode)
                 }
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,

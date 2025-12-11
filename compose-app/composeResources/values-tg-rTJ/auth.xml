@@ -13,7 +13,7 @@
     <string name="remember_sign_in">Сабти вуруд</string>
     <string name="otp">Рамзи муваққатӣ</string>
     <string name="code_sent_to">Рамз ирсол шуд ба %1$s</string>
-    <string name="resend_code">Ирсоли рамз %1$s</string>
+    <string name="send_code">Ирсоли рамз %1$s</string>
     <string name="pin_code">Рамзи PIN</string>
     <string name="repeat_pin_code">Такрори PIN рамз</string>
     <string name="pin_codes_mismatch">Рамзхои PIN гуногун</string>

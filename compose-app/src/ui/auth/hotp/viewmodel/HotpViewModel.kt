@@ -34,7 +34,7 @@ public class HotpViewModel(
     override fun action(action: HotpAction) {
         when (action) {
             is HotpAction.SetCode -> setCode(action.value)
-            is HotpAction.GenerateCode -> generateCode()
+            is HotpAction.SendNewCode -> generateCode()
             is HotpAction.Confirm -> confirm()
         }
     }
