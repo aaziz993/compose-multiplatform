@@ -14,7 +14,7 @@ import io.ktor.util.pipeline.Pipeline
 
 private val PLUGIN_CONFIGURATIONS: MutableMap<AttributeKey<*>, Any> = mutableMapOf()
 
-public fun <P : Pipeline<*, PipelineCall>, B : Any, F : Any> P.installConfigAware(
+public fun <P : Pipeline<*, PipelineCall>, B : Any, F : Any> P.installPlugin(
     plugin: Plugin<P, B, F>,
     configure: B.() -> Unit = {}
 ): F = install(plugin) {

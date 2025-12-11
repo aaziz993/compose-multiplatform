@@ -9,6 +9,7 @@ import klib.data.backup.onedrive.model.AccessData
 import klib.data.cryptography.hashSha256Blocking
 import klib.data.cryptography.secureRandomBytes
 import klib.data.net.http.client.HTTP_CLIENT_JSON
+import klib.data.net.http.client.auth
 import klib.data.net.http.client.bearer
 import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
@@ -52,16 +53,18 @@ public class OneDriveAuthService(
     public fun authenticateUser(initialToken: BearerToken): OneDriveGraphService {
         var token = initialToken
         return OneDriveGraphService(
-            httpClient.bearer(
-                loadTokens = { token },
-                refreshToken = {
-                    api.refreshToken(
-                        clientId,
-                        token.refreshToken!!,
-                        "files.readwrite.all",
-                    ).also { newToken -> token = newToken.copy(refreshToken = token.refreshToken) }
-                },
-            ),
+            httpClient.auth {
+                bearer(
+                    loadTokens = { token },
+                    refreshToken = {
+                        api.refreshToken(
+                            clientId,
+                            token.refreshToken!!,
+                            "files.readwrite.all",
+                        ).also { newToken -> token = newToken.copy(refreshToken = token.refreshToken) }
+                    },
+                )
+            },
         )
     }
 }

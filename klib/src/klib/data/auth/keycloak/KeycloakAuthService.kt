@@ -5,6 +5,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.auth.model.BearerToken
 import klib.data.net.http.client.HTTP_CLIENT_JSON
+import klib.data.net.http.client.auth
 import klib.data.net.http.client.bearer
 import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
@@ -44,15 +45,17 @@ public class KeycloakAuthService(
         var token = initialToken
         return KeycloakAdminService(
             baseUrl,
-            httpClient.bearer(
-                loadTokens = { token },
-                refreshToken = {
-                    api.refreshToken(
-                        clientId,
-                        token.refreshToken!!,
-                    ).also { newToken -> token = newToken }
-                },
-            ),
+            httpClient.auth {
+                bearer(
+                    loadTokens = { token },
+                    refreshToken = {
+                        api.refreshToken(
+                            clientId,
+                            token.refreshToken!!,
+                        ).also { newToken -> token = newToken }
+                    },
+                )
+            },
             realm,
         )
     }

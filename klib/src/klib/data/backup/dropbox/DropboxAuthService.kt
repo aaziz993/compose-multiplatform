@@ -11,6 +11,7 @@ import klib.data.backup.dropbox.model.TokenRequest
 import klib.data.cryptography.hashSha256Blocking
 import klib.data.cryptography.secureRandomBytes
 import klib.data.net.http.client.HTTP_CLIENT_JSON
+import klib.data.net.http.client.auth
 import klib.data.net.http.client.bearer
 import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
@@ -51,17 +52,19 @@ public class OneDriveAuthService(
     public fun authenticateUser(initialToken: BearerToken): DropboxFilesService {
         var token = initialToken
         return DropboxFilesService(
-            httpClient.bearer(
-                loadTokens = { token },
-                refreshToken = {
-                    api.refreshToken(
-                        RefreshTokenRequest(
-                            clientId,
-                            token.refreshToken!!,
-                        ),
-                    ).also { newToken -> token = newToken.copy(refreshToken = token.refreshToken) }
-                },
-            ),
+            httpClient.auth {
+                bearer(
+                    loadTokens = { token },
+                    refreshToken = {
+                        api.refreshToken(
+                            RefreshTokenRequest(
+                                clientId,
+                                token.refreshToken!!,
+                            ),
+                        ).also { newToken -> token = newToken.copy(refreshToken = token.refreshToken) }
+                    },
+                )
+            },
         )
     }
 }

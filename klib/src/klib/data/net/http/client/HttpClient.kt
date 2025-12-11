@@ -23,6 +23,7 @@ import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.auth.providers.digest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.pluginOrNull
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
@@ -47,7 +48,7 @@ public expect fun createHttpClient(
     block: HttpClientConfig<*>.() -> Unit = {}
 ): HttpClient
 
-public fun <TBuilder : Any, TPlugin : Any> HttpClientConfig<*>.installConfigAware(
+public fun <TBuilder : Any, TPlugin : Any> HttpClientConfig<*>.installPlugin(
     plugin: HttpClientPlugin<TBuilder, TPlugin>,
     configure: TBuilder.() -> Unit = {}
 ): Unit = install(plugin) {
@@ -93,22 +94,7 @@ public fun HttpClient.ktorfit(block: Ktorfit.Builder.() -> Unit = {}): Ktorfit =
     Ktorfit.Builder().httpClient(this).apply(block).build()
 
 public fun HttpClient.auth(block: AuthConfig.() -> Unit): HttpClient = config {
-    install(Auth, block)
-}
-
-public fun HttpClient.basic(
-    credentials: suspend () -> BasicAuthCredentials?,
-    block: BasicAuthConfig.() -> Unit = {},
-): HttpClient = auth {
-    basic {
-        credentials {
-            credentials()?.let { credentials ->
-                BasicAuthCredentials(credentials.username, credentials.password)
-            }
-        }
-
-        block()
-    }
+    pluginConfig(Auth)?.block() ?: installPlugin(Auth, block)
 }
 
 @OptIn(InternalAPI::class)
@@ -116,62 +102,9 @@ public fun HttpClient.clearBasicToken() {
     authProvider<BasicAuthProvider>()?.clearToken()
 }
 
-public fun HttpClient.digest(
-    credentials: suspend () -> DigestAuthCredentials?,
-    block: DigestAuthConfig.() -> Unit = {},
-): HttpClient = auth {
-    digest {
-        credentials {
-            credentials()?.let { credentials ->
-                DigestAuthCredentials(credentials.username, credentials.password)
-            }
-        }
-
-        block()
-    }
-}
-
 @OptIn(InternalAPI::class)
 public fun HttpClient.clearDigestToken() {
     authProvider<DigestAuthProvider>()?.clearToken()
-}
-
-public fun HttpClient.bearer(
-    loadTokens: suspend () -> BearerToken?,
-    block: BearerAuthConfig.() -> Unit = {},
-): HttpClient = auth {
-    bearer {
-        loadTokens {
-            loadTokens()?.let { token ->
-                BearerTokens(token.accessToken, token.refreshToken)
-            }
-        }
-
-        block()
-    }
-}
-
-public fun HttpClient.bearer(
-    loadTokens: suspend () -> BearerToken?,
-    refreshToken: suspend () -> BearerToken,
-    invalidRefreshToken: suspend () -> Unit = {},
-    block: BearerAuthConfig.() -> Unit = {},
-): HttpClient = bearer(loadTokens) {
-    refreshTokens {
-        try {
-            refreshToken().let { token ->
-                BearerTokens(token.accessToken, token.refreshToken ?: oldTokens?.refreshToken)
-            }
-        }
-        catch (_: Throwable) {
-            null
-        }.also { token ->
-            // Handle invalid refresh token.
-            if (token == null) invalidRefreshToken()
-        }
-    }
-
-    block()
 }
 
 public fun HttpClient.clearBearerToken() {

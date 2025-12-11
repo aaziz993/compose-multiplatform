@@ -22,6 +22,7 @@ import klib.data.location.locale.weblate.WeblateApiService
 import klib.data.net.createConnectivity
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.createHttpClient
+import klib.data.net.http.client.installPlugin
 import klib.data.type.collections.takeUnlessEmpty
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.json.encodeAnyToString
@@ -64,7 +65,7 @@ public class CommonModule {
     public fun provideHttpClient(config: Config, json: Json): HttpClient = with(config.httpClient) {
         createHttpClient {
             this@with.timeout?.takeIf(EnabledConfig::enabled)?.let { timeout ->
-                install(HttpTimeout) {
+                installPlugin(HttpTimeout) {
                     timeout.requestTimeoutMillis?.let { requestTimeoutMillis }
                     timeout.connectTimeoutMillis.let { connectTimeoutMillis }
                     timeout.socketTimeoutMillis.let { socketTimeoutMillis }
@@ -72,17 +73,17 @@ public class CommonModule {
             }
 
             this@with.cache?.takeIf(EnabledConfig::enabled)?.let { cache ->
-                install(HttpCache) {
+                installPlugin(HttpCache) {
                     cache.isShared?.let { isShared = it }
                 }
             }
 
-            install(ContentNegotiation) {
+            installPlugin(ContentNegotiation) {
                 json(json)
             }
 
             log?.takeIf(EnabledConfig::enabled)?.let {
-                install(Logging) {
+                installPlugin(Logging) {
                     logger = Logger.DEFAULT
                     it.level?.let { level = LogLevel.valueOf(it.uppercase()) }
                 }
