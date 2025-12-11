@@ -9,32 +9,24 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.CurrencyExchange
-import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.EnhancedEncryption
-import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Newspaper
-import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.CurrencyExchange
-import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.EnhancedEncryption
-import androidx.compose.material.icons.outlined.FormatShapes
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Newspaper
-import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.TextFormat
 import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -84,13 +76,13 @@ import ui.auth.hotp.HotpScreen
 import ui.auth.hotp.viewmodel.HotpViewModel
 import ui.auth.login.presentation.LoginScreen
 import ui.auth.login.presentation.viewmodel.LoginViewModel
-import ui.auth.totp.viewmodel.TotpViewModel
 import ui.auth.phone.presentation.PhoneScreen
 import ui.auth.phone.presentation.viewmodel.PhoneViewModel
 import ui.auth.pincode.PinCodeScreen
 import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
 import ui.auth.totp.TotpScreen
+import ui.auth.totp.viewmodel.TotpViewModel
 import ui.auth.verification.presentation.VerificationScreen
 import ui.auth.verification.presentation.viewmodel.VerificationViewModel
 import ui.home.HomeScreen
@@ -342,6 +334,20 @@ public data object Map : KoinRoute<Map>(), NavRoute {
 @SerialName("settings")
 public data object Settings : KoinRoutes() {
 
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Settings, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Settings, text) },
+            ),
+        )
+    }
+
     override val routes: List<BaseRoute> by lazy {
         listOf(SettingsMain, SettingsColorScheme, SettingsDynamicColorScheme, SettingsShapes, SettingsTypography)
     }
@@ -369,20 +375,6 @@ public data object Settings : KoinRoutes() {
 @Serializable
 @SerialName("settings")
 public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Settings, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.Settings, text) },
-            ),
-        )
-    }
 
     @Composable
     override fun Content(
@@ -435,20 +427,6 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
 @SerialName("settings_color_scheme")
 public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Palette, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.Palette, text) },
-            ),
-        )
-    }
-
     @Composable
     override fun Content(
         route: SettingsColorScheme,
@@ -470,20 +448,6 @@ public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRo
 @Serializable
 @SerialName("settings_dynamic_color_scheme")
 public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorScheme>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.DynamicForm, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.DynamicForm, text) },
-            ),
-        )
-    }
 
     @Composable
     override fun Content(
@@ -507,20 +471,6 @@ public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorSc
 @SerialName("settings_shapes")
 public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.FormatShapes, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.FormatShapes, text) },
-            ),
-        )
-    }
-
     @Composable
     override fun Content(
         route: SettingsShapes,
@@ -542,20 +492,6 @@ public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
 @Serializable
 @SerialName("settings_typography")
 public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.TextFormat, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.TextFormat, text) },
-            ),
-        )
-    }
 
     @Composable
     override fun Content(
