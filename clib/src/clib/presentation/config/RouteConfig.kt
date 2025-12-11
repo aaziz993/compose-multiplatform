@@ -11,7 +11,9 @@ import klib.data.type.serialization.serializers.collections.SerializableAnyMap
 @Serializable
 public data class RouteConfig(
     override val urls: List<Url> = emptyList(),
-    public val metadata: SerializableAnyMap = slideTransition(),
+    val metadata: SerializableAnyMap = slideTransition(),
+    var enabled: Boolean = true,
+    var alwaysShowLabel: Boolean = true,
     override val authResource: AuthResource? = null,
 ) : RouteConfig {
 

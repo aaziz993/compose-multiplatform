@@ -16,17 +16,16 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.LocalConfig
 import clib.presentation.event.EventBus
 import clib.presentation.navigation.deeplink.DeepLinkListener
-import clib.presentation.navigation.model.NavigationItem
 import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.auth.model.AuthResource
-import klib.data.net.http.url
 import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
@@ -46,7 +45,9 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public val name: String
         get() = navRoute.serializer().descriptor.serialName
 
-    public open val navigationItem: (@Composable (name: String) -> NavigationItem)? = null
+    public var enabled: Boolean = true
+    public var alwaysShowLabel: Boolean = true
+    public open val selectableItem: (@Composable (name: String) -> SelectableItem)? = null
 
     public var authResource: AuthResource? = null
 
@@ -61,7 +62,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     )
 
     @Composable
-    public open fun isNavigationItem(auth: Auth): Boolean = navigationItem != null && isAuth(auth)
+    public open fun isNavigationItem(auth: Auth): Boolean = selectableItem != null && isAuth(auth)
 
     @Composable
     public open fun item(
@@ -73,7 +74,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
         val router = currentRouter()
         val selected = this == router.backStack.lastOrNull()
-        val item = navigationItem!!(name)
+        val item = selectableItem!!(name)
         val selectedItem = item.item(selected)
 
         return {
@@ -82,9 +83,9 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
                 { router.onPush(this@BaseRoute) },
                 selectedItem.icon,
                 selectedItem.modifier,
-                item.enabled,
+                enabled,
                 selectedItem.text,
-                item.alwaysShowLabel,
+                alwaysShowLabel,
                 selectedItem.badge,
             )
         }
@@ -102,7 +103,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
         val router = currentRouter()
         val selected = this == router.backStack.lastOrNull()
-        val item = navigationItem!!(name)
+        val item = selectableItem!!(name)
         val selectedItem = item.item(selected)
 
         scope.NavigationBarItem(
@@ -110,9 +111,9 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
             { router.onPush(this) },
             selectedItem.icon,
             selectedItem.modifier,
-            item.enabled,
+            enabled,
             selectedItem.text,
-            item.alwaysShowLabel,
+            alwaysShowLabel,
         )
     }
 }

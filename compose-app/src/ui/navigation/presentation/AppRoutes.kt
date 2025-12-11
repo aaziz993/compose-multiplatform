@@ -48,6 +48,7 @@ import clib.di.navigation.rememberKoinScopeNavEntryDecorator
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.LocalComponentsState
 import clib.presentation.components.model.item.Item
+import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivity
 import clib.presentation.locale.LocalLocaleState
@@ -56,7 +57,6 @@ import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Route
 import clib.presentation.navigation.currentRouter
-import clib.presentation.navigation.model.NavigationItem
 import clib.presentation.navigation.scene.DelegatedScreenStrategy
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
@@ -322,9 +322,9 @@ public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
 @SerialName("home")
 public data object Home : KoinRoute<Home>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = {
@@ -359,9 +359,9 @@ public data object Home : KoinRoute<Home>(), NavRoute {
 @SerialName("news")
 public data object News : KoinRoutes() {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Newspaper, text) },
@@ -457,9 +457,9 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
 @SerialName("map")
 public data object Map : KoinRoute<Map>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Map, text) },
@@ -490,9 +490,9 @@ public data object Map : KoinRoute<Map>(), NavRoute {
 @SerialName("services")
 public data object Services : KoinRoute<Services>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Apps, text) },
@@ -523,9 +523,9 @@ public data object Services : KoinRoute<Services>(), NavRoute {
 @SerialName("wallet")
 public data object Wallet : KoinRoutes() {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Wallet, text) },
@@ -565,9 +565,9 @@ public data object Wallet : KoinRoutes() {
 @SerialName("balance")
 public data object Balance : KoinRoute<Balance>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.AccountBalance, text) },
@@ -598,9 +598,9 @@ public data object Balance : KoinRoute<Balance>(), NavRoute {
 @SerialName("crypto")
 public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.EnhancedEncryption, text) },
@@ -631,9 +631,9 @@ public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 @SerialName("stock")
 public data object Stock : KoinRoute<Stock>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.CurrencyExchange, text) },
@@ -664,9 +664,9 @@ public data object Stock : KoinRoute<Stock>(), NavRoute {
 @SerialName("profile")
 public data object Profile : KoinRoute<Profile>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Person, text) },
@@ -737,9 +737,9 @@ public data object Verification : KoinRoute<Verification>(), NavRoute {
 @SerialName("about")
 public data object About : KoinRoute<About>(), NavRoute {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Info, text) },
@@ -770,9 +770,9 @@ public data object About : KoinRoute<About>(), NavRoute {
 @SerialName("settings")
 public data object Settings : KoinRoutes() {
 
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
+        SelectableItem(
             item = Item(
                 text = { Text(text) },
                 icon = { Icon(Icons.Outlined.Settings, text) },
