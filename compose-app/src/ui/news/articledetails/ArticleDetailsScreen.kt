@@ -1,5 +1,6 @@
 package ui.news.articledetails
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,10 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import be.digitalia.compose.htmlconverter.HtmlStyle
 import clib.data.type.primitives.string.annotatedStringResource
 import clib.presentation.components.loading.CenterLoadingIndicator
 import clib.presentation.navigation.NavigationAction
@@ -120,7 +125,7 @@ private fun ArticleDetailsSuccessContent(
 
             IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.TopStart)) {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack,
+                    Icons.AutoMirrored.Default.NavigateBefore,
                     contentDescription = stringResource(Res.string.back),
                     tint = Color.White,
                 )
@@ -142,14 +147,15 @@ private fun ArticleDetailsSuccessContent(
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background).padding(16.dp),
         ) {
 
             Text(
                 text = article.title,
-                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold,
                 overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleLarge,
             )
 
             Row(
@@ -192,6 +198,7 @@ private fun ArticleDetailsSuccessContent(
 
             Text(
                 text = article.summary,
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyMedium,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -201,9 +208,18 @@ private fun ArticleDetailsSuccessContent(
                     text = annotatedStringResource(
                         resource = Res.string.read_more_at,
                         formatArgs = arrayOf(article.newsSite),
+                        style = HtmlStyle(
+                            textLinkStyles = TextLinkStyles(
+                                style = SpanStyle(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    textDecoration = TextDecoration.Underline,
+                                ),
+                            ),
+                        ),
                         linkInteractionListener = { onReadMoreClick(url) },
                     ),
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         }

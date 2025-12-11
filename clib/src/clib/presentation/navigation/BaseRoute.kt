@@ -25,6 +25,7 @@ import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.auth.model.AuthResource
+import klib.data.net.http.url
 import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
@@ -36,7 +37,12 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
 
-    public var urls: List<Url> = emptyList()
+    private var _urls: List<Url>? = null
+    public var urls: List<Url>
+        get() = _urls ?: listOf(navRoute.serializer().url()).also { _urls = it }
+        set(value) {
+            _urls = value
+        }
 
     public var metadata: Map<String, Any> = slideTransition()
 
@@ -49,8 +55,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     public var authResource: AuthResource? = null
 
-    public fun isAuth(auth: Auth): Boolean =
-        authResource?.validate(auth.provider, auth.user) != false
+    public fun isAuth(auth: Auth): Boolean = authResource?.validate(auth.provider, auth.user) != false
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="theme">Намуд</string>
+    <string name="dark_theme">Намуди торик</string>
+    <string name="light_theme">Намуди равшан</string>
+    <string name="system_theme">Намуди низомӣ</string>
+</resources>

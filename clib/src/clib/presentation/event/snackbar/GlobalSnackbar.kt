@@ -1,20 +1,30 @@
 package clib.presentation.event.snackbar
 
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import clib.data.type.collections.ToLaunchedEffect
 import kotlinx.coroutines.launch
 
 /**
  *  Global Snackbar by GlobalSnackbarEventController
  */
+@Suppress("ComposeModifierMissing")
 @Composable
-public fun GlobalSnackbar() {
+public fun GlobalSnackbar(
+    modifier: Modifier = Modifier,
+    snackbar: @Composable (SnackbarData) -> Unit = { snackbarData -> Snackbar(snackbarData) },
+) {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    SnackbarHost(snackbarHostState, modifier, snackbar)
 
     GlobalSnackbarEventController.events.ToLaunchedEffect(
         snackbarHostState,
