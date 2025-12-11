@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 public data class Article(
     val id: Long,
     val title: String,
-    val url: String,
+    val url: String? = null,
     @SerialName("image_url")
     val imageUrl: String,
     @SerialName("news_site")

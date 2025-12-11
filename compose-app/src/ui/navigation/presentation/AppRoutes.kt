@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -437,9 +438,10 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
             route: ArticleDetails,
             sharedTransitionScope: SharedTransitionScope,
         ) {
+            val uriHandler = LocalUriHandler.current
             val scrollState = rememberScrollState()
             val router = currentRouter()
-            val viewModel: ArticleDetailsViewModel = koinViewModel()
+            val viewModel: ArticleDetailsViewModel = koinViewModel { parametersOf(uriHandler) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             ArticleDetailsScreen(

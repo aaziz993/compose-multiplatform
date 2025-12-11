@@ -69,11 +69,11 @@ public fun ArticleDetailsScreen(
             {
                 onNavigationAction(NavigationAction.Pop)
             },
-            {
-                onAction(ArticleDetailsAction.ReadMore(route.articleId))
+            { url ->
+                onAction(ArticleDetailsAction.Share(url))
             },
-            {
-                onAction(ArticleDetailsAction.Share(route.articleId))
+            { url ->
+                onAction(ArticleDetailsAction.ReadMore(url))
             },
         )
 
@@ -100,7 +100,7 @@ private fun ArticleDetailsSuccessContent(
     @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
     article: Article,
     onBackClick: () -> Unit,
-    onShareClick: () -> Unit,
+    onShareClick: (String) -> Unit,
     onReadMoreClick: (String) -> Unit,
 ) {
     Column(
@@ -125,12 +125,17 @@ private fun ArticleDetailsSuccessContent(
                 )
             }
 
-            IconButton(onClick = onShareClick, modifier = Modifier.align(Alignment.TopEnd)) {
-                Icon(
-                    Icons.Default.Share,
-                    contentDescription = stringResource(Res.string.share),
-                    tint = Color.White,
-                )
+            article.url?.let { url ->
+                IconButton(
+                    onClick = { onShareClick(url) },
+                    modifier = Modifier.align(Alignment.TopEnd),
+                ) {
+                    Icon(
+                        Icons.Default.Share,
+                        contentDescription = stringResource(Res.string.share),
+                        tint = Color.White,
+                    )
+                }
             }
         }
 
@@ -190,13 +195,15 @@ private fun ArticleDetailsSuccessContent(
                 overflow = TextOverflow.Ellipsis,
             )
 
-            TextButton(
-                onClick = {
-                    onReadMoreClick(article.url)
-                },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(text = stringResource(Res.string.read_more_at, article.newsSite))
+            article.url?.let { url ->
+                TextButton(
+                    onClick = {
+                        onReadMoreClick(url)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(text = stringResource(Res.string.read_more_at, article.newsSite))
+                }
             }
         }
     }

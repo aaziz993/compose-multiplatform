@@ -1,5 +1,6 @@
 package ui.news.articledetails.viewmodel
 
+import androidx.compose.ui.platform.UriHandler
 import androidx.lifecycle.viewModelScope
 import clib.presentation.viewmodel.ViewModel
 import klib.data.load.LoadingResult
@@ -11,12 +12,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
 import ui.news.data.db.ArticlesRepository
 import ui.news.data.model.Article
 
 @KoinViewModel
 public class ArticleDetailsViewModel(
     private val repository: ArticlesRepository,
+    @Provided
+    private val uriHandler: UriHandler,
 ) : ViewModel<ArticleDetailsAction>() {
 
     public val state: StateFlow<LoadingResult<Article>>
@@ -24,8 +28,8 @@ public class ArticleDetailsViewModel(
 
     override fun action(action: ArticleDetailsAction): Unit = when (action) {
         is ArticleDetailsAction.Fetch -> fetch(action.articleId)
-        is ArticleDetailsAction.ReadMore -> readMore(action.articleId)
-        is ArticleDetailsAction.Share -> share(action.articleId)
+        is ArticleDetailsAction.ReadMore -> readMore(action.url)
+        is ArticleDetailsAction.Share -> share(action.url)
     }
 
     private fun fetch(articleId: Long) {
@@ -43,7 +47,9 @@ public class ArticleDetailsViewModel(
         }
     }
 
-    private fun readMore(articleId: Long): Unit = TODO()
+    private fun readMore(url: String) = uriHandler.openUri(url)
 
-    private fun share(articleId: Long): Unit = TODO()
+    private fun share(url: String) {
+        // TODO
+    }
 }
