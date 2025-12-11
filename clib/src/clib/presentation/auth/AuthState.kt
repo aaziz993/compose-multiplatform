@@ -9,13 +9,11 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import clib.presentation.noLocalProvidedFor
 import klib.data.auth.model.Auth
 import klib.data.auth.model.User
 
 @Suppress("ComposeCompositionLocalUsage")
-public val LocalAuthState: ProvidableCompositionLocal<AuthState> =
-    staticCompositionLocalOf { noLocalProvidedFor("LocalAuthState") }
+public val LocalAuthState: ProvidableCompositionLocal<AuthState> = staticCompositionLocalOf(::AuthState)
 
 public class AuthState(initialValue: Auth = Auth()) {
 

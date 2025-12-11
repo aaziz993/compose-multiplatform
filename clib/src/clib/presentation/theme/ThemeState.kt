@@ -9,12 +9,11 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import clib.presentation.noLocalProvidedFor
 import clib.presentation.theme.model.Theme
 
 @Suppress("ComposeCompositionLocalUsage")
 public val LocalThemeState: ProvidableCompositionLocal<ThemeState> =
-    staticCompositionLocalOf { noLocalProvidedFor("LocalThemeState") }
+    staticCompositionLocalOf(::ThemeState)
 
 public class ThemeState(initialValue: Theme = Theme()) {
 

@@ -11,14 +11,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
-import clib.presentation.noLocalProvidedFor
 import clib.presentation.theme.density.model.DensitySerial
 
 @Suppress("ComposeCompositionLocalUsage")
 public val LocalDensityState: ProvidableCompositionLocal<DensityState> =
-    staticCompositionLocalOf { noLocalProvidedFor("LocalDensityState") }
+    staticCompositionLocalOf(::DensityState)
 
-public class DensityState(initialValue: DensitySerial) {
+public class DensityState(initialValue: DensitySerial = Density(2f)) {
 
     public var density: Density by mutableStateOf(initialValue)
 

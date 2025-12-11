@@ -10,13 +10,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalInspectionMode
-import clib.presentation.noLocalProvidedFor
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 
 @Suppress("ComposeCompositionLocalUsage")
 public val LocalLocaleState: ProvidableCompositionLocal<LocaleState> =
-    staticCompositionLocalOf { noLocalProvidedFor("LocalLocaleState") }
+    staticCompositionLocalOf(::LocaleState)
 
 public class LocaleState(initialValue: Locale = Locale.current) {
 

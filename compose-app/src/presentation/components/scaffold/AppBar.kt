@@ -133,9 +133,9 @@ public fun AppBar(
             TopAppBar(
                 title = {
                     Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         title()
 
@@ -172,7 +172,7 @@ public fun AppBar(
                 },
                 actions = {
                     if (components.quickAccess.isSupport)
-                        AuthComposable(auth) {
+                        AuthComposable(auth = auth) {
                             AppTooltipBox(stringResource(Res.string.help)) {
                                 IconButton(
                                     onClick = {
@@ -249,7 +249,7 @@ public fun AppBar(
                     }
 
                     if (components.quickAccess.isAvatar) {
-                        AuthComposable(auth) { user ->
+                        AuthComposable(auth = auth) { user ->
                             AppTooltipBox(stringResource(Res.string.profile)) {
                                 var expanded by remember { mutableStateOf(false) }
                                 Box {
