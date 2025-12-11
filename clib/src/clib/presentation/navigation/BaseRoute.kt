@@ -64,6 +64,8 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     @Composable
     public open fun item(
+        enabled: Boolean = this.enabled,
+        alwaysShowLabel: Boolean = this.alwaysShowLabel,
         auth: Auth = Auth(),
         onPush: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
@@ -93,6 +95,8 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     @Composable
     context(scope: RowScope)
     public open fun NavigationBarItem(
+        enabled: Boolean = this.enabled,
+        alwaysShowLabel: Boolean = this.alwaysShowLabel,
         auth: Auth = Auth(),
         onPush: Router.(NavRoute) -> Unit = Router::push,
     ) {
@@ -235,10 +239,14 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     @Composable
     public fun items(
         router: Router,
+        enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
+        alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
         auth: Auth = Auth(),
         onPush: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
-        val items = routes.map { route -> route.item(auth, onPush) }
+        val items = routes.map { route ->
+            route.item(enabled(route), alwaysShowLabel(route), auth, onPush)
+        }
         return { items.forEach { item -> item() } }
     }
 
@@ -246,9 +254,13 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     context(scope: RowScope)
     public fun NavigationBarItems(
         router: Router,
+        enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
+        alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
         auth: Auth = Auth(),
         onPush: Router.(NavRoute) -> Unit = Router::push,
-    ): Unit = routes.forEach { route -> route.NavigationBarItem(auth, onPush) }
+    ): Unit = routes.forEach { route ->
+        route.NavigationBarItem(enabled(route), alwaysShowLabel(route), auth, onPush)
+    }
 
     final override fun iterator(): Iterator<BaseRoute> =
         routes.iterator().depthIterator({ _, route -> route.iterator() })

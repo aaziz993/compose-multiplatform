@@ -14,6 +14,7 @@ import androidx.window.core.layout.WindowSizeClass
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.event.alert.GlobalAlertDialog
 import clib.presentation.event.snackbar.GlobalSnackbar
+import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.currentRouter
 import clib.presentation.navigation.scene.WrapperSceneStrategy
@@ -51,6 +52,10 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
             NavigationSuiteScaffold(
                 navigationSuiteItems = router.routes.items(
                     router = router,
+                    alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
+                        { true }
+                    }
+                    else BaseRoute::enabled,
                     auth = authState.auth,
                 ),
                 modifier = Modifier.fillMaxSize(),
