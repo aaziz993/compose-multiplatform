@@ -245,7 +245,12 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         onPush: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
         val items = routes.map { route ->
-            route.item(enabled(route), alwaysShowLabel(route), auth, onPush)
+            route.item(
+                enabled(route) && this.enabled,
+                alwaysShowLabel(route) && this@Routes.alwaysShowLabel,
+                auth,
+                onPush,
+            )
         }
         return { items.forEach { item -> item() } }
     }
@@ -259,7 +264,12 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         auth: Auth = Auth(),
         onPush: Router.(NavRoute) -> Unit = Router::push,
     ): Unit = routes.forEach { route ->
-        route.NavigationBarItem(enabled(route), alwaysShowLabel(route), auth, onPush)
+        route.NavigationBarItem(
+            enabled(route) && this.enabled,
+            alwaysShowLabel(route) && this.alwaysShowLabel,
+            auth,
+            onPush,
+        )
     }
 
     final override fun iterator(): Iterator<BaseRoute> =
