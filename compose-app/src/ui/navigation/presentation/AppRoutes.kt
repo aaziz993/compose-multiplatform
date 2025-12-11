@@ -67,7 +67,6 @@ import clib.presentation.navigation.scene.DelegatedScreenStrategy
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
 import data.type.primitives.string.asStringResource
-import klib.data.auth.model.AuthResource
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
@@ -130,7 +129,7 @@ public data object App : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            NavScreenSceneStrategy().delegate(),
+            AppBarNavScreenSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -139,10 +138,6 @@ public data object App : KoinRoutes() {
 @Serializable
 @SerialName("home")
 public data object Home : KoinRoute<Home>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -199,7 +194,7 @@ public data object News : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            NavScreenSceneStrategy().delegate(),
+            AppBarNavScreenSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -208,10 +203,6 @@ public data object News : KoinRoutes() {
 @Serializable
 @SerialName("articles")
 public data object Articles : KoinRoute<Articles>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -283,10 +274,6 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
 @SerialName("services")
 public data object Services : KoinRoute<Services>(), NavRoute {
 
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
-
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
@@ -319,10 +306,6 @@ public data object Services : KoinRoute<Services>(), NavRoute {
 @Serializable
 @SerialName("map")
 public data object Map : KoinRoute<Map>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -375,7 +358,7 @@ public data object Settings : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            NavScreenSceneStrategy().delegate(),
+            AppBarNavScreenSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -384,10 +367,6 @@ public data object Settings : KoinRoutes() {
 @Serializable
 @SerialName("settings")
 public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -454,10 +433,6 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
 @SerialName("settings_color_scheme")
 public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRoute {
 
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
-
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
@@ -493,10 +468,6 @@ public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRo
 @Serializable
 @SerialName("settings_dynamic_color_scheme")
 public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorScheme>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -534,10 +505,6 @@ public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorSc
 @SerialName("settings_shapes")
 public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
 
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
-
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
@@ -574,10 +541,6 @@ public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
 @SerialName("settings_typography")
 public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRoute {
 
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
-
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
@@ -613,10 +576,6 @@ public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRout
 @Serializable
 @SerialName("about")
 public data object About : KoinRoute<About>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -669,7 +628,7 @@ public data object Auth : KoinRoutes(), AuthRoute {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            NavScreenSceneStrategy().delegate(),
+            AppBarNavScreenSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -678,10 +637,6 @@ public data object Auth : KoinRoutes(), AuthRoute {
 @Serializable
 @SerialName("phone")
 public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     @Composable
     override fun Content(
@@ -720,7 +675,7 @@ public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
             get() = Hotp::class
 
         init {
-            metadata += NavScreenSceneStrategy.navScreen()
+            metadata += AppBarNavScreenSceneStrategy.screen()
         }
 
         @Composable
@@ -758,7 +713,7 @@ public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
             get() = Totp::class
 
         init {
-            metadata += NavScreenSceneStrategy.navScreen()
+            metadata += AppBarNavScreenSceneStrategy.screen()
         }
 
         @Composable
@@ -787,10 +742,6 @@ public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
 @SerialName("pin_code")
 public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
 
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
-
     @Composable
     override fun Content(
         route: PinCode,
@@ -813,10 +764,6 @@ public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
 @Serializable
 @SerialName("login")
 public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     @Composable
     override fun Content(
@@ -841,10 +788,6 @@ public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
 @SerialName("forgot_pin_code")
 public data object ForgotPinCode : KoinRoute<ForgotPinCode>(), NavRoute, AuthRoute {
 
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
-
     @Composable
     override fun Content(
         route: ForgotPinCode,
@@ -863,10 +806,6 @@ public data object ForgotPinCode : KoinRoute<ForgotPinCode>(), NavRoute, AuthRou
 @Serializable
 @SerialName("verification")
 public data object Verification : KoinRoute<Verification>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     @Composable
     override fun Content(
@@ -893,10 +832,6 @@ public data object Verification : KoinRoute<Verification>(), NavRoute {
 @Serializable
 @SerialName("profile")
 public data object Profile : KoinRoute<Profile>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -963,7 +898,7 @@ public data object Wallet : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            NavScreenSceneStrategy().delegate(),
+            AppBarNavScreenSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -972,10 +907,6 @@ public data object Wallet : KoinRoutes() {
 @Serializable
 @SerialName("balance")
 public data object Balance : KoinRoute<Balance>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -1010,10 +941,6 @@ public data object Balance : KoinRoute<Balance>(), NavRoute {
 @SerialName("crypto")
 public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
-
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
@@ -1046,10 +973,6 @@ public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 @Serializable
 @SerialName("stock")
 public data object Stock : KoinRoute<Stock>(), NavRoute {
-
-    init {
-        metadata += NavScreenSceneStrategy.navScreen()
-    }
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }

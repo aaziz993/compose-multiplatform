@@ -1,34 +1,66 @@
 ui:
   routes:
     home:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     articles:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     article_details:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     services:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     map:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     settings:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     settings_color_scheme:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     settings_dynamic_color_scheme:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     settings_shapes:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     settings_typography:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     about:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     verification:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     profile:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     balance:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     crypto:
+      metadata:
+        appBarNavScreen: true
       authResource: { }
     stock:
+      metadata:
+        appBarNavScreen: true
       authResource: { }

@@ -187,8 +187,11 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
         val config = LocalConfig.current
+
         config.ui.routes[name]?.configure(this)
+
         routes.forEach { route -> config.ui.routes[route.name]?.configure(route) }
+
         val isRoot = LocalRouter.current == null
 
         Nav3Host(
@@ -250,7 +253,5 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     ): Unit = routes.forEach { route -> route.NavigationBarItem(auth, onPush) }
 
     final override fun iterator(): Iterator<BaseRoute> =
-        routes.iterator().depthIterator(
-            { _, route -> route.iterator() },
-        )
+        routes.iterator().depthIterator({ _, route -> route.iterator() })
 }

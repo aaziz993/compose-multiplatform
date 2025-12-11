@@ -25,9 +25,9 @@ import data.type.primitives.string.asStringResource
 import kotlin.collections.Map
 import kotlinx.coroutines.launch
 
-public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
+public class AppBarNavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
-    override val key: String = NAV_SCREEN_KEY
+    override val key: String = APP_BAR_NAV_SCREEN_KEY
 
     @Composable
     override fun Content(content: @Composable () -> Unit) {
@@ -90,10 +90,10 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
         }
     }
 
-    public companion object {
+    public companion object Companion {
 
-        private const val NAV_SCREEN_KEY = "navScreen"
+        private const val APP_BAR_NAV_SCREEN_KEY = "appBarNavScreen"
 
-        public fun navScreen(): Map<String, Boolean> = mapOf(NAV_SCREEN_KEY to true)
+        public fun screen(): Map<String, Boolean> = mapOf(APP_BAR_NAV_SCREEN_KEY to true)
     }
 }

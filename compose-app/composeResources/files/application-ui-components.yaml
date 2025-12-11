@@ -6,7 +6,7 @@ ui:
       isLocale: true
       isAvatar: true
     connectivity:
-      isConnectivityAlert: false,
-      isConnectivitySnackbar: false,
-      isConnectivityIndicator: true,
-      isAvatarConnectivityIndicator: true,
+      isConnectivityAlert: false
+      isConnectivitySnackbar: false
+      isConnectivityIndicator: true
+      isAvatarConnectivityIndicator: true
