@@ -130,6 +130,195 @@ public data object App : KoinRoutes() {
 }
 
 @Serializable
+@SerialName("auth")
+public data object Auth : KoinRoutes(), AuthRoute {
+
+    override val routes: List<BaseRoute> by lazy {
+        listOf(Phone, Hotp, Totp, PinCode, ForgotPinCode, Login)
+    }
+
+    @Composable
+    override fun NavDisplay(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>
+    ): Unit = androidx.navigation3.ui.NavDisplay(
+        backStack = backStack,
+        onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+            rememberKoinScopeNavEntryDecorator(),
+        ),
+        sceneStrategy = DelegatedScreenStrategy(
+            AppBarNavScreenSceneStrategy().delegate(),
+        ),
+        entryProvider = entryProvider,
+    )
+}
+
+@Serializable
+@SerialName("phone")
+public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
+
+    @Composable
+    override fun Content(
+        route: Phone,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val config = LocalConfig.current
+        val router = currentRouter()
+        val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        val country = Country.getCountries().find { country -> country.dial == state.countryCode }
+            ?: (if (!LocalInspectionMode.current) Country.current else null)
+            ?: Country.forCode("US")
+
+        PhoneScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            route,
+            state,
+            viewModel::action,
+            country,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
+@SerialName("hotp")
+public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
+
+    override val route: Route<out NavRoute>
+        get() = Hotp
+
+    public companion object : KoinRoute<Hotp>() {
+
+        override val navRoute: KClass<out NavRoute>
+            get() = Hotp::class
+
+        @Composable
+        override fun Content(
+            route: Hotp,
+            sharedTransitionScope: SharedTransitionScope,
+        ) {
+            val config = LocalConfig.current
+            val router = currentRouter()
+            val viewModel: HotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            HotpScreen(
+                Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                route,
+                config.auth.otp,
+                state,
+                viewModel::action,
+                router::actions,
+            )
+        }
+    }
+}
+
+@Serializable
+@SerialName("totp")
+public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
+
+    override val route: Route<out NavRoute>
+        get() = Totp
+
+    public companion object : KoinRoute<Totp>() {
+
+        override val navRoute: KClass<out NavRoute>
+            get() = Totp::class
+
+        @Composable
+        override fun Content(
+            route: Totp,
+            sharedTransitionScope: SharedTransitionScope,
+        ) {
+            val config = LocalConfig.current
+            val router = currentRouter()
+            val viewModel: TotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            TotpScreen(
+                Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                route,
+                config.auth.otp,
+                state,
+                viewModel::action,
+                router::actions,
+            )
+        }
+    }
+}
+
+@Serializable
+@SerialName("pin_code")
+public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
+
+    @Composable
+    override fun Content(
+        route: PinCode,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+        val viewModel: PinCodeViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        PinCodeScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            route,
+            state,
+            viewModel::action,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
+@SerialName("forgot_pin_code")
+public data object ForgotPinCode : KoinRoute<ForgotPinCode>(), NavRoute, AuthRoute {
+
+    @Composable
+    override fun Content(
+        route: ForgotPinCode,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+
+        ForgotPinCodeScreen(
+            Modifier,
+            route,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
+@SerialName("login")
+public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
+
+    @Composable
+    override fun Content(
+        route: Login,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+        val viewModel: LoginViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        LoginScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            route,
+            state,
+            viewModel::action,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
 @SerialName("home")
 public data object Home : KoinRoute<Home>(), NavRoute {
 
@@ -265,6 +454,39 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
 }
 
 @Serializable
+@SerialName("map")
+public data object Map : KoinRoute<Map>(), NavRoute {
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Map, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Map, text) },
+            ),
+        )
+    }
+
+    @Composable
+    override fun Content(
+        route: Map,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+
+        MapScreen(
+            Modifier,
+            route,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
 @SerialName("services")
 public data object Services : KoinRoute<Services>(), NavRoute {
 
@@ -297,32 +519,246 @@ public data object Services : KoinRoute<Services>(), NavRoute {
     }
 }
 
-@Serializable
-@SerialName("map")
-public data object Map : KoinRoute<Map>(), NavRoute {
+@Serializable()
+@SerialName("wallet")
+public data object Wallet : KoinRoutes() {
 
     override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
         NavigationItem(
             item = Item(
                 text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Map, text) },
+                icon = { Icon(Icons.Outlined.Wallet, text) },
             ),
             selectedItem = Item(
                 text = { Text(text) },
-                icon = { Icon(Icons.Filled.Map, text) },
+                icon = { Icon(Icons.Filled.Wallet, text) },
+            ),
+        )
+    }
+
+    override val routes: List<BaseRoute> by lazy {
+        listOf(Balance, Crypto, Stock)
+    }
+
+    @Composable
+    override fun NavDisplay(
+        backStack: List<NavRoute>,
+        onBack: () -> Unit,
+        entryProvider: (NavRoute) -> NavEntry<NavRoute>
+    ): Unit = androidx.navigation3.ui.NavDisplay(
+        backStack = backStack,
+        onBack = onBack,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+            rememberKoinScopeNavEntryDecorator(),
+        ),
+        sceneStrategy = DelegatedScreenStrategy(
+            AppBarNavScreenSceneStrategy().delegate(),
+        ),
+        entryProvider = entryProvider,
+    )
+}
+
+@Serializable
+@SerialName("balance")
+public data object Balance : KoinRoute<Balance>(), NavRoute {
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.AccountBalance, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.AccountBalance, text) },
             ),
         )
     }
 
     @Composable
     override fun Content(
-        route: Map,
+        route: Balance,
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
-        MapScreen(
+        BalanceScreen(
+            Modifier,
+            route,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
+@SerialName("crypto")
+public data object Crypto : KoinRoute<Crypto>(), NavRoute {
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.EnhancedEncryption, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.EnhancedEncryption, text) },
+            ),
+        )
+    }
+
+    @Composable
+    override fun Content(
+        route: Crypto,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+
+        CryptoScreen(
+            Modifier,
+            route,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
+@SerialName("stock")
+public data object Stock : KoinRoute<Stock>(), NavRoute {
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.CurrencyExchange, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.CurrencyExchange, text) },
+            ),
+        )
+    }
+
+    @Composable
+    override fun Content(
+        route: Stock,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+
+        StockScreen(
+            Modifier,
+            route,
+            router::actions,
+        )
+    }
+}
+
+@Serializable
+@SerialName("profile")
+public data object Profile : KoinRoute<Profile>(), NavRoute {
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Person, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Person, text) },
+            ),
+        )
+    }
+
+    @Composable
+    override fun Content(
+        route: Profile,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val scrollState = rememberScrollState()
+        val connectivity = LocalConnectivity.current
+        val componentsState = LocalComponentsState.current
+        val authState = LocalAuthState.current
+        val router = currentRouter()
+
+        ProfileScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
+            route,
+            connectivity,
+            componentsState.components,
+            authState.auth,
+            { auth -> authState.auth = auth },
+            router::actions,
+        )
+    }
+
+    @Composable
+    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
+        val isAvatar = LocalComponentsState.current.components.quickAccess.isAvatar
+        return super.isNavigationItem(auth) && !isAvatar
+    }
+}
+
+@Serializable
+@SerialName("verification")
+public data object Verification : KoinRoute<Verification>(), NavRoute {
+
+    @Composable
+    override fun Content(
+        route: Verification,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val authState = LocalAuthState.current
+        val router = currentRouter()
+        val viewModel: VerificationViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        VerificationScreen(
+            Modifier.fillMaxSize().padding(16.dp),
+            route,
+            state,
+            viewModel::action,
+            authState.auth,
+            { auth -> authState.auth = auth },
+            router::actions,
+        )
+    }
+}
+
+@Serializable
+@SerialName("about")
+public data object About : KoinRoute<About>(), NavRoute {
+
+    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
+        val text = name.toSnakeCase().asStringResource { name }
+        NavigationItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.Info, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.Info, text) },
+            ),
+        )
+    }
+
+    @Composable
+    override fun Content(
+        route: About,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+
+        AboutScreen(
             Modifier,
             route,
             router::actions,
@@ -508,441 +944,5 @@ public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRout
             config.ui.theme,
             themeState.theme,
         ) { value -> themeState.theme = value }
-    }
-}
-
-@Serializable
-@SerialName("about")
-public data object About : KoinRoute<About>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Info, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.Info, text) },
-            ),
-        )
-    }
-
-    @Composable
-    override fun Content(
-        route: About,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-
-        AboutScreen(
-            Modifier,
-            route,
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("auth")
-public data object Auth : KoinRoutes(), AuthRoute {
-
-    override val routes: List<BaseRoute> by lazy {
-        listOf(Phone, Hotp, Totp, PinCode, ForgotPinCode)
-    }
-
-    @Composable
-    override fun NavDisplay(
-        backStack: List<NavRoute>,
-        onBack: () -> Unit,
-        entryProvider: (NavRoute) -> NavEntry<NavRoute>
-    ): Unit = androidx.navigation3.ui.NavDisplay(
-        backStack = backStack,
-        onBack = onBack,
-        entryDecorators = listOf(
-            rememberSaveableStateHolderNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator(),
-            rememberKoinScopeNavEntryDecorator(),
-        ),
-        sceneStrategy = DelegatedScreenStrategy(
-            AppBarNavScreenSceneStrategy().delegate(),
-        ),
-        entryProvider = entryProvider,
-    )
-}
-
-@Serializable
-@SerialName("phone")
-public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
-
-    @Composable
-    override fun Content(
-        route: Phone,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val config = LocalConfig.current
-        val router = currentRouter()
-        val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
-        val state by viewModel.state.collectAsStateWithLifecycle()
-        val country = Country.getCountries().find { country -> country.dial == state.countryCode }
-            ?: (if (!LocalInspectionMode.current) Country.current else null)
-            ?: Country.forCode("US")
-
-        PhoneScreen(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp),
-            route,
-            state,
-            viewModel::action,
-            country,
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("hotp")
-public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
-
-    override val route: Route<out NavRoute>
-        get() = Hotp
-
-    public companion object : KoinRoute<Hotp>() {
-
-        override val navRoute: KClass<out NavRoute>
-            get() = Hotp::class
-
-        @Composable
-        override fun Content(
-            route: Hotp,
-            sharedTransitionScope: SharedTransitionScope,
-        ) {
-            val config = LocalConfig.current
-            val router = currentRouter()
-            val viewModel: HotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
-            val state by viewModel.state.collectAsStateWithLifecycle()
-
-            HotpScreen(
-                Modifier.fillMaxSize().padding(horizontal = 16.dp),
-                route,
-                config.auth.otp,
-                state,
-                viewModel::action,
-                router::actions,
-            )
-        }
-    }
-}
-
-@Serializable
-@SerialName("totp")
-public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
-
-    override val route: Route<out NavRoute>
-        get() = Totp
-
-    public companion object : KoinRoute<Totp>() {
-
-        override val navRoute: KClass<out NavRoute>
-            get() = Totp::class
-
-        @Composable
-        override fun Content(
-            route: Totp,
-            sharedTransitionScope: SharedTransitionScope,
-        ) {
-            val config = LocalConfig.current
-            val router = currentRouter()
-            val viewModel: TotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
-            val state by viewModel.state.collectAsStateWithLifecycle()
-
-            TotpScreen(
-                Modifier.fillMaxSize().padding(horizontal = 16.dp),
-                route,
-                config.auth.otp,
-                state,
-                viewModel::action,
-                router::actions,
-            )
-        }
-    }
-}
-
-@Serializable
-@SerialName("pin_code")
-public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
-
-    @Composable
-    override fun Content(
-        route: PinCode,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-        val viewModel: PinCodeViewModel = koinViewModel()
-        val state by viewModel.state.collectAsStateWithLifecycle()
-
-        PinCodeScreen(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp),
-            route,
-            state,
-            viewModel::action,
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("login")
-public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
-
-    @Composable
-    override fun Content(
-        route: Login,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-        val viewModel: LoginViewModel = koinViewModel()
-        val state by viewModel.state.collectAsStateWithLifecycle()
-
-        LoginScreen(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp),
-            route,
-            state,
-            viewModel::action,
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("forgot_pin_code")
-public data object ForgotPinCode : KoinRoute<ForgotPinCode>(), NavRoute, AuthRoute {
-
-    @Composable
-    override fun Content(
-        route: ForgotPinCode,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-
-        ForgotPinCodeScreen(
-            Modifier,
-            route,
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("verification")
-public data object Verification : KoinRoute<Verification>(), NavRoute {
-
-    @Composable
-    override fun Content(
-        route: Verification,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val authState = LocalAuthState.current
-        val router = currentRouter()
-        val viewModel: VerificationViewModel = koinViewModel()
-        val state by viewModel.state.collectAsStateWithLifecycle()
-
-        VerificationScreen(
-            Modifier.fillMaxSize().padding(16.dp),
-            route,
-            state,
-            viewModel::action,
-            authState.auth,
-            { auth -> authState.auth = auth },
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("profile")
-public data object Profile : KoinRoute<Profile>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Person, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.Person, text) },
-            ),
-        )
-    }
-
-    @Composable
-    override fun Content(
-        route: Profile,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val scrollState = rememberScrollState()
-        val connectivity = LocalConnectivity.current
-        val componentsState = LocalComponentsState.current
-        val authState = LocalAuthState.current
-        val router = currentRouter()
-
-        ProfileScreen(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
-            route,
-            connectivity,
-            componentsState.components,
-            authState.auth,
-            { auth -> authState.auth = auth },
-            router::actions,
-        )
-    }
-
-    @Composable
-    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
-        val isAvatar = LocalComponentsState.current.components.quickAccess.isAvatar
-        return super.isNavigationItem(auth) && !isAvatar
-    }
-}
-
-@Serializable()
-@SerialName("wallet")
-public data object Wallet : KoinRoutes() {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.Wallet, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.Wallet, text) },
-            ),
-        )
-    }
-
-    override val routes: List<BaseRoute> by lazy {
-        listOf(Balance, Crypto, Stock)
-    }
-
-    @Composable
-    override fun NavDisplay(
-        backStack: List<NavRoute>,
-        onBack: () -> Unit,
-        entryProvider: (NavRoute) -> NavEntry<NavRoute>
-    ): Unit = androidx.navigation3.ui.NavDisplay(
-        backStack = backStack,
-        onBack = onBack,
-        entryDecorators = listOf(
-            rememberSaveableStateHolderNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator(),
-            rememberKoinScopeNavEntryDecorator(),
-        ),
-        sceneStrategy = DelegatedScreenStrategy(
-            AppBarNavScreenSceneStrategy().delegate(),
-        ),
-        entryProvider = entryProvider,
-    )
-}
-
-@Serializable
-@SerialName("balance")
-public data object Balance : KoinRoute<Balance>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.AccountBalance, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.AccountBalance, text) },
-            ),
-        )
-    }
-
-    @Composable
-    override fun Content(
-        route: Balance,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-
-        BalanceScreen(
-            Modifier,
-            route,
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("crypto")
-public data object Crypto : KoinRoute<Crypto>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.EnhancedEncryption, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.EnhancedEncryption, text) },
-            ),
-        )
-    }
-
-    @Composable
-    override fun Content(
-        route: Crypto,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-
-        CryptoScreen(
-            Modifier,
-            route,
-            router::actions,
-        )
-    }
-}
-
-@Serializable
-@SerialName("stock")
-public data object Stock : KoinRoute<Stock>(), NavRoute {
-
-    override val navigationItem: @Composable (name: String) -> NavigationItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
-        NavigationItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.CurrencyExchange, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.CurrencyExchange, text) },
-            ),
-        )
-    }
-
-    @Composable
-    override fun Content(
-        route: Stock,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-
-        StockScreen(
-            Modifier,
-            route,
-            router::actions,
-        )
     }
 }

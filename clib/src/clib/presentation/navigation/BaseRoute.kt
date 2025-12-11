@@ -185,8 +185,10 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
         val config = LocalConfig.current
 
+        // Configure route.
         config.ui.routes[name]?.configure(this)
 
+        // Configure sub routes.
         routes.forEach { route -> config.ui.routes[route.name]?.configure(route) }
 
         val isRoot = LocalRouter.current == null

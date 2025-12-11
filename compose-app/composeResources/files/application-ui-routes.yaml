@@ -1,5 +1,23 @@
 ui:
   routes:
+    phone:
+      metadata:
+        appBarNavScreen: true
+    totp:
+      metadata:
+        appBarNavScreen: true
+    hotp:
+      metadata:
+        appBarNavScreen: true
+    pin_code:
+      metadata:
+        appBarNavScreen: true
+    forgot_pin_code:
+      metadata:
+        appBarNavScreen: true
+    login:
+      metadata:
+        appBarNavScreen: true
     home:
       metadata:
         appBarNavScreen: true
@@ -12,15 +30,35 @@ ui:
       metadata:
         navScreen: true
       authResource: { }
-    services:
-      metadata:
-        appBarNavScreen: true
-      authResource: { }
     map:
       metadata:
         appBarNavScreen: true
       authResource: { }
-    settings:
+    services:
+      metadata:
+        appBarNavScreen: true
+      authResource: { }
+    balance:
+      metadata:
+        appBarNavScreen: true
+      authResource: { }
+    crypto:
+      metadata:
+        appBarNavScreen: true
+      authResource: { }
+    stock:
+      metadata:
+        appBarNavScreen: true
+      authResource: { }
+    profile:
+      metadata:
+        appBarNavScreen: true
+      authResource: { }
+    verification:
+      metadata:
+        appBarNavScreen: true
+      authResource: { }
+    about:
       metadata:
         appBarNavScreen: true
       authResource: { }
@@ -40,36 +78,6 @@ ui:
       metadata:
         appBarNavScreen: true
       authResource: { }
-    about:
-      metadata:
-        appBarNavScreen: true
-      authResource: { }
-    verification:
-      metadata:
-        appBarNavScreen: true
-      authResource: { }
-    profile:
-      metadata:
-        appBarNavScreen: true
-      authResource: { }
-    totp:
-      metadata:
-        appBarNavScreen: true
-    hotp:
-      metadata:
-        appBarNavScreen: true
-    phone:
-      metadata:
-        appBarNavScreen: true
-    balance:
-      metadata:
-        appBarNavScreen: true
-      authResource: { }
-    crypto:
-      metadata:
-        appBarNavScreen: true
-      authResource: { }
-    stock:
-      metadata:
-        appBarNavScreen: true
-      authResource: { }
+
+
+
