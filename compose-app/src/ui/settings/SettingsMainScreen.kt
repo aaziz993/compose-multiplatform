@@ -18,8 +18,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
-import androidx.compose.material.icons.filled.SignalCellular0Bar
-import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
@@ -29,8 +27,6 @@ import androidx.compose.material.icons.outlined.Highlight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.SignalCellular0Bar
-import androidx.compose.material.icons.outlined.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,6 +43,10 @@ import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.app_bar_avatar
+import compose_app.generated.resources.app_bar_locales
+import compose_app.generated.resources.app_bar_support
+import compose_app.generated.resources.app_bar_themes
 import compose_app.generated.resources.appearance
 import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.camera
@@ -66,10 +66,6 @@ import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permission
-import compose_app.generated.resources.app_bar_avatar
-import compose_app.generated.resources.app_bar_locales
-import compose_app.generated.resources.app_bar_support
-import compose_app.generated.resources.app_bar_themes
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.search
@@ -86,6 +82,8 @@ import org.jetbrains.compose.resources.stringResource
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
+import presentation.connectivity.filledImageVector
+import presentation.connectivity.outlinedImageVector
 import presentation.theme.model.isDarkIcon
 import presentation.theme.model.isDarkStringResource
 import ui.navigation.presentation.SettingsColorScheme
@@ -246,13 +244,8 @@ public fun SettingsMainScreen(
             false
         }
 
-        val connectivityTrueIcon =
-            if (connectivity.isConnected) Icons.Filled.SignalCellular0Bar
-            else Icons.Filled.SignalCellularConnectedNoInternet4Bar
-
-        val connectivityFalseIcon =
-            if (connectivity.isConnected) Icons.Outlined.SignalCellular0Bar
-            else Icons.Outlined.SignalCellularConnectedNoInternet4Bar
+        val connectivityTrueIcon = connectivity.filledImageVector()
+        val connectivityFalseIcon = connectivity.outlinedImageVector()
 
         SettingsSwitch(
             title = stringResource(Res.string.connectivity_alert),

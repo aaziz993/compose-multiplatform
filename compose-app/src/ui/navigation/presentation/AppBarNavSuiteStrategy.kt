@@ -29,7 +29,7 @@ import kotlin.collections.Map
 import kotlinx.coroutines.launch
 import presentation.components.scaffold.AppBar
 
-public class AppBarNavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
+public class AppBarNavSuiteStrategy : WrapperSceneStrategy<NavRoute>() {
 
     override val key: String = APP_BAR_NAV_SUITE_KEY
 

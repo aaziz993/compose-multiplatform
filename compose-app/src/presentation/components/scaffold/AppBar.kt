@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,8 +20,6 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.SignalCellular0Bar
-import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0Bar
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Button
@@ -60,7 +59,6 @@ import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.back
 import compose_app.generated.resources.clear
-import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.help
 import compose_app.generated.resources.locale
@@ -85,8 +83,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppTooltipBox
-import presentation.connectivity.ConnectivityCircleIcon
-import presentation.connectivity.ConnectivityText
+import presentation.connectivity.CircleIcon
+import presentation.connectivity.DefaultIcon
+import presentation.connectivity.Text
 import presentation.theme.model.IsDarkIcon
 import ui.navigation.presentation.Profile
 
@@ -142,15 +141,12 @@ public fun AppBar(
                     ) {
                         if (components.appBar.isTitle) title()
 
-                        if (components.connectivity.isConnectivityIndicator)
-                            Icon(
-                                if (connectivity.isConnected) Icons.Default.SignalCellular0Bar
-                                else Icons.Default.SignalCellularConnectedNoInternet0Bar,
-                                stringResource(Res.string.connectivity_indicator_text),
-                            )
+                        Row(modifier = Modifier.wrapContentSize()) {
+                            if (components.connectivity.isConnectivityIndicator) connectivity.DefaultIcon()
 
-                        if (components.connectivity.isConnectivityIndicatorText)
-                            connectivity.ConnectivityText(overflow = TextOverflow.Clip, maxLines = 1)
+                            if (components.connectivity.isConnectivityIndicatorText)
+                                connectivity.Text(overflow = TextOverflow.Clip, maxLines = 1)
+                        }
                     }
                 },
                 navigationIcon = {
@@ -275,7 +271,7 @@ public fun AppBar(
                                             },
                                     )
                                     if (components.connectivity.isAvatarConnectivityIndicator)
-                                        connectivity.ConnectivityCircleIcon(
+                                        connectivity.CircleIcon(
                                             Modifier
                                                 .align(Alignment.TopEnd)
                                                 .size(14.dp),
