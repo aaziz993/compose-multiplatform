@@ -82,7 +82,7 @@ public class AppBarNavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                         navigationSuiteScaffoldState.toggle()
                     }
                 },
-                onNavigationAction = router::actions,
+                onNavigationActions = router::actions,
             ) { innerPadding ->
                 NavigationSuiteScaffold(
                     navigationSuiteItems = router.routes.items(

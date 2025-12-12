@@ -63,7 +63,7 @@ public fun NavScreen(
     hasDrawer = hasDrawer,
     isDrawerOpen = isDrawerOpen,
     onDrawerToggle = onDrawerToggle,
-    onNavigationAction = onNavigationAction,
+    onNavigationActions = onNavigationActions,
 ) { innerPadding ->
     NavigationSuiteScaffold(
         navigationSuiteItems = navigationSuiteItems,

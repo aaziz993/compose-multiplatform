@@ -50,7 +50,7 @@ public class AppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 hasBack = router.hasBack,
                 hasDrawer = false,
                 isDrawerOpen = false,
-                onNavigationAction = router::actions,
+                onNavigationActions = router::actions,
             ) { innerPadding ->
                 Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
                     content()
