@@ -7,5 +7,6 @@ public data class WeblateUnit(
     val translation: String,
     val context: String,
     val note: String,
+    val source: List<String>,
     val target: List<String>
 )

@@ -5,7 +5,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
-import io.ktor.http.Url
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.location.locale.Locale
 import klib.data.location.locale.LocaleService
@@ -55,9 +54,6 @@ public class WeblateApiService(
                 component,
                 languageTag,
             ).toList().flatMap(WeblateUnitsResponse::results)
-        }.mapNotNull { unit ->
-            val segments = Url(unit.translation).segments
-            if (segments[2] == project && segments[4] == languageTag) unit.context to unit.target else null
-        }.toMap()
+        }.associate { unit -> unit.source.first() to unit.target }
     }
 }

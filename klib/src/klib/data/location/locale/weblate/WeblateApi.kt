@@ -3,6 +3,9 @@ package klib.data.location.locale.weblate
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.QueryName
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.HttpStatusCode
 import klib.data.location.locale.weblate.model.WeblateTranslationsResponse
 import klib.data.location.locale.weblate.model.WeblateUnitsResponse
 import klib.data.type.collections.pair
@@ -26,7 +29,7 @@ public interface WeblateApi {
         @Path language: String,
         @QueryName format: String? = null,
         @QueryName page: Int? = null,
-    ): WeblateUnitsResponse
+    ): HttpResponse
 }
 
 public fun WeblateApi.getAllTranslations(
@@ -50,13 +53,22 @@ public fun WeblateApi.getAllUnits(
     var url: String? = "units/"
     while (url != null) {
         val params = url.parseParams()
-        val response = getUnits(project, component, language, params["format"], params["page"]?.toInt())
-        emit(response)
-        url = response.next
+
+        url = getUnits(project, component, language, params["format"], params["page"]?.toInt())
+            .takeIf { it.status == HttpStatusCode.OK }?.body<WeblateUnitsResponse>()?.let { response ->
+                emit(response)
+                response.next
+            }
     }
 }
 
-private fun String.parseParams(): Map<String, String> =
-    substringAfter("?")
-        .split("&")
-        .associate { value -> value.split("=").pair() }
+private fun String.parseParams(): Map<String, String> {
+    val params = substringAfter("?", "")
+
+    if (params.isEmpty()) return emptyMap()
+
+    return params.split("&")
+        .associate { value ->
+            value.split("=").pair()
+        }
+}

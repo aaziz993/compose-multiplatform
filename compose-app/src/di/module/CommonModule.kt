@@ -98,6 +98,7 @@ public class CommonModule {
                 weblate.baseUrl,
                 weblate.apiKey,
                 weblate.projectName,
+                weblate.components,
                 httpClient,
             )
         }.takeUnlessEmpty()?.let(::AggregateLocaleService) ?: LocaleService()

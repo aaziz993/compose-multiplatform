@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable(LocaleSerializer::class)
 public data class Locale(
-    private val languageTag: LanguageTag,
+    public val languageTag: LanguageTag,
 ) {
 
     public val language: String?
