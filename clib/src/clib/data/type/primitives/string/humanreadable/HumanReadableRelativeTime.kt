@@ -1,11 +1,11 @@
 package clib.data.type.primitives.string.humanreadable
 
 import androidx.compose.runtime.Composable
+import clib.data.type.primitives.string.pluralStringResource
 import klib.data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import kotlin.time.Duration
 import org.jetbrains.compose.resources.PluralStringResource
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 /**

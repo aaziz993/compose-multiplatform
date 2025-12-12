@@ -1,23 +1,46 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package clib.data.type.primitives.string
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkInteractionListener
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.case.toSnakeCase
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.LocalResourceReader
 import org.jetbrains.compose.resources.PluralStringResource
 import org.jetbrains.compose.resources.ResourceEnvironment
+import org.jetbrains.compose.resources.ResourceReader
 import org.jetbrains.compose.resources.StringArrayResource
+import org.jetbrains.compose.resources.StringItem
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.currentOrPreview
 import org.jetbrains.compose.resources.getPluralString
+import org.jetbrains.compose.resources.getResourceItemByEnvironment
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.getStringArray
+import org.jetbrains.compose.resources.getStringItem
 import org.jetbrains.compose.resources.getSystemResourceEnvironment
+import org.jetbrains.compose.resources.plural.PluralCategory
+import org.jetbrains.compose.resources.plural.PluralRuleList
 import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.rememberResourceState
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+public fun pluralStringResource(resource: PluralStringResource, quantity: Int): String {
+    val resourceReader = LocalResourceReader.currentOrPreview
+    val pluralStr by rememberResourceState(resource, quantity, { "" }) { env ->
+        loadPluralString(resource, quantity, resourceReader, env)
+    }
+    return pluralStr
+}
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
@@ -73,7 +96,7 @@ public fun annotatedStringResource(
 )
 
 @Composable
-public fun pluralAnnotatedStringResource(
+public fun annotatedPluralStringResource(
     resource: PluralStringResource,
     quantity: Int,
     environment: ResourceEnvironment = getSystemResourceEnvironment(),
@@ -87,7 +110,7 @@ public fun pluralAnnotatedStringResource(
 )
 
 @Composable
-public fun pluralAnnotatedStringResource(
+public fun annotatedPluralStringResource(
     resource: PluralStringResource,
     quantity: Int,
     vararg formatArgs: Any,
@@ -138,7 +161,7 @@ public suspend fun getAnnotatedString(
     linkInteractionListener,
 )
 
-public suspend fun getPluralAnnotatedString(
+public suspend fun getAnnotatedPluralString(
     resource: PluralStringResource,
     quantity: Int,
     environment: ResourceEnvironment = getSystemResourceEnvironment(),
@@ -151,7 +174,7 @@ public suspend fun getPluralAnnotatedString(
     linkInteractionListener,
 )
 
-public suspend fun getPluralAnnotatedString(
+public suspend fun getAnnotatedPluralString(
     resource: PluralStringResource,
     quantity: Int,
     vararg formatArgs: Any,
@@ -179,3 +202,28 @@ public suspend fun getAnnotatedStringArray(
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
+private suspend fun loadPluralString(
+    resource: PluralStringResource,
+    quantity: Int,
+    resourceReader: ResourceReader,
+    environment: ResourceEnvironment
+): String {
+    val resourceItem = resource.getResourceItemByEnvironment(environment)
+    val item = getStringItem(resourceItem, resourceReader) as StringItem.Plurals
+    val pluralCategory = when {
+        environment.language.language == "tg" -> PluralCategory.OTHER
+
+        else -> {
+            val pluralRuleList = PluralRuleList.getInstance(
+                environment.language,
+                environment.region,
+            )
+            pluralRuleList.getCategory(quantity)
+        }
+    }
+    val str = item.items[pluralCategory]
+        ?: item.items[PluralCategory.OTHER]
+        ?: error("Quantity string ID=`${resource.key}` does not have the pluralization $pluralCategory for quantity $quantity!")
+    return str
+}
