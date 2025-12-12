@@ -124,7 +124,9 @@ public data object App : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate() +
+                NavSuiteSceneStrategy().delegate() +
+                AppBarNavSuiteSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -152,7 +154,9 @@ public data object Auth : KoinRoutes(), AuthRoute {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate() +
+                NavSuiteSceneStrategy().delegate() +
+                AppBarNavSuiteSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -392,7 +396,9 @@ public data object News : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate() +
+                NavSuiteSceneStrategy().delegate() +
+                AppBarNavSuiteSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -557,7 +563,9 @@ public data object Wallet : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate() +
+                NavSuiteSceneStrategy().delegate() +
+                AppBarNavSuiteSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -804,7 +812,9 @@ public data object Settings : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate() +
+                NavSuiteSceneStrategy().delegate() +
+                AppBarNavSuiteSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
