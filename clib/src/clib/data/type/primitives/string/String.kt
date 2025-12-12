@@ -8,6 +8,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkInteractionListener
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
+import clib.presentation.locale.LocalLocaleServiceTranslations
+import klib.data.location.locale.getString
+import klib.data.location.locale.getStringOrNull
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.case.toSnakeCase
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -31,6 +34,10 @@ import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.rememberResourceState
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
+
+@Composable
+public fun stringResource(resource: StringResource): String =
+    LocalLocaleServiceTranslations.current.getStringOrNull(resource.key) ?: stringResource(resource)
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable

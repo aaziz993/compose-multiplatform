@@ -4,13 +4,8 @@ public class AggregateLocaleService(
     private val services: List<LocaleService>
 ) : LocaleService() {
 
-    override suspend fun getLocales(): List<Locale> = services.flatMap { service ->
-        service.getLocales()
-    }
+    override suspend fun getLocales(): List<Locale> = services.flatMap { service -> service.getLocales() }
 
-    override suspend fun setLocale(locale: Locale) {
-        super.setLocale(locale)
-        services.forEach { service -> service.setLocale(locale) }
-        translations = services.fold(emptyMap()) { acc, service -> acc + service.translations }
-    }
+    override suspend fun getTranslations(locale: Locale): Map<String, List<String>> =
+        services.fold(emptyMap()) { acc, service -> acc + service.getTranslations(locale) }
 }

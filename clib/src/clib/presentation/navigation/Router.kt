@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import io.ktor.http.Url
 import klib.data.type.collections.linkedlist.model.Node
 
 /**
@@ -46,6 +47,11 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
         internal set
 
     /**
+     * Nested routes queue.
+     */
+    internal var routeQueue: ArrayDeque<NavRoute> = ArrayDeque()
+
+    /**
      * Currently registered navigators has back.
      */
     public val hasBack: Boolean
@@ -66,6 +72,20 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
         val actions = routes.map(NavigationAction::Push).toTypedArray()
         navigationActionQueue.actions(*actions)
     }
+
+//    public fun push(url: Url) {
+//        val root = head()
+//        val routes = root.routes.findRouteChain(url) ?: return
+//        if (routes.isEmpty()) return
+//        root.routeQueue = ArrayDeque(routes)
+//    }
+//
+//    internal fun consumeDeepRoute() {
+//        val queue = head().routeQueue
+//        if (queue.isEmpty()) return
+//        val route = queue.removeFirst()
+//        push(route)
+//    }
 
     /**
      * Replaces the current top route with a new route.

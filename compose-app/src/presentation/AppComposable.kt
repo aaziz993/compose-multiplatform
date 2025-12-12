@@ -1,6 +1,5 @@
 package presentation
 
-import androidx.compose.foundation.ComposeFoundationFlags
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -34,6 +33,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
 import dev.jordond.connectivity.Connectivity
+import klib.data.location.locale.LocaleService
 import org.jetbrains.compose.resources.stringResource
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
@@ -48,6 +48,7 @@ public fun AppComposable(
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
     localeState: LocaleState = rememberLocaleState(config.localization.locale),
+    localeService: LocaleService = koinInject(),
     authState: AuthState = koinInject(),
     permissionsState: PermissionsState = rememberPermissionsState(),
     connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
@@ -65,26 +66,24 @@ public fun AppComposable(
             if (it == routes) Services else null,
         )
     },
-) {
-    ComposeFoundationFlags.isNewContextMenuEnabled = true
-    AppEnvironment(
-        config,
-        componentsState,
-        themeState,
-        densityState,
-        localeState,
-        authState,
-        permissionsState,
-        connectivity,
-        onlineText,
-        offlineText,
-        stateStore,
-        eventBus,
-        routerFactory,
-        navigatorFactory,
-        routes,
-    )
-}
+): Unit = AppEnvironment(
+    config,
+    componentsState,
+    themeState,
+    densityState,
+    localeState,
+    localeService,
+    authState,
+    permissionsState,
+    connectivity,
+    onlineText,
+    offlineText,
+    stateStore,
+    eventBus,
+    routerFactory,
+    navigatorFactory,
+    routes,
+)
 
 @Preview
 @Composable

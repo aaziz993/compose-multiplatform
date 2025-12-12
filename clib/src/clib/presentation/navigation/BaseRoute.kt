@@ -25,9 +25,11 @@ import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.auth.model.AuthResource
+import klib.data.net.http.toRoute
 import klib.data.net.http.url
 import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
+import kotlin.text.iterator
 import kotlinx.serialization.serializer
 
 @Stable
@@ -123,6 +125,8 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
             alwaysShowLabel,
         )
     }
+
+    public abstract fun findRoutePath(predicate: (BaseRoute) -> Boolean): List<BaseRoute>?
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -147,6 +151,9 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     }
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
+
+    final override fun findRoutePath(predicate: (BaseRoute) -> Boolean): List<BaseRoute>? =
+        if (predicate(this)) listOf(this) else null
 }
 
 public abstract class Routes() : BaseRoute(), NavRoute {
@@ -205,10 +212,9 @@ public abstract class Routes() : BaseRoute(), NavRoute {
             routerFactory(this),
             navigatorFactory(this),
         ) { backStack, onBack, _ ->
-            if (isRoot)
-                DeepLinkListener { url ->
+            if (isRoot) DeepLinkListener {
 
-                }
+            }
 
             // Return a result from one screen to a previous screen using a state-based approach.
             val resultStore = rememberStateStore()
@@ -279,4 +285,15 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     final override fun iterator(): Iterator<BaseRoute> =
         routes.iterator().depthIterator({ _, route -> route.iterator() })
+
+    final override fun findRoutePath(predicate: (BaseRoute) -> Boolean): List<BaseRoute>? {
+        if (predicate(this)) return listOf(this)
+
+        for (route in routes) {
+            val chain = route.findRoutePath(predicate)
+            if (chain != null) return listOf(this) + chain
+        }
+
+        return null
+    }
 }

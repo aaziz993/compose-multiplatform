@@ -6,6 +6,6 @@ localization:
   locale: en-US
   weblates:
     - enable: true
-      baseUrl: http://localhost:8090
-      projectName: application
-      apiKey: wlu_aiwHaV8hd99eJeHgc5LPznz20croHxo2C22z
+      baseUrl:  https://hosted.weblate.org/api/
+      projectName: Weblate
+      apiKey: wlu_1HJuwshoOcebcB2KMN10U8Yl7n4HgPkyO5q6

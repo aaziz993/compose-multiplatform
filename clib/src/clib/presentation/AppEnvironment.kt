@@ -1,6 +1,8 @@
 package clib.presentation
 
 import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.foundation.ComposeFoundationFlags
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,8 +40,10 @@ import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocalAppLocale
+import clib.presentation.locale.LocalLocaleServiceTranslations
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.LocaleState
+import clib.presentation.locale.rememberLocaleServiceTranslations
 import clib.presentation.locale.rememberLocaleState
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
@@ -60,9 +65,11 @@ import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
+import klib.data.location.locale.LocaleService
 import klib.data.net.createConnectivity
 import kotlinx.coroutines.MainScope
 
+@OptIn(ExperimentalFoundationApi::class)
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
 @Composable
 public fun AppEnvironment(
@@ -71,6 +78,7 @@ public fun AppEnvironment(
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
     localeState: LocaleState = rememberLocaleState(config.localization.locale),
+    localeService: LocaleService = LocaleService(),
     authState: AuthState = rememberAuthState(),
     permissionsState: PermissionsState = rememberPermissionsState(),
     connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
@@ -82,7 +90,10 @@ public fun AppEnvironment(
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
 ) {
+    ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configureKmLogging()
+
+    val translations by rememberLocaleServiceTranslations(localeState, localeService)
 
     CompositionLocalProvider(
         LocalConfig provides config,
@@ -94,6 +105,7 @@ public fun AppEnvironment(
         LocalDensityState provides densityState,
         LocalDensity provides densityState.density,
         LocalLocaleState provides localeState,
+        LocalLocaleServiceTranslations provides translations,
         LocalAppLocale provides localeState.locale,
         LocalAuthState provides authState,
         LocalStateStore provides stateStore,

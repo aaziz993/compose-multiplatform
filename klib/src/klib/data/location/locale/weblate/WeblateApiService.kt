@@ -40,10 +40,10 @@ public class WeblateApiService(
                 .firstNotNullOfOrNull(Locale::forLanguageTagOrNull)
         }
 
-    override suspend fun setLocale(locale: Locale) {
-        super.setLocale(locale)
+    override suspend fun getTranslations(locale: Locale): Map<String, List<String>> {
         val languageTag = locale.toString()
-        translations = api.getAllUnits().toList().flatMap { response ->
+
+        return api.getAllUnits().toList().flatMap { response ->
             response.results.mapNotNull { unit ->
                 val segments = Url(unit.translation).segments
                 if (segments[2] == project && segments[3] == languageTag) unit.context to unit.target else null
