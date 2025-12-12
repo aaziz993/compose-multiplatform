@@ -3,5 +3,6 @@
     <string name="connectivity_alert">Connectivity alert</string>
     <string name="connectivity_snackbar">Connectivity snackbar</string>
     <string name="connectivity_indicator">Connectivity indicator</string>
+    <string name="connectivity_indicator_text">Connectivity indicator text</string>
     <string name="avatar_connectivity_indicator">Avatar connectivity indicator</string>
 </resources>

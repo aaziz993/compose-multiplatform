@@ -1,6 +1,5 @@
 package ui.navigation.presentation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -12,7 +11,6 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.window.core.layout.WindowSizeClass
@@ -20,8 +18,6 @@ import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.LocalComponentsState
 import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivity
-import clib.presentation.event.alert.GlobalAlertDialog
-import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
@@ -33,9 +29,9 @@ import kotlin.collections.Map
 import kotlinx.coroutines.launch
 import presentation.components.scaffold.AppBar
 
-public class AppBarNavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
+public class AppBarNavSuiteStrategy : WrapperSceneStrategy<NavRoute>() {
 
-    override val key: String = APP_BAR_NAV_SCREEN_KEY
+    override val key: String = APP_BAR_NAV_SUITE_KEY
 
     @Composable
     override fun Content(content: @Composable () -> Unit) {
@@ -66,11 +62,9 @@ public class AppBarNavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
             }
             else NavigationSuiteType.None
 
-
             AppBar(
                 modifier = Modifier.fillMaxSize(),
                 title = { Text(text = currentRoute.route.name.asStringResource(), overflow = TextOverflow.Clip, maxLines = 1) },
-                connectivity = connectivity,
                 components = componentsState.components,
                 theme = themeState.theme,
                 onThemeChange = { value -> themeState.theme = value },
@@ -79,6 +73,7 @@ public class AppBarNavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 onLocaleChange = { value -> localeState.locale = value },
                 auth = authState.auth,
                 onAuthChange = { value -> authState.auth = value },
+                connectivity = connectivity,
                 hasBack = router.hasBack,
                 hasDrawer = layoutType == NavigationSuiteType.NavigationDrawer,
                 isDrawerOpen = navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible,
@@ -89,32 +84,28 @@ public class AppBarNavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 },
                 onNavigationAction = router::actions,
             ) { innerPadding ->
-                Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                    NavigationSuiteScaffold(
-                        navigationSuiteItems = router.routes.items(
-                            router = router,
-                            alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
-                                { true }
-                            }
-                            else BaseRoute::enabled,
-                            auth = authState.auth,
-                        ),
-                        layoutType = layoutType,
-                        state = navigationSuiteScaffoldState,
-                        content = content,
-                    )
-
-                    GlobalAlertDialog()
-                    GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
-                }
+                NavigationSuiteScaffold(
+                    navigationSuiteItems = router.routes.items(
+                        router = router,
+                        alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
+                            { true }
+                        }
+                        else BaseRoute::enabled,
+                        auth = authState.auth,
+                    ),
+                    modifier=Modifier.fillMaxSize().padding(innerPadding),
+                    layoutType = layoutType,
+                    state = navigationSuiteScaffoldState,
+                    content = content,
+                )
             }
         }
     }
 
     public companion object Companion {
 
-        private const val APP_BAR_NAV_SCREEN_KEY = "appBarNavScreen"
+        private const val APP_BAR_NAV_SUITE_KEY = "appBarNavSuite"
 
-        public fun screen(): Map<String, Boolean> = mapOf(APP_BAR_NAV_SCREEN_KEY to true)
+        public fun screen(): Map<String, Boolean> = mapOf(APP_BAR_NAV_SUITE_KEY to true)
     }
 }

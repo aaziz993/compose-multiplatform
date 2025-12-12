@@ -1,6 +1,5 @@
 package ui.navigation.presentation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -10,12 +9,9 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowSizeClass
 import clib.presentation.auth.LocalAuthState
-import clib.presentation.event.alert.GlobalAlertDialog
-import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.currentRouter
@@ -23,9 +19,9 @@ import clib.presentation.navigation.scene.WrapperSceneStrategy
 import kotlin.collections.Map
 import kotlinx.coroutines.launch
 
-public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
+public class NavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
-    override val key: String = NAV_SCREEN_KEY
+    override val key: String = NAV_SUITE_KEY
 
     @Composable
     override fun Content(content: @Composable () -> Unit) {
@@ -51,31 +47,27 @@ public class NavScreenSceneStrategy : WrapperSceneStrategy<NavRoute>() {
             }
             else NavigationSuiteType.None
 
-            Box(modifier = Modifier.fillMaxSize()) {
-                NavigationSuiteScaffold(
-                    navigationSuiteItems = router.routes.items(
-                        router = router,
-                        alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
-                            { true }
-                        }
-                        else BaseRoute::enabled,
-                        auth = authState.auth,
-                    ),
-                    layoutType = layoutType,
-                    state = navigationSuiteScaffoldState,
-                    content = content,
-                )
-
-                GlobalAlertDialog()
-                GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
-            }
+            NavigationSuiteScaffold(
+                navigationSuiteItems = router.routes.items(
+                    router = router,
+                    alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
+                        { true }
+                    }
+                    else BaseRoute::enabled,
+                    auth = authState.auth,
+                ),
+                modifier = Modifier.fillMaxSize(),
+                layoutType = layoutType,
+                state = navigationSuiteScaffoldState,
+                content = content,
+            )
         }
     }
 
     public companion object Companion {
 
-        private const val NAV_SCREEN_KEY = "navScreen"
+        private const val NAV_SUITE_KEY = "navSuite"
 
-        public fun screen(): Map<String, Boolean> = mapOf(NAV_SCREEN_KEY to true)
+        public fun screen(): Map<String, Boolean> = mapOf(NAV_SUITE_KEY to true)
     }
 }

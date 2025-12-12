@@ -2,85 +2,85 @@ ui:
   routes:
     phone:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
     totp:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
     hotp:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
     pin_code:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
     forgot_pin_code:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
     login:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
     home:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     articles:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     article_details:
       metadata:
-        navScreen: true
+        navSuite: true
       authResource: { }
     map:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     services:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     balance:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     crypto:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     stock:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     profile:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     verification:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     about:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     settings_main:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     settings_color_scheme:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     settings_dynamic_color_scheme:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     settings_shapes:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
     settings_typography:
       metadata:
-        appBarNavScreen: true
+        appBarNavSuite: true
       authResource: { }
 
 

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="quick_access">Быстрый доступ</string>
-    <string name="quick_access_to_support">Быстрый доступ к поддержке</string>
-    <string name="quick_access_to_themes">Быстрый доступ к темам</string>
-    <string name="quick_access_to_locales">Быстрый доступ к языкам</string>
-    <string name="quick_access_to_avatar">Быстрый доступ к аватару</string>
-</resources>

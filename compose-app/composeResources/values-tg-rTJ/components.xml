@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="quick_access">Дастрасии зуд</string>
-    <string name="quick_access_to_support">Дастрасии зуд ба дастгирӣ</string>
-    <string name="quick_access_to_themes">Дастрасии зуд ба намоишҳо</string>
-    <string name="quick_access_to_locales">Дастрасии зуд ба забонҳо</string>
-    <string name="quick_access_to_avatar">Дастрасии зуд ба аватар</string>
-</resources>

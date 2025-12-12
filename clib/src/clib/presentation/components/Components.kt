@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 public data class Components(
-    val quickAccess: QuickAccess = QuickAccess(),
-    val connectivity: Connectivity = Connectivity()
+    val appBar: AppBar = AppBar(),
+    val connectivity: Connectivity = Connectivity(),
 )

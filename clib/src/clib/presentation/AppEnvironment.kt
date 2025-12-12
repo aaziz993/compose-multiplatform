@@ -2,6 +2,8 @@ package clib.presentation
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Surface
@@ -9,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import clib.data.permission.LocalPermissionsState
@@ -26,8 +30,10 @@ import clib.presentation.connectivity.LocalConnectivity
 import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.event.EventBus
 import clib.presentation.event.LocalEventBus
+import clib.presentation.event.alert.GlobalAlertDialog
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
+import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocalAppLocale
@@ -61,15 +67,15 @@ import kotlinx.coroutines.MainScope
 @Composable
 public fun AppEnvironment(
     config: Config = Config(),
-    connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
-    onlineText: String = "Online",
-    offlineText: String = "Offline",
-    permissionsState: PermissionsState = rememberPermissionsState(),
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
     localeState: LocaleState = rememberLocaleState(config.localization.locale),
     authState: AuthState = rememberAuthState(),
+    permissionsState: PermissionsState = rememberPermissionsState(),
+    connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
+    onlineText: String = "Online",
+    offlineText: String = "Offline",
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
@@ -159,7 +165,11 @@ public fun AppEnvironment(
                 theme.shapes,
                 theme.typography,
             ) {
-                routes.Nav3Host(routerFactory, navigatorFactory)
+                Box(modifier = Modifier.fillMaxSize()) {
+                    routes.Nav3Host(routerFactory, navigatorFactory)
+                    GlobalAlertDialog()
+                    GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
+                }
             }
         }
     }

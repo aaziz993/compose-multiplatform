@@ -3,5 +3,6 @@
     <string name="connectivity_alert">Предупреждение соединения</string>
     <string name="connectivity_snackbar">Оповещение соединения</string>
     <string name="connectivity_indicator">Индикатор соединения</string>
+    <string name="connectivity_indicator_text">Индикатор соединения текст</string>
     <string name="avatar_connectivity_indicator">Индикатор соединения аватара</string>
 </resources>

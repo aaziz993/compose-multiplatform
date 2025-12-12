@@ -19,6 +19,8 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.SignalCellular0Bar
+import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0Bar
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Button
@@ -48,15 +50,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
 import clib.presentation.auth.AuthComposable
+import clib.presentation.components.Components
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.components.Components
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.back
+import compose_app.generated.resources.clear
+import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.help
 import compose_app.generated.resources.locale
@@ -64,7 +68,6 @@ import compose_app.generated.resources.menu
 import compose_app.generated.resources.navigate
 import compose_app.generated.resources.profile
 import compose_app.generated.resources.search
-import compose_app.generated.resources.clear
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.theme
 import data.location.locale.asStringResource
@@ -91,7 +94,6 @@ import ui.navigation.presentation.Profile
 public fun AppBar(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
-    connectivity: Status = Status.Disconnected,
     components: Components = Components(),
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
@@ -103,6 +105,7 @@ public fun AppBar(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
+    connectivity: Status = Status.Disconnected,
     hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
     onDrawerToggle: () -> Unit = {},
@@ -137,9 +140,16 @@ public fun AppBar(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        title()
+                        if (components.appBar.isTitle) title()
 
                         if (components.connectivity.isConnectivityIndicator)
+                            Icon(
+                                if (connectivity.isConnected) Icons.Default.SignalCellular0Bar
+                                else Icons.Default.SignalCellularConnectedNoInternet0Bar,
+                                stringResource(Res.string.connectivity_indicator_text),
+                            )
+
+                        if (components.connectivity.isConnectivityIndicatorText)
                             connectivity.ConnectivityText(overflow = TextOverflow.Clip, maxLines = 1)
                     }
                 },
@@ -171,7 +181,7 @@ public fun AppBar(
                     }
                 },
                 actions = {
-                    if (components.quickAccess.isSupport)
+                    if (components.appBar.isSupport)
                         AuthComposable(auth = auth) {
                             AppTooltipBox(stringResource(Res.string.help)) {
                                 IconButton(
@@ -187,7 +197,7 @@ public fun AppBar(
                             }
                         }
 
-                    if (components.quickAccess.isTheme)
+                    if (components.appBar.isTheme)
                         AppTooltipBox(stringResource(Res.string.theme)) {
                             IconButton(
                                 onClick = {
@@ -198,7 +208,7 @@ public fun AppBar(
                             }
                         }
 
-                    if (components.quickAccess.isLocale) {
+                    if (components.appBar.isLocale) {
                         var localePickerDialog by remember { mutableStateOf(false) }
 
                         if (localePickerDialog)
@@ -248,7 +258,7 @@ public fun AppBar(
                         }
                     }
 
-                    if (components.quickAccess.isAvatar) {
+                    if (components.appBar.isAvatar) {
                         AuthComposable(auth = auth) { user ->
                             AppTooltipBox(stringResource(Res.string.profile)) {
                                 var expanded by remember { mutableStateOf(false) }

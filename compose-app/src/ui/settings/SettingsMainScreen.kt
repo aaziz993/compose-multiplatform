@@ -54,6 +54,7 @@ import compose_app.generated.resources.clear
 import compose_app.generated.resources.color_scheme
 import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
+import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
@@ -65,10 +66,10 @@ import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permission
-import compose_app.generated.resources.quick_access_to_avatar
-import compose_app.generated.resources.quick_access_to_locales
-import compose_app.generated.resources.quick_access_to_support
-import compose_app.generated.resources.quick_access_to_themes
+import compose_app.generated.resources.app_bar_avatar
+import compose_app.generated.resources.app_bar_locales
+import compose_app.generated.resources.app_bar_support
+import compose_app.generated.resources.app_bar_themes
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.search
@@ -296,6 +297,20 @@ public fun SettingsMainScreen(
         )
 
         SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator_text),
+            value = components.connectivity.isConnectivityIndicatorText,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        connectivity = components.connectivity.copy(isConnectivityIndicatorText = value),
+                    ),
+                )
+            },
+        )
+
+        SettingsSwitch(
             title = stringResource(Res.string.avatar_connectivity_indicator),
             value = components.connectivity.isAvatarConnectivityIndicator,
             trueIcon = connectivityTrueIcon,
@@ -310,56 +325,56 @@ public fun SettingsMainScreen(
         )
 
         SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_support),
-            value = components.quickAccess.isSupport,
+            title = stringResource(Res.string.app_bar_support),
+            value = components.appBar.isSupport,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
-                        quickAccess = components.quickAccess.copy(isSupport = value),
+                        appBar = components.appBar.copy(isSupport = value),
                     ),
                 )
             },
         )
 
         SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_themes),
-            value = components.quickAccess.isTheme,
+            title = stringResource(Res.string.app_bar_themes),
+            value = components.appBar.isTheme,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
-                        quickAccess = components.quickAccess.copy(isTheme = value),
+                        appBar = components.appBar.copy(isTheme = value),
                     ),
                 )
             },
         )
 
         SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_locales),
-            value = components.quickAccess.isLocale,
+            title = stringResource(Res.string.app_bar_locales),
+            value = components.appBar.isLocale,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
-                        quickAccess = components.quickAccess.copy(isLocale = value),
+                        appBar = components.appBar.copy(isLocale = value),
                     ),
                 )
             },
         )
 
         SettingsSwitch(
-            title = stringResource(Res.string.quick_access_to_avatar),
-            value = components.quickAccess.isAvatar,
+            title = stringResource(Res.string.app_bar_avatar),
+            value = components.appBar.isAvatar,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
                 onComponentsChange(
                     components.copy(
-                        quickAccess = components.quickAccess.copy(isAvatar = value),
+                        appBar = components.appBar.copy(isAvatar = value),
                     ),
                 )
             },

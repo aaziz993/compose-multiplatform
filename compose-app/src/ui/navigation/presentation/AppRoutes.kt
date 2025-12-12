@@ -124,7 +124,7 @@ public data object App : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarNavScreenSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -152,7 +152,7 @@ public data object Auth : KoinRoutes(), AuthRoute {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarNavScreenSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -392,7 +392,7 @@ public data object News : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarNavScreenSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -557,7 +557,7 @@ public data object Wallet : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarNavScreenSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -704,7 +704,7 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
 
     @Composable
     override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
-        val isAvatar = LocalComponentsState.current.components.quickAccess.isAvatar
+        val isAvatar = LocalComponentsState.current.components.appBar.isAvatar
         return super.isNavigationItem(auth) && !isAvatar
     }
 }
@@ -804,7 +804,7 @@ public data object Settings : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarNavScreenSceneStrategy().delegate(),
+            AppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_bar_support">Панели замима дастгирӣ</string>
+    <string name="app_bar_themes">Панели замима намоишҳо</string>
+    <string name="app_bar_locales">Панели замима забонҳо</string>
+    <string name="app_bar_avatar">Панели замима аватар</string>
+</resources>
