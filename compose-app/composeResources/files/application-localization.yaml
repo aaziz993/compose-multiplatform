@@ -7,5 +7,7 @@ localization:
   weblates:
     - enable: true
       baseUrl:  https://hosted.weblate.org/api/
-      projectName: Weblate
+      projectName: arandr
+      components:
+        - translations
       apiKey: wlu_1HJuwshoOcebcB2KMN10U8Yl7n4HgPkyO5q6

@@ -9,6 +9,8 @@ import io.ktor.http.Url
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.location.locale.Locale
 import klib.data.location.locale.LocaleService
+import klib.data.location.locale.weblate.model.WeblateTranslationsResponse
+import klib.data.location.locale.weblate.model.WeblateUnitsResponse
 import klib.data.net.http.client.HTTP_CLIENT_JSON
 import klib.data.net.http.client.createHttpClient
 import klib.data.net.http.client.ktorfit
@@ -18,6 +20,7 @@ public class WeblateApiService(
     baseUrl: String,
     apiKey: String,
     private val project: String,
+    private val components: Set<String>,
     httpClient: HttpClient = createHttpClient {
         install(ContentNegotiation) {
             json(HTTP_CLIENT_JSON)
@@ -32,22 +35,29 @@ public class WeblateApiService(
     }.ktorfit { baseUrl(baseUrl) }.createWeblateApi()
 
     override suspend fun getLocales(): List<Locale> =
-        api.getAllTranslations().toList().flatMap { response ->
-            response.results.filter { translation -> translation.component.project.name == project }
+        components.flatMap { component ->
+            api.getAllTranslations(
+                project,
+                component,
+            ).toList().flatMap(WeblateTranslationsResponse::results)
         }.mapNotNull { translation ->
             (translation.language.aliases + translation.language.code)
                 .sortedByDescending(String::length)
                 .firstNotNullOfOrNull(Locale::forLanguageTagOrNull)
-        }
+        }.toList()
 
     override suspend fun getTranslations(locale: Locale): Map<String, List<String>> {
-        val languageTag = locale.toString()
+        val languageTag = locale.toString().replace("-", "_")
 
-        return api.getAllUnits().toList().flatMap { response ->
-            response.results.mapNotNull { unit ->
-                val segments = Url(unit.translation).segments
-                if (segments[2] == project && segments[3] == languageTag) unit.context to unit.target else null
-            }
+        return components.flatMap { component ->
+            api.getAllUnits(
+                project,
+                component,
+                languageTag,
+            ).toList().flatMap(WeblateUnitsResponse::results)
+        }.mapNotNull { unit ->
+            val segments = Url(unit.translation).segments
+            if (segments[2] == project && segments[4] == languageTag) unit.context to unit.target else null
         }.toMap()
     }
 }
