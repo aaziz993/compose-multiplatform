@@ -49,7 +49,7 @@ public fun VerificationScreen(
     onAction: (VerificationAction) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -106,7 +106,7 @@ public fun VerificationScreen(
 
         Button(
             onClick = {
-                onNavigationAction(NavigationAction.Push(Services))
+                onNavigationActions(arrayOf(NavigationAction.Push(Services)))
             },
         ) {
             Text(text = stringResource(Res.string.confirm))

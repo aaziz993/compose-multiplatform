@@ -69,7 +69,7 @@ public fun ProfileScreen(
     components: Components = Components(),
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
     verticalArrangement = Arrangement.Center,
@@ -197,7 +197,7 @@ public fun ProfileScreen(
         if (auth.user?.roles?.contains("Verified") == false)
             Button(
                 onClick = {
-                    onNavigationAction(NavigationAction.Push(Verification))
+                    onNavigationActions(arrayOf(NavigationAction.Push(Verification)))
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {

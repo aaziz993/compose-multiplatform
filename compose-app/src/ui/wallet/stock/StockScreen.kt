@@ -10,7 +10,7 @@ import ui.navigation.presentation.Stock
 public fun StockScreen(
     modifier: Modifier = Modifier,
     route: Stock = Stock,
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
 }
 

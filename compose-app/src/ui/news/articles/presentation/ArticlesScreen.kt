@@ -44,7 +44,7 @@ public fun ArticlesScreen(
     route: Articles = Articles,
     state: LoadingResult<List<Article>> = loading(),
     onAction: (ArticlesAction) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = when (val result = state.toSuccess()) {
     is LoadingResult.Loading -> CenterLoadingIndicator()
 

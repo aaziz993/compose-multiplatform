@@ -43,7 +43,7 @@ public fun HotpScreen(
     config: OtpConfig = TotpConfig.DEFAULT,
     state: HotpState = HotpState(),
     onAction: (HotpAction) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     val otpValue = remember(state.code) { mutableStateOf(state.code) }
 

@@ -48,7 +48,7 @@ public fun TotpScreen(
     config: OtpConfig = TotpConfig.DEFAULT,
     state: TotpState = TotpState(),
     onAction: (TotpAction) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     val otpValue = remember(state.code) { mutableStateOf(state.code) }
 

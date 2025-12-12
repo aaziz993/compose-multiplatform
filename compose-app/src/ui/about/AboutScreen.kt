@@ -10,7 +10,7 @@ import ui.navigation.presentation.About
 public fun AboutScreen(
     modifier: Modifier = Modifier,
     route: About = About,
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
 }
 

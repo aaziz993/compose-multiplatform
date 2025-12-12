@@ -44,7 +44,7 @@ public fun NavScreen(
     layoutType: NavigationSuiteType =
         NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo(true)),
     navigationSuiteScaffoldState: NavigationSuiteScaffoldState = rememberNavigationSuiteScaffoldState(),
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
     navigationSuiteItems: NavigationSuiteScope.() -> Unit = {},
     content: @Composable () -> Unit = {},
 ): Unit = AppBar(
@@ -72,7 +72,7 @@ public fun NavScreen(
         state = navigationSuiteScaffoldState,
         content = content,
     )
-    
+
     GlobalAlertDialog()
     GlobalSnackbar()
 }

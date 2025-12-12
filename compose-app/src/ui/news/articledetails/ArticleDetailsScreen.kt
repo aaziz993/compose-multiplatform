@@ -60,7 +60,7 @@ public fun ArticleDetailsScreen(
     route: ArticleDetails = ArticleDetails(),
     state: LoadingResult<Article> = loading(),
     onAction: (ArticleDetailsAction) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     LaunchedEffect(Unit) {
         onAction(ArticleDetailsAction.Fetch(route.articleId))
@@ -73,7 +73,7 @@ public fun ArticleDetailsScreen(
             modifier,
             result.value,
             {
-                onNavigationAction(NavigationAction.Pop)
+                onNavigationActions(arrayOf(NavigationAction.Pop))
             },
             { url ->
                 onAction(ArticleDetailsAction.Share(url))

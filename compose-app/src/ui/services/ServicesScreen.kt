@@ -26,7 +26,7 @@ import ui.navigation.presentation.Services
 public fun ServicesScreen(
     modifier: Modifier = Modifier,
     route: Services = Services,
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     Row {
         Icon(Icons.Default.Amazon, "Amazon")

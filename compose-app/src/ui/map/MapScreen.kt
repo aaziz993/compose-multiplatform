@@ -26,7 +26,7 @@ import ui.navigation.presentation.Map
 public fun MapScreen(
     modifier: Modifier = Modifier,
     route: Map = Map,
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     val center = LocationImpl(2.3522, 48.8566)
     val markers = listOf(

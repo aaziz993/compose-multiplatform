@@ -48,7 +48,7 @@ public fun PhoneScreen(
     state: PhoneState = PhoneState(),
     onAction: (PhoneAction) -> Unit = {},
     country: Country = Country.getCountries().first(),
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     Column(
         modifier = modifier,

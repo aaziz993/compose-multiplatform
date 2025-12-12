@@ -36,7 +36,7 @@ public fun PinCodeScreen(
     route: PinCode = PinCode,
     state: PinCodeState = PinCodeState(),
     onAction: (PinCodeAction) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
     val pinCode = remember(state.pinCode) { mutableStateOf(state.pinCode) }
 

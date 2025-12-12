@@ -10,7 +10,7 @@ import ui.navigation.presentation.ForgotPinCode
 public fun ForgotPinCodeScreen(
     modifier: Modifier = Modifier,
     route: ForgotPinCode = ForgotPinCode,
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
 }
 

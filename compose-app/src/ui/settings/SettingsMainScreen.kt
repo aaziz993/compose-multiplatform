@@ -115,7 +115,7 @@ public fun SettingsMainScreen(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
     verticalArrangement = Arrangement.Center,
@@ -161,7 +161,7 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.Palette,
         ) {
-            onNavigationAction(NavigationAction.Push(SettingsColorScheme))
+            onNavigationActions(arrayOf(NavigationAction.Push(SettingsColorScheme)))
         }
 
         SettingsMenuLink(
@@ -169,7 +169,7 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.DynamicForm,
         ) {
-            onNavigationAction(NavigationAction.Push(SettingsDynamicColorScheme))
+            onNavigationActions(arrayOf(NavigationAction.Push(SettingsDynamicColorScheme)))
         }
 
         SettingsSwitch(
@@ -186,7 +186,7 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.FormatShapes,
         ) {
-            onNavigationAction(NavigationAction.Push(SettingsShapes))
+            onNavigationActions(arrayOf(NavigationAction.Push(SettingsShapes)))
         }
 
         SettingsMenuLink(
@@ -194,7 +194,7 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.TextFormat,
         ) {
-            onNavigationAction(NavigationAction.Push(SettingsTypography))
+            onNavigationActions(arrayOf(NavigationAction.Push(SettingsTypography)))
         }
 
         SettingsSliderFinished(

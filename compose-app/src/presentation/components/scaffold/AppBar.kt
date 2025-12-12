@@ -109,7 +109,7 @@ public fun AppBar(
     isDrawerOpen: Boolean = true,
     onDrawerToggle: () -> Unit = {},
     hasBack: Boolean = true,
-    onNavigationAction: (NavigationAction) -> Unit = {},
+    onNavigationActions: (Array<NavigationAction>) -> Unit = {},
     content: @Composable (innerPadding: PaddingValues) -> Unit = {},
 ) {
     val hazeState = rememberHazeState(blurEnabled = blurEnabled)
@@ -166,7 +166,7 @@ public fun AppBar(
                         if (hasBack)
                             AppTooltipBox(stringResource(Res.string.back)) {
                                 IconButton(
-                                    onClick = { onNavigationAction(NavigationAction.Pop) },
+                                    onClick = { onNavigationActions(arrayOf(NavigationAction.Pop)) },
                                 ) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Default.NavigateBefore,
@@ -268,7 +268,7 @@ public fun AppBar(
                                             .combinedClickable(
                                                 onLongClick = { expanded = true },
                                             ) {
-                                                onNavigationAction(NavigationAction.Push(Profile))
+                                                onNavigationActions(arrayOf(NavigationAction.Push(Profile)))
                                             },
                                     )
                                     if (components.connectivity.isAvatarConnectivityIndicator)
@@ -288,7 +288,7 @@ public fun AppBar(
                                             Text(text = stringResource(Res.string.navigate), color = MaterialTheme.colorScheme.onSurface)
                                         },
                                         onClick = {
-                                            onNavigationAction(NavigationAction.Push(Profile))
+                                            onNavigationActions(arrayOf(NavigationAction.Push(Profile)))
                                             expanded = false
                                         },
                                         leadingIcon = {
