@@ -4,9 +4,10 @@ import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.SignalCellular0Bar
+import androidx.compose.material.icons.filled.SignalCellular4Bar
 import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0Bar
 import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet4Bar
-import androidx.compose.material.icons.outlined.SignalCellular0Bar
+import androidx.compose.material.icons.outlined.SignalCellular4Bar
 import androidx.compose.material.icons.outlined.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -82,14 +83,13 @@ public fun Status.Text(
 @Suppress("ComposeUnstableReceiver")
 @Composable
 public fun Status.filledImageVector(): ImageVector =
-    if (isConnected) Icons.Filled.SignalCellular0Bar
+    if (isConnected) Icons.Filled.SignalCellular4Bar
     else Icons.Filled.SignalCellularConnectedNoInternet4Bar
-
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
 public fun Status.outlinedImageVector(): ImageVector =
-    if (isConnected) Icons.Outlined.SignalCellular0Bar
+    if (isConnected) Icons.Outlined.SignalCellular4Bar
     else Icons.Outlined.SignalCellularConnectedNoInternet4Bar
 
 @Suppress("ComposeUnstableReceiver", "ComposeModifierMissing")

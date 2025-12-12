@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_main">Танзими асосӣ</string>
-    <string name="settings_color_scheme">Танзими рангхо</string>
-    <string name="settings_dynamic_color_scheme">Танзими рангҳои таҳаррук</string>
-    <string name="settings_shapes">Танзими шакл</string>
-    <string name="settings_typography">Танзими матбаа</string>
+    <string name="settings_main">Ҷуръи асосӣ</string>
+    <string name="settings_color_scheme">Ҷуръи рангҳо</string>
+    <string name="settings_dynamic_color_scheme">Ҷуръи рангҳои таҳаррук</string>
+    <string name="settings_shapes">Ҷуръи шакл</string>
+    <string name="settings_typography">Ҷуръи матбаа</string>
 </resources>
