@@ -511,7 +511,6 @@ public data object Services : KoinRoute<Services>(), NavRoute {
             ),
         )
     }
-
     @Composable
     override fun Content(
         route: Services,
