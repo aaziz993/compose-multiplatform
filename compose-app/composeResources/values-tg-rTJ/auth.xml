@@ -11,8 +11,8 @@
     <string name="reset_password">Барқарори рамзи убур</string>
     <string name="new_password">Рамзи убури нав</string>
     <string name="remember_sign_in">Сабти вуруд</string>
-    <string name="hotp">Рамзи яквақтаи хэш</string>
-    <string name="totp">Рамзи яквақтаи муваққатӣ</string>
+    <string name="hotp">Рамзи яккаратаи хэш</string>
+    <string name="totp">Рамзи яккаратаи муваққатӣ</string>
     <string name="code_sent_to">Рамз ирсол шуд ба %1$s</string>
     <string name="send_code">Ирсоли рамз %1$s</string>
     <string name="pin_code">Рамзи PIN</string>
