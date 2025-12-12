@@ -98,7 +98,7 @@ public fun CountryPickerBottomSheet(
                             countryTextStyle = textStyle,
                             itemPadding = itemPadding,
                             showCountryIso = picker.showCountryIso,
-                            showCountryDial = picker.showCountryCode,
+                            showCountryDial = picker.showCountryDial,
                             showCountryFlag = picker.showFlag,
                         )
                     }

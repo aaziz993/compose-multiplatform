@@ -239,6 +239,7 @@ public fun SettingsMainScreen(
                 headerTitle = stringResource(Res.string.locale),
                 searchHint = stringResource(Res.string.search),
                 clear = stringResource(Res.string.clear),
+                showCountryDial = false,
             ),
         ) { value ->
             onLocaleChange(value)

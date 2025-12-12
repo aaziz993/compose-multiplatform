@@ -2,7 +2,7 @@
 <resources>
     <string name="connectivity_alert">Огоҳиномаи алоқа</string>
     <string name="connectivity_snackbar">Паемаки алоқа</string>
-    <string name="connectivity_indicator">Нишондиҳанда алоқа</string>
-    <string name="connectivity_indicator_text">Нишондиҳанда алоқа текст</string>
-    <string name="avatar_connectivity_indicator">Нишондиҳандаи алокаи аватар</string>
+    <string name="connectivity_indicator">Нишондиҳандаи алоқа</string>
+    <string name="connectivity_indicator_text">Нишондиҳандаи алоқа матн</string>
+    <string name="avatar_connectivity_indicator">Нишондиҳандаи алока аватар</string>
 </resources>

@@ -144,7 +144,7 @@ public fun AppBar(
                         Row(modifier = Modifier.wrapContentSize()) {
                             if (components.connectivity.isConnectivityIndicatorText)
                                 connectivity.Text(overflow = TextOverflow.Clip, maxLines = 1)
-                            
+
                             if (components.connectivity.isConnectivityIndicator) connectivity.DefaultIcon()
                         }
                     }
@@ -224,6 +224,7 @@ public fun AppBar(
                                     headerTitle = stringResource(Res.string.locale),
                                     searchHint = stringResource(Res.string.search),
                                     clear = stringResource(Res.string.clear),
+                                    showCountryDial = false,
                                 ),
                             )
 
