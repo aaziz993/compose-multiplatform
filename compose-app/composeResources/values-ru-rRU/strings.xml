@@ -67,6 +67,7 @@
     <string name="spring_spec">Спецификация пружины</string>
     <string name="stiffness">Жесткость</string>
     <string name="true">Правдиво</string>
+    <string name="title">Заглавие</string>
     <string name="time">Время</string>
     <string name="time_format">Формат времени</string>
     <string name="tween_spec">Спецификация анимации перехода</string>

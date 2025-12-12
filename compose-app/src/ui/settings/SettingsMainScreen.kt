@@ -45,6 +45,7 @@ import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.app_bar_locales
+import compose_app.generated.resources.title
 import compose_app.generated.resources.app_bar_support
 import compose_app.generated.resources.app_bar_themes
 import compose_app.generated.resources.appearance
@@ -312,6 +313,20 @@ public fun SettingsMainScreen(
                 onComponentsChange(
                     components.copy(
                         connectivity = components.connectivity.copy(isAvatarConnectivityIndicator = value),
+                    ),
+                )
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.title),
+            value = components.appBar.isTitle,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
+            onCheckedChange = { value ->
+                onComponentsChange(
+                    components.copy(
+                        appBar = components.appBar.copy(isTitle = value),
                     ),
                 )
             },

@@ -68,6 +68,7 @@
     <string name="spring_spec">Spring specification</string>
     <string name="stiffness">Stiffness</string>
     <string name="true">True</string>
+    <string name="title">Title</string>
     <string name="time">Time</string>
     <string name="time_format">Time format</string>
     <string name="tween_spec">Tween specification</string>

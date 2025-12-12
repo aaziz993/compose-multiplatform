@@ -142,10 +142,10 @@ public fun AppBar(
                         if (components.appBar.isTitle) title()
 
                         Row(modifier = Modifier.wrapContentSize()) {
-                            if (components.connectivity.isConnectivityIndicator) connectivity.DefaultIcon()
-
                             if (components.connectivity.isConnectivityIndicatorText)
                                 connectivity.Text(overflow = TextOverflow.Clip, maxLines = 1)
+                            
+                            if (components.connectivity.isConnectivityIndicator) connectivity.DefaultIcon()
                         }
                     }
                 },
