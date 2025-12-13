@@ -38,6 +38,7 @@ public class AppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
             AppBar(
                 modifier = Modifier.fillMaxSize(),
                 title = { Text(text = currentRoute.route.name.asStringResource(), overflow = TextOverflow.Clip, maxLines = 1) },
+                connectivity = connectivity,
                 components = componentsState.components,
                 theme = themeState.theme,
                 onThemeChange = { value -> themeState.theme = value },
@@ -46,7 +47,6 @@ public class AppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 onLocaleChange = { value -> localeState.locale = value },
                 auth = authState.auth,
                 onAuthChange = { value -> authState.auth = value },
-                connectivity = connectivity,
                 hasBack = router.hasBack,
                 hasDrawer = false,
                 isDrawerOpen = false,
