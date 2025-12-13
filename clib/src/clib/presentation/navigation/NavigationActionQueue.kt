@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
  */
 public class NavigationActionQueue : NavigatorHolder {
 
-    /** Currently registered navigator, null if none is set. */
-    internal var registeredNavigator: Navigator? by mutableStateOf(null)
+    /** Currently attached navigator, null if none is set. */
+    internal var attachedNavigator: Navigator? by mutableStateOf(null)
         private set
 
     /** Queue of pending actions waiting for a navigator to become available. */
@@ -37,7 +37,7 @@ public class NavigationActionQueue : NavigatorHolder {
      * @param navigator The navigator to register
      */
     override fun setNavigator(navigator: Navigator) {
-        registeredNavigator = navigator
+        attachedNavigator = navigator
         if (pendingActions.isNotEmpty()) {
             val snapshot = pendingActions.toList()
             pendingActions.clear()
@@ -51,7 +51,7 @@ public class NavigationActionQueue : NavigatorHolder {
      * After calling this, new actions will be queued until a new navigator is set.
      */
     override fun removeNavigator(navigator: Navigator) {
-        registeredNavigator = null
+        attachedNavigator = null
     }
 
     /**
@@ -64,7 +64,7 @@ public class NavigationActionQueue : NavigatorHolder {
      */
     public fun actions(vararg actions: NavigationAction) {
         mainScope.launch {
-            registeredNavigator?.actions(*actions) ?: pendingActions.add(actions)
+            attachedNavigator?.actions(*actions) ?: pendingActions.add(actions)
         }
     }
 }

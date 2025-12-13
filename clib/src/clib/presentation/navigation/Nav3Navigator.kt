@@ -11,8 +11,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 
-private const val TAG_LOG: String = "Navigator"
-
 /**
  * Navigator implementation that integrates with Navigation 3.
  *
@@ -33,6 +31,7 @@ public open class Nav3Navigator(
     private val auth: Auth,
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
+    private val onUnknownRoute: (NavRoute) -> Unit,
     private val onBack: () -> Unit,
 ) : Navigator {
 
@@ -60,13 +59,14 @@ public open class Nav3Navigator(
 
         for (action in actions) {
             try {
-                action(
-                    snapshot,
-                    action,
-                ) { callOnBack = true }
+                if (!action(
+                        snapshot,
+                        action,
+                    ) { callOnBack = true }
+                ) return
             }
             catch (e: RuntimeException) {
-                return nav3Logger.error(e, TAG_LOG) { "Navigation failed '$action'" }
+                return nav3Logger.error(e, Nav3Navigator::class.simpleName!!) { "Navigation failed '$action'" }
             }
         }
 
@@ -89,9 +89,9 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction,
         onBackRequested: () -> Unit,
-    ) {
+    ): Boolean {
         when (action) {
-            is NavigationAction.Push -> push(snapshot, action)
+            is NavigationAction.Push -> return push(snapshot, action)
             is NavigationAction.ReplaceCurrent -> replaceCurrent(snapshot, action)
             is NavigationAction.ReplaceStack -> replaceStack(snapshot, action)
             is NavigationAction.PopTo -> popTo(snapshot, action)
@@ -102,6 +102,8 @@ public open class Nav3Navigator(
                 onBackRequested()
             }
         }
+
+        return true
     }
 
     /**
@@ -113,7 +115,7 @@ public open class Nav3Navigator(
     protected open fun push(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.Push,
-    ) {
+    ): Boolean {
         val route = if (action.route.route.isAuth(auth)) action.route
         else {
             check(auth.user == null) { "Insufficient user privileges '${auth.user}'" }
@@ -122,7 +124,10 @@ public open class Nav3Navigator(
             checkNotNull(authRoute) { "No auth route" }
         }
 
-        check(route.route in routes.routes) { "Route '${route.route}' isn't in '$routes${routes.routes}'" }
+        if (route.route !in routes.routes) {
+            onUnknownRoute(route)
+            return false
+        }
 
         // If the user explicitly requested the auth route, don't redirect them after login.
         if (action.route == authRoute) authRedirectRoute = null
@@ -130,6 +135,8 @@ public open class Nav3Navigator(
         if (!action.duplicate) popTo(snapshot, NavigationAction.PopTo(action.route))
 
         snapshot.addOrReplace(route)
+
+        return true
     }
 
     /**
@@ -312,13 +319,14 @@ public fun rememberNav3Navigator(
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
+    onUnknownRoute: (NavRoute) -> Unit = {},
     onBack: () -> Unit = systemOnBack(),
 ): Navigator {
     val backStack = rememberNavBackStack(routes)
     val parentOnBack = LocalRouter.current?.let { it::pop }
 
     LaunchedEffect(backStack.toList()) {
-        nav3Logger.debug(TAG_LOG) { "Back stack: ${backStack.joinToString(" -> ")}" }
+        nav3Logger.debug(Nav3Navigator::class.simpleName!!) { "Back stack: ${backStack.joinToString(" -> ")}" }
     }
 
     return remember(auth) {
@@ -328,6 +336,7 @@ public fun rememberNav3Navigator(
             auth,
             authRoute,
             authRedirectRoute,
+            onUnknownRoute,
             parentOnBack ?: onBack,
         )
     }

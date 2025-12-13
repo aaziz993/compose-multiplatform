@@ -13,10 +13,10 @@ import org.jetbrains.compose.resources.plural.cldrPluralRuleLists
 
 internal class PluralRuleList(val rules: Array<PluralRule>) {
 
-    fun getCategoryIndex(quantity: Int): Int = rules.indexOfFirst { rule -> rule.appliesTo(quantity) }
-
     fun getCategory(quantity: Int): PluralCategory =
         rules.firstOrNull { rule -> rule.appliesTo(quantity) }?.category ?: PluralCategory.OTHER
+
+    fun getCategoryIndex(quantity: Int): Int = rules.indexOfFirst { rule -> rule.appliesTo(quantity) }
 
     companion object {
 

@@ -115,12 +115,11 @@ private suspend fun loadPluralString(
         environment.language,
         environment.region,
     )
-    val pluralCategoryIndex = pluralRuleList.getCategory(quantity)
-
-    localization.getStringOrNull(resource.key, pluralCategoryIndex)
-
     val pluralCategory = pluralRuleList.getCategory(quantity)
-    val str = item.items[pluralCategory]
+    val pluralCategoryIndex = pluralRuleList.getCategoryIndex(quantity)
+
+    val str = localization.getStringOrNull(resource.key, pluralCategoryIndex)
+        ?: item.items[pluralCategory]
         ?: item.items[PluralCategory.OTHER]
         ?: error("Quantity string ID=`${resource.key}` does not have the pluralization $pluralCategory for quantity $quantity!")
     return str
