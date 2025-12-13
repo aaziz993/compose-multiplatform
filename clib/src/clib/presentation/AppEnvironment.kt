@@ -93,7 +93,7 @@ public fun AppEnvironment(
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configureKmLogging()
 
-    val translations by rememberLocalization(localeState, localeService)
+    val localization by rememberLocalization(localeState, localeService)
 
     CompositionLocalProvider(
         LocalConfig provides config,
@@ -105,7 +105,7 @@ public fun AppEnvironment(
         LocalDensityState provides densityState,
         LocalDensity provides densityState.density,
         LocalLocaleState provides localeState,
-        LocalLocalization provides translations,
+        LocalLocalization provides localization,
         LocalAppLocale provides localeState.locale,
         LocalAuthState provides authState,
         LocalStateStore provides stateStore,

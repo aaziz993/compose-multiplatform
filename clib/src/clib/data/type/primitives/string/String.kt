@@ -27,7 +27,6 @@ import org.jetbrains.compose.resources.getStringArray
 import org.jetbrains.compose.resources.getStringItem
 import org.jetbrains.compose.resources.getSystemResourceEnvironment
 import org.jetbrains.compose.resources.plural.PluralCategory
-import org.jetbrains.compose.resources.plural.PluralRuleList
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.rememberResourceState
 import org.jetbrains.compose.resources.stringArrayResource
@@ -216,17 +215,11 @@ private suspend fun loadPluralString(
 ): String {
     val resourceItem = resource.getResourceItemByEnvironment(environment)
     val item = getStringItem(resourceItem, resourceReader) as StringItem.Plurals
-    val pluralCategory = when {
-        environment.language.language == "tg" -> PluralCategory.OTHER
-
-        else -> {
-            val pluralRuleList = PluralRuleList.getInstance(
-                environment.language,
-                environment.region,
-            )
-            pluralRuleList.getCategory(quantity)
-        }
-    }
+    val pluralRuleList = PluralRuleList.getInstance(
+        environment.language,
+        environment.region,
+    )
+    val pluralCategory = pluralRuleList.getCategory(quantity)
     val str = item.items[pluralCategory]
         ?: item.items[PluralCategory.OTHER]
         ?: error("Quantity string ID=`${resource.key}` does not have the pluralization $pluralCategory for quantity $quantity!")
