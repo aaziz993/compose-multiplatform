@@ -78,8 +78,9 @@ public suspend fun getAnnotatedString(
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
 ): AnnotatedString =
-    ((if (localization.locale == Locale.current) localization.getStringOrNull(resource.key)?.replaceWithArgs(*formatArgs) else null)
-        ?: getString(resource, *formatArgs)).toHtmlString(
+    ((if (localization.locale == Locale.current) localization.getStringOrNull(resource.key)
+        ?.replaceWithArgs(*formatArgs)
+    else null) ?: getString(resource, *formatArgs)).toHtmlString(
         compactMode,
         style,
         linkInteractionListener,
