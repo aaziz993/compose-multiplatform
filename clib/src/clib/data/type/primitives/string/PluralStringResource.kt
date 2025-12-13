@@ -115,8 +115,8 @@ private suspend fun loadPluralString(
         environment.language,
         environment.region,
     )
-    val pluralCategory = pluralRuleList.getCategory(quantity)
-    val pluralCategoryIndex = pluralRuleList.getCategoryIndex(quantity)
+    val pluralCategory: PluralCategory = pluralRuleList.getCategory(quantity)
+    val pluralCategoryIndex: Int = pluralRuleList.getCategoryIndex(quantity)
 
     val str = localization.getStringOrNull(resource.key, pluralCategoryIndex)
         ?: item.items[pluralCategory]

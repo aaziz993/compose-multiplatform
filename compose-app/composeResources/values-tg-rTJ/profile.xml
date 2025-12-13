@@ -13,6 +13,6 @@
     <string name="unverified">Тасдиқнашуда</string>
     <string name="unverified_description">Аккаунти шумо тасдиқ нашудааст.</string>
     <string name="verification">Тасдиқкуни</string>
-    <string name="upload_id">Ирсоли ID</string>
+    <string name="upload_id">Ирсоли шаҳодатнома</string>
     <string name="verify">Тасдиқ</string>
 </resources>
