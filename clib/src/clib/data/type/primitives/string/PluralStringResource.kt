@@ -12,6 +12,7 @@ import clib.presentation.locale.LocalLocalization
 import klib.data.location.locale.Locale
 import klib.data.location.locale.Localization
 import klib.data.location.locale.current
+import org.jetbrains.compose.resources.DefaultResourceReader
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.LocalResourceReader
 import org.jetbrains.compose.resources.PluralStringResource
@@ -19,14 +20,12 @@ import org.jetbrains.compose.resources.ResourceEnvironment
 import org.jetbrains.compose.resources.ResourceReader
 import org.jetbrains.compose.resources.StringItem
 import org.jetbrains.compose.resources.currentOrPreview
-import org.jetbrains.compose.resources.getPluralString
 import org.jetbrains.compose.resources.getResourceItemByEnvironment
 import org.jetbrains.compose.resources.getStringItem
 import org.jetbrains.compose.resources.getSystemResourceEnvironment
 import org.jetbrains.compose.resources.plural.PluralCategory
 import org.jetbrains.compose.resources.rememberResourceState
 import org.jetbrains.compose.resources.replaceWithArgs
-import org.jetbrains.compose.resources.DefaultResourceReader
 
 @Composable
 public fun pluralStringResource(resource: PluralStringResource, quantity: Int): String {
