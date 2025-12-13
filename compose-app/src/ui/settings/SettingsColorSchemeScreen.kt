@@ -56,7 +56,7 @@ import compose_app.generated.resources.tertiary
 import compose_app.generated.resources.tertiary_container
 import compose_app.generated.resources.tertiary_fixed
 import compose_app.generated.resources.tertiary_fixed_dim
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import ui.navigation.presentation.SettingsColorScheme
 

@@ -28,7 +28,7 @@ import compose_app.generated.resources.hotp
 import compose_app.generated.resources.send_code
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.textfield.otp.AppOtpInputField
 import ui.auth.hotp.viewmodel.HotpAction
 import ui.auth.hotp.viewmodel.HotpState

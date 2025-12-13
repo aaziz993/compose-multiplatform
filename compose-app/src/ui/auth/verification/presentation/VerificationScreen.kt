@@ -34,7 +34,7 @@ import compose_app.generated.resources.select
 import compose_app.generated.resources.upload_id
 import klib.data.auth.model.Auth
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.tooltipbox.AppTooltipBox
 import ui.auth.verification.presentation.viewmodel.VerificationAction
 import ui.auth.verification.presentation.viewmodel.VerificationState

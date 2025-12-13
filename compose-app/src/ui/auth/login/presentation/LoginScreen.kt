@@ -26,7 +26,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
 import compose_app.generated.resources.pin_code
 import compose_app.generated.resources.reset_password
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.TextUnit
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.`false`
 import compose_app.generated.resources.`true`
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 
 @Composable
 public fun Boolean.asStringResource(): String =

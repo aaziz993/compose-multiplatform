@@ -6,7 +6,7 @@ import klib.data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import kotlin.time.Duration
 import org.jetbrains.compose.resources.PluralStringResource
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 
 /**
  * Returns the duration difference, in human-readable format.

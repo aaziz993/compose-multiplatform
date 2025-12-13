@@ -15,7 +15,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.cancel
 import compose_app.generated.resources.confirm
 import compose_app.generated.resources.sign_out
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 
 @Suppress("ComposeModifierMissing")
 @Composable

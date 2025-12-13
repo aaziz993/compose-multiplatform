@@ -55,7 +55,7 @@ import klib.data.auth.model.Auth
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import klib.data.type.primitives.string.ifNotEmpty
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.dialog.SignOutConfirmDialog
 import presentation.connectivity.CircleIcon
 import ui.navigation.presentation.Profile

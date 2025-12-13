@@ -51,7 +51,7 @@ import compose_app.generated.resources.stiffness
 import compose_app.generated.resources.tertiary
 import compose_app.generated.resources.visibility_threshold
 import klib.data.type.cast
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSlider

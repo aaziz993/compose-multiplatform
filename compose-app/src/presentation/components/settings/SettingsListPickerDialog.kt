@@ -21,7 +21,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.clear
 import compose_app.generated.resources.search
 import data.type.primitives.string.asStringResource
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 
 @Suppress("ComposeParameterOrder")
 @Composable

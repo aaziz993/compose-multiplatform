@@ -27,7 +27,7 @@ import compose_app.generated.resources.medium
 import compose_app.generated.resources.small
 import compose_app.generated.resources.top_end
 import compose_app.generated.resources.top_start
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.settings.SettingsSliderFinished
 import ui.navigation.presentation.SettingsShapes
 

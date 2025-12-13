@@ -41,7 +41,7 @@ import compose_app.generated.resources.rgba
 import compose_app.generated.resources.right
 import compose_app.generated.resources.saturation
 import compose_app.generated.resources.select
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 
 @Composable
 public fun SettingsColorPickerBottomSheet(

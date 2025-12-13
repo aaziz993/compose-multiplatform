@@ -34,7 +34,7 @@ import data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import kotlin.time.Duration
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.textfield.otp.AppOtpInputField
 import ui.auth.hotp.testOtpCode
 import ui.auth.totp.viewmodel.TotpAction

@@ -23,7 +23,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.confirm
 import compose_app.generated.resources.pin_code
 import compose_app.generated.resources.repeat_pin_code
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import presentation.components.textfield.otp.AppOtpInputField
 import ui.auth.pincode.viewmodel.PinCodeAction

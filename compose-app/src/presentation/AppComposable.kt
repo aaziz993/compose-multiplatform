@@ -36,7 +36,7 @@ import dev.jordond.connectivity.Connectivity
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.location.locale.LocaleService
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services

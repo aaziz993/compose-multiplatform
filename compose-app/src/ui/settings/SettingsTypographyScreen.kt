@@ -79,7 +79,7 @@ import compose_app.generated.resources.letter_spacing
 import compose_app.generated.resources.line_height
 import klib.data.type.serialization.coders.tree.deserialize
 import kotlin.math.roundToInt
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSliderFinished
 import ui.navigation.presentation.SettingsTypography

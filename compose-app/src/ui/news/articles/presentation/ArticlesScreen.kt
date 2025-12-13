@@ -33,7 +33,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import ui.navigation.presentation.Articles
 import ui.news.data.model.Article
 import ui.news.articles.presentation.viewmodel.ArticlesAction

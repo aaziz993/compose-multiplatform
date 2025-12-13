@@ -49,7 +49,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import presentation.components.tooltipbox.AppTooltipBox
 import ui.navigation.presentation.ArticleDetails
 import ui.news.articledetails.viewmodel.ArticleDetailsAction

@@ -32,7 +32,7 @@ import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
 import dev.jordond.connectivity.Connectivity.Status
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 
 @Suppress("ComposeUnstableReceiver")
 @Composable

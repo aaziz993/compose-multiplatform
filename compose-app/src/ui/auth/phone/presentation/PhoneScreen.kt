@@ -36,7 +36,7 @@ import data.type.primitives.string.asStringResource
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import klib.data.type.primitives.string.DIGIT_PATTERN
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import ui.auth.phone.presentation.viewmodel.PhoneAction
 import ui.auth.phone.presentation.viewmodel.PhoneState
 import ui.navigation.presentation.Phone

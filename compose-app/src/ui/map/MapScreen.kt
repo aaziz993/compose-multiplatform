@@ -13,7 +13,7 @@ import compose_app.generated.resources.open_street_map
 import compose_app.generated.resources.select
 import compose_app.generated.resources.virtual_earth_map
 import klib.data.location.LocationImpl
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.components.map.model.Camera
 import clib.presentation.components.map.model.GestureOptions

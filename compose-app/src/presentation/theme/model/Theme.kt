@@ -12,7 +12,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.dark_theme
 import compose_app.generated.resources.light_theme
 import compose_app.generated.resources.system_theme
-import org.jetbrains.compose.resources.stringResource
+import clib.data.type.primitives.string.stringResource
 
 @Composable
 public fun Theme.isDarkStringResource(): String = when (isDark) {
