@@ -21,6 +21,8 @@ import androidx.compose.ui.platform.LocalDensity
 import clib.data.permission.LocalPermissionsState
 import clib.data.permission.PermissionsState
 import clib.data.permission.rememberPermissionsState
+import clib.data.share.LocalShare
+import clib.data.share.rememberShare
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
@@ -73,6 +75,7 @@ import klib.data.cache.emptyCache
 import klib.data.cache.emptyCoroutineCache
 import klib.data.location.locale.LocaleService
 import klib.data.net.createConnectivity
+import klib.data.share.Share
 import kotlinx.coroutines.MainScope
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -82,6 +85,8 @@ public fun AppEnvironment(
     config: Config = Config(),
     cache: Cache<String, Any> = emptyCache(),
     coroutineCache: CoroutineCache<String, Any> = emptyCoroutineCache(),
+    share: Share = rememberShare(),
+    connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
@@ -91,7 +96,6 @@ public fun AppEnvironment(
     localeService: LocaleService = LocaleService(),
     authState: AuthState = rememberAuthState(),
     permissionsState: PermissionsState = rememberPermissionsState(),
-    connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
     onlineText: String = "Online",
     offlineText: String = "Offline",
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
@@ -107,6 +111,8 @@ public fun AppEnvironment(
         LocalConfig provides config,
         LocalCache provides cache,
         LocalCoroutineCache provides coroutineCache,
+        LocalShare provides share,
+        LocalConnectivity provides connectivity,
         LocalStateStore provides stateStore,
         LocalEventBus provides eventBus,
         LocalComponentsState provides componentsState,
@@ -119,7 +125,6 @@ public fun AppEnvironment(
         LocalLocalization provides localization,
         LocalAuthState provides authState,
         LocalPermissionsState provides permissionsState,
-        LocalConnectivity provides connectivity,
     ) {
         val theme = themeState.theme
 

@@ -7,6 +7,8 @@ import klib.data.load.LoadingResult
 import klib.data.load.failure
 import klib.data.load.loading
 import klib.data.load.success
+import klib.data.share.Share
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -21,6 +23,8 @@ public class ArticleDetailsViewModel(
     private val repository: ArticlesRepository,
     @Provided
     private val uriHandler: UriHandler,
+    @Provided
+    private val share: Share,
 ) : ViewModel<ArticleDetailsAction>() {
 
     public val state: StateFlow<LoadingResult<Article>>
@@ -50,6 +54,8 @@ public class ArticleDetailsViewModel(
     private fun readMore(url: String) = uriHandler.openUri(url)
 
     private fun share(url: String) {
-        // TODO
+        viewModelScope.launch(Dispatchers.Main) {
+            share.shareText(url)
+        }
     }
 }

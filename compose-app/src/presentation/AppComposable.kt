@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.data.permission.PermissionsState
 import clib.data.permission.rememberPermissionsState
+import clib.data.share.rememberShare
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
@@ -36,6 +37,7 @@ import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.location.locale.LocaleService
 import clib.data.type.primitives.string.stringResource
+import klib.data.share.Share
 import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services
@@ -46,6 +48,8 @@ public fun AppComposable(
     config: Config = koinInject(),
     cache: Cache<String, Any> = koinInject(),
     coroutineCache: CoroutineCache<String, Any> = koinInject(),
+    share: Share = rememberShare(),
+    connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
@@ -55,7 +59,6 @@ public fun AppComposable(
     localeService: LocaleService = koinInject(),
     authState: AuthState = koinInject(),
     permissionsState: PermissionsState = rememberPermissionsState(),
-    connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
     onlineText: String = stringResource(Res.string.online),
     offlineText: String = stringResource(Res.string.offline),
     routes: Routes = App,
@@ -72,6 +75,8 @@ public fun AppComposable(
     config,
     cache,
     coroutineCache,
+    share,
+    connectivity,
     stateStore,
     eventBus,
     componentsState,
@@ -81,7 +86,6 @@ public fun AppComposable(
     localeService,
     authState,
     permissionsState,
-    connectivity,
     onlineText,
     offlineText,
     routerFactory,

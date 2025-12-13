@@ -42,6 +42,7 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import clib.data.permission.LocalPermissionsState
+import clib.data.share.LocalShare
 import clib.di.koinViewModel
 import clib.di.navigation.KoinRoute
 import clib.di.navigation.KoinRoutes
@@ -448,9 +449,10 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
             sharedTransitionScope: SharedTransitionScope,
         ) {
             val uriHandler = LocalUriHandler.current
+            val share = LocalShare.current
             val scrollState = rememberScrollState()
             val router = currentRouter()
-            val viewModel: ArticleDetailsViewModel = koinViewModel { parametersOf(uriHandler) }
+            val viewModel: ArticleDetailsViewModel = koinViewModel { parametersOf(uriHandler, share) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             ArticleDetailsScreen(

@@ -93,6 +93,7 @@ import ui.navigation.presentation.Profile
 public fun AppBar(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
+    connectivity: Status = Status.Disconnected,
     components: Components = Components(),
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
@@ -104,7 +105,6 @@ public fun AppBar(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
-    connectivity: Status = Status.Disconnected,
     hasDrawer: Boolean = true,
     isDrawerOpen: Boolean = true,
     onDrawerToggle: () -> Unit = {},
@@ -152,7 +152,7 @@ public fun AppBar(
                 navigationIcon = {
                     Row {
                         if (hasDrawer)
-                            AppPlainTooltipBox(stringResource(Res.string.menu)) {
+                            AppPlainTooltipBox(tooltip = stringResource(Res.string.menu)) {
                                 IconButton(
                                     onClick = onDrawerToggle,
                                 ) {
@@ -164,7 +164,7 @@ public fun AppBar(
                             }
 
                         if (hasBack)
-                            AppPlainTooltipBox(stringResource(Res.string.back)) {
+                            AppPlainTooltipBox(tooltip = stringResource(Res.string.back)) {
                                 IconButton(
                                     onClick = { onNavigationActions(arrayOf(NavigationAction.Pop)) },
                                 ) {
@@ -179,7 +179,7 @@ public fun AppBar(
                 actions = {
                     if (components.appBar.isSupport)
                         AuthComposable(auth = auth) {
-                            AppPlainTooltipBox(stringResource(Res.string.help)) {
+                            AppPlainTooltipBox(tooltip = stringResource(Res.string.help)) {
                                 IconButton(
                                     onClick = {
 
@@ -194,7 +194,7 @@ public fun AppBar(
                         }
 
                     if (components.appBar.isTheme)
-                        AppPlainTooltipBox(stringResource(Res.string.theme)) {
+                        AppPlainTooltipBox(tooltip = stringResource(Res.string.theme)) {
                             IconButton(
                                 onClick = {
                                     onThemeChange(theme.copyIsDarkToggled())
@@ -228,7 +228,7 @@ public fun AppBar(
                                 ),
                             )
 
-                        AppPlainTooltipBox(stringResource(Res.string.locale)) {
+                        AppPlainTooltipBox(tooltip = stringResource(Res.string.locale)) {
                             Button(
                                 onClick = {
                                     localePickerDialog = true
@@ -257,7 +257,7 @@ public fun AppBar(
 
                     if (components.appBar.isAvatar) {
                         AuthComposable(auth = auth) { user ->
-                            AppPlainTooltipBox(stringResource(Res.string.profile)) {
+                            AppPlainTooltipBox(tooltip = stringResource(Res.string.profile)) {
                                 var expanded by remember { mutableStateOf(false) }
                                 Box {
                                     Avatar(
