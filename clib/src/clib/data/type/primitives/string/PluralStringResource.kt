@@ -26,6 +26,7 @@ import org.jetbrains.compose.resources.getSystemResourceEnvironment
 import org.jetbrains.compose.resources.plural.PluralCategory
 import org.jetbrains.compose.resources.rememberResourceState
 import org.jetbrains.compose.resources.replaceWithArgs
+import org.jetbrains.compose.resources.DefaultResourceReader
 
 @Composable
 public fun pluralStringResource(resource: PluralStringResource, quantity: Int): String {
@@ -81,28 +82,39 @@ public suspend fun getAnnotatedPluralString(
     resource: PluralStringResource,
     quantity: Int,
     environment: ResourceEnvironment = getSystemResourceEnvironment(),
+    localization: Localization = Localization(),
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = getPluralString(environment, resource, quantity).toHtmlString(
-    compactMode,
-    style,
-    linkInteractionListener,
-)
+): AnnotatedString =
+    loadPluralString(resource, quantity, localization, DefaultResourceReader, environment).toHtmlString(
+        compactMode,
+        style,
+        linkInteractionListener,
+    )
 
 public suspend fun getAnnotatedPluralString(
     resource: PluralStringResource,
     quantity: Int,
     vararg formatArgs: Any,
     environment: ResourceEnvironment = getSystemResourceEnvironment(),
+    localization: Localization = Localization(),
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = getPluralString(environment, resource, quantity, * formatArgs).toHtmlString(
-    compactMode,
-    style,
-    linkInteractionListener,
-)
+): AnnotatedString =
+    loadPluralString(
+        resource,
+        quantity,
+        formatArgs.map { it.toString() },
+        localization,
+        DefaultResourceReader,
+        environment,
+    ).toHtmlString(
+        compactMode,
+        style,
+        linkInteractionListener,
+    )
 
 private suspend fun loadPluralString(
     resource: PluralStringResource,

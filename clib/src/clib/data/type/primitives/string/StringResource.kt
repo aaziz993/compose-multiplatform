@@ -8,6 +8,7 @@ import androidx.compose.ui.text.LinkInteractionListener
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import clib.presentation.locale.LocalLocalization
 import klib.data.location.locale.Locale
+import klib.data.location.locale.Localization
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
@@ -57,23 +58,29 @@ public fun annotatedStringResource(
 
 public suspend fun getAnnotatedString(
     resource: StringResource,
+    localization: Localization = Localization(),
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = getString(resource).toHtmlString(
-    compactMode,
-    style,
-    linkInteractionListener,
-)
+): AnnotatedString =
+    ((if (localization.locale == Locale.current) localization.getStringOrNull(resource.key) else null)
+        ?: getString(resource)).toHtmlString(
+        compactMode,
+        style,
+        linkInteractionListener,
+    )
 
 public suspend fun getAnnotatedString(
     resource: StringResource,
     vararg formatArgs: Any,
+    localization: Localization = Localization(),
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = getString(resource, *formatArgs).toHtmlString(
-    compactMode,
-    style,
-    linkInteractionListener,
-)
+): AnnotatedString =
+    ((if (localization.locale == Locale.current) localization.getStringOrNull(resource.key)?.replaceWithArgs(*formatArgs) else null)
+        ?: getString(resource, *formatArgs)).toHtmlString(
+        compactMode,
+        style,
+        linkInteractionListener,
+    )

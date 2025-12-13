@@ -6,6 +6,7 @@ import androidx.compose.ui.text.LinkInteractionListener
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import clib.presentation.locale.LocalLocalization
 import klib.data.location.locale.Locale
+import klib.data.location.locale.Localization
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.ResourceEnvironment
 import org.jetbrains.compose.resources.StringArrayResource
@@ -37,13 +38,16 @@ public fun annotatedStringArrayResource(
 public suspend fun getAnnotatedStringArray(
     resource: StringArrayResource,
     environment: ResourceEnvironment = getSystemResourceEnvironment(),
+    localization: Localization = Localization(),
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): List<AnnotatedString> = getStringArray(environment, resource).map { value ->
-    value.toHtmlString(
-        compactMode,
-        style,
-        linkInteractionListener,
-    )
-}
+): List<AnnotatedString> =
+    ((if (localization.locale == Locale.current) localization.getStringArrayOrNull(resource.key) else null)
+        ?: getStringArray(environment, resource)).map { value ->
+        value.toHtmlString(
+            compactMode,
+            style,
+            linkInteractionListener,
+        )
+    }
