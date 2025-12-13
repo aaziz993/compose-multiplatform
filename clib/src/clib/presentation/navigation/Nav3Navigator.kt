@@ -132,8 +132,6 @@ public open class Nav3Navigator(
         // If the user explicitly requested the auth route, don't redirect them after login.
         if (action.route == authRoute) authRedirectRoute = null
 
-        if (!action.duplicate) popTo(snapshot, NavigationAction.PopTo(action.route))
-
         snapshot.addOrReplace(route)
 
         return true

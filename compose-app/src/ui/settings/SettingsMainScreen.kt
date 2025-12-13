@@ -161,7 +161,12 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.Palette,
         ) {
-            onNavigationActions(arrayOf(NavigationAction.Push(SettingsColorScheme)))
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.PopTo(SettingsColorScheme),
+                    NavigationAction.Push(SettingsColorScheme),
+                ),
+            )
         }
 
         SettingsMenuLink(
@@ -169,7 +174,12 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.DynamicForm,
         ) {
-            onNavigationActions(arrayOf(NavigationAction.Push(SettingsDynamicColorScheme)))
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.PopTo(SettingsDynamicColorScheme),
+                    NavigationAction.Push(SettingsDynamicColorScheme),
+                ),
+            )
         }
 
         SettingsSwitch(
@@ -186,7 +196,12 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.FormatShapes,
         ) {
-            onNavigationActions(arrayOf(NavigationAction.Push(SettingsShapes)))
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.PopTo(SettingsShapes),
+                    NavigationAction.Push(SettingsShapes),
+                ),
+            )
         }
 
         SettingsMenuLink(
@@ -194,7 +209,12 @@ public fun SettingsMainScreen(
             enabled = true,
             icon = Icons.Default.TextFormat,
         ) {
-            onNavigationActions(arrayOf(NavigationAction.Push(SettingsTypography)))
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.PopTo(SettingsTypography),
+                    NavigationAction.Push(SettingsTypography),
+                ),
+            )
         }
 
         SettingsSliderFinished(

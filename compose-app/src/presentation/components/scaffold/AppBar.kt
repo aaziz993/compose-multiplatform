@@ -268,7 +268,12 @@ public fun AppBar(
                                             .combinedClickable(
                                                 onLongClick = { expanded = true },
                                             ) {
-                                                onNavigationActions(arrayOf(NavigationAction.Push(Profile)))
+                                                onNavigationActions(
+                                                    arrayOf(
+                                                        NavigationAction.PopTo(Profile),
+                                                        NavigationAction.Push(Profile),
+                                                    ),
+                                                )
                                             },
                                     )
                                     if (components.connectivity.isAvatarConnectivityIndicator)
@@ -288,7 +293,12 @@ public fun AppBar(
                                             Text(text = stringResource(Res.string.navigate), color = MaterialTheme.colorScheme.onSurface)
                                         },
                                         onClick = {
-                                            onNavigationActions(arrayOf(NavigationAction.Push(Profile)))
+                                            onNavigationActions(
+                                                arrayOf(
+                                                    NavigationAction.PopTo(Profile),
+                                                    NavigationAction.Push(Profile),
+                                                ),
+                                            )
                                             expanded = false
                                         },
                                         leadingIcon = {

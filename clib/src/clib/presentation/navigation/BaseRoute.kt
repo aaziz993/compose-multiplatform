@@ -29,7 +29,6 @@ import klib.data.net.http.toRoute
 import klib.data.net.http.url
 import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
-import kotlin.text.iterator
 import kotlinx.serialization.serializer
 
 @Stable
@@ -126,7 +125,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         )
     }
 
-    public abstract fun findRoutePath(predicate: (BaseRoute) -> Boolean): List<BaseRoute>?
+    public abstract fun routePath(route: NavRoute): List<NavRoute>?
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -152,8 +151,8 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 
-    final override fun findRoutePath(predicate: (BaseRoute) -> Boolean): List<BaseRoute>? =
-        if (predicate(this)) listOf(this) else null
+    final override fun routePath(route: NavRoute): List<NavRoute>? =
+        if (this == route) listOf(this as NavRoute) else null
 }
 
 public abstract class Routes() : BaseRoute(), NavRoute {
@@ -286,12 +285,19 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     final override fun iterator(): Iterator<BaseRoute> =
         routes.iterator().depthIterator({ _, route -> route.iterator() })
 
-    final override fun findRoutePath(predicate: (BaseRoute) -> Boolean): List<BaseRoute>? {
-        if (predicate(this)) return listOf(this)
+    public fun urlRoute(url: Url): NavRoute? = firstNotNullOfOrNull { route ->
+        route.urls.firstNotNullOfOrNull {
+            url.toRoute(route.navRoute.serializer(), it)
+        }
+    }
+
+    final override fun routePath(route: NavRoute): List<NavRoute>? {
+        if (this == route) return listOf(this)
 
         for (route in routes) {
-            val chain = route.findRoutePath(predicate)
-            if (chain != null) return listOf(this) + chain
+            if (route !is NavRoute) continue
+            val path = route.routePath(route)
+            if (path != null) return listOf(this) + path
         }
 
         return null

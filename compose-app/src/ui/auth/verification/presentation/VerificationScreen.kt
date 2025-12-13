@@ -106,7 +106,12 @@ public fun VerificationScreen(
 
         Button(
             onClick = {
-                onNavigationActions(arrayOf(NavigationAction.Push(Services)))
+                onNavigationActions(
+                    arrayOf(
+                        NavigationAction.PopTo(Services),
+                        NavigationAction.Push(Services),
+                    ),
+                )
             },
         ) {
             Text(text = stringResource(Res.string.confirm))

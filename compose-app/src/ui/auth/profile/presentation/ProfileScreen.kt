@@ -197,7 +197,12 @@ public fun ProfileScreen(
         if (auth.user?.roles?.contains("Verified") == false)
             Button(
                 onClick = {
-                    onNavigationActions(arrayOf(NavigationAction.Push(Verification)))
+                    onNavigationActions(
+                        arrayOf(
+                            NavigationAction.PopTo(Verification),
+                            NavigationAction.Push(Verification),
+                        ),
+                    )
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {
