@@ -35,7 +35,7 @@ import compose_app.generated.resources.upload_id
 import klib.data.auth.model.Auth
 import kotlinx.coroutines.launch
 import clib.data.type.primitives.string.stringResource
-import presentation.components.tooltipbox.AppTooltipBox
+import presentation.components.tooltipbox.AppPlainTooltipBox
 import ui.auth.verification.presentation.viewmodel.VerificationAction
 import ui.auth.verification.presentation.viewmodel.VerificationState
 import ui.navigation.presentation.Services
@@ -92,7 +92,7 @@ public fun VerificationScreen(
             Text(stringResource(Res.string.select))
         }
 
-        AppTooltipBox(stringResource(Res.string.camera)) {
+        AppPlainTooltipBox(stringResource(Res.string.camera)) {
             IconButton(
                 onClick = {
                     onAction(VerificationAction.SetUserImage(""))

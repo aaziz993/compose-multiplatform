@@ -82,7 +82,7 @@ import klib.data.location.locale.current
 import org.jetbrains.compose.resources.painterResource
 import clib.data.type.primitives.string.stringResource
 import presentation.components.scaffold.model.ScreenAppBarMode
-import presentation.components.tooltipbox.AppTooltipBox
+import presentation.components.tooltipbox.AppPlainTooltipBox
 import presentation.connectivity.CircleIcon
 import presentation.connectivity.DefaultIcon
 import presentation.connectivity.Text
@@ -152,7 +152,7 @@ public fun AppBar(
                 navigationIcon = {
                     Row {
                         if (hasDrawer)
-                            AppTooltipBox(stringResource(Res.string.menu)) {
+                            AppPlainTooltipBox(stringResource(Res.string.menu)) {
                                 IconButton(
                                     onClick = onDrawerToggle,
                                 ) {
@@ -164,7 +164,7 @@ public fun AppBar(
                             }
 
                         if (hasBack)
-                            AppTooltipBox(stringResource(Res.string.back)) {
+                            AppPlainTooltipBox(stringResource(Res.string.back)) {
                                 IconButton(
                                     onClick = { onNavigationActions(arrayOf(NavigationAction.Pop)) },
                                 ) {
@@ -179,7 +179,7 @@ public fun AppBar(
                 actions = {
                     if (components.appBar.isSupport)
                         AuthComposable(auth = auth) {
-                            AppTooltipBox(stringResource(Res.string.help)) {
+                            AppPlainTooltipBox(stringResource(Res.string.help)) {
                                 IconButton(
                                     onClick = {
 
@@ -194,7 +194,7 @@ public fun AppBar(
                         }
 
                     if (components.appBar.isTheme)
-                        AppTooltipBox(stringResource(Res.string.theme)) {
+                        AppPlainTooltipBox(stringResource(Res.string.theme)) {
                             IconButton(
                                 onClick = {
                                     onThemeChange(theme.copyIsDarkToggled())
@@ -228,7 +228,7 @@ public fun AppBar(
                                 ),
                             )
 
-                        AppTooltipBox(stringResource(Res.string.locale)) {
+                        AppPlainTooltipBox(stringResource(Res.string.locale)) {
                             Button(
                                 onClick = {
                                     localePickerDialog = true
@@ -257,7 +257,7 @@ public fun AppBar(
 
                     if (components.appBar.isAvatar) {
                         AuthComposable(auth = auth) { user ->
-                            AppTooltipBox(stringResource(Res.string.profile)) {
+                            AppPlainTooltipBox(stringResource(Res.string.profile)) {
                                 var expanded by remember { mutableStateOf(false) }
                                 Box {
                                     Avatar(

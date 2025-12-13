@@ -50,7 +50,7 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import clib.data.type.primitives.string.stringResource
-import presentation.components.tooltipbox.AppTooltipBox
+import presentation.components.tooltipbox.AppPlainTooltipBox
 import ui.navigation.presentation.ArticleDetails
 import ui.news.articledetails.viewmodel.ArticleDetailsAction
 import ui.news.data.model.Article
@@ -124,8 +124,11 @@ private fun ArticleDetailsSuccessContent(
                     .aspectRatio(16f / 9f),
             )
 
-            AppTooltipBox(stringResource(Res.string.back)) {
-                IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.TopStart)) {
+            AppPlainTooltipBox(
+                tooltip = stringResource(Res.string.back),
+                modifier = Modifier.align(Alignment.TopStart),
+            ) {
+                IconButton(onClick = onBackClick) {
                     Icon(
                         Icons.AutoMirrored.Default.NavigateBefore,
                         contentDescription = stringResource(Res.string.back),
@@ -135,10 +138,12 @@ private fun ArticleDetailsSuccessContent(
             }
 
             article.url?.let { url ->
-                AppTooltipBox(stringResource(Res.string.share)) {
+                AppPlainTooltipBox(
+                    tooltip = stringResource(Res.string.share),
+                    modifier = Modifier.align(Alignment.TopEnd),
+                ) {
                     IconButton(
                         onClick = { onShareClick(url) },
-                        modifier = Modifier.align(Alignment.TopEnd),
                     ) {
                         Icon(
                             Icons.Default.Share,

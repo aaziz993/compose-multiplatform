@@ -7,15 +7,30 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.PopupPositionProvider
 
-@Suppress("ComposeModifierMissing")
+@Suppress("ComposeModifierMissing", "ComposeParameterOrder")
 @Composable
-public fun AppTooltipBox(tooltip: String, content: @Composable () -> Unit): Unit = TooltipBox(
-    positionProvider =
-        TooltipDefaults.rememberTooltipPositionProvider(
-            TooltipAnchorPosition.Above,
-        ),
-    tooltip = { PlainTooltip { Text(tooltip) } },
-    state = rememberTooltipState(),
+public fun AppPlainTooltipBox(
+    positionProvider: PopupPositionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+        TooltipAnchorPosition.Above,
+    ),
+    tooltip: String,
+    modifier: Modifier = Modifier,
+    onDismissRequest: (() -> Unit)? = null,
+    focusable: Boolean = true,
+    enableUserUnput: Boolean = false,
+    hasAction: Boolean = false,
+    content: @Composable () -> Unit
+): Unit = TooltipBox(
+    positionProvider,
+    { PlainTooltip { Text(tooltip) } },
+    rememberTooltipState(),
+    modifier,
+    onDismissRequest,
+    focusable,
+    enableUserUnput,
+    hasAction,
     content = content,
 )
