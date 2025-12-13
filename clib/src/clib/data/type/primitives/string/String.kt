@@ -15,6 +15,12 @@ import klib.data.type.primitives.string.case.toSnakeCase
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.StringResource
 
+public fun String.toHtmlString(
+    compactMode: Boolean = false,
+    style: HtmlStyle = HtmlStyle.DEFAULT,
+    linkInteractionListener: LinkInteractionListener? = null
+): AnnotatedString = htmlToAnnotatedString(this, compactMode, style, linkInteractionListener)
+
 @Suppress("ComposeUnstableReceiver")
 @Composable
 public fun String.asStringResource(
@@ -40,9 +46,3 @@ public fun <T> T.asStringResource(
         string.substringAfter('(', "").addPrefixIfNotEmpty("(")
     }"
 }
-
-public fun String.toHtmlString(
-    compactMode: Boolean = false,
-    style: HtmlStyle = HtmlStyle.DEFAULT,
-    linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = htmlToAnnotatedString(this, compactMode, style, linkInteractionListener)

@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package clib.data.type.primitives.string
 
 import androidx.compose.runtime.Composable
@@ -7,9 +9,9 @@ import be.digitalia.compose.htmlconverter.HtmlStyle
 import clib.presentation.locale.LocalLocalization
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.type.primitives.string.format
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.replaceWithArgs
 
 @Composable
 public fun stringResource(resource: StringResource): String {
@@ -23,8 +25,9 @@ public fun stringResource(resource: StringResource): String {
 public fun stringResource(resource: StringResource, vararg formatArgs: Any): String {
     val localization = LocalLocalization.current
 
-    return (if (localization.locale == Locale.current) localization.getStringOrNull(resource.key)
-    else null)?.format(*formatArgs) ?: org.jetbrains.compose.resources.stringResource(resource, formatArgs)
+    return (if (localization.locale == Locale.current) localization.getStringOrNull(resource.key) else null)
+        ?.replaceWithArgs(*formatArgs)
+        ?: org.jetbrains.compose.resources.stringResource(resource, *formatArgs)
 }
 
 @Composable
