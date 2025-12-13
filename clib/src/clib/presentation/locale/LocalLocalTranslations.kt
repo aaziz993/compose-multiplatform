@@ -6,15 +6,17 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.staticCompositionLocalOf
 import klib.data.location.locale.LocaleService
+import klib.data.location.locale.Localization
 
 @Suppress("ComposeCompositionLocalUsage")
-public val LocalLocaleServiceTranslations: ProvidableCompositionLocal<Map<String, List<String>>> =
-    staticCompositionLocalOf(::emptyMap)
+public val LocalLocalization: ProvidableCompositionLocal<Localization> =
+    staticCompositionLocalOf(::Localization)
 
 @Composable
-public fun rememberLocaleServiceTranslations(
+public fun rememberLocaleService(
     localeState: LocaleState,
     localeService: LocaleService
-): State<Map<String, List<String>>> = produceState(initialValue = emptyMap(), localeState) {
-    value = localeService.getTranslations(localeState.locale)
-}
+): State<Localization> =
+    produceState(initialValue = Localization(), localeState, localeState.locale) {
+        value = localeService.getLocale(localeState.locale)
+    }

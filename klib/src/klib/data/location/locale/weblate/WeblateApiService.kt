@@ -8,6 +8,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.location.locale.Locale
 import klib.data.location.locale.LocaleService
+import klib.data.location.locale.Localization
 import klib.data.location.locale.weblate.model.WeblateTranslationsResponse
 import klib.data.location.locale.weblate.model.WeblateUnitsResponse
 import klib.data.net.http.client.HTTP_CLIENT_JSON
@@ -17,9 +18,9 @@ import kotlinx.coroutines.flow.toList
 
 public class WeblateApiService(
     baseUrl: String,
-    apiKey: String,
     private val project: String,
     private val components: Set<String>,
+    apiKey: String,
     httpClient: HttpClient = createHttpClient {
         install(ContentNegotiation) {
             json(HTTP_CLIENT_JSON)
@@ -33,8 +34,8 @@ public class WeblateApiService(
         }
     }.ktorfit { baseUrl(baseUrl) }.createWeblateApi()
 
-    override suspend fun getLocales(): List<Locale> =
-        components.flatMap { component ->
+    override suspend fun getLocale(locale: Locale): Localization {
+        val locales = components.flatMap { component ->
             api.getAllTranslations(
                 project,
                 component,
@@ -45,15 +46,16 @@ public class WeblateApiService(
                 .firstNotNullOfOrNull(Locale::forLanguageTagOrNull)
         }.toList()
 
-    override suspend fun getTranslations(locale: Locale): Map<String, List<String>> {
         val languageTag = locale.toString().replace("-", "_")
 
-        return components.flatMap { component ->
+        val translations = components.flatMap { component ->
             api.getAllUnits(
                 project,
                 component,
                 languageTag,
             ).toList().flatMap(WeblateUnitsResponse::results)
         }.associate { unit -> unit.source.first() to unit.target }
+
+        return Localization(locales, locale, translations)
     }
 }
