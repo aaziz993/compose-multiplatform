@@ -1,6 +1,5 @@
 package presentation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -41,7 +40,6 @@ import ui.navigation.presentation.App
 import ui.navigation.presentation.Auth
 import ui.navigation.presentation.Services
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun AppComposable(
     modifier: Modifier = Modifier.fillMaxSize(),
