@@ -19,8 +19,8 @@ public fun AppPlainTooltipBox(
     tooltip: String,
     modifier: Modifier = Modifier,
     onDismissRequest: (() -> Unit)? = null,
-    focusable: Boolean = true,
-    enableUserUnput: Boolean = false,
+    focusable: Boolean = false,
+    enableUserUnput: Boolean = true,
     hasAction: Boolean = false,
     content: @Composable () -> Unit
 ): Unit = TooltipBox(
