@@ -126,7 +126,8 @@ public data object App : KoinRoutes() {
         sceneStrategy = DelegatedScreenStrategy(
             AppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate(),
+                AppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -156,7 +157,8 @@ public data object Auth : KoinRoutes(), AuthRoute {
         sceneStrategy = DelegatedScreenStrategy(
             AppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate(),
+                AppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -398,7 +400,8 @@ public data object News : KoinRoutes() {
         sceneStrategy = DelegatedScreenStrategy(
             AppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate(),
+                AppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -511,6 +514,7 @@ public data object Services : KoinRoute<Services>(), NavRoute {
             ),
         )
     }
+
     @Composable
     override fun Content(
         route: Services,
@@ -564,7 +568,8 @@ public data object Wallet : KoinRoutes() {
         sceneStrategy = DelegatedScreenStrategy(
             AppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate(),
+                AppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -813,7 +818,8 @@ public data object Settings : KoinRoutes() {
         sceneStrategy = DelegatedScreenStrategy(
             AppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate(),
+                AppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
