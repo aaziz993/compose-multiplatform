@@ -40,11 +40,11 @@ import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocalAppLocale
-import clib.presentation.locale.LocalLocaleServiceTranslations
 import clib.presentation.locale.LocalLocaleState
+import clib.presentation.locale.LocalLocalization
 import clib.presentation.locale.LocaleState
-import clib.presentation.locale.rememberLocaleServiceTranslations
 import clib.presentation.locale.rememberLocaleState
+import clib.presentation.locale.rememberLocalization
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
@@ -93,7 +93,7 @@ public fun AppEnvironment(
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configureKmLogging()
 
-    val translations by rememberLocaleServiceTranslations(localeState, localeService)
+    val translations by rememberLocalization(localeState, localeService)
 
     CompositionLocalProvider(
         LocalConfig provides config,
@@ -105,7 +105,7 @@ public fun AppEnvironment(
         LocalDensityState provides densityState,
         LocalDensity provides densityState.density,
         LocalLocaleState provides localeState,
-        LocalLocaleServiceTranslations provides translations,
+        LocalLocalization provides translations,
         LocalAppLocale provides localeState.locale,
         LocalAuthState provides authState,
         LocalStateStore provides stateStore,

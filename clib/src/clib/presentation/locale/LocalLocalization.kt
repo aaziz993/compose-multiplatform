@@ -13,10 +13,10 @@ public val LocalLocalization: ProvidableCompositionLocal<Localization> =
     staticCompositionLocalOf(::Localization)
 
 @Composable
-public fun rememberLocaleService(
+public fun rememberLocalization(
     localeState: LocaleState,
     localeService: LocaleService
 ): State<Localization> =
     produceState(initialValue = Localization(), localeState, localeState.locale) {
-        value = localeService.getLocale(localeState.locale)
+        value = runCatching { localeService.getLocalization(localeState.locale) }.getOrNull() ?: Localization()
     }
