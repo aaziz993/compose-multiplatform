@@ -132,7 +132,7 @@ public open class Nav3Navigator(
         // If the user explicitly requested the auth route, don't redirect them after login.
         if (action.route == authRoute) authRedirectRoute = null
 
-        snapshot.addOrReplace(route)
+        snapshot.addOrSet(route)
 
         return true
     }
@@ -282,7 +282,7 @@ public open class Nav3Navigator(
      *
      * @param route the route to add or replace at the end of the list.
      */
-    protected open fun MutableList<NavRoute>.addOrReplace(route: NavRoute): Unit =
+    protected open fun MutableList<NavRoute>.addOrSet(route: NavRoute): Unit =
         if (lastOrNull() == route) this[lastIndex] = route else this += route
 
     /**
