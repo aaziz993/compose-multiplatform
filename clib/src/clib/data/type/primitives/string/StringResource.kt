@@ -5,18 +5,27 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkInteractionListener
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import clib.presentation.locale.LocalLocalization
+import klib.data.location.locale.Locale
+import klib.data.location.locale.current
+import klib.data.type.primitives.string.format
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 
 @Composable
-public fun stringResource(resource: StringResource): String =
-    LocalLocalization.current.getStringOrNull(resource.key)
+public fun stringResource(resource: StringResource): String {
+    val localization = LocalLocalization.current
+
+    return (if (localization.locale == Locale.current) localization.getStringOrNull(resource.key) else null)
         ?: org.jetbrains.compose.resources.stringResource(resource)
+}
 
 @Composable
-public fun stringResource(resource: StringResource, vararg formatArgs: Any): String =
-    LocalLocalization.current.getStringOrNull(resource.key)
-        ?: org.jetbrains.compose.resources.stringResource(resource, *formatArgs)
+public fun stringResource(resource: StringResource, vararg formatArgs: Any): String {
+    val localization = LocalLocalization.current
+
+    return (if (localization.locale == Locale.current) localization.getStringOrNull(resource.key)
+    else null)?.format(*formatArgs) ?: org.jetbrains.compose.resources.stringResource(resource, formatArgs)
+}
 
 @Composable
 public fun annotatedStringResource(

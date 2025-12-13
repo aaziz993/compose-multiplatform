@@ -9,7 +9,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkInteractionListener
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import clib.presentation.locale.LocalLocalization
+import klib.data.location.locale.Locale
 import klib.data.location.locale.Localization
+import klib.data.location.locale.current
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.LocalResourceReader
 import org.jetbrains.compose.resources.PluralStringResource
@@ -118,10 +120,13 @@ private suspend fun loadPluralString(
     val pluralCategory: PluralCategory = pluralRuleList.getCategory(quantity)
     val pluralCategoryIndex: Int = pluralRuleList.getCategoryIndex(quantity)
 
-    val str = localization.getStringOrNull(resource.key, pluralCategoryIndex)
+    val str = (if (localization.locale == Locale.current)
+        localization.getStringOrNull(resource.key, pluralCategoryIndex)
+    else null)
         ?: item.items[pluralCategory]
         ?: item.items[PluralCategory.OTHER]
         ?: error("Quantity string ID=`${resource.key}` does not have the pluralization $pluralCategory for quantity $quantity!")
+
     return str
 }
 
