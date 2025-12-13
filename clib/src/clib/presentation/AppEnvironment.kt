@@ -24,6 +24,8 @@ import clib.data.permission.rememberPermissionsState
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
+import clib.presentation.cache.LocalCache
+import clib.presentation.cache.LocalCoroutineCache
 import clib.presentation.components.ComponentsState
 import clib.presentation.components.LocalComponentsState
 import clib.presentation.components.rememberComponentsState
@@ -103,19 +105,21 @@ public fun AppEnvironment(
 
     CompositionLocalProvider(
         LocalConfig provides config,
-        LocalConnectivity provides connectivity,
+        LocalCache provides cache,
+        LocalCoroutineCache provides coroutineCache,
         LocalStateStore provides stateStore,
         LocalEventBus provides eventBus,
-        LocalPermissionsState provides permissionsState,
         LocalComponentsState provides componentsState,
         LocalThemeState provides themeState,
         LocalAppTheme provides themeState.theme.isDark,
         LocalDensityState provides densityState,
         LocalDensity provides densityState.density,
         LocalLocaleState provides localeState,
-        LocalLocalization provides localization,
         LocalAppLocale provides localeState.locale,
+        LocalLocalization provides localization,
         LocalAuthState provides authState,
+        LocalPermissionsState provides permissionsState,
+        LocalConnectivity provides connectivity,
     ) {
         val theme = themeState.theme
 
