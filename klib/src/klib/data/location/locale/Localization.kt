@@ -22,6 +22,12 @@ public data class Localization(
             key
         }
 
+    public fun getStringArrayOrNull(key: String): List<String>? = translations[key]
+
+    public fun getStringArray(key: String): List<String>? = requireNotNull(getStringArrayOrNull(key)) {
+        "No localization key '$key'"
+    }
+
     public companion object {
 
         private val log = logging("LocaleService")

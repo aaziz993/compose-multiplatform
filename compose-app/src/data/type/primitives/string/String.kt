@@ -8,7 +8,7 @@ import compose_app.generated.resources.allStringResources
 @Suppress("ComposeUnstableReceiver")
 @Composable
 public fun String.asStringResource(defaultValue: () -> String = { this }): String =
-    asStringResource(Res.allStringResources, defaultValue)
+    asStringResource(resources = Res.allStringResources, defaultValue = defaultValue)
 
 @Suppress("ComposeUnstableReceiver")
 @Composable

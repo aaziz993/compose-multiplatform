@@ -65,6 +65,10 @@ import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
+import klib.data.cache.Cache
+import klib.data.cache.CoroutineCache
+import klib.data.cache.emptyCache
+import klib.data.cache.emptyCoroutineCache
 import klib.data.location.locale.LocaleService
 import klib.data.net.createConnectivity
 import kotlinx.coroutines.MainScope
@@ -74,6 +78,10 @@ import kotlinx.coroutines.MainScope
 @Composable
 public fun AppEnvironment(
     config: Config = Config(),
+    cache: Cache<String, Any> = emptyCache(),
+    coroutineCache: CoroutineCache<String, Any> = emptyCoroutineCache(),
+    stateStore: StateStore = rememberStateStore(),
+    eventBus: EventBus = remember { EventBus() },
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
@@ -84,8 +92,6 @@ public fun AppEnvironment(
     connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
     onlineText: String = "Online",
     offlineText: String = "Offline",
-    stateStore: StateStore = rememberStateStore(),
-    eventBus: EventBus = remember { EventBus() },
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
@@ -98,6 +104,8 @@ public fun AppEnvironment(
     CompositionLocalProvider(
         LocalConfig provides config,
         LocalConnectivity provides connectivity,
+        LocalStateStore provides stateStore,
+        LocalEventBus provides eventBus,
         LocalPermissionsState provides permissionsState,
         LocalComponentsState provides componentsState,
         LocalThemeState provides themeState,
@@ -108,8 +116,6 @@ public fun AppEnvironment(
         LocalLocalization provides localization,
         LocalAppLocale provides localeState.locale,
         LocalAuthState provides authState,
-        LocalStateStore provides stateStore,
-        LocalEventBus provides eventBus,
     ) {
         val theme = themeState.theme
 

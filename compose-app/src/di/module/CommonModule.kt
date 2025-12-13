@@ -14,8 +14,12 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import klib.data.cache.Cache
+import klib.data.cache.CoroutineCache
 import klib.data.cache.SettingsCache
+import klib.data.cache.SqlDelightCoroutineCache
 import klib.data.config.EnabledConfig
+import klib.data.coroutines.runBlocking
+import klib.data.db.sqldelight.createSQLDelightKlibDatabase
 import klib.data.location.locale.AggregateLocaleService
 import klib.data.location.locale.LocaleService
 import klib.data.location.locale.weblate.WeblateApiService
@@ -40,17 +44,24 @@ import org.koin.core.annotation.Single
 public class CommonModule {
 
     @Single
-    public fun provideConfig(): Config = Config { file ->
-        Res.readBytes(file).decodeToString()
-    }
+    public fun provideConfig(): Config = Config { file -> Res.readBytes(file).decodeToString() }
 
     @Single
     public fun provideCache(json: Json): Cache<String, Any> =
         SettingsCache(
             valueKClass = Any::class,
-            valueEncoder = { value -> json.encodeAnyToString(value) },
+            valueEncoder = json::encodeAnyToString,
             valueDecoder = { value -> json.decodeAnyFromString(value)!! },
         )
+
+    @Single
+    public fun provideCoroutineCache(json: Json): CoroutineCache<String, Any> = runBlocking {
+        SqlDelightCoroutineCache(
+            valueEncoder = json::encodeAnyToString,
+            valueDecoder = { value -> value?.let(json::decodeAnyFromString)!! },
+            queries = createSQLDelightKlibDatabase().keyValueQueries,
+        )
+    }
 
     @Single
     public fun provideConnectivity(): Connectivity = createConnectivity(MainScope())

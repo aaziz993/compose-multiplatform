@@ -33,6 +33,8 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
 import dev.jordond.connectivity.Connectivity
+import klib.data.cache.Cache
+import klib.data.cache.CoroutineCache
 import klib.data.location.locale.LocaleService
 import org.jetbrains.compose.resources.stringResource
 import ui.navigation.presentation.App
@@ -44,6 +46,10 @@ import ui.navigation.presentation.Services
 public fun AppComposable(
     modifier: Modifier = Modifier.fillMaxSize(),
     config: Config = koinInject(),
+    cache: Cache<String, Any> = koinInject(),
+    coroutineCache: CoroutineCache<String, Any> = koinInject(),
+    stateStore: StateStore = rememberStateStore(),
+    eventBus: EventBus = remember { EventBus() },
     componentsState: ComponentsState = rememberComponentsState(config.ui.components),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
@@ -54,8 +60,6 @@ public fun AppComposable(
     connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
     onlineText: String = stringResource(Res.string.online),
     offlineText: String = stringResource(Res.string.offline),
-    stateStore: StateStore = rememberStateStore(),
-    eventBus: EventBus = remember { EventBus() },
     routes: Routes = App,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
@@ -68,6 +72,10 @@ public fun AppComposable(
     },
 ): Unit = AppEnvironment(
     config,
+    cache,
+    coroutineCache,
+    stateStore,
+    eventBus,
     componentsState,
     themeState,
     densityState,
@@ -78,8 +86,6 @@ public fun AppComposable(
     connectivity,
     onlineText,
     offlineText,
-    stateStore,
-    eventBus,
     routerFactory,
     navigatorFactory,
     routes,
