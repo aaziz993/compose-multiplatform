@@ -50,6 +50,7 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
+import presentation.components.tooltipbox.AppTooltipBox
 import ui.navigation.presentation.ArticleDetails
 import ui.news.articledetails.viewmodel.ArticleDetailsAction
 import ui.news.data.model.Article
@@ -123,24 +124,28 @@ private fun ArticleDetailsSuccessContent(
                     .aspectRatio(16f / 9f),
             )
 
-            IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.TopStart)) {
-                Icon(
-                    Icons.AutoMirrored.Default.NavigateBefore,
-                    contentDescription = stringResource(Res.string.back),
-                    tint = Color.White,
-                )
+            AppTooltipBox(stringResource(Res.string.back)) {
+                IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.TopStart)) {
+                    Icon(
+                        Icons.AutoMirrored.Default.NavigateBefore,
+                        contentDescription = stringResource(Res.string.back),
+                        tint = Color.White,
+                    )
+                }
             }
 
             article.url?.let { url ->
-                IconButton(
-                    onClick = { onShareClick(url) },
-                    modifier = Modifier.align(Alignment.TopEnd),
-                ) {
-                    Icon(
-                        Icons.Default.Share,
-                        contentDescription = stringResource(Res.string.share),
-                        tint = Color.White,
-                    )
+                AppTooltipBox(stringResource(Res.string.share)) {
+                    IconButton(
+                        onClick = { onShareClick(url) },
+                        modifier = Modifier.align(Alignment.TopEnd),
+                    ) {
+                        Icon(
+                            Icons.Default.Share,
+                            contentDescription = stringResource(Res.string.share),
+                            tint = Color.White,
+                        )
+                    }
                 }
             }
         }
