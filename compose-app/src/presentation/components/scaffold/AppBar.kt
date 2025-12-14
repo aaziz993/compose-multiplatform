@@ -157,10 +157,10 @@ public fun AppBar(
                 navigationIcon = {
                     Row {
                         if (hasDrawer)
-                            AppPlainTooltipBox(tooltip = stringResource(Res.string.menu)) {
-                                IconButton(
-                                    onClick = onDrawerToggle,
-                                ) {
+                            IconButton(
+                                onClick = onDrawerToggle,
+                            ) {
+                                AppPlainTooltipBox(tooltip = stringResource(Res.string.menu)) {
                                     Icon(
                                         imageVector = if (isDrawerOpen) Icons.Outlined.Menu else Icons.Filled.Menu,
                                         contentDescription = stringResource(Res.string.menu),
@@ -169,10 +169,10 @@ public fun AppBar(
                             }
 
                         if (hasBack)
-                            AppPlainTooltipBox(tooltip = stringResource(Res.string.back)) {
-                                IconButton(
-                                    onClick = { onNavigationActions(arrayOf(NavigationAction.Pop)) },
-                                ) {
+                            IconButton(
+                                onClick = { onNavigationActions(arrayOf(NavigationAction.Pop)) },
+                            ) {
+                                AppPlainTooltipBox(tooltip = stringResource(Res.string.back)) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Default.NavigateBefore,
                                         contentDescription = stringResource(Res.string.back),
@@ -184,12 +184,12 @@ public fun AppBar(
                 actions = {
                     if (components.appBar.isSupport)
                         AuthComposable(auth = auth) {
-                            AppPlainTooltipBox(tooltip = stringResource(Res.string.help)) {
-                                IconButton(
-                                    onClick = {
+                            IconButton(
+                                onClick = {
 
-                                    },
-                                ) {
+                                },
+                            ) {
+                                AppPlainTooltipBox(tooltip = stringResource(Res.string.help)) {
                                     Icon(
                                         imageVector = Icons.Default.SupportAgent,
                                         contentDescription = stringResource(Res.string.help),
@@ -199,12 +199,12 @@ public fun AppBar(
                         }
 
                     if (components.appBar.isTheme)
-                        AppPlainTooltipBox(tooltip = stringResource(Res.string.theme)) {
-                            IconButton(
-                                onClick = {
-                                    onThemeChange(theme.copyIsDarkToggled())
-                                },
-                            ) {
+                        IconButton(
+                            onClick = {
+                                onThemeChange(theme.copyIsDarkToggled())
+                            },
+                        ) {
+                            AppPlainTooltipBox(tooltip = stringResource(Res.string.theme)) {
                                 theme.IsDarkIcon()
                             }
                         }
@@ -233,21 +233,21 @@ public fun AppBar(
                                 ),
                             )
 
-                        AppPlainTooltipBox(tooltip = stringResource(Res.string.locale)) {
-                            Button(
-                                onClick = {
-                                    localePickerDialog = true
-                                },
-                                modifier = Modifier.height(48.dp),
-                                shape = RoundedCornerShape(10.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = Color.Unspecified,
-                                    disabledContainerColor = Color.Transparent,
-                                ),
-                                elevation = null,
-                                contentPadding = PaddingValues(0.dp),
-                            ) {
+                        Button(
+                            onClick = {
+                                localePickerDialog = true
+                            },
+                            modifier = Modifier.height(48.dp),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Transparent,
+                                contentColor = Color.Unspecified,
+                                disabledContainerColor = Color.Transparent,
+                            ),
+                            elevation = null,
+                            contentPadding = PaddingValues(0.dp),
+                        ) {
+                            AppPlainTooltipBox(tooltip = stringResource(Res.string.locale)) {
                                 Image(
                                     painter = painterResource(locale.country()!!.alpha2.flag),
                                     contentDescription = stringResource(Res.string.country_flag),
@@ -262,9 +262,9 @@ public fun AppBar(
 
                     if (components.appBar.isAvatar) {
                         AuthComposable(auth = auth) { user ->
-                            AppPlainTooltipBox(tooltip = stringResource(Res.string.profile)) {
-                                var expanded by remember { mutableStateOf(false) }
-                                Box {
+                            var expanded by remember { mutableStateOf(false) }
+                            Box {
+                                AppPlainTooltipBox(tooltip = stringResource(Res.string.profile)) {
                                     Avatar(
                                         user = user,
                                         modifier = Modifier

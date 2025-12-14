@@ -92,12 +92,12 @@ public fun VerificationScreen(
             Text(stringResource(Res.string.select))
         }
 
-        AppPlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
-            IconButton(
-                onClick = {
-                    onAction(VerificationAction.SetUserImage(""))
-                },
-            ) {
+        IconButton(
+            onClick = {
+                onAction(VerificationAction.SetUserImage(""))
+            },
+        ) {
+            AppPlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
                 Icon(Icons.Default.CameraAlt, stringResource(Res.string.camera))
             }
         }

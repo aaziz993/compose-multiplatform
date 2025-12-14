@@ -41,6 +41,9 @@
     <string name="help">Help</string>
     <string name="hex">Hex</string>
     <string name="home">Home</string>
+    <string name="identifier">Identifier</string>
+    <string name="id">ID</string>
+    <string name="image">Image</string>
     <string name="live_search">Live search</string>
     <string name="left">Left</string>
     <string name="markers">Markers</string>
@@ -72,9 +75,6 @@
     <string name="time">Time</string>
     <string name="time_format">Time format</string>
     <string name="tween_spec">Tween specification</string>
-    <string name="identifier">Identifier</string>
-    <string name="id">ID</string>
-    <string name="image">Image</string>
     <string name="visibility_threshold">Visibility threshold</string>
     <string name="wallet">Wallet</string>
 </resources>

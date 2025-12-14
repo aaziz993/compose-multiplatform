@@ -50,6 +50,9 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import clib.data.type.primitives.string.stringResource
+import clib.generated.resources.image_load_error
+import compose_app.generated.resources.image
+import org.jetbrains.compose.resources.painterResource
 import presentation.components.tooltipbox.AppPlainTooltipBox
 import ui.navigation.presentation.ArticleDetails
 import ui.news.articledetails.viewmodel.ArticleDetailsAction
@@ -117,18 +120,20 @@ private fun ArticleDetailsSuccessContent(
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
                 model = article.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentDescription = stringResource(Res.string.image),
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(16f / 9f),
+                error = painterResource(clib.generated.resources.Res.drawable.image_load_error),
+                contentScale = ContentScale.Crop,
             )
-
-            AppPlainTooltipBox(
-                tooltip = stringResource(Res.string.back),
+            IconButton(
+                onClick = onBackClick,
                 modifier = Modifier.align(Alignment.TopStart),
             ) {
-                IconButton(onClick = onBackClick) {
+                AppPlainTooltipBox(
+                    tooltip = stringResource(Res.string.back),
+                ) {
                     Icon(
                         Icons.AutoMirrored.Default.NavigateBefore,
                         contentDescription = stringResource(Res.string.back),
@@ -138,12 +143,12 @@ private fun ArticleDetailsSuccessContent(
             }
 
             article.url?.let { url ->
-                AppPlainTooltipBox(
-                    tooltip = stringResource(Res.string.share),
+                IconButton(
+                    onClick = { onShareClick(url) },
                     modifier = Modifier.align(Alignment.TopEnd),
                 ) {
-                    IconButton(
-                        onClick = { onShareClick(url) },
+                    AppPlainTooltipBox(
+                        tooltip = stringResource(Res.string.share),
                     ) {
                         Icon(
                             Icons.Default.Share,

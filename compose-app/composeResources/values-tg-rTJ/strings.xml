@@ -40,6 +40,9 @@
     <string name="help">Кумак</string>
     <string name="hex">Hex</string>
     <string name="home">Хона</string>
+    <string name="identifier">Мушаххаскунанда</string>
+    <string name="id">ID</string>
+    <string name="image">Тасвир</string>
     <string name="live_search">Ҷустуҷӯи воқеӣ</string>
     <string name="left">Чап</string>
     <string name="markers">Нишонаҳо</string>
@@ -71,9 +74,6 @@
     <string name="time">Вақт</string>
     <string name="time_format">Қолаби вақт</string>
     <string name="tween_spec">Мушаххасоти аниматсияи миёнаравӣ</string>
-    <string name="identifier">Мушаххаскунанда</string>
-    <string name="id">ID</string>
-    <string name="image">Тасвир</string>
     <string name="visibility_threshold">Ҳудуди намоёнӣ</string>
     <string name="wallet">Тангадон</string>
 </resources>

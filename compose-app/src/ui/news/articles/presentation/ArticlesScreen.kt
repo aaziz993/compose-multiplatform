@@ -34,6 +34,9 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import clib.data.type.primitives.string.stringResource
+import clib.generated.resources.image_load_error
+import compose_app.generated.resources.image
+import org.jetbrains.compose.resources.painterResource
 import ui.navigation.presentation.Articles
 import ui.news.data.model.Article
 import ui.news.articles.presentation.viewmodel.ArticlesAction
@@ -103,11 +106,12 @@ private fun ArticleItem(
         ) {
             AsyncImage(
                 model = article.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentDescription = stringResource(Res.string.image),
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(16f / 9f),
+                error = painterResource(clib.generated.resources.Res.drawable.image_load_error),
+                contentScale = ContentScale.Crop,
             )
 
             Column(
