@@ -39,15 +39,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
+import clib.data.type.primitives.string.stringResource
+import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
+import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.app_bar_locales
-import compose_app.generated.resources.title
 import compose_app.generated.resources.app_bar_support
 import compose_app.generated.resources.app_bar_themes
 import compose_app.generated.resources.appearance
@@ -71,9 +73,11 @@ import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permission
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
+import compose_app.generated.resources.route
 import compose_app.generated.resources.search
 import compose_app.generated.resources.shapes
 import compose_app.generated.resources.theme
+import compose_app.generated.resources.title
 import compose_app.generated.resources.typography
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
@@ -81,9 +85,6 @@ import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.model.Permission
-import clib.data.type.primitives.string.stringResource
-import clib.presentation.appbar.model.AppBar
-import clib.presentation.connectivity.model.Connectivity
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
@@ -94,6 +95,7 @@ import presentation.theme.model.isDarkStringResource
 import ui.navigation.presentation.SettingsColorScheme
 import ui.navigation.presentation.SettingsDynamicColorScheme
 import ui.navigation.presentation.SettingsMain
+import ui.navigation.presentation.SettingsRoutes
 import ui.navigation.presentation.SettingsShapes
 import ui.navigation.presentation.SettingsTypography
 
@@ -416,7 +418,7 @@ public fun SettingsMainScreen(
     }
 
     SettingsMenuLink(
-        title = stringResource(Res.string.routes),
+        title = stringResource(Res.string.route),
         enabled = true,
         icon = Icons.Default.Route,
     ) {

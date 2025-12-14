@@ -5,4 +5,5 @@
     <string name="settings_dynamic_color_scheme">Settings dynamic color scheme</string>
     <string name="settings_shapes">Settings shapes</string>
     <string name="settings_typography">Settings typography</string>
+    <string name="settings_route">Settings route</string>
 </resources>

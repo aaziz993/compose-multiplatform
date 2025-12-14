@@ -5,4 +5,5 @@
     <string name="settings_dynamic_color_scheme">Настройки динамической цветовой схемы</string>
     <string name="settings_shapes">Настройки формы</string>
     <string name="settings_typography">Настройки типографии</string>
+    <string name="settings_route">Настройки пути</string>
 </resources>

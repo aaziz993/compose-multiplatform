@@ -981,7 +981,7 @@ public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRout
 }
 
 @Serializable
-@SerialName("settings_routes")
+@SerialName("settings_route")
 public data object SettingsRoutes : KoinRoute<SettingsRoutes>(), NavRoute {
 
     @Composable

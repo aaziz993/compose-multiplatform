@@ -28,20 +28,20 @@ import ui.navigation.presentation.SettingsRoutes
 public fun SettingsRoutesScreen(
     modifier: Modifier = Modifier,
     route: SettingsRoutes = SettingsRoutes,
-    defaultConfig: Map<String, RouteConfig> = emptyMap(),
-    config: Map<String, RouteConfig> = defaultConfig,
-    onConfigChange: (String, RouteConfig) -> Unit = { _, _ -> },
+    defaultRoutes: Map<String, RouteConfig> = emptyMap(),
+    routes: Map<String, RouteConfig> = defaultRoutes,
+    onRouteChange: (String, RouteConfig) -> Unit = { _, _ -> },
 ): Unit = Column(
     modifier = modifier,
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    config.forEach { (route, config) ->
+    routes.forEach { (route, config) ->
         SettingsRouteConfig(
             route.asStringResource(),
             config,
         ) { value ->
-            onConfigChange(route, value)
+            onRouteChange(route, value)
         }
     }
 }
