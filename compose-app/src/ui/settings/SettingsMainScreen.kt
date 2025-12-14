@@ -43,6 +43,7 @@ import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
+import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
@@ -124,6 +125,9 @@ public fun SettingsMainScreen(
     onAuthChange: (Auth) -> Unit = {},
     permissions: Set<Permission> = emptySet(),
     onPermissionChange: (Permission?) -> Unit = { true },
+    defaultRoutes: Map<String, RouteConfig> = emptyMap(),
+    routes: Map<String, RouteConfig> = defaultRoutes,
+    onRoutesChange: (String, RouteConfig) -> Unit = { _, _ -> },
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
@@ -442,6 +446,7 @@ public fun SettingsMainScreen(
                 theme != defaultTheme ||
                 density != defaultDensity ||
                 locale != defaultLocale
+        routes != defaultRoutes
 
         SettingsMenuLink(
             title = stringResource(Res.string.reset),
@@ -454,6 +459,7 @@ public fun SettingsMainScreen(
             if (theme != defaultTheme) onThemeChange(defaultTheme)
             if (density != defaultDensity) onDensityChange(defaultDensity)
             if (locale != defaultLocale) onLocaleChange(defaultLocale)
+            if (routes != defaultRoutes) defaultRoutes.forEach { (route, config) -> onRoutesChange(route, config) }
         }
     }
 }
