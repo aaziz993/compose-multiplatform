@@ -55,7 +55,7 @@ public class ArticleDetailsViewModel(
 
     private fun share(url: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            share.shareText(url)
+            share.shareUrl(url)
         }
     }
 }

@@ -51,9 +51,7 @@ public actual class Share {
             files = jsArrayOf(jsFile)
         }
 
-        if (!navigator.canShare(data)) {
-            error("File sharing not supported on this browser")
-        }
+        if (!navigator.canShare(data)) error("File sharing not supported on this browser")
 
         navigator.shareAsync(data)
     }
