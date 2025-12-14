@@ -2,7 +2,7 @@ package klib.data.share.model
 
 import klib.data.model.MimeType
 
-public data class ShareFileModel(
+public data class ShareFile(
     val mime: MimeType = MimeType.PDF,
     val fileName: String,
     val bytes: ByteArray
@@ -12,7 +12,7 @@ public data class ShareFileModel(
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as ShareFileModel
+        other as ShareFile
 
         if (mime != other.mime) return false
         if (fileName != other.fileName) return false

@@ -4,7 +4,7 @@ import java.awt.Desktop
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import java.io.File
-import klib.data.share.model.ShareFileModel
+import klib.data.share.model.ShareFile
 
 public actual class Share {
 
@@ -13,7 +13,9 @@ public actual class Share {
         clipboard.setContents(StringSelection(text), null)
     }
 
-    public actual suspend fun shareFile(file: ShareFileModel): Result<Unit> = runCatching {
+    public actual suspend fun shareUrl(url: String): Unit = shareText(url)
+
+    public actual suspend fun shareFile(file: ShareFile): Result<Unit> = runCatching {
         val tempFile = File.createTempFile(
             file.fileName.substringBeforeLast('.'),
             ".${file.fileName.substringAfterLast('.')}",

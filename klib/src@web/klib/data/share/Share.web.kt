@@ -4,7 +4,7 @@ import js.array.jsArrayOf
 import js.objects.unsafeJso
 import js.typedarrays.toUint8Array
 import klib.data.model.MIME_TYPES
-import klib.data.share.model.ShareFileModel
+import klib.data.share.model.ShareFile
 import kotlin.js.ExperimentalWasmJsInterop
 import web.blob.Blob
 import web.clipboard.writeText
@@ -22,8 +22,16 @@ public actual class Share {
         if (navigator.canShare(data)) navigator.shareAsync(data) else navigator.clipboard.writeText(text)
     }
 
+    public actual suspend fun shareUrl(url: String) {
+        val data = unsafeJso<ShareData> {
+            this.url = url
+        }
+
+        if (navigator.canShare(data)) navigator.shareAsync(data) else navigator.clipboard.writeText(url)
+    }
+
     @OptIn(ExperimentalWasmJsInterop::class)
-    public actual suspend fun shareFile(file: ShareFileModel): Result<Unit> = runCatching {
+    public actual suspend fun shareFile(file: ShareFile): Result<Unit> = runCatching {
         val blob = Blob(
             jsArrayOf(file.bytes.toUint8Array()),
             unsafeJso {

@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import klib.data.model.MIME_TYPES
-import klib.data.share.model.ShareFileModel
+import klib.data.share.model.ShareFile
 
 public actual class Share(private val context: Context) {
 
@@ -20,7 +20,9 @@ public actual class Share(private val context: Context) {
         context.startActivity(chooser)
     }
 
-    public actual suspend fun shareFile(file: ShareFileModel): Result<Unit> {
+    public actual suspend fun shareUrl(url: String): Unit = shareText(url)
+
+    public actual suspend fun shareFile(file: ShareFile): Result<Unit> {
         return runCatching {
             withContext(Dispatchers.IO) {
                 val savedFile = saveFile(file.fileName, file.bytes)

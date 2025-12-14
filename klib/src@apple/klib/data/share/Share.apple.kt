@@ -12,7 +12,7 @@ import platform.Foundation.dataWithBytes
 import platform.Foundation.writeToFile
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
-import klib.data.share.model.ShareFileModel
+import klib.data.share.model.ShareFile
 import kotlinx.coroutines.IO
 
 public actual class Share {
@@ -24,7 +24,9 @@ public actual class Share {
         )
     }
 
-    public actual suspend fun shareFile(file: ShareFileModel): Result<Unit> {
+    public actual suspend fun shareUrl(url: String): Unit = shareText(url)
+
+    public actual suspend fun shareFile(file: ShareFile): Result<Unit> {
         return runCatching {
             val url = withContext(Dispatchers.IO) {
                 saveFile(file.bytes, file.fileName)
