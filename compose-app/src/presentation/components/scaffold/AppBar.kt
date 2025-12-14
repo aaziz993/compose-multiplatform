@@ -221,6 +221,7 @@ public fun AppBar(
                                 onDismissRequest = {
                                     localePickerDialog = false
                                 },
+                                modifier = Modifier.clip(RoundedCornerShape(12.dp)),
                                 locales = locales,
                                 country = { locale ->
                                     locale.country()!!.copy(name = locale.asStringResource())

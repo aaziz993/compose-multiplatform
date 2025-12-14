@@ -3,6 +3,7 @@ package ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.CameraAlt
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -249,8 +251,9 @@ public fun SettingsMainScreen(
             title = { Text(text = stringResource(Res.string.locale)) },
             icon = { Text(locale.country()!!.alpha2.getEmojiFlag()) },
             subtitle = { Text(locale.asStringResource()) },
-            modifier = Modifier,
+            modifier = Modifier.clip(RoundedCornerShape(12.dp)),
             enabled = true,
+            dialogModifier = Modifier.clip(RoundedCornerShape(12.dp)),
             locales = locales,
             country = { locale ->
                 locale.country()!!.copy(name = locale.asStringResource())

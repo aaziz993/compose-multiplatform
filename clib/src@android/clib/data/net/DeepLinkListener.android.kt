@@ -16,9 +16,7 @@ public actual fun DeepLinkListener(listener: (Url) -> Unit) {
     activity.intent.fireDeepLink(listener)
 
     DisposableEffect(Unit) {
-        val listener = Consumer<Intent> { intent ->
-            intent.fireDeepLink(listener)
-        }
+        val listener = Consumer<Intent> { intent -> intent.fireDeepLink(listener) }
         activity.addOnNewIntentListener(listener)
         onDispose { activity.removeOnNewIntentListener(listener) }
     }

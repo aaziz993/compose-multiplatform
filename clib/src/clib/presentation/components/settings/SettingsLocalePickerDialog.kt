@@ -1,6 +1,5 @@
 package clib.presentation.components.settings
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -13,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
 import com.alorma.compose.settings.ui.SettingsMenuLink
@@ -23,6 +21,7 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import klib.data.location.country.Country
 import klib.data.location.locale.Locale
 
+@Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsLocalePickerDialog(
     title: @Composable () -> Unit,
@@ -35,6 +34,7 @@ public fun SettingsLocalePickerDialog(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+    dialogModifier: Modifier = Modifier,
     locales: List<Locale> = Locale.getLocales().toList(),
     country: @Composable (Locale) -> Country = { locale -> locale.country()!! },
     textStyle: TextStyle = LocalTextStyle.current,
@@ -52,7 +52,7 @@ public fun SettingsLocalePickerDialog(
             {
                 localePickerDialog = false
             },
-            Modifier.padding(end = 16.dp),
+            dialogModifier,
             locales,
             country,
             textStyle,

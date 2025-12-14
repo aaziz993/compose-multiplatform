@@ -43,6 +43,7 @@
     <string name="home">Home</string>
     <string name="identifier">Identifier</string>
     <string name="id">ID</string>
+    <string name="icon">Icon</string>
     <string name="image">Image</string>
     <string name="live_search">Live search</string>
     <string name="left">Left</string>
