@@ -52,12 +52,15 @@ import clib.presentation.locale.LocalLocalization
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
 import clib.presentation.locale.rememberLocalization
+import clib.presentation.navigation.LocalRoutesState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
+import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberNav3Navigator
 import clib.presentation.navigation.rememberRouter
+import clib.presentation.navigation.rememberRoutesState
 import clib.presentation.state.LocalStateStore
 import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
@@ -95,6 +98,7 @@ public fun AppEnvironment(
     eventBus: EventBus = remember { EventBus() },
     appBarState: AppBarState = rememberAppBarState(config.ui.appBar),
     connectivityState: ConnectivityState = rememberConnectivityState(config.ui.connectivity),
+    routesState: RoutesState = rememberRoutesState(config.ui.routes),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
     localeState: LocaleState = rememberLocaleState(config.localization.locale),
@@ -125,6 +129,7 @@ public fun AppEnvironment(
         LocalCoroutineCache provides coroutineCache,
         LocalShare provides share,
         LocalConnectivityStatus provides connectivityStatus,
+        LocalRoutesState provides routesState,
         LocalStateStore provides stateStore,
         LocalEventBus provides eventBus,
         LocalAppBarState provides appBarState,
@@ -206,7 +211,7 @@ public fun AppEnvironment(
                 theme.typography,
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    routes.Nav3Host(routerFactory, navigatorFactory)
+                    routes.Nav3Host(routesState::get, routerFactory, navigatorFactory)
                     GlobalAlertDialog()
                     GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
                 }

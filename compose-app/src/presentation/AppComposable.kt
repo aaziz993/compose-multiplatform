@@ -40,6 +40,8 @@ import clib.presentation.appbar.rememberAppBarState
 import clib.presentation.connectivity.ConnectivityState
 import clib.presentation.connectivity.rememberConnectivityState
 import clib.presentation.navigation.NavRoute
+import clib.presentation.navigation.RoutesState
+import clib.presentation.navigation.rememberRoutesState
 import klib.data.share.Share
 import ui.navigation.presentation.App
 
@@ -55,6 +57,7 @@ public fun AppComposable(
     eventBus: EventBus = remember { EventBus() },
     appBarState: AppBarState = rememberAppBarState(config.ui.appBar),
     connectivityState: ConnectivityState = rememberConnectivityState(config.ui.connectivity),
+    routesState: RoutesState = rememberRoutesState(config.ui.routes),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
     localeState: LocaleState = rememberLocaleState(config.localization.locale),
@@ -84,6 +87,7 @@ public fun AppComposable(
     eventBus,
     appBarState,
     connectivityState,
+    routesState,
     themeState,
     densityState,
     localeState,

@@ -16,9 +16,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import clib.presentation.components.model.item.SelectableItem
-import clib.presentation.config.LocalConfig
+import clib.presentation.config.RouteConfig
 import clib.presentation.event.EventBus
-import clib.data.net.DeepLinkListener
 import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
@@ -60,6 +59,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
+        configProvider: (BaseRoute) -> RouteConfig,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -139,6 +139,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     @Suppress("UNCHECKED_CAST")
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
+        configProvider: (BaseRoute) -> RouteConfig,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -180,6 +181,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
+        configProvider: (BaseRoute) -> RouteConfig,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -187,34 +189,27 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         clazz = navRoute,
         metadata = metadata,
     ) {
-        Nav3Host(routerFactory, navigatorFactory)
+        Nav3Host(configProvider, routerFactory, navigatorFactory)
     }
 
     @Composable
     public fun Nav3Host(
+        configProvider: (BaseRoute) -> RouteConfig = LocalRoutesState.current.let { routeState -> routeState::get },
         routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     ) {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
-        val config = LocalConfig.current
+        // Configure.
+        configProvider(this).configure(this)
 
-        // Configure route.
-        config.ui.routes[name]?.configure(this)
-
-        // Configure sub routes.
-        routes.forEach { route -> config.ui.routes[route.name]?.configure(route) }
-
-        val isRoot = LocalRouter.current == null
+        // Configure routes.
+        routes.forEach { route -> configProvider(route).configure(route) }
 
         Nav3Host(
             routerFactory(this),
             navigatorFactory(this),
         ) { backStack, onBack, _ ->
-            if (isRoot) DeepLinkListener {
-
-            }
-
             // Return a result from one screen to a previous screen using a state-based approach.
             val resultStore = rememberStateStore()
             // Return a result from one screen to a previous screen using an event-based approach.
@@ -231,6 +226,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
                         entryProvider {
                             routes.forEach { route ->
                                 route.entry(
+                                    configProvider,
                                     routerFactory,
                                     navigatorFactory,
                                     this@SharedTransitionLayout,
