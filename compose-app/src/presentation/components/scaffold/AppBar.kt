@@ -49,7 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
 import clib.presentation.auth.AuthComposable
-import clib.presentation.components.Components
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
@@ -81,6 +80,8 @@ import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.painterResource
 import clib.data.type.primitives.string.stringResource
+import clib.presentation.appbar.model.AppBar
+import clib.presentation.connectivity.model.Connectivity
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppPlainTooltipBox
 import presentation.connectivity.CircleIcon
@@ -91,11 +92,12 @@ import presentation.theme.model.IsDarkIcon
 import ui.navigation.presentation.Profile
 
 @Composable
-public fun AppBar(
+public fun TopAppBar(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
     connectivityStatus: Status = Status.Disconnected,
-    components: Components = Components(),
+    appBar: AppBar = AppBar(),
+    connectivity: Connectivity = Connectivity(),
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
@@ -140,13 +142,13 @@ public fun AppBar(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (components.appBar.isTitle) title()
+                        if (appBar.isTitle) title()
 
                         Row(modifier = Modifier.wrapContentSize()) {
-                            if (components.connectivity.isConnectivityIndicatorText)
+                            if (connectivity.isConnectivityIndicatorText)
                                 connectivityStatus.Text(overflow = TextOverflow.Clip, maxLines = 1)
 
-                            if (components.connectivity.isConnectivityIndicator) {
+                            if (connectivity.isConnectivityIndicator) {
                                 AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
                                     connectivityStatus.DefaultIcon()
                                 }
@@ -182,7 +184,7 @@ public fun AppBar(
                     }
                 },
                 actions = {
-                    if (components.appBar.isSupport)
+                    if (appBar.isSupport)
                         AuthComposable(auth = auth) {
                             IconButton(
                                 onClick = {
@@ -198,7 +200,7 @@ public fun AppBar(
                             }
                         }
 
-                    if (components.appBar.isTheme)
+                    if (appBar.isTheme)
                         IconButton(
                             onClick = {
                                 onThemeChange(theme.copyIsDarkToggled())
@@ -209,7 +211,7 @@ public fun AppBar(
                             }
                         }
 
-                    if (components.appBar.isLocale) {
+                    if (appBar.isLocale) {
                         var localePickerDialog by remember { mutableStateOf(false) }
 
                         if (localePickerDialog)
@@ -261,7 +263,7 @@ public fun AppBar(
                         }
                     }
 
-                    if (components.appBar.isAvatar) {
+                    if (appBar.isAvatar) {
                         AuthComposable(auth = auth) { user ->
                             var expanded by remember { mutableStateOf(false) }
                             Box {
@@ -282,8 +284,8 @@ public fun AppBar(
                                                 )
                                             },
                                     )
-                                    if (components.connectivity.isAvatarConnectivityIndicator)
-                                        connectivity.CircleIcon(
+                                    if (connectivity.isAvatarConnectivityIndicator)
+                                        connectivityStatus.CircleIcon(
                                             Modifier
                                                 .align(Alignment.TopEnd)
                                                 .size(14.dp),
@@ -348,4 +350,4 @@ public fun AppBar(
 
 @Preview
 @Composable
-private fun PreviewAppBar(): Unit = AppBar()
+private fun PreviewTopAppBar(): Unit = TopAppBar()

@@ -57,6 +57,7 @@ import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
+import clib.presentation.navigation.LocalRoutesState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Route
 import clib.presentation.navigation.currentRouter
@@ -98,6 +99,7 @@ import ui.services.ServicesScreen
 import ui.settings.SettingsColorSchemeScreen
 import ui.settings.SettingsDynamicColorSchemeScreen
 import ui.settings.SettingsMainScreen
+import ui.settings.SettingsRoutesScreen
 import ui.settings.SettingsShapesScreen
 import ui.settings.SettingsTypographyScreen
 import ui.wallet.balance.BalanceScreen
@@ -126,10 +128,10 @@ public data object App : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate() +
+            TopAppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate() +
-                NavSuiteAppBarSceneStrategy().delegate(),
+                TopAppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteTopAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -157,10 +159,10 @@ public data object Auth : KoinRoutes(), AuthRoute {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate() +
+            TopAppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate() +
-                NavSuiteAppBarSceneStrategy().delegate(),
+                TopAppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteTopAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -400,10 +402,10 @@ public data object News : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate() +
+            TopAppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate() +
-                NavSuiteAppBarSceneStrategy().delegate(),
+                TopAppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteTopAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -569,10 +571,10 @@ public data object Wallet : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate() +
+            TopAppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate() +
-                NavSuiteAppBarSceneStrategy().delegate(),
+                TopAppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteTopAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -802,7 +804,14 @@ public data object Settings : KoinRoutes() {
     }
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(SettingsMain, SettingsColorScheme, SettingsDynamicColorScheme, SettingsShapes, SettingsTypography)
+        listOf(
+            SettingsMain,
+            SettingsColorScheme,
+            SettingsDynamicColorScheme,
+            SettingsShapes,
+            SettingsTypography,
+            SettingsRoutes,
+        )
     }
 
     @Composable
@@ -819,10 +828,10 @@ public data object Settings : KoinRoutes() {
             rememberKoinScopeNavEntryDecorator(),
         ),
         sceneStrategy = DelegatedScreenStrategy(
-            AppBarSceneStrategy().delegate() +
+            TopAppBarSceneStrategy().delegate() +
                 NavSuiteSceneStrategy().delegate() +
-                AppBarNavSuiteSceneStrategy().delegate() +
-                NavSuiteAppBarSceneStrategy().delegate(),
+                TopAppBarNavSuiteSceneStrategy().delegate() +
+                NavSuiteTopAppBarSceneStrategy().delegate(),
         ),
         entryProvider = entryProvider,
     )
@@ -968,5 +977,27 @@ public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRout
             config.ui.theme,
             themeState.value,
         ) { value -> themeState.value = value }
+    }
+}
+
+@Serializable
+@SerialName("settings_routes")
+public data object SettingsRoutes : KoinRoute<SettingsRoutes>(), NavRoute {
+
+    @Composable
+    override fun Content(
+        route: SettingsRoutes,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val scrollState = rememberScrollState()
+        val config = LocalConfig.current
+        val routesState = LocalRoutesState.current
+
+        SettingsRoutesScreen(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
+            route,
+            config.ui.routes,
+            routesState.value,
+        ) { route, value -> routesState.value[route] = value }
     }
 }

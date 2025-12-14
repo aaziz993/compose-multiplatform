@@ -21,7 +21,7 @@ import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import presentation.components.scaffold.AppBar
+import presentation.components.scaffold.TopAppBar
 
 @Suppress("UNCHECKED_CAST")
 @Composable
@@ -47,7 +47,7 @@ public fun NavScreen(
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
     navigationSuiteItems: NavigationSuiteScope.() -> Unit = {},
     content: @Composable () -> Unit = {},
-): Unit = AppBar(
+): Unit = TopAppBar(
     modifier = modifier,
     title = title,
     connectivityStatus = connectivityStatus,

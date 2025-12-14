@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.Route
 import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
@@ -413,6 +414,20 @@ public fun SettingsMainScreen(
             onCheckedChange = onPermissionChange,
         )
     }
+
+    SettingsMenuLink(
+        title = stringResource(Res.string.routes),
+        enabled = true,
+        icon = Icons.Default.Route,
+    ) {
+        onNavigationActions(
+            arrayOf(
+                NavigationAction.PopTo(SettingsRoutes),
+                NavigationAction.Push(SettingsRoutes),
+            ),
+        )
+    }
+
     SettingsGroup(
         modifier = Modifier,
         enabled = true,

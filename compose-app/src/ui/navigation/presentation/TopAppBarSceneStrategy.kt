@@ -7,10 +7,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import clib.presentation.appbar.LocalAppBarState
 import clib.presentation.auth.LocalAuthState
-import clib.presentation.components.LocalComponentsState
 import clib.presentation.config.LocalConfig
-import clib.presentation.connectivity.LocalConnectivity
+import clib.presentation.connectivity.LocalConnectivityState
+import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.currentRouter
@@ -18,28 +19,30 @@ import clib.presentation.navigation.scene.WrapperSceneStrategy
 import clib.presentation.theme.LocalThemeState
 import data.type.primitives.string.asStringResource
 import kotlin.collections.Map
-import presentation.components.scaffold.AppBar
+import presentation.components.scaffold.TopAppBar
 
-public class AppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
+public class TopAppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
-    override val key: String = APP_BAR_KEY
+    override val key: String = TOP_APP_BAR_KEY
 
     @Composable
     override fun Content(content: @Composable () -> Unit) {
         val config = LocalConfig.current
-        val componentsState = LocalComponentsState.current
+        val connectivityStatus = LocalConnectivityStatus.current
+        val appBarState = LocalAppBarState.current
+        val connectivityState = LocalConnectivityState.current
         val themeState = LocalThemeState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
-        val connectivity = LocalConnectivity.current
         val router = currentRouter()
 
         router.backStack.lastOrNull()?.let { currentRoute ->
-            AppBar(
+            TopAppBar(
                 modifier = Modifier.fillMaxSize(),
                 title = { Text(text = currentRoute.route.name.asStringResource(), overflow = TextOverflow.Clip, maxLines = 1) },
-                connectivity = connectivity,
-                components = componentsState.components,
+                connectivityStatus = connectivityStatus,
+                appBar = appBarState.value,
+                connectivity = connectivityState.value,
                 theme = themeState.value,
                 onThemeChange = { value -> themeState.value = value },
                 locales = config.localization.locales,
@@ -61,8 +64,8 @@ public class AppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
     public companion object Companion {
 
-        private const val APP_BAR_KEY = "appBar"
+        private const val TOP_APP_BAR_KEY = "TopAppBar"
 
-        public fun screen(): Map<String, Boolean> = mapOf(APP_BAR_KEY to true)
+        public fun screen(): Map<String, Boolean> = mapOf(TOP_APP_BAR_KEY to true)
     }
 }

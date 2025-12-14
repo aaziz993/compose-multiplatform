@@ -8,6 +8,7 @@
     <string name="amoled">Амолед</string>
     <string name="animate">Анимировать</string>
     <string name="animation_spec">Спецификация анимации</string>
+    <string name="adaptive">Адаптивный</string>
     <string name="back">Назад</string>
     <string name="blend">Смесь</string>
     <string name="balance">Баланс</string>
@@ -44,6 +45,7 @@
     <string name="id">ID</string>
     <string name="icon">Иконка</string>
     <string name="image">Изображение</string>
+    <string name="label">Значок</string>
     <string name="live_search">Живой поиск</string>
     <string name="left">Влево</string>
     <string name="markers">Маркеры</string>
@@ -61,6 +63,7 @@
     <string name="retry">Повторить</string>
     <string name="reset">Сбросить</string>
     <string name="right">Вправо</string>
+    <string name="route">Путь</string>
     <string name="source">Источник</string>
     <string name="search">Поиск</string>
     <string name="select">Выбрать</string>

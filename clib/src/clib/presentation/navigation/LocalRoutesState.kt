@@ -13,14 +13,14 @@ public val LocalRoutesState: ProvidableCompositionLocal<RoutesState> =
 
 public class RoutesState(initialValue: Map<String, RouteConfig> = emptyMap()) {
 
-    public val stateMap: MutableMap<String, RouteConfig> =
+    public val value: MutableMap<String, RouteConfig> =
         mutableMapOf<String, RouteConfig>().apply { putAll(initialValue) }
 
     public operator fun get(route: BaseRoute): RouteConfig =
-        stateMap.getOrPut(route.name, ::RouteConfig)
+        value.getOrPut(route.name, ::RouteConfig)
 
     public operator fun set(route: BaseRoute, config: RouteConfig) {
-        stateMap[route.name] = config
+        value[route.name] = config
     }
 
     public companion object {
@@ -28,7 +28,7 @@ public class RoutesState(initialValue: Map<String, RouteConfig> = emptyMap()) {
         /** Saver to save and restore the RoutesState across config change and process death. */
         public val Saver: Saver<RoutesState, *> =
             Saver(
-                save = { it.stateMap },
+                save = { it.value },
                 restore = { RoutesState(it) },
             )
     }

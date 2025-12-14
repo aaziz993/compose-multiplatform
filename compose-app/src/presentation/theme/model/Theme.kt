@@ -1,6 +1,7 @@
 package presentation.theme.model
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoMode
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.SettingsBrightness
@@ -12,19 +13,23 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.dark_theme
 import compose_app.generated.resources.light_theme
 import compose_app.generated.resources.system_theme
+import compose_app.generated.resources.adaptive
 import clib.data.type.primitives.string.stringResource
+import clib.presentation.theme.model.ThemeMode
 
 @Composable
-public fun Theme.isDarkStringResource(): String = when (isDark) {
-    null -> stringResource(Res.string.system_theme)
-    false -> stringResource(Res.string.light_theme)
-    true -> stringResource(Res.string.dark_theme)
+public fun Theme.isDarkStringResource(): String = when (mode) {
+    ThemeMode.SYSTEM -> stringResource(Res.string.system_theme)
+    ThemeMode.LIGHT -> stringResource(Res.string.light_theme)
+    ThemeMode.DARK -> stringResource(Res.string.dark_theme)
+    ThemeMode.ADAPTIVE -> stringResource(Res.string.adaptive)
 }
 
-public fun Theme.isDarkIcon(): ImageVector = when (isDark) {
-    null -> Icons.Default.SettingsBrightness
-    false -> Icons.Default.LightMode
-    true -> Icons.Default.DarkMode
+public fun Theme.isDarkIcon(): ImageVector = when (mode) {
+    ThemeMode.SYSTEM -> Icons.Default.SettingsBrightness
+    ThemeMode.LIGHT -> Icons.Default.LightMode
+    ThemeMode.DARK -> Icons.Default.DarkMode
+    ThemeMode.ADAPTIVE -> Icons.Default.AutoMode
 }
 
 @Suppress("ComposeModifierMissing")

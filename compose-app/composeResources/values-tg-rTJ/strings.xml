@@ -8,6 +8,7 @@
     <string name="amoled">Амолед</string>
     <string name="animate">Аниматсиякард</string>
     <string name="animation_spec">Хосияти аниматсия</string>
+    <string name="adaptive">Мутобиқшаванда</string>
     <string name="back">Бозгашт</string>
     <string name="blend">Омехт</string>
     <string name="balance">Баланс</string>
@@ -44,6 +45,7 @@
     <string name="id">ID</string>
     <string name="icon">Расм</string>
     <string name="image">Тасвир</string>
+    <string name="label">Аломат</string>
     <string name="live_search">Ҷустуҷӯи воқеӣ</string>
     <string name="left">Чап</string>
     <string name="markers">Нишонаҳо</string>
@@ -61,6 +63,7 @@
     <string name="retry">Такрор</string>
     <string name="reset">Бозгашт</string>
     <string name="right">Рост</string>
+    <string name="route">Роҳ</string>
     <string name="source">Манбаъ</string>
     <string name="search">Ҷустуҷӯ</string>
     <string name="select">Интихоб</string>

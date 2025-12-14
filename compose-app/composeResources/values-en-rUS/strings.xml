@@ -8,6 +8,7 @@
     <string name="amoled">Amoled</string>
     <string name="animate">Animate</string>
     <string name="animation_spec">Animation specification</string>
+    <string name="adaptive">Adaptive</string>
     <string name="back">Back</string>
     <string name="blend">Blend</string>
     <string name="balance">Balance</string>
@@ -45,6 +46,7 @@
     <string name="id">ID</string>
     <string name="icon">Icon</string>
     <string name="image">Image</string>
+    <string name="label">Label</string>
     <string name="live_search">Live search</string>
     <string name="left">Left</string>
     <string name="markers">Markers</string>
@@ -62,6 +64,7 @@
     <string name="retry">Retry</string>
     <string name="reset">Reset</string>
     <string name="right">Right</string>
+    <string name="route">Route</string>
     <string name="source">Source</string>
     <string name="search">Search</string>
     <string name="select">Select</string>
