@@ -49,7 +49,7 @@ ui:
       metadata:
         topAppBarNavSuite: true
       authResource: { }
-    stock:
+    exchange:
       metadata:
         topAppBarNavSuite: true
       authResource: { }

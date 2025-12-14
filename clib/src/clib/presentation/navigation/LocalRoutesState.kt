@@ -2,6 +2,7 @@ package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -14,7 +15,7 @@ public val LocalRoutesState: ProvidableCompositionLocal<RoutesState> =
 public class RoutesState(initialValue: Map<String, RouteConfig> = emptyMap()) {
 
     public val value: MutableMap<String, RouteConfig> =
-        mutableMapOf<String, RouteConfig>().apply { putAll(initialValue) }
+        mutableStateMapOf<String, RouteConfig>().apply { putAll(initialValue) }
 
     public operator fun get(route: String): RouteConfig =
         value.getOrPut(route, ::RouteConfig)

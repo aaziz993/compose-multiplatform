@@ -104,7 +104,7 @@ import ui.settings.SettingsShapesScreen
 import ui.settings.SettingsTypographyScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
-import ui.wallet.stock.StockScreen
+import ui.wallet.exchange.ExchangeScreen
 
 @Serializable
 @SerialName("app")
@@ -554,7 +554,7 @@ public data object Wallet : KoinRoutes() {
     }
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Balance, Crypto, Stock)
+        listOf(Balance, Crypto, Exchange)
     }
 
     @Composable
@@ -647,8 +647,8 @@ public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 }
 
 @Serializable
-@SerialName("stock")
-public data object Stock : KoinRoute<Stock>(), NavRoute {
+@SerialName("exchange")
+public data object Exchange : KoinRoute<Exchange>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
         val text = name.toSnakeCase().asStringResource { name }
@@ -666,12 +666,12 @@ public data object Stock : KoinRoute<Stock>(), NavRoute {
 
     @Composable
     override fun Content(
-        route: Stock,
+        route: Exchange,
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
-        StockScreen(
+        ExchangeScreen(
             Modifier,
             route,
             router::actions,

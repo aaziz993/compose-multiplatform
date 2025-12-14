@@ -1,19 +1,19 @@
-package ui.wallet.stock
+package ui.wallet.exchange
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import clib.presentation.navigation.NavigationAction
 import androidx.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.Stock
+import ui.navigation.presentation.Exchange
 
 @Composable
-public fun StockScreen(
+public fun ExchangeScreen(
     modifier: Modifier = Modifier,
-    route: Stock = Stock,
+    route: Exchange = Exchange,
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
 }
 
 @Preview
 @Composable
-private fun PreviewStockScreen(): Unit = StockScreen()
+private fun PreviewStockScreen(): Unit = ExchangeScreen()
