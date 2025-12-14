@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import io.ktor.http.Url
 import klib.data.type.collections.linkedlist.model.Node
 
 /**
@@ -35,8 +34,12 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  * This class is designed to be used as the primary navigation interface in applications.
  *
  * @param routes The current top level route.
+ * @param onDeepRoute The callback to handle deep route action.
  */
-public open class Router(public val routes: Routes) : BaseRouter(), Node<Router> {
+public open class Router(
+    public val routes: Routes,
+    public val onDeepRoute: Router.(NavRoute) -> Unit = { navRoute -> push(navRoute) },
+) : BaseRouter(), Node<Router> {
 
     /** Parent router in nested navigation hierarchy. */
     override var prev: Router? by mutableStateOf(null)

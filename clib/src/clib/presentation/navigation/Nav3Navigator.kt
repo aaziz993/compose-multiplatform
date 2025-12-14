@@ -317,7 +317,7 @@ public fun rememberNav3Navigator(
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onUnknownRoute: (NavRoute) -> Unit = {},
+    onUnknownRoute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { router.push(it) } } ?: {},
     onBack: () -> Unit = systemOnBack(),
 ): Navigator {
     val backStack = rememberNavBackStack(routes)
