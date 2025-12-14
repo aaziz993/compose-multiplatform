@@ -16,11 +16,17 @@ public class RoutesState(initialValue: Map<String, RouteConfig> = emptyMap()) {
     public val value: MutableMap<String, RouteConfig> =
         mutableMapOf<String, RouteConfig>().apply { putAll(initialValue) }
 
-    public operator fun get(route: BaseRoute): RouteConfig =
-        value.getOrPut(route.name, ::RouteConfig)
+    public operator fun get(route: String): RouteConfig =
+        value.getOrPut(route, ::RouteConfig)
 
-    public operator fun set(route: BaseRoute, config: RouteConfig) {
-        value[route.name] = config
+    public operator fun set(route: String, value: RouteConfig) {
+        this.value[route] = value
+    }
+
+    public operator fun get(route: BaseRoute): RouteConfig = this[route.name]
+
+    public operator fun set(route: BaseRoute, value: RouteConfig) {
+        this[route.name] = value
     }
 
     public companion object {

@@ -22,12 +22,12 @@ import compose_app.generated.resources.enabled
 import compose_app.generated.resources.label
 import data.type.primitives.string.asStringResource
 import presentation.components.settings.SettingsSwitch
-import ui.navigation.presentation.SettingsRoutes
+import ui.navigation.presentation.SettingsRoute
 
 @Composable
-public fun SettingsRoutesScreen(
+public fun SettingsRouteScreen(
     modifier: Modifier = Modifier,
-    route: SettingsRoutes = SettingsRoutes,
+    route: SettingsRoute = SettingsRoute,
     defaultRoutes: Map<String, RouteConfig> = emptyMap(),
     routes: Map<String, RouteConfig> = defaultRoutes,
     onRouteChange: (String, RouteConfig) -> Unit = { _, _ -> },
@@ -48,7 +48,7 @@ public fun SettingsRoutesScreen(
 
 @Preview
 @Composable
-private fun PreviewSettingsRoutesScreen(): Unit = SettingsRoutesScreen()
+private fun PreviewSettingsRouteScreen(): Unit = SettingsRouteScreen()
 
 @Composable
 private fun SettingsRouteConfig(

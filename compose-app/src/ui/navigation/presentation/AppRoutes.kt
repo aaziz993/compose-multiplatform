@@ -99,7 +99,7 @@ import ui.services.ServicesScreen
 import ui.settings.SettingsColorSchemeScreen
 import ui.settings.SettingsDynamicColorSchemeScreen
 import ui.settings.SettingsMainScreen
-import ui.settings.SettingsRoutesScreen
+import ui.settings.SettingsRouteScreen
 import ui.settings.SettingsShapesScreen
 import ui.settings.SettingsTypographyScreen
 import ui.wallet.balance.BalanceScreen
@@ -810,7 +810,7 @@ public data object Settings : KoinRoutes() {
             SettingsDynamicColorScheme,
             SettingsShapes,
             SettingsTypography,
-            SettingsRoutes,
+            SettingsRoute,
         )
     }
 
@@ -857,6 +857,7 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
         val permissionsState = LocalPermissionsState.current
+        val routesState = LocalRoutesState.current
         val router = currentRouter()
 
         SettingsMainScreen(
@@ -887,6 +888,9 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
                     permissionsState.providePermission(value)
                 }
             },
+            config.ui.routes,
+            routesState.value,
+            { route, value -> routesState[route] = value },
             router::actions,
         )
     }
@@ -982,18 +986,18 @@ public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRout
 
 @Serializable
 @SerialName("settings_route")
-public data object SettingsRoutes : KoinRoute<SettingsRoutes>(), NavRoute {
+public data object SettingsRoute : KoinRoute<SettingsRoute>(), NavRoute {
 
     @Composable
     override fun Content(
-        route: SettingsRoutes,
+        route: SettingsRoute,
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
         val config = LocalConfig.current
         val routesState = LocalRoutesState.current
 
-        SettingsRoutesScreen(
+        SettingsRouteScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.routes,

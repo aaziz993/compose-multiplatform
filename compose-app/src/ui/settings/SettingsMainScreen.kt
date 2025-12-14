@@ -96,7 +96,7 @@ import presentation.theme.model.isDarkStringResource
 import ui.navigation.presentation.SettingsColorScheme
 import ui.navigation.presentation.SettingsDynamicColorScheme
 import ui.navigation.presentation.SettingsMain
-import ui.navigation.presentation.SettingsRoutes
+import ui.navigation.presentation.SettingsRoute
 import ui.navigation.presentation.SettingsShapes
 import ui.navigation.presentation.SettingsTypography
 
@@ -428,8 +428,8 @@ public fun SettingsMainScreen(
     ) {
         onNavigationActions(
             arrayOf(
-                NavigationAction.PopTo(SettingsRoutes),
-                NavigationAction.Push(SettingsRoutes),
+                NavigationAction.PopTo(SettingsRoute),
+                NavigationAction.Push(SettingsRoute),
             ),
         )
     }
