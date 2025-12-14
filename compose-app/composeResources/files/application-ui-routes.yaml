@@ -1,4 +1,7 @@
 ui:
+  startRoute: auth
+  authRoute: auth
+  authRedirectRoute: news
   routes:
     phone:
       metadata:
