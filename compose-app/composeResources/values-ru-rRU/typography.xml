@@ -3,7 +3,7 @@
     <string name="typography">Типография</string>
     <string name="font">Шрифт</string>
     <string name="font_scale">Растяжение фонта</string>
-    <string name="font_size">/Размер шрифта</string>
+    <string name="font_size">Размер шрифта</string>
     <string name="font_weight">Толщина шрифта</string>
     <string name="font_style">Стиль шрифта</string>
     <string name="font_synthesis">Синтез шрифта</string>
