@@ -5,7 +5,7 @@ import clib
 class AppDelegate: NSObject, UIApplicationDelegate {
 
     // Shared KMM deep link handler.
-    let deepLinkHandler = DeepLinkStateIos()
+    let deepLinkHandler = DeepLinkState()
 
     // Handle URL schemes.
     func application(_ app: UIApplication,
@@ -28,7 +28,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct IOSApp: App {
 
     // Shared KMM deep link handler.
-    let deepLinkHandler = DeepLinkStateIos()
+    let deepLinkHandler = DeepLinkState()
 
     // Bridge to AppDelegate.
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

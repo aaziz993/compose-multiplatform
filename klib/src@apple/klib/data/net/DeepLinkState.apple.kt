@@ -1,20 +1,20 @@
-package clib.presentation.navigation.deeplink
+package klib.data.net
 
-import clib.presentation.navigation.deeplink.DeepLinkState.handleDeepLink
+import klib.data.net.DeepLinkState.handleDeepLink
 import platform.Foundation.NSUserActivity
 import platform.Foundation.NSUserActivityTypeBrowsingWeb
 import kotlin.experimental.ExperimentalObjCName
 
 @OptIn(ExperimentalObjCName::class)
-@ObjCName(swiftName = "DeepLinkStateIos")
-public class DeepLinkStateIos {
+@ObjCName(swiftName = "DeepLinkState")
+public class DeepLinkStateApple {
 
     @ObjCName("onDeepLinkReceived")
     public fun onDeepLinkReceived(url: String): Unit = handleDeepLink(url)
 
     @ObjCName("onDeepLinkReceived")
     public fun onDeepLinkReceived(userActivity: NSUserActivity) {
-        userActivity.getUrlString()?.let { url -> handleDeepLink(url) }
+        userActivity.getUrlString()?.let(::handleDeepLink)
     }
 
     private fun NSUserActivity.getUrlString() =

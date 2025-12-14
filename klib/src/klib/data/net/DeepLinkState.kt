@@ -1,4 +1,4 @@
-package clib.presentation.navigation.deeplink
+package klib.data.net
 
 import io.ktor.http.Url
 import kotlinx.coroutines.MainScope
@@ -11,7 +11,7 @@ public object DeepLinkState {
     /** Coroutine scope for executing actions on the main thread. */
     private val mainScope = MainScope()
 
-    internal var deepLinkFlow = MutableStateFlow<Url?>(null)
+    public var deepLinkFlow: MutableStateFlow<Url?> = MutableStateFlow(null)
         private set
 
     /**
@@ -20,9 +20,9 @@ public object DeepLinkState {
      */
     public fun handleDeepLink(url: String) {
         mainScope.launch {
-            deepLinkFlow.emit(Url(url))
+            deepLinkFlow.emit(url.toUrl())
         }
     }
 
-    internal fun consumeDeepLink(): Url? = deepLinkFlow.getAndUpdate { null }
+    public fun consumeDeepLink(): Url? = deepLinkFlow.getAndUpdate { null }
 }

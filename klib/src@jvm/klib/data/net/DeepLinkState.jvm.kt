@@ -1,7 +1,7 @@
-package clib.presentation.navigation.deeplink
+package klib.data.net
 
 import java.awt.Desktop
-import clib.presentation.navigation.deeplink.DeepLinkState.handleDeepLink
+import klib.data.net.DeepLinkState.handleDeepLink
 
 public fun handleDeepLink(args: Array<String>) {
     if (System.getProperty("os.name").indexOf("Mac") > -1)

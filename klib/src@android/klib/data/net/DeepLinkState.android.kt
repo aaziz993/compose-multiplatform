@@ -1,10 +1,11 @@
-package clib.presentation.navigation.deeplink
+package klib.data.net
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.core.util.Consumer
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import klib.data.net.DeepLinkState.handleDeepLink
 
 public fun ComponentActivity.handleDeepLink() {
     intent.fireDeepLink()
@@ -29,5 +30,5 @@ public fun ComponentActivity.handleDeepLink() {
 }
 
 private fun Intent.fireDeepLink() {
-    dataString?.let(DeepLinkState::handleDeepLink)
+    dataString?.let(::handleDeepLink)
 }

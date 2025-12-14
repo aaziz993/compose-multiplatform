@@ -1,7 +1,6 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.ExperimentalBrowserHistoryApi
-import clib.presentation.navigation.deeplink.handleDeepLink
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_name
 import kotlinx.browser.document
@@ -12,7 +11,6 @@ import org.w3c.dom.HTMLLinkElement
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalBrowserHistoryApi
 public suspend fun main() {
-    handleDeepLink()
     val title = getString(Res.string.app_name)
     onWasmReady {
         val body = document.body ?: return@onWasmReady

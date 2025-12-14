@@ -38,17 +38,8 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  */
 public open class Router(
     override val routes: Routes,
-    public val onReroute: Router.(NavRoute) -> Unit = { navRoute -> push(navRoute) },
+    public val onReroute: Router.(NavRoute) -> Unit = Router::push,
 ) : BaseRouter(), Node<Router> {
-
-    /**
-     *  The callback called when route isn't in the current top level route.
-     */
-    override val onUnknownRoute: (NavRoute) -> Unit
-        get() = {
-            val root = head()
-            val t = 0
-        }
 
     /**
      * Parent router in nested navigation hierarchy.
@@ -63,15 +54,32 @@ public open class Router(
         internal set
 
     /**
+     * Currently registered navigators has back.
+     */
+    public val hasBack: Boolean
+        get() = backStack.size > 1 || prev?.hasBack == true
+
+    /**
      * Nested routes queue.
      */
     internal var routeQueue: ArrayDeque<NavRoute> = ArrayDeque()
 
     /**
-     * Currently registered navigators has back.
+     *  The callback called when route isn't in the current top level route.
      */
-    public val hasBack: Boolean
-        get() = backStack.size > 1 || prev?.hasBack == true
+    override val onUnknownRoute: (NavRoute) -> Unit
+        get() = {
+
+            val t = 0
+            // consumeQueuedRoute()
+        }
+
+    internal fun consumeQueuedRoute() {
+        val queue = head().routeQueue
+        if (queue.isEmpty()) return
+        val route = queue.removeFirst()
+        onReroute(route)
+    }
 
     /**
      * Pushes one or more routes onto the navigation stack.
@@ -87,20 +95,6 @@ public open class Router(
 
         val actions = routes.map(NavigationAction::Push).toTypedArray()
         actions(*actions)
-    }
-
-    //    public fun push(url: Url) {
-//        val root = head()
-//        val routes = root.routes.findRouteChain(url) ?: return
-//        if (routes.isEmpty()) return
-//        root.routeQueue = ArrayDeque(routes)
-//    }
-//
-    internal fun consumeForwarded() {
-        val queue = head().routeQueue
-        if (queue.isEmpty()) return
-        val route = queue.removeFirst()
-        onReroute(route)
     }
 
     /**

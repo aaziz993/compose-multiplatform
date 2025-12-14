@@ -37,7 +37,7 @@ internal fun Nav3Host(
         check(parentRouter != router) { "Router can't be parent of itself" }
         parentRouter?.next = router
         router.prev = parentRouter
-        router.consumeForwarded()
+        router.consumeQueuedRoute()
     }
 
     DisposableEffect(router, navigator) {

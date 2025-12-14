@@ -25,7 +25,7 @@ public abstract class BaseRouter {
      * This is internal to prevent direct access from outside the library,
      * but accessible to the navigation system for setup.
      */
-    internal val navigationActionQueue: NavigationActionQueue = NavigationActionQueue()
+    internal val navigationActionQueue: NavigationActionQueue = NavigationActionQueue(onUnknownRoute)
 
     /**
      * Currently registered navigator back stack.

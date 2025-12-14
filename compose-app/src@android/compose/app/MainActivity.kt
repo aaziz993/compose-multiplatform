@@ -20,13 +20,11 @@ import App
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import clib.presentation.navigation.deeplink.handleDeepLink
 
 public class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        handleDeepLink()
         setContent { App() }
     }
 }

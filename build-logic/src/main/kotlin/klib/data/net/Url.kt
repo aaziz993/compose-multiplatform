@@ -1,4 +1,4 @@
-package klib.data.net.http
+package klib.data.net
 
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
@@ -15,6 +15,7 @@ import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.getElementDescriptor
 import klib.data.type.serialization.hasElementAnnotation
 import klib.data.type.serialization.isElementOptional
+import kotlin.IllegalArgumentException
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.elementNames
