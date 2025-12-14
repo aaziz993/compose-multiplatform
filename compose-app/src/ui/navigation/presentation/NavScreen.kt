@@ -12,10 +12,11 @@ import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import clib.presentation.appbar.model.AppBar
+import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.event.alert.GlobalAlertDialog
 import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.components.Components
 import clib.presentation.theme.model.Theme
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.auth.model.Auth
@@ -29,7 +30,8 @@ public fun NavScreen(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
     connectivityStatus: Status = Status.Disconnected,
-    components: Components = Components(),
+    appBar: AppBar = AppBar(),
+    connectivity: Connectivity = Connectivity(),
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
     locales: List<Locale> = emptyList(),
@@ -51,7 +53,8 @@ public fun NavScreen(
     modifier = modifier,
     title = title,
     connectivityStatus = connectivityStatus,
-    components = components,
+    appBar = appBar,
+    connectivity = connectivity,
     theme = theme,
     onThemeChange = onThemeChange,
     locales = locales,
