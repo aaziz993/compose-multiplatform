@@ -10,7 +10,7 @@ import klib.data.net.toUrl
 @Composable
 public actual fun DeepLinkListener(listener: (Url) -> Unit) {
     DisposableEffect(Unit) {
-        val (popStateEvent, hasChangeEvent) = addDeepLinkHandler { url -> listener(url.toUrl()) }
-        onDispose { removeDeepLinkHandler(popStateEvent, hasChangeEvent) }
+        val (popStateEvent, hashChangeEvent) = addDeepLinkHandler { url -> listener(url.toUrl()) }
+        onDispose { removeDeepLinkHandler(popStateEvent, hashChangeEvent) }
     }
 }

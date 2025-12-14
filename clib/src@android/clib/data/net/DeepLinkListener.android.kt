@@ -20,9 +20,7 @@ public actual fun DeepLinkListener(listener: (Url) -> Unit) {
             intent.fireDeepLink(listener)
         }
         activity.addOnNewIntentListener(listener)
-        onDispose {
-            activity.removeOnNewIntentListener(listener)
-        }
+        onDispose { activity.removeOnNewIntentListener(listener) }
     }
 }
 
