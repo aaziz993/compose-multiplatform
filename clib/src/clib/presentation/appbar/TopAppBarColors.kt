@@ -1,4 +1,4 @@
-package clib.presentation.components.topappbar
+package clib.presentation.appbar
 
 import clib.data.type.ColorSerial
 import kotlinx.serialization.KSerializer

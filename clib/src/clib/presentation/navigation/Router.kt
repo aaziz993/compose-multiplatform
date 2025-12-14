@@ -74,11 +74,11 @@ public open class Router(
             // consumeQueuedRoute()
         }
 
-    internal fun consumeQueuedRoute() {
+    internal fun consumeRoute(): NavRoute? {
         val queue = head().routeQueue
-        if (queue.isEmpty()) return
+        if (queue.isEmpty()) return null
         val route = queue.removeFirst()
-        onReroute(route)
+        return route
     }
 
     /**

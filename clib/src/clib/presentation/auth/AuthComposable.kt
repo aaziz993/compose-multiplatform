@@ -11,7 +11,7 @@ import klib.data.auth.model.User
 @Composable
 public inline fun AuthComposable(
     id: String? = null,
-    auth: Auth = LocalAuthState.current.auth,
+    auth: Auth = LocalAuthState.current.value,
     authResource: AuthResource? = LocalConfig.current.auth.components[id],
     content: @Composable (User) -> Unit
 ) {

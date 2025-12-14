@@ -17,16 +17,16 @@ public val LocalAuthState: ProvidableCompositionLocal<AuthState> = staticComposi
 
 public class AuthState(initialValue: Auth = Auth()) {
 
-    public var auth: Auth by mutableStateOf(initialValue)
+    public var value: Auth by mutableStateOf(initialValue)
 
     public fun setUser(user: User?) {
-        auth = auth.copy(user = user)
+        value = value.copy(user = user)
     }
 
     public companion object Companion {
 
         public val Saver: Saver<AuthState, *> = listSaver(
-            save = { listOf(it.auth) },
+            save = { listOf(it.value) },
             restore = { AuthState(it[0]) },
         )
     }

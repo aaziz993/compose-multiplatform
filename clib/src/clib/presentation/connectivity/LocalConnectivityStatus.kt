@@ -10,7 +10,7 @@ import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.Connectivity.Status
 
 @Suppress("ComposeCompositionLocalUsage")
-public val LocalConnectivity: ProvidableCompositionLocal<Status> = staticCompositionLocalOf { Status.Disconnected }
+public val LocalConnectivityStatus: ProvidableCompositionLocal<Status> = staticCompositionLocalOf { Status.Disconnected }
 
 @Composable
 public fun rememberConnectivity(connectivity: Connectivity): Status {

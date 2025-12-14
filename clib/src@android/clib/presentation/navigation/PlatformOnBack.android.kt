@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
 @Composable
-public actual fun systemOnBack(): () -> Unit {
+public actual fun platformOnBack(): () -> Unit {
     val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     return remember(backPressedDispatcher) {

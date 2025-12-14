@@ -17,12 +17,12 @@ public val LocalThemeState: ProvidableCompositionLocal<ThemeState> =
 
 public class ThemeState(initialValue: Theme = Theme()) {
 
-    public var theme: Theme by mutableStateOf(initialValue)
+    public var value: Theme by mutableStateOf(initialValue)
 
     public companion object Companion {
 
         public val Saver: Saver<ThemeState, *> = listSaver(
-            save = { listOf(it.theme) },
+            save = { listOf(it.value) },
             restore = { ThemeState(it[0]) },
         )
     }

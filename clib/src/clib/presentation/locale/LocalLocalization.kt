@@ -17,6 +17,6 @@ public fun rememberLocalization(
     localeState: LocaleState,
     localeService: LocaleService
 ): State<Localization> =
-    produceState(initialValue = Localization(), localeState, localeState.locale) {
-        value = runCatching { localeService.getLocalization(localeState.locale) }.getOrNull() ?: Localization()
+    produceState(initialValue = Localization(), localeState, localeState.value) {
+        value = runCatching { localeService.getLocalization(localeState.value) }.getOrNull() ?: Localization()
     }

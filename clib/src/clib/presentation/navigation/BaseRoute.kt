@@ -73,12 +73,12 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         enabled: Boolean = this.enabled,
         alwaysShowLabel: Boolean = this.alwaysShowLabel,
         auth: Auth = Auth(),
-        onPush: Router.(NavRoute) -> Unit = Router::push,
+        router: Router = currentRouter(),
+        onClick: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
         if (!isNavigationItem(auth)) return {}
         check(this is NavRoute) { "Not a nav route '$this'" }
 
-        val router = currentRouter()
         val selected = this == router.backStack.lastOrNull()
         val item = selectableItem!!(name)
         val selectedItem = item.item(selected)
@@ -86,7 +86,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         return {
             item(
                 selected,
-                { router.onPush(this@BaseRoute) },
+                { router.onClick(this@BaseRoute) },
                 selectedItem.icon,
                 selectedItem.modifier,
                 enabled,
@@ -104,19 +104,19 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         enabled: Boolean = this.enabled,
         alwaysShowLabel: Boolean = this.alwaysShowLabel,
         auth: Auth = Auth(),
-        onPush: Router.(NavRoute) -> Unit = Router::push,
+        router: Router = currentRouter(),
+        onClick: Router.(NavRoute) -> Unit = Router::push,
     ) {
         if (!isNavigationItem(auth)) return
         check(this is NavRoute) { "Not a route '$this'" }
 
-        val router = currentRouter()
         val selected = this == router.backStack.lastOrNull()
         val item = selectableItem!!(name)
         val selectedItem = item.item(selected)
 
         scope.NavigationBarItem(
             selected,
-            { router.onPush(this) },
+            { router.onClick(this) },
             selectedItem.icon,
             selectedItem.modifier,
             enabled,
@@ -248,18 +248,19 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     @Composable
     public fun items(
-        router: Router,
         enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
         alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
         auth: Auth = Auth(),
-        onPush: Router.(NavRoute) -> Unit = Router::push,
+        router: Router = currentRouter(),
+        onClick: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
         val items = routes.map { route ->
             route.item(
                 enabled(route) && this.enabled,
                 alwaysShowLabel(route) && this@Routes.alwaysShowLabel,
                 auth,
-                onPush,
+                router,
+                onClick,
             )
         }
         return { items.forEach { item -> item() } }
@@ -268,17 +269,18 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     @Composable
     context(scope: RowScope)
     public fun NavigationBarItems(
-        router: Router,
         enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
         alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
         auth: Auth = Auth(),
-        onPush: Router.(NavRoute) -> Unit = Router::push,
+        router: Router = currentRouter(),
+        onClick: Router.(NavRoute) -> Unit = Router::push,
     ): Unit = routes.forEach { route ->
         route.NavigationBarItem(
             enabled(route) && this.enabled,
             alwaysShowLabel(route) && this.alwaysShowLabel,
             auth,
-            onPush,
+            router,
+            onClick,
         )
     }
 

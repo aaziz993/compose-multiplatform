@@ -94,7 +94,7 @@ import ui.navigation.presentation.Profile
 public fun AppBar(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
-    connectivity: Status = Status.Disconnected,
+    connectivityStatus: Status = Status.Disconnected,
     components: Components = Components(),
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
     mode: ScreenAppBarMode = ScreenAppBarMode.Default,
@@ -144,11 +144,11 @@ public fun AppBar(
 
                         Row(modifier = Modifier.wrapContentSize()) {
                             if (components.connectivity.isConnectivityIndicatorText)
-                                connectivity.Text(overflow = TextOverflow.Clip, maxLines = 1)
+                                connectivityStatus.Text(overflow = TextOverflow.Clip, maxLines = 1)
 
                             if (components.connectivity.isConnectivityIndicator) {
-                                AppPlainTooltipBox(tooltip = connectivity.stringResource()) {
-                                    connectivity.DefaultIcon()
+                                AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
+                                    connectivityStatus.DefaultIcon()
                                 }
                             }
                         }

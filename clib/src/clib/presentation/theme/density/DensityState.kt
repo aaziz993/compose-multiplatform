@@ -19,12 +19,12 @@ public val LocalDensityState: ProvidableCompositionLocal<DensityState> =
 
 public class DensityState(initialValue: DensitySerial = Density(2f)) {
 
-    public var density: Density by mutableStateOf(initialValue)
+    public var value: Density by mutableStateOf(initialValue)
 
     public companion object Companion {
 
         public val Saver: Saver<DensityState, *> = listSaver(
-            save = { listOf(it.density) },
+            save = { listOf(it.value) },
             restore = { DensityState(it[0]) },
         )
     }

@@ -38,7 +38,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
-import clib.presentation.components.Components
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.navigation.NavigationAction
@@ -82,6 +81,8 @@ import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.model.Permission
 import clib.data.type.primitives.string.stringResource
+import clib.presentation.appbar.model.AppBar
+import clib.presentation.connectivity.model.Connectivity
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
@@ -99,12 +100,13 @@ import ui.navigation.presentation.SettingsTypography
 public fun SettingsMainScreen(
     modifier: Modifier = Modifier,
     route: SettingsMain = SettingsMain,
-    connectivity: Status = Status.Disconnected,
-    permissions: Set<Permission> = emptySet(),
-    onPermissionChange: (Permission?) -> Unit = { true },
-    defaultComponents: Components = Components(),
-    components: Components = defaultComponents,
-    onComponentsChange: (Components) -> Unit = {},
+    connectivityStatus: Status = Status.Disconnected,
+    defaultAppBar: AppBar = AppBar(),
+    appBar: AppBar = defaultAppBar,
+    onAppBarChange: (AppBar) -> Unit = {},
+    defaultConnectivity: Connectivity = Connectivity(),
+    connectivity: Connectivity = defaultConnectivity,
+    onConnectivityChange: (Connectivity) -> Unit = {},
     defaultTheme: Theme = Theme(),
     theme: Theme = defaultTheme,
     onThemeChange: (Theme) -> Unit = {},
@@ -117,6 +119,8 @@ public fun SettingsMainScreen(
     onLocaleChange: (Locale) -> Unit = {},
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
+    permissions: Set<Permission> = emptySet(),
+    onPermissionChange: (Permission?) -> Unit = { true },
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
@@ -269,146 +273,106 @@ public fun SettingsMainScreen(
             false
         }
 
-        val connectivityTrueIcon = connectivity.filledImageVector()
-        val connectivityFalseIcon = connectivity.outlinedImageVector()
+        val connectivityTrueIcon = connectivityStatus.filledImageVector()
+        val connectivityFalseIcon = connectivityStatus.outlinedImageVector()
 
         SettingsSwitch(
             title = stringResource(Res.string.connectivity_alert),
-            value = components.connectivity.isConnectivityAlert,
+            value = connectivity.isConnectivityAlert,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        connectivity = components.connectivity.copy(isConnectivityAlert = value),
-                    ),
-                )
+                onConnectivityChange(connectivity.copy(isConnectivityAlert = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.connectivity_snackbar),
-            value = components.connectivity.isConnectivitySnackbar,
+            value = connectivity.isConnectivitySnackbar,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        connectivity = components.connectivity.copy(isConnectivitySnackbar = value),
-                    ),
-                )
+                onConnectivityChange(connectivity.copy(isConnectivitySnackbar = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.connectivity_indicator),
-            value = components.connectivity.isConnectivityIndicator,
+            value = connectivity.isConnectivityIndicator,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        connectivity = components.connectivity.copy(isConnectivityIndicator = value),
-                    ),
-                )
+                onConnectivityChange(connectivity.copy(isConnectivityIndicator = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.connectivity_indicator_text),
-            value = components.connectivity.isConnectivityIndicatorText,
+            value = connectivity.isConnectivityIndicatorText,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        connectivity = components.connectivity.copy(isConnectivityIndicatorText = value),
-                    ),
-                )
+                onConnectivityChange(connectivity.copy(isConnectivityIndicatorText = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.avatar_connectivity_indicator),
-            value = components.connectivity.isAvatarConnectivityIndicator,
+            value = connectivity.isAvatarConnectivityIndicator,
             trueIcon = connectivityTrueIcon,
             falseIcon = connectivityFalseIcon,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        connectivity = components.connectivity.copy(isAvatarConnectivityIndicator = value),
-                    ),
-                )
+                onConnectivityChange(connectivity.copy(isAvatarConnectivityIndicator = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.title),
-            value = components.appBar.isTitle,
+            value = appBar.isTitle,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        appBar = components.appBar.copy(isTitle = value),
-                    ),
-                )
+                onAppBarChange(appBar.copy(isTitle = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_support),
-            value = components.appBar.isSupport,
+            value = appBar.isSupport,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        appBar = components.appBar.copy(isSupport = value),
-                    ),
-                )
+                onAppBarChange(appBar.copy(isSupport = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_themes),
-            value = components.appBar.isTheme,
+            value = appBar.isTheme,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        appBar = components.appBar.copy(isTheme = value),
-                    ),
-                )
+                onAppBarChange(appBar.copy(isTheme = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_locales),
-            value = components.appBar.isLocale,
+            value = appBar.isLocale,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        appBar = components.appBar.copy(isLocale = value),
-                    ),
-                )
+                onAppBarChange(appBar.copy(isLocale = value))
             },
         )
 
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_avatar),
-            value = components.appBar.isAvatar,
+            value = appBar.isAvatar,
             trueIcon = Icons.Filled.FlashOn,
             falseIcon = Icons.Outlined.FlashOn,
             onCheckedChange = { value ->
-                onComponentsChange(
-                    components.copy(
-                        appBar = components.appBar.copy(isAvatar = value),
-                    ),
-                )
+                onAppBarChange(appBar.copy(isAvatar = value))
             },
         )
     }
@@ -455,10 +419,12 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.recovery)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        val resettable = theme != defaultTheme ||
-            density != defaultDensity ||
-            locale != defaultLocale ||
-            components != defaultComponents
+        val resettable =
+            appBar != defaultAppBar ||
+                connectivity != defaultConnectivity ||
+                theme != defaultTheme ||
+                density != defaultDensity ||
+                locale != defaultLocale
 
         SettingsMenuLink(
             title = stringResource(Res.string.reset),
@@ -466,10 +432,11 @@ public fun SettingsMainScreen(
             icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
             subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
         ) {
+            if (appBar != defaultAppBar) onAppBarChange(defaultAppBar)
+            if (connectivity != defaultConnectivity) onConnectivityChange(defaultConnectivity)
             if (theme != defaultTheme) onThemeChange(defaultTheme)
             if (density != defaultDensity) onDensityChange(defaultDensity)
             if (locale != defaultLocale) onLocaleChange(defaultLocale)
-            if (components != defaultComponents) onComponentsChange(defaultComponents)
         }
     }
 }

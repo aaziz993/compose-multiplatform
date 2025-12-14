@@ -31,7 +31,7 @@ public class NavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
         val coroutineScope = rememberCoroutineScope()
 
         router.backStack.lastOrNull()?.let { currentRoute ->
-            val layoutType = if (router.routes.isNavigationItems(authState.auth)) {
+            val layoutType = if (router.routes.isNavigationItems(authState.value)) {
                 val adaptiveInfo = currentWindowAdaptiveInfo()
                 with(adaptiveInfo) {
                     if (windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
@@ -49,12 +49,11 @@ public class NavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
             NavigationSuiteScaffold(
                 navigationSuiteItems = router.routes.items(
-                    router = router,
                     alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
                         { true }
                     }
                     else BaseRoute::enabled,
-                    auth = authState.auth,
+                    auth = authState.value,
                 ),
                 modifier = Modifier.fillMaxSize(),
                 layoutType = layoutType,

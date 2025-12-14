@@ -36,7 +36,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.Components
 import clib.presentation.components.country.CountryCodePickerTextField
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
@@ -56,6 +55,7 @@ import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import klib.data.type.primitives.string.ifNotEmpty
 import clib.data.type.primitives.string.stringResource
+import clib.presentation.connectivity.model.Connectivity
 import presentation.components.dialog.SignOutConfirmDialog
 import presentation.connectivity.CircleIcon
 import ui.navigation.presentation.Profile
@@ -65,8 +65,8 @@ import ui.navigation.presentation.Verification
 public fun ProfileScreen(
     modifier: Modifier = Modifier,
     route: Profile = Profile,
-    connectivity: Status = Status.Disconnected,
-    components: Components = Components(),
+    connectivityStatus: Status = Status.Disconnected,
+    connectivity: Connectivity = Connectivity(),
     auth: Auth = Auth(),
     onAuthChange: (Auth) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
@@ -82,8 +82,8 @@ public fun ProfileScreen(
                 modifier = Modifier.size(80.dp)
                     .clip(CircleShape),
             )
-            if (components.connectivity.isAvatarConnectivityIndicator)
-                connectivity.CircleIcon(
+            if (connectivity.isAvatarConnectivityIndicator)
+                connectivityStatus.CircleIcon(
                     Modifier
                         .align(Alignment.TopEnd)
                         .size(14.dp),

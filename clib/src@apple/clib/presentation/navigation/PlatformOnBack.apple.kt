@@ -6,7 +6,7 @@ import platform.UIKit.navigationController
 import platform.posix.exit
 
 @Composable
-public actual fun systemOnBack(): () -> Unit {
+public actual fun platformOnBack(): () -> Unit {
     val viewController = LocalUIViewController.current
 
     return {

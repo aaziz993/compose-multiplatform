@@ -46,7 +46,7 @@ public class AppBarNavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
         val coroutineScope = rememberCoroutineScope()
 
         router.backStack.lastOrNull()?.let { currentRoute ->
-            val layoutType = if (router.routes.isNavigationItems(authState.auth)) {
+            val layoutType = if (router.routes.isNavigationItems(authState.value)) {
                 val adaptiveInfo = currentWindowAdaptiveInfo()
                 with(adaptiveInfo) {
                     if (windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND))
@@ -67,13 +67,13 @@ public class AppBarNavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 title = { Text(text = currentRoute.route.name.asStringResource(), overflow = TextOverflow.Clip, maxLines = 1) },
                 connectivity = connectivity,
                 components = componentsState.components,
-                theme = themeState.theme,
-                onThemeChange = { value -> themeState.theme = value },
+                theme = themeState.value,
+                onThemeChange = { value -> themeState.value = value },
                 locales = config.localization.locales,
                 locale = localeState.localeInspectionAware(),
-                onLocaleChange = { value -> localeState.locale = value },
-                auth = authState.auth,
-                onAuthChange = { value -> authState.auth = value },
+                onLocaleChange = { value -> localeState.value = value },
+                auth = authState.value,
+                onAuthChange = { value -> authState.value = value },
                 hasBack = router.hasBack,
                 hasDrawer = layoutType == NavigationSuiteType.NavigationDrawer,
                 isDrawerOpen = navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible,
@@ -86,12 +86,11 @@ public class AppBarNavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
             ) { innerPadding ->
                 NavigationSuiteScaffold(
                     navigationSuiteItems = router.routes.items(
-                        router = router,
                         alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
                             { true }
                         }
                         else BaseRoute::enabled,
-                        auth = authState.auth,
+                        auth = authState.value,
                     ),
                     modifier = Modifier.fillMaxSize().padding(innerPadding),
                     layoutType = layoutType,

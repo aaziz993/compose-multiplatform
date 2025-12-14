@@ -1,4 +1,4 @@
-package clib.presentation.components
+package clib.presentation.connectivity.model
 
 import kotlinx.serialization.Serializable
 

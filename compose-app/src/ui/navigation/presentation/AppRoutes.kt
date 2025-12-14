@@ -47,12 +47,13 @@ import clib.di.koinViewModel
 import clib.di.navigation.KoinRoute
 import clib.di.navigation.KoinRoutes
 import clib.di.navigation.rememberKoinScopeNavEntryDecorator
+import clib.presentation.appbar.LocalAppBarState
 import clib.presentation.auth.LocalAuthState
-import clib.presentation.components.LocalComponentsState
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.LocalConfig
-import clib.presentation.connectivity.LocalConnectivity
+import clib.presentation.connectivity.LocalConnectivityState
+import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
@@ -700,25 +701,25 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
-        val connectivity = LocalConnectivity.current
-        val componentsState = LocalComponentsState.current
+        val connectivityStatus = LocalConnectivityStatus.current
+        val componentsState = LocalConnectivityState.current
         val authState = LocalAuthState.current
         val router = currentRouter()
 
         ProfileScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
-            connectivity,
-            componentsState.components,
-            authState.auth,
-            { auth -> authState.auth = auth },
+            connectivityStatus,
+            componentsState.value,
+            authState.value,
+            { auth -> authState.value = auth },
             router::actions,
         )
     }
 
     @Composable
     override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
-        val isAvatar = LocalComponentsState.current.components.appBar.isAvatar
+        val isAvatar = LocalAppBarState.current.value.isAvatar
         return super.isNavigationItem(auth) && !isAvatar
     }
 }
@@ -742,8 +743,8 @@ public data object Verification : KoinRoute<Verification>(), NavRoute {
             route,
             state,
             viewModel::action,
-            authState.auth,
-            { auth -> authState.auth = auth },
+            authState.value,
+            { auth -> authState.value = auth },
             router::actions,
         )
     }
@@ -839,40 +840,44 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
         val coroutineScope = rememberCoroutineScope()
         val scrollState = rememberScrollState()
         val config = LocalConfig.current
-        val connectivity = LocalConnectivity.current
-        val permissionsState = LocalPermissionsState.current
-        val componentsState = LocalComponentsState.current
+        val connectivityStatus = LocalConnectivityStatus.current
+        val appBarState = LocalAppBarState.current
+        val connectivityState = LocalConnectivityState.current
         val themeState = LocalThemeState.current
         val densityState = LocalDensityState.current
         val localeState = LocalLocaleState.current
         val authState = LocalAuthState.current
+        val permissionsState = LocalPermissionsState.current
         val router = currentRouter()
 
         SettingsMainScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
-            connectivity,
+            connectivityStatus,
+            config.ui.appBar,
+            appBarState.value,
+            { value -> appBarState.value = value },
+            config.ui.connectivity,
+            connectivityState.value,
+            { value -> connectivityState.value = value },
+            config.ui.theme,
+            themeState.value,
+            { value -> themeState.value = value },
+            config.ui.density,
+            densityState.value,
+            { value -> densityState.value = value },
+            config.localization.locales,
+            config.localization.locale,
+            localeState.localeInspectionAware(),
+            { value -> localeState.value = value },
+            authState.value,
+            { value -> authState.value = value },
             permissionsState.permissions,
             { value ->
                 coroutineScope.launch {
                     permissionsState.providePermission(value)
                 }
             },
-            config.ui.components,
-            componentsState.components,
-            { value -> componentsState.components = value },
-            config.ui.theme,
-            themeState.theme,
-            { value -> themeState.theme = value },
-            config.ui.density,
-            densityState.density,
-            { value -> densityState.density = value },
-            config.localization.locales,
-            config.localization.locale,
-            localeState.localeInspectionAware(),
-            { value -> localeState.locale = value },
-            authState.auth,
-            { value -> authState.auth = value },
             router::actions,
         )
     }
@@ -895,8 +900,8 @@ public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRo
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.theme,
-            themeState.theme,
-        ) { value -> themeState.theme = value }
+            themeState.value,
+        ) { value -> themeState.value = value }
     }
 }
 
@@ -917,8 +922,8 @@ public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorSc
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.theme,
-            themeState.theme,
-        ) { value -> themeState.theme = value }
+            themeState.value,
+        ) { value -> themeState.value = value }
     }
 }
 
@@ -939,8 +944,8 @@ public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.theme,
-            themeState.theme,
-        ) { value -> themeState.theme = value }
+            themeState.value,
+        ) { value -> themeState.value = value }
     }
 }
 
@@ -961,7 +966,7 @@ public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRout
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             config.ui.theme,
-            themeState.theme,
-        ) { value -> themeState.theme = value }
+            themeState.value,
+        ) { value -> themeState.value = value }
     }
 }

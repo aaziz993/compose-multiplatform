@@ -23,18 +23,21 @@ import clib.data.permission.PermissionsState
 import clib.data.permission.rememberPermissionsState
 import clib.data.share.LocalShare
 import clib.data.share.rememberShare
+import clib.presentation.appbar.AppBarState
+import clib.presentation.appbar.LocalAppBarState
+import clib.presentation.appbar.rememberAppBarState
 import clib.presentation.auth.AuthState
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.auth.rememberAuthState
 import clib.presentation.cache.LocalCache
 import clib.presentation.cache.LocalCoroutineCache
-import clib.presentation.components.ComponentsState
-import clib.presentation.components.LocalComponentsState
-import clib.presentation.components.rememberComponentsState
 import clib.presentation.config.Config
 import clib.presentation.config.LocalConfig
-import clib.presentation.connectivity.LocalConnectivity
+import clib.presentation.connectivity.ConnectivityState
+import clib.presentation.connectivity.LocalConnectivityState
+import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.connectivity.rememberConnectivity
+import clib.presentation.connectivity.rememberConnectivityState
 import clib.presentation.event.EventBus
 import clib.presentation.event.LocalEventBus
 import clib.presentation.event.alert.GlobalAlertDialog
@@ -49,6 +52,7 @@ import clib.presentation.locale.LocalLocalization
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
 import clib.presentation.locale.rememberLocalization
+import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
@@ -86,10 +90,11 @@ public fun AppEnvironment(
     cache: Cache<String, Any> = emptyCache(),
     coroutineCache: CoroutineCache<String, Any> = emptyCoroutineCache(),
     share: Share = rememberShare(),
-    connectivity: Status = rememberConnectivity(createConnectivity(MainScope())),
+    connectivityStatus: Status = rememberConnectivity(createConnectivity(MainScope())),
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
-    componentsState: ComponentsState = rememberComponentsState(config.ui.components),
+    appBarState: AppBarState = rememberAppBarState(config.ui.appBar),
+    connectivityState: ConnectivityState = rememberConnectivityState(config.ui.connectivity),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
     localeState: LocaleState = rememberLocaleState(config.localization.locale),
@@ -98,9 +103,16 @@ public fun AppEnvironment(
     permissionsState: PermissionsState = rememberPermissionsState(),
     onlineText: String = "Online",
     offlineText: String = "Offline",
-    routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
-    navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     routes: Routes,
+    routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
+    navigatorFactory: @Composable (Routes) -> Navigator = {
+        rememberNav3Navigator(
+            routes = it,
+            startRoute = if (it == routes) routes.routes.find { route -> route.name == config.ui.startRoute } as? NavRoute else null,
+            authRoute = routes.find { route -> route.name == config.ui.authRoute } as? NavRoute,
+            authRedirectRoute = routes.find { route -> route.name == config.ui.authRedirectRoute } as? NavRoute,
+        )
+    },
 ) {
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configure()
@@ -112,26 +124,27 @@ public fun AppEnvironment(
         LocalCache provides cache,
         LocalCoroutineCache provides coroutineCache,
         LocalShare provides share,
-        LocalConnectivity provides connectivity,
+        LocalConnectivityStatus provides connectivityStatus,
         LocalStateStore provides stateStore,
         LocalEventBus provides eventBus,
-        LocalComponentsState provides componentsState,
+        LocalAppBarState provides appBarState,
+        LocalConnectivityState provides connectivityState,
         LocalThemeState provides themeState,
-        LocalAppTheme provides themeState.theme.isDark,
+        LocalAppTheme provides themeState.value.isDark(),
         LocalDensityState provides densityState,
-        LocalDensity provides densityState.density,
+        LocalDensity provides densityState.value,
         LocalLocaleState provides localeState,
-        LocalAppLocale provides localeState.locale,
+        LocalAppLocale provides localeState.value,
         LocalLocalization provides localization,
         LocalAuthState provides authState,
         LocalPermissionsState provides permissionsState,
     ) {
-        val theme = themeState.theme
+        val theme = themeState.value
 
-        with(componentsState.components.connectivity) {
-            LaunchedEffect(connectivity) {
+        with(connectivityState.value) {
+            LaunchedEffect(connectivityStatus) {
                 if (isConnectivityAlert)
-                    when (connectivity) {
+                    when (connectivityStatus) {
                         is Status.Connected -> GlobalAlertEventController.sendEvent(
                             AlertEvent(onlineText),
                         )
@@ -142,7 +155,7 @@ public fun AppEnvironment(
                     }
 
                 if (isConnectivitySnackbar)
-                    when (connectivity) {
+                    when (connectivityStatus) {
                         is Status.Connected -> GlobalSnackbarEventController.sendEvent(
                             SnackbarEvent(onlineText),
                         )

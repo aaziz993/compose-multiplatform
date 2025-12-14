@@ -313,7 +313,8 @@ public open class Nav3Navigator(
  * This ensures proper lifecycle management and prevents memory leaks.
  *
  * @param routes The top level route associated with navigator.
- * @param authRoute Optional route representing an authentication screen. If provided, navigator may redirect unauthorized users here.
+ * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
+ * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param auth The current authentication state used to determine access control.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
@@ -322,16 +323,16 @@ public open class Nav3Navigator(
 @Composable
 public fun rememberNav3Navigator(
     routes: Routes,
+    startRoute: NavRoute? = LocalRouter.current?.consumeRoute(),
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onBack: () -> Unit = systemOnBack(),
+    onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
     onError: (Throwable) -> Unit = { e ->
         nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
     },
 ): Navigator {
-    val backStack = rememberNavBackStack(routes)
-    val parentOnBack = LocalRouter.current?.let { it::pop }
+    val backStack = rememberNavBackStack(routes, startRoute)
 
     LaunchedEffect(backStack.toList()) {
         nav3Logger.debug(Nav3Navigator::class.simpleName!!) { "Back stack: ${backStack.joinToString(" -> ")}" }
@@ -344,7 +345,7 @@ public fun rememberNav3Navigator(
             auth,
             authRoute,
             authRedirectRoute,
-            parentOnBack ?: onBack,
+            onBack,
             onError,
         )
     }

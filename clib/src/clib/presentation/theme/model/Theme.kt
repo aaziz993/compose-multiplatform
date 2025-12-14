@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 @Immutable
 @Serializable
 public data class Theme(
-    val isDark: Boolean? = null,
+    val mode: ThemeMode = ThemeMode.SYSTEM,
     val isDynamic: Boolean = false,
     val isHighContrast: Boolean = false,
     val isExpressive: Boolean = true,
@@ -38,30 +38,32 @@ public data class Theme(
             val (lightColorScheme, darkColorScheme) =
                 if (isHighContrast) lightColorSchemeHighContrast to darkColorSchemeHighContrast
                 else lightColorScheme to darkColorScheme
-            return if (isDark ?: isSystemInDarkTheme()) darkColorScheme else lightColorScheme
+            return if (isDark()) darkColorScheme else lightColorScheme
         }
 
     public val currentDynamicColorScheme: DynamicColorScheme
         get() = if (isHighContrast) dynamicColorSchemeHighContrast else dynamicColorScheme
 
-    public fun copyIsDarkToggled(): Theme = when (isDark) {
-        null -> copy(isDark = false)
-        false -> copy(isDark = true)
-        true -> copy(isDark = null)
+    @Composable
+    public fun isDark(): Boolean = isSystemInDarkTheme()
+
+    public fun copyIsDarkToggled(): Theme = when (mode) {
+        ThemeMode.SYSTEM -> copy(mode = ThemeMode.LIGHT)
+        ThemeMode.LIGHT -> copy(mode = ThemeMode.DARK)
+        ThemeMode.DARK -> copy(mode = ThemeMode.ADAPTIVE)
+        ThemeMode.ADAPTIVE -> copy(mode = ThemeMode.SYSTEM)
     }
 
     @Composable
-    public fun copyColorScheme(): (ColorScheme) -> Theme {
-        val isDark = isDark ?: isSystemInDarkTheme()
-        return if (isHighContrast) {
-            if (isDark) { colorScheme -> copy(darkColorSchemeHighContrast = colorScheme) }
+    public fun copyColorScheme(): (ColorScheme) -> Theme =
+        if (isHighContrast) {
+            if (isDark()) { colorScheme -> copy(darkColorSchemeHighContrast = colorScheme) }
             else { colorScheme -> copy(lightColorSchemeHighContrast = colorScheme) }
         }
         else {
-            if (isDark) { colorScheme -> copy(darkColorScheme = colorScheme) }
+            if (isDark()) { colorScheme -> copy(darkColorScheme = colorScheme) }
             else { colorScheme -> copy(lightColorScheme = colorScheme) }
         }
-    }
 
     public fun copyDynamicColorScheme(colorScheme: DynamicColorScheme): Theme =
         if (isHighContrast) copy(dynamicColorSchemeHighContrast = colorScheme) else copy(dynamicColorScheme = colorScheme)

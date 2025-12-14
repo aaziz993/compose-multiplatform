@@ -11,8 +11,6 @@ import clib.data.share.rememberShare
 import clib.di.koinInject
 import clib.presentation.AppEnvironment
 import clib.presentation.auth.AuthState
-import clib.presentation.components.ComponentsState
-import clib.presentation.components.rememberComponentsState
 import clib.presentation.config.Config
 import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.event.EventBus
@@ -37,10 +35,13 @@ import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.location.locale.LocaleService
 import clib.data.type.primitives.string.stringResource
+import clib.presentation.appbar.AppBarState
+import clib.presentation.appbar.rememberAppBarState
+import clib.presentation.connectivity.ConnectivityState
+import clib.presentation.connectivity.rememberConnectivityState
+import clib.presentation.navigation.NavRoute
 import klib.data.share.Share
 import ui.navigation.presentation.App
-import ui.navigation.presentation.Auth
-import ui.navigation.presentation.Services
 
 @Composable
 public fun AppComposable(
@@ -52,7 +53,8 @@ public fun AppComposable(
     connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
-    componentsState: ComponentsState = rememberComponentsState(config.ui.components),
+    appBarState: AppBarState = rememberAppBarState(config.ui.appBar),
+    connectivityState: ConnectivityState = rememberConnectivityState(config.ui.connectivity),
     themeState: ThemeState = rememberThemeState(config.ui.theme),
     densityState: DensityState = rememberDensityState(config.ui.density),
     localeState: LocaleState = rememberLocaleState(config.localization.locale),
@@ -66,9 +68,10 @@ public fun AppComposable(
     navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(
             it,
-            authState.auth,
-            Auth,
-            if (it == routes) Services else null,
+            if (it == routes) routes.routes.find { route -> route.name == config.ui.startRoute } as? NavRoute else null,
+            authState.value,
+            routes.find { route -> route.name == config.ui.authRoute } as? NavRoute,
+            routes.find { route -> route.name == config.ui.authRedirectRoute } as? NavRoute,
         )
     },
 ): Unit = AppEnvironment(
@@ -79,7 +82,8 @@ public fun AppComposable(
     connectivity,
     stateStore,
     eventBus,
-    componentsState,
+    appBarState,
+    connectivityState,
     themeState,
     densityState,
     localeState,
@@ -88,9 +92,9 @@ public fun AppComposable(
     permissionsState,
     onlineText,
     offlineText,
+    routes,
     routerFactory,
     navigatorFactory,
-    routes,
 )
 
 @Preview

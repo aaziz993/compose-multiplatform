@@ -12,7 +12,10 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.serializer
 
 @Composable
-internal fun rememberNavBackStack(routes: Routes): NavBackStack<NavRoute> = rememberSerializable(
+internal fun rememberNavBackStack(
+    routes: Routes,
+    startRoute: NavRoute? = null,
+): NavBackStack<NavRoute> = rememberSerializable(
     serializer = NavBackStackSerializer(PolymorphicSerializer(NavRoute::class)),
     configuration = SavedStateConfiguration {
         serializersModule = SerializersModule {
@@ -24,5 +27,5 @@ internal fun rememberNavBackStack(routes: Routes): NavBackStack<NavRoute> = reme
         }
     },
 ) {
-    NavBackStack(routes.startRoute)
+    NavBackStack(startRoute ?: routes.startRoute)
 }

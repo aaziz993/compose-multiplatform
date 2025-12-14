@@ -28,7 +28,7 @@ import presentation.components.scaffold.AppBar
 public fun NavScreen(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
-    connectivity: Status = Status.Disconnected,
+    connectivityStatus: Status = Status.Disconnected,
     components: Components = Components(),
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
@@ -50,7 +50,7 @@ public fun NavScreen(
 ): Unit = AppBar(
     modifier = modifier,
     title = title,
-    connectivity = connectivity,
+    connectivityStatus = connectivityStatus,
     components = components,
     theme = theme,
     onThemeChange = onThemeChange,

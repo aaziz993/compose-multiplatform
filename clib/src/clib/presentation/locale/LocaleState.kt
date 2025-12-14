@@ -19,17 +19,17 @@ public val LocalLocaleState: ProvidableCompositionLocal<LocaleState> =
 
 public class LocaleState(initialValue: Locale = Locale.current) {
 
-    public var locale: Locale by mutableStateOf(initialValue)
+    public var value: Locale by mutableStateOf(initialValue)
 
     @Suppress("ComposeUnstableReceiver")
     @Composable
     public fun localeInspectionAware(): Locale =
-        (if (LocalInspectionMode.current) null else locale) ?: Locale.forLanguageTag("en-US")
+        (if (LocalInspectionMode.current) null else value) ?: Locale.forLanguageTag("en-US")
 
     public companion object Companion {
 
         public val Saver: Saver<LocaleState, *> = listSaver(
-            save = { listOf(it.locale) },
+            save = { listOf(it.value) },
             restore = { LocaleState(it[0]) },
         )
     }
