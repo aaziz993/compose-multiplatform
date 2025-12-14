@@ -103,7 +103,7 @@ public fun AppEnvironment(
     routes: Routes,
 ) {
     ComposeFoundationFlags.isNewContextMenuEnabled = true
-    config.log.configureKmLogging()
+    config.log.configure()
 
     val localization by rememberLocalization(localeState, localeService)
 

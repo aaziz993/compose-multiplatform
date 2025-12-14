@@ -3,5 +3,5 @@ log:
 script:
   - module: |
       {
-        applicationScript.log.configureKmLogging()
+        applicationScript.log.configure()
       }
