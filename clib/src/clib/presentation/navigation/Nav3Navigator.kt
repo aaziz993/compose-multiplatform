@@ -327,13 +327,13 @@ public fun rememberNav3Navigator(
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onBack: () -> Unit = platformOnBack(),
+    onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
     onError: (Throwable) -> Unit = { e ->
         nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
     },
 ): Navigator {
     val backStack = rememberNavBackStack(routes, startRoute)
-    val pb = LocalRouter.current?.let { it::pop }
+
     LaunchedEffect(backStack.toList()) {
         nav3Logger.debug(Nav3Navigator::class.simpleName!!) { "Back stack: ${backStack.joinToString(" -> ")}" }
     }
@@ -345,7 +345,7 @@ public fun rememberNav3Navigator(
             auth,
             authRoute,
             authRedirectRoute,
-            pb ?: onBack,
+            onBack,
             onError,
         )
     }
