@@ -1,8 +1,8 @@
-package klib.data.type.primitives.number.decimal.model
+package klib.data.type.primitives.number.model
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.decimal.toBigDecimal
-import klib.data.type.primitives.number.decimal.decimalLogger
+import klib.data.type.primitives.number.numberLogger
 
 /**
  * Result of formatting a decimal number, containing both display and parseable formats.
@@ -77,5 +77,7 @@ public class FormattedDecimal internal constructor(
     override fun toString(): String = displayValue
 
     private fun logError(message: String?) =
-        decimalLogger.error { "Error converting '$parseableValue' to BigDecimal: $message" }
+        numberLogger.error(null, FormattedDecimal::class.simpleName!!) {
+            "Error converting '$parseableValue' to BigDecimal: $message"
+        }
 }

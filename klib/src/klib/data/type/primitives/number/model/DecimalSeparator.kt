@@ -1,4 +1,4 @@
-package klib.data.type.primitives.number.decimal.model
+package klib.data.type.primitives.number.model
 
 /**
  * Enum representing the decimal separator options.

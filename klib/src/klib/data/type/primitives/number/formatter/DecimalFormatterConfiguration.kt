@@ -1,8 +1,8 @@
-package klib.data.type.primitives.number.decimal.formatter
+package klib.data.type.primitives.number.formatter
 
-import klib.data.type.primitives.number.decimal.model.DecimalInputMode
-import klib.data.type.primitives.number.decimal.model.DecimalSeparator
-import klib.data.type.primitives.number.decimal.model.ThousandSeparator
+import klib.data.type.primitives.number.model.DecimalInputMode
+import klib.data.type.primitives.number.model.DecimalSeparator
+import klib.data.type.primitives.number.model.ThousandSeparator
 
 /**
  * Configuration for decimal number formatting.

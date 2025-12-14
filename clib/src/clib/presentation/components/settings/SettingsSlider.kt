@@ -23,7 +23,7 @@ import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import com.alorma.compose.settings.ui.base.internal.SettingsTileScaffold
-import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
+import klib.data.type.primitives.number.formatter.DecimalFormatter
 import kotlin.math.roundToInt
 import pro.respawn.kmmutils.common.signChar
 

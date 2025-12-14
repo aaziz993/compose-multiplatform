@@ -26,7 +26,7 @@ import clib.data.type.toHSL
 import clib.presentation.components.color.common.ColorSlider
 import clib.presentation.components.color.common.SelectedColorDetail
 import clib.presentation.components.slider.CircularSlider
-import klib.data.type.primitives.number.decimal.formatter.DecimalFormatter
+import klib.data.type.primitives.number.formatter.DecimalFormatter
 import kotlin.math.roundToInt
 
 /**

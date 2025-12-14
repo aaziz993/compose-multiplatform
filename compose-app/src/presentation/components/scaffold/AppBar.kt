@@ -86,6 +86,7 @@ import presentation.components.tooltipbox.AppPlainTooltipBox
 import presentation.connectivity.CircleIcon
 import presentation.connectivity.DefaultIcon
 import presentation.connectivity.Text
+import presentation.connectivity.stringResource
 import presentation.theme.model.IsDarkIcon
 import ui.navigation.presentation.Profile
 
@@ -145,7 +146,11 @@ public fun AppBar(
                             if (components.connectivity.isConnectivityIndicatorText)
                                 connectivity.Text(overflow = TextOverflow.Clip, maxLines = 1)
 
-                            if (components.connectivity.isConnectivityIndicator) connectivity.DefaultIcon()
+                            if (components.connectivity.isConnectivityIndicator) {
+                                AppPlainTooltipBox(tooltip = connectivity.stringResource()) {
+                                    connectivity.DefaultIcon()
+                                }
+                            }
                         }
                     }
                 },

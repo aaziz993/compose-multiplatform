@@ -1,10 +1,10 @@
-package klib.data.type.primitives.number.decimal.formatter
+package klib.data.type.primitives.number.formatter
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
-import klib.data.type.primitives.number.decimal.decimalLogger
-import klib.data.type.primitives.number.decimal.model.DecimalInputMode
-import klib.data.type.primitives.number.decimal.model.FormattedDecimal
-import klib.data.type.primitives.number.decimal.model.ThousandSeparator
+import klib.data.type.primitives.number.model.DecimalInputMode
+import klib.data.type.primitives.number.model.FormattedDecimal
+import klib.data.type.primitives.number.model.ThousandSeparator
+import klib.data.type.primitives.number.numberLogger
 
 /**
  * A formatter for decimal numbers with configurable separators and decimal places.
@@ -228,7 +228,9 @@ public class DecimalFormatter(private val configuration: DecimalFormatterConfigu
      * Creates the display value using locale-specific separators with prefix and suffix
      */
     private fun createDisplayValue(result: FormattingResult): String {
-        decimalLogger.debug { "Creating display value for: ${result.integerPart}.${result.decimalPart}" }
+        numberLogger.debug(DecimalFormatter::class.simpleName!!) {
+            "Creating display value for: ${result.integerPart}.${result.decimalPart}"
+        }
 
         val coreFormatting = if (configuration.decimalPlaces == 0) {
             // Whole number
