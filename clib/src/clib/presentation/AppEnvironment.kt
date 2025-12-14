@@ -113,8 +113,8 @@ public fun AppEnvironment(
         rememberNav3Navigator(
             routes = it,
             startRoute = if (it == routes) routes.routes.find { route -> route.name == config.ui.startRoute } as? NavRoute else null,
-            authRoute = routes.find { route -> route.name == config.ui.authRoute } as? NavRoute,
-            authRedirectRoute = routes.find { route -> route.name == config.ui.authRedirectRoute } as? NavRoute,
+            authRoute = routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
+            authRedirectRoute = routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute?,
         )
     },
 ) {

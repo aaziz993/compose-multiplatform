@@ -85,6 +85,10 @@ ui:
       metadata:
         topAppBarNavSuite: true
       authResource: { }
+    settings_route:
+      metadata:
+        topAppBarNavSuite: true
+      authResource: { }
 
 
 

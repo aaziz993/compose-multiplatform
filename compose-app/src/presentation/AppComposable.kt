@@ -44,6 +44,8 @@ import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberRoutesState
 import klib.data.share.Share
 import ui.navigation.presentation.App
+import ui.navigation.presentation.News
+import ui.navigation.presentation.Services
 
 @Composable
 public fun AppComposable(
@@ -73,8 +75,8 @@ public fun AppComposable(
             it,
             if (it == routes) routes.routes.find { route -> route.name == config.ui.startRoute } as? NavRoute else null,
             authState.value,
-            routes.find { route -> route.name == config.ui.authRoute } as? NavRoute,
-            routes.find { route -> route.name == config.ui.authRedirectRoute } as? NavRoute,
+            routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
+            Services,
         )
     },
 ): Unit = AppEnvironment(

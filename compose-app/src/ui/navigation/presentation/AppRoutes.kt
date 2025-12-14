@@ -855,7 +855,6 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
         val themeState = LocalThemeState.current
         val densityState = LocalDensityState.current
         val localeState = LocalLocaleState.current
-        val authState = LocalAuthState.current
         val permissionsState = LocalPermissionsState.current
         val routesState = LocalRoutesState.current
         val router = currentRouter()
@@ -880,17 +879,15 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
             config.localization.locale,
             localeState.localeInspectionAware(),
             { value -> localeState.value = value },
-            authState.value,
-            { value -> authState.value = value },
+            config.ui.routes,
+            routesState.value,
+            { route, value -> routesState[route] = value },
             permissionsState.permissions,
             { value ->
                 coroutineScope.launch {
                     permissionsState.providePermission(value)
                 }
             },
-            config.ui.routes,
-            routesState.value,
-            { route, value -> routesState[route] = value },
             router::actions,
         )
     }

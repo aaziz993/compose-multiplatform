@@ -121,13 +121,11 @@ public fun SettingsMainScreen(
     defaultLocale: Locale = Locale.current,
     locale: Locale = defaultLocale,
     onLocaleChange: (Locale) -> Unit = {},
-    auth: Auth = Auth(),
-    onAuthChange: (Auth) -> Unit = {},
-    permissions: Set<Permission> = emptySet(),
-    onPermissionChange: (Permission?) -> Unit = { true },
     defaultRoutes: Map<String, RouteConfig> = emptyMap(),
     routes: Map<String, RouteConfig> = defaultRoutes,
     onRoutesChange: (String, RouteConfig) -> Unit = { _, _ -> },
+    permissions: Set<Permission> = emptySet(),
+    onPermissionChange: (Permission?) -> Unit = { true },
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
@@ -382,6 +380,19 @@ public fun SettingsMainScreen(
                 onAppBarChange(appBar.copy(isAvatar = value))
             },
         )
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.route),
+            enabled = true,
+            icon = Icons.Default.Route,
+        ) {
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.PopTo(SettingsRoute),
+                    NavigationAction.Push(SettingsRoute),
+                ),
+            )
+        }
     }
 
     SettingsGroup(
@@ -418,19 +429,6 @@ public fun SettingsMainScreen(
             permissions = permissions,
             coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
-        )
-    }
-
-    SettingsMenuLink(
-        title = stringResource(Res.string.route),
-        enabled = true,
-        icon = Icons.Default.Route,
-    ) {
-        onNavigationActions(
-            arrayOf(
-                NavigationAction.PopTo(SettingsRoute),
-                NavigationAction.Push(SettingsRoute),
-            ),
         )
     }
 
