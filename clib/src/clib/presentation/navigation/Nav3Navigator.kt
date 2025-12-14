@@ -31,16 +31,23 @@ public open class Nav3Navigator(
     private val auth: Auth,
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
-    private val onUnknownRoute: (NavRoute) -> Unit,
     private val onBack: () -> Unit,
+    private val onError: (Throwable) -> Unit,
 ) : Navigator {
 
     init {
         auth()
     }
 
-    /** Coroutine scope for scheduling back navigation calls. */
+    /**
+     * Coroutine scope for scheduling back navigation calls.
+     */
     private val mainScope = MainScope()
+
+    /**
+     * Callback called when route isn't in the current top level route.
+     */
+    override lateinit var onUnknownRoute: (NavRoute) -> Unit
 
     /**
      * Applies an array of navigation actions to the back stack.
@@ -66,7 +73,7 @@ public open class Nav3Navigator(
                 ) return
             }
             catch (e: RuntimeException) {
-                return nav3Logger.error(e, Nav3Navigator::class.simpleName!!) { "Navigation failed '$action'" }
+                return onError(e)
             }
         }
 
@@ -91,7 +98,7 @@ public open class Nav3Navigator(
         onBackRequested: () -> Unit,
     ): Boolean {
         when (action) {
-            is NavigationAction.Push -> return push(snapshot, action)
+            is NavigationAction.Push -> return push(snapshot, action, onUnknownRoute)
             is NavigationAction.ReplaceCurrent -> replaceCurrent(snapshot, action)
             is NavigationAction.ReplaceStack -> replaceStack(snapshot, action)
             is NavigationAction.PopTo -> popTo(snapshot, action)
@@ -115,6 +122,7 @@ public open class Nav3Navigator(
     protected open fun push(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.Push,
+        onUnknownRoute: (NavRoute) -> Unit,
     ): Boolean {
         val route = if (action.route.route.isAuth(auth)) action.route
         else {
@@ -317,8 +325,10 @@ public fun rememberNav3Navigator(
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onUnknownRoute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { router.push(it) } } ?: {},
     onBack: () -> Unit = systemOnBack(),
+    onError: (Throwable) -> Unit = { e ->
+        nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
+    },
 ): Navigator {
     val backStack = rememberNavBackStack(routes)
     val parentOnBack = LocalRouter.current?.let { it::pop }
@@ -334,8 +344,8 @@ public fun rememberNav3Navigator(
             auth,
             authRoute,
             authRedirectRoute,
-            onUnknownRoute,
             parentOnBack ?: onBack,
+            onError,
         )
     }
 }

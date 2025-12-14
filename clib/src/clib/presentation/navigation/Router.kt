@@ -34,18 +34,31 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  * This class is designed to be used as the primary navigation interface in applications.
  *
  * @param routes The current top level route.
- * @param onDeepRoute The callback to handle deep route action.
+ * @param onReroute The callback to handle reroute of route to related top level router.
  */
 public open class Router(
-    public val routes: Routes,
-    public val onDeepRoute: Router.(NavRoute) -> Unit = { navRoute -> push(navRoute) },
+    override val routes: Routes,
+    public val onReroute: Router.(NavRoute) -> Unit = { navRoute -> push(navRoute) },
 ) : BaseRouter(), Node<Router> {
 
-    /** Parent router in nested navigation hierarchy. */
+    /**
+     *  The callback called when route isn't in the current top level route.
+     */
+    override val onUnknownRoute: (NavRoute) -> Unit
+        get() = {
+            val root = head()
+            val t = 0
+        }
+
+    /**
+     * Parent router in nested navigation hierarchy.
+     */
     override var prev: Router? by mutableStateOf(null)
         internal set
 
-    /** Parent child router in nested navigation hierarchy. */
+    /**
+     * Parent child router in nested navigation hierarchy.
+     */
     override var next: Router? by mutableStateOf(null)
         internal set
 
@@ -73,22 +86,22 @@ public open class Router(
         require(routes.isNotEmpty()) { "Screens must not be empty" }
 
         val actions = routes.map(NavigationAction::Push).toTypedArray()
-        navigationActionQueue.actions(*actions)
+        actions(*actions)
     }
 
-//    public fun push(url: Url) {
+    //    public fun push(url: Url) {
 //        val root = head()
 //        val routes = root.routes.findRouteChain(url) ?: return
 //        if (routes.isEmpty()) return
 //        root.routeQueue = ArrayDeque(routes)
 //    }
 //
-//    internal fun consumeDeepRoute() {
-//        val queue = head().routeQueue
-//        if (queue.isEmpty()) return
-//        val route = queue.removeFirst()
-//        push(route)
-//    }
+    internal fun consumeForwarded() {
+        val queue = head().routeQueue
+        if (queue.isEmpty()) return
+        val route = queue.removeFirst()
+        onReroute(route)
+    }
 
     /**
      * Replaces the current top route with a new route.

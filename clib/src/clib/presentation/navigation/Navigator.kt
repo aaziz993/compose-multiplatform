@@ -16,6 +16,11 @@ public interface Navigator {
     public val backStack: List<NavRoute>
 
     /**
+     * Callback called when route not in current top level route.
+     */
+    public var onUnknownRoute: (NavRoute) -> Unit
+
+    /**
      * Applies an array of navigation commands to the navigation stack.
      *
      * @param actions Array of actions to apply to the navigation stack

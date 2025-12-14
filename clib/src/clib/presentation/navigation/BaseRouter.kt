@@ -10,6 +10,16 @@ package clib.presentation.navigation
 public abstract class BaseRouter {
 
     /**
+     *  The top level route.
+     */
+    public abstract val routes: Routes
+
+    /**
+     *  The callback called when route isn't in the current top level route.
+     */
+    protected abstract val onUnknownRoute: (NavRoute) -> Unit
+
+    /**
      * Action queue that manages action execution and navigator lifecycle.
      *
      * This is internal to prevent direct access from outside the library,
@@ -31,5 +41,6 @@ public abstract class BaseRouter {
      *
      * @param actions Variable number of actions to execute
      */
-    public fun actions(vararg actions: NavigationAction): Unit = navigationActionQueue.actions(*actions)
+    public fun actions(vararg actions: NavigationAction): Unit =
+        navigationActionQueue.actions(*actions)
 }

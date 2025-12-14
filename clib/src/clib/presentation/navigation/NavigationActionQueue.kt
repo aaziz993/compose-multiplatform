@@ -16,7 +16,9 @@ import kotlinx.coroutines.launch
  *
  * All action execution happens on the Main dispatcher to ensure UI thread safety.
  */
-public class NavigationActionQueue : NavigatorHolder {
+public class NavigationActionQueue(
+    private val onUnknownRoute: (NavRoute) -> Unit,
+) : NavigatorHolder {
 
     /** Currently attached navigator, null if none is set. */
     internal var attachedNavigator: Navigator? by mutableStateOf(null)
@@ -37,6 +39,7 @@ public class NavigationActionQueue : NavigatorHolder {
      * @param navigator The navigator to register
      */
     override fun setNavigator(navigator: Navigator) {
+        navigator.onUnknownRoute = onUnknownRoute
         attachedNavigator = navigator
         if (pendingActions.isNotEmpty()) {
             val snapshot = pendingActions.toList()
