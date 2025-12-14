@@ -5,7 +5,6 @@ import klib.data.cache.kache.InMemoryKache
 import klib.data.cache.kache.KacheKeys
 import klib.data.cache.kache.KacheStrategy
 import klib.data.cache.kache.file.KotlinxIOFileKache.Configuration
-import klib.data.cache.kache.file.journal.FILES_DIR
 import klib.data.cache.kache.file.journal.JOURNAL_FILE
 import klib.data.cache.kache.file.journal.JournalException
 import klib.data.cache.kache.file.journal.JournalWriter
