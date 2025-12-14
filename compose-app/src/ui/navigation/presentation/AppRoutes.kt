@@ -75,7 +75,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import ui.about.AboutScreen
-import ui.auth.forgotpassword.presentation.ForgotPinCodeScreen
+import ui.auth.resetpincode.presentation.ResetPinCodeScreen
 import ui.auth.hotp.HotpScreen
 import ui.auth.hotp.viewmodel.HotpViewModel
 import ui.auth.login.presentation.LoginScreen
@@ -142,7 +142,7 @@ public data object App : KoinRoutes() {
 public data object Auth : KoinRoutes(), AuthRoute {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Phone, Hotp, Totp, PinCode, ForgotPinCode, Login)
+        listOf(Phone, Hotp, Totp, PinCode, ResetPinCode, Login)
     }
 
     @Composable
@@ -288,17 +288,17 @@ public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
 }
 
 @Serializable
-@SerialName("forgot_pin_code")
-public data object ForgotPinCode : KoinRoute<ForgotPinCode>(), NavRoute, AuthRoute {
+@SerialName("reset_pin_code")
+public data object ResetPinCode : KoinRoute<ResetPinCode>(), NavRoute, AuthRoute {
 
     @Composable
     override fun Content(
-        route: ForgotPinCode,
+        route: ResetPinCode,
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val router = currentRouter()
 
-        ForgotPinCodeScreen(
+        ResetPinCodeScreen(
             Modifier,
             route,
             router::actions,
@@ -999,6 +999,6 @@ public data object SettingsRoute : KoinRoute<SettingsRoute>(), NavRoute {
             route,
             config.ui.routes,
             routesState.value,
-        ) { route, value -> routesState.value[route] = value }
+        ) { route, value -> routesState[route] = value }
     }
 }

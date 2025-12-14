@@ -1,19 +1,19 @@
-package ui.auth.forgotpassword.presentation
+package ui.auth.resetpincode.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import clib.presentation.navigation.NavigationAction
 import androidx.compose.ui.tooling.preview.Preview
-import ui.navigation.presentation.ForgotPinCode
+import ui.navigation.presentation.ResetPinCode
 
 @Composable
-public fun ForgotPinCodeScreen(
+public fun ResetPinCodeScreen(
     modifier: Modifier = Modifier,
-    route: ForgotPinCode = ForgotPinCode,
+    route: ResetPinCode = ResetPinCode,
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ) {
 }
 
 @Preview
 @Composable
-private fun PreviewForgotPinCodeScreen(): Unit = ForgotPinCodeScreen()
+private fun PreviewForgotPinCodeScreen(): Unit = ResetPinCodeScreen()

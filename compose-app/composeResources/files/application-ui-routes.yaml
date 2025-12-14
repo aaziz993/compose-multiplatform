@@ -15,7 +15,7 @@ ui:
     pin_code:
       metadata:
         topAppBarNavSuite: true
-    forgot_pin_code:
+    reset_pin_code:
       metadata:
         topAppBarNavSuite: true
     login:
