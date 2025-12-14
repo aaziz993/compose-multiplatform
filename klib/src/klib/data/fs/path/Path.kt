@@ -95,9 +95,9 @@ public fun Path.move(destination: String): Unit =
 public fun Path.copy(destination: String, bufferSize: Long = BUFFER_SIZE.toLong()): Unit =
     SystemFileSystem.copy(this, destination.toPath(), bufferSize)
 
-public fun Path.delete(mustExist: Boolean = true): Unit = SystemFileSystem.delete(this, mustExist)
+public fun Path.delete(mustExist: Boolean = false): Unit = SystemFileSystem.delete(this, mustExist)
 
-public fun Path.deleteRecursively(mustExist: Boolean = true): Unit =
+public fun Path.deleteRecursively(mustExist: Boolean = false): Unit =
     metadata().deleteRecursively(
         { SystemFileSystem.list(this).map(Path::metadata) },
         mustExist,
@@ -133,12 +133,13 @@ public suspend fun Path.write(
     }
 }
 
-public fun Path.resolve(child: String, normalize: Boolean): Path = toOkioPath().resolve(child, normalize).toPath()
+public fun Path.resolve(child: String, normalize: Boolean = false): Path =
+    toOkioPath().resolve(child, normalize).toPath()
 
-public fun Path.resolve(child: ByteString, normalize: Boolean): Path =
+public fun Path.resolve(child: ByteString, normalize: Boolean = false): Path =
     toOkioPath().resolve(child.toOkioByteString(), normalize).toPath()
 
-public fun Path.resolve(child: Path, normalize: Boolean): Path =
+public fun Path.resolve(child: Path, normalize: Boolean = false): Path =
     toOkioPath().resolve(child.toOkioPath(), normalize).toPath()
 
 @JvmName("resolve")

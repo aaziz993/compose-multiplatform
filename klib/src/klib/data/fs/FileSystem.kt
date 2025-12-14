@@ -3,6 +3,7 @@ package klib.data.fs
 import klib.data.BUFFER_SIZE
 import kotlinx.io.Buffer
 import kotlinx.io.IOException
+import kotlinx.io.files.FileMetadata
 import kotlinx.io.files.FileSystem
 import kotlinx.io.files.Path
 
@@ -15,6 +16,10 @@ public val Regex.Companion.FILE: Regex
 public fun String.isFileUrl(): Boolean = matches(Regex.FILE)
 
 public expect fun String.isValidFileUrl(): Boolean
+
+public fun FileSystem.metadata(path: Path): FileMetadata = requireNotNull(metadataOrNull(path)) {
+    "No metadata on path '$path'"
+}
 
 public expect fun FileSystem.canonicalize(path: Path): Path
 
@@ -32,4 +37,9 @@ public fun FileSystem.copy(source: Path, destination: Path, bufferSize: Long = B
             }
         }
     }
+}
+
+public fun FileSystem.atomicMove(source: Path, target: Path, deleteTarget: Boolean) {
+    if (deleteTarget) delete(target)
+    atomicMove(source, target)
 }
