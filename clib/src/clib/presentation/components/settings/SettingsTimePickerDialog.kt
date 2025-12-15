@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
-import clib.data.type.state.localTime
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
@@ -51,7 +50,7 @@ public fun SettingsTimePickerDialog(
 ) {
     var dialog by remember { mutableStateOf(false) }
     if (dialog) {
-        var showDial by remember { mutableStateOf(true) }
+        var displayMode by remember { mutableStateOf(TimePickerDisplayMode.Picker) }
         val state = rememberTimePickerState(initialValue.hour, initialValue.minute, true)
         TimePickerDialog(
             {
@@ -66,7 +65,10 @@ public fun SettingsTimePickerDialog(
             {
                 TimePickerDialogDefaults.DisplayModeToggle(
                     {
-                        showDial = !showDial
+                        when (displayMode) {
+                            TimePickerDisplayMode.Picker -> displayMode = TimePickerDisplayMode.Input
+                            TimePickerDisplayMode.Input -> displayMode = TimePickerDisplayMode.Picker
+                        }
                     },
                     TimePickerDisplayMode.Picker,
                 )
@@ -75,7 +77,10 @@ public fun SettingsTimePickerDialog(
             shape,
             containerColor,
         ) {
-            if (showDial) TimePicker(state) else TimeInput(state)
+            when (displayMode) {
+                TimePickerDisplayMode.Picker -> TimePicker(state)
+                TimePickerDisplayMode.Input -> TimeInput(state)
+            }
         }
     }
 

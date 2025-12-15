@@ -17,8 +17,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.MenuOpen
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
+import androidx.compose.material.icons.automirrored.filled.ViewSidebar
+import androidx.compose.material.icons.automirrored.outlined.ViewSidebar
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material.icons.outlined.Menu
@@ -164,7 +168,7 @@ public fun TopAppBar(
                             ) {
                                 AppPlainTooltipBox(tooltip = stringResource(Res.string.menu)) {
                                     Icon(
-                                        imageVector = if (isDrawerOpen) Icons.Outlined.Menu else Icons.Filled.Menu,
+                                        imageVector = if (isDrawerOpen) Icons.AutoMirrored.Filled.ViewSidebar else Icons.AutoMirrored.Outlined.ViewSidebar,
                                         contentDescription = stringResource(Res.string.menu),
                                     )
                                 }

@@ -49,7 +49,7 @@ public fun ColorPickerBottomSheet(
     onClose: () -> Unit = onDismissRequest,
     initialColor: Color = Color.White,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-    picker: ColorPicker = ColorPicker()
+    picker: ColorPicker = ColorPicker(),
 ): Unit = ModalBottomSheet(
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
