@@ -321,7 +321,7 @@ public open class Nav3Navigator(
 @Composable
 public fun rememberNav3Navigator(
     routes: Routes,
-    startRoute: NavRoute? = LocalRouter.current?.routePath?.firstOrNull(),
+    startRoute: NavRoute? = LocalRouter.current?.navRoutePath?.firstOrNull(),
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,

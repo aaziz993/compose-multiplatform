@@ -110,11 +110,12 @@ public fun AppEnvironment(
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
+        val isRoot = it == routes
         rememberNav3Navigator(
             routes = it,
-            startRoute = if (it == routes) routes.routes.find { route -> route.name == config.ui.startRoute } as? NavRoute else null,
+            startRoute = if (isRoot) routes.routes.find { route -> route.name == config.ui.startRoute } as NavRoute? else null,
             authRoute = routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
-            authRedirectRoute = routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute?,
+            authRedirectRoute = if (isRoot) routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute? else null,
         )
     },
 ) {

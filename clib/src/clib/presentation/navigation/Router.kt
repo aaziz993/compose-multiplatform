@@ -55,15 +55,15 @@ public open class Router(
         private set
 
     /**
-     * Currently registered navigators has back.
+     * Currently registered navigator's has pop back.
      */
-    public val hasBack: Boolean
-        get() = backStack.size > 1 || prev?.hasBack == true
+    public val hasPopBack: Boolean
+        get() = backStack.size > 1 || prev?.hasPopBack == true
 
     /**
-     * Nested route path.
+     * Nested nav route path.
      */
-    public var routePath: List<NavRoute> = emptyList()
+    public var navRoutePath: List<NavRoute> = emptyList()
         private set
 
     /**
@@ -72,20 +72,20 @@ public open class Router(
     override val onUnknownRoute: (NavRoute) -> Unit
         get() = { navRoute ->
             routes.navRoutePath(navRoute)?.let {
-                routePath = it.drop()
+                navRoutePath = it.drop()
                 onReroute(it.first())
             } ?: prev?.onUnknownRoute(navRoute)
         }
 
     /**
-     * Creates parent child router relationship.
+     * Creates parent child routers relationship.
      */
     public fun bind(parentRouter: Router) {
         require(this != parentRouter) { "Router can't be parent of itself" }
 
         parentRouter.next = this
         prev = parentRouter
-        routePath = parentRouter.routePath.drop()
+        navRoutePath = parentRouter.navRoutePath.drop()
     }
 
     /**
@@ -181,4 +181,5 @@ public fun rememberRouter(
 ): Router = remember(*keys) { factory() }
 
 @Composable
-public fun currentRouter(): Router = checkNotNull(LocalRouter.current) { "No Router was provided via LocalRouter" }
+public fun currentRouter(): Router =
+    checkNotNull(LocalRouter.current) { "No Router was provided via LocalRouter" }

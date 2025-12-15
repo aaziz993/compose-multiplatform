@@ -77,7 +77,7 @@ public class TopAppBarNavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 onLocaleChange = { value -> localeState.value = value },
                 auth = authState.value,
                 onAuthChange = { value -> authState.value = value },
-                hasBack = router.hasBack,
+                hasBack = router.hasPopBack,
                 hasDrawer = layoutType == NavigationSuiteType.NavigationDrawer,
                 isDrawerOpen = navigationSuiteScaffoldState.currentValue == NavigationSuiteScaffoldValue.Visible,
                 onDrawerToggle = {
