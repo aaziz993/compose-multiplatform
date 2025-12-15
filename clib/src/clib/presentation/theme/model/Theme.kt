@@ -25,6 +25,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import pro.respawn.kmmutils.datetime.plusDays
+import pro.respawn.kmmutils.datetime.withTime
 
 @Immutable
 @Serializable
@@ -81,7 +82,7 @@ public data class Theme(
     public fun copyDynamicColorScheme(colorScheme: DynamicColorScheme): Theme =
         if (isHighContrast) copy(dynamicColorSchemeHighContrast = colorScheme) else copy(dynamicColorScheme = colorScheme)
 
-    //    @Suppress("ComposeNamingUppercase")
+//    @Suppress("ComposeNamingUppercase")
 //    @Composable
 //    public fun isAdaptiveDark(): Boolean {
 //        produceState(isNighTime()) {
@@ -89,15 +90,15 @@ public data class Theme(
 //                val now = LocalDateTime.now()
 //
 //                val nextChange = when {
-//                    now.hour < 6 -> LocalTime(6, 0, 0)
-//                    now.hour < 19 -> LocalTime(19, 0, 0)
-//                    else -> now.plusDays(1).withH LocalTime (1
-//                        , 6, 0)
+//                    now.hour < 6 -> now.withTime(LocalTime(6, 0, 0))
+//                    now.hour < 19 -> now.withTime(LocalTime(19, 0, 0))
+//                    else -> now.plusDays(1, TimeZone.currentSystemDefault()).withTime(LocalTime(1, 6, 0))
 //                }
 //            }
 //        }
 //    }
-//
+
+    //
     private fun isNighTime(): Boolean {
         val hour = LocalTime.now(TimeZone.currentSystemDefault()).hour
         return hour < lightModeTime.hour || hour >= darkModeTime.hour

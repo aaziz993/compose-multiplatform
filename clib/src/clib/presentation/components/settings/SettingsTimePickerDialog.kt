@@ -42,7 +42,6 @@ public fun SettingsTimePickerDialog(
     confirmButton: @Composable () -> Unit = {},
     dialogModifier: Modifier = Modifier,
     dialogProperties: DialogProperties = DialogProperties(),
-    modeToggleButton: (@Composable () -> Unit)? = null,
     dismissButton: (@Composable () -> Unit)? = null,
     shape: Shape = TimePickerDialogDefaults.shape,
     containerColor: Color = TimePickerDialogDefaults.containerColor,
