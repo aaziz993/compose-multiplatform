@@ -1,8 +1,10 @@
 package clib.presentation.components.settings
 
+import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDialog
 import androidx.compose.material3.TimePickerDialogDefaults
+import androidx.compose.material3.TimePickerDisplayMode
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,6 +40,7 @@ public fun SettingsTimePickerDialog(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+    confirmButton: @Composable () -> Unit = {},
     dialogModifier: Modifier = Modifier,
     dialogProperties: DialogProperties = DialogProperties(),
     modeToggleButton: (@Composable () -> Unit)? = null,
@@ -48,23 +51,31 @@ public fun SettingsTimePickerDialog(
 ) {
     var dialog by remember { mutableStateOf(false) }
     if (dialog) {
+        var showDial by remember { mutableStateOf(true) }
         val state = rememberTimePickerState(initialValue.hour, initialValue.minute, true)
         TimePickerDialog(
             {
                 dialog = false
             },
             {
-                dialog = onValueChanged(state.localTime)
+
             },
             title,
             dialogModifier,
             dialogProperties,
-            modeToggleButton,
+            {
+                TimePickerDialogDefaults.DisplayModeToggle(
+                    {
+                        showDial = !showDial
+                    },
+                    TimePickerDisplayMode.Picker,
+                )
+            },
             dismissButton,
             shape,
             containerColor,
         ) {
-            TimePicker(state)
+            if (showDial) TimePicker(state) else TimeInput(state)
         }
     }
 

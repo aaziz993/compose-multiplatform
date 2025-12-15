@@ -35,6 +35,9 @@ public fun SettingsTimePickerDialog(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+    confirmButton: @Composable () -> Unit = {
+        Text("Confirm")
+    },
     dialogModifier: Modifier = Modifier,
     dialogProperties: DialogProperties = DialogProperties(),
     modeToggleButton: (@Composable () -> Unit)? = null,
@@ -54,6 +57,7 @@ public fun SettingsTimePickerDialog(
     tonalElevation,
     shadowElevation,
     semanticProperties,
+    confirmButton,
     dialogModifier,
     dialogProperties,
     modeToggleButton,

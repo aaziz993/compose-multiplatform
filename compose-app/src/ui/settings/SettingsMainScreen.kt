@@ -3,6 +3,7 @@ package ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
@@ -156,6 +157,7 @@ public fun SettingsMainScreen(
             initialValue = theme.lightModeTime,
             enabled = true,
             subtitle = { Text(theme.lightModeTime.toString()) },
+            dialogModifier = Modifier.padding(16.dp),
         ) { value ->
             onThemeChange(theme.copy(lightModeTime = value))
             false
@@ -166,6 +168,7 @@ public fun SettingsMainScreen(
             initialValue = theme.darkModeTime,
             enabled = true,
             subtitle = { Text(theme.darkModeTime.toString()) },
+            dialogModifier = Modifier.padding(16.dp),
         ) { value ->
             onThemeChange(theme.copy(darkModeTime = value))
             false
