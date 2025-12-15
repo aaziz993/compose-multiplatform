@@ -40,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
-import clib.data.type.ColorSerial
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
@@ -51,6 +50,7 @@ import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.action_icon_content_color
 import compose_app.generated.resources.app_bar
 import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.app_bar_locales
@@ -65,6 +65,7 @@ import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
 import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.connectivity_snackbar
+import compose_app.generated.resources.container_color
 import compose_app.generated.resources.dark_mode_time
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
@@ -77,15 +78,18 @@ import compose_app.generated.resources.line_height
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
+import compose_app.generated.resources.navigation_icon_content_color
 import compose_app.generated.resources.permission
-import compose_app.generated.resources.primary
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.route
+import compose_app.generated.resources.scrolled_container_color
 import compose_app.generated.resources.search
 import compose_app.generated.resources.shapes
+import compose_app.generated.resources.subtitle_content_color
 import compose_app.generated.resources.theme
 import compose_app.generated.resources.title
+import compose_app.generated.resources.title_content_color
 import compose_app.generated.resources.typography
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
@@ -149,7 +153,7 @@ public fun SettingsMainScreen(
         contentPadding = PaddingValues(16.dp),
     ) {
         SettingsSliderFinished(
-            title = stringResource(Res.string.height),
+            title = stringResource(Res.string.line_height),
             initialValue = density.fontScale,
             icon = { Icons.Default.Height },
             enabled = true,
