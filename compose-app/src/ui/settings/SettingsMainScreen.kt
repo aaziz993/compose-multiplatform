@@ -3,7 +3,6 @@ package ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
@@ -50,6 +49,7 @@ import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.app_bar
 import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.app_bar_locales
 import compose_app.generated.resources.app_bar_support
@@ -59,6 +59,7 @@ import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.clear
 import compose_app.generated.resources.color_scheme
+import compose_app.generated.resources.connectivity
 import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
 import compose_app.generated.resources.connectivity_indicator_text
@@ -140,7 +141,136 @@ public fun SettingsMainScreen(
     SettingsGroup(
         modifier = Modifier,
         enabled = true,
-        title = { Text(text = stringResource(Res.string.appearance)) },
+        title = { Text(text = stringResource(Res.string.connectivity)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        val connectivityTrueIcon = connectivityStatus.filledImageVector()
+        val connectivityFalseIcon = connectivityStatus.outlinedImageVector()
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_alert),
+            value = connectivity.isConnectivityAlert,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivityAlert = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_snackbar),
+            value = connectivity.isConnectivitySnackbar,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivitySnackbar = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator),
+            value = connectivity.isConnectivityIndicator,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivityIndicator = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator_text),
+            value = connectivity.isConnectivityIndicatorText,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivityIndicatorText = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.avatar_connectivity_indicator),
+            value = connectivity.isAvatarConnectivityIndicator,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isAvatarConnectivityIndicator = value))
+            },
+        )
+    }
+
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.app_bar)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        SettingsSwitch(
+            title = stringResource(Res.string.title),
+            value = appBar.isTitle,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
+            onCheckedChange = { value ->
+                onAppBarChange(appBar.copy(isTitle = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.app_bar_support),
+            value = appBar.isSupport,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
+            onCheckedChange = { value ->
+                onAppBarChange(appBar.copy(isSupport = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.app_bar_themes),
+            value = appBar.isTheme,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
+            onCheckedChange = { value ->
+                onAppBarChange(appBar.copy(isTheme = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.app_bar_locales),
+            value = appBar.isLocale,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
+            onCheckedChange = { value ->
+                onAppBarChange(appBar.copy(isLocale = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.app_bar_avatar),
+            value = appBar.isAvatar,
+            trueIcon = Icons.Filled.FlashOn,
+            falseIcon = Icons.Outlined.FlashOn,
+            onCheckedChange = { value ->
+                onAppBarChange(appBar.copy(isAvatar = value))
+            },
+        )
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.route),
+            enabled = true,
+            icon = Icons.Default.Route,
+        ) {
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.Push(SettingsRoute),
+                ),
+            )
+        }
+    }
+
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.theme)) },
         contentPadding = PaddingValues(16.dp),
     ) {
         SettingsMenuLink(
@@ -154,7 +284,7 @@ public fun SettingsMainScreen(
 
         SettingsTimePickerDialog(
             title = stringResource(Res.string.light_mode_time),
-            initialValue = theme.lightModeTime,
+            value = theme.lightModeTime,
             enabled = true,
             subtitle = { Text(theme.lightModeTime.toString()) },
         ) { value ->
@@ -164,7 +294,7 @@ public fun SettingsMainScreen(
 
         SettingsTimePickerDialog(
             title = stringResource(Res.string.dark_mode_time),
-            initialValue = theme.darkModeTime,
+            value = theme.darkModeTime,
             enabled = true,
             subtitle = { Text(theme.darkModeTime.toString()) },
         ) { value ->
@@ -246,7 +376,13 @@ public fun SettingsMainScreen(
                 ),
             )
         }
-
+    }
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.density)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
         SettingsSliderFinished(
             title = stringResource(Res.string.density),
             initialValue = density.density,
@@ -274,7 +410,14 @@ public fun SettingsMainScreen(
         ) { value ->
             onDensityChange(Density(density.density, value))
         }
+    }
 
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.locale)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
         SettingsLocalePickerDialog(
             title = { Text(text = stringResource(Res.string.locale)) },
             icon = { Text(locale.country()!!.alpha2.getEmojiFlag()) },
@@ -295,121 +438,6 @@ public fun SettingsMainScreen(
         ) { value ->
             onLocaleChange(value)
             false
-        }
-
-        val connectivityTrueIcon = connectivityStatus.filledImageVector()
-        val connectivityFalseIcon = connectivityStatus.outlinedImageVector()
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_alert),
-            value = connectivity.isConnectivityAlert,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivityAlert = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_snackbar),
-            value = connectivity.isConnectivitySnackbar,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivitySnackbar = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_indicator),
-            value = connectivity.isConnectivityIndicator,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivityIndicator = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_indicator_text),
-            value = connectivity.isConnectivityIndicatorText,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivityIndicatorText = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.avatar_connectivity_indicator),
-            value = connectivity.isAvatarConnectivityIndicator,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isAvatarConnectivityIndicator = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.title),
-            value = appBar.isTitle,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
-            onCheckedChange = { value ->
-                onAppBarChange(appBar.copy(isTitle = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.app_bar_support),
-            value = appBar.isSupport,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
-            onCheckedChange = { value ->
-                onAppBarChange(appBar.copy(isSupport = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.app_bar_themes),
-            value = appBar.isTheme,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
-            onCheckedChange = { value ->
-                onAppBarChange(appBar.copy(isTheme = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.app_bar_locales),
-            value = appBar.isLocale,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
-            onCheckedChange = { value ->
-                onAppBarChange(appBar.copy(isLocale = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.app_bar_avatar),
-            value = appBar.isAvatar,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
-            onCheckedChange = { value ->
-                onAppBarChange(appBar.copy(isAvatar = value))
-            },
-        )
-
-        SettingsMenuLink(
-            title = stringResource(Res.string.route),
-            enabled = true,
-            icon = Icons.Default.Route,
-        ) {
-            onNavigationActions(
-                arrayOf(
-                    NavigationAction.Push(SettingsRoute),
-                ),
-            )
         }
     }
 

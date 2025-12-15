@@ -1,7 +1,6 @@
 package clib.presentation.components.settings
 
 import androidx.compose.material3.TimePickerDialogDefaults
-import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,13 +18,15 @@ import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import pro.respawn.kmmutils.datetime.now
 
 @Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsTimePickerDialog(
     title: @Composable () -> Unit,
-    onConfirm: () -> Unit,
-    state: TimePickerState,
+    value: LocalTime = LocalTime.now(TimeZone.currentSystemDefault()),
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: (@Composable () -> Unit)? = null,
@@ -40,6 +41,7 @@ public fun SettingsTimePickerDialog(
     shape: Shape = TimePickerDialogDefaults.shape,
     containerColor: Color = TimePickerDialogDefaults.containerColor,
     picker: TimePicker = TimePicker(),
+    onValueChanged: (LocalTime) -> Boolean,
 ) {
     var dialog by remember { mutableStateOf(false) }
     if (dialog)
@@ -47,13 +49,14 @@ public fun SettingsTimePickerDialog(
             onDismissRequest = {
                 dialog = false
             },
-            onConfirm = onConfirm,
-            state = state,
             title = title,
             modifier = dialogModifier,
             dialogProperties = dialogProperties,
             shape = shape,
             containerColor = containerColor,
+            onValueChanged = { value ->
+                dialog = onValueChanged(value)
+            },
         )
 
     SettingsMenuLink(

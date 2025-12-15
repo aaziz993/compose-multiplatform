@@ -5,7 +5,6 @@ import androidx.compose.material.icons.filled.Watch
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePickerDialogDefaults
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,7 +14,6 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
 import clib.data.type.primitives.string.stringResource
-import clib.data.type.state.localTime
 import clib.presentation.components.picker.model.TimePicker
 import clib.presentation.components.settings.SettingsTimePickerDialog
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
@@ -32,7 +30,7 @@ import kotlinx.datetime.TimeZone
 @Composable
 public fun SettingsTimePickerDialog(
     title: String,
-    initialValue: LocalTime = LocalTime.now(TimeZone.currentSystemDefault()),
+    value: LocalTime = LocalTime.now(TimeZone.currentSystemDefault()),
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: ImageVector? = Icons.Default.Watch,
@@ -51,31 +49,25 @@ public fun SettingsTimePickerDialog(
     shape: Shape = TimePickerDialogDefaults.shape,
     containerColor: Color = TimePickerDialogDefaults.containerColor,
     onValueChanged: (LocalTime) -> Boolean,
-) {
-    val state = rememberTimePickerState(initialValue.hour, initialValue.minute, true)
-
-    SettingsTimePickerDialog(
-        title = { Text(title) },
-        {
-            onValueChanged(state.localTime)
-        },
-        state,
-        modifier,
-        enabled,
-        icon?.let { { Icon(it, title) } },
-        subtitle,
-        action,
-        colors,
-        tonalElevation,
-        shadowElevation,
-        semanticProperties,
-        dialogModifier,
-        dialogProperties,
-        shape,
-        containerColor,
-        TimePicker(
-            stringResource(Res.string.confirm),
-            stringResource(Res.string.close),
-        ),
-    )
-}
+): Unit = SettingsTimePickerDialog(
+    title = { Text(title) },
+    value,
+    modifier,
+    enabled,
+    icon?.let { { Icon(it, title) } },
+    subtitle,
+    action,
+    colors,
+    tonalElevation,
+    shadowElevation,
+    semanticProperties,
+    dialogModifier,
+    dialogProperties,
+    shape,
+    containerColor,
+    TimePicker(
+        stringResource(Res.string.confirm),
+        stringResource(Res.string.close),
+    ),
+    onValueChanged,
+)

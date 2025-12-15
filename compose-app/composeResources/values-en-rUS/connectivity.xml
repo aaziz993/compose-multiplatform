@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="connectivity">Connectivity</string>
     <string name="connectivity_alert">Connectivity alert</string>
     <string name="connectivity_snackbar">Connectivity snackbar</string>
     <string name="connectivity_indicator">Connectivity indicator</string>

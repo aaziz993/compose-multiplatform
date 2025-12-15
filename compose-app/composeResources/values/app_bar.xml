@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_bar">App bar</string>
     <string name="app_bar_support">App bar support</string>
     <string name="app_bar_themes">App bar themes</string>
     <string name="app_bar_locales">App bar locales</string>

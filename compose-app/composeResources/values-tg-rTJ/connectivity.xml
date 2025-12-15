@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="connectivity">Алоқа</string>
     <string name="connectivity_alert">Огоҳиномаи алоқа</string>
     <string name="connectivity_snackbar">Паемаки алоқа</string>
     <string name="connectivity_indicator">Нишондиҳандаи алоқа</string>
