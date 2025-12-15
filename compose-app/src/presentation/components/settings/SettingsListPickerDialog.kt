@@ -54,8 +54,8 @@ public fun <E> SettingsListPickerDialog(
     ),
     onItemClicked: (E) -> Boolean,
 ): Unit = SettingsListPickerDialog(
-    values,
     { Text(title) },
+    values,
     modifier,
     enabled,
     icon?.let { { Icon(it, value.asStringResource()) } },

@@ -81,7 +81,7 @@ public data class Theme(
     public fun copyDynamicColorScheme(colorScheme: DynamicColorScheme): Theme =
         if (isHighContrast) copy(dynamicColorSchemeHighContrast = colorScheme) else copy(dynamicColorScheme = colorScheme)
 
-//    @Suppress("ComposeNamingUppercase")
+    //    @Suppress("ComposeNamingUppercase")
 //    @Composable
 //    public fun isAdaptiveDark(): Boolean {
 //        produceState(isNighTime()) {
@@ -98,9 +98,8 @@ public data class Theme(
 //        }
 //    }
 //
-//    private fun isNighTime(): Boolean {
-//        val nowUtc = Clock.System.now()
-//        val hour = nowUtc.toLocalDateTime(TimeZone.currentSystemDefault()).hour
-//        return hour < 6 || hour >= 19
-//    }
+    private fun isNighTime(): Boolean {
+        val hour = LocalTime.now(TimeZone.currentSystemDefault()).hour
+        return hour < lightModeTime.hour || hour >= darkModeTime.hour
+    }
 }

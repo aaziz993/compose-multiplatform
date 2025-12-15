@@ -2,19 +2,17 @@ package clib.presentation.components.image.avatar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import clib.presentation.components.image.AdvancedImage
+import clib.presentation.components.image.Image
 import clib.presentation.components.image.avatar.model.AvatarView
 import klib.data.auth.model.User
 import kotlin.math.absoluteValue
 
-@Suppress("ComposeModifierReused")
 @Composable
 public fun Avatar(
     firstName: String,
@@ -29,7 +27,7 @@ public fun Avatar(
         lastName,
         modifier,
     )
-    else AdvancedImage(
+    else Image(
         imageSource,
         contentDescription,
         modifier,

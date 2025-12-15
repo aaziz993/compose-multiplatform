@@ -45,7 +45,6 @@ import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
-import clib.presentation.components.settings.SettingsTimePickerDialog
 import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.navigation.NavigationAction
@@ -95,6 +94,7 @@ import klib.data.permission.model.Permission
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
+import presentation.components.settings.SettingsTimePickerDialog
 import presentation.connectivity.filledImageVector
 import presentation.connectivity.outlinedImageVector
 import presentation.theme.model.isDarkIcon
@@ -156,20 +156,20 @@ public fun SettingsMainScreen(
         }
 
         SettingsTimePickerDialog(
-            title = { Text(stringResource(Res.string.light_mode_time)) },
+            title = stringResource(Res.string.light_mode_time),
+            initialValue = theme.lightModeTime,
             enabled = true,
-            icon = { Icon(Icons.Default.Timer3, "") },
-            subtitle = {},
+            subtitle = { Text(theme.lightModeTime.toString()) },
         ) { value ->
             onThemeChange(theme.copy(lightModeTime = value))
             false
         }
 
         SettingsTimePickerDialog(
-            title = { Text(stringResource(Res.string.dark_mode_time)) },
+            title = stringResource(Res.string.dark_mode_time),
+            initialValue = theme.darkModeTime,
             enabled = true,
-            icon = { Icon(Icons.Default.Timer3, "") },
-            subtitle = {},
+            subtitle = { Text(theme.darkModeTime.toString()) },
         ) { value ->
             onThemeChange(theme.copy(darkModeTime = value))
             false

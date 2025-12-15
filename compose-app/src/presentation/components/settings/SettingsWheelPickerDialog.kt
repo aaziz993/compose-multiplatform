@@ -51,9 +51,9 @@ public fun <E> SettingsWheelPickerDialog(
     picker: ListPicker = ListPicker(),
     onItemClicked: (E) -> Boolean,
 ): Unit = SettingsWheelPickerDialog(
+    { Text(title) },
     initialValue,
     values,
-    { Text(title) },
     modifier,
     enabled,
     icon?.let { { Icon(it, initialValue.asStringResource()) } },
