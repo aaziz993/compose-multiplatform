@@ -274,7 +274,7 @@ public fun ColorfulIconSlider(
             coerceThumbInTrack = coerceThumbInTrack,
             drawInactiveTrack = drawInactiveTrack,
             borderStroke = borderStroke,
-            modifier = press.then(drag)
+            modifier = press then drag,
         )
     }
 }

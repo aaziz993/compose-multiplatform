@@ -115,7 +115,7 @@ private fun ArticleDetailsSuccessContent(
 ) {
     Column(
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier.background(MaterialTheme.colorScheme.background).then(modifier),
+        modifier = Modifier.background(MaterialTheme.colorScheme.background) then modifier,
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(

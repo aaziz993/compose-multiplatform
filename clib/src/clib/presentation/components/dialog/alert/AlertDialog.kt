@@ -40,7 +40,7 @@ public fun AlertDialog(
     onDismissRequest,
 ) {
     Surface(
-        modifier = Modifier.wrapContentSize().then(modifier),
+        modifier = Modifier.wrapContentSize() then modifier,
         shape = MaterialTheme.shapes.large,
         tonalElevation = AlertDialogDefaults.TonalElevation,
     ) {

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.config.RouteConfig
 import com.alorma.compose.settings.ui.SettingsGroup
+import com.alorma.compose.settings.ui.SettingsTriStateCheckbox
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.enabled
 import compose_app.generated.resources.label
@@ -77,5 +78,14 @@ private fun SettingsRouteConfig(
         falseIcon = Icons.AutoMirrored.Outlined.Label,
     ) {
         onValueChange(value.copy(alwaysShowLabel = it))
+    }
+
+    SettingsTriStateCheckbox(
+        value.enabled && value.alwaysShowLabel,
+        {
+            Text("Route params")
+        },
+    ) {
+        onValueChange(value.copy(enabled = it, alwaysShowLabel = it))
     }
 }

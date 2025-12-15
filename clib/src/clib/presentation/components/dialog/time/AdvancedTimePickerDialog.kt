@@ -60,7 +60,7 @@ public fun AdvancedTimePickerDialog(
         Surface(
             Modifier.fillMaxSize(.8f)
                 .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.extraLarge)
-                .then(modifier),
+                then modifier,
             MaterialTheme.shapes.extraLarge,
             tonalElevation = 6.dp,
         ) {

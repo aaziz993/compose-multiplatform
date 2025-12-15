@@ -536,9 +536,7 @@ private fun Thumb(
             .offset { IntOffset(offset.toInt(), 0) }
             .shadow(1.dp, shape = CircleShape)
             .size(thumbSize)
-            .then(
-                Modifier.background(thumbColor)
-            )
+            then Modifier.background(thumbColor),
     )
 }
 

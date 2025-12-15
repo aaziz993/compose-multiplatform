@@ -244,12 +244,11 @@ public fun <E> WheelPicker(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     style = textStyle,
-                                    modifier = textModifier.then(
+                                    modifier = textModifier then
                                         Modifier.clickable(
                                             onClick = { edit = true },
                                             enabled = enabled,
                                         ),
-                                    ),
                                 )
                             }
 

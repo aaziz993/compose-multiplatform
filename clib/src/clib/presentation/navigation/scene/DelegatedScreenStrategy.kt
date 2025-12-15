@@ -19,7 +19,7 @@ public class DelegatedScreenStrategy<T : Any>(
 
         return with(
             if (strategies.isEmpty()) fallbackStrategy
-            else strategies.reduce { left, right -> left.then(right) },
+            else strategies.reduce { left, right -> left then right },
         ) {
             calculateScene(entries)
         }

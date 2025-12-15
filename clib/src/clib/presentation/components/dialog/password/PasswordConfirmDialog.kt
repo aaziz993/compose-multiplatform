@@ -58,7 +58,7 @@ public fun PasswordDialog(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.85f).then(modifier),
+            .fillMaxHeight(0.85f) then modifier,
         elevation = CardDefaults.elevatedCardElevation(4.dp),
         shape = RoundedCornerShape(12.dp),
     ) {

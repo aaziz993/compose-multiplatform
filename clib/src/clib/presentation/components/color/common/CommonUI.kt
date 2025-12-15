@@ -257,7 +257,7 @@ internal fun ColorColumn(
                     .clickable {
                         onValueChange(color)
                     }
-                    .then(if (isSelected) Modifier.border(2.dp, Color.White) else Modifier),
+                    then if (isSelected) Modifier.border(2.dp, Color.White) else Modifier,
             )
         }
     }

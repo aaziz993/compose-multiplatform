@@ -60,7 +60,7 @@ public open class Router(
         get() = backStack.size > 1 || prev?.hasBack == true
 
     /**
-     * Nested routes queue.
+     * Nested route path.
      */
     public var routePath: List<NavRoute> = emptyList()
         internal set

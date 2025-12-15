@@ -82,13 +82,12 @@ public fun HorizontalPagerIndicator(
                     )
                 }
                 .size(width = indicatorWidth, height = indicatorHeight)
-                .then(
+                then
                     if (state.pageCount > 0) Modifier.background(
                         color = activeColor,
                         shape = indicatorShape,
                     )
                     else Modifier
-                )
         )
     }
 }
