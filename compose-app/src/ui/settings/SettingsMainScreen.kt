@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Route
 import androidx.compose.material.icons.filled.TextFormat
-import androidx.compose.material.icons.filled.Timer3
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.DynamicForm
@@ -30,7 +29,6 @@ import androidx.compose.material.icons.outlined.Highlight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -64,12 +62,14 @@ import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
 import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.connectivity_snackbar
+import compose_app.generated.resources.dark_mode_time
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
 import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.high_contrast
+import compose_app.generated.resources.light_mode_time
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
@@ -80,14 +80,10 @@ import compose_app.generated.resources.route
 import compose_app.generated.resources.search
 import compose_app.generated.resources.shapes
 import compose_app.generated.resources.theme
-import compose_app.generated.resources.light_mode_time
-import compose_app.generated.resources.dark_mode_time
-import compose_app.generated.resources.time
 import compose_app.generated.resources.title
 import compose_app.generated.resources.typography
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
-import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.model.Permission
