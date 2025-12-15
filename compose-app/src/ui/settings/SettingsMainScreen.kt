@@ -73,6 +73,7 @@ import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
 import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
+import compose_app.generated.resources.height
 import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.light_mode_time
 import compose_app.generated.resources.line_height
@@ -154,11 +155,11 @@ public fun SettingsMainScreen(
         contentPadding = PaddingValues(16.dp),
     ) {
         SettingsSliderFinished(
-            title = stringResource(Res.string.line_height),
+            title = stringResource(Res.string.height),
             initialValue = appBar.expandedHeight.toFloatPx(),
             icon = { Icons.Default.Height },
             enabled = true,
-            valueRange = 56f..80f,
+            valueRange = 64f..192f,
         ) { value ->
             onAppBarChange(appBar.copy(expandedHeight = value.dp))
         }
