@@ -174,7 +174,6 @@ public fun SettingsMainScreen(
         ) {
             onNavigationActions(
                 arrayOf(
-                    NavigationAction.PopTo(SettingsColorScheme),
                     NavigationAction.Push(SettingsColorScheme),
                 ),
             )
@@ -187,7 +186,6 @@ public fun SettingsMainScreen(
         ) {
             onNavigationActions(
                 arrayOf(
-                    NavigationAction.PopTo(SettingsDynamicColorScheme),
                     NavigationAction.Push(SettingsDynamicColorScheme),
                 ),
             )
@@ -209,7 +207,6 @@ public fun SettingsMainScreen(
         ) {
             onNavigationActions(
                 arrayOf(
-                    NavigationAction.PopTo(SettingsShapes),
                     NavigationAction.Push(SettingsShapes),
                 ),
             )
@@ -222,7 +219,6 @@ public fun SettingsMainScreen(
         ) {
             onNavigationActions(
                 arrayOf(
-                    NavigationAction.PopTo(SettingsTypography),
                     NavigationAction.Push(SettingsTypography),
                 ),
             )
@@ -388,7 +384,6 @@ public fun SettingsMainScreen(
         ) {
             onNavigationActions(
                 arrayOf(
-                    NavigationAction.PopTo(SettingsRoute),
                     NavigationAction.Push(SettingsRoute),
                 ),
             )

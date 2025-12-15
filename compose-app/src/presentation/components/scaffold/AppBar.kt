@@ -278,7 +278,6 @@ public fun TopAppBar(
                                             ) {
                                                 onNavigationActions(
                                                     arrayOf(
-                                                        NavigationAction.PopTo(Profile),
                                                         NavigationAction.Push(Profile),
                                                     ),
                                                 )
@@ -303,7 +302,6 @@ public fun TopAppBar(
                                         onClick = {
                                             onNavigationActions(
                                                 arrayOf(
-                                                    NavigationAction.PopTo(Profile),
                                                     NavigationAction.Push(Profile),
                                                 ),
                                             )

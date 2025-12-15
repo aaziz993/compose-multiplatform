@@ -111,7 +111,7 @@ import ui.wallet.exchange.ExchangeScreen
 public data object App : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Auth, News, Map, Services, Profile, Verification, Settings)
+        listOf(Authentification, News, Map, Services, Profile, Verification, Settings)
     }
 
     @Composable
@@ -138,8 +138,8 @@ public data object App : KoinRoutes() {
 }
 
 @Serializable
-@SerialName("auth")
-public data object Auth : KoinRoutes(), AuthRoute {
+@SerialName("authentification")
+public data object Authentification : KoinRoutes(), AuthRoute {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Phone, Hotp, Totp, PinCode, ResetPinCode, Login)

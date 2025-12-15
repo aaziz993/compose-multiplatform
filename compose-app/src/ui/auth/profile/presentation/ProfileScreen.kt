@@ -199,7 +199,6 @@ public fun ProfileScreen(
                 onClick = {
                     onNavigationActions(
                         arrayOf(
-                            NavigationAction.PopTo(Verification),
                             NavigationAction.Push(Verification),
                         ),
                     )

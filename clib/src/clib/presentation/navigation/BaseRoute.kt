@@ -15,6 +15,8 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import arrow.core.prependTo
+import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.RouteConfig
 import clib.presentation.event.EventBus
@@ -72,7 +74,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open fun item(
         enabled: Boolean = this.enabled,
         alwaysShowLabel: Boolean = this.alwaysShowLabel,
-        auth: Auth = Auth(),
+        auth: Auth = LocalAuthState.current.value,
         router: Router = currentRouter(),
         onClick: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
@@ -103,7 +105,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open fun NavigationBarItem(
         enabled: Boolean = this.enabled,
         alwaysShowLabel: Boolean = this.alwaysShowLabel,
-        auth: Auth = Auth(),
+        auth: Auth = LocalAuthState.current.value,
         router: Router = currentRouter(),
         onClick: Router.(NavRoute) -> Unit = Router::push,
     ) {
@@ -125,7 +127,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         )
     }
 
-    public abstract fun routePath(route: NavRoute): List<NavRoute>?
+    public abstract fun navRoutePath(navRoute: NavRoute): List<NavRoute>?
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -152,8 +154,8 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 
-    final override fun routePath(route: NavRoute): List<NavRoute>? =
-        if (this == route) listOf(this as NavRoute) else null
+    final override fun navRoutePath(navRoute: NavRoute): List<NavRoute>? =
+        if (this == navRoute) listOf(this as NavRoute) else null
 }
 
 public abstract class Routes() : BaseRoute(), NavRoute {
@@ -246,7 +248,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public fun items(
         enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
         alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
-        auth: Auth = Auth(),
+        auth: Auth = LocalAuthState.current.value,
         router: Router = currentRouter(),
         onClick: Router.(NavRoute) -> Unit = Router::push,
     ): NavigationSuiteScope.() -> Unit {
@@ -267,7 +269,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public fun NavigationBarItems(
         enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
         alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
-        auth: Auth = Auth(),
+        auth: Auth = LocalAuthState.current.value,
         router: Router = currentRouter(),
         onClick: Router.(NavRoute) -> Unit = Router::push,
     ): Unit = routes.forEach { route ->
@@ -283,19 +285,12 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     final override fun iterator(): Iterator<BaseRoute> =
         routes.iterator().depthIterator({ _, route -> route.iterator() })
 
-    public fun urlRoute(url: Url): NavRoute? = firstNotNullOfOrNull { route ->
-        route.urls.firstNotNullOfOrNull {
-            url.toRoute(route.navRoute.serializer(), it)
-        }
-    }
-
-    final override fun routePath(route: NavRoute): List<NavRoute>? {
-        if (this == route) return listOf(this)
-
+    final override fun navRoutePath(navRoute: NavRoute): List<NavRoute>? {
         for (route in routes) {
             if (route !is NavRoute) continue
-            val path = route.routePath(route)
-            if (path != null) return listOf(this) + path
+            if (route == navRoute) return listOf(route)
+            val path = route.navRoutePath(navRoute)?.let(listOf(route)::plus)
+            if (path != null) return path
         }
 
         return null

@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Label
 import androidx.compose.material.icons.automirrored.outlined.Label
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -64,8 +64,8 @@ private fun SettingsRouteConfig(
     SettingsSwitch(
         title = stringResource(Res.string.enabled),
         value = value.enabled,
-        trueIcon = Icons.Filled.Check,
-        falseIcon = Icons.Outlined.Check,
+        trueIcon = Icons.Default.RadioButtonChecked,
+        falseIcon = Icons.Default.RadioButtonUnchecked,
     ) {
         onValueChange(value.copy(enabled = it))
     }

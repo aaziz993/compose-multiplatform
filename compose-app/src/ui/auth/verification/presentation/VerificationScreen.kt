@@ -108,7 +108,6 @@ public fun VerificationScreen(
             onClick = {
                 onNavigationActions(
                     arrayOf(
-                        NavigationAction.PopTo(Services),
                         NavigationAction.Push(Services),
                     ),
                 )

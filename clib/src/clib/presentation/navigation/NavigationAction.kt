@@ -12,8 +12,9 @@ public interface NavigationAction {
      * The route will be added to the top of the stack.
      *
      * @param route The route to push onto the stack.
+     * @param duplicate Prevents duplicate.
      */
-    public data class Push(val route: NavRoute) : NavigationAction
+    public data class Push(val route: NavRoute, val duplicate: Boolean = false) : NavigationAction
 
     /**
      * Action to replace the current top route with a new one.

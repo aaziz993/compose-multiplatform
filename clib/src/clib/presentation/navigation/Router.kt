@@ -70,9 +70,11 @@ public open class Router(
      * Callback to be called if route isn't in the current top level route.
      */
     override val onUnknownRoute: (NavRoute) -> Unit
-        get() = {
-
-            val t = 0
+        get() = { navRoute ->
+            routes.navRoutePath(navRoute)?.let {
+                routePath = it.drop()
+                onReroute(it.first())
+            } ?: prev?.onUnknownRoute(navRoute)
         }
 
     /**

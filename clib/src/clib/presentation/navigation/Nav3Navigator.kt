@@ -125,6 +125,9 @@ public open class Nav3Navigator(
         action: NavigationAction.Push,
         onUnknownRoute: (NavRoute) -> Unit,
     ): Boolean {
+        // If the user explicitly requested the auth route, don't redirect them after login.
+        if (action.route == authRoute) authRedirectRoute = null
+
         val route = if (action.route.route.isAuth(auth)) action.route
         else {
             check(auth.user == null) { "Insufficient user privileges '${auth.user}'" }
@@ -138,10 +141,14 @@ public open class Nav3Navigator(
             return false
         }
 
-        // If the user explicitly requested the auth route, don't redirect them after login.
-        if (action.route == authRoute) authRedirectRoute = null
 
-        snapshot.addOrSet(route)
+
+        if (!action.duplicate) {
+            popTo(snapshot, NavigationAction.PopTo(action.route))
+            if (snapshot.lastOrNull() == route) snapshot.removeLast()
+        }
+
+        snapshot += route
 
         return true
     }
@@ -285,14 +292,6 @@ public open class Nav3Navigator(
             backStack.replaceWith(value)
         }
     }
-
-    /**
-     * Extension function to add or replace route at the end of MutableList.
-     *
-     * @param route the route to add or replace at the end of the list.
-     */
-    protected open fun MutableList<NavRoute>.addOrSet(route: NavRoute): Unit =
-        if (lastOrNull() == route) this[lastIndex] = route else this += route
 
     /**
      * Extension function to remove a range of elements from a MutableList.

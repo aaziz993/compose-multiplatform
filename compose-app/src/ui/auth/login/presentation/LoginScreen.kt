@@ -79,7 +79,6 @@ public fun LoginScreen(
                 .clickable {
                     onNavigationActions(
                         arrayOf(
-                            NavigationAction.PopTo(Phone),
                             NavigationAction.Push(Phone),
                         ),
                     )
