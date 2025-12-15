@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Compose Multiplatform</string>
+    <string name="application">Application</string>
     <string name="appearance">Appearance</string>
     <string name="about">About</string>
     <string name="alpha">Alpha</string>

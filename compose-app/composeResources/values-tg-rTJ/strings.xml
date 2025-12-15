@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Компоус мултиплатформ</string>
+    <string name="application">Замима</string>
     <string name="appearance">Намоиш</string>
     <string name="about">Оиди</string>
     <string name="alpha">Алфа</string>

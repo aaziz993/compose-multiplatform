@@ -35,7 +35,7 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  * This class is designed to be used as the primary navigation interface in applications.
  *
  * @param routes The current top level route.
- * @param onReroute The callback to handle reroute of route to related top level router.
+ * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  */
 public open class Router(
     override val routes: Routes,

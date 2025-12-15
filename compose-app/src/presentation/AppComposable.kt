@@ -43,8 +43,7 @@ import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberRoutesState
 import klib.data.share.Share
-import ui.navigation.presentation.App
-import ui.navigation.presentation.News
+import ui.navigation.presentation.Application
 import ui.navigation.presentation.Services
 
 @Composable
@@ -68,7 +67,7 @@ public fun AppComposable(
     permissionsState: PermissionsState = rememberPermissionsState(),
     onlineText: String = stringResource(Res.string.online),
     offlineText: String = stringResource(Res.string.offline),
-    routes: Routes = App,
+    routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(

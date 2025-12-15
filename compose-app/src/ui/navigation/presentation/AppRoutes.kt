@@ -107,8 +107,8 @@ import ui.wallet.crypto.CryptoScreen
 import ui.wallet.exchange.ExchangeScreen
 
 @Serializable
-@SerialName("app")
-public data object App : KoinRoutes() {
+@SerialName("application")
+public data object Application : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Authentification, News, Map, Services, Profile, Verification, Settings)
