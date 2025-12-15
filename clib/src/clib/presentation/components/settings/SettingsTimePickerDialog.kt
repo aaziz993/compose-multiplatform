@@ -49,6 +49,7 @@ public fun SettingsTimePickerDialog(
             onDismissRequest = {
                 dialog = false
             },
+            value = value,
             title = title,
             modifier = dialogModifier,
             dialogProperties = dialogProperties,
