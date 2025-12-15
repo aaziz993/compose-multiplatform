@@ -55,10 +55,10 @@ public open class Router(
         private set
 
     /**
-     * Currently registered navigator's has pop back.
+     * Currently registered navigator's can pop back.
      */
-    public val hasPopBack: Boolean
-        get() = backStack.size > 1 || prev?.hasPopBack == true
+    public val canPopBack: Boolean
+        get() = backStack.size > 1 || prev?.canPopBack == true
 
     /**
      * Nested nav route path.

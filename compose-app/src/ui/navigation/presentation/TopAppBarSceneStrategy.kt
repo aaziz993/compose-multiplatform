@@ -50,7 +50,7 @@ public class TopAppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 onLocaleChange = { value -> localeState.value = value },
                 auth = authState.value,
                 onAuthChange = { value -> authState.value = value },
-                hasBack = router.hasPopBack,
+                hasBack = router.canPopBack,
                 hasDrawer = false,
                 isDrawerOpen = false,
                 onNavigationActions = router::actions,
