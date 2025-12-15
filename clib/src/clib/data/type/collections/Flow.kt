@@ -1,7 +1,7 @@
 package clib.data.type.collections
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.LaunchedEffect as ComposeLaunchedEffect
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -11,12 +11,12 @@ import kotlinx.coroutines.withContext
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-public fun <T> Flow<T>.ToLaunchedEffect(
+public fun <T> Flow<T>.LaunchedEffect(
     vararg keys: Any?,
-    onEvent: (T) -> Unit
+    onEvent: (T) -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(this, lifecycleOwner.lifecycle, *keys) {
+    ComposeLaunchedEffect(this, lifecycleOwner.lifecycle, *keys) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             withContext(Dispatchers.Main.immediate) {
                 collect(onEvent)

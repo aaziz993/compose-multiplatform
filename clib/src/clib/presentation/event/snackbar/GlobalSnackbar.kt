@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import clib.data.type.collections.ToLaunchedEffect
+import clib.data.type.collections.LaunchedEffect
 import kotlinx.coroutines.launch
 
 /**
@@ -26,7 +26,7 @@ public fun GlobalSnackbar(
 
     SnackbarHost(snackbarHostState, modifier, snackbar)
 
-    GlobalSnackbarEventController.events.ToLaunchedEffect(
+    GlobalSnackbarEventController.events.LaunchedEffect(
         snackbarHostState,
     ) { event ->
         coroutineScope.launch {

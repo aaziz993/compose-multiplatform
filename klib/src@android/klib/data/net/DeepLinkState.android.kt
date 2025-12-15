@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.core.util.Consumer
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import klib.data.net.DeepLinkState.handleDeepLink
+import klib.data.net.GlobalDeepLinkController.handle
 
 public fun ComponentActivity.handleDeepLink() {
     intent.fireDeepLink()
@@ -30,5 +30,5 @@ public fun ComponentActivity.handleDeepLink() {
 }
 
 private fun Intent.fireDeepLink() {
-    dataString?.let(::handleDeepLink)
+    dataString?.let(::handle)
 }

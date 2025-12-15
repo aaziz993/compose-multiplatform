@@ -1,6 +1,6 @@
 package klib.data.net
 
-import klib.data.net.DeepLinkState.handleDeepLink
+import klib.data.net.GlobalDeepLinkController.handle
 import web.events.addEventListener
 import web.events.removeEventListener
 import web.history.HASH_CHANGE
@@ -10,7 +10,7 @@ import web.history.PopStateEvent
 import web.window.window
 
 public fun addDeepLinkHandler(
-    handle: (String) -> Unit = ::handleDeepLink
+    handle: (String) -> Unit = ::handle
 ): Pair<(PopStateEvent) -> Unit, (HashChangeEvent) -> Unit> {
     val popStateHandler: (PopStateEvent) -> Unit = { handle(window.location.href) }
     val hashChangeHandler: (HashChangeEvent) -> Unit = { handle(window.location.href) }

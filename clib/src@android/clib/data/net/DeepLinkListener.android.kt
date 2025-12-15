@@ -10,13 +10,16 @@ import io.ktor.http.Url
 import klib.data.net.toUrl
 
 @Composable
-public actual fun DeepLinkListener(listener: (Url) -> Unit) {
+public actual fun DeepLinkListener(
+    vararg keys: Any,
+    onEvent: (Url) -> Unit,
+) {
     val activity = LocalActivity.current as? ComponentActivity ?: return
 
-    activity.intent.fireDeepLink(listener)
+    activity.intent.fireDeepLink(onEvent)
 
-    DisposableEffect(Unit) {
-        val listener = Consumer<Intent> { intent -> intent.fireDeepLink(listener) }
+    DisposableEffect(*keys) {
+        val listener = Consumer<Intent> { intent -> intent.fireDeepLink(onEvent) }
         activity.addOnNewIntentListener(listener)
         onDispose { activity.removeOnNewIntentListener(listener) }
     }

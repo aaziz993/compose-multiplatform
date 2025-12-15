@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import clib.data.type.collections.ToLaunchedEffect
+import clib.data.type.collections.LaunchedEffect
 import clib.presentation.components.dialog.alert.AlertDialog
 import clib.presentation.event.alert.model.AlertEvent
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ public fun GlobalAlertDialog() {
     val coroutineScope = rememberCoroutineScope()
     var alertDialogState by remember { mutableStateOf<AlertEvent?>(null) }
 
-    GlobalAlertEventController.events.ToLaunchedEffect { event ->
+    GlobalAlertEventController.events.LaunchedEffect { event ->
         alertDialogState = event
     }
     alertDialogState?.let { event ->
