@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
+import clib.presentation.auth.LocalAuthState
 import klib.data.auth.model.Auth
 import klib.data.type.collections.replaceWith
 import kotlinx.coroutines.MainScope
@@ -322,7 +323,7 @@ public open class Nav3Navigator(
 public fun rememberNav3Navigator(
     routes: Routes,
     startRoute: NavRoute? = LocalRouter.current?.navRoutePath?.firstOrNull(),
-    auth: Auth = Auth(),
+    auth: Auth = LocalAuthState.current.value,
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
     onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),

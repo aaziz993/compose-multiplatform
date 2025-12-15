@@ -72,11 +72,10 @@ public fun AppComposable(
     navigatorFactory: @Composable (Routes) -> Navigator = {
         val isRoot = it == routes
         rememberNav3Navigator(
-            it,
-            if (isRoot) routes.routes.find { route -> route.name == config.ui.startRoute } as NavRoute? else null,
-            authState.value,
-            routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
-            if (isRoot) Services else null,
+            routes = it,
+            startRoute = if (isRoot) routes.routes.find { route -> route.name == config.ui.startRoute } as NavRoute? else null,
+            authRoute = routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
+            authRedirectRoute = if (isRoot) Services else null,
         )
     },
 ): Unit = AppEnvironment(
