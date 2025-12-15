@@ -75,7 +75,7 @@ public fun AppComposable(
             routes = it,
             startRoute = if (isRoot) routes.routes.find { route -> route.name == config.ui.startRoute } as NavRoute? else null,
             authRoute = routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
-            authRedirectRoute = if (isRoot) Services else null,
+            authRedirectRoute = if (isRoot) routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute? else null,
         )
     },
 ): Unit = AppEnvironment(

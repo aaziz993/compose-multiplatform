@@ -53,9 +53,7 @@ public fun <T> Iterator<T>.chunked(predicate: (T) -> Boolean): List<List<T>> = b
         else buffer.add(element)
     }
 
-    if (buffer.isNotEmpty()) {
-        add(buffer)
-    }
+    if (buffer.isNotEmpty()) add(buffer)
 }
 
 public fun <T> Iterator<T>.depthIterator(
@@ -96,11 +94,7 @@ public class IteratorDepthIterator<T>(
 
             setNext(next)
 
-            if (next != null) {
-                val transformed = transform(iterators.size, next)
-
-                if (transformed != null) iterators.add(transformed)
-            }
+            if (next != null) transform(iterators.size, next)?.let(iterators::add)
 
             return
         }
@@ -137,17 +131,13 @@ public class IteratorBreadthIterator<T>(
 
                 val transformed = transform(iterators.size - 1, next)
 
-                if (isStop) {
-                    break
-                }
+                if (isStop) break
 
                 if (transformed == null) {
                     setNext(next)
                     return
                 }
-                else {
-                    iterators.add(transformed)
-                }
+                else iterators.add(transformed)
             }
             else {
                 iterators.removeFirst()

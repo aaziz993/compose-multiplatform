@@ -15,7 +15,6 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import arrow.core.prependTo
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.RouteConfig
@@ -26,9 +25,7 @@ import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.auth.model.AuthResource
-import klib.data.net.toRoute
 import klib.data.net.url
-import klib.data.type.collections.iterator.depthIterator
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
 
@@ -282,8 +279,12 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         )
     }
 
-    final override fun iterator(): Iterator<BaseRoute> =
-        routes.iterator().depthIterator({ _, route -> route.iterator() })
+    final override fun iterator(): Iterator<BaseRoute> = sequence {
+        routes.forEach { route ->
+            yield(route)
+            yieldAll(route)
+        }
+    }.iterator()
 
     final override fun navRoutePath(navRoute: NavRoute): List<NavRoute>? {
         for (route in routes) {
