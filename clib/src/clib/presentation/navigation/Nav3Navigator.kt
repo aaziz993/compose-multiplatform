@@ -52,11 +52,11 @@ public open class Nav3Navigator(
      * This ensures consistency and prevents intermediate states from being visible.
      *
      * @param actions Array of navigation actions to apply.
-     * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
+     * @param onUnknownNavRoute Callback to be called if route isn't in the current top level route.
      */
     override fun actions(
         vararg actions: NavigationAction,
-        onUnknownRoute: (NavRoute) -> Unit,
+        onUnknownNavRoute: (NavRoute) -> Unit,
     ) {
         val snapshot = backStack.toMutableList()
         var callOnBack = false
@@ -66,7 +66,7 @@ public open class Nav3Navigator(
                 if (!action(
                         snapshot,
                         action,
-                        onUnknownRoute,
+                        onUnknownNavRoute,
                     ) { callOnBack = true }
                 ) return
             }
