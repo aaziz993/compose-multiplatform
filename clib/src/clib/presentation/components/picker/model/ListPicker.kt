@@ -2,7 +2,7 @@ package clib.presentation.components.picker.model
 
 import androidx.compose.ui.graphics.Color
 
-public data class Picker(
+public data class ListPicker(
     var itemPadding: Int = 10,
     var dividerColor: Color = Color.LightGray,
     var headerTitle: String = "Select item",

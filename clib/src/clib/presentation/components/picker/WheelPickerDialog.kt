@@ -18,14 +18,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.picker.model.Picker
+import clib.presentation.components.picker.model.ListPicker
 
 @Composable
 public fun <E> WheelPickerDialog(
+    onDismissRequest: () -> Unit,
     initialValue: E,
     values: List<E>,
     onItemClicked: (E) -> Unit,
-    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
@@ -40,7 +40,7 @@ public fun <E> WheelPickerDialog(
     dividerColor: Color = MaterialTheme.colorScheme.outline,
     dividerThickness: Dp = 1.dp,
     keyboardType: KeyboardType = KeyboardType.Text,
-    picker: Picker = Picker(),
+    picker: ListPicker = ListPicker(),
 ): Unit = PickerDialog(
     values,
     onDismissRequest,

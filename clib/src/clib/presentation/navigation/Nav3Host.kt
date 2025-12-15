@@ -39,7 +39,7 @@ internal fun Nav3Host(
 
     DisposableEffect(router, navigator) {
         router.navigationActionQueue.setNavigator(navigator)
-        onDispose { router.navigationActionQueue.removeNavigator(navigator) }
+        onDispose(router.navigationActionQueue::removeNavigator)
     }
 
     val onBack: () -> Unit = remember(router) {

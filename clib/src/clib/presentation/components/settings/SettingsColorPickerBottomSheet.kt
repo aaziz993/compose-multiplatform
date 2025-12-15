@@ -55,13 +55,12 @@ public fun SettingsColorPickerBottomSheet(
     picker: ColorPicker = ColorPicker(),
     onValueChanged: (Color) -> Boolean,
 ) {
-    var showSheet by remember { mutableStateOf(false) }
-
-    if (showSheet)
+    var sheet by remember { mutableStateOf(false) }
+    if (sheet)
         ColorPickerBottomSheet(
-            { showSheet = false },
+            { sheet = false },
             { value ->
-                showSheet = onValueChanged(value)
+                sheet = onValueChanged(value)
             },
             initialColor = value,
             sheetState = sheetState,
@@ -80,7 +79,7 @@ public fun SettingsColorPickerBottomSheet(
         shadowElevation,
         semanticProperties,
         {
-            showSheet = true
+            sheet = true
         },
     )
 }

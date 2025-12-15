@@ -19,8 +19,8 @@ import klib.data.type.collections.bimap.toBiMap
 
 @Composable
 public fun LocalePickerDialog(
-    onItemClicked: (item: Locale) -> Unit,
     onDismissRequest: () -> Unit,
+    onItemClicked: (item: Locale) -> Unit,
     modifier: Modifier = Modifier,
     locales: List<Locale> = Locale.getLocales().toList(),
     country: @Composable (Locale) -> Country = { locale -> locale.country()!! },
@@ -29,11 +29,11 @@ public fun LocalePickerDialog(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     picker: CountryPicker = CountryPicker(),
 ) {
-    val localeCountryMap = locales.associateWith{country(it)}.toBiMap()
+    val localeCountryMap = locales.associateWith { country(it) }.toBiMap()
 
     CountryPickerDialog(
-        { country -> onItemClicked(localeCountryMap.inverse[country]!!) },
         onDismissRequest,
+        { country -> onItemClicked(localeCountryMap.inverse[country]!!) },
         modifier,
         localeCountryMap.values.toList(),
         textStyle,

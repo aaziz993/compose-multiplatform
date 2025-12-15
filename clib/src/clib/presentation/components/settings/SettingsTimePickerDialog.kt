@@ -1,9 +1,9 @@
 package clib.presentation.components.settings
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerDialog
+import androidx.compose.material3.TimePickerDialogDefaults
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,22 +11,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import clib.presentation.components.model.item.Item
-import clib.presentation.components.picker.ListPickerDialog
-import clib.presentation.components.picker.model.ListPicker
+import androidx.compose.ui.window.DialogProperties
+import clib.data.type.state.localTime
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
+import klib.data.type.primitives.time.toLocalTime
+import kotlin.time.Clock
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
 
+@Suppress("ComposeParameterOrder")
 @Composable
-public fun <E> SettingsListPickerDialog(
+public fun SettingsTimePickerDialog(
     title: @Composable () -> Unit,
-    values: List<E>,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: (@Composable () -> Unit)? = null,
@@ -36,30 +38,36 @@ public fun <E> SettingsListPickerDialog(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
-    item: (E) -> Item = { value -> Item(text = { Text(value.toString()) }) },
-    textStyle: TextStyle = LocalTextStyle.current,
-    itemPadding: Int = 10,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    picker: ListPicker = ListPicker(),
-    onItemClicked: (E) -> Boolean,
+    dialogModifier: Modifier = Modifier,
+    dialogProperties: DialogProperties = DialogProperties(),
+    modeToggleButton: (@Composable () -> Unit)? = null,
+    dismissButton: (@Composable () -> Unit)? = null,
+    shape: Shape = TimePickerDialogDefaults.shape,
+    containerColor: Color = TimePickerDialogDefaults.containerColor,
+    onItemClicked: (LocalTime) -> Boolean,
 ) {
     var dialog by remember { mutableStateOf(false) }
-    if (dialog)
-        ListPickerDialog(
+    if (dialog) {
+        val now = Clock.System.now().toLocalTime(TimeZone.currentSystemDefault())
+        val state = rememberTimePickerState(now.hour, now.minute, true)
+        TimePickerDialog(
             {
                 dialog = false
             },
-            values,
-            { value ->
-                dialog = onItemClicked(value)
+            {
+                dialog = onItemClicked(state.localTime)
             },
-            Modifier.padding(end = 16.dp),
-            item,
-            textStyle,
-            itemPadding,
-            backgroundColor,
-            picker,
-        )
+            title,
+            dialogModifier,
+            dialogProperties,
+            modeToggleButton,
+            dismissButton,
+            shape,
+            containerColor,
+        ) {
+            TimePicker(state)
+        }
+    }
 
     SettingsMenuLink(
         title,

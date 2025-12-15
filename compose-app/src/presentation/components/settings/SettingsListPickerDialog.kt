@@ -12,7 +12,7 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import clib.presentation.components.model.item.Item
-import clib.presentation.components.picker.model.Picker
+import clib.presentation.components.picker.model.ListPicker
 import clib.presentation.components.settings.SettingsListPickerDialog
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
@@ -47,7 +47,7 @@ public fun <E> SettingsListPickerDialog(
     textStyle: TextStyle = LocalTextStyle.current,
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    picker: Picker = Picker(
+    picker: ListPicker = ListPicker(
         headerTitle = title,
         searchHint = stringResource(Res.string.search),
         clear = stringResource(Res.string.clear),

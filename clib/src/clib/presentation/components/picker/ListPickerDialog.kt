@@ -25,19 +25,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.model.item.Item
-import clib.presentation.components.picker.model.Picker
+import clib.presentation.components.picker.model.ListPicker
 
 @Composable
 public fun <E> ListPickerDialog(
+    onDismissRequest: () -> Unit,
     values: List<E>,
     onItemClicked: (E) -> Unit,
-    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     item: (E) -> Item = { value -> Item(text = { Text(value.toString()) }) },
     textStyle: TextStyle = LocalTextStyle.current,
     itemPadding: Int = 10,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    picker: Picker = Picker(),
+    picker: ListPicker = ListPicker(),
 ): Unit = PickerDialog(
     values,
     onDismissRequest,

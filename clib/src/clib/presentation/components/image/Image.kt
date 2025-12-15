@@ -1,8 +1,6 @@
 package clib.presentation.components.image
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +17,7 @@ import coil3.compose.AsyncImage
 import kotlin.String
 
 @Composable
-public fun AdvancedImage(
+public fun Image(
     imageSource: Any,
     contentDescription: String?,
     modifier: Modifier = Modifier,

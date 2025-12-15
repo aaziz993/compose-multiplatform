@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.picker.WheelPickerDialog
-import clib.presentation.components.picker.model.Picker
+import clib.presentation.components.picker.model.ListPicker
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
@@ -24,9 +24,9 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 
 @Composable
 public fun <E> SettingsWheelPickerDialog(
+    title: @Composable () -> Unit,
     initialValue: E,
     values: List<E>,
-    title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: (@Composable () -> Unit)? = null,
@@ -49,19 +49,19 @@ public fun <E> SettingsWheelPickerDialog(
     dividerColor: Color = MaterialTheme.colorScheme.outline,
     dividerThickness: Dp = 1.dp,
     keyboardType: KeyboardType = KeyboardType.Text,
-    picker: Picker = Picker(),
+    picker: ListPicker = ListPicker(),
     onItemClicked: (E) -> Boolean,
 ) {
-    var pickerDialog by remember { mutableStateOf(false) }
-    if (pickerDialog)
+    var dialog by remember { mutableStateOf(false) }
+    if (dialog)
         WheelPickerDialog(
+            {
+                dialog = false
+            },
             initialValue,
             values,
             { value ->
-                pickerDialog = onItemClicked(value)
-            },
-            {
-                pickerDialog = false
+                dialog = onItemClicked(value)
             },
             Modifier.padding(end = 16.dp),
             itemPadding,
@@ -92,6 +92,6 @@ public fun <E> SettingsWheelPickerDialog(
         shadowElevation,
         semanticProperties,
     ) {
-        pickerDialog = true
+        dialog = true
     }
 }

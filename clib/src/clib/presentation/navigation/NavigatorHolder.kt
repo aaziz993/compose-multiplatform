@@ -20,7 +20,6 @@ public interface NavigatorHolder {
     /**
      * Unregisters the current navigator.
      *
-     * @param navigator The navigator instance to unregister.
      */
-    public fun removeNavigator(navigator: Navigator)
+    public fun removeNavigator()
 }

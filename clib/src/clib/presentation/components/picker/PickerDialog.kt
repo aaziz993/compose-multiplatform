@@ -35,7 +35,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import clib.presentation.components.picker.model.Picker
+import clib.presentation.components.picker.model.ListPicker
 
 @Suppress("ComposeParameterOrder")
 @Composable
@@ -46,7 +46,7 @@ internal fun <E> PickerDialog(
     textStyle: TextStyle,
     itemPadding: Int = 10,
     backgroundColor: Color,
-    picker: Picker,
+    picker: ListPicker,
     content: @Composable (List<E>) -> Unit,
 ) {
     var searchQuery by remember { mutableStateOf("") }

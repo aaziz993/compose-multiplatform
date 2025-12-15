@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Route
 import androidx.compose.material.icons.filled.TextFormat
+import androidx.compose.material.icons.filled.Timer3
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.DynamicForm
@@ -29,6 +30,7 @@ import androidx.compose.material.icons.outlined.Highlight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +45,7 @@ import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
+import clib.presentation.components.settings.SettingsTimePickerDialog
 import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.navigation.NavigationAction
@@ -78,6 +81,9 @@ import compose_app.generated.resources.route
 import compose_app.generated.resources.search
 import compose_app.generated.resources.shapes
 import compose_app.generated.resources.theme
+import compose_app.generated.resources.light_mode_time
+import compose_app.generated.resources.dark_mode_time
+import compose_app.generated.resources.time
 import compose_app.generated.resources.title
 import compose_app.generated.resources.typography
 import data.location.locale.asStringResource
@@ -147,6 +153,26 @@ public fun SettingsMainScreen(
             subtitle = theme.isDarkStringResource(),
         ) {
             onThemeChange(theme.copyIsDarkToggled())
+        }
+
+        SettingsTimePickerDialog(
+            title = { Text(stringResource(Res.string.light_mode_time)) },
+            enabled = true,
+            icon = { Icon(Icons.Default.Timer3, "") },
+            subtitle = {},
+        ) { value ->
+            onThemeChange(theme.copy(lightModeTime = value))
+            false
+        }
+
+        SettingsTimePickerDialog(
+            title = { Text(stringResource(Res.string.dark_mode_time)) },
+            enabled = true,
+            icon = { Icon(Icons.Default.Timer3, "") },
+            subtitle = {},
+        ) { value ->
+            onThemeChange(theme.copy(darkModeTime = value))
+            false
         }
 
         SettingsSwitch(

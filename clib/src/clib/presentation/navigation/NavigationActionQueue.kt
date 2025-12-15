@@ -53,7 +53,7 @@ public class NavigationActionQueue(
      *
      * After calling this, new actions will be queued until a new navigator is set.
      */
-    override fun removeNavigator(navigator: Navigator) {
+    override fun removeNavigator() {
         attachedNavigator = null
     }
 

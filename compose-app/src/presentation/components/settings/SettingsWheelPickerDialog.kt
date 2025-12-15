@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.picker.model.Picker
+import clib.presentation.components.picker.model.ListPicker
 import clib.presentation.components.settings.SettingsWheelPickerDialog
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
@@ -48,7 +48,7 @@ public fun <E> SettingsWheelPickerDialog(
     dividerColor: Color = MaterialTheme.colorScheme.outline,
     dividerThickness: Dp = 1.dp,
     keyboardType: KeyboardType = KeyboardType.Text,
-    picker: Picker = Picker(),
+    picker: ListPicker = ListPicker(),
     onItemClicked: (E) -> Boolean,
 ): Unit = SettingsWheelPickerDialog(
     initialValue,

@@ -31,8 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 public fun CountryPickerDialog(
-    onItemClicked: (item: Country) -> Unit,
     onDismissRequest: () -> Unit,
+    onItemClicked: (item: Country) -> Unit,
     modifier: Modifier = Modifier,
     countries: List<Country> = Country.getCountries().toList(),
     textStyle: TextStyle = LocalTextStyle.current,

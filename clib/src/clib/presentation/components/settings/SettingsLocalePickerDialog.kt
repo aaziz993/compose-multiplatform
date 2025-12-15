@@ -43,14 +43,14 @@ public fun SettingsLocalePickerDialog(
     picker: CountryPicker = CountryPicker(),
     onItemClicked: (Locale) -> Boolean,
 ) {
-    var localePickerDialog by remember { mutableStateOf(false) }
-    if (localePickerDialog)
+    var dialog by remember { mutableStateOf(false) }
+    if (dialog)
         LocalePickerDialog(
-            { value ->
-                localePickerDialog = onItemClicked(value)
-            },
             {
-                localePickerDialog = false
+                dialog = false
+            },
+            { value ->
+                dialog = onItemClicked(value)
             },
             dialogModifier,
             locales,
@@ -73,6 +73,6 @@ public fun SettingsLocalePickerDialog(
         shadowElevation,
         semanticProperties,
     ) {
-        localePickerDialog = true
+        dialog = true
     }
 }
