@@ -7,14 +7,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.DensityLarge
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.FlashOn
-import androidx.compose.material.icons.filled.FlashlightOn
 import androidx.compose.material.icons.filled.FormatShapes
-import androidx.compose.material.icons.filled.Highlight
 import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
@@ -24,10 +23,9 @@ import androidx.compose.material.icons.filled.Route
 import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.FlashOn
-import androidx.compose.material.icons.outlined.FlashlightOff
-import androidx.compose.material.icons.outlined.Highlight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Restore
@@ -41,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
+import clib.data.type.ColorSerial
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
@@ -56,7 +55,6 @@ import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.app_bar_locales
 import compose_app.generated.resources.app_bar_support
 import compose_app.generated.resources.app_bar_themes
-import compose_app.generated.resources.appearance
 import compose_app.generated.resources.avatar_connectivity_indicator
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.clear
@@ -78,6 +76,7 @@ import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
 import compose_app.generated.resources.permission
+import compose_app.generated.resources.primary
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.route
@@ -91,6 +90,7 @@ import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.model.Permission
+import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
@@ -196,16 +196,49 @@ public fun SettingsMainScreen(
             },
         )
 
-        SettingsMenuLink(
-            title = stringResource(Res.string.route),
-            enabled = true,
-            icon = Icons.Default.Route,
-        ) {
-            onNavigationActions(
-                arrayOf(
-                    NavigationAction.Push(SettingsRoute),
-                ),
-            )
+        val colors = appBar.colors
+        val copyColors = appBar.copyColors(theme.isHighContrast)
+
+        SettingsColorPickerBottomSheet(
+            stringResource(Res.string.container_color),
+            colors.containerColor,
+        ) { value ->
+            onAppBarChange(copyColors(colors.copy(containerColor = value)))
+        }
+
+        SettingsColorPickerBottomSheet(
+            stringResource(Res.string.scrolled_container_color),
+            colors.scrolledContainerColor,
+        ) { value ->
+            onAppBarChange(copyColors(colors.copy(scrolledContainerColor = value)))
+        }
+
+        SettingsColorPickerBottomSheet(
+            stringResource(Res.string.navigation_icon_content_color),
+            colors.navigationIconContentColor,
+        ) { value ->
+            onAppBarChange(copyColors(colors.copy(navigationIconContentColor = value)))
+        }
+
+        SettingsColorPickerBottomSheet(
+            stringResource(Res.string.title_content_color),
+            colors.titleContentColor,
+        ) { value ->
+            onAppBarChange(copyColors(colors.copy(titleContentColor = value)))
+        }
+
+        SettingsColorPickerBottomSheet(
+            stringResource(Res.string.action_icon_content_color),
+            colors.actionIconContentColor,
+        ) { value ->
+            onAppBarChange(copyColors(colors.copy(actionIconContentColor = value)))
+        }
+
+        SettingsColorPickerBottomSheet(
+            stringResource(Res.string.subtitle_content_color),
+            colors.subtitleContentColor,
+        ) { value ->
+            onAppBarChange(copyColors(colors.copy(subtitleContentColor = value)))
         }
     }
 
@@ -316,8 +349,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.high_contrast),
             value = theme.isHighContrast,
-            trueIcon = Icons.Filled.FlashlightOn,
-            falseIcon = Icons.Outlined.FlashlightOff,
+            trueIcon = Icons.Filled.Contrast,
+            falseIcon = Icons.Outlined.Contrast,
         ) { value ->
             onThemeChange(theme.copy(isHighContrast = value))
         }
@@ -440,6 +473,25 @@ public fun SettingsMainScreen(
         ) { value ->
             onLocaleChange(value)
             false
+        }
+    }
+
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.route)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        SettingsMenuLink(
+            title = stringResource(Res.string.route),
+            enabled = true,
+            icon = Icons.Default.Route,
+        ) {
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.Push(SettingsRoute),
+                ),
+            )
         }
     }
 

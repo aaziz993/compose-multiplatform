@@ -8,20 +8,19 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.graphics.Color
 import clib.presentation.theme.darkHighContrast
 import clib.presentation.theme.lightHighContrast
 import clib.presentation.theme.shapes.ShapesSerial
 import clib.presentation.theme.typography.TypographySerial
-import klib.data.type.primitives.time.now
-import klib.data.type.primitives.time.toLocalDateTime
 import klib.data.type.primitives.time.toLocalTime
-import klib.data.type.serialization.plus
 import kotlin.time.Clock
-import kotlinx.datetime.LocalDateTime
+import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import pro.respawn.kmmutils.datetime.plusDays
@@ -59,7 +58,13 @@ public data class Theme(
         get() = if (isHighContrast) dynamicColorSchemeHighContrast else dynamicColorScheme
 
     @Composable
-    public fun isDark(): Boolean = isSystemInDarkTheme()
+    public fun isDark(): Boolean =
+        when (mode) {
+            ThemeMode.SYSTEM -> isSystemInDarkTheme()
+            ThemeMode.LIGHT -> false
+            ThemeMode.DARK -> true
+            ThemeMode.ADAPTIVE -> isAdaptiveDark()
+        }
 
     public fun copyIsDarkToggled(): Theme = when (mode) {
         ThemeMode.SYSTEM -> copy(mode = ThemeMode.LIGHT)
@@ -81,26 +86,46 @@ public data class Theme(
 
     public fun copyDynamicColorScheme(colorScheme: DynamicColorScheme): Theme =
         if (isHighContrast) copy(dynamicColorSchemeHighContrast = colorScheme) else copy(dynamicColorScheme = colorScheme)
+}
 
-//    @Suppress("ComposeNamingUppercase")
-//    @Composable
-//    public fun isAdaptiveDark(): Boolean {
-//        produceState(isNighTime()) {
-//            while (true) {
-//                val now = LocalDateTime.now()
-//
-//                val nextChange = when {
-//                    now.hour < 6 -> now.withTime(LocalTime(6, 0, 0))
-//                    now.hour < 19 -> now.withTime(LocalTime(19, 0, 0))
-//                    else -> now.plusDays(1, TimeZone.currentSystemDefault()).withTime(LocalTime(1, 6, 0))
-//                }
-//            }
-//        }
-//    }
+@Suppress("ComposeNamingUppercase")
+@Composable
+public fun isAdaptiveDark(
+    dayStart: LocalTime = LocalTime(6, 0),
+    nightStart: LocalTime = LocalTime(19, 0),
+    clock: Clock = Clock.System,
+    timeZone: TimeZone = TimeZone.currentSystemDefault(),
+): Boolean {
+    val isNight by produceState(isNight(dayStart, nightStart, clock, timeZone)) {
+        while (true) {
+            val now = clock.now().toLocalDateTime(timeZone)
 
-    //
-    private fun isNighTime(): Boolean {
-        val hour = LocalTime.now(TimeZone.currentSystemDefault()).hour
-        return hour < lightModeTime.hour || hour >= darkModeTime.hour
+            val nextChange = when {
+                now.time < dayStart -> now.withTime(dayStart)
+                now.time < nightStart -> now.withTime(nightStart)
+                else -> now.plusDays(1, TimeZone.currentSystemDefault())
+                    .withTime(dayStart)
+            }
+
+            val delayMs = nextChange.toInstant(timeZone)
+                .minus(clock.now())
+                .inWholeMilliseconds
+                .coerceAtLeast(0)
+
+            delay(delayMs)
+            value = isNight(dayStart, nightStart, clock, timeZone)
+        }
     }
+
+    return isNight
+}
+
+private fun isNight(
+    dayStart: LocalTime,
+    nightStart: LocalTime,
+    clock: Clock,
+    timeZone: TimeZone,
+): Boolean {
+    val now = clock.now().toLocalTime(timeZone)
+    return now < dayStart || now >= nightStart
 }

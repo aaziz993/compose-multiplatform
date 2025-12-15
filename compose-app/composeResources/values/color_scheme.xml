@@ -51,6 +51,12 @@
     <string name="tertiary_fixed_dim">Tertiary Fixed Dim</string>
     <string name="on_tertiary_fixed">On Tertiary Fixed</string>
     <string name="on_tertiary_fixed_variant">On Tertiary Fixed Variant</string>
+    <string name="container_color">Container color</string>
+    <string name="scrolled_container_color">Scrolled container color</string>
+    <string name="navigation_icon_content_color">Navigation icon content color</string>
+    <string name="title_content_color">Title content color</string>
+    <string name="action_icon_content_color">Action icon content color</string>
+    <string name="subtitle_content_color">Subtitle content color</string>
     <string name="neutral">Neutral</string>
     <string name="neutral_variant">Neutral variant</string>
 </resources>

@@ -340,10 +340,7 @@ public fun TopAppBar(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
-                ),
+                colors = appBar.colors,
             )
         },
         content = content,

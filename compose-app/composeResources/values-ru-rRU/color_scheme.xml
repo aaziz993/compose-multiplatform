@@ -51,4 +51,12 @@
     <string name="tertiary_fixed_dim">Тёмный фиксированный третичный</string>
     <string name="on_tertiary_fixed">На фиксированном третичном</string>
     <string name="on_tertiary_fixed_variant">На варианте фиксированного третичного</string>
+    <string name="container_color">Цвет контейнера</string>
+    <string name="scrolled_container_color">Цвет контейнера листания</string>
+    <string name="navigation_icon_content_color">Цвет содержимого иконки навигации</string>
+    <string name="title_content_color">Цвет содержимого заглавия</string>
+    <string name="action_icon_content_color">Цвет содержимого иконки действия</string>
+    <string name="subtitle_content_color">Цвет содержимого подзаголавия</string>
+    <string name="neutral">Нейтральный</string>
+    <string name="neutral_variant">Нейтральный вариант</string>
 </resources>

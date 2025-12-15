@@ -51,4 +51,12 @@
     <string name="tertiary_fixed_dim">Сеюмӣ собити торик</string>
     <string name="on_tertiary_fixed">Дар сеюмӣ собит</string>
     <string name="on_tertiary_fixed_variant">Дар намуди сеюмӣ собит</string>
+    <string name="container_color">Ранги контейнер</string>
+    <string name="scrolled_container_color">Ранги контейнери варақзанӣ</string>
+    <string name="navigation_icon_content_color">Ранги мазмуни расми роҳгузорӣ</string>
+    <string name="title_content_color">Ранги мазмуни сарлавҳа</string>
+    <string name="action_icon_content_color">Ранги мазмуни расми амал</string>
+    <string name="subtitle_content_color">Ранги мазмуни зерсарлавҳа</string>
+    <string name="neutral">Беғараз</string>
+    <string name="neutral_variant">Беғараз навъ</string>
 </resources>
