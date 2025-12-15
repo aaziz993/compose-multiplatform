@@ -1,7 +1,7 @@
 ui:
   startRoute: auth
   authRoute: auth
-  authRedirectRoute: news
+  authRedirectRoute: services
   routes:
     phone:
       metadata:
