@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.FlashlightOn
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Highlight
 import androidx.compose.material.icons.filled.LinearScale
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.FlashOn
+import androidx.compose.material.icons.outlined.FlashlightOff
 import androidx.compose.material.icons.outlined.Highlight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mic
@@ -314,8 +316,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.high_contrast),
             value = theme.isHighContrast,
-            trueIcon = Icons.Filled.Highlight,
-            falseIcon = Icons.Outlined.Highlight,
+            trueIcon = Icons.Filled.FlashlightOn,
+            falseIcon = Icons.Outlined.FlashlightOff,
         ) { value ->
             onThemeChange(theme.copy(isHighContrast = value))
         }
