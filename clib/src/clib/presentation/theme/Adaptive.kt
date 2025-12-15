@@ -25,6 +25,7 @@ public fun isAdaptiveDark(
         isNight(dayStart, nightStart, clock, timeZone),
         dayStart,
         nightStart,
+        timeZone,
     ) {
         while (true) {
             val now = clock.now().toLocalDateTime(timeZone)
