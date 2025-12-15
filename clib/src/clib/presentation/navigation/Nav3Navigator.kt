@@ -143,7 +143,7 @@ public open class Nav3Navigator(
 
 
 
-        if (!action.duplicate) {
+        if (action.single) {
             popTo(snapshot, NavigationAction.PopTo(action.route))
             if (snapshot.lastOrNull() == route) snapshot.removeLast()
         }
