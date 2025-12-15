@@ -52,6 +52,7 @@ public open class Nav3Navigator(
      * This ensures consistency and prevents intermediate states from being visible.
      *
      * @param actions Array of navigation actions to apply.
+     * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
      */
     override fun actions(
         vararg actions: NavigationAction,
@@ -87,6 +88,7 @@ public open class Nav3Navigator(
      *
      * @param snapshot Mutable copy of the navigation stack.
      * @param action Command to process.
+     * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
      * @param onBackRequested Callback to trigger when system back navigation is needed.
      */
     protected open fun action(
@@ -116,6 +118,7 @@ public open class Nav3Navigator(
      *
      * @param snapshot The stack snapshot to modify.
      * @param action The push action containing the route to add.
+     * @param onUnknownRoute The callback to be called if route isn't in the current top level route.
      */
     protected open fun push(
         snapshot: MutableList<NavRoute>,

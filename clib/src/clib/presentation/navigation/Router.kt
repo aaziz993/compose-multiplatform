@@ -67,7 +67,7 @@ public open class Router(
         private set
 
     /**
-     *  The callback called when route isn't in the current top level route.
+     * Callback to be called if route isn't in the current top level route.
      */
     override val onUnknownRoute: (NavRoute) -> Unit
         get() = {

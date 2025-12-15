@@ -70,7 +70,7 @@ public class NavSuiteTopAppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                     alwaysShowLabel = if (layoutType == NavigationSuiteType.NavigationDrawer) {
                         { true }
                     }
-                    else BaseRoute::enabled,
+                    else BaseRoute::alwaysShowLabel,
                     auth = authState.value,
                 ),
                 modifier = Modifier.fillMaxSize(),
