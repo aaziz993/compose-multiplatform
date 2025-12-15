@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.DensitySmall
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.FormatShapes
+import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
@@ -72,6 +73,7 @@ import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.light_mode_time
+import compose_app.generated.resources.line_height
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.microphone
@@ -146,6 +148,17 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.app_bar)) },
         contentPadding = PaddingValues(16.dp),
     ) {
+        SettingsSliderFinished(
+            title = stringResource(Res.string.height),
+            initialValue = density.fontScale,
+            icon = { Icons.Default.Height },
+            enabled = true,
+            valueRange = 56f..80f,
+            steps = 4,
+        ) { value ->
+            onAppBarChange(appBar.copy(expandedHeight = value.dp))
+        }
+
         SettingsSwitch(
             title = stringResource(Res.string.title),
             value = appBar.isTitle,

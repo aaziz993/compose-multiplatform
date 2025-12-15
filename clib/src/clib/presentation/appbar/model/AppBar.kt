@@ -7,6 +7,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.dp
+import clib.data.type.DpSerial
 import clib.presentation.appbar.TopAppBarColorsSerial
 import clib.presentation.theme.LocalAppTheme
 import kotlinx.serialization.Serializable
@@ -14,6 +15,7 @@ import kotlinx.serialization.Serializable
 @Immutable
 @Serializable
 public data class AppBar(
+    public val expandedHeight: DpSerial = 64.dp,
     public val isTitle: Boolean = true,
     public val isSupport: Boolean = true,
     public val isTheme: Boolean = true,

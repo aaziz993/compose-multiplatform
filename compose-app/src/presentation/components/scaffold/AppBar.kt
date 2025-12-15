@@ -340,6 +340,7 @@ public fun TopAppBar(
                         }
                     }
                 },
+                expandedHeight = appBar.expandedHeight,
                 colors = appBar.colors,
             )
         },
