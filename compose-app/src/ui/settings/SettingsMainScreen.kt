@@ -47,6 +47,7 @@ import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.navigation.NavigationAction
+import clib.presentation.theme.density.toFloatPx
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
@@ -154,11 +155,10 @@ public fun SettingsMainScreen(
     ) {
         SettingsSliderFinished(
             title = stringResource(Res.string.line_height),
-            initialValue = density.fontScale,
+            initialValue = appBar.expandedHeight.toFloatPx(),
             icon = { Icons.Default.Height },
             enabled = true,
             valueRange = 56f..80f,
-            steps = 4,
         ) { value ->
             onAppBarChange(appBar.copy(expandedHeight = value.dp))
         }
