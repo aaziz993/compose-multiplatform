@@ -48,7 +48,7 @@ public open class Router(
         internal set
 
     /**
-     * Parent child router in nested navigation hierarchy.
+     * Child router in nested navigation hierarchy.
      */
     override var next: Router? by mutableStateOf(null)
         internal set
@@ -62,7 +62,8 @@ public open class Router(
     /**
      * Nested routes queue.
      */
-    internal var routeQueue: ArrayDeque<NavRoute> = ArrayDeque()
+    public var routePath: List<NavRoute> = emptyList()
+        internal set
 
     /**
      *  The callback called when route isn't in the current top level route.
@@ -71,15 +72,7 @@ public open class Router(
         get() = {
 
             val t = 0
-            // consumeQueuedRoute()
         }
-
-    internal fun consumeRoute(): NavRoute? {
-        val queue = head().routeQueue
-        if (queue.isEmpty()) return null
-        val route = queue.removeFirst()
-        return route
-    }
 
     /**
      * Pushes one or more routes onto the navigation stack.

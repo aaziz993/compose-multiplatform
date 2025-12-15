@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
  * immediately when a navigator becomes available.
  *
  * All action execution happens on the Main dispatcher to ensure UI thread safety.
+ * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
  */
 public class NavigationActionQueue(
     private val onUnknownRoute: (NavRoute) -> Unit,
@@ -39,12 +40,11 @@ public class NavigationActionQueue(
      * @param navigator The navigator to register
      */
     override fun setNavigator(navigator: Navigator) {
-        navigator.onUnknownRoute = onUnknownRoute
         attachedNavigator = navigator
         if (pendingActions.isNotEmpty()) {
             val snapshot = pendingActions.toList()
             pendingActions.clear()
-            snapshot.forEach(navigator::actions)
+            snapshot.forEach { actions -> navigator.actions(actions = actions, onUnknownRoute = onUnknownRoute) }
         }
     }
 
@@ -67,7 +67,8 @@ public class NavigationActionQueue(
      */
     public fun actions(vararg actions: NavigationAction) {
         mainScope.launch {
-            attachedNavigator?.actions(*actions) ?: pendingActions.add(actions)
+            attachedNavigator?.actions(actions = actions, onUnknownRoute = onUnknownRoute)
+                ?: pendingActions.add(actions)
         }
     }
 }

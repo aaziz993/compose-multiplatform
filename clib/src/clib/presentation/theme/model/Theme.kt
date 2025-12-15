@@ -8,12 +8,23 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.graphics.Color
 import clib.presentation.theme.darkHighContrast
 import clib.presentation.theme.lightHighContrast
 import clib.presentation.theme.shapes.ShapesSerial
 import clib.presentation.theme.typography.TypographySerial
+import klib.data.type.primitives.time.now
+import klib.data.type.primitives.time.toLocalDateTime
+import klib.data.type.primitives.time.toLocalTime
+import klib.data.type.serialization.plus
+import kotlin.time.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
+import pro.respawn.kmmutils.datetime.plusDays
 
 @Immutable
 @Serializable
@@ -67,5 +78,27 @@ public data class Theme(
 
     public fun copyDynamicColorScheme(colorScheme: DynamicColorScheme): Theme =
         if (isHighContrast) copy(dynamicColorSchemeHighContrast = colorScheme) else copy(dynamicColorScheme = colorScheme)
-}
 
+//    @Suppress("ComposeNamingUppercase")
+//    @Composable
+//    public fun isAdaptiveDark(): Boolean {
+//        produceState(isNighTime()) {
+//            while (true) {
+//                val now = LocalDateTime.now()
+//
+//                val nextChange = when {
+//                    now.hour < 6 -> LocalTime(6, 0, 0)
+//                    now.hour < 19 -> LocalTime(19, 0, 0)
+//                    else -> now.plusDays(1).withH LocalTime (1
+//                        , 6, 0)
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun isNighTime(): Boolean {
+//        val nowUtc = Clock.System.now()
+//        val hour = nowUtc.toLocalDateTime(TimeZone.currentSystemDefault()).hour
+//        return hour < 6 || hour >= 19
+//    }
+}

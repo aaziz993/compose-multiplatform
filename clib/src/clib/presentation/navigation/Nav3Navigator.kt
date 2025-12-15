@@ -45,11 +45,6 @@ public open class Nav3Navigator(
     private val mainScope = MainScope()
 
     /**
-     * Callback called when route isn't in the current top level route.
-     */
-    override lateinit var onUnknownRoute: (NavRoute) -> Unit
-
-    /**
      * Applies an array of navigation actions to the back stack.
      *
      * Actions are processed sequentially against a snapshot of the current stack.
@@ -60,6 +55,7 @@ public open class Nav3Navigator(
      */
     override fun actions(
         vararg actions: NavigationAction,
+        onUnknownRoute: (NavRoute) -> Unit,
     ) {
         val snapshot = backStack.toMutableList()
         var callOnBack = false
@@ -69,6 +65,7 @@ public open class Nav3Navigator(
                 if (!action(
                         snapshot,
                         action,
+                        onUnknownRoute,
                     ) { callOnBack = true }
                 ) return
             }
@@ -95,6 +92,7 @@ public open class Nav3Navigator(
     protected open fun action(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction,
+        onUnknownRoute: (NavRoute) -> Unit,
         onBackRequested: () -> Unit,
     ): Boolean {
         when (action) {
@@ -323,7 +321,7 @@ public open class Nav3Navigator(
 @Composable
 public fun rememberNav3Navigator(
     routes: Routes,
-    startRoute: NavRoute? = LocalRouter.current?.consumeRoute(),
+    startRoute: NavRoute? = LocalRouter.current?.routePath?.firstOrNull(),
     auth: Auth = Auth(),
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
