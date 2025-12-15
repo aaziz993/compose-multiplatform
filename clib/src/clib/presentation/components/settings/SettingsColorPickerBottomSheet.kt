@@ -78,8 +78,7 @@ public fun SettingsColorPickerBottomSheet(
         tonalElevation,
         shadowElevation,
         semanticProperties,
-        {
-            sheet = true
-        },
-    )
+    ) {
+        sheet = true
+    }
 }
