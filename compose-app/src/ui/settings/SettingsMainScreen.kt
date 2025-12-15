@@ -443,8 +443,8 @@ public fun SettingsMainScreen(
                 connectivity != defaultConnectivity ||
                 theme != defaultTheme ||
                 density != defaultDensity ||
-                locale != defaultLocale
-        routes != defaultRoutes
+                locale != defaultLocale ||
+                routes != defaultRoutes
 
         SettingsMenuLink(
             title = stringResource(Res.string.reset),

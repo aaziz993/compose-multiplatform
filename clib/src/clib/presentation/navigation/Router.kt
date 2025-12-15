@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import klib.data.type.collections.linkedlist.model.Node
+import klib.data.type.collections.list.drop
 
 /**
  * CompositionLocal that provides access to the parent Router in nested navigation hierarchies.
@@ -45,13 +46,13 @@ public open class Router(
      * Parent router in nested navigation hierarchy.
      */
     override var prev: Router? by mutableStateOf(null)
-        internal set
+        private set
 
     /**
      * Child router in nested navigation hierarchy.
      */
     override var next: Router? by mutableStateOf(null)
-        internal set
+        private set
 
     /**
      * Currently registered navigators has back.
@@ -63,7 +64,7 @@ public open class Router(
      * Nested route path.
      */
     public var routePath: List<NavRoute> = emptyList()
-        internal set
+        private set
 
     /**
      *  The callback called when route isn't in the current top level route.
@@ -73,6 +74,17 @@ public open class Router(
 
             val t = 0
         }
+
+    /**
+     * Creates parent child router relationship.
+     */
+    public fun bind(parentRouter: Router) {
+        require(this != parentRouter) { "Router can't be parent of itself" }
+
+        parentRouter.next = this
+        prev = parentRouter
+        routePath = parentRouter.routePath.drop()
+    }
 
     /**
      * Pushes one or more routes onto the navigation stack.
