@@ -159,7 +159,7 @@ public fun SettingsMainScreen(
             initialValue = appBar.expandedHeight.toFloatPx(),
             icon = { Icons.Default.Height },
             enabled = true,
-            valueRange = 64f..192f,
+            valueRange = 32.dp.toFloatPx()..96.dp.toFloatPx(),
         ) { value ->
             onAppBarChange(appBar.copy(expandedHeight = value.dp))
         }
