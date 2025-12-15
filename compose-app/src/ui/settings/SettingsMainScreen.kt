@@ -141,66 +141,6 @@ public fun SettingsMainScreen(
     SettingsGroup(
         modifier = Modifier,
         enabled = true,
-        title = { Text(text = stringResource(Res.string.connectivity)) },
-        contentPadding = PaddingValues(16.dp),
-    ) {
-        val connectivityTrueIcon = connectivityStatus.filledImageVector()
-        val connectivityFalseIcon = connectivityStatus.outlinedImageVector()
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_alert),
-            value = connectivity.isConnectivityAlert,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivityAlert = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_snackbar),
-            value = connectivity.isConnectivitySnackbar,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivitySnackbar = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_indicator),
-            value = connectivity.isConnectivityIndicator,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivityIndicator = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.connectivity_indicator_text),
-            value = connectivity.isConnectivityIndicatorText,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isConnectivityIndicatorText = value))
-            },
-        )
-
-        SettingsSwitch(
-            title = stringResource(Res.string.avatar_connectivity_indicator),
-            value = connectivity.isAvatarConnectivityIndicator,
-            trueIcon = connectivityTrueIcon,
-            falseIcon = connectivityFalseIcon,
-            onCheckedChange = { value ->
-                onConnectivityChange(connectivity.copy(isAvatarConnectivityIndicator = value))
-            },
-        )
-    }
-
-    SettingsGroup(
-        modifier = Modifier,
-        enabled = true,
         title = { Text(text = stringResource(Res.string.app_bar)) },
         contentPadding = PaddingValues(16.dp),
     ) {
@@ -265,6 +205,66 @@ public fun SettingsMainScreen(
                 ),
             )
         }
+    }
+
+    SettingsGroup(
+        modifier = Modifier,
+        enabled = true,
+        title = { Text(text = stringResource(Res.string.connectivity)) },
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        val connectivityTrueIcon = connectivityStatus.filledImageVector()
+        val connectivityFalseIcon = connectivityStatus.outlinedImageVector()
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_alert),
+            value = connectivity.isConnectivityAlert,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivityAlert = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_snackbar),
+            value = connectivity.isConnectivitySnackbar,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivitySnackbar = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator),
+            value = connectivity.isConnectivityIndicator,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivityIndicator = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.connectivity_indicator_text),
+            value = connectivity.isConnectivityIndicatorText,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isConnectivityIndicatorText = value))
+            },
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.avatar_connectivity_indicator),
+            value = connectivity.isAvatarConnectivityIndicator,
+            trueIcon = connectivityTrueIcon,
+            falseIcon = connectivityFalseIcon,
+            onCheckedChange = { value ->
+                onConnectivityChange(connectivity.copy(isAvatarConnectivityIndicator = value))
+            },
+        )
     }
 
     SettingsGroup(
