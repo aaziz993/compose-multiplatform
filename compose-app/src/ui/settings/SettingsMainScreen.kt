@@ -69,6 +69,8 @@ import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
+import clib.presentation.event.alert.GlobalAlertEventController
+import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocalLocalization
@@ -101,7 +103,7 @@ import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.contact
 import compose_app.generated.resources.container_color
 import compose_app.generated.resources.dark_time
-import compose_app.generated.resources.dark_time_lt_light_time
+import compose_app.generated.resources.light_time_gt_dark_time
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
@@ -392,7 +394,7 @@ public fun SettingsMainScreen(
                     GlobalSnackbarEventController.sendEvent(
                         SnackbarEvent(
                             getString(
-                                Res.string.dark_time_lt_light_time,
+                                Res.string.light_time_gt_dark_time,
                                 localization,
                             ),
                         ),
@@ -415,10 +417,10 @@ public fun SettingsMainScreen(
             }
             else {
                 coroutineScope.launch {
-                    GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(
+                    GlobalAlertEventController.sendEvent(
+                        AlertEvent(
                             getString(
-                                Res.string.dark_time_lt_light_time,
+                                Res.string.light_time_gt_dark_time,
                                 localization,
                             ),
                         ),

@@ -215,7 +215,7 @@ public fun AppEnvironment(
                 Box(modifier = Modifier.fillMaxSize()) {
                     routes.Nav3Host(routesState::get, routerFactory, navigatorFactory)
                     GlobalAlertDialog()
-                    GlobalSnackbar(modifier = Modifier.align(Alignment.Center).zIndex(0f))
+                    GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
