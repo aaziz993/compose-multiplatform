@@ -15,7 +15,6 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import clib.data.net.GlobalDeepLink
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.RouteConfig
@@ -90,7 +89,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
                 { router.onClick(this@BaseRoute) },
                 selectedItem.icon,
                 selectedItem.modifier,
-                enabled,
+                false,
                 selectedItem.text,
                 alwaysShowLabel,
                 selectedItem.badge,
@@ -216,13 +215,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         Nav3Host(
             routerFactory(this),
             navigatorFactory(this),
-        ) { isRoot, router, backStack, onBack ->
-            // Global deeplink events.
-            if (isRoot)
-                GlobalDeepLink(router) {
-
-                }
-
+        ) { _, backStack, onBack ->
             // Return a result from one screen to a previous screen using a state-based approach.
             val resultStore = rememberStateStore()
             // Return a result from one screen to a previous screen using an event-based approach.
@@ -312,12 +305,10 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     }
 
     final override fun navRoutePath(url: Url): List<NavRoute>? {
-        for (route in routes) {
-            if (route !is NavRoute) continue
-            if (route == navRoute) return listOf(route)
-            val path = route.navRoutePath(url)?.let(listOf(route)::plus)
-            if (path != null) return path
-        }
+//        for (route in routes) {
+//            val path = route.navRoutePath(url)?.let(listOf(route)::plus)
+//            if (path != null) return path
+//        }
 
         return null
     }

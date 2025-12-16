@@ -10,7 +10,7 @@ import io.ktor.http.Url
 import klib.data.net.toUrl
 
 @Composable
-public actual fun GlobalDeepLink(
+public actual fun GlobalDeepLinkEvents(
     vararg keys: Any,
     onEvent: (Url) -> Unit,
 ) {

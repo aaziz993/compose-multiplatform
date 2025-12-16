@@ -8,7 +8,7 @@ import klib.data.net.removeDeepLinkHandler
 import klib.data.net.toUrl
 
 @Composable
-public actual fun GlobalDeepLink(
+public actual fun GlobalDeepLinkEvents(
     vararg keys: Any,
     onEvent: (Url) -> Unit,
 ): Unit = DisposableEffect(*keys) {

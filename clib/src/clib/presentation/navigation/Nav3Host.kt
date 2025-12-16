@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import clib.data.net.GlobalDeepLinkEvents
 
 /**
  * Main composable for setting up Navigation 3 integration.
@@ -26,13 +27,15 @@ internal fun Nav3Host(
     router: Router,
     navigator: Navigator,
     content: @Composable (
-        isRoot: Boolean,
         router: Router,
         backStack: List<NavRoute>,
         onBack: () -> Unit,
     ) -> Unit,
 ) {
     val parentRouter = LocalRouter.current
+
+    // Global deep link events.
+    if (parentRouter == null) GlobalDeepLinkEvents(router, onEvent = router::push)
 
     LaunchedEffect(router) {
         parentRouter?.let(router::bind)
@@ -51,7 +54,7 @@ internal fun Nav3Host(
 
     CompositionLocalProvider(LocalRouter provides router) {
         BackInterceptionProvider(interceptionEnabled) {
-            content(parentRouter == null, router, navigator.backStack, onBack)
+            content(router, navigator.backStack, onBack)
         }
     }
 }

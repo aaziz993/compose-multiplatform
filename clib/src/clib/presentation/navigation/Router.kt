@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import io.ktor.http.Url
 import klib.data.type.collections.linkedlist.model.Node
 import klib.data.type.collections.list.drop
 
@@ -102,6 +103,18 @@ public open class Router(
 
         val actions = routes.map(NavigationAction::Push).toTypedArray()
         actions(*actions)
+    }
+
+    /**
+     * Pushes url route onto the navigation stack.
+     *
+     * @param url Url of route to push onto the stack.
+     */
+    public fun push(url: Url) {
+        routes.navRoutePath(url)?.let {
+            navRoutePath = navRoutePath.drop()
+            push(navRoutePath.first())
+        }
     }
 
     /**

@@ -4,89 +4,89 @@ ui:
   authRedirectRoute: services
   routes:
     phone:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
     totp:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
     hotp:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
     pin_code:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
     reset_pin_code:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
     login:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
     home:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     articles:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     article_details:
-      metadata:
+      additionalMetadata:
         navSuite: true
       authResource: { }
     map:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     services:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     balance:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     crypto:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     exchange:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     profile:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     verification:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     about:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_main:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_color_scheme:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_dynamic_color_scheme:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_shapes:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_typography:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_route:
-      metadata:
+      additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
 
