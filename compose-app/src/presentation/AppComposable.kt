@@ -1,8 +1,14 @@
 package presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.data.permission.PermissionsState
@@ -39,6 +45,8 @@ import clib.presentation.appbar.AppBarState
 import clib.presentation.appbar.rememberAppBarState
 import clib.presentation.connectivity.ConnectivityState
 import clib.presentation.connectivity.rememberConnectivityState
+import clib.presentation.event.alert.GlobalAlertDialog
+import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberRoutesState
@@ -69,8 +77,6 @@ public fun AppComposable(
     localeService: LocaleService = koinInject(),
     authState: AuthState = koinInject(),
     permissionsState: PermissionsState = rememberPermissionsState(),
-    confirmText: String = stringResource(Res.string.confirm),
-    dismissText: String = stringResource(Res.string.close),
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
@@ -102,13 +108,26 @@ public fun AppComposable(
     localeService,
     authState,
     permissionsState,
-    confirmText,
-    dismissText,
     routes,
     routerFactory,
     navigatorFactory,
     onDeepLink,
-)
+) {
+    GlobalAlertDialog(
+        { action ->
+            IconButton(action) {
+                Icon(Icons.Default.Check, stringResource(Res.string.confirm))
+            }
+        },
+        Modifier.align(Alignment.Center),
+        { dismiss ->
+            IconButton(dismiss) {
+                Icon(Icons.Default.Close, stringResource(Res.string.close))
+            }
+        },
+    )
+    GlobalSnackbar(Modifier.align(Alignment.Center))
+}
 
 @Preview
 @Composable

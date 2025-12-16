@@ -5,12 +5,8 @@ import androidx.compose.foundation.ComposeFoundationFlags
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Surface
@@ -23,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.zIndex
 import clib.data.permission.LocalPermissionsState
 import clib.data.permission.PermissionsState
 import clib.data.permission.rememberPermissionsState
@@ -114,8 +109,6 @@ public fun AppEnvironment(
     localeService: LocaleService = LocaleService(),
     authState: AuthState = rememberAuthState(),
     permissionsState: PermissionsState = rememberPermissionsState(),
-    confirmText: String = "Confirm",
-    dismissText: String = "Dismiss",
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
@@ -128,6 +121,10 @@ public fun AppEnvironment(
         )
     },
     onDeepLink: Router.(Url) -> Unit = Router::push,
+    content: @Composable BoxScope.() -> Unit = {
+        GlobalAlertDialog()
+        GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
+    }
 ) {
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configure()
@@ -223,19 +220,7 @@ public fun AppEnvironment(
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     routes.Nav3Host(routesState::get, routerFactory, navigatorFactory)
-                    GlobalAlertDialog(
-                        confirmButton = { action ->
-                            IconButton(action) {
-                                Icon(Icons.Default.Check, confirmText)
-                            }
-                        },
-                        dismissButton = { dismiss ->
-                            IconButton(dismiss) {
-                                Icon(Icons.Default.Close, dismissText)
-                            }
-                        },
-                    )
-                    GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
+                    content()
                 }
             }
         }
