@@ -51,6 +51,8 @@ import androidx.compose.material.icons.outlined.Sensors
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -716,13 +718,16 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.recovery)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        val resettable =
-            appBar != defaultAppBar ||
-                connectivity != defaultConnectivity ||
-                theme != defaultTheme ||
-                density != defaultDensity ||
-                locale != defaultLocale ||
-                routes != defaultRoutes
+        val resettable by remember {
+            derivedStateOf {
+                appBar != defaultAppBar ||
+                    connectivity != defaultConnectivity ||
+                    theme != defaultTheme ||
+                    density != defaultDensity ||
+                    locale != defaultLocale ||
+                    routes.any { (key, value) -> defaultRoutes[key] != value }
+            }
+        }
 
         SettingsMenuLink(
             title = stringResource(Res.string.reset),
