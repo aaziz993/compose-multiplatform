@@ -168,7 +168,7 @@ public fun SettingsMainScreen(
     onLocaleChange: (Locale) -> Unit = {},
     defaultRoutes: Map<String, RouteConfig> = emptyMap(),
     routes: Map<String, RouteConfig> = defaultRoutes,
-    onRoutesChange: (Map<String, RouteConfig>) -> Unit = { },
+    onRouteChange: (String, RouteConfig) -> Unit = { _, _ -> },
     permissions: Set<Permission> = emptySet(),
     onPermissionChange: (Permission?) -> Unit = { true },
     onOpenPermissions: () -> Unit = {},
@@ -735,7 +735,7 @@ public fun SettingsMainScreen(
             if (theme != defaultTheme) onThemeChange(defaultTheme)
             if (density != defaultDensity) onDensityChange(defaultDensity)
             if (locale != defaultLocale) onLocaleChange(defaultLocale)
-            if (routes != defaultRoutes) onRoutesChange(defaultRoutes)
+            if (routes != defaultRoutes) defaultRoutes.forEach { (route, value) -> onRouteChange(route, value) }
         }
     }
 }

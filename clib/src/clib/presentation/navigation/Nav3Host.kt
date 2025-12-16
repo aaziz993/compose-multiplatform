@@ -26,9 +26,10 @@ internal fun Nav3Host(
     router: Router,
     navigator: Navigator,
     content: @Composable (
+        isRoot: Boolean,
+        router: Router,
         backStack: List<NavRoute>,
         onBack: () -> Unit,
-        router: Router,
     ) -> Unit,
 ) {
     val parentRouter = LocalRouter.current
@@ -50,7 +51,7 @@ internal fun Nav3Host(
 
     CompositionLocalProvider(LocalRouter provides router) {
         BackInterceptionProvider(interceptionEnabled) {
-            content(navigator.backStack, onBack, router)
+            content(parentRouter == null, router, navigator.backStack, onBack)
         }
     }
 }

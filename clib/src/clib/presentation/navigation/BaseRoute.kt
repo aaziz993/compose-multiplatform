@@ -216,9 +216,9 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         Nav3Host(
             routerFactory(this),
             navigatorFactory(this),
-        ) { backStack, onBack, router ->
+        ) { isRoot, router, backStack, onBack ->
             // Global deeplink events.
-            if (router.prev == null)
+            if (isRoot)
                 GlobalDeepLink(router) {
 
                 }

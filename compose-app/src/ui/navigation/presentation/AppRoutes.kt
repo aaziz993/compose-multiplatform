@@ -881,7 +881,7 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
             { value -> localeState.value = value },
             config.ui.routes,
             routesState.value,
-            { value -> routesState.value = value },
+            { route,value -> routesState[route] = value },
             permissionsState.permissions,
             { value ->
                 coroutineScope.launch {
@@ -992,13 +992,12 @@ public data object SettingsRoute : KoinRoute<SettingsRoute>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
-        val config = LocalConfig.current
         val routesState = LocalRoutesState.current
 
         SettingsRouteScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             routesState.value,
-        ) { value -> routesState.value = value }
+        ) { route, value -> routesState[route] = value }
     }
 }

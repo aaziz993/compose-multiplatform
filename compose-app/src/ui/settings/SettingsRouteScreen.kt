@@ -35,7 +35,7 @@ public fun SettingsRouteScreen(
     modifier: Modifier = Modifier,
     route: SettingsRoute = SettingsRoute,
     routes: Map<String, RouteConfig> = emptyMap(),
-    onRoutesChange: (Map<String, RouteConfig>) -> Unit = { },
+    onRouteChange: (String, RouteConfig) -> Unit = { _, _ -> },
 ): Unit = Column(
     modifier = modifier,
     verticalArrangement = Arrangement.Center,
@@ -57,7 +57,7 @@ public fun SettingsRouteScreen(
             metadataList,
             config,
         ) { value ->
-            onRoutesChange(routes + (route to value))
+            onRouteChange(route, value)
         }
     }
 }

@@ -2,11 +2,8 @@ package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import clib.presentation.config.RouteConfig
 
@@ -16,9 +13,20 @@ public val LocalRoutesState: ProvidableCompositionLocal<RoutesState> =
 
 public class RoutesState(initialValue: Map<String, RouteConfig> = emptyMap()) {
 
-    public var value: Map<String, RouteConfig> by mutableStateOf(initialValue)
+    public val value: MutableMap<String, RouteConfig>
+        field = mutableMapOf<String, RouteConfig>().apply { putAll(initialValue) }
 
-    public operator fun get(route: BaseRoute): RouteConfig? = value[route.name]
+    public operator fun get(route: String): RouteConfig? = value[route]
+
+    public operator fun set(route: String, value: RouteConfig) {
+        this.value[route] = value
+    }
+
+    public operator fun get(route: BaseRoute): RouteConfig? = this[route.name]
+
+    public operator fun set(route: BaseRoute, value: RouteConfig) {
+        this[route.name] = value
+    }
 
     public companion object {
 
