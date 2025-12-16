@@ -26,7 +26,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.model.ColorPicker
-import com.ashampoo.kim.format.bmff.box.Box
 
 /**
  * This created a bottom sheet to pick color. As a content of this user can select their color using
