@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Apps
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.SupportAgent
 import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -68,7 +70,6 @@ import data.type.primitives.string.asStringResource
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
-import klib.data.type.primitives.string.case.toSnakeCase
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
@@ -102,6 +103,7 @@ import ui.settings.SettingsMainScreen
 import ui.settings.SettingsRouteScreen
 import ui.settings.SettingsShapesScreen
 import ui.settings.SettingsTypographyScreen
+import ui.support.SupportScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.exchange.ExchangeScreen
@@ -334,7 +336,7 @@ public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
 public data object Home : KoinRoute<Home>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -371,7 +373,7 @@ public data object Home : KoinRoute<Home>(), NavRoute {
 public data object News : KoinRoutes() {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -474,7 +476,7 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute
 public data object Map : KoinRoute<Map>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -507,7 +509,7 @@ public data object Map : KoinRoute<Map>(), NavRoute {
 public data object Services : KoinRoute<Services>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -540,7 +542,7 @@ public data object Services : KoinRoute<Services>(), NavRoute {
 public data object Wallet : KoinRoutes() {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -585,7 +587,7 @@ public data object Wallet : KoinRoutes() {
 public data object Balance : KoinRoute<Balance>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -618,7 +620,7 @@ public data object Balance : KoinRoute<Balance>(), NavRoute {
 public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -651,7 +653,7 @@ public data object Crypto : KoinRoute<Crypto>(), NavRoute {
 public data object Exchange : KoinRoute<Exchange>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -684,7 +686,7 @@ public data object Exchange : KoinRoute<Exchange>(), NavRoute {
 public data object Profile : KoinRoute<Profile>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -757,7 +759,7 @@ public data object Verification : KoinRoute<Verification>(), NavRoute {
 public data object About : KoinRoute<About>(), NavRoute {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },
@@ -786,11 +788,50 @@ public data object About : KoinRoute<About>(), NavRoute {
 }
 
 @Serializable
+@SerialName("support")
+public data object Support : KoinRoute<Support>(), NavRoute {
+
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
+        val text = name.asStringResource()
+        SelectableItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.SupportAgent, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.SupportAgent, text) },
+            ),
+        )
+    }
+
+    @Composable
+    override fun Content(
+        route: Support,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+
+        SupportScreen(
+            Modifier,
+            route,
+            router::actions,
+        )
+    }
+
+    @Composable
+    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
+        val isSupport = LocalAppBarState.current.value.isSupport
+        return super.isNavigationItem(auth) && !isSupport
+    }
+}
+
+@Serializable
 @SerialName("settings")
 public data object Settings : KoinRoutes() {
 
     override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.toSnakeCase().asStringResource { name }
+        val text = name.asStringResource()
         SelectableItem(
             item = Item(
                 text = { Text(text) },

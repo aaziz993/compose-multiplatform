@@ -80,7 +80,6 @@ import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.painterResource
-import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppPlainTooltipBox
 import presentation.connectivity.CircleIcon
 import presentation.connectivity.DefaultIcon
@@ -88,6 +87,7 @@ import presentation.connectivity.Text
 import presentation.connectivity.stringResource
 import presentation.theme.model.IsDarkIcon
 import ui.navigation.presentation.Profile
+import ui.navigation.presentation.Support
 
 @Composable
 public fun TopAppBar(
@@ -97,7 +97,6 @@ public fun TopAppBar(
     appBar: AppBar = AppBar(),
     connectivity: Connectivity = Connectivity(),
     blurEnabled: Boolean = HazeDefaults.blurEnabled(),
-    mode: ScreenAppBarMode = ScreenAppBarMode.Default,
     inputScale: HazeInputScale = HazeInputScale.Default,
     theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
@@ -121,7 +120,7 @@ public fun TopAppBar(
             .hazeEffect(state = hazeState, style = style) {
                 this.inputScale = inputScale
 
-                when (mode) {
+                when (appBar.mode) {
                     AppBarMode.Default -> Unit
                     AppBarMode.Progressive ->
                         progressive = HazeProgressive.verticalGradient(
@@ -179,7 +178,11 @@ public fun TopAppBar(
                         AuthComposable(auth = auth) {
                             IconButton(
                                 onClick = {
-
+                                    onNavigationActions(
+                                        arrayOf(
+                                            NavigationAction.Push(Support),
+                                        ),
+                                    )
                                 },
                             ) {
                                 AppPlainTooltipBox(tooltip = stringResource(Res.string.help)) {
