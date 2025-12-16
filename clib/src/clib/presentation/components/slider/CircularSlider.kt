@@ -115,16 +115,29 @@ public fun CircularSlider(
         Canvas(
             modifier = Modifier
                 .size(radiusCircle * 2f)
-                .pointerInput(onDragEnabled, onTouchEnabled) {
-                    if (onDragEnabled)
+                .pointerInput(Unit) {
+                    if (onDragEnabled && !onTouchEnabled)
                         detectDragGestures { change, _ ->
                             onValueChanged(getRotationAngle(change.position, shapeCenter))
                             change.consume()
                         }
 
-                    if (onTouchEnabled)
+                    if (onTouchEnabled && !onDragEnabled)
                         detectTapGestures { offset ->
                             onValueChanged(getRotationAngle(offset, shapeCenter))
+                        }
+                }
+                .pointerInput(Unit) {
+                    if (onTouchEnabled && onDragEnabled)
+                        detectTapGestures { offset ->
+                            onValueChanged(getRotationAngle(offset, shapeCenter))
+                        }
+                }
+                .pointerInput(Unit) {
+                    if (onTouchEnabled && onDragEnabled)
+                        detectDragGestures { change, _ ->
+                            onValueChanged(getRotationAngle(change.position, shapeCenter))
+                            change.consume()
                         }
                 },
         ) {
