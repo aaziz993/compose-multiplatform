@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.model.ColorPicker
+import com.ashampoo.kim.format.bmff.box.Box
 
 /**
  * This created a bottom sheet to pick color. As a content of this user can select their color using
@@ -68,7 +69,12 @@ public fun ColorPickerBottomSheet(
     Column(
         modifier = modifier,
     ) {
-        title()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
+            title()
+        }
 
         PrimaryTabRow(
             modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp),

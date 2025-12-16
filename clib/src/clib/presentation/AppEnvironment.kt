@@ -123,8 +123,8 @@ public fun AppEnvironment(
     },
     onDeepLink: Router.(Url) -> Unit = Router::push,
     content: @Composable BoxScope.() -> Unit = {
-        GlobalAlertDialog()
-        GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
+        GlobalAlertDialog(modifier = Modifier.align(Alignment.Center))
+        GlobalSnackbar(Modifier.align(Alignment.Center))
     }
 ) {
     ComposeFoundationFlags.isNewContextMenuEnabled = true
