@@ -89,6 +89,10 @@ ui:
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
+    support:
+      additionalMetadata:
+        topAppBarNavSuite: true
+      authResource: { }
 
 
 

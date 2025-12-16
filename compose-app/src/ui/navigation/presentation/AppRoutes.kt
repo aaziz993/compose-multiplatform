@@ -113,7 +113,7 @@ import ui.wallet.exchange.ExchangeScreen
 public data object Application : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Authentification, News, Map, Services, Profile, Verification, Settings)
+        listOf(Authentification, News, Map, Services, Profile, Verification, Settings, Support)
     }
 
     @Composable
@@ -788,45 +788,6 @@ public data object About : KoinRoute<About>(), NavRoute {
 }
 
 @Serializable
-@SerialName("support")
-public data object Support : KoinRoute<Support>(), NavRoute {
-
-    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
-        val text = name.asStringResource()
-        SelectableItem(
-            item = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Outlined.SupportAgent, text) },
-            ),
-            selectedItem = Item(
-                text = { Text(text) },
-                icon = { Icon(Icons.Filled.SupportAgent, text) },
-            ),
-        )
-    }
-
-    @Composable
-    override fun Content(
-        route: Support,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val router = currentRouter()
-
-        SupportScreen(
-            Modifier,
-            route,
-            router::actions,
-        )
-    }
-
-    @Composable
-    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
-        val isSupport = LocalAppBarState.current.value.isSupport
-        return super.isNavigationItem(auth) && !isSupport
-    }
-}
-
-@Serializable
 @SerialName("settings")
 public data object Settings : KoinRoutes() {
 
@@ -1042,3 +1003,43 @@ public data object SettingsRoute : KoinRoute<SettingsRoute>(), NavRoute {
         ) { route, value -> routesState[route] = value }
     }
 }
+
+@Serializable
+@SerialName("support")
+public data object Support : KoinRoute<Support>(), NavRoute {
+
+    override val selectableItem: @Composable (name: String) -> SelectableItem = { name ->
+        val text = name.asStringResource()
+        SelectableItem(
+            item = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Outlined.SupportAgent, text) },
+            ),
+            selectedItem = Item(
+                text = { Text(text) },
+                icon = { Icon(Icons.Filled.SupportAgent, text) },
+            ),
+        )
+    }
+
+    @Composable
+    override fun Content(
+        route: Support,
+        sharedTransitionScope: SharedTransitionScope,
+    ) {
+        val router = currentRouter()
+
+        SupportScreen(
+            Modifier,
+            route,
+            router::actions,
+        )
+    }
+
+    @Composable
+    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
+        val isSupport = LocalAppBarState.current.value.isSupport
+        return super.isNavigationItem(auth) && !isSupport
+    }
+}
+
