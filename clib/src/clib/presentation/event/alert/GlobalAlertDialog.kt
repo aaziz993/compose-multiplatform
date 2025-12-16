@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
 import clib.data.type.collections.LaunchedEffect
-import clib.data.type.errorColor
+import clib.data.type.orErrorColor
 import clib.presentation.event.alert.model.AlertEvent
 import kotlinx.coroutines.launch
 
@@ -72,10 +72,10 @@ public fun GlobalAlertDialog(
             event.title ?: title,
             event.text ?: text,
             shape,
-            containerColor.errorColor(event.isError),
-            iconContentColor.errorColor(event.isError),
-            titleContentColor.errorColor(event.isError),
-            textContentColor.errorColor(event.isError),
+            containerColor.orErrorColor(event.isError),
+            iconContentColor.orErrorColor(event.isError),
+            titleContentColor.orErrorColor(event.isError),
+            textContentColor.orErrorColor(event.isError),
             tonalElevation,
             properties,
         )

@@ -1,7 +1,6 @@
 package clib.data.type
 
 import androidx.annotation.ColorInt
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
@@ -453,7 +452,8 @@ internal object Color50 {
 }
 
 @Composable
-public fun ComposeColor.errorColor(error: Boolean): ComposeColor = if (error) MaterialTheme.colorScheme.error else this
+public fun ComposeColor.orErrorColor(error: Boolean): ComposeColor =
+    if (error) MaterialTheme.colorScheme.error else this
 
 /**
  * Convert this color to a ColorMath [Color] instance.
