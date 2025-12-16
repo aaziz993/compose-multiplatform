@@ -48,7 +48,6 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     public val name: String
         get() = navRoute.serializer().descriptor.serialName
-
     public var enabled: Boolean = true
     public var alwaysShowLabel: Boolean = true
     public open val selectableItem: (@Composable (name: String) -> SelectableItem)? = null

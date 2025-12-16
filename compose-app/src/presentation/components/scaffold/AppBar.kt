@@ -3,12 +3,10 @@ package presentation.components.scaffold
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -136,24 +134,7 @@ public fun TopAppBar(
         topBar = {
             TopAppBar(
                 title = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        if (appBar.isTitle) title()
-
-                        Row(modifier = Modifier.wrapContentSize()) {
-                            if (connectivity.isConnectivityIndicatorText)
-                                connectivityStatus.Text(overflow = TextOverflow.Clip, maxLines = 1)
-
-                            if (connectivity.isConnectivityIndicator) {
-                                AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
-                                    connectivityStatus.DefaultIcon()
-                                }
-                            }
-                        }
-                    }
+                    if (appBar.isTitle) title()
                 },
                 navigationIcon = {
                     Row {
@@ -183,6 +164,16 @@ public fun TopAppBar(
                     }
                 },
                 actions = {
+                    Row(modifier = Modifier.wrapContentSize()) {
+                        if (connectivity.isConnectivityIndicatorText)
+                            connectivityStatus.Text(overflow = TextOverflow.Clip, maxLines = 1)
+
+                        if (connectivity.isConnectivityIndicator) {
+                            AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
+                                connectivityStatus.DefaultIcon()
+                            }
+                        }
+                    }
                     if (appBar.isSupport)
                         AuthComposable(auth = auth) {
                             IconButton(
