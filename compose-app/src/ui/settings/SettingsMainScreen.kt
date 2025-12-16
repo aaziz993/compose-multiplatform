@@ -62,12 +62,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
+import clib.data.type.primitives.string.getString
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
+import clib.presentation.event.snackbar.GlobalSnackbarEventController
+import clib.presentation.event.snackbar.model.SnackbarEvent
+import clib.presentation.locale.LocalLocalization
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.density.toFloatPx
 import clib.presentation.theme.model.Theme
@@ -97,6 +101,7 @@ import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.contact
 import compose_app.generated.resources.container_color
 import compose_app.generated.resources.dark_time
+import compose_app.generated.resources.dark_time_lt_light_time
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
@@ -132,6 +137,7 @@ import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.model.Permission
+import kotlinx.coroutines.launch
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
@@ -380,14 +386,27 @@ public fun SettingsMainScreen(
             false
         }
 
+        val localization = LocalLocalization.current
+
         SettingsTimePickerDialog(
             title = stringResource(Res.string.dark_time),
             value = theme.darkTime,
             enabled = true,
             subtitle = { Text(theme.darkTime.toString()) },
         ) { value ->
-            onThemeChange(theme.copy(darkTime = value))
-            false
+            // Dark time should be greater than light time.
+            if (value > theme.lightTime) {
+                onThemeChange(theme.copy(darkTime = value))
+                false
+            }
+            else {
+                coroutineScope.launch {
+                    GlobalSnackbarEventController.sendEvent(
+                        SnackbarEvent(getString(Res.string.dark_time_lt_light_time, localization)),
+                    )
+                }
+                true
+            }
         }
 
         SettingsSwitch(

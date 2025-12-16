@@ -6,4 +6,5 @@
     <string name="dark_theme">Темная тема</string>
     <string name="light_time">Светлое время</string>
     <string name="dark_time">Темное время</string>
+    <string name="dark_time_lt_light_time">Темное время меньше чем светлое время</string>
 </resources>

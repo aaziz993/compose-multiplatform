@@ -10,16 +10,25 @@ import klib.data.location.locale.Localization
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.ResourceEnvironment
 import org.jetbrains.compose.resources.StringArrayResource
-import org.jetbrains.compose.resources.getStringArray
 import org.jetbrains.compose.resources.getSystemResourceEnvironment
+import org.jetbrains.compose.resources.stringArrayResource as stringArrayResourceCompose
+import org.jetbrains.compose.resources.getStringArray as getStringArrayCompose
 
 @Composable
 public fun stringArrayResource(resource: StringArrayResource): List<String> {
     val localization = LocalLocalization.current
 
     return (if (localization.locale == Locale.current) localization.getStringArrayOrNull(resource.key) else null)
-        ?: org.jetbrains.compose.resources.stringArrayResource(resource)
+        ?: stringArrayResourceCompose(resource)
 }
+
+public suspend fun getStringArray(
+    environment: ResourceEnvironment = getSystemResourceEnvironment(),
+    resource: StringArrayResource,
+    localization: Localization = Localization(),
+): List<String> =
+    (if (localization.locale == Locale.current) localization.getStringArrayOrNull(resource.key) else null)
+        ?: getStringArrayCompose(environment, resource)
 
 @Composable
 public fun annotatedStringArrayResource(
@@ -43,8 +52,7 @@ public suspend fun getAnnotatedStringArray(
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
 ): List<AnnotatedString> =
-    ((if (localization.locale == Locale.current) localization.getStringArrayOrNull(resource.key) else null)
-        ?: getStringArray(environment, resource)).map { value ->
+    getStringArray(environment, resource, localization).map { value ->
         value.toHtmlString(
             compactMode,
             style,

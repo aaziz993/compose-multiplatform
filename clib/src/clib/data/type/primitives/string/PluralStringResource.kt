@@ -41,12 +41,34 @@ public fun pluralStringResource(resource: PluralStringResource, quantity: Int): 
 public fun pluralStringResource(resource: PluralStringResource, quantity: Int, vararg formatArgs: Any): String {
     val localization = LocalLocalization.current
     val resourceReader = LocalResourceReader.currentOrPreview
-    val args = formatArgs.map { it.toString() }
+    val args = formatArgs.map(Any::toString)
     val pluralStr by rememberResourceState(resource, quantity, args, { "" }) { env ->
         loadPluralString(resource, quantity, args, localization, resourceReader, env)
     }
     return pluralStr
 }
+
+public suspend fun getPluralString(
+    resource: PluralStringResource,
+    quantity: Int,
+    environment: ResourceEnvironment = getSystemResourceEnvironment(),
+    localization: Localization = Localization(),
+): String = loadPluralString(resource, quantity, localization, DefaultResourceReader, environment)
+
+public suspend fun getPluralString(
+    resource: PluralStringResource,
+    quantity: Int,
+    vararg formatArgs: Any,
+    environment: ResourceEnvironment = getSystemResourceEnvironment(),
+    localization: Localization = Localization(),
+): String = loadPluralString(
+    resource,
+    quantity,
+    formatArgs.map(Any::toString),
+    localization,
+    DefaultResourceReader,
+    environment,
+)
 
 @Composable
 public fun annotatedPluralStringResource(
@@ -85,12 +107,11 @@ public suspend fun getAnnotatedPluralString(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString =
-    loadPluralString(resource, quantity, localization, DefaultResourceReader, environment).toHtmlString(
-        compactMode,
-        style,
-        linkInteractionListener,
-    )
+): AnnotatedString = getPluralString(resource, quantity, environment, localization).toHtmlString(
+    compactMode,
+    style,
+    linkInteractionListener,
+)
 
 public suspend fun getAnnotatedPluralString(
     resource: PluralStringResource,
@@ -101,19 +122,17 @@ public suspend fun getAnnotatedPluralString(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString =
-    loadPluralString(
-        resource,
-        quantity,
-        formatArgs.map { it.toString() },
-        localization,
-        DefaultResourceReader,
-        environment,
-    ).toHtmlString(
-        compactMode,
-        style,
-        linkInteractionListener,
-    )
+): AnnotatedString = getPluralString(
+    resource = resource,
+    quantity = quantity,
+    formatArgs = formatArgs,
+    environment = environment,
+    localization = localization,
+).toHtmlString(
+    compactMode,
+    style,
+    linkInteractionListener,
+)
 
 private suspend fun loadPluralString(
     resource: PluralStringResource,

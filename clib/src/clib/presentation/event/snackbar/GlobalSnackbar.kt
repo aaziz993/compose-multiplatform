@@ -13,7 +13,7 @@ import clib.data.type.collections.LaunchedEffect
 import kotlinx.coroutines.launch
 
 /**
- *  Global Snackbar by GlobalSnackbarEventController
+ *  Global Snackbar by GlobalSnackbarEventController.
  */
 @Suppress("ComposeModifierMissing")
 @Composable

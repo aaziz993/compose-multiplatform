@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.zIndex
 import clib.data.permission.LocalPermissionsState
 import clib.data.permission.PermissionsState
 import clib.data.permission.rememberPermissionsState
@@ -214,7 +215,7 @@ public fun AppEnvironment(
                 Box(modifier = Modifier.fillMaxSize()) {
                     routes.Nav3Host(routesState::get, routerFactory, navigatorFactory)
                     GlobalAlertDialog()
-                    GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
+                    GlobalSnackbar(modifier = Modifier.align(Alignment.Center).zIndex(0f))
                 }
             }
         }

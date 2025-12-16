@@ -126,7 +126,11 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     }
 
     public abstract fun navRoutePath(navRoute: NavRoute): List<NavRoute>?
-    public abstract fun navRoutePath(url: Url): List<NavRoute>?
+
+    public open fun navRoutePath(url: Url): List<NavRoute>? =
+        urls.firstNotNullOfOrNull {
+            url.toRoute(navRoute.serializer(), it)
+        }?.let(::listOf)
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -155,11 +159,6 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun navRoutePath(navRoute: NavRoute): List<NavRoute>? =
         if (this == navRoute) listOf(this as NavRoute) else null
-
-    final override fun navRoutePath(url: Url): List<NavRoute>? =
-        urls.firstNotNullOfOrNull {
-            url.toRoute(navRoute.serializer(), it)
-        }?.let(::listOf)
 }
 
 public abstract class Routes() : BaseRoute(), NavRoute {

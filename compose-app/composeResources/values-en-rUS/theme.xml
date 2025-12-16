@@ -6,4 +6,5 @@
     <string name="dark_theme">Dark theme</string>
     <string name="light_time">Light time</string>
     <string name="dark_time">Dark time</string>
+    <string name="dark_time_lt_light_time">Dark time less than light time</string>
 </resources>
