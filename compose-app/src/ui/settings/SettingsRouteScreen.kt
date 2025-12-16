@@ -105,8 +105,8 @@ private fun SettingsRouteConfig(
             ) {
                 onValueChange(
                     value.copy(
-                        metadata = if (it) valueMetadata.filterKeys { key -> key !in metadata }
-                        else valueMetadata + metadata,
+                        metadata = if (it) valueMetadata + metadata
+                        else valueMetadata.filterKeys { key -> key !in metadata },
                     ),
                 )
             }
