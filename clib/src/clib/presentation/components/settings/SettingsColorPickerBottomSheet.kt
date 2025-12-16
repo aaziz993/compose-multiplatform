@@ -4,12 +4,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,23 +30,25 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import com.materialkolor.ktx.toHex
 
+@Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsColorPickerBottomSheet(
     title: @Composable () -> Unit,
-    value: Color,
+    state: MutableState<Color>,
+    confirmButton: @Composable (dismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
-    subtitle: (@Composable () -> Unit)? = { Text(text = value.toHex()) },
+    subtitle: (@Composable () -> Unit)? = { Text(text = state.value.toHex()) },
     icon: (@Composable () -> Unit)? = {
         Icon(
             imageVector = Icons.Filled.Circle,
-            contentDescription = value.toHex(),
+            contentDescription = state.value.toHex(),
             Modifier.border(
                 2.dp,
                 MaterialTheme.colorScheme.onSurface,
                 CircleShape,
             ),
-            tint = value,
+            tint = state.value,
         )
     },
     action: (@Composable () -> Unit)? = null,
@@ -51,20 +56,36 @@ public fun SettingsColorPickerBottomSheet(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
+    sheetModifier: Modifier = Modifier,
+    dismissButton: (@Composable (dismiss: () -> Unit) -> Unit)? = { dismiss ->
+        IconButton(dismiss) {
+            Icon(Icons.Default.Close, null)
+        }
+    },
     sheetState: SheetState = rememberModalBottomSheetState(),
     picker: ColorPicker = ColorPicker(),
-    onValueChanged: (Color) -> Boolean,
 ) {
     var sheet by remember { mutableStateOf(false) }
     if (sheet)
         ColorPickerBottomSheet(
+            state,
             { sheet = false },
-            { value ->
-                sheet = onValueChanged(value)
+            {
+                confirmButton {
+                    sheet = false
+                }
             },
-            value = value,
-            sheetState = sheetState,
-            picker = picker,
+            title,
+            sheetModifier,
+            dismissButton?.let {
+                {
+                    it {
+                        sheet = false
+                    }
+                }
+            },
+            sheetState,
+            picker,
         )
 
     SettingsMenuLink(

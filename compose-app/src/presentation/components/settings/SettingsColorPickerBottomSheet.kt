@@ -3,18 +3,24 @@ package presentation.components.settings
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.color.model.ColorPicker
 import clib.presentation.components.settings.SettingsColorPickerBottomSheet
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
@@ -26,8 +32,8 @@ import compose_app.generated.resources.alpha
 import compose_app.generated.resources.blend
 import compose_app.generated.resources.blue
 import compose_app.generated.resources.brightness
-import compose_app.generated.resources.cancel
-import compose_app.generated.resources.color
+import compose_app.generated.resources.close
+import compose_app.generated.resources.confirm
 import compose_app.generated.resources.copy
 import compose_app.generated.resources.green
 import compose_app.generated.resources.grid
@@ -40,9 +46,8 @@ import compose_app.generated.resources.red
 import compose_app.generated.resources.rgba
 import compose_app.generated.resources.right
 import compose_app.generated.resources.saturation
-import compose_app.generated.resources.select
-import clib.data.type.primitives.string.stringResource
 
+@Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsColorPickerBottomSheet(
     title: String,
@@ -67,9 +72,9 @@ public fun SettingsColorPickerBottomSheet(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
-    sheetState: SheetState = rememberModalBottomSheetState(),
+    sheetModifier: Modifier = Modifier,
+    sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
     picker: ColorPicker = ColorPicker(
-        stringResource(Res.string.color),
         stringResource(Res.string.rgba),
         stringResource(Res.string.red),
         stringResource(Res.string.green),
@@ -86,25 +91,46 @@ public fun SettingsColorPickerBottomSheet(
         stringResource(Res.string.right),
         stringResource(Res.string.hex),
         stringResource(Res.string.copy),
-        stringResource(Res.string.cancel),
-        stringResource(Res.string.select),
     ),
-    onValueChanged: (Color) -> Unit,
-): Unit = SettingsColorPickerBottomSheet(
-    { Text(title) },
-    value,
-    modifier,
-    enabled,
-    subtitle,
-    icon,
-    action,
-    colors,
-    tonalElevation,
-    shadowElevation,
-    semanticProperties,
-    sheetState,
-    picker,
-) { value ->
-    onValueChanged(value)
-    false
+    onValueChanged: (Color) -> Boolean,
+) {
+    val state = remember { mutableStateOf(value) }
+    SettingsColorPickerBottomSheet(
+        { Text(title) },
+        state,
+        { dismiss ->
+            IconButton(
+                onClick = {
+                    if (!onValueChanged(state.value)) dismiss()
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = stringResource(Res.string.confirm),
+                    tint = Color.Green,
+                )
+            }
+        },
+        modifier,
+        enabled,
+        subtitle,
+        icon,
+        action,
+        colors,
+        tonalElevation,
+        shadowElevation,
+        semanticProperties,
+        sheetModifier,
+        { dismiss ->
+            IconButton(dismiss) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(Res.string.close),
+                    tint = MaterialTheme.colorScheme.error,
+                )
+            }
+        },
+        sheetState,
+        picker,
+    )
 }

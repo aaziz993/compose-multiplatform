@@ -1,7 +1,6 @@
 package clib.presentation.components.color.model
 
 public data class ColorPicker(
-    val title: String = "Pick color",
     val rgba: String = "Rgba",
     val red: String = "Red",
     val green: String = "Green",
@@ -18,6 +17,4 @@ public data class ColorPicker(
     val right: String = "Right",
     val hex: String = "Hex",
     val copy: String = "Copy",
-    val cancel: String = "Cancel",
-    val select: String = "Select",
 )

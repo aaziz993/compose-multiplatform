@@ -1,13 +1,12 @@
 package clib.presentation.components.color
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Tab
@@ -15,13 +14,14 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.model.ColorPicker
@@ -34,20 +34,20 @@ import clib.presentation.components.color.model.ColorPicker
  * RED, GREEN and BLUE values in a color.
  *
  * @param onDismissRequest: Executes when the user clicks outside of the bottom sheet, after sheet animates to Hidden.
- * @param onSelect: (selectedColor: Color) -> Unit: Callback to invoke when a color is selected.
- * @param onClose: Callback to invoke when user clicks close button.
  * @param sheetState: SheetState: State variable to control the bottom sheet.
  * @param picker: Picker visual configuration.
  *
  * @return @Composable: A bottom sheet UI.
  */
-@Suppress("ComposeModifierMissing")
+@Suppress("ComposeParameterOrder")
 @Composable
 public fun ColorPickerBottomSheet(
+    state: MutableState<Color>,
     onDismissRequest: () -> Unit,
-    onSelect: (Color) -> Unit,
-    value: Color = Color.White,
-    onClose: () -> Unit = onDismissRequest,
+    confirmButton: @Composable () -> Unit,
+    title: @Composable () -> Unit = {},
+    modifier: Modifier = Modifier,
+    dismissButton: (@Composable () -> Unit)? = null,
     sheetState: SheetState = rememberModalBottomSheetState(),
     picker: ColorPicker = ColorPicker(),
 ): Unit = ModalBottomSheet(
@@ -56,7 +56,6 @@ public fun ColorPickerBottomSheet(
     containerColor = MaterialTheme.colorScheme.background,
     scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .5f),
 ) {
-    var color by remember { mutableStateOf(value) }
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf(
         picker.rgba,
@@ -67,8 +66,10 @@ public fun ColorPickerBottomSheet(
     )
 
     Column(
-        modifier = Modifier.padding(12.dp),
+        modifier = modifier,
     ) {
+        title()
+
         PrimaryTabRow(
             modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp),
             selectedTabIndex = tabIndex,
@@ -99,9 +100,9 @@ public fun ColorPickerBottomSheet(
 
         when (tabIndex) {
             0 -> RGBAColorPicker(
-                color,
+                state.value,
                 { value ->
-                    color = value
+                    state.value = value
                 },
                 Modifier
                     .weight(.8f)
@@ -116,9 +117,9 @@ public fun ColorPickerBottomSheet(
             )
 
             1 -> GridColorPicker(
-                color,
+                state.value,
                 { value ->
-                    color = value
+                    state.value = value
                 },
                 modifier = Modifier
                     .weight(.8f)
@@ -129,9 +130,9 @@ public fun ColorPickerBottomSheet(
             )
 
             2 -> HSVColorPicker(
-                color,
+                state.value,
                 { value ->
-                    color = value
+                    state.value = value
                 },
                 Modifier
                     .weight(.8f)
@@ -144,9 +145,9 @@ public fun ColorPickerBottomSheet(
             )
 
             3 -> HSLAColorPicker(
-                color,
+                state.value,
                 { value ->
-                    color = value
+                    state.value = value
                 },
                 Modifier
                     .weight(.8f)
@@ -160,9 +161,9 @@ public fun ColorPickerBottomSheet(
             )
 
             4 -> BlendColorPicker(
-                color,
+                state.value,
                 { value ->
-                    color = value
+                    state.value = value
                 },
                 Modifier
                     .weight(.8f)
@@ -180,32 +181,10 @@ public fun ColorPickerBottomSheet(
                 .fillMaxWidth()
                 .weight(.2f)
                 .padding(bottom = 12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            OutlinedButton(
-                modifier = Modifier
-                    .padding(start = 4.dp, end = 4.dp)
-                    .weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                onClick = onClose,
-            ) {
-                Text(
-                    text = picker.cancel,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-            }
-
-            OutlinedButton(
-                modifier = Modifier
-                    .padding(start = 4.dp, end = 4.dp)
-                    .weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                onClick = { onSelect(color) },
-            ) {
-                Text(
-                    text = picker.select,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-            }
+            dismissButton?.invoke()
+            confirmButton()
         }
     }
 }
