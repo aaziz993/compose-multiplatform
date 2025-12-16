@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_app_bar">Верхняя панель приложения</string>
+    <string name="nav_suite">Навигационная панель</string>
+    <string name="top_app_bar_nav_suite">Верхняя и навигационная панель приложения</string>
+    <string name="nav_suite_top_app_bar">Навигационная и верхняя панель приложения</string>
+</resources>

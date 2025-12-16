@@ -5,8 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.BluetoothSearching
+import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
+import androidx.compose.material.icons.filled.Bluetooth
+import androidx.compose.material.icons.filled.BluetoothConnected
+import androidx.compose.material.icons.filled.BrowseGallery
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.DensityLarge
 import androidx.compose.material.icons.filled.DensityMedium
@@ -17,19 +23,31 @@ import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Route
+import androidx.compose.material.icons.filled.Sensors
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
+import androidx.compose.material.icons.outlined.Bluetooth
+import androidx.compose.material.icons.outlined.BluetoothConnected
+import androidx.compose.material.icons.outlined.BrowseGallery
 import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.FlashOn
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.LocationOff
+import androidx.compose.material.icons.outlined.MyLocation
+import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Sensors
+import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -58,41 +76,52 @@ import compose_app.generated.resources.app_bar_locales
 import compose_app.generated.resources.app_bar_support
 import compose_app.generated.resources.app_bar_themes
 import compose_app.generated.resources.avatar_connectivity_indicator
+import compose_app.generated.resources.background_location
+import compose_app.generated.resources.bluetooth_advertise
+import compose_app.generated.resources.bluetooth_connect
+import compose_app.generated.resources.bluetooth_le
+import compose_app.generated.resources.bluetooth_scan
 import compose_app.generated.resources.camera
 import compose_app.generated.resources.clear
+import compose_app.generated.resources.coarse_location
 import compose_app.generated.resources.color_scheme
 import compose_app.generated.resources.connectivity
 import compose_app.generated.resources.connectivity_alert
 import compose_app.generated.resources.connectivity_indicator
 import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.connectivity_snackbar
+import compose_app.generated.resources.contact
 import compose_app.generated.resources.container_color
-import compose_app.generated.resources.dark_mode_time
+import compose_app.generated.resources.dark_time
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
 import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
+import compose_app.generated.resources.gallery
 import compose_app.generated.resources.height
 import compose_app.generated.resources.high_contrast
-import compose_app.generated.resources.light_mode_time
-import compose_app.generated.resources.line_height
+import compose_app.generated.resources.light_time
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
-import compose_app.generated.resources.microphone
 import compose_app.generated.resources.navigation_icon_content_color
 import compose_app.generated.resources.permission
+import compose_app.generated.resources.record_audio
 import compose_app.generated.resources.recovery
+import compose_app.generated.resources.remote_notification
 import compose_app.generated.resources.reset
 import compose_app.generated.resources.route
 import compose_app.generated.resources.scrolled_container_color
 import compose_app.generated.resources.search
+import compose_app.generated.resources.sensors
 import compose_app.generated.resources.shapes
+import compose_app.generated.resources.storage
 import compose_app.generated.resources.subtitle_content_color
 import compose_app.generated.resources.theme
 import compose_app.generated.resources.title
 import compose_app.generated.resources.title_content_color
 import compose_app.generated.resources.typography
+import compose_app.generated.resources.write_storage
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
@@ -137,7 +166,7 @@ public fun SettingsMainScreen(
     onLocaleChange: (Locale) -> Unit = {},
     defaultRoutes: Map<String, RouteConfig> = emptyMap(),
     routes: Map<String, RouteConfig> = defaultRoutes,
-    onRoutesChange: (String, RouteConfig) -> Unit = { _, _ -> },
+    onRoutesChange: (Map<String, RouteConfig>) -> Unit = { },
     permissions: Set<Permission> = emptySet(),
     onPermissionChange: (Permission?) -> Unit = { true },
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
@@ -336,22 +365,22 @@ public fun SettingsMainScreen(
         }
 
         SettingsTimePickerDialog(
-            title = stringResource(Res.string.light_mode_time),
-            value = theme.lightModeTime,
+            title = stringResource(Res.string.light_time),
+            value = theme.lightTime,
             enabled = true,
-            subtitle = { Text(theme.lightModeTime.toString()) },
+            subtitle = { Text(theme.lightTime.toString()) },
         ) { value ->
-            onThemeChange(theme.copy(lightModeTime = value))
+            onThemeChange(theme.copy(lightTime = value))
             false
         }
 
         SettingsTimePickerDialog(
-            title = stringResource(Res.string.dark_mode_time),
-            value = theme.darkModeTime,
+            title = stringResource(Res.string.dark_time),
+            value = theme.darkTime,
             enabled = true,
-            subtitle = { Text(theme.darkModeTime.toString()) },
+            subtitle = { Text(theme.darkTime.toString()) },
         ) { value ->
-            onThemeChange(theme.copy(darkModeTime = value))
+            onThemeChange(theme.copy(darkTime = value))
             false
         }
 
@@ -519,6 +548,7 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.permission)) },
         contentPadding = PaddingValues(16.dp),
     ) {
+
         SettingsSwitch(
             title = stringResource(Res.string.camera),
             value = Permission.CAMERA,
@@ -530,10 +560,30 @@ public fun SettingsMainScreen(
         )
 
         SettingsSwitch(
-            title = stringResource(Res.string.microphone),
-            value = Permission.RECORD_AUDIO,
-            trueIcon = Icons.Filled.Mic,
-            falseIcon = Icons.Outlined.Mic,
+            title = stringResource(Res.string.gallery),
+            value = Permission.GALLERY,
+            trueIcon = Icons.Filled.BrowseGallery,
+            falseIcon = Icons.Outlined.BrowseGallery,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.storage),
+            value = Permission.STORAGE,
+            trueIcon = Icons.Filled.Storage,
+            falseIcon = Icons.Outlined.Storage,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.write_storage),
+            value = Permission.WRITE_STORAGE,
+            trueIcon = Icons.Filled.Storage,
+            falseIcon = Icons.Outlined.Storage,
             permissions = permissions,
             coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
@@ -542,8 +592,108 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.location),
             value = Permission.LOCATION,
+            trueIcon = Icons.Filled.MyLocation,
+            falseIcon = Icons.Outlined.MyLocation,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.coarse_location),
+            value = Permission.COARSE_LOCATION,
+            trueIcon = Icons.Filled.MyLocation,
+            falseIcon = Icons.Outlined.MyLocation,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.background_location),
+            value = Permission.BACKGROUND_LOCATION,
             trueIcon = Icons.Filled.LocationOn,
-            falseIcon = Icons.Outlined.LocationOn,
+            falseIcon = Icons.Outlined.LocationOff,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.bluetooth_le),
+            value = Permission.BLUETOOTH_LE,
+            trueIcon = Icons.Filled.Bluetooth,
+            falseIcon = Icons.Outlined.Bluetooth,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.remote_notification),
+            value = Permission.REMOTE_NOTIFICATION,
+            trueIcon = Icons.Filled.NotificationsActive,
+            falseIcon = Icons.Outlined.NotificationsOff,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.record_audio),
+            value = Permission.RECORD_AUDIO,
+            trueIcon = Icons.Filled.RecordVoiceOver,
+            falseIcon = Icons.Outlined.RecordVoiceOver,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.bluetooth_scan),
+            value = Permission.BLUETOOTH_SCAN,
+            trueIcon = Icons.AutoMirrored.Filled.BluetoothSearching,
+            falseIcon = Icons.AutoMirrored.Outlined.BluetoothSearching,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.bluetooth_advertise),
+            value = Permission.BLUETOOTH_ADVERTISE,
+            trueIcon = Icons.Filled.Bluetooth,
+            falseIcon = Icons.Outlined.Bluetooth,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.bluetooth_connect),
+            value = Permission.BLUETOOTH_CONNECT,
+            trueIcon = Icons.Filled.BluetoothConnected,
+            falseIcon = Icons.Outlined.BluetoothConnected,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.contact),
+            value = Permission.CONTACT,
+            trueIcon = Icons.Filled.Contacts,
+            falseIcon = Icons.Outlined.Contacts,
+            permissions = permissions,
+            coroutineScope = coroutineScope,
+            onCheckedChange = onPermissionChange,
+        )
+
+        SettingsSwitch(
+            title = stringResource(Res.string.sensors),
+            value = Permission.SENSORS,
+            trueIcon = Icons.Filled.Sensors,
+            falseIcon = Icons.Outlined.Sensors,
             permissions = permissions,
             coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
@@ -575,7 +725,7 @@ public fun SettingsMainScreen(
             if (theme != defaultTheme) onThemeChange(defaultTheme)
             if (density != defaultDensity) onDensityChange(defaultDensity)
             if (locale != defaultLocale) onLocaleChange(defaultLocale)
-            if (routes != defaultRoutes) defaultRoutes.forEach { (route, config) -> onRoutesChange(route, config) }
+            if (routes != defaultRoutes) onRoutesChange(defaultRoutes)
         }
     }
 }

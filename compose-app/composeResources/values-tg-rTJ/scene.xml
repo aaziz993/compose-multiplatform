@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_app_bar">Тахтачаи болои замима</string>
+    <string name="nav_suite">Тахтачаи роҳандозӣ</string>
+    <string name="top_app_bar_nav_suite">Тахтачаи боло ва роҳандозии замима</string>
+    <string name="nav_suite_top_app_bar">Тахтачаи роҳандозӣ ва болои замима</string>
+</resources>

@@ -21,8 +21,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class Theme(
     val mode: ThemeMode = ThemeMode.SYSTEM,
-    val lightModeTime: LocalTime = LocalTime(6, 0),
-    val darkModeTime: LocalTime = LocalTime(19, 0),
+    val lightTime: LocalTime = LocalTime(6, 0),
+    val darkTime: LocalTime = LocalTime(19, 0),
     val isDynamic: Boolean = false,
     val isHighContrast: Boolean = false,
     val isExpressive: Boolean = true,
@@ -54,7 +54,7 @@ public data class Theme(
             ThemeMode.SYSTEM -> isSystemInDarkTheme()
             ThemeMode.LIGHT -> false
             ThemeMode.DARK -> true
-            ThemeMode.ADAPTIVE -> isAdaptiveDark(lightModeTime, darkModeTime)
+            ThemeMode.ADAPTIVE -> isAdaptiveDark(lightTime, darkTime)
         }
 
     public fun copyIsDarkToggled(): Theme = when (mode) {

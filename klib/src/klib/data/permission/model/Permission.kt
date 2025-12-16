@@ -17,7 +17,7 @@ public enum class Permission {
     CONTACT,
     SENSORS,
 
-    // JS
+    // Web.
     LOCAL_FONTS,
     BACKGROUND_SYNC,
     COMPUTE_PRESSURE,

@@ -8,7 +8,7 @@
     <string name="location">Location</string>
     <string name="coarse_location">Coarse location</string>
     <string name="background_location">Background location</string>
-    <string name="bluetooth_le">Bluetooth_le</string>
+    <string name="bluetooth_le">Bluetooth LE</string>
     <string name="remote_notification">Remote notification</string>
     <string name="record_audio">Record audio</string>
     <string name="bluetooth_scan">Bluetooth scan</string>

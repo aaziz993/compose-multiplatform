@@ -881,7 +881,7 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
             { value -> localeState.value = value },
             config.ui.routes,
             routesState.value,
-            { route, value -> routesState[route] = value },
+            { value -> routesState.value = value },
             permissionsState.permissions,
             { value ->
                 coroutineScope.launch {
@@ -997,8 +997,7 @@ public data object SettingsRoute : KoinRoute<SettingsRoute>(), NavRoute {
         SettingsRouteScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
-            config.ui.routes,
             routesState.value,
-        ) { route, value -> routesState[route] = value }
+        ) { value -> routesState.value = value }
     }
 }

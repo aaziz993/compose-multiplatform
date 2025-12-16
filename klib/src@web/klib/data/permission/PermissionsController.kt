@@ -5,9 +5,13 @@ package klib.data.permission
 import io.ktor.utils.io.CancellationException
 import js.objects.unsafeJso
 import klib.data.permission.exception.PermissionDeniedAlwaysException
+import klib.data.permission.exception.PermissionDeniedException
+import klib.data.permission.exception.PermissionRequestCanceledException
+import klib.data.permission.model.Permission
+import klib.data.permission.model.PermissionState
 import klib.data.type.await
 import kotlin.OptIn
-import kotlin.Suppress
+import kotlin.Throws
 import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.all
@@ -16,10 +20,6 @@ import kotlin.collections.listOf
 import kotlin.js.*
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.to
-import klib.data.permission.exception.PermissionDeniedException
-import klib.data.permission.exception.PermissionRequestCanceledException
-import klib.data.permission.model.Permission
-import klib.data.permission.model.PermissionState
 import web.navigator.navigator
 import web.permissions.PermissionName
 import web.permissions.camera

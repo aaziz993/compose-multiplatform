@@ -58,7 +58,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
-        configProvider: (BaseRoute) -> RouteConfig,
+        configProvider: (BaseRoute) -> RouteConfig?,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -138,7 +138,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     @Suppress("UNCHECKED_CAST")
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        configProvider: (BaseRoute) -> RouteConfig,
+        configProvider: (BaseRoute) -> RouteConfig?,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -180,7 +180,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        configProvider: (BaseRoute) -> RouteConfig,
+        configProvider: (BaseRoute) -> RouteConfig?,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -193,17 +193,17 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     @Composable
     public fun Nav3Host(
-        configProvider: (BaseRoute) -> RouteConfig = LocalRoutesState.current.let { routeState -> routeState::get },
+        configProvider: (BaseRoute) -> RouteConfig? = LocalRoutesState.current.let { routeState -> routeState::get },
         routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
     ) {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
         // Configure.
-        configProvider(this).configure(this)
+        configProvider(this)?.configure(this)
 
         // Configure routes.
-        routes.forEach { route -> configProvider(route).configure(route) }
+        routes.forEach { route -> configProvider(route)?.configure(route) }
 
         Nav3Host(
             routerFactory(this),

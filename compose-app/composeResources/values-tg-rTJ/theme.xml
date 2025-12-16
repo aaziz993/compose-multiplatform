@@ -4,6 +4,6 @@
     <string name="system_theme">Намуди низомӣ</string>
     <string name="light_theme">Намуди равшан</string>
     <string name="dark_theme">Намуди торик</string>
-    <string name="light_mode_time">Вақти намуди равшан</string>
-    <string name="dark_mode_time">Вақти намуди торик</string>
+    <string name="light_time">Вақти равшан</string>
+    <string name="dark_time">Вақти торик</string>
 </resources>

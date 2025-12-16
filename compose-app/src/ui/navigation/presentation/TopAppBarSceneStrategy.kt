@@ -64,7 +64,7 @@ public class TopAppBarSceneStrategy : WrapperSceneStrategy<NavRoute>() {
 
     public companion object Companion {
 
-        private const val TOP_APP_BAR_KEY = "TopAppBar"
+        private const val TOP_APP_BAR_KEY = "topAppBar"
 
         public fun screen(): Map<String, Boolean> = mapOf(TOP_APP_BAR_KEY to true)
     }

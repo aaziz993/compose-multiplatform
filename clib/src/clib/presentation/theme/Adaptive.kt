@@ -15,25 +15,25 @@ import pro.respawn.kmmutils.datetime.withTime
 
 @Composable
 public fun isAdaptiveDark(
-    dayStart: LocalTime = LocalTime(6, 0),
-    nightStart: LocalTime = LocalTime(19, 0),
+    lightTime: LocalTime = LocalTime(6, 0),
+    darkTime: LocalTime = LocalTime(19, 0),
     clock: Clock = Clock.System,
     timeZone: TimeZone = TimeZone.currentSystemDefault(),
 ): Boolean {
     val isNight by produceState(
-        isNight(dayStart, nightStart, clock, timeZone),
-        dayStart,
-        nightStart,
+        isDarkTime(lightTime, darkTime, clock, timeZone),
+        lightTime,
+        darkTime,
         timeZone,
     ) {
         while (true) {
             val now = clock.now().toLocalDateTime(timeZone)
 
             val nextChange = when {
-                now.time < dayStart -> now.withTime(dayStart)
-                now.time < nightStart -> now.withTime(nightStart)
+                now.time < lightTime -> now.withTime(lightTime)
+                now.time < darkTime -> now.withTime(darkTime)
                 else -> now.plusDays(1, timeZone)
-                    .withTime(dayStart)
+                    .withTime(lightTime)
             }
 
             val delayMs = nextChange.toInstant(timeZone)
@@ -42,19 +42,19 @@ public fun isAdaptiveDark(
                 .coerceAtLeast(0)
 
             delay(delayMs)
-            value = isNight(dayStart, nightStart, clock, timeZone)
+            value = isDarkTime(lightTime, darkTime, clock, timeZone)
         }
     }
 
     return isNight
 }
 
-private fun isNight(
-    dayStart: LocalTime,
-    nightStart: LocalTime,
+private fun isDarkTime(
+    lightTime: LocalTime,
+    darkTime: LocalTime,
     clock: Clock,
     timeZone: TimeZone,
 ): Boolean {
     val now = clock.now().toLocalTime(timeZone)
-    return now < dayStart || now >= nightStart
+    return now < lightTime || now >= darkTime
 }

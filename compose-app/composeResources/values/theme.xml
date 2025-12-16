@@ -4,6 +4,6 @@
     <string name="system_theme">System theme</string>
     <string name="light_theme">Light theme</string>
     <string name="dark_theme">Dark theme</string>
-    <string name="light_mode_time">Light mode time</string>
-    <string name="dark_mode_time">Dark mode time</string>
+    <string name="light_time">Light time</string>
+    <string name="dark_time">Dark time</string>
 </resources>

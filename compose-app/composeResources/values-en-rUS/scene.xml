@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_app_bar">Top app bar</string>
+    <string name="nav_suite">Navigation suite</string>
+    <string name="top_app_bar_nav_suite">Top app bar and navigation suite</string>
+    <string name="nav_suite_top_app_bar">Navigation suite and top app bar</string>
+</resources>
