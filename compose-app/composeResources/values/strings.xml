@@ -21,6 +21,7 @@
     <string name="continue">Continue</string>
     <string name="clear">Clear</string>
     <string name="content">Content</string>
+    <string name="default">Default</string>
     <string name="done">Done</string>
     <string name="description">Description</string>
     <string name="disabled">Disabled</string>
@@ -53,12 +54,15 @@
     <string name="left">Left</string>
     <string name="markers">Markers</string>
     <string name="menu">Menu</string>
+    <string name="mode">Mode</string>
+    <string name="mask">Mask</string>
     <string name="navigate">Navigate</string>
     <string name="not_selected">Not selected</string>
     <string name="open">Open</string>
     <string name="options">Options</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
+    <string name="progressive">Progressive</string>
     <string name="platform">Platform</string>
     <string name="path">Path</string>
     <string name="pagination">Pagination</string>

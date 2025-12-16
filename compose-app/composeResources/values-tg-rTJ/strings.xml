@@ -20,6 +20,7 @@
     <string name="confirm">Тасдиқ</string>
     <string name="continue">Давом</string>
     <string name="content">Таркиб</string>
+    <string name="default">Асосӣ</string>
     <string name="done">Анҷомдод</string>
     <string name="description">Тавсиф</string>
     <string name="disabled">Гайрифаъол</string>
@@ -52,12 +53,15 @@
     <string name="left">Чап</string>
     <string name="markers">Нишонаҳо</string>
     <string name="menu">Меню</string>
+    <string name="mode">Низом</string>
+    <string name="mask">Маска</string>
     <string name="navigate">Гузашт</string>
     <string name="not_selected">Интихоб нашуд</string>
     <string name="open">Кушод</string>
     <string name="options">Имкониятҳо</string>
     <string name="online">Пайваст</string>
     <string name="offline">Пайваст нест</string>
+    <string name="progressive">Пешрафта</string>
     <string name="platform">Платформа</string>
     <string name="path">Роҳ</string>
     <string name="pagination">Саҳифабандӣ</string>

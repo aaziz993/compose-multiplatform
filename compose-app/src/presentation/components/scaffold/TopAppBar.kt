@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
+import clib.presentation.appbar.model.AppBarMode
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
@@ -121,14 +122,14 @@ public fun TopAppBar(
                 this.inputScale = inputScale
 
                 when (mode) {
-                    ScreenAppBarMode.Default -> Unit
-                    ScreenAppBarMode.Progressive ->
+                    AppBarMode.Default -> Unit
+                    AppBarMode.Progressive ->
                         progressive = HazeProgressive.verticalGradient(
                             startIntensity = 1f,
                             endIntensity = 0f,
                         )
 
-                    ScreenAppBarMode.Mask -> mask = Brush.easedVerticalGradient(EaseIn)
+                    AppBarMode.Mask -> mask = Brush.easedVerticalGradient(EaseIn)
                 }
             },
         topBar = {

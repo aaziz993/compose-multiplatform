@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Palette
@@ -72,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
+import clib.presentation.appbar.model.AppBarMode
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.config.RouteConfig
@@ -120,6 +122,7 @@ import compose_app.generated.resources.light_time_gt_dark_time
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.navigation_icon_content_color
+import compose_app.generated.resources.mode
 import compose_app.generated.resources.open
 import compose_app.generated.resources.permission
 import compose_app.generated.resources.record_audio
@@ -145,6 +148,7 @@ import klib.data.location.locale.current
 import klib.data.permission.model.Permission
 import kotlinx.coroutines.launch
 import presentation.components.settings.SettingsColorPickerBottomSheet
+import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
@@ -201,6 +205,18 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.app_bar)) },
         contentPadding = PaddingValues(16.dp),
     ) {
+        SettingsListPickerDialog(
+            appBar.mode,
+            values = AppBarMode.entries,
+            title = stringResource(Res.string.mode),
+            icon = Icons.Default.Mode,
+            modifier = Modifier,
+            enabled = true,
+        ) { value ->
+            onAppBarChange(appBar.copy(mode = value))
+            false
+        }
+
         SettingsSliderFinished(
             title = stringResource(Res.string.height),
             initialValue = appBar.expandedHeight.toFloatPx(),

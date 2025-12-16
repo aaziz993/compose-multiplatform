@@ -15,6 +15,7 @@ import kotlinx.serialization.Serializable
 @Immutable
 @Serializable
 public data class AppBar(
+    public val mode: AppBarMode = AppBarMode.Default,
     public val expandedHeight: DpSerial = 64.dp,
     public val isTitle: Boolean = true,
     public val isSupport: Boolean = true,
