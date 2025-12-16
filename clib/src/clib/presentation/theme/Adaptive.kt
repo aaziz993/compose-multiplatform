@@ -13,7 +13,6 @@ import kotlinx.datetime.toLocalDateTime
 import pro.respawn.kmmutils.datetime.plusDays
 import pro.respawn.kmmutils.datetime.withTime
 
-@Suppress("ComposeNamingUppercase")
 @Composable
 public fun isAdaptiveDark(
     dayStart: LocalTime = LocalTime(6, 0),
@@ -33,7 +32,7 @@ public fun isAdaptiveDark(
             val nextChange = when {
                 now.time < dayStart -> now.withTime(dayStart)
                 now.time < nightStart -> now.withTime(nightStart)
-                else -> now.plusDays(1, TimeZone.currentSystemDefault())
+                else -> now.plusDays(1, timeZone)
                     .withTime(dayStart)
             }
 
