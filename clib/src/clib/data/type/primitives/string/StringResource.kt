@@ -79,13 +79,11 @@ public suspend fun getAnnotatedString(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString =
-    ((if (localization.locale == Locale.current) localization.getStringOrNull(resource.key) else null)
-        ?: getString(resource)).toHtmlString(
-        compactMode,
-        style,
-        linkInteractionListener,
-    )
+): AnnotatedString = getString(resource, localization).toHtmlString(
+    compactMode,
+    style,
+    linkInteractionListener,
+)
 
 public suspend fun getAnnotatedString(
     resource: StringResource,
@@ -94,9 +92,12 @@ public suspend fun getAnnotatedString(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString =
-    getString(resource, *formatArgs, localization = localization).toHtmlString(
-        compactMode,
-        style,
-        linkInteractionListener,
-    )
+): AnnotatedString = getString(
+    resource = resource,
+    formatArgs = formatArgs,
+    localization = localization,
+).toHtmlString(
+    compactMode,
+    style,
+    linkInteractionListener,
+)

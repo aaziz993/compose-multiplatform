@@ -51,11 +51,10 @@ public suspend fun getAnnotatedStringArray(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): List<AnnotatedString> =
-    getStringArray(environment, resource, localization).map { value ->
-        value.toHtmlString(
-            compactMode,
-            style,
-            linkInteractionListener,
-        )
-    }
+): List<AnnotatedString> = getStringArray(environment, resource, localization).map { value ->
+    value.toHtmlString(
+        compactMode,
+        style,
+        linkInteractionListener,
+    )
+}
