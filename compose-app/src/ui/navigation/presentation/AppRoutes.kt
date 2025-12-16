@@ -881,7 +881,7 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
             { value -> localeState.value = value },
             config.ui.routes,
             routesState.value,
-            { route,value -> routesState[route] = value },
+            { route, value -> routesState[route] = value },
             permissionsState.permissions,
             { value ->
                 coroutineScope.launch {
