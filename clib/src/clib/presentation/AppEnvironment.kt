@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -159,11 +160,11 @@ public fun AppEnvironment(
                 if (isConnectivityAlert)
                     when (connectivityStatus) {
                         is Status.Connected -> GlobalAlertEventController.sendEvent(
-                            AlertEvent(onlineText),
+                            AlertEvent(text = { Text(onlineText) }),
                         )
 
                         is Status.Disconnected -> GlobalAlertEventController.sendEvent(
-                            AlertEvent(offlineText),
+                            AlertEvent(text = { Text(offlineText) }),
                         )
                     }
 
