@@ -72,7 +72,7 @@ public fun GlobalAlertDialog(
             event.title ?: title,
             event.text ?: text,
             shape,
-            containerColor.orErrorColor(event.isError),
+            containerColor,
             iconContentColor.orErrorColor(event.isError),
             titleContentColor.orErrorColor(event.isError),
             textContentColor.orErrorColor(event.isError),

@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import clib.data.type.orErrorColor
 import clib.generated.resources.Res
 import clib.generated.resources.case_sensitive
 import clib.generated.resources.regex
@@ -49,7 +51,6 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import org.jetbrains.compose.resources.painterResource
-import clib.data.type.color
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 
 @Composable
@@ -171,7 +172,7 @@ public fun AdvancedSearchField(
                     painterResource(Res.drawable.case_sensitive),
                     null,
                     iconModifier.clickable { state.ignoreCase = !state.ignoreCase },
-                    color(!state.ignoreCase),
+                    LocalContentColor.current.orErrorColor(!state.ignoreCase),
                 )
             }
 
@@ -180,7 +181,7 @@ public fun AdvancedSearchField(
                     painterResource(Res.drawable.whole_word),
                     null,
                     iconModifier.clickable { state.matchAll = !state.matchAll },
-                    color(!state.matchAll),
+                    LocalContentColor.current.orErrorColor(!state.matchAll),
                 )
             }
 
@@ -189,7 +190,7 @@ public fun AdvancedSearchField(
                     painterResource(Res.drawable.regex),
                     null,
                     iconModifier.clickable { state.regexMatch = !state.regexMatch },
-                    color(!state.regexMatch),
+                    LocalContentColor.current.orErrorColor(!state.regexMatch),
                 )
             }
         }
