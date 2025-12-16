@@ -52,6 +52,7 @@ import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -718,7 +719,7 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.recovery)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        val resettable by remember {
+        val resettable by remember(appBar, connectivity, theme, density, locale, routes) {
             derivedStateOf {
                 appBar != defaultAppBar ||
                     connectivity != defaultConnectivity ||
