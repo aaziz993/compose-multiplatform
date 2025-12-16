@@ -19,20 +19,24 @@ import androidx.compose.material.icons.filled.DensityLarge
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
 import androidx.compose.material.icons.filled.DynamicForm
-import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Height
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Route
 import androidx.compose.material.icons.filled.Sensors
+import androidx.compose.material.icons.filled.SettingsBrightness
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material.icons.filled.TextFormat
+import androidx.compose.material.icons.filled.Title
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.BluetoothConnected
@@ -41,14 +45,18 @@ import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.DynamicForm
-import androidx.compose.material.icons.outlined.FlashOn
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOff
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Sensors
+import androidx.compose.material.icons.outlined.SettingsBrightness
 import androidx.compose.material.icons.outlined.Storage
+import androidx.compose.material.icons.outlined.SupportAgent
+import androidx.compose.material.icons.outlined.Title
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -206,8 +214,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.title),
             value = appBar.isTitle,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
+            trueIcon = Icons.Filled.Title,
+            falseIcon = Icons.Outlined.Title,
             onCheckedChange = { value ->
                 onAppBarChange(appBar.copy(isTitle = value))
             },
@@ -216,8 +224,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_support),
             value = appBar.isSupport,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
+            trueIcon = Icons.Filled.SupportAgent,
+            falseIcon = Icons.Outlined.SupportAgent,
             onCheckedChange = { value ->
                 onAppBarChange(appBar.copy(isSupport = value))
             },
@@ -226,8 +234,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_themes),
             value = appBar.isTheme,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
+            trueIcon = Icons.Filled.SettingsBrightness,
+            falseIcon = Icons.Outlined.SettingsBrightness,
             onCheckedChange = { value ->
                 onAppBarChange(appBar.copy(isTheme = value))
             },
@@ -236,8 +244,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_locales),
             value = appBar.isLocale,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
+            trueIcon = Icons.Filled.Language,
+            falseIcon = Icons.Outlined.Language,
             onCheckedChange = { value ->
                 onAppBarChange(appBar.copy(isLocale = value))
             },
@@ -246,8 +254,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.app_bar_avatar),
             value = appBar.isAvatar,
-            trueIcon = Icons.Filled.FlashOn,
-            falseIcon = Icons.Outlined.FlashOn,
+            trueIcon = Icons.Filled.Person,
+            falseIcon = Icons.Outlined.Person,
             onCheckedChange = { value ->
                 onAppBarChange(appBar.copy(isAvatar = value))
             },
