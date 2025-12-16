@@ -187,6 +187,7 @@ public fun SettingsMainScreen(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
+    val localization = LocalLocalization.current
     val coroutineScope = rememberCoroutineScope()
 
     SettingsGroup(
@@ -382,11 +383,24 @@ public fun SettingsMainScreen(
             enabled = true,
             subtitle = { Text(theme.lightTime.toString()) },
         ) { value ->
-            onThemeChange(theme.copy(lightTime = value))
-            false
+            if (value < theme.darkTime) {
+                onThemeChange(theme.copy(lightTime = value))
+                false
+            }
+            else {
+                coroutineScope.launch {
+                    GlobalSnackbarEventController.sendEvent(
+                        SnackbarEvent(
+                            getString(
+                                Res.string.dark_time_lt_light_time,
+                                localization,
+                            ),
+                        ),
+                    )
+                }
+                true
+            }
         }
-
-        val localization = LocalLocalization.current
 
         SettingsTimePickerDialog(
             title = stringResource(Res.string.dark_time),
@@ -402,7 +416,12 @@ public fun SettingsMainScreen(
             else {
                 coroutineScope.launch {
                     GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(getString(Res.string.dark_time_lt_light_time, localization)),
+                        SnackbarEvent(
+                            getString(
+                                Res.string.dark_time_lt_light_time,
+                                localization,
+                            ),
+                        ),
                     )
                 }
                 true
