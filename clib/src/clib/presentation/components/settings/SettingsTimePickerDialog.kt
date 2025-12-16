@@ -28,7 +28,7 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 public fun SettingsTimePickerDialog(
     title: @Composable () -> Unit,
     state: TimePickerState,
-    confirmButton: @Composable () -> Unit,
+    confirmButton: @Composable (dismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: (@Composable () -> Unit)? = null,
@@ -55,7 +55,11 @@ public fun SettingsTimePickerDialog(
             {
                 dialog = false
             },
-            confirmButton,
+            {
+                confirmButton {
+                    dialog = false
+                }
+            },
             title,
             dialogModifier,
             dialogProperties,
