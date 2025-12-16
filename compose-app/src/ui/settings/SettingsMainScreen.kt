@@ -62,7 +62,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.getEmojiFlag
-import clib.data.type.primitives.string.getString
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.components.country.model.CountryPicker
@@ -71,7 +70,6 @@ import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
-import clib.presentation.locale.LocalLocalization
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.density.toFloatPx
 import clib.presentation.theme.model.Theme
@@ -187,7 +185,6 @@ public fun SettingsMainScreen(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    val localization = LocalLocalization.current
     val coroutineScope = rememberCoroutineScope()
 
     SettingsGroup(
@@ -391,11 +388,10 @@ public fun SettingsMainScreen(
                 coroutineScope.launch {
                     GlobalAlertEventController.sendEvent(
                         AlertEvent(
-                            getString(
-                                Res.string.light_time_gt_dark_time,
-                                localization,
-                            ),
-                            true,
+                            text = {
+                                Text(stringResource(Res.string.light_time_gt_dark_time))
+                            },
+                            isError = true,
                         ),
                     )
                 }
@@ -418,11 +414,10 @@ public fun SettingsMainScreen(
                 coroutineScope.launch {
                     GlobalAlertEventController.sendEvent(
                         AlertEvent(
-                            getString(
-                                Res.string.light_time_gt_dark_time,
-                                localization,
-                            ),
-                            true,
+                            text = {
+                                Text(stringResource(Res.string.light_time_gt_dark_time))
+                            },
+                            isError = true,
                         ),
                     )
                 }

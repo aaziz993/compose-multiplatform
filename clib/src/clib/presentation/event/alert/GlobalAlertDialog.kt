@@ -1,16 +1,13 @@
 package clib.presentation.event.alert
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.CrisisAlert
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +20,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
 import clib.data.type.collections.LaunchedEffect
+import clib.data.type.errorColor
 import clib.presentation.event.alert.model.AlertEvent
 import kotlinx.coroutines.launch
 
@@ -43,14 +41,14 @@ public fun GlobalAlertDialog(
             Icon(Icons.Default.Close, null)
         }
     },
+    icon: (@Composable () -> Unit)? = { Icon(Icons.Default.Warning, null) },
     title: (@Composable () -> Unit)? = null,
-    icon: (@Composable () -> Unit)? = { Icon(Icons.Default.Alarm, null) },
+    text: (@Composable () -> Unit)? = null,
     shape: Shape = AlertDialogDefaults.shape,
     containerColor: Color = AlertDialogDefaults.containerColor,
     iconContentColor: Color = AlertDialogDefaults.iconContentColor,
     titleContentColor: Color = AlertDialogDefaults.titleContentColor,
     textContentColor: Color = AlertDialogDefaults.textContentColor,
-    textContentErrorColor: Color = MaterialTheme.colorScheme.error,
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(),
 ) {
@@ -70,14 +68,14 @@ public fun GlobalAlertDialog(
                     it { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } }
                 }
             },
-            { Icon(Icons.Default.CrisisAlert, "") },
-            title,
-            { Text(event.message) },
+            event.icon ?: icon,
+            event.title ?: title,
+            event.text ?: text,
             shape,
-            containerColor,
-            iconContentColor,
-            titleContentColor,
-            if (event.isError) textContentErrorColor else textContentColor,
+            containerColor.errorColor(event.isError),
+            iconContentColor.errorColor(event.isError),
+            titleContentColor.errorColor(event.isError),
+            textContentColor.errorColor(event.isError),
             tonalElevation,
             properties,
         )
