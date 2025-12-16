@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.components.color.model.ColorPicker
@@ -95,6 +96,8 @@ public fun ColorPickerBottomSheet(
                             color = MaterialTheme.colorScheme.secondary,
                             style = MaterialTheme.typography.bodySmall,
                             fontSize = 12.sp,
+                            overflow = TextOverflow.Clip,
+                            maxLines = 1,
                         )
                     },
                     selected = tabIndex == index,

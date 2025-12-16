@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.toHSL
@@ -72,6 +73,8 @@ internal fun BlendColorPicker(
             .fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 12.dp),
         style = MaterialTheme.typography.bodySmall,
         fontSize = 12.sp,
+        overflow = TextOverflow.Clip,
+        maxLines = 1,
     )
 
     // State variables for first color hue and second color hue
@@ -107,7 +110,11 @@ internal fun BlendColorPicker(
                 onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
             }
 
-            Text(text = firstBlendColor.toHex())
+            Text(
+                text = firstBlendColor.toHex(),
+                overflow = TextOverflow.Clip,
+                maxLines = 1,
+            )
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -126,7 +133,11 @@ internal fun BlendColorPicker(
                 onValueChange(firstBlendColor.blend(secondBlendColor, colorBias))
             }
 
-            Text(text = secondBlendColor.toHex())
+            Text(
+                text = secondBlendColor.toHex(),
+                overflow = TextOverflow.Clip,
+                maxLines = 1,
+            )
         }
     }
 

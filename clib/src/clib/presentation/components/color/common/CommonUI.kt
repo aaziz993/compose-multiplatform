@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,6 +98,8 @@ internal fun ColumnScope.ColorSlider(
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 14.sp,
             modifier = Modifier.weight(.2f),
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
         )
 
         val sliderText by remember(value) {
