@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import clib.presentation.components.model.item.Item
 import clib.presentation.components.picker.model.ListPicker
@@ -54,7 +55,13 @@ public fun <E> SettingsListPickerDialog(
     ),
     onItemClicked: (E) -> Boolean,
 ): Unit = SettingsListPickerDialog(
-    { Text(title) },
+    {
+        Text(
+            text = title,
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
+        )
+    },
     values,
     modifier,
     enabled,

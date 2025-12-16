@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import clib.presentation.event.snackbar.GlobalSnackbarEventController
 import clib.presentation.event.snackbar.model.SnackbarEvent
@@ -45,7 +46,13 @@ public fun SettingsSwitch(
     onCheckedChange: (Boolean) -> Unit,
 ): Unit = SettingsSwitch(
     value,
-    { Text(title) },
+    {
+        Text(
+            text = title,
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
+        )
+    },
     modifier,
     enabled,
     (if (value) trueIcon else falseIcon)?.let { { Icon(it, value.asStringResource()) } },

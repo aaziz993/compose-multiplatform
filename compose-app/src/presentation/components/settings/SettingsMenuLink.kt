@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
@@ -27,7 +28,13 @@ public fun SettingsMenuLink(
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     onClick: () -> Unit,
 ): Unit = SettingsMenuLink(
-    { Text(title) },
+    {
+        Text(
+            text = title,
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
+        )
+    },
     modifier,
     enabled,
     icon?.let { { Icon(it, subtitle ?: title) } },

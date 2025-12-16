@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.picker.model.ListPicker
@@ -51,7 +52,13 @@ public fun <E> SettingsWheelPickerDialog(
     picker: ListPicker = ListPicker(),
     onItemClicked: (E) -> Boolean,
 ): Unit = SettingsWheelPickerDialog(
-    { Text(title) },
+    {
+        Text(
+            text = title,
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
+        )
+    },
     initialValue,
     values,
     modifier,

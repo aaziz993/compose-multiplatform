@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.data.type.primitives.string.stringResource
@@ -96,7 +97,13 @@ public fun SettingsColorPickerBottomSheet(
 ) {
     val state = remember { mutableStateOf(value) }
     SettingsColorPickerBottomSheet(
-        { Text(title) },
+        {
+            Text(
+                text = title,
+                overflow = TextOverflow.Clip,
+                maxLines = 1,
+            )
+        },
         state,
         { dismiss ->
             IconButton(

@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.settings.SettingsSlider
@@ -60,7 +61,13 @@ public fun SettingsSliderFinished(
 ) {
     var value by remember { mutableFloatStateOf(initialValue) }
     SettingsSlider(
-        { Text(title) },
+        {
+            Text(
+                text = title,
+                overflow = TextOverflow.Clip,
+                maxLines = 1,
+            )
+        },
         value,
         modifier,
         subtitle?.let { { it(value) } },

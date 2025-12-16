@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
 import clib.data.type.primitives.string.stringResource
@@ -57,7 +58,13 @@ public fun SettingsTimePickerDialog(
 ) {
     val state = rememberTimePickerState(value.hour, value.minute, true)
     SettingsTimePickerDialog(
-        title = { Text(title) },
+        title = {
+            Text(
+                text = title,
+                overflow = TextOverflow.Clip,
+                maxLines = 1,
+            )
+        },
         state,
         { dismiss ->
             IconButton(

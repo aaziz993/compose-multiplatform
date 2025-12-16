@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import clib.presentation.components.settings.SettingsSlider
@@ -57,7 +58,13 @@ public fun SettingsSlider(
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     onValueChange: (Float, Offset) -> Unit,
 ): Unit = SettingsSlider(
-    { Text(title) },
+    {
+        Text(
+            text = title,
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
+        )
+    },
     value,
     modifier,
     subtitle,
