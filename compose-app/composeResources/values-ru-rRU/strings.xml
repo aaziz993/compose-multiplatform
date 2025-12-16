@@ -59,8 +59,10 @@
     <string name="offline">Оффлайн</string>
     <string name="platform">Платформа</string>
     <string name="path">Путь</string>
-    <string name="pagination">Пагинация</string>
+    <string name="pagination">Листание</string>
     <string name="permission">Разрешение</string>
+    <string name="pop_transition_spec">Спецификация перехода назад</string>
+    <string name="predictive_pop_transition_spec">Предсказуемая спецификация перехода назад</string>
     <string name="recovery">Восстановление</string>
     <string name="retry">Повторить</string>
     <string name="reset">Сбросить</string>

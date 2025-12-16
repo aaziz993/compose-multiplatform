@@ -62,6 +62,8 @@
     <string name="path">Path</string>
     <string name="pagination">Pagination</string>
     <string name="permission">Permission</string>
+    <string name="pop_transition_spec">Pop transition specification</string>
+    <string name="predictive_pop_transition_spec">Predictive pop transition specification</string>
     <string name="recovery">Recovery</string>
     <string name="retry">Retry</string>
     <string name="reset">Reset</string>

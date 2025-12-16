@@ -101,7 +101,7 @@ private fun SettingsRouteConfig(
         metadataList.forEach { metadata ->
             SettingsCheckbox(
                 metadata.keys.all { key -> key in valueMetadata },
-                { Text(metadata.keys.first().asStringResource()) },
+                { Text(metadata.keys.map { it.asStringResource() }.joinToString("\n")) },
             ) {
                 onValueChange(
                     value.copy(

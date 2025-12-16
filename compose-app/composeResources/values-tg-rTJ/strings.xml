@@ -61,6 +61,8 @@
     <string name="path">Роҳ</string>
     <string name="pagination">Саҳифабандӣ</string>
     <string name="permission">Иҷозат</string>
+    <string name="pop_transition_spec">Мушаххасоти гузариш ба пушт</string>
+    <string name="predictive_pop_transition_spec">Мушаххасоти пешгӯи гузариш ба пушт</string>
     <string name="recovery">Барқакор</string>
     <string name="retry">Такрор</string>
     <string name="reset">Бозгашт</string>
