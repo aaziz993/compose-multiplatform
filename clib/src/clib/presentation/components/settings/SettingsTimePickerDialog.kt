@@ -1,6 +1,11 @@
 package clib.presentation.components.settings
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.TimePickerDialogDefaults
+import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,20 +18,17 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
 import clib.presentation.components.picker.TimePickerDialog
-import clib.presentation.components.picker.model.TimePicker
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import pro.respawn.kmmutils.datetime.now
 
 @Suppress("ComposeParameterOrder")
 @Composable
 public fun SettingsTimePickerDialog(
     title: @Composable () -> Unit,
-    value: LocalTime = LocalTime.now(TimeZone.currentSystemDefault()),
+    state: TimePickerState,
+    confirmButton: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = LocalSettingsGroupEnabled.current,
     icon: (@Composable () -> Unit)? = null,
@@ -38,26 +40,34 @@ public fun SettingsTimePickerDialog(
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     dialogModifier: Modifier = Modifier,
     dialogProperties: DialogProperties = DialogProperties(),
+    dismissButton: (@Composable (dismiss: () -> Unit) -> Unit)? = { dismiss ->
+        IconButton(dismiss) {
+            Icon(Icons.Default.Close, null)
+        }
+    },
     shape: Shape = TimePickerDialogDefaults.shape,
     containerColor: Color = TimePickerDialogDefaults.containerColor,
-    picker: TimePicker = TimePicker(),
-    onValueChanged: (LocalTime) -> Boolean,
 ) {
     var dialog by remember { mutableStateOf(false) }
     if (dialog)
         TimePickerDialog(
-            onDismissRequest = {
+            state,
+            {
                 dialog = false
             },
-            value = value,
-            title = title,
-            modifier = dialogModifier,
-            dialogProperties = dialogProperties,
-            shape = shape,
-            containerColor = containerColor,
-            onValueChanged = { value ->
-                dialog = onValueChanged(value)
+            confirmButton,
+            title,
+            dialogModifier,
+            dialogProperties,
+            dismissButton?.let {
+                {
+                    it {
+                        dialog = false
+                    }
+                }
             },
+            shape,
+            containerColor = containerColor,
         )
 
     SettingsMenuLink(

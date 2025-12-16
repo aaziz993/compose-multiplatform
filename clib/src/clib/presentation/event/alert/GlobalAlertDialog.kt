@@ -62,24 +62,24 @@ public fun GlobalAlertDialog(
     }
     dialogEvent?.let { event ->
         AlertDialog(
-            onDismissRequest = { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
-            confirmButton = event.action?.let { action -> { confirmButton(action) } } ?: {},
-            modifier = modifier,
+            { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
+            event.action?.let { action -> { confirmButton(action) } } ?: {},
+            modifier,
             dismissButton?.let {
                 {
                     it { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } }
                 }
             },
-            icon = { Icon(Icons.Default.CrisisAlert, "") },
-            title = title,
-            text = { Text(event.message) },
-            shape = shape,
-            containerColor = containerColor,
-            iconContentColor = iconContentColor,
-            titleContentColor = titleContentColor,
-            textContentColor = if (event.isError) textContentErrorColor else textContentColor,
-            tonalElevation = tonalElevation,
-            properties = properties,
+            { Icon(Icons.Default.CrisisAlert, "") },
+            title,
+            { Text(event.message) },
+            shape,
+            containerColor,
+            iconContentColor,
+            titleContentColor,
+            if (event.isError) textContentErrorColor else textContentColor,
+            tonalElevation,
+            properties,
         )
     }
 }
