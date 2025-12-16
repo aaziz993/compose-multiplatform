@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.config.RouteConfig
 import clib.presentation.navigation.slideTransition
-import com.alorma.compose.settings.ui.SettingsCheckbox
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.enabled
@@ -99,9 +98,11 @@ private fun SettingsRouteConfig(
 
     value.metadata?.let { valueMetadata ->
         metadataList.forEach { metadata ->
-            SettingsCheckbox(
+            SettingsSwitch(
+                title = metadata.keys.map { it.asStringResource() }.joinToString("\n"),
                 metadata.keys.all { key -> key in valueMetadata },
-                { Text(metadata.keys.map { it.asStringResource() }.joinToString("\n")) },
+                trueIcon = Icons.Default.RadioButtonChecked,
+                falseIcon = Icons.Default.RadioButtonUnchecked,
             ) {
                 onValueChange(
                     value.copy(
