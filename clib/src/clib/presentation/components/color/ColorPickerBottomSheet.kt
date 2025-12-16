@@ -46,8 +46,8 @@ import clib.presentation.components.color.model.ColorPicker
 public fun ColorPickerBottomSheet(
     onDismissRequest: () -> Unit,
     onSelect: (Color) -> Unit,
+    value: Color = Color.White,
     onClose: () -> Unit = onDismissRequest,
-    initialColor: Color = Color.White,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
     picker: ColorPicker = ColorPicker(),
 ): Unit = ModalBottomSheet(
@@ -56,7 +56,7 @@ public fun ColorPickerBottomSheet(
     containerColor = MaterialTheme.colorScheme.background,
     scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .5f),
 ) {
-    var color by remember { mutableStateOf(initialColor) }
+    var color by remember { mutableStateOf(value) }
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf(
         picker.rgba,

@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Watch
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePickerDialogDefaults
 import androidx.compose.material3.rememberTimePickerState
@@ -64,7 +65,11 @@ public fun SettingsTimePickerDialog(
                     onValueChanged(state.localTime)
                 },
             ) {
-                Icon(Icons.Default.Check, stringResource(Res.string.confirm))
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = stringResource(Res.string.confirm),
+                    tint = Color.Green,
+                )
             }
         },
         modifier,
@@ -80,7 +85,11 @@ public fun SettingsTimePickerDialog(
         dialogProperties,
         { dismiss ->
             IconButton(dismiss) {
-                Icon(Icons.Default.Close, stringResource(Res.string.close))
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(Res.string.close),
+                    tint = MaterialTheme.colorScheme.error,
+                )
             }
         },
         shape,

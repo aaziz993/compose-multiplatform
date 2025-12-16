@@ -62,7 +62,7 @@ public fun SettingsColorPickerBottomSheet(
             { value ->
                 sheet = onValueChanged(value)
             },
-            initialColor = value,
+            value = value,
             sheetState = sheetState,
             picker = picker,
         )
