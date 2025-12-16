@@ -123,6 +123,7 @@ import compose_app.generated.resources.title
 import compose_app.generated.resources.title_content_color
 import compose_app.generated.resources.typography
 import compose_app.generated.resources.write_storage
+import compose_app.generated.resources.open
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
