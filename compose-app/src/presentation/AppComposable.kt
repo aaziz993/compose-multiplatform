@@ -42,9 +42,9 @@ import clib.presentation.connectivity.rememberConnectivityState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberRoutesState
+import io.ktor.http.Url
 import klib.data.share.Share
 import ui.navigation.presentation.Application
-import ui.navigation.presentation.Services
 
 @Composable
 public fun AppComposable(
@@ -78,6 +78,7 @@ public fun AppComposable(
             authRedirectRoute = if (isRoot) routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute? else null,
         )
     },
+    onDeepLink: Router.(Url) -> Unit = Router::push,
 ): Unit = AppEnvironment(
     config,
     cache,
@@ -100,6 +101,7 @@ public fun AppComposable(
     routes,
     routerFactory,
     navigatorFactory,
+    onDeepLink,
 )
 
 @Preview

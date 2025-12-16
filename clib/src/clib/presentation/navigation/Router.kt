@@ -106,9 +106,9 @@ public open class Router(
     }
 
     /**
-     * Pushes url route onto the navigation stack.
+     * Pushes route with url onto the navigation stack.
      *
-     * @param url Url of route to push onto the stack.
+     * @param url The url of the route to push onto the stack.
      */
     public fun push(url: Url) {
         routes.navRoutePath(url)?.let {
@@ -129,6 +129,21 @@ public open class Router(
         actions(NavigationAction.ReplaceCurrent(route))
 
     /**
+     * Replaces the current top route with a new route.
+     *
+     * If the stack is empty, the new route will be added as the first route.
+     * This is useful for scenarios like login flow completion or error recovery.
+     *
+     * @param url The url of the route to replace the current top route with.
+     */
+    public fun replaceCurrent(url: Url) {
+        routes.navRoutePath(url)?.let {
+            navRoutePath = navRoutePath.drop()
+            replaceCurrent(navRoutePath.first())
+        }
+    }
+
+    /**
      * Replaces the entire navigation stack with new routes.
      *
      * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
@@ -138,6 +153,20 @@ public open class Router(
      */
     public fun replaceStack(vararg routes: NavRoute): Unit =
         actions(NavigationAction.ReplaceStack(routes.toList()))
+
+    /**
+     * Replaces the entire navigation stack with new route.
+     *
+     * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
+     *
+     * @param routes Url of the route to replace the stack with.
+     */
+    public fun replaceStack(url: Url) {
+        routes.navRoutePath(url)?.let {
+            navRoutePath = navRoutePath.drop()
+            replaceStack(navRoutePath.first())
+        }
+    }
 
     /**
      * Removes the top route from the navigation stack.

@@ -202,6 +202,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         configProvider: (BaseRoute) -> RouteConfig? = LocalRoutesState.current.let { routeState -> routeState::get },
         routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
+        onDeepLink: Router.(Url) -> Unit = Router::push,
     ) {
         check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
 
@@ -214,6 +215,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         Nav3Host(
             routerFactory(this),
             navigatorFactory(this),
+            onDeepLink,
         ) { _, backStack, onBack ->
             // Return a result from one screen to a previous screen using a state-based approach.
             val resultStore = rememberStateStore()

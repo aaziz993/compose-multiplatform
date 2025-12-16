@@ -77,6 +77,7 @@ import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
+import io.ktor.http.Url
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.cache.emptyCache
@@ -119,6 +120,7 @@ public fun AppEnvironment(
             authRedirectRoute = if (isRoot) routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute? else null,
         )
     },
+    onDeepLink: Router.(Url) -> Unit = Router::push,
 ) {
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configure()
