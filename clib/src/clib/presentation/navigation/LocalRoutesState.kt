@@ -13,7 +13,7 @@ public val LocalRoutesState: ProvidableCompositionLocal<RoutesState> =
 
 public class RoutesState(initialValue: Map<String, RouteConfig> = emptyMap()) {
 
-    public val value: MutableMap<String, RouteConfig>
+    public val value: Map<String, RouteConfig>
         field = mutableMapOf<String, RouteConfig>().apply { putAll(initialValue) }
 
     public operator fun get(route: String): RouteConfig? = value[route]
