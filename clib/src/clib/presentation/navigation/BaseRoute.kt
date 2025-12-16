@@ -89,7 +89,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
                 { router.onClick(this@BaseRoute) },
                 selectedItem.icon,
                 selectedItem.modifier,
-                false,
+                enabled,
                 selectedItem.text,
                 alwaysShowLabel,
                 selectedItem.badge,
