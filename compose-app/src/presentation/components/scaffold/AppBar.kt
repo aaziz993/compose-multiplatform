@@ -17,15 +17,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.automirrored.filled.MenuBook
-import androidx.compose.material.icons.automirrored.filled.MenuOpen
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.automirrored.filled.ViewSidebar
 import androidx.compose.material.icons.automirrored.outlined.ViewSidebar
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SupportAgent
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -36,7 +32,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,10 +47,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.location.country.flag
+import clib.data.type.primitives.string.stringResource
+import clib.presentation.appbar.model.AppBar
 import clib.presentation.auth.AuthComposable
 import clib.presentation.components.country.LocalePickerDialog
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
+import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
@@ -83,9 +81,6 @@ import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.painterResource
-import clib.data.type.primitives.string.stringResource
-import clib.presentation.appbar.model.AppBar
-import clib.presentation.connectivity.model.Connectivity
 import presentation.components.scaffold.model.ScreenAppBarMode
 import presentation.components.tooltipbox.AppPlainTooltipBox
 import presentation.connectivity.CircleIcon
@@ -143,7 +138,7 @@ public fun TopAppBar(
                 title = {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         if (appBar.isTitle) title()
