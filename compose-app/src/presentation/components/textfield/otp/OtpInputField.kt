@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -22,7 +23,7 @@ import clib.presentation.components.textfield.otp.OtpInputField
 
 @Suppress("ComposeModifierMissing")
 @Composable
-public fun AppOtpInputField(
+public fun OtpInputField(
     otp: MutableState<String>,
     count: Int = 4,
     enabled: Boolean = true,
@@ -47,9 +48,10 @@ public fun AppOtpInputField(
             enabled = enabled,
             otpBoxModifier = Modifier
                 .size(boxSize)
+                .padding(4.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f), shape = RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp)),
+                .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)),
             otpTextType = otpTextType,
             textColor = textColor,
         )

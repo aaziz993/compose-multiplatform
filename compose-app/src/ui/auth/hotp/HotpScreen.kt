@@ -29,7 +29,7 @@ import compose_app.generated.resources.send_code
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import clib.data.type.primitives.string.stringResource
-import presentation.components.textfield.otp.AppOtpInputField
+import presentation.components.textfield.otp.OtpInputField
 import ui.auth.hotp.viewmodel.HotpAction
 import ui.auth.hotp.viewmodel.HotpState
 import ui.navigation.presentation.Hotp
@@ -77,7 +77,7 @@ public fun HotpScreen(
 
         Text("Test code-${testOtpCode}")
 
-        AppOtpInputField(
+        OtpInputField(
             otp = otpValue,
             count = config.codeDigits,
         )

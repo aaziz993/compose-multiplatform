@@ -25,7 +25,7 @@ import compose_app.generated.resources.pin_code
 import compose_app.generated.resources.repeat_pin_code
 import clib.data.type.primitives.string.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import presentation.components.textfield.otp.AppOtpInputField
+import presentation.components.textfield.otp.OtpInputField
 import ui.auth.pincode.viewmodel.PinCodeAction
 import ui.auth.pincode.viewmodel.PinCodeState
 import ui.navigation.presentation.PinCode
@@ -63,7 +63,7 @@ public fun PinCodeScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        AppOtpInputField(otp = pinCode)
+        OtpInputField(otp = pinCode)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -75,7 +75,7 @@ public fun PinCodeScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
-        AppOtpInputField(otp = repeatPinCode)
+        OtpInputField(otp = repeatPinCode)
 
         Spacer(modifier = Modifier.height(16.dp))
 

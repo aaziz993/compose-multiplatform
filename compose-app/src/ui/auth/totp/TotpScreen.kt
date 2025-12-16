@@ -35,7 +35,7 @@ import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import kotlin.time.Duration
 import clib.data.type.primitives.string.stringResource
-import presentation.components.textfield.otp.AppOtpInputField
+import presentation.components.textfield.otp.OtpInputField
 import ui.auth.hotp.testOtpCode
 import ui.auth.totp.viewmodel.TotpAction
 import ui.auth.totp.viewmodel.TotpState
@@ -83,7 +83,7 @@ public fun TotpScreen(
         Text("Test code-$testOtpCode")
 
 
-        AppOtpInputField(
+        OtpInputField(
             otp = otpValue,
             count = config.codeDigits,
             enabled = state.countdown > Duration.ZERO,
