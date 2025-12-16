@@ -71,8 +71,6 @@ import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
-import clib.presentation.event.snackbar.GlobalSnackbarEventController
-import clib.presentation.event.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocalLocalization
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.density.toFloatPx
@@ -103,7 +101,6 @@ import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.contact
 import compose_app.generated.resources.container_color
 import compose_app.generated.resources.dark_time
-import compose_app.generated.resources.light_time_gt_dark_time
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
@@ -113,9 +110,11 @@ import compose_app.generated.resources.gallery
 import compose_app.generated.resources.height
 import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.light_time
+import compose_app.generated.resources.light_time_gt_dark_time
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.navigation_icon_content_color
+import compose_app.generated.resources.open
 import compose_app.generated.resources.permission
 import compose_app.generated.resources.record_audio
 import compose_app.generated.resources.recovery
@@ -133,7 +132,6 @@ import compose_app.generated.resources.title
 import compose_app.generated.resources.title_content_color
 import compose_app.generated.resources.typography
 import compose_app.generated.resources.write_storage
-import compose_app.generated.resources.open
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
@@ -391,8 +389,8 @@ public fun SettingsMainScreen(
             }
             else {
                 coroutineScope.launch {
-                    GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(
+                    GlobalAlertEventController.sendEvent(
+                        AlertEvent(
                             getString(
                                 Res.string.light_time_gt_dark_time,
                                 localization,

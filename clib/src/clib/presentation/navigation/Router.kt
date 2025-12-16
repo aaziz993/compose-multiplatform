@@ -159,7 +159,7 @@ public open class Router(
      *
      * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
      *
-     * @param routes Url of the route to replace the stack with.
+     * @param url The url of the route to replace the stack with.
      */
     public fun replaceStack(url: Url) {
         routes.navRoutePath(url)?.let {

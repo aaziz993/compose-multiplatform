@@ -6,6 +6,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Surface
@@ -96,6 +101,8 @@ public fun AppEnvironment(
     coroutineCache: CoroutineCache<String, Any> = emptyCoroutineCache(),
     share: Share = rememberShare(),
     connectivityStatus: Status = rememberConnectivity(createConnectivity(MainScope())),
+    onlineText: String = "Online",
+    offlineText: String = "Offline",
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
     appBarState: AppBarState = rememberAppBarState(config.ui.appBar),
@@ -107,8 +114,8 @@ public fun AppEnvironment(
     localeService: LocaleService = LocaleService(),
     authState: AuthState = rememberAuthState(),
     permissionsState: PermissionsState = rememberPermissionsState(),
-    onlineText: String = "Online",
-    offlineText: String = "Offline",
+    confirmText: String = "Confirm",
+    dismissText: String = "Dismiss",
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
@@ -216,7 +223,18 @@ public fun AppEnvironment(
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     routes.Nav3Host(routesState::get, routerFactory, navigatorFactory)
-                    GlobalAlertDialog()
+                    GlobalAlertDialog(
+                        confirmButton = { action ->
+                            IconButton(action) {
+                                Icon(Icons.Default.Check, confirmText)
+                            }
+                        },
+                        dismissButton = { dismiss ->
+                            IconButton(dismiss) {
+                                Icon(Icons.Default.Close, dismissText)
+                            }
+                        },
+                    )
                     GlobalSnackbar(modifier = Modifier.align(Alignment.Center))
                 }
             }

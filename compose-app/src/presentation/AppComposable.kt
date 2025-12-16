@@ -42,6 +42,8 @@ import clib.presentation.connectivity.rememberConnectivityState
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberRoutesState
+import compose_app.generated.resources.close
+import compose_app.generated.resources.confirm
 import io.ktor.http.Url
 import klib.data.share.Share
 import ui.navigation.presentation.Application
@@ -53,7 +55,9 @@ public fun AppComposable(
     cache: Cache<String, Any> = koinInject(),
     coroutineCache: CoroutineCache<String, Any> = koinInject(),
     share: Share = rememberShare(),
-    connectivity: Connectivity.Status = rememberConnectivity(koinInject()),
+    connectivityStatus: Connectivity.Status = rememberConnectivity(koinInject()),
+    onlineText: String = stringResource(Res.string.online),
+    offlineText: String = stringResource(Res.string.offline),
     stateStore: StateStore = rememberStateStore(),
     eventBus: EventBus = remember { EventBus() },
     appBarState: AppBarState = rememberAppBarState(config.ui.appBar),
@@ -65,8 +69,8 @@ public fun AppComposable(
     localeService: LocaleService = koinInject(),
     authState: AuthState = koinInject(),
     permissionsState: PermissionsState = rememberPermissionsState(),
-    onlineText: String = stringResource(Res.string.online),
-    offlineText: String = stringResource(Res.string.offline),
+    confirmText: String = stringResource(Res.string.confirm),
+    dismissText: String = stringResource(Res.string.close),
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
     navigatorFactory: @Composable (Routes) -> Navigator = {
@@ -84,7 +88,9 @@ public fun AppComposable(
     cache,
     coroutineCache,
     share,
-    connectivity,
+    connectivityStatus,
+    onlineText,
+    offlineText,
     stateStore,
     eventBus,
     appBarState,
@@ -96,8 +102,8 @@ public fun AppComposable(
     localeService,
     authState,
     permissionsState,
-    onlineText,
-    offlineText,
+    confirmText,
+    dismissText,
     routes,
     routerFactory,
     navigatorFactory,

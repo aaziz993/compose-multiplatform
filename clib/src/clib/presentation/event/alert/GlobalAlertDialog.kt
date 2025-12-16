@@ -2,6 +2,7 @@ package clib.presentation.event.alert
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CrisisAlert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
@@ -27,9 +28,20 @@ import kotlinx.coroutines.launch
 /**
  * Global AlertDialog by GlobalAlertEventController.
  */
+@Suppress("ComposeParameterOrder")
 @Composable
 public fun GlobalAlertDialog(
+    confirmButton: @Composable (action: () -> Unit) -> Unit = { action ->
+        IconButton(action) {
+            Icon(Icons.Default.Check, null)
+        }
+    },
     modifier: Modifier = Modifier,
+    dismissButton: @Composable() ((dismiss: () -> Unit) -> Unit)? = { dismiss ->
+        IconButton(dismiss) {
+            Icon(Icons.Default.Close, null)
+        }
+    },
     title: (@Composable () -> Unit)? = null,
     icon: (@Composable () -> Unit)? = { Icon(Icons.Default.CrisisAlert, null) },
     shape: Shape = AlertDialogDefaults.shape,
@@ -40,11 +52,6 @@ public fun GlobalAlertDialog(
     textContentErrorColor: Color = MaterialTheme.colorScheme.error,
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(),
-    actionButton: @Composable (action: () -> Unit) -> Unit = { action ->
-        IconButton(action) {
-            Icon(Icons.Default.Check, null)
-        }
-    },
 ) {
     val coroutineScope = rememberCoroutineScope()
     var dialogEvent by remember { mutableStateOf<AlertEvent?>(null) }
@@ -55,8 +62,13 @@ public fun GlobalAlertDialog(
     dialogEvent?.let { event ->
         AlertDialog(
             onDismissRequest = { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
-            confirmButton = event.action?.let { action -> { actionButton(action) } } ?: {},
+            confirmButton = event.action?.let { action -> { confirmButton(action) } } ?: {},
             modifier = modifier,
+            dismissButton?.let {
+                {
+                    it { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } }
+                }
+            },
             icon = { Icon(Icons.Default.CrisisAlert, "") },
             title = title,
             text = { Text(event.message) },
