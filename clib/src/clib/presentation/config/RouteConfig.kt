@@ -1,6 +1,7 @@
 package clib.presentation.config
 
 import clib.presentation.navigation.BaseRoute
+import clib.presentation.navigation.slideTransition
 import io.ktor.http.Url
 import klib.data.auth.model.AuthResource
 import kotlinx.serialization.Serializable
@@ -12,7 +13,7 @@ import klib.data.type.serialization.serializers.collections.SerializableAnyMap
 public data class RouteConfig(
     override val urls: List<Url>? = null,
     override val additionalUrls: List<Url> = emptyList(),
-    val metadata: SerializableAnyMap? = null,
+    val metadata: SerializableAnyMap = slideTransition(),
     val additionalMetadata: SerializableAnyMap = emptyMap(),
     var enabled: Boolean = true,
     var alwaysShowLabel: Boolean = true,
@@ -22,7 +23,7 @@ public data class RouteConfig(
     public fun configure(route: BaseRoute) {
         route::urls trySet urls
         route.urls += additionalUrls
-        route::metadata trySet metadata
+        route.metadata = metadata
         route.metadata += additionalMetadata
         route.enabled = enabled
         route.alwaysShowLabel = alwaysShowLabel

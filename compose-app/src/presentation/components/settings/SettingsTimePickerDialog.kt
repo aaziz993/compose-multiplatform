@@ -62,7 +62,7 @@ public fun SettingsTimePickerDialog(
         { dismiss ->
             IconButton(
                 onClick = {
-                    if (onValueChanged(state.localTime)) dismiss()
+                    if (!onValueChanged(state.localTime)) dismiss()
                 },
             ) {
                 Icon(

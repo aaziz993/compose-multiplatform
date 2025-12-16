@@ -8,6 +8,8 @@ import androidx.compose.material.icons.automirrored.filled.Label
 import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
+import androidx.compose.material.icons.filled.ToggleOff
+import androidx.compose.material.icons.filled.ToggleOn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -101,8 +103,8 @@ private fun SettingsRouteConfig(
             SettingsSwitch(
                 title = metadata.keys.map { it.asStringResource() }.joinToString("\n"),
                 metadata.keys.all { key -> key in valueMetadata },
-                trueIcon = Icons.Default.RadioButtonChecked,
-                falseIcon = Icons.Default.RadioButtonUnchecked,
+                trueIcon = Icons.Default.ToggleOn,
+                falseIcon = Icons.Default.ToggleOff,
             ) {
                 onValueChange(
                     value.copy(

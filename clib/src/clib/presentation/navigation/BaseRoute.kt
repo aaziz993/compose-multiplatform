@@ -44,7 +44,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
             _urls = value
         }
 
-    public var metadata: Map<String, Any> = slideTransition()
+    public var metadata: Map<String, Any> = emptyMap()
 
     public val name: String
         get() = navRoute.serializer().descriptor.serialName
