@@ -34,9 +34,6 @@ internal fun Nav3Host(
 ) {
     val parentRouter = LocalRouter.current
 
-    // Global deep link events.
-    if (parentRouter == null) GlobalDeepLinkEvents(router, onEvent = router::push)
-
     LaunchedEffect(router) {
         parentRouter?.let(router::bind)
     }
@@ -45,6 +42,9 @@ internal fun Nav3Host(
         router.navigationActionQueue.setNavigator(navigator)
         onDispose(router.navigationActionQueue::removeNavigator)
     }
+
+    // Global deep link events.
+    if (parentRouter == null) GlobalDeepLinkEvents(router, onEvent = router::push)
 
     val onBack: () -> Unit = remember(router) {
         { router.pop() }
