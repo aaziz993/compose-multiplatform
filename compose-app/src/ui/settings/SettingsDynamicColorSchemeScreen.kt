@@ -77,6 +77,7 @@ public fun SettingsDynamicColorSchemeScreen(
         colorScheme.seedColor,
     ) { value ->
         onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(seedColor = value)))
+        false
     }
 
     SettingsSwitch(
@@ -86,6 +87,7 @@ public fun SettingsDynamicColorSchemeScreen(
         falseIcon = Icons.Outlined.Monitor,
         onCheckedChange = { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(isAmoled = value)))
+            false
         },
     )
 
@@ -95,6 +97,7 @@ public fun SettingsDynamicColorSchemeScreen(
             primary,
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(primary = value)))
+            false
         }
     }
 
@@ -104,6 +107,7 @@ public fun SettingsDynamicColorSchemeScreen(
             secondary,
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(secondary = value)))
+            false
         }
     }
 
@@ -113,6 +117,7 @@ public fun SettingsDynamicColorSchemeScreen(
             tertiary,
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(tertiary = value)))
+            false
         }
     }
 
@@ -122,6 +127,7 @@ public fun SettingsDynamicColorSchemeScreen(
             neutral,
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(neutral = value)))
+            false
         }
     }
 
@@ -131,6 +137,7 @@ public fun SettingsDynamicColorSchemeScreen(
             neutralVariant,
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(neutralVariant = value)))
+            false
         }
     }
 
@@ -140,6 +147,7 @@ public fun SettingsDynamicColorSchemeScreen(
             error,
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(error = value)))
+            false
         }
     }
 
@@ -165,6 +173,7 @@ public fun SettingsDynamicColorSchemeScreen(
     ) { value ->
         onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(platform = value)))
         false
+        false
     }
 
     SettingsSwitch(
@@ -174,6 +183,7 @@ public fun SettingsDynamicColorSchemeScreen(
         falseIcon = Icons.Outlined.Animation,
         onCheckedChange = { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(animate = value)))
+            false
         },
     )
 
@@ -195,6 +205,7 @@ public fun SettingsDynamicColorSchemeScreen(
         ) { value ->
             onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(animationSpec = value)))
             false
+            false
         }
 
         when (val animationSpec = colorScheme.animationSpec) {
@@ -202,12 +213,14 @@ public fun SettingsDynamicColorSchemeScreen(
                 animationSpec.cast(),
             ) { value ->
                 onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(animationSpec = value)))
+                false
             }
 
             is TweenSpec<*> -> SettingsGroupTweenSpec(
                 animationSpec.cast(),
             ) { value ->
                 onThemeChange(theme.copyDynamicColorScheme(colorScheme.copy(animationSpec = value)))
+                false
             }
         }
     }
@@ -267,6 +280,7 @@ private fun SettingsGroupSpringSpec(
                     it,
                 ),
             )
+            false
         }
     }
 }

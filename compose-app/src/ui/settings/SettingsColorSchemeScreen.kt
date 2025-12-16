@@ -80,6 +80,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.primary,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(primary = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -87,6 +88,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onPrimary,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onPrimary = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -94,6 +96,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.primaryContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(primaryContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -101,6 +104,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onPrimaryContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onPrimaryContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -108,6 +112,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.inversePrimary,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(inversePrimary = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -115,6 +120,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.secondary,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(secondary = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -122,6 +128,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onSecondary,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onSecondary = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -129,6 +136,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.secondaryContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(secondaryContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -136,6 +144,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onSecondaryContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onSecondaryContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -143,6 +152,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.tertiary,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(tertiary = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -150,6 +160,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onTertiary,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onTertiary = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -157,6 +168,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.tertiaryContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(tertiaryContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -164,6 +176,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onTertiaryContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onTertiaryContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -171,6 +184,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.background,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(background = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -178,6 +192,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onBackground,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onBackground = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -185,6 +200,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surface,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surface = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -192,6 +208,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onSurface,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onSurface = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -199,6 +216,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceVariant,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceVariant = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -206,6 +224,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onSurfaceVariant,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onSurfaceVariant = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -213,6 +232,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceTint,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceTint = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -220,6 +240,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.inverseSurface,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(inverseSurface = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -227,6 +248,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.inverseOnSurface,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(inverseOnSurface = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -234,6 +256,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.error,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(error = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -241,6 +264,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onError,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onError = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -248,6 +272,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.errorContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(errorContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -255,6 +280,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onErrorContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onErrorContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -262,6 +288,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.outline,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(outline = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -269,6 +296,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.outlineVariant,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(outlineVariant = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -276,6 +304,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.scrim,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(scrim = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -283,6 +312,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceBright,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceBright = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -290,6 +320,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceDim,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceDim = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -297,6 +328,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceContainer,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainer = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -304,6 +336,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceContainerHigh,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerHigh = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -311,6 +344,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceContainerHighest,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerHighest = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -318,6 +352,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceContainerLow,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerLow = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -325,6 +360,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.surfaceContainerLowest,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(surfaceContainerLowest = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -332,6 +368,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.primaryFixed,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(primaryFixed = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -339,6 +376,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.primaryFixedDim,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(primaryFixedDim = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -346,6 +384,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onPrimaryFixed,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onPrimaryFixed = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -353,6 +392,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onPrimaryFixedVariant,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onPrimaryFixedVariant = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -360,6 +400,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.secondaryFixed,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(secondaryFixed = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -367,6 +408,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.secondaryFixedDim,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(secondaryFixedDim = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -374,6 +416,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onSecondaryFixed,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onSecondaryFixed = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -381,6 +424,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onSecondaryFixedVariant,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onSecondaryFixedVariant = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -388,6 +432,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.tertiaryFixed,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(tertiaryFixed = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -395,6 +440,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.tertiaryFixedDim,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(tertiaryFixedDim = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -402,6 +448,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onTertiaryFixed,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onTertiaryFixed = value)))
+        false
     }
 
     SettingsColorPickerBottomSheet(
@@ -409,6 +456,7 @@ public fun SettingsColorSchemeScreen(
         colorScheme.onTertiaryFixedVariant,
     ) { value ->
         onThemeChange(copyColorScheme(colorScheme.copy(onTertiaryFixedVariant = value)))
+        false
     }
 }
 

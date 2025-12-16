@@ -285,6 +285,7 @@ public fun SettingsMainScreen(
             colors.containerColor,
         ) { value ->
             onAppBarChange(copyColors(colors.copy(containerColor = value)))
+            false
         }
 
         SettingsColorPickerBottomSheet(
@@ -292,6 +293,7 @@ public fun SettingsMainScreen(
             colors.scrolledContainerColor,
         ) { value ->
             onAppBarChange(copyColors(colors.copy(scrolledContainerColor = value)))
+            false
         }
 
         SettingsColorPickerBottomSheet(
@@ -299,6 +301,7 @@ public fun SettingsMainScreen(
             colors.navigationIconContentColor,
         ) { value ->
             onAppBarChange(copyColors(colors.copy(navigationIconContentColor = value)))
+            false
         }
 
         SettingsColorPickerBottomSheet(
@@ -306,6 +309,7 @@ public fun SettingsMainScreen(
             colors.titleContentColor,
         ) { value ->
             onAppBarChange(copyColors(colors.copy(titleContentColor = value)))
+            false
         }
 
         SettingsColorPickerBottomSheet(
@@ -313,6 +317,7 @@ public fun SettingsMainScreen(
             colors.actionIconContentColor,
         ) { value ->
             onAppBarChange(copyColors(colors.copy(actionIconContentColor = value)))
+            false
         }
 
         SettingsColorPickerBottomSheet(
@@ -320,6 +325,18 @@ public fun SettingsMainScreen(
             colors.subtitleContentColor,
         ) { value ->
             onAppBarChange(copyColors(colors.copy(subtitleContentColor = value)))
+            false
+        }
+
+        val resettable = appBar != defaultAppBar
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.reset),
+            enabled = true,
+            icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
+            subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
+        ) {
+            if (appBar != defaultAppBar) onAppBarChange(defaultAppBar)
         }
     }
 
@@ -381,6 +398,17 @@ public fun SettingsMainScreen(
                 onConnectivityChange(connectivity.copy(isAvatarConnectivityIndicator = value))
             },
         )
+
+        val resettable = connectivity != defaultConnectivity
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.reset),
+            enabled = true,
+            icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
+            subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
+        ) {
+            if (connectivity != defaultConnectivity) onConnectivityChange(defaultConnectivity)
+        }
     }
 
     SettingsGroup(
@@ -523,7 +551,19 @@ public fun SettingsMainScreen(
                 ),
             )
         }
+
+        val resettable = theme != defaultTheme
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.reset),
+            enabled = true,
+            icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
+            subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
+        ) {
+            if (theme != defaultTheme) onThemeChange(defaultTheme)
+        }
     }
+
     SettingsGroup(
         modifier = Modifier,
         enabled = true,
@@ -557,6 +597,17 @@ public fun SettingsMainScreen(
         ) { value ->
             onDensityChange(Density(density.density, value))
         }
+
+        val resettable = density != defaultDensity
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.reset),
+            enabled = true,
+            icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
+            subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
+        ) {
+            if (density != defaultDensity) onDensityChange(defaultDensity)
+        }
     }
 
     SettingsGroup(
@@ -586,6 +637,17 @@ public fun SettingsMainScreen(
             onLocaleChange(value)
             false
         }
+
+        val resettable = locale != defaultLocale
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.reset),
+            enabled = true,
+            icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
+            subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
+        ) {
+            if (locale != defaultLocale) onLocaleChange(defaultLocale)
+        }
     }
 
     SettingsGroup(
@@ -604,6 +666,17 @@ public fun SettingsMainScreen(
                     NavigationAction.Push(SettingsRoute),
                 ),
             )
+        }
+
+        val resettable = routes.any { (key, value) -> defaultRoutes[key] != value }
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.reset),
+            enabled = true,
+            icon = if (resettable) Icons.Outlined.Restore else Icons.Filled.Restore,
+            subtitle = stringResource(if (resettable) Res.string.reset else Res.string.done),
+        ) {
+            if (routes != defaultRoutes) defaultRoutes.forEach { (route, value) -> onRouteChange(route, value) }
         }
     }
 
