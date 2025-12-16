@@ -1,6 +1,7 @@
 package clib.presentation.event.alert
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CrisisAlert
@@ -43,7 +44,7 @@ public fun GlobalAlertDialog(
         }
     },
     title: (@Composable () -> Unit)? = null,
-    icon: (@Composable () -> Unit)? = { Icon(Icons.Default.CrisisAlert, null) },
+    icon: (@Composable () -> Unit)? = { Icon(Icons.Default.Alarm, null) },
     shape: Shape = AlertDialogDefaults.shape,
     containerColor: Color = AlertDialogDefaults.containerColor,
     iconContentColor: Color = AlertDialogDefaults.iconContentColor,

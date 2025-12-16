@@ -395,6 +395,7 @@ public fun SettingsMainScreen(
                                 Res.string.light_time_gt_dark_time,
                                 localization,
                             ),
+                            true,
                         ),
                     )
                 }
@@ -421,6 +422,7 @@ public fun SettingsMainScreen(
                                 Res.string.light_time_gt_dark_time,
                                 localization,
                             ),
+                            true,
                         ),
                     )
                 }
