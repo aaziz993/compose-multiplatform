@@ -81,6 +81,7 @@
     <string name="time">Time</string>
     <string name="time_format">Time format</string>
     <string name="tween_spec">Tween specification</string>
+    <string name="transition_spec">Transition specification</string>
     <string name="visibility_threshold">Visibility threshold</string>
     <string name="wallet">Wallet</string>
 </resources>

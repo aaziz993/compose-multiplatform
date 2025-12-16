@@ -80,6 +80,7 @@
     <string name="time">Вақт</string>
     <string name="time_format">Қолаби вақт</string>
     <string name="tween_spec">Мушаххасоти аниматсияи миёнаравӣ</string>
+    <string name="transition_spec">Мушаххасоти гузариш</string>
     <string name="visibility_threshold">Ҳудуди намоёнӣ</string>
     <string name="wallet">Тангадон</string>
 </resources>

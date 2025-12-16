@@ -80,6 +80,7 @@
     <string name="time">Время</string>
     <string name="time_format">Формат времени</string>
     <string name="tween_spec">Спецификация анимации перехода</string>
+    <string name="transition_spec">Спецификация перехода</string>
     <string name="visibility_threshold">Порог видимости</string>
     <string name="wallet">Кошелек</string>
 </resources>
