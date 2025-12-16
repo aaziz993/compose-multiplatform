@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.BluetoothSearching
 import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
+import androidx.compose.material.icons.filled.AppSettingsAlt
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.BluetoothConnected
@@ -169,6 +170,7 @@ public fun SettingsMainScreen(
     onRoutesChange: (Map<String, RouteConfig>) -> Unit = { },
     permissions: Set<Permission> = emptySet(),
     onPermissionChange: (Permission?) -> Unit = { true },
+    onOpenPermissions: () -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
@@ -697,6 +699,13 @@ public fun SettingsMainScreen(
             permissions = permissions,
             coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
+        )
+
+        SettingsMenuLink(
+            title = stringResource(Res.string.open),
+            enabled = true,
+            icon = Icons.Default.AppSettingsAlt,
+            onClick = onOpenPermissions,
         )
     }
 

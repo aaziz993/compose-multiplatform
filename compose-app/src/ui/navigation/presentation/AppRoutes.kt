@@ -888,6 +888,7 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
                     permissionsState.providePermission(value)
                 }
             },
+            permissionsState::openAppSettings,
             router::actions,
         )
     }
