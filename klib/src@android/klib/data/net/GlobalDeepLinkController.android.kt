@@ -5,30 +5,27 @@ import androidx.activity.ComponentActivity
 import androidx.core.util.Consumer
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import klib.data.net.GlobalDeepLinkController.handle
 
-public fun ComponentActivity.handleDeepLink() {
-    intent.fireDeepLink()
+context(activity: ComponentActivity)
+public fun GlobalDeepLinkController.handle() {
+    fireDeepLink(activity.intent)
 
-    val listener = Consumer<Intent> { intent ->
-        intent.fireDeepLink()
-    }
-
-    lifecycle.addObserver(
+    val listener = Consumer(::fireDeepLink)
+    activity.lifecycle.addObserver(
         object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {
-                this@handleDeepLink.addOnNewIntentListener(listener)
+                activity.addOnNewIntentListener(listener)
                 super.onCreate(owner)
             }
 
             override fun onDestroy(owner: LifecycleOwner) {
-                this@handleDeepLink.removeOnNewIntentListener(listener)
+                activity.removeOnNewIntentListener(listener)
                 super.onDestroy(owner)
             }
         },
     )
 }
 
-private fun Intent.fireDeepLink() {
-    dataString?.let(::handle)
+private fun GlobalDeepLinkController.fireDeepLink(intent: Intent) {
+    intent.dataString?.let(::handle)
 }

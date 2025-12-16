@@ -6,8 +6,8 @@ import platform.Foundation.NSUserActivityTypeBrowsingWeb
 import kotlin.experimental.ExperimentalObjCName
 
 @OptIn(ExperimentalObjCName::class)
-@ObjCName(swiftName = "DeepLinkState")
-public class DeepLinkStateApple {
+@ObjCName(swiftName = "GlobalDeepLinkController")
+public class GlobalDeepLinkControllerApple {
 
     @ObjCName("onDeepLinkReceived")
     public fun onDeepLinkReceived(url: String): Unit = handle(url)

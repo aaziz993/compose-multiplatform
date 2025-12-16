@@ -3,17 +3,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import klib.data.net.handleDeepLink
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_icon
 import compose_app.generated.resources.app_name
+import klib.data.net.GlobalDeepLinkController
+import klib.data.net.handle
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 
 private val INIT_SIZE = DpSize(800.dp, 600.dp)
 
 public suspend fun main(args: Array<String>) {
-    handleDeepLink(args)
+    GlobalDeepLinkController.handle(args)
 
     // Prevent SwingPanel on top of compose components
     System.setProperty("compose.interop.blending", "true")

@@ -15,6 +15,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import clib.data.net.GlobalDeepLink
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.RouteConfig
@@ -25,6 +26,7 @@ import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.auth.model.AuthResource
+import klib.data.net.toRoute
 import klib.data.net.url
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
@@ -125,6 +127,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     }
 
     public abstract fun navRoutePath(navRoute: NavRoute): List<NavRoute>?
+    public abstract fun navRoutePath(url: Url): List<NavRoute>?
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -153,6 +156,11 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun navRoutePath(navRoute: NavRoute): List<NavRoute>? =
         if (this == navRoute) listOf(this as NavRoute) else null
+
+    final override fun navRoutePath(url: Url): List<NavRoute>? =
+        urls.firstNotNullOfOrNull {
+            url.toRoute(navRoute.serializer(), it)
+        }?.let(::listOf)
 }
 
 public abstract class Routes() : BaseRoute(), NavRoute {
@@ -208,7 +216,13 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         Nav3Host(
             routerFactory(this),
             navigatorFactory(this),
-        ) { backStack, onBack, _ ->
+        ) { backStack, onBack, router ->
+            // Global deeplink events.
+            if (router.prev == null)
+                GlobalDeepLink(router) {
+
+                }
+
             // Return a result from one screen to a previous screen using a state-based approach.
             val resultStore = rememberStateStore()
             // Return a result from one screen to a previous screen using an event-based approach.
@@ -291,6 +305,17 @@ public abstract class Routes() : BaseRoute(), NavRoute {
             if (route !is NavRoute) continue
             if (route == navRoute) return listOf(route)
             val path = route.navRoutePath(navRoute)?.let(listOf(route)::plus)
+            if (path != null) return path
+        }
+
+        return null
+    }
+
+    final override fun navRoutePath(url: Url): List<NavRoute>? {
+        for (route in routes) {
+            if (route !is NavRoute) continue
+            if (route == navRoute) return listOf(route)
+            val path = route.navRoutePath(url)?.let(listOf(route)::plus)
             if (path != null) return path
         }
 

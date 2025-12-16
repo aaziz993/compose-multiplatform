@@ -11,7 +11,9 @@ import klib.data.type.serialization.serializers.collections.SerializableAnyMap
 @Serializable
 public data class RouteConfig(
     override val urls: List<Url>? = null,
+    override val additionalUrls: List<Url> = emptyList(),
     val metadata: SerializableAnyMap? = null,
+    val additionalMetadata: SerializableAnyMap = emptyMap(),
     var enabled: Boolean = true,
     var alwaysShowLabel: Boolean = true,
     override val authResource: AuthResource? = null,
@@ -19,7 +21,9 @@ public data class RouteConfig(
 
     public fun configure(route: BaseRoute) {
         route::urls trySet urls
+        route.urls += additionalUrls
         route::metadata trySet metadata
+        route.metadata += additionalMetadata
         route.enabled = enabled
         route.alwaysShowLabel = alwaysShowLabel
         route.authResource = authResource

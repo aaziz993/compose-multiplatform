@@ -4,14 +4,14 @@ import clib
 // AppDelegate.
 class AppDelegate: NSObject, UIApplicationDelegate {
 
-    // Shared KMM deep link handler.
-    let deepLinkHandler = DeepLinkState()
+    // Shared KMM deep link controller.
+    let deepLinkController = GlobalDeepLinkController()
 
     // Handle URL schemes.
     func application(_ app: UIApplication,
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        deepLinkHandler.onDeepLinkReceived(url: url.absoluteString)
+        deepLinkController.onDeepLinkReceived(url: url.absoluteString)
         return true
     }
 
@@ -19,7 +19,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        deepLinkHandler.onDeepLinkReceived(userActivity: userActivity)
+        deepLinkController.onDeepLinkReceived(userActivity: userActivity)
         return true
     }
 }
@@ -27,8 +27,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct IOSApp: App {
 
-    // Shared KMM deep link handler.
-    let deepLinkHandler = DeepLinkState()
+    // Shared KMM deep link controller.
+    let deepLinkController = GlobalDeepLinkController()
 
     // Bridge to AppDelegate.
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -36,9 +36,9 @@ struct IOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                // Handle custom URL schemes
+                // Handle custom URL schemes.
                 .onOpenURL { url in
-                    deepLinkHandler.onDeepLinkReceived(url: url.absoluteString)
+                    deepLinkController.onDeepLinkReceived(url: url.absoluteString)
                 }
         }
     }

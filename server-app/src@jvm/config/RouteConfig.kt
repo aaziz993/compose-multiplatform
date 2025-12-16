@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 public data class RouteConfig(
-    override val urls: List<Url> = emptyList(),
+    override val urls: List<Url>? = null,
+    override val additionalUrls: List<Url> = emptyList(),
     override val authResource: AuthResource? = null,
 ) : RouteConfig
