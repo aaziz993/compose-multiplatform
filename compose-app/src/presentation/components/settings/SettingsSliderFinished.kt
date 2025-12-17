@@ -59,7 +59,8 @@ public fun SettingsSliderFinished(
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     onValueChanged: (Float) -> Unit,
 ) {
-    var value by remember { mutableFloatStateOf(initialValue) }
+    var value by remember(initialValue) { mutableFloatStateOf(initialValue) }
+
     SettingsSlider(
         {
             Text(

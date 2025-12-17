@@ -219,10 +219,10 @@ public fun SettingsMainScreen(
 
         SettingsSliderFinished(
             title = stringResource(Res.string.height),
-            initialValue = appBar.expandedHeight.toFloatPx(),
+            initialValue = appBar.expandedHeight.value,
             icon = { Icons.Default.Height },
             enabled = true,
-            valueRange = 32.dp.toFloatPx()..96.dp.toFloatPx(),
+            valueRange = 32f..96f,
         ) { value ->
             onAppBarChange(appBar.copy(expandedHeight = value.dp))
         }
