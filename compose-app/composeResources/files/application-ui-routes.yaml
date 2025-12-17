@@ -3,7 +3,7 @@ ui:
   authRoute: auth
   authRedirectRoute: services
   routes:
-    authentication:
+    authentification:
       isAuth: true
     phone:
       isAuth: true

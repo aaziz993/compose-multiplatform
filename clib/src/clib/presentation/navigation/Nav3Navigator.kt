@@ -187,7 +187,6 @@ public open class Nav3Navigator(
 
     /**
      * Replaces routes based on authentication state.
-     *
      */
     protected open fun auth() {
         val authStack = (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
