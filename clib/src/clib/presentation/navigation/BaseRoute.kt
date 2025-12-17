@@ -265,7 +265,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         val items = routes.map { route ->
             route.item(
                 enabled(route) && this.enabled,
-                alwaysShowLabel(route) && this@Routes.alwaysShowLabel,
+                this@Routes.alwaysShowLabel && alwaysShowLabel(route),
                 auth,
                 router,
                 onClick,
@@ -285,7 +285,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     ): Unit = routes.forEach { route ->
         route.NavigationBarItem(
             enabled(route) && this.enabled,
-            alwaysShowLabel(route) && this.alwaysShowLabel,
+            this.alwaysShowLabel && alwaysShowLabel(route),
             auth,
             router,
             onClick,
