@@ -61,7 +61,6 @@ import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberNav3Navigator
-import clib.presentation.navigation.rememberRouter
 import clib.presentation.navigation.rememberRoutesState
 import clib.presentation.state.LocalStateStore
 import clib.presentation.state.StateStore
@@ -111,14 +110,21 @@ public fun AppEnvironment(
     authState: AuthState = rememberAuthState(),
     permissionsState: PermissionsState = rememberPermissionsState(),
     routes: Routes,
-    routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
-    navigatorFactory: @Composable (Routes) -> Navigator = {
+    routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
+        remember {
+            Router(
+                it,
+                if (isRoot) routes.find { route -> route.name == config.ui.startRoute } as NavRoute?
+                else null,
+            )
+        }
+    },
+    navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(
             routes = it,
-            startRoute = if (isRoot) routes.routes.find { route -> route.name == config.ui.startRoute } as NavRoute? else null,
             authRoute = routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
-            authRedirectRoute = if (isRoot) routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute? else null,
+            authRedirectRoute = routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute?,
         )
     },
     onDeepLink: Router.(Url) -> Unit = Router::push,

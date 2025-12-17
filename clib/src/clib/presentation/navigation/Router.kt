@@ -5,7 +5,6 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import io.ktor.http.Url
 import klib.data.type.collections.linkedlist.model.Node
@@ -36,10 +35,12 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  * This class is designed to be used as the primary navigation interface in applications.
  *
  * @param routes The current top level route.
+ * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
  * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  */
 public open class Router(
     override val routes: Routes,
+    startRoute: NavRoute? = null,
     public val onReroute: Router.(NavRoute) -> Unit = Router::push,
 ) : BaseRouter(), Node<Router> {
 
@@ -71,12 +72,18 @@ public open class Router(
      * Callback to be called if route isn't in the current top level route.
      */
     override val onUnknownNavRoute: (NavRoute) -> Unit
-        get() = { navRoute ->
-            routes.navRoutePath(navRoute)?.let {
-                navRoutePath = it.drop()
-                onReroute(it.first())
-            } ?: prev?.onUnknownNavRoute(navRoute)
-        }
+        get() = { navRoute -> handleUnknownNavRoute(navRoute) { onReroute(it) } }
+
+    init {
+        startRoute?.let { navRoute -> handleUnknownNavRoute(navRoute, ::push) }
+    }
+
+    protected open fun handleUnknownNavRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
+        routes.navRoutePath(navRoute)?.let {
+            navRoutePath = it.drop()
+            onReroute(it.first())
+        } ?: prev?.onUnknownNavRoute(navRoute)
+    }
 
     /**
      * Creates parent child routers relationship.
@@ -204,23 +211,6 @@ public open class Router(
      */
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
 }
-
-/**
- * Creates and remembers a Router instance.
- *
- * The router will be recreated if any of the provided keys change, allowing for
- * state-dependent router configurations.
- *
- * @param keys Optional keys that trigger router recreation when changed.
- * @param factory Factory function to create the router instance.
- * @return A remembered router instance.
- */
-@Composable
-public fun rememberRouter(
-    routes: Routes,
-    vararg keys: Any?,
-    factory: () -> Router = { Router(routes) },
-): Router = remember(*keys) { factory() }
 
 @Composable
 public fun currentRouter(): Router =
