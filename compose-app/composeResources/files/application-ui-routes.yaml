@@ -25,6 +25,8 @@ ui:
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
+    news:
+      authResource: { }
     articles:
       additionalMetadata:
         topAppBarNavSuite: true
