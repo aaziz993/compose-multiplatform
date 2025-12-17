@@ -277,8 +277,8 @@ public fun SettingsMainScreen(
             },
         )
 
-        val colors = appBar.colors
-        val copyColors = appBar.copyColors(theme.isHighContrast)
+        val colors = appBar.colors(theme.isDynamic, theme.isHighContrast)
+        val copyColors = appBar.copyColors(theme.isDynamic, theme.isHighContrast)
 
         SettingsColorPickerBottomSheet(
             stringResource(Res.string.container_color),
