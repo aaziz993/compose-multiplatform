@@ -10,18 +10,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.dark_theme
-import compose_app.generated.resources.light_theme
-import compose_app.generated.resources.system_theme
+import compose_app.generated.resources.dark
+import compose_app.generated.resources.light
+import compose_app.generated.resources.system
 import compose_app.generated.resources.adaptive
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.theme.model.ThemeMode
 
 @Composable
 public fun Theme.isDarkStringResource(): String = when (mode) {
-    ThemeMode.SYSTEM -> stringResource(Res.string.system_theme)
-    ThemeMode.LIGHT -> stringResource(Res.string.light_theme)
-    ThemeMode.DARK -> stringResource(Res.string.dark_theme)
+    ThemeMode.SYSTEM -> stringResource(Res.string.system)
+    ThemeMode.LIGHT -> stringResource(Res.string.light)
+    ThemeMode.DARK -> stringResource(Res.string.dark)
     ThemeMode.ADAPTIVE -> stringResource(Res.string.adaptive)
 }
 
