@@ -7,7 +7,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.dp
 import clib.data.type.DpSerial
 import clib.presentation.appbar.TopAppBarColorsSerial
-import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.LocalThemeState
 import kotlinx.serialization.Serializable
 
@@ -25,8 +24,10 @@ public data class AppBar(
     val lightColorsHighContrast: TopAppBarColorsSerial? = null,
     val darkColors: TopAppBarColorsSerial? = null,
     val darkColorsHighContrast: TopAppBarColorsSerial? = null,
-    val dynamicColors: TopAppBarColorsSerial? = null,
-    val dynamicColorsHighContrast: TopAppBarColorsSerial? = null,
+    val lightDynamicColors: TopAppBarColorsSerial? = null,
+    val lightDynamicColorsHighContrast: TopAppBarColorsSerial? = null,
+    val darkDynamicColors: TopAppBarColorsSerial? = null,
+    val darkDynamicColorsHighContrast: TopAppBarColorsSerial? = null,
 ) {
 
     public val colors: TopAppBarColors
@@ -35,11 +36,15 @@ public data class AppBar(
             val theme = LocalThemeState.current.value
 
             return if (theme.isDynamic) {
-                if (theme.isHighContrast) dynamicColorsHighContrast else dynamicColors
+                val (lightDynamicColors, darkDynamicColors) =
+                    if (theme.isHighContrast) lightDynamicColorsHighContrast to darkDynamicColorsHighContrast
+                    else lightDynamicColors to darkDynamicColors
+                if (theme.isDark()) darkDynamicColors else lightDynamicColors
             }
             else {
                 val (lightColors, darkColors) =
-                    if (theme.isHighContrast) lightColorsHighContrast to darkColorsHighContrast else lightColors to darkColors
+                    if (theme.isHighContrast) lightColorsHighContrast to darkColorsHighContrast
+                    else lightColors to darkColors
                 if (theme.isDark()) darkColors else lightColors
             } ?: TopAppBarDefaults.topAppBarColors()
         }
@@ -49,8 +54,14 @@ public data class AppBar(
         val theme = LocalThemeState.current.value
 
         return if (theme.isDynamic) {
-            if (theme.isHighContrast) { colors -> copy(dynamicColorsHighContrast = colors) }
-            else { colors -> copy(dynamicColors = colors) }
+            if (theme.isHighContrast) {
+                if (theme.isDark()) { colors -> copy(darkDynamicColorsHighContrast = colors) }
+                else { colors -> copy(lightDynamicColorsHighContrast = colors) }
+            }
+            else {
+                if (theme.isDark()) { colors -> copy(darkDynamicColors = colors) }
+                else { colors -> copy(lightDynamicColors = colors) }
+            }
         }
         else {
             if (theme.isHighContrast) {
