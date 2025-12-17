@@ -1,7 +1,6 @@
 package clib.presentation.config
 
 import clib.presentation.navigation.BaseRoute
-import clib.presentation.navigation.Route
 import clib.presentation.navigation.slideTransition
 import io.ktor.http.Url
 import klib.data.auth.model.AuthResource
@@ -18,6 +17,7 @@ public data class RouteConfig(
     val additionalMetadata: SerializableAnyMap = emptyMap(),
     var enabled: Boolean = true,
     var alwaysShowLabel: Boolean = true,
+    public val isAuth: Boolean = false,
     override val authResource: AuthResource? = null,
 ) : RouteConfig {
 
@@ -27,6 +27,7 @@ public data class RouteConfig(
         route.metadata = metadata + additionalMetadata
         route.enabled = enabled
         route.alwaysShowLabel = alwaysShowLabel
-        (route as Route<*>).authResource = authResource
+        route.isAuth = isAuth
+        route.authResource = authResource
     }
 }

@@ -65,7 +65,6 @@ import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivityState
 import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.locale.LocalLocaleState
-import clib.presentation.navigation.AuthRoute
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.LocalRoutesState
 import clib.presentation.navigation.NavRoute
@@ -149,7 +148,7 @@ public data object Application : KoinRoutes() {
 
 @Serializable
 @SerialName("authentification")
-public data object Authentification : KoinRoutes(), AuthRoute {
+public data object Authentification : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
         listOf(Phone, Hotp, Totp, PinCode, ResetPinCode, Login)
@@ -180,7 +179,7 @@ public data object Authentification : KoinRoutes(), AuthRoute {
 
 @Serializable
 @SerialName("phone")
-public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
+public data object Phone : KoinRoute<Phone>(), NavRoute {
 
     @Composable
     override fun Content(
@@ -208,7 +207,7 @@ public data object Phone : KoinRoute<Phone>(), NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("hotp")
-public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
+public data class Hotp(val contact: String = "") : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = Hotp
@@ -242,7 +241,7 @@ public data class Hotp(val contact: String = "") : NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("totp")
-public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
+public data class Totp(val contact: String = "") : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = Totp
@@ -276,7 +275,7 @@ public data class Totp(val contact: String = "") : NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("pin_code")
-public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
+public data object PinCode : KoinRoute<PinCode>(), NavRoute {
 
     @Composable
     override fun Content(
@@ -299,7 +298,7 @@ public data object PinCode : KoinRoute<PinCode>(), NavRoute, AuthRoute {
 
 @Serializable
 @SerialName("reset_pin_code")
-public data object ResetPinCode : KoinRoute<ResetPinCode>(), NavRoute, AuthRoute {
+public data object ResetPinCode : KoinRoute<ResetPinCode>(), NavRoute {
 
     @Composable
     override fun Content(
@@ -318,7 +317,7 @@ public data object ResetPinCode : KoinRoute<ResetPinCode>(), NavRoute, AuthRoute
 
 @Serializable
 @SerialName("login")
-public data object Login : KoinRoute<Login>(), NavRoute, AuthRoute {
+public data object Login : KoinRoute<Login>(), NavRoute {
 
     @Composable
     override fun Content(
@@ -446,7 +445,7 @@ public data object Articles : KoinRoute<Articles>(), NavRoute {
 
 @Serializable
 @SerialName("article_details")
-public data class ArticleDetails(val articleId: Long = 0L) : NavRoute, AuthRoute {
+public data class ArticleDetails(val articleId: Long = 0L) : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = ArticleDetails

@@ -52,7 +52,13 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public var alwaysShowLabel: Boolean = true
     public open val selectableItem: (@Composable (name: String) -> SelectableItem)? = null
 
-    public abstract fun isAuth(auth: Auth): Boolean
+    public var isAuth: Boolean = false
+
+    public var authResource: AuthResource? = null
+
+    public open fun isAuth(auth: Auth): Boolean =
+        (if (auth.user == null) true else !isAuth) &&
+            authResource?.validate(auth.provider, auth.user) != false
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
@@ -132,11 +138,6 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
 
-    public var authResource: AuthResource? = null
-
-    final override fun isAuth(auth: Auth): Boolean =
-        (if (auth.user == null) true else this !is AuthRoute) && authResource?.validate(auth.provider, auth.user) != false
-
     @Composable
     protected abstract fun Content(
         route: T,
@@ -169,8 +170,6 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 public abstract class Routes() : BaseRoute(), NavRoute {
 
     public abstract val routes: List<BaseRoute>
-
-    override fun isAuth(auth: Auth): Boolean = routes.any { route -> route.isAuth(auth) }
 
     @Composable
     protected open fun NavDisplay(

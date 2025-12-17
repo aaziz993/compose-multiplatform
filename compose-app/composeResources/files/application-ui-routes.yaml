@@ -3,27 +3,37 @@ ui:
   authRoute: auth
   authRedirectRoute: services
   routes:
+    authentication:
+      isAuth: true
     phone:
+      isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     totp:
+      isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     hotp:
+      isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     pin_code:
+      isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     reset_pin_code:
+      isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     login:
+      isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     home:
       additionalMetadata:
         topAppBarNavSuite: true
+      authResource: { }
+    news:
       authResource: { }
     articles:
       additionalMetadata:
@@ -40,6 +50,8 @@ ui:
     services:
       additionalMetadata:
         topAppBarNavSuite: true
+      authResource: { }
+    wallet:
       authResource: { }
     balance:
       additionalMetadata:
@@ -64,6 +76,8 @@ ui:
     about:
       additionalMetadata:
         topAppBarNavSuite: true
+      authResource: { }
+    settings:
       authResource: { }
     settings_main:
       additionalMetadata:
