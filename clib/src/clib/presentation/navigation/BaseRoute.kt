@@ -56,7 +56,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
-        configProvider: (BaseRoute) -> RouteConfig?,
+        configure: (BaseRoute) -> Unit,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -135,7 +135,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     public var authResource: AuthResource? = null
 
     final override fun isAuth(auth: Auth): Boolean =
-        authResource?.validate(auth.provider, auth.user) != false
+        (if (auth.user == null) true else this !is AuthRoute) && authResource?.validate(auth.provider, auth.user) != false
 
     @Composable
     protected abstract fun Content(
@@ -146,12 +146,11 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     @Suppress("UNCHECKED_CAST")
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        configProvider: (BaseRoute) -> RouteConfig?,
+        configure: (BaseRoute) -> Unit,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
     ) {
-        configProvider(this)?.configure(this)
 
         scope.addEntryProvider(
             clazz = navRoute,
@@ -173,11 +172,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     override fun isAuth(auth: Auth): Boolean = routes.any { route -> route.isAuth(auth) }
 
-    public fun startRoute(auth: Auth): NavRoute =
-        checkNotNull(routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) }) {
-            "No start route in '$this$routes'"
-        }
-
     @Composable
     protected open fun NavDisplay(
         backStack: List<NavRoute>,
@@ -195,7 +189,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        configProvider: (BaseRoute) -> RouteConfig?,
+        configure: (BaseRoute) -> Unit,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -203,17 +197,19 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         clazz = navRoute,
         metadata = metadata,
     ) {
-        Nav3Host(configProvider, routerFactory, navigatorFactory)
+        Nav3Host(configure, routerFactory, navigatorFactory)
     }
 
     @Composable
     public fun Nav3Host(
-        configProvider: (BaseRoute) -> RouteConfig? = LocalRoutesState.current.let { routeState -> routeState::get },
+        configure: (BaseRoute) -> Unit = LocalRoutesState.current.let { routeState -> routeState::configure },
         routerFactory: @Composable (Routes) -> Router = { routes -> rememberRouter(routes) },
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
         onDeepLink: Router.(Url) -> Unit = Router::push,
     ) {
-        configProvider(this)?.configure(this)
+        configure(this)
+
+        routes.forEach(configure)
 
         Nav3Host(
             routerFactory(this),
@@ -236,7 +232,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
                         entryProvider {
                             routes.forEach { route ->
                                 route.entry(
-                                    configProvider,
+                                    configure,
                                     routerFactory,
                                     navigatorFactory,
                                     this@SharedTransitionLayout,

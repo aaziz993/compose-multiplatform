@@ -17,16 +17,12 @@ public class RoutesState(initialValue: Map<String, RouteConfig> = emptyMap()) {
     public val value: Map<String, RouteConfig>
         field = mutableStateMapOf<String, RouteConfig>().apply { putAll(initialValue) }
 
-    public operator fun get(route: String): RouteConfig? = value[route]
-
     public operator fun set(route: String, value: RouteConfig) {
         this.value[route] = value
     }
 
-    public operator fun get(route: BaseRoute): RouteConfig? = this[route.name]
-
-    public operator fun set(route: BaseRoute, value: RouteConfig) {
-        this[route.name] = value
+    public fun configure(route: BaseRoute) {
+        value[route.name]?.configure(route)
     }
 
     public companion object {

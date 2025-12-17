@@ -188,22 +188,15 @@ public open class Nav3Navigator(
     /**
      * Replaces routes based on authentication state.
      *
-     * When the user is unauthenticated:
-     * - Keeps only routes that are allowed for unauthenticated users.
-     * - If none remain, falls back to a start route that allows unauthenticated access.
-     *
-     * When the user is authenticated:
-     * - Removes all authentication-only routes.
-     * - Appends an auth redirect route if defined.
-     *
-     * If the resulting stack is non-empty, it replaces the current stack.
-     * If empty, parent navigators may handle the transition instead.
      */
     protected open fun auth() {
-        val authStack = if (auth.user == null) backStack.filter { navRoute -> navRoute.route.isAuth(auth) }.ifEmpty {
-            listOfNotNull(routes.startRoute(auth))
-        }
-        else backStack.filterNot { navRoute -> navRoute is AuthRoute } + listOfNotNull(authRedirectRoute)
+        val authStack = (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
+            listOfNotNull(authRedirectRoute?.takeIf { it.route.isAuth(auth) }))
+            .ifEmpty {
+                listOfNotNull(
+                    routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) },
+                )
+            }
         if (authStack.isNotEmpty()) actions(NavigationAction.ReplaceStack(authStack))
     }
 
@@ -330,7 +323,12 @@ public fun rememberNav3Navigator(
         nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
     },
 ): Navigator {
-    val backStack = rememberNavBackStack(routes, startRoute ?: routes.startRoute(auth))
+    val backStack = rememberNavBackStack(
+        routes,
+        requireNotNull(startRoute ?: routes.filterIsInstance<NavRoute>().firstOrNull()) {
+            "No start nav route in '$routes${routes.routes}'"
+        },
+    )
 
     return remember(auth) {
         Nav3Navigator(

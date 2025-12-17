@@ -220,7 +220,7 @@ public fun AppEnvironment(
                 theme.typography,
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    routes.Nav3Host(routesState::get, routerFactory, navigatorFactory)
+                    routes.Nav3Host(routesState::configure, routerFactory, navigatorFactory)
                     content()
                 }
             }
