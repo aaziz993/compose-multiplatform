@@ -40,7 +40,7 @@ public data class AppBar(
             else {
                 val (lightColors, darkColors) =
                     if (theme.isHighContrast) lightColorsHighContrast to darkColorsHighContrast else lightColors to darkColors
-                if (LocalAppTheme.current) darkColors else lightColors
+                if (theme.isDark()) darkColors else lightColors
             } ?: TopAppBarDefaults.topAppBarColors()
         }
 
