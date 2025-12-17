@@ -82,6 +82,7 @@ import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
+import clib.presentation.theme.model.ThemeMode
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.action_icon_content_color
@@ -425,64 +426,57 @@ public fun SettingsMainScreen(
             onThemeChange(theme.copyIsDarkToggled())
         }
 
-        SettingsTimePickerDialog(
-            title = stringResource(Res.string.light_time),
-            value = theme.lightTime,
-            enabled = true,
-            subtitle = { Text(theme.lightTime.toString()) },
-        ) { value ->
-            if (value < theme.darkTime) {
-                onThemeChange(theme.copy(lightTime = value))
-                false
-            }
-            else {
-                coroutineScope.launch {
-                    GlobalAlertEventController.sendEvent(
-                        AlertEvent(
-                            text = {
-                                Text(stringResource(Res.string.light_time_gt_dark_time))
-                            },
-                            isError = true,
-                        ),
-                    )
+        if (theme.mode == ThemeMode.ADAPTIVE) {
+            SettingsTimePickerDialog(
+                title = stringResource(Res.string.light_time),
+                value = theme.lightTime,
+                enabled = true,
+                subtitle = { Text(theme.lightTime.toString()) },
+            ) { value ->
+                if (value < theme.darkTime) {
+                    onThemeChange(theme.copy(lightTime = value))
+                    false
                 }
-                true
-            }
-        }
-
-        SettingsTimePickerDialog(
-            title = stringResource(Res.string.dark_time),
-            value = theme.darkTime,
-            enabled = true,
-            subtitle = { Text(theme.darkTime.toString()) },
-        ) { value ->
-            // Dark time should be greater than light time.
-            if (value > theme.lightTime) {
-                onThemeChange(theme.copy(darkTime = value))
-                false
-            }
-            else {
-                coroutineScope.launch {
-                    GlobalAlertEventController.sendEvent(
-                        AlertEvent(
-                            text = {
-                                Text(stringResource(Res.string.light_time_gt_dark_time))
-                            },
-                            isError = true,
-                        ),
-                    )
+                else {
+                    coroutineScope.launch {
+                        GlobalAlertEventController.sendEvent(
+                            AlertEvent(
+                                text = {
+                                    Text(stringResource(Res.string.light_time_gt_dark_time))
+                                },
+                                isError = true,
+                            ),
+                        )
+                    }
+                    true
                 }
-                true
             }
-        }
 
-        SettingsSwitch(
-            title = stringResource(Res.string.dynamic_color_scheme),
-            value = theme.isDynamic,
-            trueIcon = Icons.Filled.DynamicForm,
-            falseIcon = Icons.Outlined.DynamicForm,
-        ) { value ->
-            onThemeChange(theme.copy(isDynamic = value))
+            SettingsTimePickerDialog(
+                title = stringResource(Res.string.dark_time),
+                value = theme.darkTime,
+                enabled = true,
+                subtitle = { Text(theme.darkTime.toString()) },
+            ) { value ->
+                // Dark time should be greater than light time.
+                if (value > theme.lightTime) {
+                    onThemeChange(theme.copy(darkTime = value))
+                    false
+                }
+                else {
+                    coroutineScope.launch {
+                        GlobalAlertEventController.sendEvent(
+                            AlertEvent(
+                                text = {
+                                    Text(stringResource(Res.string.light_time_gt_dark_time))
+                                },
+                                isError = true,
+                            ),
+                        )
+                    }
+                    true
+                }
+            }
         }
 
         SettingsSwitch(
@@ -494,29 +488,40 @@ public fun SettingsMainScreen(
             onThemeChange(theme.copy(isHighContrast = value))
         }
 
-        SettingsMenuLink(
-            title = stringResource(Res.string.color_scheme),
-            enabled = true,
-            icon = Icons.Default.Palette,
-        ) {
-            onNavigationActions(
-                arrayOf(
-                    NavigationAction.Push(SettingsColorScheme),
-                ),
-            )
+        SettingsSwitch(
+            title = stringResource(Res.string.dynamic_color_scheme),
+            value = theme.isDynamic,
+            trueIcon = Icons.Filled.DynamicForm,
+            falseIcon = Icons.Outlined.DynamicForm,
+        ) { value ->
+            onThemeChange(theme.copy(isDynamic = value))
         }
 
-        SettingsMenuLink(
-            title = stringResource(Res.string.dynamic_color_scheme),
-            enabled = true,
-            icon = Icons.Default.DynamicForm,
-        ) {
-            onNavigationActions(
-                arrayOf(
-                    NavigationAction.Push(SettingsDynamicColorScheme),
-                ),
-            )
-        }
+        if (!theme.isDynamic)
+            SettingsMenuLink(
+                title = stringResource(Res.string.color_scheme),
+                enabled = true,
+                icon = Icons.Default.Palette,
+            ) {
+                onNavigationActions(
+                    arrayOf(
+                        NavigationAction.Push(SettingsColorScheme),
+                    ),
+                )
+            }
+
+        if (theme.isDynamic)
+            SettingsMenuLink(
+                title = stringResource(Res.string.dynamic_color_scheme),
+                enabled = true,
+                icon = Icons.Default.DynamicForm,
+            ) {
+                onNavigationActions(
+                    arrayOf(
+                        NavigationAction.Push(SettingsDynamicColorScheme),
+                    ),
+                )
+            }
 
         SettingsSwitch(
             stringResource(Res.string.expressive),
