@@ -331,7 +331,7 @@ public fun TopAppBar(
                     }
                 },
                 expandedHeight = appBar.expandedHeight,
-                colors = appBar.colors(theme.isDynamic, theme.isHighContrast),
+                colors = appBar.colors,
             )
         },
         content = content,

@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import clib.data.type.DpSerial
 import clib.presentation.appbar.TopAppBarColorsSerial
 import clib.presentation.theme.LocalAppTheme
+import clib.presentation.theme.LocalThemeState
 import kotlinx.serialization.Serializable
 
 @Immutable
@@ -28,31 +29,38 @@ public data class AppBar(
     val dynamicColorsHighContrast: TopAppBarColorsSerial? = null,
 ) {
 
-    @Composable
-    public fun colors(isDynamic: Boolean, isHighContrast: Boolean): TopAppBarColors =
-        if (isDynamic) {
-            if (isHighContrast) dynamicColorsHighContrast else dynamicColors
+    public val colors: TopAppBarColors
+        @Composable
+        get() {
+            val theme = LocalThemeState.current.value
+
+            return if (theme.isDynamic) {
+                if (theme.isHighContrast) dynamicColorsHighContrast else dynamicColors
+            }
+            else {
+                val (lightColors, darkColors) =
+                    if (theme.isHighContrast) lightColorsHighContrast to darkColorsHighContrast else lightColors to darkColors
+                if (LocalAppTheme.current) darkColors else lightColors
+            } ?: TopAppBarDefaults.topAppBarColors()
         }
-        else {
-            val (lightColors, darkColors) =
-                if (isHighContrast) lightColorsHighContrast to darkColorsHighContrast else lightColors to darkColors
-            if (LocalAppTheme.current) darkColors else lightColors
-        } ?: TopAppBarDefaults.topAppBarColors()
 
     @Composable
-    public fun copyColors(isDynamic: Boolean, isHighContrast: Boolean): (TopAppBarColors) -> AppBar =
-        if (isDynamic) {
-            if (isHighContrast) { colors -> copy(dynamicColorsHighContrast = colors) }
+    public fun copyColors(): (TopAppBarColors) -> AppBar {
+        val theme = LocalThemeState.current.value
+
+        return if (theme.isDynamic) {
+            if (theme.isHighContrast) { colors -> copy(dynamicColorsHighContrast = colors) }
             else { colors -> copy(dynamicColors = colors) }
         }
         else {
-            if (isHighContrast) {
-                if (LocalAppTheme.current) { colors -> copy(darkColorsHighContrast = colors) }
+            if (theme.isHighContrast) {
+                if (theme.isDark()) { colors -> copy(darkColorsHighContrast = colors) }
                 else { colors -> copy(lightColorsHighContrast = colors) }
             }
             else {
-                if (LocalAppTheme.current) { colors -> copy(darkColors = colors) }
+                if (theme.isDark()) { colors -> copy(darkColors = colors) }
                 else { colors -> copy(lightColors = colors) }
             }
         }
+    }
 }
