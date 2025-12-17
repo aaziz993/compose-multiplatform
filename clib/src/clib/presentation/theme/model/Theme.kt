@@ -20,17 +20,17 @@ import kotlinx.serialization.Serializable
 @Immutable
 @Serializable
 public data class Theme(
-    val mode: ThemeMode = ThemeMode.SYSTEM,
-    val lightTime: LocalTime = LocalTime(6, 0),
-    val darkTime: LocalTime = LocalTime(19, 0),
-    val isHighContrast: Boolean = false,
-    val isDynamic: Boolean = false,
     val lightColorScheme: ColorSchemeSerial = lightColorScheme(),
     val lightColorSchemeHighContrast: ColorSchemeSerial = lightColorScheme.lightHighContrast(),
     val darkColorScheme: ColorSchemeSerial = darkColorScheme(),
     val darkColorSchemeHighContrast: ColorSchemeSerial = darkColorScheme.darkHighContrast(),
     val dynamicColorScheme: DynamicColorScheme = DynamicColorScheme(Color.Cyan),
     val dynamicColorSchemeHighContrast: DynamicColorScheme = DynamicColorScheme(Color.Blue),
+    val isDynamic: Boolean = false,
+    val mode: ThemeMode = ThemeMode.SYSTEM,
+    val lightTime: LocalTime = LocalTime(6, 0),
+    val darkTime: LocalTime = LocalTime(19, 0),
+    val isHighContrast: Boolean = false,
     val isExpressive: Boolean = true,
     val shapes: ShapesSerial = Shapes(),
     val typography: TypographySerial = Typography(),

@@ -417,6 +417,41 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.theme)) },
         contentPadding = PaddingValues(16.dp),
     ) {
+        if (!theme.isDynamic)
+            SettingsMenuLink(
+                title = stringResource(Res.string.color_scheme),
+                enabled = true,
+                icon = Icons.Default.Palette,
+            ) {
+                onNavigationActions(
+                    arrayOf(
+                        NavigationAction.Push(SettingsColorScheme),
+                    ),
+                )
+            }
+
+        if (theme.isDynamic)
+            SettingsMenuLink(
+                title = stringResource(Res.string.dynamic_color_scheme),
+                enabled = true,
+                icon = Icons.Default.DynamicForm,
+            ) {
+                onNavigationActions(
+                    arrayOf(
+                        NavigationAction.Push(SettingsDynamicColorScheme),
+                    ),
+                )
+            }
+
+        SettingsSwitch(
+            title = stringResource(Res.string.dynamic_color_scheme),
+            value = theme.isDynamic,
+            trueIcon = Icons.Filled.DynamicForm,
+            falseIcon = Icons.Outlined.DynamicForm,
+        ) { value ->
+            onThemeChange(theme.copy(isDynamic = value))
+        }
+
         SettingsMenuLink(
             title = stringResource(Res.string.theme),
             enabled = true,
@@ -487,41 +522,6 @@ public fun SettingsMainScreen(
         ) { value ->
             onThemeChange(theme.copy(isHighContrast = value))
         }
-
-        SettingsSwitch(
-            title = stringResource(Res.string.dynamic_color_scheme),
-            value = theme.isDynamic,
-            trueIcon = Icons.Filled.DynamicForm,
-            falseIcon = Icons.Outlined.DynamicForm,
-        ) { value ->
-            onThemeChange(theme.copy(isDynamic = value))
-        }
-
-        if (!theme.isDynamic)
-            SettingsMenuLink(
-                title = stringResource(Res.string.color_scheme),
-                enabled = true,
-                icon = Icons.Default.Palette,
-            ) {
-                onNavigationActions(
-                    arrayOf(
-                        NavigationAction.Push(SettingsColorScheme),
-                    ),
-                )
-            }
-
-        if (theme.isDynamic)
-            SettingsMenuLink(
-                title = stringResource(Res.string.dynamic_color_scheme),
-                enabled = true,
-                icon = Icons.Default.DynamicForm,
-            ) {
-                onNavigationActions(
-                    arrayOf(
-                        NavigationAction.Push(SettingsDynamicColorScheme),
-                    ),
-                )
-            }
 
         SettingsSwitch(
             stringResource(Res.string.expressive),
