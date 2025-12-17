@@ -1,7 +1,6 @@
 package clib.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.navigation3.runtime.NavBackStack
@@ -331,11 +330,7 @@ public fun rememberNav3Navigator(
         nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
     },
 ): Navigator {
-    val backStack = rememberNavBackStack(routes, startRoute)
-
-    LaunchedEffect(backStack.toList()) {
-        nav3Logger.debug(Nav3Navigator::class.simpleName!!) { "Back stack: ${backStack.joinToString(" -> ")}" }
-    }
+    val backStack = rememberNavBackStack(routes, startRoute, auth)
 
     return remember(auth) {
         Nav3Navigator(

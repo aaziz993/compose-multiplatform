@@ -32,11 +32,9 @@ internal fun rememberNavBackStack(
     NavBackStack(
         startRoute
             ?: checkNotNull(
-                routes.filterIsInstance<NavRoute>().find { navRoute ->
-                    navRoute.route.isAuth(auth)
-                },
+                routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) },
             ) {
-                "No route as startRoute in '$routes${routes.routes}'"
+                "No startRoute in '$routes${routes.routes}'"
             },
     )
 }
