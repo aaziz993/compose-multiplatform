@@ -34,10 +34,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle.Companion.Italic
+import androidx.compose.ui.text.font.FontStyle.Companion.Normal
+import androidx.compose.ui.text.font.FontSynthesis.Companion.All
+import androidx.compose.ui.text.font.FontSynthesis.Companion.None
+import androidx.compose.ui.text.font.FontSynthesis.Companion.Style
+import androidx.compose.ui.text.font.FontSynthesis.Companion.Weight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -76,7 +84,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import ui.about.AboutScreen
-import ui.auth.resetpincode.presentation.ResetPinCodeScreen
 import ui.auth.hotp.HotpScreen
 import ui.auth.hotp.viewmodel.HotpViewModel
 import ui.auth.login.presentation.LoginScreen
@@ -86,6 +93,7 @@ import ui.auth.phone.presentation.viewmodel.PhoneViewModel
 import ui.auth.pincode.PinCodeScreen
 import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
+import ui.auth.resetpincode.presentation.ResetPinCodeScreen
 import ui.auth.totp.TotpScreen
 import ui.auth.totp.viewmodel.TotpViewModel
 import ui.auth.verification.presentation.VerificationScreen
@@ -906,13 +914,11 @@ public data object SettingsColorScheme : KoinRoute<SettingsColorScheme>(), NavRo
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
-        val config = LocalConfig.current
         val themeState = LocalThemeState.current
 
         SettingsColorSchemeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
-            config.ui.theme,
             themeState.value,
         ) { value -> themeState.value = value }
     }
@@ -928,13 +934,11 @@ public data object SettingsDynamicColorScheme : KoinRoute<SettingsDynamicColorSc
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
-        val config = LocalConfig.current
         val themeState = LocalThemeState.current
 
         SettingsDynamicColorSchemeScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
-            config.ui.theme,
             themeState.value,
         ) { value -> themeState.value = value }
     }
@@ -950,13 +954,11 @@ public data object SettingsShapes : KoinRoute<SettingsShapes>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
-        val config = LocalConfig.current
         val themeState = LocalThemeState.current
 
         SettingsShapesScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
-            config.ui.theme,
             themeState.value,
         ) { value -> themeState.value = value }
     }
@@ -972,13 +974,25 @@ public data object SettingsTypography : KoinRoute<SettingsTypography>(), NavRout
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
-        val config = LocalConfig.current
+        val fontStyles = remember { listOf(Normal, Italic) }
+        val fontSynthesis = remember { listOf(None, Weight, Style, All) }
+        val fontFamilies = remember {
+            listOf(
+                FontFamily.Default,
+                FontFamily.SansSerif,
+                FontFamily.Serif,
+                FontFamily.Monospace,
+                FontFamily.Cursive,
+            )
+        }
         val themeState = LocalThemeState.current
 
         SettingsTypographyScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
-            config.ui.theme,
+            fontStyles,
+            fontSynthesis,
+            fontFamilies,
             themeState.value,
         ) { value -> themeState.value = value }
     }

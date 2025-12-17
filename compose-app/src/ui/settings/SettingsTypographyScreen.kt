@@ -5,17 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatBold
-import androidx.compose.material.icons.filled.FormatLineSpacing
 import androidx.compose.material.icons.filled.FormatPaint
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Height
-import androidx.compose.material.icons.filled.LineAxis
-import androidx.compose.material.icons.filled.LineWeight
 import androidx.compose.material.icons.filled.LinearScale
-import androidx.compose.material.icons.filled.Style
 import androidx.compose.material.icons.filled.TextFormat
-import androidx.compose.material.icons.filled.TypeSpecimen
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -33,54 +28,51 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.theme.density.toFloatPx
+import clib.data.type.primitives.string.stringResource
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.typography.FontFamilySerial
 import clib.presentation.theme.typography.FontStyleSerial
 import clib.presentation.theme.typography.FontSynthesisSerial
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.display_large
-import compose_app.generated.resources.display_medium
-import compose_app.generated.resources.display_small
-import compose_app.generated.resources.headline_large
-import compose_app.generated.resources.headline_medium
-import compose_app.generated.resources.headline_small
-import compose_app.generated.resources.title_large
-import compose_app.generated.resources.title_medium
-import compose_app.generated.resources.title_small
 import compose_app.generated.resources.body_large
-import compose_app.generated.resources.body_medium
-import compose_app.generated.resources.body_small
-import compose_app.generated.resources.label_large
-import compose_app.generated.resources.label_medium
-import compose_app.generated.resources.label_small
-import compose_app.generated.resources.display_large_emphasized
-import compose_app.generated.resources.display_medium_emphasized
-import compose_app.generated.resources.display_small_emphasized
-import compose_app.generated.resources.headline_large_emphasized
-import compose_app.generated.resources.headline_medium_emphasized
-import compose_app.generated.resources.headline_small_emphasized
-import compose_app.generated.resources.title_large_emphasized
-import compose_app.generated.resources.title_medium_emphasized
-import compose_app.generated.resources.title_small_emphasized
 import compose_app.generated.resources.body_large_emphasized
+import compose_app.generated.resources.body_medium
 import compose_app.generated.resources.body_medium_emphasized
+import compose_app.generated.resources.body_small
 import compose_app.generated.resources.body_small_emphasized
+import compose_app.generated.resources.display_large
+import compose_app.generated.resources.display_large_emphasized
+import compose_app.generated.resources.display_medium
+import compose_app.generated.resources.display_medium_emphasized
+import compose_app.generated.resources.display_small
+import compose_app.generated.resources.display_small_emphasized
 import compose_app.generated.resources.font_family
-import compose_app.generated.resources.label_large_emphasized
-import compose_app.generated.resources.label_medium_emphasized
-import compose_app.generated.resources.label_small_emphasized
 import compose_app.generated.resources.font_size
 import compose_app.generated.resources.font_style
 import compose_app.generated.resources.font_synthesis
 import compose_app.generated.resources.font_weight
+import compose_app.generated.resources.headline_large
+import compose_app.generated.resources.headline_large_emphasized
+import compose_app.generated.resources.headline_medium
+import compose_app.generated.resources.headline_medium_emphasized
+import compose_app.generated.resources.headline_small
+import compose_app.generated.resources.headline_small_emphasized
+import compose_app.generated.resources.label_large
+import compose_app.generated.resources.label_large_emphasized
+import compose_app.generated.resources.label_medium
+import compose_app.generated.resources.label_medium_emphasized
+import compose_app.generated.resources.label_small
+import compose_app.generated.resources.label_small_emphasized
 import compose_app.generated.resources.letter_spacing
 import compose_app.generated.resources.line_height
-import klib.data.type.serialization.coders.tree.deserialize
+import compose_app.generated.resources.title_large
+import compose_app.generated.resources.title_large_emphasized
+import compose_app.generated.resources.title_medium
+import compose_app.generated.resources.title_medium_emphasized
+import compose_app.generated.resources.title_small
+import compose_app.generated.resources.title_small_emphasized
 import kotlin.math.roundToInt
-import clib.data.type.primitives.string.stringResource
-import kotlin.math.absoluteValue
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSliderFinished
 import ui.navigation.presentation.SettingsTypography
@@ -89,29 +81,24 @@ import ui.navigation.presentation.SettingsTypography
 public fun SettingsTypographyScreen(
     modifier: Modifier = Modifier,
     route: SettingsTypography = SettingsTypography,
-    defaultTheme: Theme = Theme(),
-    theme: Theme = defaultTheme,
-    onThemeChange: (Theme) -> Unit = {},
-): Unit = Column(
-    modifier = modifier,
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally,
-) {
-
-    val fontStyles = remember { listOf(Normal, Italic) }
-
-    val fontSynthesis = remember { listOf(None, Weight, Style, All) }
-
-    val fontFamilies = remember {
-        listOf<FontFamilySerial>(
+    fontStyles: List<FontStyleSerial> = remember { listOf(Normal, Italic) },
+    fontSynthesis: List<FontSynthesisSerial> = remember { listOf(None, Weight, Style, All) },
+    fontFamilies: List<FontFamilySerial> = remember {
+        listOf(
             FontFamily.Default,
             FontFamily.SansSerif,
             FontFamily.Serif,
             FontFamily.Monospace,
             FontFamily.Cursive,
         )
-    }
-
+    },
+    theme: Theme = Theme(),
+    onThemeChange: (Theme) -> Unit = {},
+): Unit = Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+) {
     SettingsTextStyle(
         stringResource(Res.string.display_large),
         fontStyles,
@@ -557,7 +544,7 @@ private fun SettingsTextStyle(
         initialValue = value.fontSize.value,
         icon = { Icons.Default.FormatSize },
         enabled = true,
-        valueRange = 22f..114f,
+        valueRange = 8f..72f,
         onValueChanged = {
             onValueChanged(value.copy(fontSize = it.sp))
         },
@@ -624,7 +611,7 @@ private fun SettingsTextStyle(
         initialValue = value.lineHeight.value,
         icon = { Icons.Default.Height },
         enabled = true,
-        valueRange = 32f..128f,
+        valueRange = 1f..128f,
         onValueChanged = {
             onValueChanged(value.copy(lineHeight = it.sp))
         },
@@ -635,9 +622,20 @@ private fun SettingsTextStyle(
         initialValue = value.letterSpacing.value,
         icon = { Icons.Default.LinearScale },
         enabled = true,
-        valueRange = -0.4f..1f,
+        valueRange = -1f..1f,
         onValueChanged = {
             onValueChanged(value.copy(letterSpacing = it.sp))
         },
     )
 }
+
+private data class Ranges(
+    val minFontSize: Float,
+    val maxFontSize: Float,
+    val minFontWeight: Float,
+    val maxFontWeight: Float,
+    val minLineHeight: Float,
+    val maxLineHeight: Float,
+    val minLetterSpacing: Float,
+    val maxLetterSpacing: Float,
+)

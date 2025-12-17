@@ -64,8 +64,7 @@ import ui.navigation.presentation.SettingsColorScheme
 public fun SettingsColorSchemeScreen(
     modifier: Modifier = Modifier,
     route: SettingsColorScheme = SettingsColorScheme,
-    defaultTheme: Theme = Theme(),
-    theme: Theme = defaultTheme,
+    theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,

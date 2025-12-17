@@ -35,8 +35,7 @@ import ui.navigation.presentation.SettingsShapes
 public fun SettingsShapesScreen(
     modifier: Modifier = Modifier,
     route: SettingsShapes = SettingsShapes,
-    defaultTheme: Theme = Theme(),
-    theme: Theme = defaultTheme,
+    theme: Theme = Theme(),
     onThemeChange: (Theme) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
