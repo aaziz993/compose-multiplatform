@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="theme">Theme</string>
-    <string name="system_theme">System theme</string>
-    <string name="light_theme">Light theme</string>
-    <string name="dark_theme">Dark theme</string>
-    <string name="light_time">Light time</string>
-    <string name="dark_time">Dark time</string>
-    <string name="light_time_gt_dark_time">Light time greater than dark time</string>
+    <string name="light_later_dark">Light later dark</string>
 </resources>

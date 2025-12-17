@@ -264,7 +264,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     ): NavigationSuiteScope.() -> Unit {
         val items = routes.map { route ->
             route.item(
-                enabled(route) && this.enabled,
+                this@Routes.enabled && enabled(route),
                 this@Routes.alwaysShowLabel && alwaysShowLabel(route),
                 auth,
                 router,
@@ -284,7 +284,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         onClick: Router.(NavRoute) -> Unit = Router::push,
     ): Unit = routes.forEach { route ->
         route.NavigationBarItem(
-            enabled(route) && this.enabled,
+            this.enabled && enabled(route),
             this.alwaysShowLabel && alwaysShowLabel(route),
             auth,
             router,

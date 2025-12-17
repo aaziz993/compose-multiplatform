@@ -108,7 +108,7 @@ import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.contact
 import compose_app.generated.resources.container_color
-import compose_app.generated.resources.dark_time
+import compose_app.generated.resources.dark
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
 import compose_app.generated.resources.dynamic_color_scheme
@@ -117,8 +117,8 @@ import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.gallery
 import compose_app.generated.resources.height
 import compose_app.generated.resources.high_contrast
-import compose_app.generated.resources.light_time
-import compose_app.generated.resources.light_time_gt_dark_time
+import compose_app.generated.resources.light
+import compose_app.generated.resources.light_later_dark
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
 import compose_app.generated.resources.mode
@@ -428,7 +428,7 @@ public fun SettingsMainScreen(
 
         if (theme.mode == ThemeMode.ADAPTIVE) {
             SettingsTimePickerDialog(
-                title = stringResource(Res.string.light_time),
+                title = stringResource(Res.string.light),
                 value = theme.lightTime,
                 enabled = true,
                 subtitle = { Text(theme.lightTime.toString()) },
@@ -442,7 +442,7 @@ public fun SettingsMainScreen(
                         GlobalAlertEventController.sendEvent(
                             AlertEvent(
                                 text = {
-                                    Text(stringResource(Res.string.light_time_gt_dark_time))
+                                    Text(stringResource(Res.string.light_later_dark))
                                 },
                                 isError = true,
                             ),
@@ -453,7 +453,7 @@ public fun SettingsMainScreen(
             }
 
             SettingsTimePickerDialog(
-                title = stringResource(Res.string.dark_time),
+                title = stringResource(Res.string.dark),
                 value = theme.darkTime,
                 enabled = true,
                 subtitle = { Text(theme.darkTime.toString()) },
@@ -468,7 +468,7 @@ public fun SettingsMainScreen(
                         GlobalAlertEventController.sendEvent(
                             AlertEvent(
                                 text = {
-                                    Text(stringResource(Res.string.light_time_gt_dark_time))
+                                    Text(stringResource(Res.string.light_later_dark))
                                 },
                                 isError = true,
                             ),

@@ -28,6 +28,7 @@
     <string name="damping_ratio">Сатҳи сустшавӣ</string>
     <string name="duration">Муддат</string>
     <string name="delay">Таъхир</string>
+    <string name="dark">Торик</string>
     <string name="enabled">Фаъол</string>
     <string name="error">Хато</string>
     <string name="false">Ноҳақ</string>
@@ -51,6 +52,7 @@
     <string name="label">Аломат</string>
     <string name="live_search">Ҷустуҷӯи воқеӣ</string>
     <string name="left">Чап</string>
+    <string name="light">Равшан</string>
     <string name="markers">Нишонаҳо</string>
     <string name="menu">Меню</string>
     <string name="mode">Низом</string>
@@ -83,6 +85,7 @@
     <string name="settings">Ҷур</string>
     <string name="spring_spec">Мушаххасоти пружина</string>
     <string name="stiffness">Сахтӣ</string>
+    <string name="system">Низомӣ</string>
     <string name="true">Ҳақ</string>
     <string name="title">Сарлавҳ</string>
     <string name="time">Вақт</string>
