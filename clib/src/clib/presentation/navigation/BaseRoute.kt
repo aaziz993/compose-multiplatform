@@ -173,6 +173,11 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     override fun isAuth(auth: Auth): Boolean = routes.any { route -> route.isAuth(auth) }
 
+    public fun startRoute(auth: Auth): NavRoute =
+        checkNotNull(routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) }) {
+            "No start route in '$this$routes'"
+        }
+
     @Composable
     protected open fun NavDisplay(
         backStack: List<NavRoute>,

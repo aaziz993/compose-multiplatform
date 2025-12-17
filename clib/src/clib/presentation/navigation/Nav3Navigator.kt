@@ -201,7 +201,7 @@ public open class Nav3Navigator(
      */
     protected open fun auth() {
         val authStack = if (auth.user == null) backStack.filter { navRoute -> navRoute.route.isAuth(auth) }.ifEmpty {
-            listOfNotNull(routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) })
+            listOfNotNull(routes.startRoute(auth))
         }
         else backStack.filterNot { navRoute -> navRoute is AuthRoute } + listOfNotNull(authRedirectRoute)
         if (authStack.isNotEmpty()) actions(NavigationAction.ReplaceStack(authStack))
@@ -330,7 +330,7 @@ public fun rememberNav3Navigator(
         nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
     },
 ): Navigator {
-    val backStack = rememberNavBackStack(routes, startRoute, auth)
+    val backStack = rememberNavBackStack(routes, startRoute ?: routes.startRoute(auth))
 
     return remember(auth) {
         Nav3Navigator(
