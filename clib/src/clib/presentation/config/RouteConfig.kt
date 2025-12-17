@@ -1,6 +1,7 @@
 package clib.presentation.config
 
 import clib.presentation.navigation.BaseRoute
+import clib.presentation.navigation.Route
 import clib.presentation.navigation.slideTransition
 import io.ktor.http.Url
 import klib.data.auth.model.AuthResource
@@ -26,6 +27,6 @@ public data class RouteConfig(
         route.metadata = metadata + additionalMetadata
         route.enabled = enabled
         route.alwaysShowLabel = alwaysShowLabel
-        route.authResource = authResource
+        (route as Route<*>).authResource = authResource
     }
 }

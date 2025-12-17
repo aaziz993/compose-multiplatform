@@ -52,9 +52,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public var alwaysShowLabel: Boolean = true
     public open val selectableItem: (@Composable (name: String) -> SelectableItem)? = null
 
-    public var authResource: AuthResource? = null
-
-    public fun isAuth(auth: Auth): Boolean = authResource?.validate(auth.provider, auth.user) != false
+    public abstract fun isAuth(auth: Auth): Boolean
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
@@ -134,6 +132,11 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
 
+    public var authResource: AuthResource? = null
+
+    final override fun isAuth(auth: Auth): Boolean =
+        authResource?.validate(auth.provider, auth.user) != false
+
     @Composable
     protected abstract fun Content(
         route: T,
@@ -147,11 +150,15 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
-    ): Unit = scope.addEntryProvider(
-        clazz = navRoute,
-        metadata = metadata,
-    ) { navRoute ->
-        Content(navRoute as T, sharedTransitionScope)
+    ) {
+        configProvider(this)?.configure(this)
+
+        scope.addEntryProvider(
+            clazz = navRoute,
+            metadata = metadata,
+        ) { navRoute ->
+            Content(navRoute as T, sharedTransitionScope)
+        }
     }
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
@@ -164,9 +171,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     public abstract val routes: List<BaseRoute>
 
-    public val startRoute: NavRoute by lazy {
-        checkNotNull(routes.firstOrNull() as? NavRoute) { "No start route" }
-    }
+    override fun isAuth(auth: Auth): Boolean = routes.any { route -> route.isAuth(auth) }
 
     @Composable
     protected open fun NavDisplay(
@@ -203,13 +208,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         navigatorFactory: @Composable (Routes) -> Navigator = { routes -> rememberNav3Navigator(routes) },
         onDeepLink: Router.(Url) -> Unit = Router::push,
     ) {
-        check(startRoute.route in routes) { "Start route '${startRoute.route}' isn't in '$routes'" }
-
-        // Configure.
         configProvider(this)?.configure(this)
-
-        // Configure routes.
-        routes.forEach { route -> configProvider(route)?.configure(route) }
 
         Nav3Host(
             routerFactory(this),

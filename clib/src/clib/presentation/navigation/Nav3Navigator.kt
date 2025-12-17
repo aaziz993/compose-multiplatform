@@ -202,7 +202,7 @@ public open class Nav3Navigator(
      */
     protected open fun auth() {
         val authStack = if (auth.user == null) backStack.filter { navRoute -> navRoute.route.isAuth(auth) }.ifEmpty {
-            listOfNotNull(routes.startRoute.takeIf { navRoute -> navRoute.route.isAuth(auth) })
+            listOfNotNull(routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) })
         }
         else backStack.filterNot { navRoute -> navRoute is AuthRoute } + listOfNotNull(authRedirectRoute)
         if (authStack.isNotEmpty()) actions(NavigationAction.ReplaceStack(authStack))
@@ -284,7 +284,7 @@ public open class Nav3Navigator(
      *
      * @param value The new contents for the list.
      */
-    public open fun swap(
+    protected open fun swap(
         value: List<NavRoute>,
     ) {
         Snapshot.withMutableSnapshot {
