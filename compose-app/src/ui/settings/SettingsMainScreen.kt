@@ -81,7 +81,6 @@ import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.event.alert.GlobalAlertEventController
 import clib.presentation.event.alert.model.AlertEvent
 import clib.presentation.navigation.NavigationAction
-import clib.presentation.theme.density.toFloatPx
 import clib.presentation.theme.model.Theme
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
@@ -121,8 +120,8 @@ import compose_app.generated.resources.light_time
 import compose_app.generated.resources.light_time_gt_dark_time
 import compose_app.generated.resources.locale
 import compose_app.generated.resources.location
-import compose_app.generated.resources.navigation_icon_content_color
 import compose_app.generated.resources.mode
+import compose_app.generated.resources.navigation_icon_content_color
 import compose_app.generated.resources.open
 import compose_app.generated.resources.permission
 import compose_app.generated.resources.record_audio
