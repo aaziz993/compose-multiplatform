@@ -80,6 +80,7 @@ import compose_app.generated.resources.line_height
 import klib.data.type.serialization.coders.tree.deserialize
 import kotlin.math.roundToInt
 import clib.data.type.primitives.string.stringResource
+import kotlin.math.absoluteValue
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsSliderFinished
 import ui.navigation.presentation.SettingsTypography
@@ -553,7 +554,7 @@ private fun SettingsTextStyle(
 ) {
     SettingsSliderFinished(
         title = stringResource(Res.string.font_size),
-        initialValue = value.fontSize.toFloatPx(),
+        initialValue = value.fontSize.value,
         icon = { Icons.Default.FormatSize },
         enabled = true,
         valueRange = 22f..114f,
@@ -565,7 +566,7 @@ private fun SettingsTextStyle(
     value.fontWeight?.let { fontWeight ->
         SettingsSliderFinished(
             title = stringResource(Res.string.font_weight),
-            initialValue = fontWeight.weight.toFloatPx(),
+            initialValue = fontWeight.weight.toFloat(),
             icon = { Icons.Default.FormatBold },
             enabled = true,
             valueRange = 1f..1000f,
@@ -620,7 +621,7 @@ private fun SettingsTextStyle(
 
     SettingsSliderFinished(
         title = stringResource(Res.string.line_height),
-        initialValue = value.lineHeight.toFloatPx(),
+        initialValue = value.lineHeight.value,
         icon = { Icons.Default.Height },
         enabled = true,
         valueRange = 32f..128f,
@@ -631,7 +632,7 @@ private fun SettingsTextStyle(
 
     SettingsSliderFinished(
         title = stringResource(Res.string.letter_spacing),
-        initialValue = value.letterSpacing.toFloatPx(),
+        initialValue = value.letterSpacing.value,
         icon = { Icons.Default.LinearScale },
         enabled = true,
         valueRange = -0.4f..1f,
