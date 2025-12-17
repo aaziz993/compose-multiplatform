@@ -23,8 +23,7 @@ public data class RouteConfig(
     public fun configure(route: BaseRoute) {
         route::urls trySet urls
         route.urls += additionalUrls
-        route.metadata = metadata
-        route.metadata += additionalMetadata
+        route.metadata = metadata + additionalMetadata
         route.enabled = enabled
         route.alwaysShowLabel = alwaysShowLabel
         route.authResource = authResource

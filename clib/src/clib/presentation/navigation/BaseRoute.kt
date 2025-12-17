@@ -52,7 +52,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public var alwaysShowLabel: Boolean = true
     public open val selectableItem: (@Composable (name: String) -> SelectableItem)? = null
 
-    public abstract var authResource: AuthResource?
+    public var authResource: AuthResource? = null
 
     public fun isAuth(auth: Auth): Boolean = authResource?.validate(auth.provider, auth.user) != false
 
@@ -134,8 +134,6 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
 
-    final override var authResource: AuthResource? = null
-
     @Composable
     protected abstract fun Content(
         route: T,
@@ -169,10 +167,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public val startRoute: NavRoute by lazy {
         checkNotNull(routes.firstOrNull() as? NavRoute) { "No start route" }
     }
-
-    final override var authResource: AuthResource?
-        get() = startRoute.route.authResource
-        set(_) = throw UnsupportedOperationException()
 
     @Composable
     protected open fun NavDisplay(
