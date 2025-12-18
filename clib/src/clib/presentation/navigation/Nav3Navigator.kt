@@ -52,11 +52,11 @@ public open class Nav3Navigator(
      * This ensures consistency and prevents intermediate states from being visible.
      *
      * @param actions Array of navigation actions to apply.
-     * @param onUnknownNavRoute Callback to be called if route isn't in the current top level route.
+     * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
      */
     override fun actions(
         vararg actions: NavigationAction,
-        onUnknownNavRoute: (NavRoute) -> Unit,
+        onUnknownRoute: (NavRoute) -> Unit,
     ) {
         val snapshot = backStack.toMutableList()
         var callOnBack = false
@@ -66,7 +66,7 @@ public open class Nav3Navigator(
                 if (!action(
                         snapshot,
                         action,
-                        onUnknownNavRoute,
+                        onUnknownRoute,
                     ) { callOnBack = true }
                 ) return
             }
@@ -162,7 +162,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceCurrent,
     ) {
         require(action.route.route in routes.routes) {
-            "Route '${action.route.route}' isn't in '$routes${routes.routes}'"
+            "Route '${action.route.route}' isn't in '$routes'"
         }
         if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
     }
@@ -180,7 +180,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceStack,
     ) {
         require(action.routes.all { navRoute -> navRoute.route in routes.routes }) {
-            "Routes '${action.routes.map(NavRoute::route)}' isn't in '$routes${routes.routes}'"
+            "Routes '${action.routes.map(NavRoute::route)}' isn't in '$routes'"
         }
         snapshot.replaceWith(action.routes)
     }
@@ -322,10 +322,14 @@ public fun rememberNav3Navigator(
         nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
     },
 ): Navigator {
+    require(startRoute?.let { it.route in routes } != false) {
+        "Start route '$startRoute' not in '$routes'"
+    }
+
     val backStack = rememberNavBackStack(
         routes,
         requireNotNull(startRoute ?: routes.filterIsInstance<NavRoute>().firstOrNull()) {
-            "No start nav route in '$routes${routes.routes}'"
+            "No start nav route in '$routes'"
         },
     )
 

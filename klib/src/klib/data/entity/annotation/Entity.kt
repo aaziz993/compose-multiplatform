@@ -4,7 +4,7 @@ import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.decimal.toBigDecimal
 import klib.data.type.collections.bimap.BiMap
 import klib.data.type.collections.bimap.toBiMap
-import klib.data.type.primitives.string.case.toSnakeCase
+import net.pearx.kasechange.toSnakeCase
 import klib.data.type.primitives.string.takeUnlessEmpty
 import klib.data.type.primitives.time.toDuration
 import klib.data.type.primitives.time.toInstant

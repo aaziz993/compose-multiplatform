@@ -17,7 +17,7 @@ public abstract class BaseRouter {
     /**
      * Callback to be called if route isn't in the current top level route.
      */
-    protected abstract val onUnknownNavRoute: (NavRoute) -> Unit
+    protected abstract val onUnknownRoute: (NavRoute) -> Unit
 
     /**
      * Action queue that manages action execution and navigator lifecycle.
@@ -25,7 +25,7 @@ public abstract class BaseRouter {
      * This is internal to prevent direct access from outside the library,
      * but accessible to the navigation system for setup.
      */
-    internal val navigationActionQueue: NavigationActionQueue = NavigationActionQueue(onUnknownNavRoute)
+    internal val navigationActionQueue: NavigationActionQueue = NavigationActionQueue(onUnknownRoute)
 
     /**
      * Currently registered navigator back stack.

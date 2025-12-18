@@ -2,7 +2,7 @@ package klib.data.type.primitives.string.tokenization.substitution
 
 import klib.data.type.primitives.number.toBigDecimal
 import klib.data.type.primitives.number.toBigInteger
-import klib.data.type.primitives.string.case.toPascalCase
+import net.pearx.kasechange.toPascalCase
 import kotlin.Pair
 
 public enum class Type(public vararg val parents: Type) {

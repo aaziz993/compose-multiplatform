@@ -1,6 +1,6 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.primitives.string.case.toPascalCase
+import net.pearx.kasechange.toPascalCase
 import klib.data.type.primitives.number.toBigDecimal
 import klib.data.type.primitives.number.toBigInteger
 import kotlin.Pair

@@ -113,11 +113,8 @@ public fun AppEnvironment(
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
         remember {
-            Router(
-                it,
-                if (isRoot) routes.find { route -> route.name == config.ui.startRoute } as NavRoute?
-                else null,
-            )
+            if (isRoot && config.ui.startRoute != null) Router(it, config.ui.startRoute)
+            else Router(it)
         }
     },
     navigatorFactory: @Composable (Routes) -> Navigator = {

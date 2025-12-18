@@ -1,7 +1,7 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
 import klib.data.type.collections.takeUnlessEmpty
-import klib.data.type.primitives.string.case.toCamelCase
+import net.pearx.kasechange.toCamelCase
 import klib.data.type.primitives.string.tokenization.combinators.asJust
 import klib.data.type.primitives.string.tokenization.combinators.leftAssociative
 import klib.data.type.primitives.string.tokenization.combinators.map

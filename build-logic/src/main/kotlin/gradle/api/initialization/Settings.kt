@@ -8,7 +8,7 @@ import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
 import java.io.File
 import java.util.Properties
-import klib.data.type.primitives.string.case.toScreamingSnakeCase
+import net.pearx.kasechange.toScreamingSnakeCase
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
 import org.gradle.api.initialization.Settings

@@ -1,9 +1,9 @@
 package klib.data.type.serialization.properties
 
-import klib.data.type.primitives.string.case.toCamelCase
-import klib.data.type.primitives.string.case.toKebabCase
-import klib.data.type.primitives.string.case.toPascalCase
-import klib.data.type.primitives.string.case.toSnakeCase
+import net.pearx.kasechange.toCamelCase
+import net.pearx.kasechange.toKebabCase
+import net.pearx.kasechange.toPascalCase
+import net.pearx.kasechange.toSnakeCase
 import klib.data.type.serialization.properties.PropertiesNamingStrategy.Builtins.PascalCase
 import kotlinx.serialization.descriptors.SerialDescriptor
 

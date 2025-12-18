@@ -17,7 +17,6 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.SelectableItem
-import clib.presentation.config.RouteConfig
 import clib.presentation.event.EventBus
 import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
@@ -128,12 +127,20 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         )
     }
 
-    public abstract fun navRoutePath(navRoute: NavRoute): List<NavRoute>?
+    internal abstract fun resolve(transform: (BaseRoute) -> NavRoute?): List<NavRoute>?
 
-    public open fun navRoutePath(url: Url): List<NavRoute>? =
-        urls.firstNotNullOfOrNull {
-            url.toRoute(navRoute.serializer(), it)
-        }?.let(::listOf)
+    public fun resolve(name: String): List<NavRoute>? =
+        resolve { route -> if (route.name == name) route as NavRoute else null }
+
+    public fun resolve(navRoute: NavRoute): List<NavRoute>? =
+        resolve { route -> if (route == navRoute.route) route as NavRoute else null }
+
+    public fun resolve(url: Url): List<NavRoute>? =
+        resolve { route ->
+            route.urls.firstNotNullOfOrNull {
+                url.toRoute(navRoute.serializer(), it)
+            }
+        }
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -163,8 +170,10 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 
-    final override fun navRoutePath(navRoute: NavRoute): List<NavRoute>? =
-        if (this == navRoute) listOf(this as NavRoute) else null
+    final override fun resolve(transform: (BaseRoute) -> NavRoute?): List<NavRoute>? =
+        transform(this)?.let(::listOf)
+
+    override fun toString(): String = name
 }
 
 public abstract class Routes() : BaseRoute(), NavRoute {
@@ -292,23 +301,14 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         }
     }.iterator()
 
-    final override fun navRoutePath(navRoute: NavRoute): List<NavRoute>? {
+    final override fun resolve(transform: (BaseRoute) -> NavRoute?): List<NavRoute>? {
         for (route in routes) {
             if (route !is NavRoute) continue
-            if (route == navRoute) return listOf(route)
-            val path = route.navRoutePath(navRoute)?.let(listOf(route)::plus)
-            if (path != null) return path
+            val childPath = route.resolve(transform)
+            if (childPath != null) return listOf(this) + childPath
         }
-
         return null
     }
 
-    final override fun navRoutePath(url: Url): List<NavRoute>? {
-//        for (route in routes) {
-//            val path = route.navRoutePath(url)?.let(listOf(route)::plus)
-//            if (path != null) return path
-//        }
-
-        return null
-    }
+    override fun toString(): String = "$name${routes.map(BaseRoute::name)}"
 }

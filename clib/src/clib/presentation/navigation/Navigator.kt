@@ -19,7 +19,7 @@ public interface Navigator {
      * Applies an array of navigation commands to the navigation stack.
      *
      * @param actions Array of actions to apply to the navigation stack
-     * @param onUnknownNavRoute Callback to be called if route isn't in the current top level route.
+     * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
      */
-    public fun actions(vararg actions: NavigationAction, onUnknownNavRoute: (NavRoute) -> Unit = {})
+    public fun actions(vararg actions: NavigationAction, onUnknownRoute: (NavRoute) -> Unit = {})
 }

@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import io.ktor.http.Url
 import klib.data.type.collections.linkedlist.model.Node
 import klib.data.type.collections.list.drop
+import kotlin.collections.first
 
 /**
  * CompositionLocal that provides access to the parent Router in nested navigation hierarchies.
@@ -35,14 +36,36 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  * This class is designed to be used as the primary navigation interface in applications.
  *
  * @param routes The current top level route.
- * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
  * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  */
 public open class Router(
     override val routes: Routes,
-    startRoute: NavRoute? = null,
     public val onReroute: Router.(NavRoute) -> Unit = Router::push,
 ) : BaseRouter(), Node<Router> {
+
+    public constructor(
+        routes: Routes,
+        startRoute: String,
+        onReroute: Router.(NavRoute) -> Unit = Router::push,
+    ) : this(routes, onReroute) {
+        handleRoute(startRoute, ::push)
+    }
+
+    public constructor(
+        routes: Routes,
+        startRoute: NavRoute,
+        onReroute: Router.(NavRoute) -> Unit = Router::push,
+    ) : this(routes, onReroute) {
+        handleRoute(startRoute, ::push)
+    }
+
+    public constructor(
+        routes: Routes,
+        startRoute: Url,
+        onReroute: Router.(NavRoute) -> Unit = Router::push,
+    ) : this(routes, onReroute) {
+        handleRoute(startRoute, ::push)
+    }
 
     /**
      * Parent router in nested navigation hierarchy.
@@ -71,29 +94,38 @@ public open class Router(
     /**
      * Callback to be called if route isn't in the current top level route.
      */
-    override val onUnknownNavRoute: (NavRoute) -> Unit
-        get() = { navRoute -> handleUnknownNavRoute(navRoute) { onReroute(it) } }
+    override val onUnknownRoute: (NavRoute) -> Unit
+        get() = { navRoute -> handleRoute(navRoute) { onReroute(it) } }
 
-    init {
-        startRoute?.let { navRoute -> handleUnknownNavRoute(navRoute, ::push) }
+    protected open fun handleRoutePath(navRoutePath: List<NavRoute>, onReroute: (NavRoute) -> Unit) {
+        this.navRoutePath = navRoutePath.drop()
+        onReroute(navRoutePath.first())
     }
 
-    protected open fun handleUnknownNavRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
-        routes.navRoutePath(navRoute)?.let {
-            navRoutePath = it.drop()
-            onReroute(it.first())
-        } ?: prev?.onUnknownNavRoute(navRoute)
+    protected open fun handleRoute(name: String, onReroute: (NavRoute) -> Unit) {
+        routes.resolve(name)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
+            ?: prev?.handleRoute(name, onReroute)
+    }
+
+    protected open fun handleRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
+        routes.resolve(navRoute)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
+            ?: prev?.handleRoute(navRoute, onReroute)
+    }
+
+    protected open fun handleRoute(url: Url, onReroute: (NavRoute) -> Unit) {
+        routes.resolve(url)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
+            ?: prev?.handleRoute(url, onReroute)
     }
 
     /**
      * Creates parent child routers relationship.
      */
-    public fun bind(parentRouter: Router) {
-        require(this != parentRouter) { "Router can't be parent of itself" }
+    public fun bind(prev: Router) {
+        require(this != prev) { "Router can't be parent of itself" }
 
-        parentRouter.next = this
-        prev = parentRouter
-        navRoutePath = parentRouter.navRoutePath.drop()
+        prev.next = this
+        this.prev = prev
+        navRoutePath = prev.navRoutePath.drop()
     }
 
     /**
@@ -118,7 +150,7 @@ public open class Router(
      * @param url The url of the route to push onto the stack.
      */
     public fun push(url: Url) {
-        routes.navRoutePath(url)?.let {
+        routes.resolve(url)?.let {
             navRoutePath = navRoutePath.drop()
             push(navRoutePath.first())
         }
@@ -144,7 +176,7 @@ public open class Router(
      * @param url The url of the route to replace the current top route with.
      */
     public fun replaceCurrent(url: Url) {
-        routes.navRoutePath(url)?.let {
+        routes.resolve(url)?.let {
             navRoutePath = navRoutePath.drop()
             replaceCurrent(navRoutePath.first())
         }
@@ -169,7 +201,7 @@ public open class Router(
      * @param url The url of the route to replace the stack with.
      */
     public fun replaceStack(url: Url) {
-        routes.navRoutePath(url)?.let {
+        routes.resolve(url)?.let {
             navRoutePath = navRoutePath.drop()
             replaceStack(navRoutePath.first())
         }

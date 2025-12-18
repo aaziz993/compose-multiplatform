@@ -11,7 +11,7 @@ import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import clib.presentation.locale.LocalLocalization
 import klib.data.location.locale.Localization
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.case.toSnakeCase
+import net.pearx.kasechange.toSnakeCase
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.StringResource
 

@@ -12,6 +12,7 @@ script:
                 implementation(libs["bignum"])
                 implementation(libs.bundles("kmath"))
                 implementation(libs["javamath2kmp"])
+                implementation(libs["kasechange"])
                 implementation(libs["kotlinx.uuid.core"])
                 implementation(libs.bundles("fleeksoft.charset"))
                 // implementation(libs.bundles("diglol")) // uncomment when wasmJs target added.
