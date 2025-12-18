@@ -5,8 +5,10 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import io.ktor.http.Url
+import klib.data.auth.model.Auth
 import klib.data.type.collections.linkedlist.model.Node
 import klib.data.type.collections.list.drop
 import kotlin.collections.first
@@ -40,30 +42,34 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  */
 public open class Router(
     override val routes: Routes,
+    public val auth: Auth = Auth(),
     public val onReroute: Router.(NavRoute) -> Unit = Router::push,
 ) : BaseRouter(), Node<Router> {
 
     public constructor(
         routes: Routes,
         startRoute: String,
+        auth: Auth = Auth(),
         onReroute: Router.(NavRoute) -> Unit = Router::push,
-    ) : this(routes, onReroute) {
+    ) : this(routes, auth, onReroute) {
         handleRoute(startRoute, ::push)
     }
 
     public constructor(
         routes: Routes,
         startRoute: NavRoute,
+        auth: Auth = Auth(),
         onReroute: Router.(NavRoute) -> Unit = Router::push,
-    ) : this(routes, onReroute) {
+    ) : this(routes, auth, onReroute) {
         handleRoute(startRoute, ::push)
     }
 
     public constructor(
         routes: Routes,
         startRoute: Url,
+        auth: Auth = Auth(),
         onReroute: Router.(NavRoute) -> Unit = Router::push,
-    ) : this(routes, onReroute) {
+    ) : this(routes, auth, onReroute) {
         handleRoute(startRoute, ::push)
     }
 
@@ -98,22 +104,22 @@ public open class Router(
         get() = { navRoute -> handleRoute(navRoute) { onReroute(it) } }
 
     protected open fun handleRoutePath(navRoutePath: List<NavRoute>, onReroute: (NavRoute) -> Unit) {
-        this.navRoutePath = navRoutePath.drop()
-        onReroute(navRoutePath.first())
+        this.navRoutePath = navRoutePath.drop(2)
+        onReroute(navRoutePath[1])
     }
 
     protected open fun handleRoute(name: String, onReroute: (NavRoute) -> Unit) {
-        routes.resolve(name)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
+        routes.resolve(name, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
             ?: prev?.handleRoute(name, onReroute)
     }
 
     protected open fun handleRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
-        routes.resolve(navRoute)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
+        routes.resolve(navRoute, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
             ?: prev?.handleRoute(navRoute, onReroute)
     }
 
     protected open fun handleRoute(url: Url, onReroute: (NavRoute) -> Unit) {
-        routes.resolve(url)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
+        routes.resolve(url, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
             ?: prev?.handleRoute(url, onReroute)
     }
 
@@ -150,10 +156,7 @@ public open class Router(
      * @param url The url of the route to push onto the stack.
      */
     public fun push(url: Url) {
-        routes.resolve(url)?.let {
-            navRoutePath = navRoutePath.drop()
-            push(navRoutePath.first())
-        }
+        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, ::push) }
     }
 
     /**
@@ -176,10 +179,7 @@ public open class Router(
      * @param url The url of the route to replace the current top route with.
      */
     public fun replaceCurrent(url: Url) {
-        routes.resolve(url)?.let {
-            navRoutePath = navRoutePath.drop()
-            replaceCurrent(navRoutePath.first())
-        }
+        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, ::replaceCurrent) }
     }
 
     /**
@@ -201,10 +201,7 @@ public open class Router(
      * @param url The url of the route to replace the stack with.
      */
     public fun replaceStack(url: Url) {
-        routes.resolve(url)?.let {
-            navRoutePath = navRoutePath.drop()
-            replaceStack(navRoutePath.first())
-        }
+        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, ::replaceStack) }
     }
 
     /**
@@ -243,6 +240,47 @@ public open class Router(
      */
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
 }
+
+/**
+ * Creates and remembers a Router instance.
+ *
+ * The router will be recreated if any of the provided keys change, allowing for
+ * state-dependent router configurations.
+ *
+ * @param routes Optional keys that trigger router recreation when changed.
+ * @param auth Factory function to create the router instance.
+ * @return A remembered router instance.
+ */
+@Composable
+public fun rememberRouter(
+    routes: Routes,
+    auth: Auth,
+    onReroute: Router.(NavRoute) -> Unit = Router::push,
+): Router = remember(auth) { Router(routes, auth, onReroute) }
+
+@Composable
+public fun rememberRouter(
+    routes: Routes,
+    startRoute: String,
+    auth: Auth,
+    onReroute: Router.(NavRoute) -> Unit = Router::push,
+): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
+
+@Composable
+public fun rememberRouter(
+    routes: Routes,
+    startRoute: NavRoute,
+    auth: Auth,
+    onReroute: Router.(NavRoute) -> Unit = Router::push,
+): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
+
+@Composable
+public fun rememberRouter(
+    routes: Routes,
+    startRoute: Url,
+    auth: Auth,
+    onReroute: Router.(NavRoute) -> Unit = Router::push,
+): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
 
 @Composable
 public fun currentRouter(): Router =

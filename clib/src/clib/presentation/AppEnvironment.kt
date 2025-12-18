@@ -61,6 +61,7 @@ import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberNav3Navigator
+import clib.presentation.navigation.rememberRouter
 import clib.presentation.navigation.rememberRoutesState
 import clib.presentation.state.LocalStateStore
 import clib.presentation.state.StateStore
@@ -112,16 +113,15 @@ public fun AppEnvironment(
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
-        remember {
-            if (isRoot && config.ui.startRoute != null) Router(it, config.ui.startRoute)
-            else Router(it)
-        }
+        if (isRoot && config.ui.startRoute != null)
+            rememberRouter(it, config.ui.startRoute, authState.value)
+        else rememberRouter(it, authState.value)
     },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(
             routes = it,
-            authRoute = routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
-            authRedirectRoute = routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute?,
+            authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
+            authRedirectRoute = config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull(),
         )
     },
     onDeepLink: Router.(Url) -> Unit = Router::push,

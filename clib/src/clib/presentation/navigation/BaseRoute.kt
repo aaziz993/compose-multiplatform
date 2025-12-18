@@ -127,20 +127,29 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         )
     }
 
-    internal abstract fun resolve(transform: (BaseRoute) -> NavRoute?): List<NavRoute>?
+    internal abstract fun resolve(
+        auth: Auth,
+        transform: (BaseRoute) -> NavRoute?,
+    ): List<NavRoute>?
 
-    public fun resolve(name: String): List<NavRoute>? =
-        resolve { route -> if (route.name == name) route as NavRoute else null }
+    public fun resolve(
+        name: String,
+        auth: Auth = Auth(),
+    ): List<NavRoute>? = resolve(auth) { route -> if (route.name == name) route as NavRoute else null }
 
-    public fun resolve(navRoute: NavRoute): List<NavRoute>? =
-        resolve { route -> if (route == navRoute.route) route as NavRoute else null }
+    public fun resolve(
+        navRoute: NavRoute,
+        auth: Auth = Auth(),
+    ): List<NavRoute>? = resolve(auth) { route -> if (route == navRoute.route) route as NavRoute else null }
 
-    public fun resolve(url: Url): List<NavRoute>? =
-        resolve { route ->
-            route.urls.firstNotNullOfOrNull {
-                url.toRoute(navRoute.serializer(), it)
-            }
+    public fun resolve(
+        url: Url,
+        auth: Auth = Auth(),
+    ): List<NavRoute>? = resolve(auth) { route ->
+        route.urls.firstNotNullOfOrNull {
+            url.toRoute(navRoute.serializer(), it)
         }
+    }
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -170,7 +179,10 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 
-    final override fun resolve(transform: (BaseRoute) -> NavRoute?): List<NavRoute>? =
+    final override fun resolve(
+        auth: Auth,
+        transform: (BaseRoute) -> NavRoute?,
+    ): List<NavRoute>? =
         transform(this)?.let(::listOf)
 
     override fun toString(): String = name
@@ -301,10 +313,13 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         }
     }.iterator()
 
-    final override fun resolve(transform: (BaseRoute) -> NavRoute?): List<NavRoute>? {
+    final override fun resolve(
+        auth: Auth,
+        transform: (BaseRoute) -> NavRoute?,
+    ): List<NavRoute>? {
         for (route in routes) {
-            if (route !is NavRoute) continue
-            val childPath = route.resolve(transform)
+            if (route !is NavRoute || !route.isAuth(auth)) continue
+            val childPath = route.resolve(auth, transform)
             if (childPath != null) return listOf(this) + childPath
         }
         return null

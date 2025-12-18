@@ -50,6 +50,7 @@ import clib.presentation.event.alert.GlobalAlertDialog
 import clib.presentation.event.snackbar.GlobalSnackbar
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.RoutesState
+import clib.presentation.navigation.rememberRouter
 import clib.presentation.navigation.rememberRoutesState
 import compose_app.generated.resources.close
 import compose_app.generated.resources.confirm
@@ -81,19 +82,15 @@ public fun AppComposable(
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
-        remember {
-            Router(
-                it,
-                if (isRoot) routes.find { route -> route.name == config.ui.startRoute } as NavRoute?
-                else null,
-            )
-        }
+        if (isRoot && config.ui.startRoute != null)
+            rememberRouter(it, config.ui.startRoute!!, authState.value)
+        else rememberRouter(it, authState.value)
     },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(
             routes = it,
-            authRoute = routes.find { route -> route.name == config.ui.authRoute } as NavRoute?,
-            authRedirectRoute = routes.find { route -> route.name == config.ui.authRedirectRoute } as NavRoute?,
+            authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
+            authRedirectRoute = config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull(),
         )
     },
     onDeepLink: Router.(Url) -> Unit = Router::push,
