@@ -112,7 +112,7 @@ public open class Router(
     /**
      * Binds to parent.
      */
-    public fun bind(prev: Router) {
+    internal fun bind(prev: Router) {
         require(this != prev) { "Router can't be parent of itself" }
 
         prev.next = this
@@ -123,9 +123,7 @@ public open class Router(
     /**
      * Unbinds from parent.
      */
-    public fun unbind(prev: Router) {
-        require(this != prev) { "Router can't be parent of itself" }
-
+    internal fun unbind(prev: Router) {
         prev.next = null
         this.prev = null
     }
