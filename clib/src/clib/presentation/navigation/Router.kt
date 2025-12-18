@@ -39,20 +39,17 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  *
  * @param routes The current top level route.
  * @param auth The current authentication state used to determine access control.
- * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  */
 public open class Router(
     override val routes: Routes,
     public val auth: Auth = Auth(),
-    public val onReroute: Router.(NavRoute) -> Unit = Router::push,
 ) : BaseRouter(), Node<Router> {
 
     public constructor(
         routes: Routes,
         startRoute: NavRoute,
         auth: Auth = Auth(),
-        onReroute: Router.(NavRoute) -> Unit = Router::push,
-    ) : this(routes, auth, onReroute) {
+    ) : this(routes, auth) {
         handleRoute(startRoute, ::push)
     }
 
@@ -60,8 +57,7 @@ public open class Router(
         routes: Routes,
         startRoute: Url,
         auth: Auth = Auth(),
-        onReroute: Router.(NavRoute) -> Unit = Router::push,
-    ) : this(routes, auth, onReroute) {
+    ) : this(routes, auth) {
         handleRoute(startRoute, ::push)
     }
 
@@ -93,7 +89,7 @@ public open class Router(
      * Callback to be called if route isn't in the current top level route.
      */
     override val onUnknownRoute: (NavRoute) -> Unit
-        get() = { navRoute -> handleRoute(navRoute) { onReroute(it) } }
+        get() = { navRoute -> handleRoute(navRoute, ::push) }
 
     protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: (NavRoute) -> Unit) {
         this.navRoutePath = navRoutePath.drop(2)
@@ -244,15 +240,13 @@ public open class Router(
  *
  * @param routes The current top level route.
  * @param auth The current authentication state used to determine access control.
- * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  * @return A remembered router instance.
  */
 @Composable
 public fun rememberRouter(
     routes: Routes,
     auth: Auth = LocalAuthState.current.value,
-    onReroute: Router.(NavRoute) -> Unit = Router::push,
-): Router = remember(auth) { Router(routes, auth, onReroute) }
+): Router = remember(auth) { Router(routes, auth) }
 
 /**
  * Creates and remembers a Router instance.
@@ -263,7 +257,6 @@ public fun rememberRouter(
  * @param routes The current top level route.
  * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
  * @param auth The current authentication state used to determine access control.
- * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  * @return A remembered router instance.
  */
 @Composable
@@ -271,8 +264,7 @@ public fun rememberRouter(
     routes: Routes,
     startRoute: NavRoute,
     auth: Auth = LocalAuthState.current.value,
-    onReroute: Router.(NavRoute) -> Unit = Router::push,
-): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
+): Router = remember(auth) { Router(routes, startRoute, auth) }
 
 /**
  * Creates and remembers a Router instance.
@@ -283,7 +275,6 @@ public fun rememberRouter(
  * @param routes The current top level route.
  * @param startRoute Optional route url representing an start route. If provided, back stack will start with that.
  * @param auth The current authentication state used to determine access control.
- * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  * @return A remembered router instance.
  */
 @Composable
@@ -291,8 +282,7 @@ public fun rememberRouter(
     routes: Routes,
     startRoute: Url,
     auth: Auth = LocalAuthState.current.value,
-    onReroute: Router .(NavRoute) -> Unit = Router::push,
-): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
+): Router = remember(auth) { Router(routes, startRoute, auth) }
 
 @Composable
 public fun currentRouter(): Router =
