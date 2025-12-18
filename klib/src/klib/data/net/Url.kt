@@ -86,7 +86,7 @@ public fun Url.matchParameters(url: Url): Map<String, Any>? {
                 val segmentParamName = result.groups[1]!!.value
                 args[segmentParamName] = requestedSegment
             } ?: run {
-                // if it's path arg is not the expected type, its not a match
+                // if it's path arg is not the expected type, its not a match.
                 if (requestedSegment != candidateSegment) return null
             }
         }
