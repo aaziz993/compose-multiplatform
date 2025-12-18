@@ -36,8 +36,10 @@ internal fun Nav3Host(
 ) {
     val parentRouter = LocalRouter.current
 
-    LaunchedEffect(router) {
-        parentRouter?.let(router::bind)
+    DisposableEffect(parentRouter, router) {
+        val prev = parentRouter
+        prev?.let(router::bind)
+        onDispose { prev?.let(router::unbind) }
     }
 
     DisposableEffect(router, navigator) {

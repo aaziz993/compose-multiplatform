@@ -61,7 +61,6 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
-        configure: (BaseRoute) -> Unit,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -163,7 +162,6 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     @Suppress("UNCHECKED_CAST")
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        configure: (BaseRoute) -> Unit,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -209,7 +207,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
-        configure: (BaseRoute) -> Unit,
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
@@ -217,50 +214,42 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         clazz = navRoute,
         metadata = metadata,
     ) {
-        Nav3Host(configure, routerFactory, navigatorFactory)
+        Nav3Host(routerFactory, navigatorFactory)
     }
 
     @Composable
     public fun Nav3Host(
-        configure: (BaseRoute) -> Unit = LocalRoutesState.current.let { routeState -> routeState::configure },
         routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
         navigatorFactory: @Composable (Routes) -> Navigator = { rememberNav3Navigator(it) },
         onDeepLink: Router.(Url) -> Unit = Router::push,
-    ) {
-        configure(this)
+    ): Unit = Nav3Host(
+        routerFactory(this),
+        navigatorFactory(this),
+        onDeepLink,
+    ) { _, backStack, onBack ->
+        // Return a result from one screen to a previous screen using a state-based approach.
+        val resultStore = rememberStateStore()
+        // Return a result from one screen to a previous screen using an event-based approach.
+        val resultEventBus = remember(::EventBus)
 
-        routes.forEach(configure)
-
-        Nav3Host(
-            routerFactory(this),
-            navigatorFactory(this),
-            onDeepLink,
-        ) { _, backStack, onBack ->
-            // Return a result from one screen to a previous screen using a state-based approach.
-            val resultStore = rememberStateStore()
-            // Return a result from one screen to a previous screen using an event-based approach.
-            val resultEventBus = remember { EventBus() }
-
-            CompositionLocalProvider(
-                LocalResultStore provides resultStore,
-                LocalResultEventBus provides resultEventBus,
-            ) {
-                SharedTransitionLayout {
-                    NavDisplay(
-                        backStack,
-                        onBack,
-                        entryProvider {
-                            routes.forEach { route ->
-                                route.entry(
-                                    configure,
-                                    routerFactory,
-                                    navigatorFactory,
-                                    this@SharedTransitionLayout,
-                                )
-                            }
-                        },
-                    )
-                }
+        CompositionLocalProvider(
+            LocalResultStore provides resultStore,
+            LocalResultEventBus provides resultEventBus,
+        ) {
+            SharedTransitionLayout {
+                NavDisplay(
+                    backStack,
+                    onBack,
+                    entryProvider {
+                        routes.forEach { route ->
+                            route.entry(
+                                routerFactory,
+                                navigatorFactory,
+                                this@SharedTransitionLayout,
+                            )
+                        }
+                    },
+                )
             }
         }
     }

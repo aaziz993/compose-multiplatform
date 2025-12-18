@@ -191,8 +191,7 @@ public data object Phone : KoinRoute<Phone>(), NavRoute {
         val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
         val state by viewModel.state.collectAsStateWithLifecycle()
         val country = Country.getCountries().find { country -> country.dial == state.countryCode }
-            ?: (if (!LocalInspectionMode.current) Country.current else null)
-            ?: Country.forCode("US")
+            ?: (if (!LocalInspectionMode.current) Country.current else null) ?: Country.forCode("US")
 
         PhoneScreen(
             Modifier.fillMaxSize().padding(horizontal = 16.dp),

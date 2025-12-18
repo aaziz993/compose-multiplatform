@@ -94,23 +94,23 @@ public open class Router(
     override val onUnknownRoute: (NavRoute) -> Unit
         get() = { navRoute -> handleRoute(navRoute) { onReroute(it) } }
 
-    protected fun handleRoutePath(navRoutePath: List<NavRoute>, onReroute: (NavRoute) -> Unit) {
+    protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: (NavRoute) -> Unit) {
         this.navRoutePath = navRoutePath.drop(2)
-        onReroute(navRoutePath[1])
+        handler(navRoutePath[1])
     }
 
-    protected fun handleRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
-        routes.resolve(navRoute, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
-            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.handleRoute(navRoute, onReroute)
+    protected fun handleRoute(navRoute: NavRoute, handler: (NavRoute) -> Unit) {
+        routes.resolve(navRoute, auth)?.let { navRoute -> handleRoutePath(navRoute, handler) }
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.handleRoute(navRoute, handler)
     }
 
-    protected fun handleRoute(url: Url, onReroute: (NavRoute) -> Unit) {
-        routes.resolve(url, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
-            ?: checkNotNull(prev){ "Unknown route '$url'" }.handleRoute(url, onReroute)
+    protected fun handleRoute(url: Url, handler: (NavRoute) -> Unit) {
+        routes.resolve(url, auth)?.let { navRoute -> handleRoutePath(navRoute, handler) }
+            ?: checkNotNull(prev) { "Unknown route '$url'" }.handleRoute(url, handler)
     }
 
     /**
-     * Creates parent child routers relationship.
+     * Binds parent to child routers.
      */
     public fun bind(prev: Router) {
         require(this != prev) { "Router can't be parent of itself" }
@@ -118,6 +118,17 @@ public open class Router(
         prev.next = this
         this.prev = prev
         navRoutePath = prev.navRoutePath.drop()
+    }
+
+    /**
+     * Unbind parent to child routers.
+     */
+    public fun unbind(prev: Router) {
+        require(this != prev) { "Router can't be parent of itself" }
+
+        prev.next = null
+        this.prev = null
+        navRoutePath = emptyList()
     }
 
     /**

@@ -135,6 +135,10 @@ public fun AppEnvironment(
 
     val localization by rememberLocalization(localeState, localeService)
 
+    remember(routesState) {
+        routes.forEach(routesState::configure)
+    }
+
     CompositionLocalProvider(
         LocalConfig provides config,
         LocalCache provides cache,
@@ -223,7 +227,7 @@ public fun AppEnvironment(
                 theme.typography,
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    routes.Nav3Host(routesState::configure, routerFactory, navigatorFactory)
+                    routes.Nav3Host(routerFactory, navigatorFactory)
                     content()
                 }
             }
