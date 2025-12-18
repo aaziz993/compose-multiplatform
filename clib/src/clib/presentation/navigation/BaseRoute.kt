@@ -227,92 +227,83 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         navigatorFactory(this),
         onDeepLink,
     ) { _, backStack, onBack ->
-        // Return a result from one screen to a previous screen using a state-based approach.
-        val resultStore = rememberStateStore()
-        // Return a result from one screen to a previous screen using an event-based approach.
-        val resultEventBus = remember(::EventBus)
-
-        CompositionLocalProvider(
-            LocalResultStore provides resultStore,
-            LocalResultEventBus provides resultEventBus,
-        ) {
-            SharedTransitionLayout {
-                NavDisplay(
-                    backStack,
-                    onBack,
-                    entryProvider {
-                        routes.forEach { route ->
-                            route.entry(
-                                routerFactory,
-                                navigatorFactory,
-                                this@SharedTransitionLayout,
-                            )
-                        }
-                    },
-                )
-            }
-        }
-    }
-
-    @Composable
-    public fun isNavigationItems(auth: Auth): Boolean = routes.any { route -> route.isNavigationItem(auth) }
-
-    @Composable
-    public fun items(
-        enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
-        alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
-        auth: Auth = LocalAuthState.current.value,
-        router: Router = currentRouter(),
-        onClick: Router.(NavRoute) -> Unit = Router::push,
-    ): NavigationSuiteScope.() -> Unit {
-        val items = routes.map { route ->
-            route.item(
-                this@Routes.enabled && enabled(route),
-                this@Routes.alwaysShowLabel && alwaysShowLabel(route),
-                auth,
-                router,
-                onClick,
+        SharedTransitionLayout {
+            NavDisplay(
+                backStack,
+                onBack,
+                entryProvider {
+                    routes.forEach { route ->
+                        route.entry(
+                            routerFactory,
+                            navigatorFactory,
+                            this@SharedTransitionLayout,
+                        )
+                    }
+                },
             )
         }
-        return { items.forEach { item -> item() } }
     }
+}
 
-    @Composable
-    context(scope: RowScope)
-    public fun NavigationBarItems(
-        enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
-        alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
-        auth: Auth = LocalAuthState.current.value,
-        router: Router = currentRouter(),
-        onClick: Router.(NavRoute) -> Unit = Router::push,
-    ): Unit = routes.forEach { route ->
-        route.NavigationBarItem(
-            this.enabled && enabled(route),
-            this.alwaysShowLabel && alwaysShowLabel(route),
+@Composable
+public fun isNavigationItems(auth: Auth): Boolean = routes.any { route -> route.isNavigationItem(auth) }
+
+@Composable
+public fun items(
+    enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
+    alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
+    auth: Auth = LocalAuthState.current.value,
+    router: Router = currentRouter(),
+    onClick: Router.(NavRoute) -> Unit = Router::push,
+): NavigationSuiteScope.() -> Unit {
+    val items = routes.map { route ->
+        route.item(
+            this@Routes.enabled && enabled(route),
+            this@Routes.alwaysShowLabel && alwaysShowLabel(route),
             auth,
             router,
             onClick,
         )
     }
+    return { items.forEach { item -> item() } }
+}
 
-    final override fun iterator(): Iterator<BaseRoute> = sequence {
-        routes.forEach { route ->
-            yield(route)
-            yieldAll(route)
-        }
-    }.iterator()
+@Composable
+context(scope: RowScope)
+public fun NavigationBarItems(
+    enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
+    alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
+    auth: Auth = LocalAuthState.current.value,
+    router: Router = currentRouter(),
+    onClick: Router.(NavRoute) -> Unit = Router::push,
+): Unit = routes.forEach { route ->
+    route.NavigationBarItem(
+        this.enabled && enabled(route),
+        this.alwaysShowLabel && alwaysShowLabel(route),
+        auth,
+        router,
+        onClick,
+    )
+}
 
-    final override fun resolve(
-        auth: Auth,
-        transform: (BaseRoute) -> NavRoute?,
-    ): List<NavRoute>? {
-        for (route in routes) {
-            if (route !is NavRoute || !route.isAuth(auth)) continue
-            val childPath = route.resolve(auth, transform)
-            if (childPath != null) return listOf(this) + childPath
-        }
-        return null
+final override fun iterator(): Iterator<BaseRoute> = sequence {
+    routes.forEach { route ->
+        yield(route)
+        yieldAll(route)
     }
+}.iterator()
 
-    override fun toString(): String = "$name${routes.map(BaseRoute::name)}"
+final override fun resolve(
+    auth: Auth,
+    transform: (BaseRoute) -> NavRoute?,
+): List<NavRoute>? {
+    for (route in routes) {
+        if (route !is NavRoute || !route.isAuth(auth)) continue
+        val childPath = route.resolve(auth, transform)
+        if (childPath != null) return listOf(this) + childPath
+    }
+    return null
+}
+
+override fun toString(): String = "$name${routes.map(BaseRoute::name)}"
 }

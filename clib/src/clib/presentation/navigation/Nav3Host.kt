@@ -3,9 +3,12 @@ package clib.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import clib.data.net.GlobalDeepLinkEvents
+import clib.presentation.event.EventBus
+import clib.presentation.navigation.result.LocalResultEventBus
+import clib.presentation.navigation.result.LocalResultStore
+import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 
 /**
@@ -34,7 +37,12 @@ internal fun Nav3Host(
         onBack: () -> Unit,
     ) -> Unit,
 ) {
+
     val parentRouter = LocalRouter.current
+    // Return a result from one screen to a previous screen using a state-based approach.
+    val resultStore = rememberStateStore()
+    // Return a result from one screen to a previous screen using an event-based approach.
+    val resultEventBus = remember(::EventBus)
 
     DisposableEffect(parentRouter, router) {
         val prev = parentRouter
@@ -59,7 +67,11 @@ internal fun Nav3Host(
 
     val interceptionEnabled = parentRouter != null
 
-    CompositionLocalProvider(LocalRouter provides router) {
+    CompositionLocalProvider(
+        LocalRouter provides router,
+        LocalResultStore provides resultStore,
+        LocalResultEventBus provides resultEventBus,
+    ) {
         BackInterceptionProvider(interceptionEnabled) {
             content(router, navigator.backStack, onBack)
         }
