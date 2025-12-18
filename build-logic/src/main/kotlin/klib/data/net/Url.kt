@@ -9,7 +9,6 @@ import io.ktor.http.path
 import io.ktor.util.toMap
 import klib.data.net.http.annotation.UrlParam
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.surround
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.getElementDescriptor
@@ -69,10 +68,7 @@ public fun String.decodeHttpUrl(): String = URLBuilder().apply { path(this@decod
  * @returns a [Map] of parameters if this matches the pattern, returns null otherwise.
  */
 public fun Url.matchParameters(url: Url): Map<String, Any>? {
-    if (
-        protocol.name != url.protocol.name ||
-        rawSegments.size != url.rawSegments.size
-    ) return null
+    if (protocol.name != url.protocol.name || rawSegments.size != url.rawSegments.size) return null
 
     // exact match (url does not contain any arguments).
     if (this == url) return mapOf()
@@ -81,10 +77,9 @@ public fun Url.matchParameters(url: Url): Map<String, Any>? {
 
     // match the path
     rawSegments
-        .asSequence()
         // zip to compare the two objects side by side, order matters here so we
         // need to make sure the compared segments are at the same position within the url
-        .zip(url.rawSegments.asSequence())
+        .zip(url.rawSegments)
         .forEach { (requestedSegment, candidateSegment) ->
             // if the potential match expects a path arg for this segment, try to parse the.
             // requested segment into the expected type.
@@ -97,11 +92,7 @@ public fun Url.matchParameters(url: Url): Map<String, Any>? {
             }
         }
 
-    val urlPatternParameterNames = url.parameters.names().map { name ->
-        name.removeSurrounding("{", "}")
-    }
-
-    args += parameters.toMap().filter { (paramName, _) -> paramName in urlPatternParameterNames }
+    args += parameters.toMap()
 
     // provide the map of arg names to arg values.
     return args
@@ -131,7 +122,7 @@ public fun <T : Any> KSerializer<T>.url(basePath: String = ""): Url {
     }
 
     return Url(
-        "${basePath.addSuffixIfNotEmpty("/")}${descriptor.serialName}${
+        "$basePath${descriptor.serialName}${
             pathParams.joinToString("/") { param -> param.surround("{", "}") }
                 .addPrefixIfNotEmpty("/")
         }${
@@ -153,8 +144,7 @@ public fun <T : Any> KSerializer<T>.url(basePath: String = ""): Url {
  *
  * @return [Url] representing the url pattern for type [T].
  */
-public inline fun <reified T : Any> url(basePath: String = ""): Url =
-    T::class.serializer().url(basePath)
+public inline fun <reified T : Any> url(basePath: String = ""): Url = T::class.serializer().url(basePath)
 
 /**
  * Attempts to decode the current [Url] into a strongly-typed route object.

@@ -67,7 +67,7 @@ public fun String.decodeHttpUrl(): String = URLBuilder().apply { path(this@decod
  * @returns a [Map] of parameters if this matches the pattern, returns null otherwise.
  */
 public fun Url.matchParameters(url: Url): Map<String, Any>? {
-    if (rawSegments.size != url.rawSegments.size) return null
+    if (protocol.name != url.protocol.name || rawSegments.size != url.rawSegments.size) return null
 
     // exact match (url does not contain any arguments).
     if (this == url) return mapOf()
