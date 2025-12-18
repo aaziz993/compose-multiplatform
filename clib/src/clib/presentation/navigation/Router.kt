@@ -11,7 +11,6 @@ import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.type.collections.linkedlist.model.Node
 import klib.data.type.collections.list.drop
-import kotlin.collections.first
 
 /**
  * CompositionLocal that provides access to the parent Router in nested navigation hierarchies.
@@ -38,6 +37,7 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  * This class is designed to be used as the primary navigation interface in applications.
  *
  * @param routes The current top level route.
+ * @param auth The current authentication state used to determine access control.
  * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  */
 public open class Router(
@@ -45,15 +45,6 @@ public open class Router(
     public val auth: Auth = Auth(),
     public val onReroute: Router.(NavRoute) -> Unit = Router::push,
 ) : BaseRouter(), Node<Router> {
-
-    public constructor(
-        routes: Routes,
-        startRoute: String,
-        auth: Auth = Auth(),
-        onReroute: Router.(NavRoute) -> Unit = Router::push,
-    ) : this(routes, auth, onReroute) {
-        handleRoute(startRoute, ::push)
-    }
 
     public constructor(
         routes: Routes,
@@ -103,22 +94,17 @@ public open class Router(
     override val onUnknownRoute: (NavRoute) -> Unit
         get() = { navRoute -> handleRoute(navRoute) { onReroute(it) } }
 
-    protected open fun handleRoutePath(navRoutePath: List<NavRoute>, onReroute: (NavRoute) -> Unit) {
+    protected fun handleRoutePath(navRoutePath: List<NavRoute>, onReroute: (NavRoute) -> Unit) {
         this.navRoutePath = navRoutePath.drop(2)
         onReroute(navRoutePath[1])
     }
 
-    protected open fun handleRoute(name: String, onReroute: (NavRoute) -> Unit) {
-        routes.resolve(name, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
-            ?: prev?.handleRoute(name, onReroute)
-    }
-
-    protected open fun handleRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
+    protected fun handleRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
         routes.resolve(navRoute, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
             ?: prev?.handleRoute(navRoute, onReroute)
     }
 
-    protected open fun handleRoute(url: Url, onReroute: (NavRoute) -> Unit) {
+    protected fun handleRoute(url: Url, onReroute: (NavRoute) -> Unit) {
         routes.resolve(url, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
             ?: prev?.handleRoute(url, onReroute)
     }
@@ -247,39 +233,56 @@ public open class Router(
  * The router will be recreated if any of the provided keys change, allowing for
  * state-dependent router configurations.
  *
- * @param routes Optional keys that trigger router recreation when changed.
- * @param auth Factory function to create the router instance.
+ * @param routes The current top level route.
+ * @param auth The current authentication state used to determine access control.
+ * @param onReroute Callback to handle reroute if route isn't in the current top level route.
  * @return A remembered router instance.
  */
 @Composable
 public fun rememberRouter(
     routes: Routes,
-    auth: Auth,
+    auth: Auth = Auth(),
     onReroute: Router.(NavRoute) -> Unit = Router::push,
 ): Router = remember(auth) { Router(routes, auth, onReroute) }
 
-@Composable
-public fun rememberRouter(
-    routes: Routes,
-    startRoute: String,
-    auth: Auth,
-    onReroute: Router.(NavRoute) -> Unit = Router::push,
-): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
-
+/**
+ * Creates and remembers a Router instance.
+ *
+ * The router will be recreated if any of the provided keys change, allowing for
+ * state-dependent router configurations.
+ *
+ * @param routes The current top level route.
+ * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
+ * @param auth The current authentication state used to determine access control.
+ * @param onReroute Callback to handle reroute if route isn't in the current top level route.
+ * @return A remembered router instance.
+ */
 @Composable
 public fun rememberRouter(
     routes: Routes,
     startRoute: NavRoute,
-    auth: Auth,
+    auth: Auth = Auth(),
     onReroute: Router.(NavRoute) -> Unit = Router::push,
 ): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
 
+/**
+ * Creates and remembers a Router instance.
+ *
+ * The router will be recreated if any of the provided keys change, allowing for
+ * state-dependent router configurations.
+ *
+ * @param routes The current top level route.
+ * @param startRoute Optional route url representing an start route. If provided, back stack will start with that.
+ * @param auth The current authentication state used to determine access control.
+ * @param onReroute Callback to handle reroute if route isn't in the current top level route.
+ * @return A remembered router instance.
+ */
 @Composable
 public fun rememberRouter(
     routes: Routes,
     startRoute: Url,
-    auth: Auth,
-    onReroute: Router.(NavRoute) -> Unit = Router::push,
+    auth: Auth = Auth(),
+    onReroute: Router .(NavRoute) -> Unit = Router::push,
 ): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
 
 @Composable
