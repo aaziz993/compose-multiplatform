@@ -33,8 +33,6 @@ ui:
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
-    news:
-      authResource: { }
     articles:
       additionalMetadata:
         topAppBarNavSuite: true
@@ -77,8 +75,6 @@ ui:
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
-    settings:
-      authResource: { }
     settings_main:
       additionalMetadata:
         topAppBarNavSuite: true
@@ -107,6 +103,3 @@ ui:
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
-
-
-

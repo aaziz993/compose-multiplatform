@@ -110,7 +110,7 @@ public open class Router(
     }
 
     /**
-     * Binds parent to child routers.
+     * Binds to parent.
      */
     public fun bind(prev: Router) {
         require(this != prev) { "Router can't be parent of itself" }
@@ -121,14 +121,13 @@ public open class Router(
     }
 
     /**
-     * Unbind parent to child routers.
+     * Unbinds from parent.
      */
     public fun unbind(prev: Router) {
         require(this != prev) { "Router can't be parent of itself" }
 
         prev.next = null
         this.prev = null
-        navRoutePath = emptyList()
     }
 
     /**

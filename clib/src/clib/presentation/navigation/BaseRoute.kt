@@ -126,14 +126,11 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     ): List<NavRoute>?
 
     public fun resolve(
-        name: String,
-        auth: Auth = Auth(),
-    ): List<NavRoute>? = resolve(auth) { route -> if (route.name == name) route as NavRoute else null }
-
-    public fun resolve(
         navRoute: NavRoute,
         auth: Auth = Auth(),
-    ): List<NavRoute>? = resolve(auth) { route -> if (route == navRoute.route) route as NavRoute else null }
+    ): List<NavRoute>? = resolve(auth) { route ->
+        if (route == navRoute.route) route as NavRoute else null
+    }
 
     public fun resolve(
         url: Url,
