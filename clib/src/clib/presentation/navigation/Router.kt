@@ -42,7 +42,7 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  */
 public open class Router(
     override val routes: Routes,
-    public val auth: Auth = Auth(),
+    public val auth: Auth,
 ) : BaseRouter(), Node<Router> {
 
     public constructor(

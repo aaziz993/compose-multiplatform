@@ -162,7 +162,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceCurrent,
     ) {
         require(action.route.route in routes.routes) {
-            "Route '${action.route.route}' isn't in '$routes'"
+            "Replace current route '${action.route.route}' isn't in '$routes'"
         }
         if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
     }
@@ -180,7 +180,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceStack,
     ) {
         require(action.routes.all { navRoute -> navRoute.route in routes.routes }) {
-            "Routes '${action.routes.map(NavRoute::route)}' isn't in '$routes'"
+            "Replace stack routes '${action.routes.map(NavRoute::route)}' isn't in '$routes'"
         }
         snapshot.replaceWith(action.routes)
     }
