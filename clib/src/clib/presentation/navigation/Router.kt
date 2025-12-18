@@ -50,7 +50,7 @@ public open class Router(
         startRoute: NavRoute,
         auth: Auth = Auth(),
     ) : this(routes, auth) {
-        handleRoute(startRoute, ::push)
+        handleRoute(startRoute, Router::push)
     }
 
     public constructor(
@@ -58,7 +58,7 @@ public open class Router(
         startRoute: Url,
         auth: Auth = Auth(),
     ) : this(routes, auth) {
-        handleRoute(startRoute, ::push)
+        handleRoute(startRoute, Router::push)
     }
 
     /**
@@ -89,19 +89,19 @@ public open class Router(
      * Callback to be called if route isn't in the current top level route.
      */
     override val onUnknownRoute: (NavRoute) -> Unit
-        get() = { navRoute -> handleRoute(navRoute, ::push) }
+        get() = { navRoute -> handleRoute(navRoute, Router::push) }
 
-    protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: (NavRoute) -> Unit) {
+    protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
         this.navRoutePath = navRoutePath.drop(2)
         handler(navRoutePath[1])
     }
 
-    protected fun handleRoute(navRoute: NavRoute, handler: (NavRoute) -> Unit) {
+    protected fun handleRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit) {
         routes.resolve(navRoute, auth)?.let { navRoute -> handleRoutePath(navRoute, handler) }
             ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.handleRoute(navRoute, handler)
     }
 
-    protected fun handleRoute(url: Url, handler: (NavRoute) -> Unit) {
+    protected fun handleRoute(url: Url, handler: Router.(NavRoute) -> Unit) {
         routes.resolve(url, auth)?.let { navRoute -> handleRoutePath(navRoute, handler) }
             ?: checkNotNull(prev) { "Unknown route '$url'" }.handleRoute(url, handler)
     }
@@ -147,7 +147,7 @@ public open class Router(
      * @param url The url of the route to push onto the stack.
      */
     public fun push(url: Url) {
-        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, ::push) }
+        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, Router::push) }
     }
 
     /**
@@ -170,7 +170,7 @@ public open class Router(
      * @param url The url of the route to replace the current top route with.
      */
     public fun replaceCurrent(url: Url) {
-        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, ::replaceCurrent) }
+        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, Router::replaceCurrent) }
     }
 
     /**
@@ -192,7 +192,7 @@ public open class Router(
      * @param url The url of the route to replace the stack with.
      */
     public fun replaceStack(url: Url) {
-        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, ::replaceStack) }
+        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, Router::replaceStack) }
     }
 
     /**
