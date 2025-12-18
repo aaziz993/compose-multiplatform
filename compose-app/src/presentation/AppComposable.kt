@@ -81,9 +81,8 @@ public fun AppComposable(
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
-        if (isRoot && config.ui.startRoute != null)
-            rememberRouter(it, config.ui.startRoute!!, authState.value)
-        else rememberRouter(it, authState.value)
+        if (isRoot && config.ui.startRoute != null) rememberRouter(it, config.ui.startRoute!!)
+        else rememberRouter(it)
     },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(

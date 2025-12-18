@@ -164,14 +164,11 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
         routerFactory: @Composable (Routes) -> Router,
         navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
-    ) {
-
-        scope.addEntryProvider(
-            clazz = navRoute,
-            metadata = metadata,
-        ) { navRoute ->
-            Content(navRoute as T, sharedTransitionScope)
-        }
+    ): Unit = scope.addEntryProvider(
+        clazz = navRoute,
+        metadata = metadata,
+    ) { navRoute ->
+        Content(navRoute as T, sharedTransitionScope)
     }
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
@@ -300,12 +297,11 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? {
-        if (isAuth(auth))
-            for (route in routes) {
-                if (route !is NavRoute) continue
-                val childPath = route.resolve(auth, transform)
-                if (childPath != null) return listOf(this) + childPath
-            }
+        for (route in routes) {
+            if (route !is NavRoute) continue
+            val childPath = route.resolve(auth, transform)
+            if (childPath != null) return listOf(this) + childPath
+        }
         return null
     }
 

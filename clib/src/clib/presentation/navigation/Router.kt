@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import clib.presentation.auth.LocalAuthState
 import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.type.collections.linkedlist.model.Node
@@ -249,7 +250,7 @@ public open class Router(
 @Composable
 public fun rememberRouter(
     routes: Routes,
-    auth: Auth = Auth(),
+    auth: Auth = LocalAuthState.current.value,
     onReroute: Router.(NavRoute) -> Unit = Router::push,
 ): Router = remember(auth) { Router(routes, auth, onReroute) }
 
@@ -269,7 +270,7 @@ public fun rememberRouter(
 public fun rememberRouter(
     routes: Routes,
     startRoute: NavRoute,
-    auth: Auth = Auth(),
+    auth: Auth = LocalAuthState.current.value,
     onReroute: Router.(NavRoute) -> Unit = Router::push,
 ): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
 
@@ -289,7 +290,7 @@ public fun rememberRouter(
 public fun rememberRouter(
     routes: Routes,
     startRoute: Url,
-    auth: Auth = Auth(),
+    auth: Auth = LocalAuthState.current.value,
     onReroute: Router .(NavRoute) -> Unit = Router::push,
 ): Router = remember(auth) { Router(routes, startRoute, auth, onReroute) }
 

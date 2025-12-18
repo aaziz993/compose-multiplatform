@@ -55,7 +55,6 @@ import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
 import clib.presentation.locale.rememberLocalization
 import clib.presentation.navigation.LocalRoutesState
-import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
@@ -113,9 +112,8 @@ public fun AppEnvironment(
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
-        if (isRoot && config.ui.startRoute != null)
-            rememberRouter(it, config.ui.startRoute, authState.value)
-        else rememberRouter(it, authState.value)
+        if (isRoot && config.ui.startRoute != null) rememberRouter(it, config.ui.startRoute)
+        else rememberRouter(it)
     },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(
