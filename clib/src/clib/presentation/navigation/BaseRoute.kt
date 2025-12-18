@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -17,10 +16,6 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.SelectableItem
-import clib.presentation.event.EventBus
-import clib.presentation.navigation.result.LocalResultEventBus
-import clib.presentation.navigation.result.LocalResultStore
-import clib.presentation.state.rememberStateStore
 import io.ktor.http.Url
 import klib.data.auth.model.Auth
 import klib.data.auth.model.AuthResource
@@ -38,7 +33,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     private var _urls: List<Url>? = null
     public var urls: List<Url>
-        get() = _urls ?: listOf(navRoute.serializer().url()).also { _urls = it }
+        get() = _urls ?: listOf(navRoute.serializer().url("http://")).also { _urls = it }
         set(value) {
             _urls = value
         }
@@ -180,8 +175,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     final override fun resolve(
         auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
-    ): List<NavRoute>? =
-        transform(this)?.let(::listOf)
+    ): List<NavRoute>? = if (isAuth(auth)) transform(this)?.let(::listOf) else null
 
     override fun toString(): String = name
 }
@@ -243,67 +237,66 @@ public abstract class Routes() : BaseRoute(), NavRoute {
             )
         }
     }
-}
 
-@Composable
-public fun isNavigationItems(auth: Auth): Boolean = routes.any { route -> route.isNavigationItem(auth) }
+    @Composable
+    public fun isNavigationItems(auth: Auth): Boolean = routes.any { route -> route.isNavigationItem(auth) }
 
-@Composable
-public fun items(
-    enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
-    alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
-    auth: Auth = LocalAuthState.current.value,
-    router: Router = currentRouter(),
-    onClick: Router.(NavRoute) -> Unit = Router::push,
-): NavigationSuiteScope.() -> Unit {
-    val items = routes.map { route ->
-        route.item(
-            this@Routes.enabled && enabled(route),
-            this@Routes.alwaysShowLabel && alwaysShowLabel(route),
+    @Composable
+    public fun items(
+        enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
+        alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
+        auth: Auth = LocalAuthState.current.value,
+        router: Router = currentRouter(),
+        onClick: Router.(NavRoute) -> Unit = Router::push,
+    ): NavigationSuiteScope.() -> Unit {
+        val items = routes.map { route ->
+            route.item(
+                this@Routes.enabled && enabled(route),
+                this@Routes.alwaysShowLabel && alwaysShowLabel(route),
+                auth,
+                router,
+                onClick,
+            )
+        }
+        return { items.forEach { item -> item() } }
+    }
+
+    @Composable
+    context(scope: RowScope)
+    public fun NavigationBarItems(
+        enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
+        alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
+        auth: Auth = LocalAuthState.current.value,
+        router: Router = currentRouter(),
+        onClick: Router.(NavRoute) -> Unit = Router::push,
+    ): Unit = routes.forEach { route ->
+        route.NavigationBarItem(
+            this.enabled && enabled(route),
+            this.alwaysShowLabel && alwaysShowLabel(route),
             auth,
             router,
             onClick,
         )
     }
-    return { items.forEach { item -> item() } }
-}
 
-@Composable
-context(scope: RowScope)
-public fun NavigationBarItems(
-    enabled: (BaseRoute) -> Boolean = BaseRoute::enabled,
-    alwaysShowLabel: (BaseRoute) -> Boolean = BaseRoute::alwaysShowLabel,
-    auth: Auth = LocalAuthState.current.value,
-    router: Router = currentRouter(),
-    onClick: Router.(NavRoute) -> Unit = Router::push,
-): Unit = routes.forEach { route ->
-    route.NavigationBarItem(
-        this.enabled && enabled(route),
-        this.alwaysShowLabel && alwaysShowLabel(route),
-        auth,
-        router,
-        onClick,
-    )
-}
+    final override fun iterator(): Iterator<BaseRoute> = sequence {
+        routes.forEach { route ->
+            yield(route)
+            yieldAll(route)
+        }
+    }.iterator()
 
-final override fun iterator(): Iterator<BaseRoute> = sequence {
-    routes.forEach { route ->
-        yield(route)
-        yieldAll(route)
+    final override fun resolve(
+        auth: Auth,
+        transform: (BaseRoute) -> NavRoute?,
+    ): List<NavRoute>? {
+        for (route in routes) {
+            if (route !is NavRoute || !route.isAuth(auth)) continue
+            val childPath = route.resolve(auth, transform)
+            if (childPath != null) return listOf(this) + childPath
+        }
+        return null
     }
-}.iterator()
 
-final override fun resolve(
-    auth: Auth,
-    transform: (BaseRoute) -> NavRoute?,
-): List<NavRoute>? {
-    for (route in routes) {
-        if (route !is NavRoute || !route.isAuth(auth)) continue
-        val childPath = route.resolve(auth, transform)
-        if (childPath != null) return listOf(this) + childPath
-    }
-    return null
-}
-
-override fun toString(): String = "$name${routes.map(BaseRoute::name)}"
+    override fun toString(): String = "$name${routes.map(BaseRoute::name)}"
 }
