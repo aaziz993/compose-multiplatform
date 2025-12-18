@@ -37,12 +37,11 @@ internal fun Nav3Host(
         onBack: () -> Unit,
     ) -> Unit,
 ) {
-
-    val parentRouter = LocalRouter.current
     // Return a result from one screen to a previous screen using a state-based approach.
     val resultStore = rememberStateStore()
     // Return a result from one screen to a previous screen using an event-based approach.
     val resultEventBus = remember(::EventBus)
+    val parentRouter = LocalRouter.current
 
     DisposableEffect(parentRouter, router) {
         val prev = parentRouter

@@ -46,13 +46,12 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public var alwaysShowLabel: Boolean = true
     public open val selectableItem: (@Composable (name: String) -> SelectableItem)? = null
 
+    /**
+     * Indicates the route is part of authentication/authorizations flow.
+     */
     public var isAuth: Boolean = false
 
-    public var authResource: AuthResource? = null
-
-    public open fun isAuth(auth: Auth): Boolean =
-        (if (auth.user == null) true else !isAuth) &&
-            authResource?.validate(auth.provider, auth.user) != false
+    public open fun isAuth(auth: Auth): Boolean = if (auth.user == null) true else !isAuth
 
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
@@ -121,7 +120,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         )
     }
 
-    internal abstract fun resolve(
+    public abstract fun resolve(
         auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>?
@@ -147,6 +146,14 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
+
+    /**
+     * Sets the route need authentication/authorization.
+     */
+    public var authResource: AuthResource? = null
+
+    final override fun isAuth(auth: Auth): Boolean =
+        super.isAuth(auth) && authResource?.validate(auth.provider, auth.user) != false
 
     @Composable
     protected abstract fun Content(
@@ -175,7 +182,10 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     final override fun resolve(
         auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
-    ): List<NavRoute>? = if (isAuth(auth)) transform(this)?.let(::listOf) else null
+    ): List<NavRoute>? =
+        if (isAuth(auth))
+            transform(this)?.let(::listOf)
+        else null
 
     override fun toString(): String = name
 }
@@ -183,6 +193,9 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 public abstract class Routes() : BaseRoute(), NavRoute {
 
     public abstract val routes: List<BaseRoute>
+
+    final override fun isAuth(auth: Auth): Boolean =
+        super.isAuth(auth) && routes.any { route -> route.isAuth(auth) }
 
     @Composable
     protected open fun NavDisplay(
@@ -290,11 +303,12 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? {
-        for (route in routes) {
-            if (route !is NavRoute || !route.isAuth(auth)) continue
-            val childPath = route.resolve(auth, transform)
-            if (childPath != null) return listOf(this) + childPath
-        }
+        if (isAuth(auth))
+            for (route in routes) {
+                if (route !is NavRoute) continue
+                val childPath = route.resolve(auth, transform)
+                if (childPath != null) return listOf(this) + childPath
+            }
         return null
     }
 

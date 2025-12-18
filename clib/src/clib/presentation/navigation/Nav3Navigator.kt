@@ -20,9 +20,9 @@ import kotlinx.coroutines.yield
  *
  * @param routes The top level route associated with navigator.
  * @param backStack The Navigation 3 back stack to control.
+ * @param auth The current authentication state used to determine access control.
  * @param authRoute Optional route representing an authentication screen. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
- * @param auth The current authentication state used to determine access control.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
  */
 public open class Nav3Navigator(
@@ -304,9 +304,9 @@ public open class Nav3Navigator(
  *
  * @param routes The top level route associated with navigator.
  * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
+ * @param auth The current authentication state used to determine access control.
  * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
- * @param auth The current authentication state used to determine access control.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
  * @return A remembered navigator instance.
  */
