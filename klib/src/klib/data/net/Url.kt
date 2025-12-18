@@ -19,11 +19,11 @@ import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.serializer
 
-public val Regex.Companion.HTTP_PATTERN: String
+public val Regex.Companion.HTTP_PROTOCOL_PATTERN: String
     get() = "^https?://.*"
 
-public val Regex.Companion.HTTP: Regex
-    get() = HTTP_PATTERN.toRegex()
+public val Regex.Companion.HTTP_PROTOCOL: Regex
+    get() = HTTP_PROTOCOL_PATTERN.toRegex()
 
 public val Regex.Companion.GITHUB_HTTP_PATTERN: String
     get() = """https?://(www\.)?github\.com/.*"""
@@ -40,7 +40,7 @@ public val Regex.Companion.PATH_PARAM_REGEX: String
 public val Regex.Companion.PATH_PARAM: Regex
     get() = PATH_PARAM_REGEX.toRegex()
 
-public fun String.isHttpUrl(): Boolean = matches(Regex.HTTP)
+public fun String.isHttpUrl(): Boolean = matches(Regex.HTTP_PROTOCOL)
 
 public fun String.isGithubUrl(): Boolean = matches(Regex.GITHUB_HTTP)
 

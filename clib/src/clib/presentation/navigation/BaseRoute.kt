@@ -33,7 +33,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     private var _urls: List<Url>? = null
     public var urls: List<Url>
-        get() = _urls ?: listOf(navRoute.serializer().url("http://")).also { _urls = it }
+        get() = _urls ?: listOf(navRoute.serializer().url()).also { _urls = it }
         set(value) {
             _urls = value
         }
