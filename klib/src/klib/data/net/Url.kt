@@ -76,10 +76,9 @@ public fun Url.matchParameters(url: Url): Map<String, Any>? {
 
     // match the path
     rawSegments
-        .asSequence()
         // zip to compare the two objects side by side, order matters here so we
         // need to make sure the compared segments are at the same position within the url
-        .zip(url.rawSegments.asSequence())
+        .zip(url.rawSegments)
         .forEach { (requestedSegment, candidateSegment) ->
             // if the potential match expects a path arg for this segment, try to parse the.
             // requested segment into the expected type.
@@ -92,11 +91,7 @@ public fun Url.matchParameters(url: Url): Map<String, Any>? {
             }
         }
 
-    val urlPatternParameterNames = url.parameters.names().map { name ->
-        name.removeSurrounding("{", "}")
-    }
-
-    args += parameters.toMap().filter { (paramName, _) -> paramName in urlPatternParameterNames }
+    args += parameters.toMap()
 
     // provide the map of arg names to arg values.
     return args
