@@ -1,7 +1,7 @@
 ui:
-  startRoute: http://localhost/login
-  authRoute: http://localhost/login
-  authRedirectRoute: http://localhost/services
+  startRoute: http://login
+  authRoute: http://login
+  authRedirectRoute: http://services
   routes:
     authentification:
       isAuth: true
@@ -26,6 +26,8 @@ ui:
       additionalMetadata:
         topAppBarNavSuite: true
     login:
+      urls:
+        - http://login
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
@@ -48,6 +50,8 @@ ui:
         topAppBarNavSuite: true
       authResource: { }
     services:
+      urls:
+        - http://services
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }

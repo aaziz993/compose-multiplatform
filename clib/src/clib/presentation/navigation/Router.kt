@@ -101,12 +101,12 @@ public open class Router(
 
     protected fun handleRoute(navRoute: NavRoute, onReroute: (NavRoute) -> Unit) {
         routes.resolve(navRoute, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
-            ?: prev?.handleRoute(navRoute, onReroute)
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.handleRoute(navRoute, onReroute)
     }
 
     protected fun handleRoute(url: Url, onReroute: (NavRoute) -> Unit) {
         routes.resolve(url, auth)?.let { navRoute -> handleRoutePath(navRoute, onReroute) }
-            ?: prev?.handleRoute(url, onReroute)
+            ?: checkNotNull(prev){ "Unknown route '$url'" }.handleRoute(url, onReroute)
     }
 
     /**

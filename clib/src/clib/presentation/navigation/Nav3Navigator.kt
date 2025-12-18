@@ -327,7 +327,7 @@ public fun rememberNav3Navigator(
     val backStack = rememberNavBackStack(
         routes,
         requireNotNull(startRoute ?: routes.filterIsInstance<NavRoute>().firstOrNull()) {
-            "No start nav route in '$routes'"
+            "No start route in '$routes'"
         },
     )
 

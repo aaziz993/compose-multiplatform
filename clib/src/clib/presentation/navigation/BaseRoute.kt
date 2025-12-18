@@ -34,7 +34,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     @Suppress("UNCHECKED_CAST")
     public open val navRoute: KClass<out NavRoute>
-        get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No nav route" }
+        get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No route" }
 
     private var _urls: List<Url>? = null
     public var urls: List<Url>
