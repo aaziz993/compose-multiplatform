@@ -147,7 +147,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         auth: Auth = Auth(),
     ): List<NavRoute>? = resolve(auth) { route ->
         route.urls.firstNotNullOfOrNull {
-            url.toRoute(navRoute.serializer(), it)
+            url.toRoute(route.navRoute.serializer(), it)
         }
     }
 }

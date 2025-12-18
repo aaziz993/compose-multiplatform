@@ -322,9 +322,7 @@ public fun rememberNav3Navigator(
         nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
     },
 ): Navigator {
-    require(startRoute?.let { it.route in routes } != false) {
-        "Start route '$startRoute' not in '$routes'"
-    }
+    require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
 
     val backStack = rememberNavBackStack(
         routes,
