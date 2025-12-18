@@ -1,7 +1,7 @@
 ui:
   startRoute: http://login
   authRoute: http://login
-  authRedirectRoute: http://localhost/services
+  authRedirectRoute: http://services
   routes:
     authentification:
       isAuth: true
