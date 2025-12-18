@@ -220,7 +220,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     @Composable
     public fun Nav3Host(
-        routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
+        routerFactory: @Composable (Routes) -> Router = { rememberRouter(it) },
         navigatorFactory: @Composable (Routes) -> Navigator = { rememberNav3Navigator(it) },
         onDeepLink: Router.(Url) -> Unit = Router::push,
     ): Unit = Nav3Host(
