@@ -7,6 +7,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavEntry
@@ -208,7 +209,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     @Composable
     public fun Nav3Host(
-        routerFactory: @Composable (Routes) -> Router = { rememberRouter(it) },
+        routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
         navigatorFactory: @Composable (Routes) -> Navigator = { rememberNav3Navigator(it) },
         onDeepLink: Router.(Url) -> Unit = Router::push,
     ): Unit = Nav3Host(
