@@ -5,11 +5,8 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import clib.presentation.auth.LocalAuthState
 import io.ktor.http.Url
-import klib.data.auth.model.Auth
 import klib.data.type.collections.linkedlist.model.Node
 import klib.data.type.collections.list.drop
 
@@ -38,26 +35,14 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  * This class is designed to be used as the primary navigation interface in applications.
  *
  * @param routes The current top level route.
- * @param auth The current authentication state used to determine access control.
  */
-public open class Router(
-    override val routes: Routes,
-    public val auth: Auth,
-) : BaseRouter(), Node<Router> {
+public open class Router(override val routes: Routes) : BaseRouter(), Node<Router> {
 
-    public constructor(
-        routes: Routes,
-        startRoute: NavRoute,
-        auth: Auth = Auth(),
-    ) : this(routes, auth) {
+    public constructor(routes: Routes, startRoute: NavRoute) : this(routes) {
         handleRoute(startRoute, Router::push)
     }
 
-    public constructor(
-        routes: Routes,
-        startRoute: Url,
-        auth: Auth = Auth(),
-    ) : this(routes, auth) {
+    public constructor(routes: Routes, startRoute: Url) : this(routes) {
         handleRoute(startRoute, Router::push)
     }
 
@@ -97,12 +82,12 @@ public open class Router(
     }
 
     protected fun handleRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit) {
-        routes.resolve(navRoute, auth)?.let { navRoute -> handleRoutePath(navRoute, handler) }
+        routes.resolve(navRoute)?.let { navRoute -> handleRoutePath(navRoute, handler) }
             ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.handleRoute(navRoute, handler)
     }
 
     protected fun handleRoute(url: Url, handler: Router.(NavRoute) -> Unit) {
-        routes.resolve(url, auth)?.let { navRoute -> handleRoutePath(navRoute, handler) }
+        routes.resolve(url)?.let { navRoute -> handleRoutePath(navRoute, handler) }
             ?: checkNotNull(prev) { "Unknown route '$url'" }.handleRoute(url, handler)
     }
 
@@ -231,58 +216,6 @@ public open class Router(
      */
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
 }
-
-/**
- * Creates and remembers a Router instance.
- *
- * The router will be recreated if any of the provided keys change, allowing for
- * state-dependent router configurations.
- *
- * @param routes The current top level route.
- * @param auth The current authentication state used to determine access control.
- * @return A remembered router instance.
- */
-@Composable
-public fun rememberRouter(
-    routes: Routes,
-    auth: Auth = LocalAuthState.current.value,
-): Router = remember(auth) { Router(routes, auth) }
-
-/**
- * Creates and remembers a Router instance.
- *
- * The router will be recreated if any of the provided keys change, allowing for
- * state-dependent router configurations.
- *
- * @param routes The current top level route.
- * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
- * @param auth The current authentication state used to determine access control.
- * @return A remembered router instance.
- */
-@Composable
-public fun rememberRouter(
-    routes: Routes,
-    startRoute: NavRoute,
-    auth: Auth = LocalAuthState.current.value,
-): Router = remember(auth) { Router(routes, startRoute, auth) }
-
-/**
- * Creates and remembers a Router instance.
- *
- * The router will be recreated if any of the provided keys change, allowing for
- * state-dependent router configurations.
- *
- * @param routes The current top level route.
- * @param startRoute Optional route url representing an start route. If provided, back stack will start with that.
- * @param auth The current authentication state used to determine access control.
- * @return A remembered router instance.
- */
-@Composable
-public fun rememberRouter(
-    routes: Routes,
-    startRoute: Url,
-    auth: Auth = LocalAuthState.current.value,
-): Router = remember(auth) { Router(routes, startRoute, auth) }
 
 @Composable
 public fun currentRouter(): Router =

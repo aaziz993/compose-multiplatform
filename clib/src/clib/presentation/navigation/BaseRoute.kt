@@ -7,7 +7,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavEntry
@@ -121,21 +120,14 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     }
 
     public abstract fun resolve(
-        auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>?
 
-    public fun resolve(
-        navRoute: NavRoute,
-        auth: Auth = Auth(),
-    ): List<NavRoute>? = resolve(auth) { route ->
+    public fun resolve(navRoute: NavRoute): List<NavRoute>? = resolve { route ->
         if (route == navRoute.route) route as NavRoute else null
     }
 
-    public fun resolve(
-        url: Url,
-        auth: Auth = Auth(),
-    ): List<NavRoute>? = resolve(auth) { route ->
+    public fun resolve(url: Url): List<NavRoute>? = resolve { route ->
         route.urls.firstNotNullOfOrNull {
             url.toRoute(route.navRoute.serializer(), it)
         }
@@ -174,12 +166,8 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 
     final override fun resolve(
-        auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
-    ): List<NavRoute>? =
-        if (isAuth(auth))
-            transform(this)?.let(::listOf)
-        else null
+    ): List<NavRoute>? = transform(this)?.let(::listOf)
 
     override fun toString(): String = name
 }
@@ -294,12 +282,11 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     }.iterator()
 
     final override fun resolve(
-        auth: Auth,
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? {
         for (route in routes) {
             if (route !is NavRoute) continue
-            val childPath = route.resolve(auth, transform)
+            val childPath = route.resolve(transform)
             if (childPath != null) return listOf(this) + childPath
         }
         return null

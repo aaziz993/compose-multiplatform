@@ -36,7 +36,6 @@ import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
 import clib.presentation.navigation.RoutesState
 import clib.presentation.navigation.rememberNav3Navigator
-import clib.presentation.navigation.rememberRouter
 import clib.presentation.navigation.rememberRoutesState
 import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
@@ -81,8 +80,8 @@ public fun AppComposable(
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
-        if (isRoot && config.ui.startRoute != null) rememberRouter(it, config.ui.startRoute!!)
-        else rememberRouter(it)
+        if (isRoot && config.ui.startRoute != null) remember { Router(it, config.ui.startRoute!!) }
+        else remember { Router(it) }
     },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         rememberNav3Navigator(
