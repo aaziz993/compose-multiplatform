@@ -3,6 +3,7 @@ package ui.navigation.presentation
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -194,7 +195,8 @@ public data object Phone : KoinRoute<Phone>(), NavRoute {
             ?: (if (!LocalInspectionMode.current) Country.current else null) ?: Country.forCode("US")
 
         PhoneScreen(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            Modifier.widthIn()
+                .padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
@@ -328,7 +330,8 @@ public data object Login : KoinRoute<Login>(), NavRoute {
         val state by viewModel.state.collectAsStateWithLifecycle()
 
         LoginScreen(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            Modifier.widthIn(max = 600.dp)
+                .padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
