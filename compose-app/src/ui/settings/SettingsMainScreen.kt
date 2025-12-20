@@ -63,7 +63,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -78,8 +77,8 @@ import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.settings.SettingsLocalePickerDialog
 import clib.presentation.config.RouteConfig
 import clib.presentation.connectivity.model.Connectivity
-import clib.presentation.event.alert.GlobalAlertEventController
-import clib.presentation.event.alert.model.AlertEvent
+import clib.presentation.events.alert.GlobalAlertEventController
+import clib.presentation.events.alert.model.AlertEvent
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
@@ -146,7 +145,6 @@ import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.model.Permission
-import kotlinx.coroutines.launch
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsMenuLink
@@ -197,8 +195,6 @@ public fun SettingsMainScreen(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     SettingsGroup(
         modifier = Modifier,
         enabled = true,
@@ -473,16 +469,14 @@ public fun SettingsMainScreen(
                     false
                 }
                 else {
-                    coroutineScope.launch {
-                        GlobalAlertEventController.sendEvent(
-                            AlertEvent(
-                                text = {
-                                    Text(stringResource(Res.string.light_later_dark))
-                                },
-                                isError = true,
-                            ),
-                        )
-                    }
+                    GlobalAlertEventController.sendEvent(
+                        AlertEvent(
+                            text = {
+                                Text(stringResource(Res.string.light_later_dark))
+                            },
+                            isError = true,
+                        ),
+                    )
                     true
                 }
             }
@@ -499,16 +493,14 @@ public fun SettingsMainScreen(
                     false
                 }
                 else {
-                    coroutineScope.launch {
-                        GlobalAlertEventController.sendEvent(
-                            AlertEvent(
-                                text = {
-                                    Text(stringResource(Res.string.light_later_dark))
-                                },
-                                isError = true,
-                            ),
-                        )
-                    }
+                    GlobalAlertEventController.sendEvent(
+                        AlertEvent(
+                            text = {
+                                Text(stringResource(Res.string.light_later_dark))
+                            },
+                            isError = true,
+                        ),
+                    )
                     true
                 }
             }
@@ -697,7 +689,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.CameraAlt,
             falseIcon = Icons.Outlined.CameraAlt,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -707,7 +698,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.BrowseGallery,
             falseIcon = Icons.Outlined.BrowseGallery,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -717,7 +707,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.Storage,
             falseIcon = Icons.Outlined.Storage,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -727,7 +716,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.Storage,
             falseIcon = Icons.Outlined.Storage,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -737,7 +725,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.MyLocation,
             falseIcon = Icons.Outlined.MyLocation,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -747,7 +734,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.MyLocation,
             falseIcon = Icons.Outlined.MyLocation,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -757,7 +743,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.LocationOn,
             falseIcon = Icons.Outlined.LocationOff,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -767,7 +752,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.Bluetooth,
             falseIcon = Icons.Outlined.Bluetooth,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -777,7 +761,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.NotificationsActive,
             falseIcon = Icons.Outlined.NotificationsOff,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -787,7 +770,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.RecordVoiceOver,
             falseIcon = Icons.Outlined.RecordVoiceOver,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -797,7 +779,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.AutoMirrored.Filled.BluetoothSearching,
             falseIcon = Icons.AutoMirrored.Outlined.BluetoothSearching,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -807,7 +788,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.Bluetooth,
             falseIcon = Icons.Outlined.Bluetooth,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -817,7 +797,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.BluetoothConnected,
             falseIcon = Icons.Outlined.BluetoothConnected,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -827,7 +806,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.Contacts,
             falseIcon = Icons.Outlined.Contacts,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 
@@ -837,7 +815,6 @@ public fun SettingsMainScreen(
             trueIcon = Icons.Filled.Sensors,
             falseIcon = Icons.Outlined.Sensors,
             permissions = permissions,
-            coroutineScope = coroutineScope,
             onCheckedChange = onPermissionChange,
         )
 

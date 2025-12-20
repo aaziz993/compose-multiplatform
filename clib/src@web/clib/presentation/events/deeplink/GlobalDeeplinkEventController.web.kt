@@ -1,4 +1,4 @@
-package klib.data.net
+package clib.presentation.events.deeplink
 
 import web.events.addEventListener
 import web.events.removeEventListener
@@ -8,8 +8,8 @@ import web.history.POP_STATE
 import web.history.PopStateEvent
 import web.window.window
 
-public fun addDeepLinkHandler(
-    handle: (String) -> Unit = GlobalDeepLinkController::handle
+public fun addHandleDeeplinkEvents(
+    handle: (String) -> Unit = GlobalDeeplinkEventController::sendEvent
 ): Pair<(PopStateEvent) -> Unit, (HashChangeEvent) -> Unit> {
     val popStateHandler: (PopStateEvent) -> Unit = { handle(window.location.href) }
     val hashChangeHandler: (HashChangeEvent) -> Unit = { handle(window.location.href) }
@@ -29,7 +29,7 @@ public fun addDeepLinkHandler(
     return popStateHandler to hashChangeHandler
 }
 
-public fun removeDeepLinkHandler(
+public fun removeHandleDeeplinkEvents(
     popStateHandler: (PopStateEvent) -> Unit,
     hashChangeHandler: (HashChangeEvent) -> Unit,
 ) {

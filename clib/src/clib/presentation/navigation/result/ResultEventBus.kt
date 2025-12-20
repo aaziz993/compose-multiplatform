@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.compositionLocalOf
-import clib.presentation.event.EventBus
+import clib.presentation.events.EventBus
 
 /**
  * Local for receiving results in a [EventBus]

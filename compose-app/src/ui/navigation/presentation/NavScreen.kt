@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.presentation.appbar.model.AppBar
 import clib.presentation.connectivity.model.Connectivity
-import clib.presentation.event.alert.GlobalAlertDialog
-import clib.presentation.event.snackbar.GlobalSnackbar
+import clib.presentation.events.alert.GlobalAlertDialog
+import clib.presentation.events.snackbar.GlobalSnackbar
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import dev.jordond.connectivity.Connectivity.Status

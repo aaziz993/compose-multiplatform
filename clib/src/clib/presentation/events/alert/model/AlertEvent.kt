@@ -1,4 +1,4 @@
-package clib.presentation.event.alert.model
+package clib.presentation.events.alert.model
 
 import androidx.compose.runtime.Composable
 

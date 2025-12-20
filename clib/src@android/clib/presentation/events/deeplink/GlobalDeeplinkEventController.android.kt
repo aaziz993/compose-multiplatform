@@ -1,4 +1,4 @@
-package klib.data.net
+package clib.presentation.events.deeplink
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
@@ -7,7 +7,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
 context(activity: ComponentActivity)
-public fun GlobalDeepLinkController.handle() {
+public fun GlobalDeeplinkEventController.handleEvents() {
     fireDeepLink(activity.intent)
 
     val listener = Consumer(::fireDeepLink)
@@ -26,6 +26,6 @@ public fun GlobalDeepLinkController.handle() {
     )
 }
 
-private fun GlobalDeepLinkController.fireDeepLink(intent: Intent) {
-    intent.dataString?.let(::handle)
+private fun GlobalDeeplinkEventController.fireDeepLink(intent: Intent) {
+    intent.dataString?.let(::sendEvent)
 }

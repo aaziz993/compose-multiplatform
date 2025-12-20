@@ -1,4 +1,4 @@
-package clib.presentation.event.snackbar
+package clib.presentation.events.snackbar
 
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData

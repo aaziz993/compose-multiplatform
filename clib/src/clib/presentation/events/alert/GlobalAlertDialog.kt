@@ -1,4 +1,4 @@
-package clib.presentation.event.alert
+package clib.presentation.events.alert
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
 import clib.data.type.collections.LaunchedEffect
 import clib.data.type.orErrorColor
-import clib.presentation.event.alert.model.AlertEvent
+import clib.presentation.events.alert.model.AlertEvent
 import kotlinx.coroutines.launch
 
 /**

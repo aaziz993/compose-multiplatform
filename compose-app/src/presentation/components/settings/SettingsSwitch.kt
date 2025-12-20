@@ -11,8 +11,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import clib.presentation.event.snackbar.GlobalSnackbarEventController
-import clib.presentation.event.snackbar.model.SnackbarEvent
+import clib.presentation.events.snackbar.GlobalSnackbarEventController
+import clib.presentation.events.snackbar.model.SnackbarEvent
 import com.alorma.compose.settings.ui.SettingsSwitch
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
@@ -21,8 +21,6 @@ import data.type.primitives.asStringResource
 import klib.data.permission.exception.PermissionDeniedAlwaysException
 import klib.data.permission.exception.PermissionDeniedException
 import klib.data.permission.model.Permission
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 public fun SettingsSwitch(
@@ -86,7 +84,6 @@ public fun SettingsSwitch(
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
     permissions: Set<Permission>,
-    coroutineScope: CoroutineScope,
     onCheckedChange: (Permission?) -> Unit,
 ): Unit = SettingsSwitch(
     title,
@@ -102,18 +99,14 @@ public fun SettingsSwitch(
     semanticProperties,
     onCheckedChange = {
         if (it) onCheckedChange(null)
-        else {
-            coroutineScope.launch {
-                try {
-                    onCheckedChange(value)
-                }
-                catch (deniedAlways: PermissionDeniedAlwaysException) {
-                    GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
-                }
-                catch (denied: PermissionDeniedException) {
-                    GlobalSnackbarEventController.sendEvent(SnackbarEvent(denied.message.orEmpty()))
-                }
-            }
+        else try {
+            onCheckedChange(value)
+        }
+        catch (deniedAlways: PermissionDeniedAlwaysException) {
+            GlobalSnackbarEventController.sendEvent(SnackbarEvent(deniedAlways.message.orEmpty()))
+        }
+        catch (denied: PermissionDeniedException) {
+            GlobalSnackbarEventController.sendEvent(SnackbarEvent(denied.message.orEmpty()))
         }
     },
 )

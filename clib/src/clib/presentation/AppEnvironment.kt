@@ -13,7 +13,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,14 +39,14 @@ import clib.presentation.connectivity.LocalConnectivityState
 import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.connectivity.rememberConnectivityState
-import clib.presentation.event.EventBus
-import clib.presentation.event.LocalEventBus
-import clib.presentation.event.alert.GlobalAlertDialog
-import clib.presentation.event.alert.GlobalAlertEventController
-import clib.presentation.event.alert.model.AlertEvent
-import clib.presentation.event.snackbar.GlobalSnackbar
-import clib.presentation.event.snackbar.GlobalSnackbarEventController
-import clib.presentation.event.snackbar.model.SnackbarEvent
+import clib.presentation.events.EventBus
+import clib.presentation.events.LocalEventBus
+import clib.presentation.events.alert.GlobalAlertDialog
+import clib.presentation.events.alert.GlobalAlertEventController
+import clib.presentation.events.alert.model.AlertEvent
+import clib.presentation.events.snackbar.GlobalSnackbar
+import clib.presentation.events.snackbar.GlobalSnackbarEventController
+import clib.presentation.events.snackbar.model.SnackbarEvent
 import clib.presentation.locale.LocalAppLocale
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.LocalLocalization
@@ -160,29 +159,27 @@ public fun AppEnvironment(
         val theme = themeState.value
 
         with(connectivityState.value) {
-            LaunchedEffect(connectivityStatus) {
-                if (isConnectivityAlert)
-                    when (connectivityStatus) {
-                        is Status.Connected -> GlobalAlertEventController.sendEvent(
-                            AlertEvent(text = { Text(onlineText) }),
-                        )
+            if (isConnectivityAlert)
+                when (connectivityStatus) {
+                    is Status.Connected -> GlobalAlertEventController.sendEvent(
+                        AlertEvent(text = { Text(onlineText) }),
+                    )
 
-                        is Status.Disconnected -> GlobalAlertEventController.sendEvent(
-                            AlertEvent(text = { Text(offlineText) }),
-                        )
-                    }
+                    is Status.Disconnected -> GlobalAlertEventController.sendEvent(
+                        AlertEvent(text = { Text(offlineText) }),
+                    )
+                }
 
-                if (isConnectivitySnackbar)
-                    when (connectivityStatus) {
-                        is Status.Connected -> GlobalSnackbarEventController.sendEvent(
-                            SnackbarEvent(onlineText),
-                        )
+            if (isConnectivitySnackbar)
+                when (connectivityStatus) {
+                    is Status.Connected -> GlobalSnackbarEventController.sendEvent(
+                        SnackbarEvent(onlineText),
+                    )
 
-                        is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
-                            SnackbarEvent(offlineText),
-                        )
-                    }
-            }
+                    is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
+                        SnackbarEvent(offlineText),
+                    )
+                }
         }
 
         val (colorScheme, seedColor) = if (theme.isDynamic) {

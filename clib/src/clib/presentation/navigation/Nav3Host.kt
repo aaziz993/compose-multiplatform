@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
-import clib.data.net.GlobalDeepLinkEvents
-import clib.presentation.event.EventBus
+import clib.presentation.events.deeplink.GlobalDeepLink
+import clib.presentation.events.EventBus
 import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
@@ -56,7 +56,7 @@ internal fun Nav3Host(
 
     // Handle global deep link events.
     if (parentRouter == null)
-        GlobalDeepLinkEvents(router) { url -> router.onDeepLink(url) }
+        GlobalDeepLink(router) { url -> router.onDeepLink(url) }
 
     val onBack: () -> Unit = remember(router) {
         { router.pop() }

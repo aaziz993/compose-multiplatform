@@ -1,4 +1,4 @@
-package clib.presentation.event
+package clib.presentation.events
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

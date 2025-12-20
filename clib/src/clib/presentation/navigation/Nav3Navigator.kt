@@ -202,7 +202,8 @@ public open class Nav3Navigator(
                     routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) },
                 )
             }
-        if (authStack.isNotEmpty()) actions(NavigationAction.ReplaceStack(authStack))
+        if (authStack.isNotEmpty() && authStack != backStack)
+            actions(NavigationAction.ReplaceStack(authStack))
     }
 
     /**

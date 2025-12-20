@@ -5,7 +5,7 @@ import clib
 class AppDelegate: NSObject, UIApplicationDelegate {
 
     // Shared KMM deep link controller.
-    let deepLinkController = GlobalDeepLinkController()
+    let deepLinkController = GlobalDeeplinkEventControllerApple()
 
     // Handle URL schemes.
     func application(_ app: UIApplication,
@@ -28,7 +28,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct IOSApp: App {
 
     // Shared KMM deep link controller.
-    let deepLinkController = GlobalDeepLinkController()
+    let deepLinkController = GlobalDeeplinkEventControllerApple()
 
     // Bridge to AppDelegate.
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

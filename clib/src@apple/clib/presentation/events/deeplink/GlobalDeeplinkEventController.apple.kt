@@ -1,20 +1,19 @@
-package klib.data.net
+package clib.presentation.events.deeplink
 
-import klib.data.net.GlobalDeepLinkController.handle
+import kotlin.experimental.ExperimentalObjCName
 import platform.Foundation.NSUserActivity
 import platform.Foundation.NSUserActivityTypeBrowsingWeb
-import kotlin.experimental.ExperimentalObjCName
 
 @OptIn(ExperimentalObjCName::class)
-@ObjCName(swiftName = "GlobalDeepLinkController")
-public class GlobalDeepLinkControllerApple {
+@ObjCName(swiftName = "GlobalDeeplinkEventControllerApple")
+public class GlobalDeeplinkEventControllerApple {
 
     @ObjCName("onDeepLinkReceived")
-    public fun onDeepLinkReceived(url: String): Unit = handle(url)
+    public fun onDeepLinkReceived(url: String): Unit = GlobalDeeplinkEventController.sendEvent(url)
 
     @ObjCName("onDeepLinkReceived")
     public fun onDeepLinkReceived(userActivity: NSUserActivity) {
-        userActivity.getUrlString()?.let(::handle)
+        userActivity.getUrlString()?.let(GlobalDeeplinkEventController::sendEvent)
     }
 
     private fun NSUserActivity.getUrlString() =

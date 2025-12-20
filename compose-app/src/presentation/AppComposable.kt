@@ -26,9 +26,9 @@ import clib.presentation.config.Config
 import clib.presentation.connectivity.ConnectivityState
 import clib.presentation.connectivity.rememberConnectivity
 import clib.presentation.connectivity.rememberConnectivityState
-import clib.presentation.event.EventBus
-import clib.presentation.event.alert.GlobalAlertDialog
-import clib.presentation.event.snackbar.GlobalSnackbar
+import clib.presentation.events.EventBus
+import clib.presentation.events.alert.GlobalAlertDialog
+import clib.presentation.events.snackbar.GlobalSnackbar
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
 import clib.presentation.navigation.Navigator

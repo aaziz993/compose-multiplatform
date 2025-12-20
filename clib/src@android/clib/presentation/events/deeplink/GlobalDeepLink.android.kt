@@ -1,4 +1,4 @@
-package clib.data.net
+package clib.presentation.events.deeplink
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import io.ktor.http.Url
 import klib.data.net.toUrl
 
 @Composable
-public actual fun GlobalDeepLinkEvents(
+public actual fun GlobalDeepLink(
     vararg keys: Any,
     onEvent: (Url) -> Unit,
 ) {

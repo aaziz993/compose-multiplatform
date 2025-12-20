@@ -1,4 +1,4 @@
-package clib.presentation.event.snackbar.model
+package clib.presentation.events.snackbar.model
 
 import androidx.compose.material3.SnackbarDuration
 import kotlin.String
