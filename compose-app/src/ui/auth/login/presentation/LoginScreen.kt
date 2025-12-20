@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -16,10 +17,10 @@ import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -80,7 +81,7 @@ public fun LoginScreen(
         val leadingIconColor = LocalContentColor.current.orErrorColor(state.error != null)
 
         AdvancedTextField(
-            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
+            modifier = Modifier.focusRequester(focusList[0]),
             value = state.username,
             onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
             label = { Text(stringResource(Res.string.username)) },
@@ -96,7 +97,7 @@ public fun LoginScreen(
         )
 
         AdvancedTextField(
-            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
+            modifier = Modifier.focusRequester(focusList[1]),
             value = state.password,
             onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },
             label = { Text(stringResource(Res.string.password)) },
@@ -113,14 +114,15 @@ public fun LoginScreen(
             onShowValueChange = { value -> onAction(LoginAction.SetShowPassword(value)) },
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(stringResource(Res.string.remember_sign_in))
-            Switch(
+            Spacer(Modifier.width(2.dp))
+            Checkbox(
                 checked = state.remember,
                 onCheckedChange = { value -> onAction(LoginAction.SetRemember(value)) },
             )
@@ -148,8 +150,7 @@ public fun LoginScreen(
 
         Button(
             { onAction(LoginAction.Login) },
-            Modifier.focusRequester(focusList[2])
-                .fillMaxWidth(0.8f),
+            Modifier.focusRequester(focusList[2]),
         ) {
             Text(text = stringResource(Res.string.login))
         }
