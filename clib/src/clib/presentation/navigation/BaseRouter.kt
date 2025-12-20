@@ -15,7 +15,7 @@ public abstract class BaseRouter {
     public abstract val routes: Routes
 
     /**
-     * Callback to be called if route isn't in the current top level route.
+     * Callback triggered when route isn't in the current top level route.
      */
     protected abstract val onReroute: (NavRoute) -> Unit
 

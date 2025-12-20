@@ -1,7 +1,9 @@
 package ui.auth.login.presentation.viewmodel
 
 public sealed interface LoginAction {
-    public data class SetPinCode(val value: String) : LoginAction
-    public data class ShowPinCode(val value: Boolean) : LoginAction
+    public data class SetUsername(val value: String) : LoginAction
+    public data class SetPassword(val value: String) : LoginAction
+    public data class SetShowPassword(val value: Boolean) : LoginAction
+    public data class SetRemember(val value: Boolean) : LoginAction
     public data object Login : LoginAction
 }

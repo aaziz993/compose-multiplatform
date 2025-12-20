@@ -3,31 +3,46 @@ package ui.auth.login.presentation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.presentation.navigation.NavigationAction
+import clib.data.type.orErrorColor
+import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
-import compose_app.generated.resources.pin_code
+import compose_app.generated.resources.password
+import compose_app.generated.resources.remember_sign_in
 import compose_app.generated.resources.reset_password
-import clib.data.type.primitives.string.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import compose_app.generated.resources.username
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Login
@@ -46,6 +61,12 @@ public fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Icon(
+            imageVector = Icons.AutoMirrored.Default.Login,
+            contentDescription = stringResource(Res.string.login),
+            modifier = Modifier.size(128.dp),
+        )
+
         Text(
             text = stringResource(Res.string.login),
             fontSize = 28.sp,
@@ -54,21 +75,56 @@ public fun LoginScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
         )
 
+        val focusList = remember { List(3) { FocusRequester() }.apply { first().requestFocus() } }
+
+        val leadingIconColor = LocalContentColor.current.orErrorColor(state.error != null)
+
         AdvancedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = state.pinCode,
-            onValueChange = { value -> onAction(LoginAction.SetPinCode(value)) },
-            label = { Text(text = stringResource(Res.string.pin_code)) },
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
+            value = state.username,
+            onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
+            label = { Text(stringResource(Res.string.username)) },
+            placeholder = { Text(stringResource(Res.string.username)) },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = leadingIconColor)
+            },
             isError = state.error != null,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.NumberPassword,
-                imeAction = ImeAction.Next,
-            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions({ focusList[1].requestFocus() }),
             singleLine = true,
             outlined = true,
         )
 
+        AdvancedTextField(
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
+            value = state.password,
+            onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },
+            label = { Text(stringResource(Res.string.password)) },
+            placeholder = { Text(stringResource(Res.string.password)) },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = leadingIconColor)
+            },
+            isError = state.error != null,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions({ focusList[2].requestFocus() }),
+            singleLine = true,
+            outlined = true,
+            showValue = state.showPassword,
+            onShowValueChange = { value -> onAction(LoginAction.SetShowPassword(value)) },
+        )
+
         Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(stringResource(Res.string.remember_sign_in))
+            Switch(
+                checked = state.remember,
+                onCheckedChange = { value -> onAction(LoginAction.SetRemember(value)) },
+            )
+        }
 
         Text(
             text = stringResource(Res.string.reset_password),
@@ -91,8 +147,9 @@ public fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { onAction(LoginAction.Login) },
-            modifier = Modifier.fillMaxWidth(),
+            { onAction(LoginAction.Login) },
+            Modifier.focusRequester(focusList[2])
+                .fillMaxWidth(0.8f),
         ) {
             Text(text = stringResource(Res.string.login))
         }

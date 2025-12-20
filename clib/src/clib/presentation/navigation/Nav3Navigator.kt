@@ -46,7 +46,7 @@ public open class Nav3Navigator(
     private val mainScope = MainScope()
 
     /**
-     *  Callback to be called if route isn't in the current top level route.
+     *  Callback triggered when route isn't in the current top level route.
      */
     override lateinit var onUnknownRoute: (NavRoute) -> Unit
 
@@ -91,7 +91,7 @@ public open class Nav3Navigator(
      *
      * @param snapshot Mutable copy of the navigation stack.
      * @param action Command to process.
-     * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
+     * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
      * @param onBackRequested Callback to trigger when system back navigation is needed.
      */
     protected open fun action(

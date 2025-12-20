@@ -71,7 +71,7 @@ public open class Router(override val routes: Routes) : BaseRouter(), Node<Route
         private set
 
     /**
-     * Callback to be called if route isn't in the current top level route.
+     * Callback triggered when route isn't in the current top level route.
      */
     override val onReroute: (NavRoute) -> Unit
         get() = { navRoute -> handleRoute(navRoute, Router::push) }

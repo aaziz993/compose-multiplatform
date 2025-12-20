@@ -1,7 +1,9 @@
 package ui.auth.login.presentation.viewmodel
 
 public data class LoginState(
-    val pinCode: String = "",
-    val showPinCode: Boolean = false,
-    val error: String? = null,
+    val username: String = "",
+    val password: String = "",
+    val showPassword: Boolean = false,
+    val remember: Boolean = false,
+    val error: Throwable? = null,
 )
