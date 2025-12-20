@@ -275,6 +275,8 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         )
     }
 
+    public operator fun contains(route: BaseRoute): Boolean = route in routes
+
     final override fun iterator(): Iterator<BaseRoute> = sequence {
         routes.forEach { route ->
             yield(route)

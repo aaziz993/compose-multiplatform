@@ -92,9 +92,9 @@ public open class Router(override val routes: Routes) : BaseRouter(), Node<Route
     }
 
     /**
-     * Binds to parent.
+     * Binds the parent router.
      */
-    internal fun bind(prev: Router) {
+    internal fun bindParent(prev: Router) {
         require(this != prev) { "Router can't be parent of itself" }
 
         prev.next = this
@@ -103,9 +103,9 @@ public open class Router(override val routes: Routes) : BaseRouter(), Node<Route
     }
 
     /**
-     * Unbinds from parent.
+     * Unbinds the parent router.
      */
-    internal fun unbind(prev: Router) {
+    internal fun unbindParent(prev: Router) {
         prev.next = null
         this.prev = null
     }

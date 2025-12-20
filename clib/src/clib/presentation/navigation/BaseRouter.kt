@@ -31,7 +31,7 @@ public abstract class BaseRouter {
      * Currently registered navigator back stack.
      */
     public val backStack: List<NavRoute>
-        get() = navigationActionQueue.attachedNavigator?.backStack ?: emptyList()
+        get() = navigationActionQueue.navigator?.backStack ?: emptyList()
 
     /**
      * Executes one or more navigation actions.

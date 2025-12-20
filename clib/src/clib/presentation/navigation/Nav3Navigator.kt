@@ -24,6 +24,7 @@ import kotlinx.coroutines.yield
  * @param authRoute Optional route representing an authentication screen. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
+ * @param onError Callback to trigger when navigation error.
  */
 public open class Nav3Navigator(
     override val routes: Routes,
@@ -45,6 +46,11 @@ public open class Nav3Navigator(
     private val mainScope = MainScope()
 
     /**
+     *  Callback to be called if route isn't in the current top level route.
+     */
+    override lateinit var onUnknownRoute: (NavRoute) -> Unit
+
+    /**
      * Applies an array of navigation actions to the back stack.
      *
      * Actions are processed sequentially against a snapshot of the current stack.
@@ -52,11 +58,9 @@ public open class Nav3Navigator(
      * This ensures consistency and prevents intermediate states from being visible.
      *
      * @param actions Array of navigation actions to apply.
-     * @param onUnknownRoute Callback to be called if route isn't in the current top level route.
      */
     override fun actions(
         vararg actions: NavigationAction,
-        onUnknownRoute: (NavRoute) -> Unit,
     ) {
         val snapshot = backStack.toMutableList()
         var callOnBack = false
@@ -66,7 +70,6 @@ public open class Nav3Navigator(
                 if (!action(
                         snapshot,
                         action,
-                        onUnknownRoute,
                     ) { callOnBack = true }
                 ) return
             }
@@ -94,7 +97,6 @@ public open class Nav3Navigator(
     protected open fun action(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction,
-        onUnknownRoute: (NavRoute) -> Unit,
         onBackRequested: () -> Unit,
     ): Boolean {
         when (action) {
@@ -190,7 +192,11 @@ public open class Nav3Navigator(
      */
     protected open fun auth() {
         val authStack = (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
-            listOfNotNull(authRedirectRoute?.takeIf { it.route.isAuth(auth) }))
+            listOfNotNull(
+                authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also { route ->
+                    if (route.route !in routes) return onUnknownRoute(route)
+                },
+            ))
             .ifEmpty {
                 listOfNotNull(
                     routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) },
@@ -308,6 +314,7 @@ public open class Nav3Navigator(
  * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
+ * @param onError Callback to trigger when navigation error.
  * @return A remembered navigator instance.
  */
 @Composable
@@ -318,9 +325,7 @@ public fun rememberNav3Navigator(
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
     onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
-    onError: (Throwable) -> Unit = { e ->
-        nav3Logger.error(e.cause, Nav3Navigator::class.simpleName!!) { e.message }
-    },
+    onError: (Throwable) -> Unit = { e -> throw e },
 ): Navigator {
     require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
 

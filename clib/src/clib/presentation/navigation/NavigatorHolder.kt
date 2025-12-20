@@ -11,15 +11,15 @@ package clib.presentation.navigation
 public interface NavigatorHolder {
 
     /**
-     * Registers a navigator instance to handle navigation actions.
+     * Binds a navigator instance to handle navigation actions.
      *
      * @param navigator The navigator instance to register.
      */
-    public fun setNavigator(navigator: Navigator)
+    public fun bindNavigator(navigator: Navigator)
 
     /**
-     * Unregisters the current navigator.
+     * Unbinds the current navigator.
      *
      */
-    public fun removeNavigator()
+    public fun unbindNavigator()
 }

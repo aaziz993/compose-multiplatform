@@ -22,7 +22,7 @@ public class NavigationActionQueue(
 ) : NavigatorHolder {
 
     /** Currently attached navigator, null if none is set. */
-    internal var attachedNavigator: Navigator? by mutableStateOf(null)
+    internal var navigator: Navigator? by mutableStateOf(null)
         private set
 
     /** Queue of pending actions waiting for a navigator to become available. */
@@ -39,12 +39,13 @@ public class NavigationActionQueue(
      *
      * @param navigator The navigator to register
      */
-    override fun setNavigator(navigator: Navigator) {
-        attachedNavigator = navigator
+    override fun bindNavigator(navigator: Navigator) {
+        navigator.onUnknownRoute = onUnknownRoute
+        this@NavigationActionQueue.navigator = navigator
         if (pendingActions.isNotEmpty()) {
             val snapshot = pendingActions.toList()
             pendingActions.clear()
-            snapshot.forEach { actions -> navigator.actions(actions = actions, onUnknownRoute = onUnknownRoute) }
+            snapshot.forEach { actions -> navigator.actions(*actions) }
         }
     }
 
@@ -53,8 +54,8 @@ public class NavigationActionQueue(
      *
      * After calling this, new actions will be queued until a new navigator is set.
      */
-    override fun removeNavigator() {
-        attachedNavigator = null
+    override fun unbindNavigator() {
+        navigator = null
     }
 
     /**
@@ -67,7 +68,7 @@ public class NavigationActionQueue(
      */
     public fun actions(vararg actions: NavigationAction) {
         mainScope.launch {
-            attachedNavigator?.actions(actions = actions, onUnknownRoute = onUnknownRoute)
+            navigator?.actions(* actions)
                 ?: pendingActions.add(actions)
         }
     }

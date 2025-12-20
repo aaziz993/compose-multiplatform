@@ -45,13 +45,13 @@ internal fun Nav3Host(
 
     DisposableEffect(router) {
         val prev = parentRouter
-        prev?.let(router::bind)
-        onDispose { prev?.let(router::unbind) }
+        prev?.let(router::bindParent)
+        onDispose { prev?.let(router::unbindParent) }
     }
 
     DisposableEffect(router, navigator) {
-        router.navigationActionQueue.setNavigator(navigator)
-        onDispose(router.navigationActionQueue::removeNavigator)
+        router.navigationActionQueue.bindNavigator(navigator)
+        onDispose(router.navigationActionQueue::unbindNavigator)
     }
 
     // Handle global deep link events.
