@@ -41,7 +41,7 @@ import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
 import compose_app.generated.resources.password
-import compose_app.generated.resources.remember_sign_in
+import compose_app.generated.resources.remember
 import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
 import ui.auth.login.presentation.viewmodel.LoginAction
@@ -120,7 +120,7 @@ public fun LoginScreen(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(Res.string.remember_sign_in))
+            Text(stringResource(Res.string.remember))
             Spacer(Modifier.width(2.dp))
             Checkbox(
                 checked = state.remember,
