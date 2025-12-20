@@ -19,18 +19,24 @@ public class LoginViewModel(
         field = MutableStateFlow(LoginState()).onStartStateIn { it }
 
     override fun action(action: LoginAction): Unit = when (action) {
-        is LoginAction.SetPinCode -> setPinCode(action.value)
-        is LoginAction.ShowPinCode -> showPinCode(action.value)
+        is LoginAction.SetUsername -> setUsername(action.value)
+        is LoginAction.SetPassword -> setPassword(action.value)
+        is LoginAction.SetShowPassword -> setShowPassword(action.value)
+        is LoginAction.SetRemember -> setRemember(action.value)
         is LoginAction.Login -> login()
     }
 
-    private fun setPinCode(value: String) = state.update { it.copy(pinCode = value, error = null) }
+    private fun setUsername(value: String) = state.update { it.copy(username = value, error = null) }
 
-    private fun showPinCode(value: Boolean) = state.update { it.copy(showPinCode = value, error = null) }
+    private fun setPassword(value: String) = state.update { it.copy(password = value, error = null) }
+
+    private fun setShowPassword(value: Boolean) = state.update { it.copy(showPassword = value, error = null) }
+
+    private fun setRemember(value: Boolean) = state.update { it.copy(remember = value, error = null) }
 
     private fun login() {
         viewModelScope.launch {
-            if (state.value.pinCode == "7890")
+            if (state.value.password == "7890")
                 authState.setUser(
                     User(
                         username = "jogn.doe@gmail.com",
@@ -39,7 +45,7 @@ public class LoginViewModel(
                         roles = setOf("User"),
                     ),
                 )
-            else state.update { it.copy(error = "Invalid PIN code") }
+            else state.update { it.copy(error = Exception("Invalid PIN code")) }
         }
     }
 }
