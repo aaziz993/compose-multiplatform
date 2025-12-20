@@ -81,7 +81,7 @@ public fun LoginScreen(
         val leadingIconColor = LocalContentColor.current.orErrorColor(state.error != null)
 
         AdvancedTextField(
-            modifier = Modifier.focusRequester(focusList[0]),
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
             value = state.username,
             onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
             label = { Text(stringResource(Res.string.username)) },
@@ -97,7 +97,7 @@ public fun LoginScreen(
         )
 
         AdvancedTextField(
-            modifier = Modifier.focusRequester(focusList[1]),
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
             value = state.password,
             onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },
             label = { Text(stringResource(Res.string.password)) },
@@ -150,7 +150,7 @@ public fun LoginScreen(
 
         Button(
             { onAction(LoginAction.Login) },
-            Modifier.focusRequester(focusList[2]),
+            Modifier.fillMaxWidth(0.8f).focusRequester(focusList[2]),
         ) {
             Text(text = stringResource(Res.string.login))
         }

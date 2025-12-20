@@ -10,7 +10,6 @@
     <string name="incorrect_username_or_password">Нодуруст номи истифодабаранда ва е рамзи убур</string>
     <string name="reset_password">Барқарори рамзи убур</string>
     <string name="new_password">Рамзи убури нав</string>
-    <string name="remember_sign_in">Сабти вуруд</string>
     <string name="hotp">Рамзи яккаратаи хэш</string>
     <string name="totp">Рамзи яккаратаи муваққатӣ</string>
     <string name="code_sent_to">Рамз ирсол шуд ба %1$s</string>

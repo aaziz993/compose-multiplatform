@@ -10,7 +10,6 @@
     <string name="incorrect_username_or_password">Invalid user or password</string>
     <string name="reset_password">Reset password</string>
     <string name="new_password">New password</string>
-    <string name="remember_sign_in">Remember sign in</string>
     <string name="hotp">Hotp</string>
     <string name="totp">Totp</string>
     <string name="code_sent_to">Code sent to %1$s</string>
