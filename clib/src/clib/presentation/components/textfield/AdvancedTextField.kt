@@ -87,7 +87,7 @@ public fun AdvancedTextField(
     outlined: Boolean = false,
     underlineMessage: String? = null,
     validator: Validator? = null,
-    onValidation: (List<String>) -> String = { value -> value.joinToString(", ") },
+    onValidation: @Composable (List<String>) -> String = { value -> value.joinToString(", ") },
     showValidationMessage: Boolean = true,
     showValue: Boolean = true,
     onShowValueChange: ((Boolean) -> Unit)? = null

@@ -31,6 +31,7 @@
     <string name="delay">Delay</string>
     <string name="dark">Dark</string>
     <string name="enabled">Enabled</string>
+    <string name="edit">Edit</string>
     <string name="error">Error</string>
     <string name="exchange">Exchange</string>
     <string name="expressive">Expressive</string>
@@ -77,6 +78,7 @@
     <string name="right">Right</string>
     <string name="route">Route</string>
     <string name="remember">Remember</string>
+    <string name="save">Save</string>
     <string name="support">Support</string>
     <string name="source">Source</string>
     <string name="search">Search</string>

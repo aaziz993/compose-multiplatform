@@ -93,6 +93,7 @@ import ui.auth.phone.presentation.viewmodel.PhoneViewModel
 import ui.auth.pincode.PinCodeScreen
 import ui.auth.pincode.viewmodel.PinCodeViewModel
 import ui.auth.profile.presentation.ProfileScreen
+import ui.auth.profile.presentation.viewmodel.ProfileViewModel
 import ui.auth.resetpincode.presentation.ResetPinCodeScreen
 import ui.auth.totp.TotpScreen
 import ui.auth.totp.viewmodel.TotpViewModel
@@ -712,9 +713,12 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val scrollState = rememberScrollState()
+        val config = LocalConfig.current
         val connectivityStatus = LocalConnectivityStatus.current
         val componentsState = LocalConnectivityState.current
         val authState = LocalAuthState.current
+        val viewModel: ProfileViewModel = koinViewModel { parametersOf(authState.value.user) }
+        val state by viewModel.state.collectAsStateWithLifecycle()
         val router = currentRouter()
 
         ProfileScreen(
@@ -722,8 +726,9 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
             route,
             connectivityStatus,
             componentsState.value,
-            authState.value,
-            { auth -> authState.value = auth },
+            config.validator["user"].orEmpty(),
+            state,
+            viewModel::action,
             router::actions,
         )
     }

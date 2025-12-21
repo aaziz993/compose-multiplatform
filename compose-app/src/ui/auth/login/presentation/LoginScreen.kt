@@ -56,104 +56,102 @@ public fun LoginScreen(
     state: LoginState = LoginState(),
     onAction: (LoginAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
+): Unit = Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Icon(
+        imageVector = Icons.AutoMirrored.Default.Login,
+        contentDescription = stringResource(Res.string.login),
+        modifier = Modifier.size(128.dp),
+    )
+
+    Text(
+        text = stringResource(Res.string.login),
+        fontSize = 28.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+    )
+
+    val focusList = remember { List(3) { FocusRequester() }.apply { first().requestFocus() } }
+
+    val leadingIconColor = LocalContentColor.current.orErrorColor(state.error != null)
+
+    AdvancedTextField(
+        modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
+        value = state.username,
+        onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
+        label = { Text(stringResource(Res.string.username)) },
+        placeholder = { Text(stringResource(Res.string.username)) },
+        leadingIcon = {
+            Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = leadingIconColor)
+        },
+        isError = state.error != null,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions({ focusList[1].requestFocus() }),
+        singleLine = true,
+        outlined = true,
+    )
+
+    AdvancedTextField(
+        modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
+        value = state.password,
+        onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },
+        label = { Text(stringResource(Res.string.password)) },
+        placeholder = { Text(stringResource(Res.string.password)) },
+        leadingIcon = {
+            Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = leadingIconColor)
+        },
+        isError = state.error != null,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions({ focusList[2].requestFocus() }),
+        singleLine = true,
+        outlined = true,
+        showValue = state.showPassword,
+        onShowValueChange = { value -> onAction(LoginAction.SetShowPassword(value)) },
+    )
+
+    Spacer(modifier = Modifier.height(32.dp))
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Default.Login,
-            contentDescription = stringResource(Res.string.login),
-            modifier = Modifier.size(128.dp),
+        Text(stringResource(Res.string.remember))
+        Spacer(Modifier.width(2.dp))
+        Checkbox(
+            checked = state.remember,
+            onCheckedChange = { value -> onAction(LoginAction.SetRemember(value)) },
         )
+    }
 
-        Text(
-            text = stringResource(Res.string.login),
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
-        )
+    Text(
+        text = stringResource(Res.string.reset_password),
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .align(Alignment.CenterHorizontally)
+            .clickable {
+                onNavigationActions(
+                    arrayOf(
+                        NavigationAction.Push(Phone),
+                    ),
+                )
+            }
+            .padding(vertical = 8.dp),
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Medium,
+    )
 
-        val focusList = remember { List(3) { FocusRequester() }.apply { first().requestFocus() } }
+    Spacer(modifier = Modifier.height(32.dp))
 
-        val leadingIconColor = LocalContentColor.current.orErrorColor(state.error != null)
-
-        AdvancedTextField(
-            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
-            value = state.username,
-            onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
-            label = { Text(stringResource(Res.string.username)) },
-            placeholder = { Text(stringResource(Res.string.username)) },
-            leadingIcon = {
-                Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = leadingIconColor)
-            },
-            isError = state.error != null,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions({ focusList[1].requestFocus() }),
-            singleLine = true,
-            outlined = true,
-        )
-
-        AdvancedTextField(
-            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
-            value = state.password,
-            onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },
-            label = { Text(stringResource(Res.string.password)) },
-            placeholder = { Text(stringResource(Res.string.password)) },
-            leadingIcon = {
-                Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = leadingIconColor)
-            },
-            isError = state.error != null,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions({ focusList[2].requestFocus() }),
-            singleLine = true,
-            outlined = true,
-            showValue = state.showPassword,
-            onShowValueChange = { value -> onAction(LoginAction.SetShowPassword(value)) },
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(stringResource(Res.string.remember))
-            Spacer(Modifier.width(2.dp))
-            Checkbox(
-                checked = state.remember,
-                onCheckedChange = { value -> onAction(LoginAction.SetRemember(value)) },
-            )
-        }
-
-        Text(
-            text = stringResource(Res.string.reset_password),
-            color = MaterialTheme.colorScheme.primary,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .clickable {
-                    onNavigationActions(
-                        arrayOf(
-                            NavigationAction.Push(Phone),
-                        ),
-                    )
-                }
-                .padding(vertical = 8.dp),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            { onAction(LoginAction.Login) },
-            Modifier.fillMaxWidth(0.8f).focusRequester(focusList[2]),
-        ) {
-            Text(text = stringResource(Res.string.login))
-        }
+    Button(
+        { onAction(LoginAction.Login) },
+        Modifier.fillMaxWidth(0.8f).focusRequester(focusList[2]),
+    ) {
+        Text(text = stringResource(Res.string.login))
     }
 }
 

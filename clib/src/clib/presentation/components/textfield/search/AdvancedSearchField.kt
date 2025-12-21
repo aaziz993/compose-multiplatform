@@ -81,7 +81,7 @@ public fun AdvancedSearchField(
     outlined: Boolean = false,
     validator: Validator? = null,
     underlineMessage: String? = null,
-    onValidation: (List<String>) -> String = { value -> value.joinToString(", ") },
+    onValidation: @Composable (List<String>) -> String = { value -> value.joinToString(", ") },
     showValue: Boolean = true, onShowValueChange: ((Boolean) -> Unit)? = null,
     matchAll: Boolean = true,
     regexMatch: Boolean = true,

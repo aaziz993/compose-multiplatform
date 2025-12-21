@@ -30,6 +30,7 @@
     <string name="delay">Таъхир</string>
     <string name="dark">Торик</string>
     <string name="enabled">Фаъол</string>
+    <string name="edit">Таҳрир</string>
     <string name="error">Хато</string>
     <string name="false">Ноҳақ</string>
     <string name="exchange">Мубодилла</string>
@@ -76,6 +77,7 @@
     <string name="right">Рост</string>
     <string name="route">Роҳ</string>
     <string name="remember">Сабт</string>
+    <string name="save">Сабт</string>
     <string name="support">Дастгирӣ</string>
     <string name="source">Манбаъ</string>
     <string name="search">Ҷустуҷӯ</string>
