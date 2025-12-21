@@ -16,7 +16,7 @@ public class ProfileViewModel(
     private val authState: AuthState,
 ) : ViewModel<ProfileAction>() {
 
-    public val state: StateFlow<ProfileState>
+    public val state: MutableStateFlow<ProfileState>
         field = MutableStateFlow(ProfileState(authState.value.user!!))
 
     override fun action(action: ProfileAction) {
