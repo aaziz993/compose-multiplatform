@@ -1,7 +1,9 @@
 package ui.auth.profile.presentation.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import clib.presentation.auth.AuthState
 import clib.presentation.components.dialog.password.model.PasswordDialogState
+import clib.presentation.components.dialog.password.model.PasswordResetDialogState
 import clib.presentation.viewmodel.ViewModel
 import klib.data.auth.model.Auth
 import klib.data.load.LoadingResult
@@ -9,6 +11,7 @@ import klib.data.load.success
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Provided
 
@@ -18,7 +21,7 @@ public class ProfileViewModel(
     private val authState: AuthState,
 ) : ViewModel<ProfileAction>() {
 
-    public val state: MutableStateFlow<LoadingResult<ProfileState>>
+    public val state: StateFlow<LoadingResult<ProfileState>>
         field = MutableStateFlow(success(ProfileState(authState.value.user!!)))
 
     override fun action(action: ProfileAction) {
@@ -32,15 +35,15 @@ public class ProfileViewModel(
             is ProfileAction.SetEmail -> setEmail(action.value)
             is ProfileAction.SetAttribute -> setAttribute(action.key, action.value)
             is ProfileAction.StartUpdate -> startUpdate(action.value)
-            ProfileAction.CompleteUpdate -> {}
-            is ProfileAction.StartResetPassword -> {}
-            ProfileAction.CompleteResetPassword -> completeUpdate()
+            ProfileAction.CompleteUpdate -> completeUpdate()
+            is ProfileAction.StartResetPassword -> startResetPassword(action.value)
+            ProfileAction.CompleteResetPassword -> completeResetPassword()
             is ProfileAction.SignOut -> signOut()
         }
     }
 
     private fun editUser(value: Boolean) = state.update {
-        it.map { if (value) copy(editUser = true) else copy(user = authState.value.user!!, editUser = false) }
+        it.map { if (value) copy(edit = true) else copy(user = authState.value.user!!, edit = false) }
     }
 
     private fun setUserImage(value: String) = state.update {
@@ -76,6 +79,25 @@ public class ProfileViewModel(
     }
 
     private fun completeUpdate() {
+        state.update { it.toLoading() }
+        viewModelScope.launch {
+            state.update {
+                it.map { copy(edit = false, passwordDialogState = null) }
+            }
+        }
+    }
+
+    private fun startResetPassword(value: PasswordResetDialogState?) = state.update {
+        it.map { copy(passwordResetDialogState = value) }
+    }
+
+    private fun completeResetPassword() {
+        state.update { it.toLoading() }
+        viewModelScope.launch {
+            state.update {
+                it.map { copy(passwordResetDialogState = null) }
+            }
+        }
     }
 
     private fun signOut() {

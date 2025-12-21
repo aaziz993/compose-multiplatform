@@ -6,7 +6,7 @@ import klib.data.auth.model.User
 
 public data class ProfileState(
     val user: User = User(),
-    val editUser: Boolean = false,
+    val edit: Boolean = false,
     val passwordDialogState: PasswordDialogState? = null,
     val passwordResetDialogState: PasswordResetDialogState? = null,
 )

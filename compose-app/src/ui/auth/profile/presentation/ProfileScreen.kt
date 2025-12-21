@@ -157,8 +157,6 @@ private fun ProfileScreenContent(
         }
     }
 
-    Spacer(modifier = Modifier.height(32.dp))
-
     if (state.user.roles.isNotEmpty()) {
         FlowRow {
             state.user.roles.forEach { role ->
@@ -177,11 +175,13 @@ private fun ProfileScreenContent(
         }
     }
 
+    Spacer(modifier = Modifier.height(32.dp))
+
     val focusRequesters = remember { List(7 + state.user.attributes.size) { FocusRequester() } }
     val validations = remember { mutableStateListOf(*Array(7 + state.user.attributes.size) { false }) }
 
     Row {
-        if (state.editUser) {
+        if (state.edit) {
             val isValidAll = validations.all()
             IconButton(
                 {
@@ -198,11 +198,11 @@ private fun ProfileScreenContent(
         }
         IconButton(
             {
-                if (!state.editUser) focusRequesters[0].requestFocus()
-                onAction(ProfileAction.Edit(!state.editUser))
+                if (!state.edit) focusRequesters[0].requestFocus()
+                onAction(ProfileAction.Edit(!state.edit))
             },
         ) {
-            if (state.editUser)
+            if (state.edit)
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(Res.string.close),
@@ -217,7 +217,7 @@ private fun ProfileScreenContent(
         { value -> onAction(ProfileAction.SetUsername(value)) },
         focusRequesters[0],
         focusRequesters[1],
-        state.editUser,
+        state.edit,
         stringResource(Res.string.username),
         Icons.Default.Person,
         validator["username"],
@@ -230,7 +230,7 @@ private fun ProfileScreenContent(
         { value -> onAction(ProfileAction.SetFirstName(value)) },
         focusRequesters[1],
         focusRequesters[2],
-        state.editUser,
+        state.edit,
         stringResource(Res.string.first_name),
         Icons.Default.Person,
         validator["firstName"],
@@ -242,7 +242,7 @@ private fun ProfileScreenContent(
         { value -> onAction(ProfileAction.SetLastName(value)) },
         focusRequesters[2],
         focusRequesters[3],
-        state.editUser,
+        state.edit,
         stringResource(Res.string.last_name),
         Icons.Default.Person,
         validator["lastName"],
@@ -254,7 +254,7 @@ private fun ProfileScreenContent(
         { value -> onAction(ProfileAction.SetPhone(value)) },
         focusRequesters[3],
         focusRequesters[4],
-        state.editUser,
+        state.edit,
         stringResource(Res.string.phone),
         Icons.Default.Phone,
         validator["phone"],
@@ -266,7 +266,7 @@ private fun ProfileScreenContent(
         { value -> onAction(ProfileAction.SetEmail(value)) },
         focusRequesters[4],
         focusRequesters[5],
-        state.editUser,
+        state.edit,
         stringResource(Res.string.email),
         Icons.Default.Email,
         validator["email"],
@@ -279,7 +279,7 @@ private fun ProfileScreenContent(
             { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
             focusRequesters[5 + index],
             focusRequesters[6 + index],
-            state.editUser,
+            state.edit,
             key.asStringResource(),
             Icons.Default.Attribution,
             validator[key],
