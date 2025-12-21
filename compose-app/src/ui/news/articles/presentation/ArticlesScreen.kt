@@ -21,31 +21,31 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import clib.data.type.primitives.string.stringResource
+import clib.generated.resources.image_load_error
 import clib.presentation.components.loading.CenterLoadingIndicator
 import clib.presentation.navigation.NavigationAction
 import coil3.compose.AsyncImage
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.image
 import compose_app.generated.resources.retry
 import klib.data.load.LoadingResult
-import klib.data.load.loading
+import klib.data.load.success
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
-import clib.data.type.primitives.string.stringResource
-import clib.generated.resources.image_load_error
-import compose_app.generated.resources.image
 import org.jetbrains.compose.resources.painterResource
 import ui.navigation.presentation.Articles
-import ui.news.data.model.Article
 import ui.news.articles.presentation.viewmodel.ArticlesAction
+import ui.news.data.model.Article
 
 @Composable
 public fun ArticlesScreen(
     modifier: Modifier = Modifier,
     route: Articles = Articles,
-    state: LoadingResult<List<Article>> = loading(),
+    state: LoadingResult<List<Article>> = success(emptyList()),
     onAction: (ArticlesAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = when (val result = state.toSuccess()) {

@@ -4,6 +4,8 @@ import clib.presentation.auth.AuthState
 import clib.presentation.components.dialog.password.model.PasswordDialogState
 import clib.presentation.viewmodel.ViewModel
 import klib.data.auth.model.Auth
+import klib.data.load.LoadingResult
+import klib.data.load.success
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,8 +18,8 @@ public class ProfileViewModel(
     private val authState: AuthState,
 ) : ViewModel<ProfileAction>() {
 
-    public val state: MutableStateFlow<ProfileState>
-        field = MutableStateFlow(ProfileState(authState.value.user!!))
+    public val state: MutableStateFlow<LoadingResult<ProfileState>>
+        field = MutableStateFlow(success(ProfileState(authState.value.user!!)))
 
     override fun action(action: ProfileAction) {
         when (action) {
@@ -38,39 +40,39 @@ public class ProfileViewModel(
     }
 
     private fun editUser(value: Boolean) = state.update {
-        if (value) it.copy(editUser = true) else it.copy(user = authState.value.user!!, editUser = false)
+        it.map { if (value) copy(editUser = true) else copy(user = authState.value.user!!, editUser = false) }
     }
 
     private fun setUserImage(value: String) = state.update {
-        it.copy(user = it.user.copy(image = value))
+        it.map { copy(user = user.copy(image = value)) }
     }
 
     private fun setUsername(value: String) = state.update {
-        it.copy(user = it.user.copy(username = value))
+        it.map { copy(user = user.copy(username = value)) }
     }
 
     private fun setFirstName(value: String) = state.update {
-        it.copy(user = it.user.copy(firstName = value))
+        it.map { copy(user = user.copy(firstName = value)) }
     }
 
     private fun setLastName(value: String) = state.update {
-        it.copy(user = it.user.copy(lastName = value))
+        it.map { copy(user = user.copy(lastName = value)) }
     }
 
     private fun setPhone(value: String) = state.update {
-        it.copy(user = it.user.copy(phone = value))
+        it.map { copy(user = user.copy(phone = value)) }
     }
 
     private fun setEmail(value: String) = state.update {
-        it.copy(user = it.user.copy(email = value))
+        it.map { copy(user = user.copy(email = value)) }
     }
 
     private fun setAttribute(key: String, value: List<String>) = state.update {
-        it.copy(user = it.user.copy(attributes = it.user.attributes + (key to value)))
+        it.map { copy(user = user.copy(attributes = user.attributes + (key to value))) }
     }
 
     private fun startUpdate(value: PasswordDialogState?) = state.update {
-        it.copy(passwordDialogState = value)
+        it.map { copy(passwordDialogState = value) }
     }
 
     private fun completeUpdate() {

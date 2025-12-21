@@ -67,6 +67,8 @@ import compose_app.generated.resources.username
 import compose_app.generated.resources.verify
 import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
+import klib.data.load.LoadingResult
+import klib.data.load.success
 import klib.data.type.collections.all
 import klib.data.validator.Validator
 import presentation.components.dialog.SignOutConfirmDialog
@@ -83,7 +85,7 @@ public fun ProfileScreen(
     connectivityStatus: Status = Status.Disconnected,
     connectivity: Connectivity = Connectivity(),
     validator: Map<String, Validator> = emptyMap(),
-    state: ProfileState = ProfileState(),
+    state: LoadingResult<ProfileState> = success(ProfileState()),
     onAction: (ProfileAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Column(

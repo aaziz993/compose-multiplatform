@@ -39,10 +39,10 @@ public sealed interface LoadingResult<T> {
 
     public fun toFailure(throwable: Throwable): Failure<T> = Failure(throwable, value)
 
-    public fun <R> map(block: (T) -> R): LoadingResult<R> = when (this) {
-        is Loading -> Loading(value?.let(block))
-        is Success -> Success(block(value))
-        is Failure -> Failure(throwable, value?.let(block))
+    public fun <R> map(block: T.() -> R): LoadingResult<R> = when (this) {
+        is Loading -> Loading(value?.run(block))
+        is Success -> Success(value.block())
+        is Failure -> Failure(throwable, value?.run(block))
     }
 
     public suspend fun load(block: suspend () -> T): LoadingResult<T> =
