@@ -51,8 +51,11 @@ import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.image.avatar.Avatar
+import clib.presentation.components.loading.CenterLoadingIndicator
 import clib.presentation.components.textfield.AdvancedTextField
 import clib.presentation.connectivity.model.Connectivity
+import clib.presentation.events.alert.GlobalAlertEventController
+import clib.presentation.events.alert.model.AlertEvent
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.close
@@ -88,7 +91,38 @@ public fun ProfileScreen(
     state: LoadingResult<ProfileState> = success(ProfileState()),
     onAction: (ProfileAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
-): Unit = Column(
+): Unit = when (val result = state.toSuccess()) {
+    is LoadingResult.Loading -> CenterLoadingIndicator()
+
+    is LoadingResult.Success -> ProfileScreenContent(
+        modifier,
+        connectivityStatus,
+        connectivity,
+        validator,
+        result.value,
+        onAction,
+        onNavigationActions,
+    )
+
+    is LoadingResult.Failure -> {
+        GlobalAlertEventController.sendEvent(
+            AlertEvent(
+                text = { Text(result.throwable.message.orEmpty()) },
+            ),
+        )
+    }
+}
+
+@Composable
+private fun ProfileScreenContent(
+    @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
+    connectivityStatus: Status,
+    connectivity: Connectivity,
+    validator: Map<String, Validator>,
+    state: ProfileState,
+    onAction: (ProfileAction) -> Unit,
+    onNavigationActions: (Array<NavigationAction>) -> Unit,
+) = Column(
     modifier = modifier,
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -299,10 +333,6 @@ public fun ProfileScreen(
     }
 }
 
-@Preview
-@Composable
-private fun PreviewProfileScreen(): Unit = ProfileScreen()
-
 @Composable
 private fun ProfileAttributeField(
     value: String,
@@ -336,3 +366,8 @@ private fun ProfileAttributeField(
         value.map { it.asStringResource() }.joinToString("\n")
     },
 )
+
+@Preview
+@Composable
+private fun PreviewProfileScreen(): Unit = ProfileScreen()
+
