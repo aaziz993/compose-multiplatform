@@ -155,22 +155,24 @@ private fun ProfileScreenContent(
                 modifier = Modifier.size(14.dp),
             )
         }
-    }
 
-    if (state.user.roles.isNotEmpty()) {
-        FlowRow {
-            state.user.roles.forEach { role ->
-                AssistChip(
-                    onClick = {},
-                    label = { Text(role, style = MaterialTheme.typography.labelSmall) },
-                    colors = AssistChipDefaults.assistChipColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    border = null,
-                    modifier = Modifier.defaultMinSize(minHeight = 32.dp),
-                )
+        if (state.user.roles.isNotEmpty()) {
+            FlowRow(
+                modifier = Modifier.align(Alignment.BottomCenter),
+            ) {
+                state.user.roles.forEach { role ->
+                    AssistChip(
+                        onClick = {},
+                        label = { Text(role, style = MaterialTheme.typography.labelSmall) },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        border = null,
+                        modifier = Modifier.defaultMinSize(minHeight = 32.dp),
+                    )
+                }
             }
         }
     }
@@ -300,6 +302,7 @@ private fun ProfileScreenContent(
             { value -> validations[5 + index] = value },
         )
     }
+
 //        CountryCodePickerTextField(
 //            value = user.phone.orEmpty().removePrefix(country?.dial.orEmpty().ifNotEmpty { "+$it" }),
 //            onValueChange = { _, _, _ -> },
