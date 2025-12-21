@@ -325,12 +325,13 @@ public data object Login : KoinRoute<Login>(), NavRoute {
         route: Login,
         sharedTransitionScope: SharedTransitionScope,
     ) {
-        val router = currentRouter()
+        val scrollState = rememberScrollState()
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val router = currentRouter()
 
         LoginScreen(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp).verticalScroll(scrollState),
             route,
             state,
             viewModel::action,
@@ -469,7 +470,7 @@ public data class ArticleDetails(val articleId: Long = 0L) : NavRoute {
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             ArticleDetailsScreen(
-                Modifier.fillMaxSize().verticalScroll(scrollState),
+                Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
                 route,
                 state,
                 viewModel::action,

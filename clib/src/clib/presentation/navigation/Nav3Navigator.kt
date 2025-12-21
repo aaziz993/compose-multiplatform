@@ -138,7 +138,7 @@ public open class Nav3Navigator(
             checkNotNull(authRoute) { "No auth route" }
         }
 
-        if (route.route !in routes.routes) {
+        if (route.route !in routes) {
             onUnknownRoute(route)
             return false
         }
@@ -163,9 +163,7 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceCurrent,
     ) {
-        require(action.route.route in routes.routes) {
-            "Replace current route '${action.route.route}' isn't in '$routes'"
-        }
+        if (action.route.route !in routes) return
         if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
     }
 
@@ -181,10 +179,7 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceStack,
     ) {
-        require(action.routes.all { navRoute -> navRoute.route in routes.routes }) {
-            "Replace stack routes '${action.routes.map(NavRoute::route)}' isn't in '$routes'"
-        }
-        snapshot.replaceWith(action.routes)
+        snapshot.replaceWith(action.routes.filter { navRoute -> navRoute.route in routes })
     }
 
     /**
@@ -193,9 +188,7 @@ public open class Nav3Navigator(
     protected open fun auth() {
         val authStack = (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
             listOfNotNull(
-                authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also { route ->
-                    if (route.route !in routes) return onUnknownRoute(route)
-                },
+                authRedirectRoute?.takeIf { it.route in routes && it.route.isAuth(auth) },
             ))
             .ifEmpty {
                 listOfNotNull(

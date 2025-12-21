@@ -1,7 +1,5 @@
 package clib.presentation.components.textfield
 
-import clib.presentation.components.dropdown.list.ListDropdown
-import clib.presentation.components.textfield.model.TextField
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -12,7 +10,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -38,13 +39,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
-import compose.icons.EvaIcons
-import compose.icons.evaicons.Fill
-import compose.icons.evaicons.Outline
-import compose.icons.evaicons.fill.Close
-import compose.icons.evaicons.outline.Eye
-import compose.icons.evaicons.outline.EyeOff2
 import clib.data.type.state.timePickerStateToTime
+import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
+import clib.presentation.components.dropdown.list.ListDropdown
+import clib.presentation.components.textfield.model.TextField
 import klib.data.type.primitives.time.now
 import klib.data.type.primitives.time.parseOrNull
 import klib.data.type.primitives.time.toEpochMilliseconds
@@ -53,7 +51,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
-import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 
 @Composable
 public fun AdvancedTextField(
@@ -115,7 +112,7 @@ public fun AdvancedTextField(
     val clearIconButton: (@Composable () -> Unit)? = if (clearable && enabled && value.isNotBlank()) {
         {
             Icon(
-                EvaIcons.Fill.Close, null, iconModifier.clickable { onValueChange("") }, MaterialTheme.colorScheme.error,
+                Icons.Default.Close, null, iconModifier.clickable { onValueChange("") }, MaterialTheme.colorScheme.error,
             )
         }
     }
@@ -124,12 +121,7 @@ public fun AdvancedTextField(
     val showIconButton: (@Composable (isError: Boolean) -> Unit)? = onShowValueChange?.let { osc ->
         {
             Icon(
-                if (showValue) {
-                    EvaIcons.Outline.EyeOff2
-                }
-                else {
-                    EvaIcons.Outline.Eye
-                },
+                if (showValue) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 null,
                 iconModifier.clickable { osc(!showValue) },
                 LocalContentColor.current.orErrorColor(it),

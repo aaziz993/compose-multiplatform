@@ -90,7 +90,7 @@ public fun LoginScreen(
         },
         isError = state.error != null,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions({ focusList[1].requestFocus() }),
+        keyboardActions = KeyboardActions { focusList[1].requestFocus() },
         singleLine = true,
         outlined = true,
     )
@@ -106,7 +106,7 @@ public fun LoginScreen(
         },
         isError = state.error != null,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions({ focusList[2].requestFocus() }),
+        keyboardActions = KeyboardActions { focusList[2].requestFocus() },
         singleLine = true,
         outlined = true,
         showValue = state.showPassword,

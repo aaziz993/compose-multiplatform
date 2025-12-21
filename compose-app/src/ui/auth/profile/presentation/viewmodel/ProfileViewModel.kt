@@ -22,7 +22,7 @@ public class ProfileViewModel(
 ) : ViewModel<ProfileAction>() {
 
     public val state: StateFlow<LoadingResult<ProfileState>>
-        field = MutableStateFlow(success(ProfileState(authState.value.user!!)))
+        field = MutableStateFlow<LoadingResult<ProfileState>>(success(ProfileState(authState.value.user!!)))
 
     override fun action(action: ProfileAction) {
         when (action) {
