@@ -180,14 +180,17 @@ private fun ProfileScreenContent(
     val focusRequesters = remember { List(7 + state.user.attributes.size) { FocusRequester() } }
     val validations = remember { mutableStateListOf(*Array(7 + state.user.attributes.size) { false }) }
 
-    Row {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+    ) {
         if (state.edit) {
             val isValidAll = validations.all()
             IconButton(
-                {
+                onClick = {
                     if (isValidAll) onAction(ProfileAction.StartUpdate())
                 },
-                Modifier.focusRequester(focusRequesters[6]),
+                modifier = Modifier.focusRequester(focusRequesters[6]),
             ) {
                 Icon(
                     imageVector = Icons.Default.Save,
@@ -197,7 +200,7 @@ private fun ProfileScreenContent(
             }
         }
         IconButton(
-            {
+            onClick = {
                 if (!state.edit) focusRequesters[0].requestFocus()
                 onAction(ProfileAction.Edit(!state.edit))
             },
@@ -212,6 +215,8 @@ private fun ProfileScreenContent(
         }
     }
 
+    Spacer(modifier = Modifier.height(32.dp))
+
     ProfileAttributeField(
         state.user.username.orEmpty(),
         { value -> onAction(ProfileAction.SetUsername(value)) },
@@ -224,6 +229,7 @@ private fun ProfileScreenContent(
         { value -> validations[0] = value },
     )
 
+    Spacer(modifier = Modifier.height(32.dp))
 
     ProfileAttributeField(
         state.user.firstName.orEmpty(),
@@ -237,6 +243,8 @@ private fun ProfileScreenContent(
         { value -> validations[1] = value },
     )
 
+    Spacer(modifier = Modifier.height(32.dp))
+
     ProfileAttributeField(
         state.user.lastName.orEmpty(),
         { value -> onAction(ProfileAction.SetLastName(value)) },
@@ -249,6 +257,8 @@ private fun ProfileScreenContent(
         { value -> validations[2] = value },
     )
 
+    Spacer(modifier = Modifier.height(32.dp))
+
     ProfileAttributeField(
         state.user.phone.orEmpty(),
         { value -> onAction(ProfileAction.SetPhone(value)) },
@@ -260,6 +270,8 @@ private fun ProfileScreenContent(
         validator["phone"],
         { value -> validations[3] = value },
     )
+
+    Spacer(modifier = Modifier.height(32.dp))
 
     ProfileAttributeField(
         state.user.email.orEmpty(),
@@ -274,6 +286,8 @@ private fun ProfileScreenContent(
     )
 
     state.user.attributes.entries.forEachIndexed { index, (key, value) ->
+        Spacer(modifier = Modifier.height(32.dp))
+
         ProfileAttributeField(
             value.first(),
             { onAction(ProfileAction.SetAttribute(key, listOf(it))) },

@@ -148,8 +148,8 @@ public fun LoginScreen(
     Spacer(modifier = Modifier.height(32.dp))
 
     Button(
-        { onAction(LoginAction.Login) },
-        Modifier.fillMaxWidth(0.8f).focusRequester(focusList[2]),
+        onClick = { onAction(LoginAction.Login) },
+        modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[2]),
     ) {
         Text(text = stringResource(Res.string.login))
     }
