@@ -182,15 +182,17 @@ public open class Nav3Navigator(
      * Replaces routes based on authentication state.
      */
     protected open fun auth() {
-        val authStack = (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
-            listOfNotNull(
-                authRedirectRoute?.takeIf { it.route in routes && it.route.isAuth(auth) },
-            ))
-            .ifEmpty {
-                listOfNotNull(
-                    routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) },
-                )
-            }
+        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }
+        if (navRoute != null && navRoute.route !in routes) return onUnknownRoute(navRoute)
+
+        val authStack =
+            (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } + listOfNotNull(navRoute))
+                .ifEmpty {
+                    listOfNotNull(
+                        routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) },
+                    )
+                }
+
         if (authStack.isNotEmpty() && authStack != backStack)
             actions(NavigationAction.ReplaceStack(authStack))
     }
