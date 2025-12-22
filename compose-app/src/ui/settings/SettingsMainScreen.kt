@@ -1,5 +1,14 @@
 package ui.settings
 
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,7 +16,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.BluetoothSearching
 import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
+import androidx.compose.material.icons.filled.Animation
 import androidx.compose.material.icons.filled.AppSettingsAlt
+import androidx.compose.material.icons.filled.AspectRatio
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.BluetoothConnected
@@ -20,6 +31,7 @@ import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.FormatShapes
+import androidx.compose.material.icons.filled.Functions
 import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LinearScale
@@ -32,12 +44,16 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Route
+import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material.icons.filled.Sensors
 import androidx.compose.material.icons.filled.SettingsBrightness
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material.icons.filled.TextFormat
+import androidx.compose.material.icons.filled.Timelapse
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.Title
+import androidx.compose.material.icons.outlined.Animation
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.BluetoothConnected
@@ -66,6 +82,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -85,6 +102,8 @@ import clib.presentation.theme.model.ThemeMode
 import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.action_icon_content_color
+import compose_app.generated.resources.animate
+import compose_app.generated.resources.animation_spec
 import compose_app.generated.resources.app_bar
 import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.app_bar_locales
@@ -107,10 +126,14 @@ import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.contact
 import compose_app.generated.resources.container_color
+import compose_app.generated.resources.damping_ratio
 import compose_app.generated.resources.dark
+import compose_app.generated.resources.delay
 import compose_app.generated.resources.density
 import compose_app.generated.resources.done
+import compose_app.generated.resources.duration
 import compose_app.generated.resources.dynamic_color_scheme
+import compose_app.generated.resources.easing
 import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.gallery
@@ -133,21 +156,25 @@ import compose_app.generated.resources.scrolled_container_color
 import compose_app.generated.resources.search
 import compose_app.generated.resources.sensors
 import compose_app.generated.resources.shapes
+import compose_app.generated.resources.stiffness
 import compose_app.generated.resources.storage
 import compose_app.generated.resources.subtitle_content_color
 import compose_app.generated.resources.theme
 import compose_app.generated.resources.title
 import compose_app.generated.resources.title_content_color
 import compose_app.generated.resources.typography
+import compose_app.generated.resources.visibility_threshold
 import compose_app.generated.resources.write_storage
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.permission.model.Permission
+import klib.data.type.cast
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsMenuLink
+import presentation.components.settings.SettingsSlider
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
 import presentation.components.settings.SettingsTimePickerDialog
@@ -516,6 +543,54 @@ public fun SettingsMainScreen(
         }
 
         SettingsSwitch(
+            title = stringResource(Res.string.animate),
+            value = theme.animate,
+            trueIcon = Icons.Filled.Animation,
+            falseIcon = Icons.Outlined.Animation,
+            onCheckedChange = { value ->
+                onThemeChange(theme.copy(animate = value))
+                false
+            },
+        )
+
+        theme.animationSpec?.let { animationSpec ->
+            val animationSpecs = remember {
+                listOf<AnimationSpec<Color>>(
+                    spring(),
+                    tween(),
+                )
+            }
+
+            SettingsListPickerDialog(
+                animationSpec,
+                values = animationSpecs,
+                title = stringResource(Res.string.animation_spec),
+                icon = Icons.Default.Animation,
+                modifier = Modifier,
+                enabled = true,
+            ) { value ->
+                onThemeChange(theme.copy(animationSpec = value))
+                false
+            }
+
+            when (val animationSpec = theme.animationSpec) {
+                is SpringSpec<*> -> SettingsGroupSpringSpec(
+                    animationSpec.cast(),
+                ) { value ->
+                    onThemeChange(theme.copy(animationSpec = value))
+                    false
+                }
+
+                is TweenSpec<*> -> SettingsGroupTweenSpec(
+                    animationSpec.cast(),
+                ) { value ->
+                    onThemeChange(theme.copy(animationSpec = value))
+                    false
+                }
+            }
+        }
+
+        SettingsSwitch(
             stringResource(Res.string.expressive),
             value = theme.isExpressive,
             trueIcon = Icons.Filled.AutoAwesomeMotion,
@@ -856,6 +931,126 @@ public fun SettingsMainScreen(
             if (locale != defaultLocale) onLocaleChange(defaultLocale)
             if (routes != defaultRoutes) defaultRoutes.forEach { (route, value) -> onRouteChange(route, value) }
         }
+    }
+}
+
+@Composable
+private fun SettingsGroupSpringSpec(
+    value: SpringSpec<Color>,
+    onValueChange: (SpringSpec<Color>) -> Unit,
+) {
+    SettingsSlider(
+        title = stringResource(Res.string.damping_ratio),
+        value = value.dampingRatio,
+        icon = Icons.Default.AspectRatio,
+        enabled = true,
+        valueRange = 0.2f..1f,
+        steps = 2,
+    ) { it, _ ->
+        onValueChange(
+            spring(
+                it,
+                value.stiffness,
+                value.visibilityThreshold,
+            ),
+        )
+    }
+
+    SettingsSlider(
+        title = stringResource(Res.string.stiffness),
+        value = value.stiffness,
+        icon = Icons.Default.Scale,
+        enabled = true,
+        valueRange = 50f..10_000f,
+    ) { it, _ ->
+        onValueChange(
+            spring(
+                value.dampingRatio,
+                it,
+                value.visibilityThreshold,
+            ),
+        )
+    }
+
+    value.visibilityThreshold?.let { visibilityThreshold ->
+        SettingsColorPickerBottomSheet(
+            stringResource(Res.string.visibility_threshold),
+            visibilityThreshold,
+        ) {
+            onValueChange(
+                spring(
+                    value.dampingRatio,
+                    value.stiffness,
+                    it,
+                ),
+            )
+            false
+        }
+    }
+}
+
+@Composable
+private fun SettingsGroupTweenSpec(
+    value: TweenSpec<Color>,
+    onValueChange: (TweenSpec<Color>) -> Unit,
+) {
+    SettingsSlider(
+        title = stringResource(Res.string.duration),
+        value = value.durationMillis.toFloat(),
+        icon = Icons.Default.Timelapse,
+        enabled = true,
+        valueRange = 0f..5_000f,
+    ) { it, _ ->
+        onValueChange(
+            tween(
+                it.toInt(),
+                value.delay,
+                value.easing,
+            ),
+        )
+    }
+
+    SettingsSlider(
+        title = stringResource(Res.string.delay),
+        value = value.delay.toFloat(),
+        icon = Icons.Default.Timer,
+        enabled = true,
+        valueRange = 0f..5_000f,
+    ) { it, _ ->
+        onValueChange(
+            tween(
+                value.durationMillis,
+                it.toInt(),
+                value.easing,
+            ),
+        )
+    }
+
+    val easings = remember {
+        listOf(
+            FastOutSlowInEasing,
+            LinearOutSlowInEasing,
+            FastOutLinearInEasing,
+            LinearEasing,
+        )
+    }
+
+    SettingsListPickerDialog(
+        value.easing,
+        values = easings,
+        title = stringResource(Res.string.easing),
+        icon = Icons.Default.Functions,
+        modifier = Modifier,
+        enabled = true,
+    ) {
+        onValueChange(
+            tween(
+                value.durationMillis,
+                value.delay,
+                it,
+            ),
+        )
+        false
     }
 }
 

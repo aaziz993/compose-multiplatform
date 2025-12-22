@@ -9,6 +9,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import clib.data.type.ColorSerial
 import clib.presentation.theme.darkHighContrast
 import clib.presentation.theme.isAdaptiveDark
 import clib.presentation.theme.lightHighContrast
@@ -31,6 +32,8 @@ public data class Theme(
     val lightTime: LocalTime = LocalTime(6, 0),
     val darkTime: LocalTime = LocalTime(19, 0),
     val isHighContrast: Boolean = false,
+    val animate: Boolean = false,
+    val animationSpec: AnimationSpecSerial<ColorSerial>? = null,
     val isExpressive: Boolean = true,
     val shapes: ShapesSerial = Shapes(),
     val typography: TypographySerial = Typography(),

@@ -3,7 +3,6 @@ package clib.presentation
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.foundation.ComposeFoundationFlags
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -190,7 +189,7 @@ public fun AppEnvironment(
 
             val state = rememberDynamicMaterialThemeState(
                 seedColor = dynamicColorScheme.seedColor,
-                isDark = isSystemInDarkTheme(),
+                isDark = theme.isDark(),
                 isAmoled = dynamicColorScheme.isAmoled,
                 primary = dynamicColorScheme.primary,
                 secondary = dynamicColorScheme.secondary,
@@ -206,15 +205,26 @@ public fun AppEnvironment(
             Surface { }
 
             val colorScheme = state.colorScheme
-            (if (!dynamicColorScheme.animate) colorScheme
-            else animateColorScheme(
-                colorScheme = colorScheme,
-                animationSpec = {
-                    dynamicColorScheme.animationSpec as FiniteAnimationSpec<Color>
-                },
-            )) to state.seedColor
+            (if (theme.animate)
+                animateColorScheme(
+                    colorScheme = colorScheme,
+                    animationSpec = {
+                        theme.animationSpec as FiniteAnimationSpec<Color>
+                    },
+                )
+            else colorScheme) to state.seedColor
         }
-        else theme.currentColorScheme to Color.Transparent
+        else {
+            val colorScheme = theme.currentColorScheme
+            (if (theme.animate)
+                animateColorScheme(
+                    colorScheme = colorScheme,
+                    animationSpec = {
+                        theme.animationSpec as FiniteAnimationSpec<Color>
+                    },
+                )
+            else colorScheme) to Color.Transparent
+        }
 
         CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
             MaterialExpressiveTheme(
