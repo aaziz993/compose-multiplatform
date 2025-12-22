@@ -114,10 +114,11 @@ public fun AppEnvironment(
         else remember { Router(it) }
     },
     navigatorFactory: @Composable (Routes) -> Navigator = {
+        val isRoot = it == routes
         rememberNav3Navigator(
             routes = it,
             authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
-            authRedirectRoute = config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull(),
+            authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )
     },
     onDeepLink: Router.(Url) -> Unit = Router::push,
