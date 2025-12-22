@@ -34,7 +34,7 @@ public fun GlobalAlertDialog(
         }
     },
     modifier: Modifier = Modifier,
-    dismissButton: @Composable() ((dismiss: () -> Unit) -> Unit)? = { dismiss ->
+    dismissButton: (@Composable (dismiss: () -> Unit) -> Unit)? = { dismiss ->
         IconButton(dismiss) {
             Icon(Icons.Default.Close, null)
         }

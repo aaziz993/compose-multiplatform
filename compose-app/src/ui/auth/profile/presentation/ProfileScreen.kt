@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Attribution
 import androidx.compose.material.icons.filled.Close
@@ -113,8 +112,13 @@ public fun ProfileScreen(
             AlertEvent(
                 text = { Text(result.throwable.message.orEmpty()) },
                 isError = true,
-                action = {
+                dismissRequestAction = {
                     onAction(ProfileAction.Restore)
+                    GlobalAlertEventController.sendEvent(null)
+                },
+                dismissAction = {
+                    onAction(ProfileAction.Restore)
+                    GlobalAlertEventController.sendEvent(null)
                 },
             ),
         )
