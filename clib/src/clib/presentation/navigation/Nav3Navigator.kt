@@ -7,7 +7,6 @@ import androidx.navigation3.runtime.NavBackStack
 import clib.presentation.auth.LocalAuthState
 import klib.data.auth.model.Auth
 import klib.data.type.collections.replaceWith
-import klib.data.type.collections.takeUnlessEmpty
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
@@ -24,9 +23,9 @@ import kotlinx.coroutines.yield
  * @param auth The current authentication state used to determine access control.
  * @param authRoute Optional route representing an authentication screen. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
+ * @param onError Callback to trigger navigation exception.
  * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
- * @param onError Callback to trigger when navigation error.
  */
 public open class Nav3Navigator(
     public val routes: Routes,
@@ -34,9 +33,9 @@ public open class Nav3Navigator(
     private val auth: Auth,
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
+    private val onError: (Throwable) -> Unit,
     private val onUnknownRoute: (NavRoute) -> Unit,
     private val onBack: () -> Unit,
-    private val onError: (Throwable) -> Unit,
 ) : Navigator {
 
     init {
@@ -304,8 +303,9 @@ public open class Nav3Navigator(
  * @param auth The current authentication state used to determine access control.
  * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
+ * @param onError Callback to trigger navigation exception.
+ * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
- * @param onError Callback to trigger when navigation error.
  * @return A remembered navigator instance.
  */
 @Composable
@@ -315,10 +315,10 @@ public fun rememberNav3Navigator(
     auth: Auth = LocalAuthState.current.value,
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onUnknownRoute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { router.push(it) } }
-        ?: { navRoute -> error("Unknown route '$navRoute'") },
-    onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
     onError: (Throwable) -> Unit = { e -> throw e },
+    onUnknownRoute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { router.push(it) } }
+        ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
+    onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
 ): Navigator {
     require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
 
@@ -336,9 +336,9 @@ public fun rememberNav3Navigator(
             auth,
             authRoute,
             authRedirectRoute,
+            onError,
             onUnknownRoute,
             onBack,
-            onError,
         )
     }
 }
