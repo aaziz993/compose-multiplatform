@@ -97,7 +97,7 @@ internal fun HSLAColorPicker(
             },
             animate = true,
         ) {
-            val displayText = DecimalFormatter.DefaultFormatter.format((hsl.h * 100).roundToInt().toString()).displayValue
+            val displayText = DecimalFormatter.Default.format((hsl.h * 100).roundToInt().toString()).displayValue
             Text(
                 text = displayText,
                 color = value,

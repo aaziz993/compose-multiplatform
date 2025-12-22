@@ -30,6 +30,8 @@ import kotlinx.io.writeString
 public val String.Companion.DEFAULT: String
     get() = ""
 
+public expect val String.Companion.LINE_SEPARATOR: String
+
 public fun String.takeUnlessEmpty(): String? = takeUnless(String::isEmpty)
 
 public fun String.takeUnlessBlank(): String? = takeUnless(String::isBlank)

@@ -33,7 +33,7 @@ public fun SettingsSlider(
     value: Float,
     modifier: Modifier = Modifier,
     subtitle: @Composable (() -> Unit)? = {
-        Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
+        Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.Default.format((value * 100).roundToInt()).displayValue}")
     },
     icon: @Composable (() -> Unit)? = null,
     enabled: Boolean = LocalSettingsGroupEnabled.current,

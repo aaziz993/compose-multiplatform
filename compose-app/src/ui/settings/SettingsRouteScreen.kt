@@ -25,6 +25,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.enabled
 import compose_app.generated.resources.label
 import data.type.primitives.string.asStringResource
+import klib.data.type.primitives.string.LINE_SEPARATOR
 import presentation.components.settings.SettingsSwitch
 import ui.navigation.presentation.NavSuiteSceneStrategy
 import ui.navigation.presentation.NavSuiteTopAppBarSceneStrategy
@@ -100,7 +101,7 @@ private fun SettingsRouteConfig(
 
     metadataList.forEach { metadata ->
         SettingsSwitch(
-            title = metadata.keys.map { it.asStringResource() }.joinToString("\n"),
+            title = metadata.keys.map { it.asStringResource() }.joinToString(LINE_SEPARATOR),
             metadata.keys.all { key -> key in value.metadata || key in value.additionalMetadata },
             trueIcon = Icons.Filled.DisplaySettings,
             falseIcon = Icons.Outlined.DisplaySettings,

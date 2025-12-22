@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -158,28 +159,30 @@ public fun AppEnvironment(
     ) {
         val theme = themeState.value
 
-        with(connectivityState.value) {
-            if (isConnectivityAlert)
-                when (connectivityStatus) {
-                    is Status.Connected -> GlobalAlertEventController.sendEvent(
-                        AlertEvent(text = { Text(onlineText) }),
-                    )
+        LaunchedEffect(connectivityStatus) {
+            with(connectivityState.value) {
+                if (isConnectivityAlert)
+                    when (connectivityStatus) {
+                        is Status.Connected -> GlobalAlertEventController.sendEvent(
+                            AlertEvent(text = { Text(onlineText) }),
+                        )
 
-                    is Status.Disconnected -> GlobalAlertEventController.sendEvent(
-                        AlertEvent(text = { Text(offlineText) }),
-                    )
-                }
+                        is Status.Disconnected -> GlobalAlertEventController.sendEvent(
+                            AlertEvent(text = { Text(offlineText) }),
+                        )
+                    }
 
-            if (isConnectivitySnackbar)
-                when (connectivityStatus) {
-                    is Status.Connected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(onlineText),
-                    )
+                if (isConnectivitySnackbar)
+                    when (connectivityStatus) {
+                        is Status.Connected -> GlobalSnackbarEventController.sendEvent(
+                            SnackbarEvent(onlineText),
+                        )
 
-                    is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
-                        SnackbarEvent(offlineText),
-                    )
-                }
+                        is Status.Disconnected -> GlobalSnackbarEventController.sendEvent(
+                            SnackbarEvent(offlineText),
+                        )
+                    }
+            }
         }
 
         val (colorScheme, seedColor) = if (theme.isDynamic) {

@@ -31,7 +31,7 @@ public fun SettingsSliderFinished(
     initialValue: Float,
     modifier: Modifier = Modifier,
     subtitle: @Composable ((value: Float) -> Unit)? = { value ->
-        Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.DefaultFormatter.format((value * 100).roundToInt()).displayValue}")
+        Text("${if (value < 0) value.signChar else ""}${DecimalFormatter.Default.format((value * 100).roundToInt()).displayValue}")
     },
     icon: (value: Float) -> ImageVector? = { null },
     enabled: Boolean = true,

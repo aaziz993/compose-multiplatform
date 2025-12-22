@@ -16,7 +16,7 @@ public class DecimalFormatter(private val configuration: DecimalFormatterConfigu
 
     public companion object {
 
-        public val DefaultFormatter: DecimalFormatter
+        public val Default: DecimalFormatter
             get() = DecimalFormatter(DecimalFormatterConfiguration.us())
     }
 
