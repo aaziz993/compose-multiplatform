@@ -16,7 +16,10 @@ import kotlinx.coroutines.launch
  *
  * All action execution happens on the Main dispatcher to ensure UI thread safety.
  */
-public class NavigationActionQueue: NavigatorHolder {
+public class NavigationActionQueue : NavigatorHolder {
+
+    /** Coroutine scope for executing actions on the main thread. */
+    private val mainScope = MainScope()
 
     /** Currently attached navigator, null if none is set. */
     internal var navigator: Navigator? by mutableStateOf(null)
@@ -24,9 +27,6 @@ public class NavigationActionQueue: NavigatorHolder {
 
     /** Queue of pending actions waiting for a navigator to become available. */
     private val pendingActions = mutableListOf<Array<out NavigationAction>>()
-
-    /** Coroutine scope for executing actions on the main thread. */
-    private val mainScope = MainScope()
 
     /**
      * Sets the navigator and executes any pending actions.
