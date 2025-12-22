@@ -213,6 +213,11 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      * Use it when you want to close a nested navigation graph or a whole application.
      */
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
+
+    override fun actions(vararg actions: NavigationAction) {
+        navRoutePath = emptyList()
+        super.actions(*actions)
+    }
 }
 
 @Composable
