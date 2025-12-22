@@ -68,7 +68,7 @@ public data class Theme(
     }
 
     @Composable
-    public fun copyColorScheme(): (ColorScheme) -> Theme =
+    public fun copyColorSchemeFunc(): (ColorScheme) -> Theme =
         if (isHighContrast) {
             if (isDark()) { colorScheme -> copy(darkColorSchemeHighContrast = colorScheme) }
             else { colorScheme -> copy(lightColorSchemeHighContrast = colorScheme) }

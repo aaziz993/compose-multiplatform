@@ -72,7 +72,7 @@ public fun SettingsColorSchemeScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val colorScheme = theme.currentColorScheme
-    val copyColorScheme = theme.copyColorScheme()
+    val copyColorScheme = theme.copyColorSchemeFunc()
 
     SettingsColorPickerBottomSheet(
         stringResource(Res.string.primary),
