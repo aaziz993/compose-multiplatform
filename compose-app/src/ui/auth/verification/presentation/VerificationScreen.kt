@@ -78,7 +78,7 @@ public fun VerificationScreen(
                 ?: Text(stringResource(Res.string.not_selected), color = Color.Gray)
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {

@@ -1,6 +1,7 @@
 package ui.auth.phone.presentation
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -49,10 +50,13 @@ public fun PhoneScreen(
     onAction: (PhoneAction) -> Unit = {},
     country: Country = Country.getCountries().first(),
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
+): Unit = Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth(0.8f),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(

@@ -2,6 +2,7 @@ package ui.auth.totp
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,23 +50,26 @@ public fun TotpScreen(
     state: TotpState = TotpState(),
     onAction: (TotpAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
+): Unit = Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
 ) {
-    val otpValue = remember(state.code) { mutableStateOf(state.code) }
-
-    LaunchedEffect(Unit) {
-        onAction(TotpAction.SendNewCode)
-    }
-
-    LaunchedEffect(otpValue.value) {
-        if (otpValue.value != state.code) onAction(TotpAction.SetCode(otpValue.value))
-        if (otpValue.value.length == config.codeDigits) onAction(TotpAction.Confirm)
-    }
-
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth(0.8f),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        val otpValue = remember(state.code) { mutableStateOf(state.code) }
+
+        LaunchedEffect(Unit) {
+            onAction(TotpAction.SendNewCode)
+        }
+
+        LaunchedEffect(otpValue.value) {
+            if (otpValue.value != state.code) onAction(TotpAction.SetCode(otpValue.value))
+            if (otpValue.value.length == config.codeDigits) onAction(TotpAction.Confirm)
+        }
+
         Icon(
             imageVector = Icons.Default.Otp,
             contentDescription = stringResource(Res.string.totp),

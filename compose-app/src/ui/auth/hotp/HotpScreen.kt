@@ -2,6 +2,7 @@ package ui.auth.hotp
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,23 +45,26 @@ public fun HotpScreen(
     state: HotpState = HotpState(),
     onAction: (HotpAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
+): Unit = Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
 ) {
-    val otpValue = remember(state.code) { mutableStateOf(state.code) }
-
-    LaunchedEffect(Unit) {
-        onAction(HotpAction.SendNewCode)
-    }
-
-    LaunchedEffect(otpValue.value) {
-        if (otpValue.value != state.code) onAction(HotpAction.SetCode(otpValue.value))
-        if (otpValue.value.length == config.codeDigits) onAction(HotpAction.Confirm)
-    }
-
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth(0.8f),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        val otpValue = remember(state.code) { mutableStateOf(state.code) }
+
+        LaunchedEffect(Unit) {
+            onAction(HotpAction.SendNewCode)
+        }
+
+        LaunchedEffect(otpValue.value) {
+            if (otpValue.value != state.code) onAction(HotpAction.SetCode(otpValue.value))
+            if (otpValue.value.length == config.codeDigits) onAction(HotpAction.Confirm)
+        }
+
         Icon(
             imageVector = Icons.Default.Otp,
             contentDescription = stringResource(Res.string.hotp),

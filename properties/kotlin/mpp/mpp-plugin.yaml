@@ -37,6 +37,7 @@ script:
                 implementation(libs["kstore"])
                 implementation(libs.bundles("sqldelight"))
                 implementation(libs.bundles("store"))
+                implementation(libs["imagepickerkmp"])
                 implementation(libs.bundles("connectivity.kotlin.multiplatform"))
                 // implementation(libs.bundles("oidc"))
                 // implementation(libs.bundles("kmpauth"))

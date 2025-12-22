@@ -16,8 +16,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Attribution
@@ -35,6 +35,8 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -162,32 +164,42 @@ private fun ProfileScreenContent(
     if (state.user.roles.isNotEmpty()) {
         FlowRow {
             state.user.roles.forEach { role ->
-                Chip(
+                AssistChip(
                     onClick = {},
+                    label = {
+                        Text(role, style = MaterialTheme.typography.labelSmall)
+                    },
                     modifier = Modifier.defaultMinSize(minHeight = 32.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ChipDefaults.chipColors(
-                        backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    colors = AssistChipDefaults.assistChipColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     ),
-                ) {
-                    Text(role, style = MaterialTheme.typography.labelSmall)
-                }
+                )
             }
         }
     }
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
-    val focusRequesters = remember { List(7 + state.user.attributes.size) { FocusRequester() } }
-    val validations = remember { mutableStateListOf(*Array(7 + state.user.attributes.size) { true }) }
+    val focusRequesters = remember(state.user.attributes.size) {
+        List(7 + state.user.attributes.size) { FocusRequester() }
+    }
+
+    LaunchedEffect(state.edit) {
+        if (state.edit) focusRequesters[0].requestFocus()
+    }
+
+    val validations = remember(state.user.attributes.size) {
+        mutableStateListOf(*Array(7 + state.user.attributes.size) { true })
+    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
     ) {
         if (state.edit) {
-            val isValidAll = validations.all()
+            val isValidAll by remember(validations) { derivedStateOf(validations::all) }
             IconButton(
                 onClick = {
                     if (isValidAll) onAction(ProfileAction.StartUpdate())
@@ -203,7 +215,6 @@ private fun ProfileScreenContent(
         }
         IconButton(
             onClick = {
-                if (!state.edit) focusRequesters[0].requestFocus()
                 onAction(ProfileAction.Edit(!state.edit))
             },
         ) {
@@ -217,7 +228,7 @@ private fun ProfileScreenContent(
         }
     }
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
     ProfileAttributeField(
         state.user.username.orEmpty(),
@@ -231,7 +242,7 @@ private fun ProfileScreenContent(
         { value -> validations[0] = value },
     )
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
     ProfileAttributeField(
         state.user.firstName.orEmpty(),
@@ -245,7 +256,7 @@ private fun ProfileScreenContent(
         { value -> validations[1] = value },
     )
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
     ProfileAttributeField(
         state.user.lastName.orEmpty(),
@@ -259,7 +270,7 @@ private fun ProfileScreenContent(
         { value -> validations[2] = value },
     )
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
     ProfileAttributeField(
         state.user.phone.orEmpty(),
@@ -273,7 +284,7 @@ private fun ProfileScreenContent(
         { value -> validations[3] = value },
     )
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
     ProfileAttributeField(
         state.user.email.orEmpty(),
@@ -288,7 +299,7 @@ private fun ProfileScreenContent(
     )
 
     state.user.attributes.entries.forEachIndexed { index, (key, value) ->
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         ProfileAttributeField(
             value.first(),
