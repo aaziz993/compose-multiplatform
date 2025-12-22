@@ -34,7 +34,7 @@
     <string name="error">Хато</string>
     <string name="false">Ноҳақ</string>
     <string name="exchange">Мубодилла</string>
-    <string name="expressive">Равшанӣ</string>
+    <string name="expressive">Ифодакунанда</string>
     <string name="easing">Оромшавӣ</string>
     <string name="cubic_bezier_easing">Оромшавии кубии Безе</string>
     <string name="file">Файл</string>
@@ -76,8 +76,8 @@
     <string name="reset">Бозгашт</string>
     <string name="right">Рост</string>
     <string name="route">Роҳ</string>
-    <string name="remember">Сабт</string>
-    <string name="save">Сабт</string>
+    <string name="remember">Ед</string>
+    <string name="save">Захира</string>
     <string name="support">Дастгирӣ</string>
     <string name="source">Манбаъ</string>
     <string name="search">Ҷустуҷӯ</string>
