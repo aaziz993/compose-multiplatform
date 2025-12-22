@@ -7,6 +7,7 @@ import androidx.navigation3.runtime.NavBackStack
 import clib.presentation.auth.LocalAuthState
 import klib.data.auth.model.Auth
 import klib.data.type.collections.replaceWith
+import klib.data.type.collections.takeUnlessEmpty
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
@@ -23,15 +24,17 @@ import kotlinx.coroutines.yield
  * @param auth The current authentication state used to determine access control.
  * @param authRoute Optional route representing an authentication screen. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
+ * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
  * @param onError Callback to trigger when navigation error.
  */
 public open class Nav3Navigator(
-    override val routes: Routes,
+    public val routes: Routes,
     override val backStack: NavBackStack<NavRoute>,
     private val auth: Auth,
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
+    private val onUnknownRoute: (NavRoute) -> Unit,
     private val onBack: () -> Unit,
     private val onError: (Throwable) -> Unit,
 ) : Navigator {
@@ -44,11 +47,6 @@ public open class Nav3Navigator(
      * Coroutine scope for scheduling back navigation calls.
      */
     private val mainScope = MainScope()
-
-    /**
-     *  Callback triggered when route isn't in the current top level route.
-     */
-    override lateinit var onUnknownRoute: (NavRoute) -> Unit
 
     /**
      * Applies an array of navigation actions to the back stack.
@@ -65,18 +63,13 @@ public open class Nav3Navigator(
         val snapshot = backStack.toMutableList()
         var callOnBack = false
 
-        for (action in actions) {
+        for (action in actions)
             try {
-                if (!action(
-                        snapshot,
-                        action,
-                    ) { callOnBack = true }
-                ) return
+                if (!action(snapshot, action) { callOnBack = true }) return
             }
             catch (e: RuntimeException) {
                 return onError(e)
             }
-        }
 
         swap(snapshot)
 
@@ -91,7 +84,6 @@ public open class Nav3Navigator(
      *
      * @param snapshot Mutable copy of the navigation stack.
      * @param action Command to process.
-     * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
      * @param onBackRequested Callback to trigger when system back navigation is needed.
      */
     protected open fun action(
@@ -100,7 +92,7 @@ public open class Nav3Navigator(
         onBackRequested: () -> Unit,
     ): Boolean {
         when (action) {
-            is NavigationAction.Push -> return push(snapshot, action, onUnknownRoute)
+            is NavigationAction.Push -> return push(snapshot, action)
             is NavigationAction.ReplaceCurrent -> replaceCurrent(snapshot, action)
             is NavigationAction.ReplaceStack -> replaceStack(snapshot, action)
             is NavigationAction.PopTo -> popTo(snapshot, action)
@@ -120,12 +112,10 @@ public open class Nav3Navigator(
      *
      * @param snapshot The stack snapshot to modify.
      * @param action The push action containing the route to add.
-     * @param onUnknownRoute The callback to be called if route isn't in the current top level route.
      */
     protected open fun push(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.Push,
-        onUnknownRoute: (NavRoute) -> Unit,
     ): Boolean {
         // If the user explicitly requested the auth route, don't redirect them after login.
         if (action.route == authRoute) authRedirectRoute = null
@@ -163,7 +153,9 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceCurrent,
     ) {
-        if (action.route.route !in routes) return
+        require(action.route.route in routes) {
+            "Replace current route '${action.route.route}' isn't in '$routes'"
+        }
         if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
     }
 
@@ -179,7 +171,12 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceStack,
     ) {
-        snapshot.replaceWith(action.routes.filter { navRoute -> navRoute.route in routes })
+        action.routes.forEach { navRoute ->
+            require(navRoute.route in routes) {
+                "Replace stack routes '${navRoute.route}' isn't in '$routes'"
+            }
+        }
+        snapshot.replaceWith(action.routes)
     }
 
     /**
@@ -318,6 +315,7 @@ public fun rememberNav3Navigator(
     auth: Auth = LocalAuthState.current.value,
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
+    onUnknownRoute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { router.push(it) } } ?: {},
     onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
     onError: (Throwable) -> Unit = { e -> throw e },
 ): Navigator {
@@ -337,6 +335,7 @@ public fun rememberNav3Navigator(
             auth,
             authRoute,
             authRedirectRoute,
+            onUnknownRoute,
             onBack,
             onError,
         )

@@ -16,6 +16,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Attribution
 import androidx.compose.material.icons.filled.Close
@@ -25,8 +28,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -113,6 +114,7 @@ public fun ProfileScreen(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ProfileScreenContent(
     @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,
@@ -155,23 +157,21 @@ private fun ProfileScreenContent(
                 modifier = Modifier.size(14.dp),
             )
         }
+    }
 
-        if (state.user.roles.isNotEmpty()) {
-            FlowRow(
-                modifier = Modifier.align(Alignment.BottomCenter),
-            ) {
-                state.user.roles.forEach { role ->
-                    AssistChip(
-                        onClick = {},
-                        label = { Text(role, style = MaterialTheme.typography.labelSmall) },
-                        colors = AssistChipDefaults.assistChipColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        ),
-                        shape = RoundedCornerShape(12.dp),
-                        border = null,
-                        modifier = Modifier.defaultMinSize(minHeight = 32.dp),
-                    )
+    if (state.user.roles.isNotEmpty()) {
+        FlowRow {
+            state.user.roles.forEach { role ->
+                Chip(
+                    onClick = {},
+                    modifier = Modifier.defaultMinSize(minHeight = 32.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ChipDefaults.chipColors(
+                        backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    ),
+                ) {
+                    Text(role, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
@@ -180,7 +180,7 @@ private fun ProfileScreenContent(
     Spacer(modifier = Modifier.height(32.dp))
 
     val focusRequesters = remember { List(7 + state.user.attributes.size) { FocusRequester() } }
-    val validations = remember { mutableStateListOf(*Array(7 + state.user.attributes.size) { false }) }
+    val validations = remember { mutableStateListOf(*Array(7 + state.user.attributes.size) { true }) }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -315,7 +315,7 @@ private fun ProfileScreenContent(
 //            ),
 //        )
 
-    if (!state.user.roles.contains("Verified"))
+    if (!state.user.isVerified)
         Button(
             onClick = {
                 onNavigationActions(
@@ -378,9 +378,9 @@ private fun ProfileAttributeField(
     keyboardActions = KeyboardActions(onDone = { nextFocusRequester.requestFocus() }),
     singleLine = true,
     validator = validator,
-    onValidation = { value ->
-        onValidation(value.isEmpty())
-        value.map { it.asStringResource() }.joinToString("\n")
+    onValidation = {
+        onValidation(it.isEmpty())
+        it.map { it.asStringResource() }.joinToString("\n")
     },
 )
 

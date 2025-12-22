@@ -287,6 +287,10 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     final override fun resolve(
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? {
+        transform(this)?.let { navRoute ->
+            return listOf(navRoute)
+        }
+
         for (route in routes) {
             if (route !is NavRoute) continue
             val childPath = route.resolve(transform)

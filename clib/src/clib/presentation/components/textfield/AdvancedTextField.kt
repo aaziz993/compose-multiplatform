@@ -292,9 +292,10 @@ public fun AdvancedTextField(
         )
 
     var message: String? = underlineMessage
-    if (validationMessages.isNotEmpty() && showValidationMessage) {
-        message = message.orEmpty() + onValidation(validationMessages)
-    }
+
+    val vm = onValidation(validationMessages)
+    if (vm.isNotEmpty() && showValidationMessage)
+        message += message.orEmpty() + vm
 
     message?.let {
         Column(Modifier.wrapContentSize()) {

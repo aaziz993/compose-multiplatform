@@ -36,7 +36,7 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  *
  * @param routes The current top level route.
  */
-public open class Router(override val routes: Routes) : BaseRouter(), Node<Router> {
+public open class Router(public val routes: Routes) : BaseRouter(), Node<Router> {
 
     public constructor(routes: Routes, startRoute: NavRoute) : this(routes) {
         handleRoute(startRoute, Router::push)
@@ -65,20 +65,17 @@ public open class Router(override val routes: Routes) : BaseRouter(), Node<Route
         get() = backStack.size > 1 || prev?.canPopBack == true
 
     /**
-     * Nested nav route path.
+     * Pending deep routes owned by the current router.
+     *
+     * This path is best-effort and will be cancelled if any new navigation
+     * action is triggered before it is fully consumed.
      */
     public var navRoutePath: List<NavRoute> = emptyList()
-        private set
-
-    /**
-     * Callback triggered when route isn't in the current top level route.
-     */
-    override val onReroute: (NavRoute) -> Unit
-        get() = { navRoute -> handleRoute(navRoute, Router::push) }
+        protected set
 
     protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
-        this.navRoutePath = navRoutePath.drop(2)
         handler(navRoutePath[1])
+        this.navRoutePath = navRoutePath.drop(2)
     }
 
     protected fun handleRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit) {
@@ -108,6 +105,7 @@ public open class Router(override val routes: Routes) : BaseRouter(), Node<Route
     internal fun unbindParent(prev: Router) {
         prev.next = null
         this.prev = null
+        navRoutePath = emptyList()
     }
 
     /**

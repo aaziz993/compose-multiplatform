@@ -31,7 +31,7 @@ public class VerificationViewModel(
     private fun confirm() {
         viewModelScope.launch {
             authState.value.user?.let { user ->
-                authState.setUser(user.copy(roles = user.roles + "Verified"))
+                authState.setUser(user.copy(isVerified = true))
             }
         }
     }

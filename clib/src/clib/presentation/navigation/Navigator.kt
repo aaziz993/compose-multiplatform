@@ -9,16 +9,8 @@ package clib.presentation.navigation
  */
 public interface Navigator {
 
-    /** The top level route associated with navigator. */
-    public val routes: Routes
-
     /** The Navigation 3 back stack to control. */
     public val backStack: List<NavRoute>
-
-    /**
-     *  Callback triggered when route isn't in the current top level route.
-     */
-    public var onUnknownRoute: (NavRoute) -> Unit
 
     /**
      * Applies an array of navigation commands to the navigation stack.

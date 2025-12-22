@@ -10,22 +10,12 @@ package clib.presentation.navigation
 public abstract class BaseRouter {
 
     /**
-     *  The top level route.
-     */
-    public abstract val routes: Routes
-
-    /**
-     * Callback triggered when route isn't in the current top level route.
-     */
-    protected abstract val onReroute: (NavRoute) -> Unit
-
-    /**
      * Action queue that manages action execution and navigator lifecycle.
      *
      * This is internal to prevent direct access from outside the library,
      * but accessible to the navigation system for setup.
      */
-    internal val navigationActionQueue: NavigationActionQueue = NavigationActionQueue(onReroute)
+    internal val navigationActionQueue: NavigationActionQueue = NavigationActionQueue()
 
     /**
      * Currently registered navigator back stack.
@@ -41,6 +31,6 @@ public abstract class BaseRouter {
      *
      * @param actions Variable number of actions to execute
      */
-    public fun actions(vararg actions: NavigationAction): Unit =
+    public open fun actions(vararg actions: NavigationAction): Unit =
         navigationActionQueue.actions(*actions)
 }
