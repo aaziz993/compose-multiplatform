@@ -33,6 +33,7 @@ kotlin {
 
     compilerOptions {
         freeCompilerArgs.addAll(
+            "-Xmulti-dollar-interpolation",
             "-Xignore-const-optimization-errors",
             "-Xcontext-parameters",
             "-Xtype-enhancement-improvements-strict-mode=false",

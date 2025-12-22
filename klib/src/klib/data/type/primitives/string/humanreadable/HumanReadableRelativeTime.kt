@@ -1,6 +1,6 @@
 package klib.data.type.primitives.string.humanreadable
 
-import klib.data.type.primitives.string.format
+import klib.data.type.primitives.string.formatter.format
 import kotlin.time.Duration
 
 /**

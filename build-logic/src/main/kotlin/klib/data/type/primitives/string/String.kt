@@ -30,6 +30,9 @@ import kotlinx.io.writeString
 public val String.Companion.DEFAULT: String
     get() = ""
 
+public val String.Companion.LINE_SEPARATOR: String
+    get() = System.lineSeparator()
+
 public fun String.takeUnlessEmpty(): String? = takeUnless(String::isEmpty)
 
 public fun String.takeUnlessBlank(): String? = takeUnless(String::isBlank)
@@ -71,26 +74,26 @@ public fun String.unescape(escapeChar: Char = '"'): String = buildString {
             val nextChar = value[index + 1]
             when {
                 nextChar == escapeChar -> {
-                    append(escapeChar);
+                    append(escapeChar)
                     index += 2
                 }
 
                 ESCAPES.containsKey(nextChar) -> {
-                    append(ESCAPES[nextChar]);
+                    append(ESCAPES[nextChar])
                     index += 2
                 }
 
                 nextChar == 'u' -> index = appendUnicodeEscape(value, index, n, 4, 'u')
                 nextChar == 'U' -> index = appendUnicodeEscape(value, index, n, 8, 'U')
                 else -> {
-                    append('\\');
-                    append(nextChar);
+                    append('\\')
+                    append(nextChar)
                     index += 2
                 }
             }
         }
         else {
-            append(char);
+            append(char)
             index++
         }
     }
@@ -105,14 +108,14 @@ private fun Appendable.appendUnicodeEscape(s: String, i: Int, n: Int, width: Int
             i + 2 + width
         }
         else {
-            append('\\');
-            append(label);
+            append('\\')
+            append(label)
             i + 2
         }
     }
     else {
-        append('\\');
-        append(label);
+        append('\\')
+        append(label)
         i + 2
     }
 
@@ -170,12 +173,6 @@ public fun String.isSurrounded(vararg values: String): Boolean =
 
 public fun String.removeWhiteSpaces(): String = this.replace("\\s".toRegex(), "")
 
-private val STRING_FORMAT_REGEX = Regex("""%(\d+)\$[ds]""")
-
-public fun String.format(vararg args: Any?): String = STRING_FORMAT_REGEX.replace(this) { matchResult ->
-    args[matchResult.groupValues[1].toInt() - 1].toString()
-}
-
 public fun String.escapePattern(): String = Regex.escape(this)
 
 public fun randomString(length: Int, charPool: List<Char> = ('a'..'z') + ('A'..'Z')): String =
@@ -202,7 +199,7 @@ public fun String.isLetterOrDigit(): Boolean = all(Char::isLetterOrDigit)
 
 public fun String.isDigit(): Boolean = all(Char::isDigit)
 
-public fun <T> String.rangeEquals(
+public fun String.rangeEquals(
     offset: Int,
     other: String,
     otherOffset: Int,

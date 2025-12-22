@@ -4,7 +4,7 @@ import klib.data.type.primitives.string.humanreadable.model.RelativeTime
 import klib.data.type.primitives.string.humanreadable.model.TimeUnit
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-import klib.data.type.primitives.string.format
+import klib.data.type.primitives.string.formatter.format
 
 /**
  * Returns the difference between now and instant, in human-readable format. Also supports
