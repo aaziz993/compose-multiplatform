@@ -145,9 +145,10 @@ public class Formatter internal constructor(public val conversions: ConversionMa
     }
 }
 
-public fun Formatter.format(str: String, vararg args: Any?) = formatTo(StringBuilder(), str, args).toString()
+public fun Formatter.format(str: String, vararg args: Any?): String =
+    formatTo(StringBuilder(), str, args).toString()
 
-public fun String.format(vararg args: Any?) = Formatter.Default.format(this, *args)
+public fun String.format(vararg args: Any?): String = Formatter.Default.format(this, *args)
 
 private fun createFormatStringRegex(flags: FlagSet, conversions: ConversionMap): Regex =
     Regex(
