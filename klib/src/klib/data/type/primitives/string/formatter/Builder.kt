@@ -2,9 +2,9 @@ package klib.data.type.primitives.string.formatter
 
 import klib.data.type.primitives.string.formatter.conversions.Conversion
 import klib.data.type.primitives.string.formatter.conversions.UppercaseConversion
-import klib.data.type.primitives.string.formatter.utils.ConversionKey
-import klib.data.type.primitives.string.formatter.utils.MutableConversionMap
-import klib.data.type.primitives.string.formatter.utils.MutableFlagSet
+import klib.data.type.primitives.string.formatter.model.ConversionKey
+import klib.data.type.primitives.string.formatter.model.MutableConversionMap
+import klib.data.type.primitives.string.formatter.model.MutableFlagSet
 
 @DslMarker
 public annotation class FormatterDsl

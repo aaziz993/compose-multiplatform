@@ -1,8 +1,8 @@
 package klib.data.type.primitives.string.formatter.conversions
 
-import klib.data.type.primitives.string.formatter.utils.ArgumentTaker
-import klib.data.type.primitives.string.formatter.utils.FormatString
-import klib.data.type.primitives.string.formatter.utils.PartAction
+import klib.data.type.primitives.string.formatter.argument.ArgumentTaker
+import klib.data.type.primitives.string.formatter.model.FormatString
+import klib.data.type.primitives.string.formatter.model.PartAction
 
 internal class ConversionConstant(
     private val replacement: String,

@@ -3,13 +3,13 @@ package klib.data.type.primitives.string.formatter
 import klib.data.type.primitives.string.LINE_SEPARATOR
 import klib.data.type.primitives.string.formatter.conversions.conversion
 import klib.data.type.primitives.string.formatter.conversions.conversionNotNull
-import klib.data.type.primitives.string.formatter.utils.ArgumentTaker
-import klib.data.type.primitives.string.formatter.utils.ConversionMap
-import klib.data.type.primitives.string.formatter.utils.FlagSet
-import klib.data.type.primitives.string.formatter.utils.PartAction
-import klib.data.type.primitives.string.formatter.utils.internal.ArgumentIndexHolder
-import klib.data.type.primitives.string.formatter.utils.internal.createFormatStringRegex
-import klib.data.type.primitives.string.formatter.utils.internal.parseFormatString
+import klib.data.type.primitives.string.formatter.argument.ArgumentTaker
+import klib.data.type.primitives.string.formatter.model.ConversionKey
+import klib.data.type.primitives.string.formatter.model.ConversionMap
+import klib.data.type.primitives.string.formatter.model.FlagSet
+import klib.data.type.primitives.string.formatter.model.FormatString
+import klib.data.type.primitives.string.formatter.model.PartAction
+import klib.data.type.primitives.string.formatter.argument.ArgumentIndexHolder
 import klib.data.type.primitives.string.lengthSequence
 
 public class Formatter internal constructor(public val conversions: ConversionMap, public val flags: FlagSet) {
@@ -148,3 +148,47 @@ public class Formatter internal constructor(public val conversions: ConversionMa
 public fun Formatter.format(str: String, vararg args: Any?) = formatTo(StringBuilder(), str, args).toString()
 
 public fun String.format(vararg args: Any?) = Formatter.Default.format(this, *args)
+
+private fun createFormatStringRegex(flags: FlagSet, conversions: ConversionMap): Regex =
+    Regex(
+        StringBuilder().apply {
+            append("""%(?:(\d+)\$)?([""")
+            append(Regex.escape(flags.toCharArray().concatToString()))
+            append("""]+)?(\d+)?(?:\.(\d+))?(""")
+
+            val sbPrefixes = StringBuilder(conversions.size)
+            for (ch in conversions.keys)
+                if (ch.prefix != null)
+                    sbPrefixes.append(ch.prefix)
+            if (!sbPrefixes.isEmpty()) {
+                append("[")
+                append(Regex.escape(sbPrefixes.toString()))
+                append("]")
+            }
+
+            append(""")?(.)""")
+        }.toString(),
+    )
+
+private fun parseFormatString(format: String, regex: Regex): Iterator<FormatString> =
+    object : Iterator<FormatString> {
+        private var next: MatchResult? = regex.find(format)
+
+        override fun hasNext(): Boolean = next != null
+
+        override fun next(): FormatString {
+            val nxt = next ?: throw NoSuchElementException()
+
+            val result = FormatString(
+                argumentIndex = nxt.groupValues[1].toIntOrNull(),
+                flags = nxt.groupValues[2],
+                width = nxt.groupValues[3].toIntOrNull(),
+                precision = nxt.groupValues[4].toIntOrNull(),
+                conversion = ConversionKey(nxt.groupValues[5].singleOrNull(), nxt.groupValues[6].single()),
+                start = nxt.range.start,
+                endInclusive = nxt.range.endInclusive,
+            )
+            next = nxt.next()
+            return result
+        }
+    }

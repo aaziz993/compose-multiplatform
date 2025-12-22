@@ -1,8 +1,8 @@
 package klib.data.type.primitives.string.formatter
 
 import klib.data.type.primitives.string.formatter.conversions.Conversion
-import klib.data.type.primitives.string.formatter.utils.ConversionKey
-import klib.data.type.primitives.string.formatter.utils.FormatString
+import klib.data.type.primitives.string.formatter.model.ConversionKey
+import klib.data.type.primitives.string.formatter.model.FormatString
 
 /*
  * Created by mrAppleXZ on 02.08.18.

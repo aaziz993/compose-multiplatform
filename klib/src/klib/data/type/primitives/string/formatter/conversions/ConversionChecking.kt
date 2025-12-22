@@ -6,8 +6,8 @@ import klib.data.type.primitives.string.formatter.FlagMismatchException
 import klib.data.type.primitives.string.formatter.PrecisionMismatchException
 import klib.data.type.primitives.string.formatter.WidthMismatchException
 import kotlin.text.iterator
-import klib.data.type.primitives.string.formatter.utils.FormatString
-import klib.data.type.primitives.string.formatter.utils.PartAction
+import klib.data.type.primitives.string.formatter.model.FormatString
+import klib.data.type.primitives.string.formatter.model.PartAction
 
 public interface ConversionChecking : Conversion {
 

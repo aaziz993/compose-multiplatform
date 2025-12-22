@@ -1,8 +1,8 @@
-package klib.data.type.primitives.string.formatter.utils
+package klib.data.type.primitives.string.formatter.argument
 
 import klib.data.type.primitives.string.formatter.FLAG_REUSE_ARGUMENT
 import klib.data.type.primitives.string.formatter.NoSuchArgumentException
-import klib.data.type.primitives.string.formatter.utils.internal.ArgumentIndexHolder
+import klib.data.type.primitives.string.formatter.model.FormatString
 
 public class ArgumentTaker internal constructor(
     private val holder: ArgumentIndexHolder,

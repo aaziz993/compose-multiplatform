@@ -1,7 +1,6 @@
-package klib.data.type.primitives.string.formatter.utils
+package klib.data.type.primitives.string.formatter.model
 
 import klib.data.type.primitives.string.formatter.conversions.Conversion
-
 
 public typealias FlagSet = Set<Char>
 public typealias MutableFlagSet = MutableSet<Char>
