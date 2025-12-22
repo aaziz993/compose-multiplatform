@@ -256,6 +256,8 @@ klibs-kstorage = "4.4.1"
 kotlinx-io = "0.8.0"
 okio = "3.16.4"
 okio-extras = "1.1.3"
+# cross-platform Image Picker & Camera Library for Kotlin Multiplatform.
+imagepickerkmp = "1.0.28"
 # assists in saving and restoring objects to and from disk using kotlinx.coroutines, kotlinx.serialization and kotlinx.io.
 kstore = "1.0.0"
 # multiplatform settings.
@@ -454,8 +456,6 @@ androidx-material-navigation = "1.9.3"
 androidx-test-ext-junit = "1.3.0"
 # file picker.
 filekit-compose = "0.8.8"
-#
-imagepickerkmp = "1.0.28"
 circuit = "0.31.0"
 # geolocation.
 compass = "2.4.1"
@@ -712,6 +712,8 @@ okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
 okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem", version.ref = "okio" }
 okio-extras = { module = "com.saveourtool.okio-extras:okio-extras", version.ref = "okio-extras" }
+# cross-platform Image Picker & Camera Library for Kotlin Multiplatform.
+imagepickerkmp = { module = "io.github.ismoy:imagepickerkmp", version.ref = "imagepickerkmp" }
 ##assists in saving and restoring objects to and from disk using kotlinx.coroutines, kotlinx.serialization and kotlinx.io.
 # for common.
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
@@ -1000,8 +1002,6 @@ androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navi
 androidx-material-navigation = { module = "org.jetbrains.compose.material:material-navigation", version.ref = "androidx-material-navigation" }
 # file picker.
 filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit-compose" }
-# cross-platform Image Picker & Camera Library for Kotlin Multiplatform.
-imagepickerkmp = { module = "io.github.ismoy:imagepickerkmp", version.ref = "imagepickerkmp" }
 # circuit is a simple, lightweight, and extensible framework for building Kotlin applications that’s Compose from the ground up.
 circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "circuit" }
 # geolocation.
