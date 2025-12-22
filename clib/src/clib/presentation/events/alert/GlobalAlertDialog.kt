@@ -57,12 +57,12 @@ public fun GlobalAlertDialog(
     }
     dialogEvent?.let { event ->
         AlertDialog(
-            { GlobalAlertEventController.sendEvent(null) },
-            event.action?.let { action -> { confirmButton(action) } } ?: {},
+            event.dismissRequestAction ?: {},
+            event.confirmAction?.let { action -> { confirmButton(action) } } ?: {},
             modifier,
-            dismissButton?.let {
-                {
-                    it { GlobalAlertEventController.sendEvent(null) }
+            event.dismissAction?.let { action ->
+                dismissButton?.let {
+                    { it(action) }
                 }
             },
             event.icon ?: icon,

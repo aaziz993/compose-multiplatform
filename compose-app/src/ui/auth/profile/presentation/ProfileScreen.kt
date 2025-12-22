@@ -344,7 +344,6 @@ private fun ProfileScreenContent(
                         ),
                     )
                 },
-                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = stringResource(Res.string.verify))
             }
@@ -364,7 +363,6 @@ private fun ProfileScreenContent(
             onClick = {
                 singOutConfirmDialog = true
             },
-            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(Res.string.sign_out))
         }
