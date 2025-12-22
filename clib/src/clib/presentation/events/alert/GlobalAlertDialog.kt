@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +21,6 @@ import androidx.compose.ui.window.DialogProperties
 import clib.data.type.collections.LaunchedEffect
 import clib.data.type.orErrorColor
 import clib.presentation.events.alert.model.AlertEvent
-import kotlinx.coroutines.launch
 
 /**
  * Global AlertDialog by GlobalAlertEventController.
@@ -52,7 +50,6 @@ public fun GlobalAlertDialog(
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(),
 ) {
-    val coroutineScope = rememberCoroutineScope()
     var dialogEvent by remember { mutableStateOf<AlertEvent?>(null) }
 
     GlobalAlertEventController.events.LaunchedEffect { event ->
@@ -60,12 +57,12 @@ public fun GlobalAlertDialog(
     }
     dialogEvent?.let { event ->
         AlertDialog(
-            { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } },
+            { GlobalAlertEventController.sendEvent(null) },
             event.action?.let { action -> { confirmButton(action) } } ?: {},
             modifier,
             dismissButton?.let {
                 {
-                    it { coroutineScope.launch { GlobalAlertEventController.sendEvent(null) } }
+                    it { GlobalAlertEventController.sendEvent(null) }
                 }
             },
             event.icon ?: icon,

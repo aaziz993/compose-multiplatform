@@ -21,7 +21,7 @@ public fun isAdaptiveDark(
     timeZone: TimeZone = TimeZone.currentSystemDefault(),
 ): Boolean {
     val isNight by produceState(
-        isDarkTime(darkTime, clock, timeZone),
+        isDarkTime(lightTime, darkTime, clock, timeZone),
         lightTime,
         darkTime,
         timeZone,
@@ -42,7 +42,7 @@ public fun isAdaptiveDark(
                 .coerceAtLeast(0)
 
             delay(delayMs)
-            value = isDarkTime(darkTime, clock, timeZone)
+            value = isDarkTime(lightTime, darkTime, clock, timeZone)
         }
     }
 
@@ -50,7 +50,11 @@ public fun isAdaptiveDark(
 }
 
 private fun isDarkTime(
+    lightTime: LocalTime,
     darkTime: LocalTime,
     clock: Clock,
     timeZone: TimeZone,
-): Boolean = clock.now().toLocalTime(timeZone) >= darkTime
+): Boolean {
+    val now = clock.now().toLocalTime(timeZone)
+    return now >= darkTime || now < lightTime
+}

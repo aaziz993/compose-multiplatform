@@ -17,4 +17,5 @@ public sealed interface ProfileAction {
     public data class StartResetPassword(val value: PasswordResetDialogState? = PasswordResetDialogState()) : ProfileAction
     public data object CompleteResetPassword : ProfileAction
     public data object SignOut : ProfileAction
+    public data object Restore : ProfileAction
 }

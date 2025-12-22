@@ -112,12 +112,15 @@ public fun ProfileScreen(
         GlobalAlertEventController.sendEvent(
             AlertEvent(
                 text = { Text(result.throwable.message.orEmpty()) },
+                isError = true,
+                action = {
+                    onAction(ProfileAction.Restore)
+                },
             ),
         )
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ProfileScreenContent(
     @Suppress("ComposeModifierWithoutDefault") modifier: Modifier,

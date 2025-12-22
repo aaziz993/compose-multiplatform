@@ -39,6 +39,7 @@ public class ProfileViewModel(
             is ProfileAction.StartResetPassword -> startResetPassword(action.value)
             ProfileAction.CompleteResetPassword -> completeResetPassword()
             is ProfileAction.SignOut -> signOut()
+            is ProfileAction.Restore -> restore()
         }
     }
 
@@ -103,4 +104,7 @@ public class ProfileViewModel(
     private fun signOut() {
         authState.value = Auth()
     }
+
+    private fun restore() =
+        state.update { it.toSuccess(false) }
 }
