@@ -101,7 +101,7 @@ private fun SettingsRouteConfig(
 
     metadataList.forEach { metadata ->
         SettingsSwitch(
-            title = metadata.keys.map { it.asStringResource() }.joinToString(LINE_SEPARATOR),
+            title = metadata.keys.map { it.asStringResource() }.joinToString(String.LINE_SEPARATOR),
             metadata.keys.all { key -> key in value.metadata || key in value.additionalMetadata },
             trueIcon = Icons.Filled.DisplaySettings,
             falseIcon = Icons.Outlined.DisplaySettings,
