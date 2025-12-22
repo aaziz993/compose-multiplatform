@@ -183,18 +183,17 @@ public open class Nav3Navigator(
      */
     protected open fun auth() {
         val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }
-        if (navRoute != null && navRoute.route !in routes) return onUnknownRoute(navRoute)
+        val snapshot = backStack.filter { navRoute -> navRoute.route.isAuth(auth) }.toMutableList()
 
-        val authStack =
-            (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } + listOfNotNull(navRoute))
-                .ifEmpty {
-                    listOfNotNull(
-                        routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) },
-                    )
-                }
+        navRoute?.let(snapshot::add)
 
-        if (authStack.isNotEmpty() && authStack != backStack)
-            actions(NavigationAction.ReplaceStack(authStack))
+        if (snapshot.isEmpty())
+            routes.filterIsInstance<NavRoute>().find { navRoute ->
+                navRoute.route.isAuth(auth)
+            }?.let(snapshot::add)
+
+        if (snapshot.isNotEmpty() && snapshot != backStack.toList())
+            actions(NavigationAction.ReplaceStack(snapshot))
     }
 
     /**

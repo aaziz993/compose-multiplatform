@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,17 +26,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import clib.data.type.primitives.string.stringResource
 import clib.presentation.icons.Otp
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.code_sent_to
-import compose_app.generated.resources.totp
 import compose_app.generated.resources.send_code
+import compose_app.generated.resources.totp
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
 import kotlin.time.Duration
-import clib.data.type.primitives.string.stringResource
 import presentation.components.textfield.otp.OtpInputField
 import ui.auth.hotp.testOtpCode
 import ui.auth.totp.viewmodel.TotpAction
@@ -57,8 +57,7 @@ public fun TotpScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .fillMaxHeight(),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

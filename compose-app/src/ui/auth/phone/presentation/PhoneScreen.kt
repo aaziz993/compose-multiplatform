@@ -3,7 +3,7 @@ package ui.auth.phone.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.country.CountryCodePickerOutlinedTextField
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.navigation.NavigationAction
@@ -38,7 +39,6 @@ import data.type.primitives.string.asStringResource
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import klib.data.type.primitives.string.DIGIT_PATTERN
-import clib.data.type.primitives.string.stringResource
 import ui.auth.phone.presentation.viewmodel.PhoneAction
 import ui.auth.phone.presentation.viewmodel.PhoneState
 import ui.navigation.presentation.Phone
@@ -57,8 +57,7 @@ public fun PhoneScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .fillMaxHeight(),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

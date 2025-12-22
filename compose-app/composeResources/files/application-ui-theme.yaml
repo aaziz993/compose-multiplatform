@@ -13,7 +13,8 @@ ui:
       amoled: true
     animate: true
     animationSpec:
-      spring: { }
+      tween:
+        durationMillis: 3000
     shapes:
       small:
         squircle:

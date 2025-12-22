@@ -67,7 +67,6 @@ public fun LoginScreen(
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(

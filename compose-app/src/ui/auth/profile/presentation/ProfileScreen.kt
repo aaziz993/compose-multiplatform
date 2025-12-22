@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -126,193 +127,198 @@ private fun ProfileScreenContent(
     state: ProfileState,
     onAction: (ProfileAction) -> Unit,
     onNavigationActions: (Array<NavigationAction>) -> Unit,
-) = Column(
+): Unit = Box(
     modifier = modifier,
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally,
+    contentAlignment = Alignment.Center,
 ) {
-    Box {
-        Avatar(
-            user = state.user,
-            modifier = Modifier.size(80.dp)
-                .clip(CircleShape),
-        )
-        if (connectivity.isAvatarConnectivityIndicator)
-            connectivityStatus.CircleIcon(
-                Modifier
-                    .align(Alignment.TopEnd)
-                    .size(14.dp),
-                Modifier
-                    .align(Alignment.TopEnd)
-                    .size(14.dp),
-            )
-        IconButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset(20.dp, 5.dp)
-                .size(24.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Edit,
-                contentDescription = stringResource(Res.string.edit),
-                modifier = Modifier.size(14.dp),
-            )
-        }
-    }
-
-    if (state.user.roles.isNotEmpty()) {
-        FlowRow {
-            state.user.roles.forEach { role ->
-                AssistChip(
-                    onClick = {},
-                    label = {
-                        Text(role, style = MaterialTheme.typography.labelSmall)
-                    },
-                    modifier = Modifier.defaultMinSize(minHeight = 32.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = AssistChipDefaults.assistChipColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    ),
-                )
-            }
-        }
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    val focusRequesters = remember(state.user.attributes.size) {
-        List(7 + state.user.attributes.size) { FocusRequester() }
-    }
-
-    LaunchedEffect(state.edit) {
-        if (state.edit) focusRequesters[0].requestFocus()
-    }
-
-    val validations = remember(state.user.attributes.size) {
-        mutableStateListOf(*Array(7 + state.user.attributes.size) { true })
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End,
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (state.edit) {
-            val isValidAll by remember(validations) { derivedStateOf(validations::all) }
+        Box {
+            Avatar(
+                user = state.user,
+                modifier = Modifier.size(80.dp)
+                    .clip(CircleShape),
+            )
+            if (connectivity.isAvatarConnectivityIndicator)
+                connectivityStatus.CircleIcon(
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .size(14.dp),
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .size(14.dp),
+                )
             IconButton(
-                onClick = {
-                    if (isValidAll) onAction(ProfileAction.StartUpdate())
-                },
-                modifier = Modifier.focusRequester(focusRequesters[6]),
+                onClick = {},
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(20.dp, 5.dp)
+                    .size(24.dp),
             ) {
                 Icon(
-                    imageVector = Icons.Default.Save,
-                    contentDescription = stringResource(Res.string.save),
-                    tint = LocalContentColor.current.orErrorColor(!isValidAll),
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = stringResource(Res.string.edit),
+                    modifier = Modifier.size(14.dp),
                 )
             }
         }
-        IconButton(
-            onClick = {
-                onAction(ProfileAction.Edit(!state.edit))
-            },
-        ) {
-            if (state.edit)
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(Res.string.close),
-                    tint = MaterialTheme.colorScheme.error,
-                )
-            else Icon(Icons.Default.Edit, stringResource(Res.string.edit))
+
+        if (state.user.roles.isNotEmpty()) {
+            FlowRow {
+                state.user.roles.forEach { role ->
+                    AssistChip(
+                        onClick = {},
+                        label = {
+                            Text(role, style = MaterialTheme.typography.labelSmall)
+                        },
+                        modifier = Modifier.defaultMinSize(minHeight = 32.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        ),
+                    )
+                }
+            }
         }
-    }
 
-    Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-    ProfileAttributeField(
-        state.user.username.orEmpty(),
-        { value -> onAction(ProfileAction.SetUsername(value)) },
-        focusRequesters[0],
-        focusRequesters[1],
-        state.edit,
-        stringResource(Res.string.username),
-        Icons.Default.Person,
-        validator["username"],
-        { value -> validations[0] = value },
-    )
+        val focusRequesters = remember(state.user.attributes.size) {
+            List(7 + state.user.attributes.size) { FocusRequester() }
+        }
 
-    Spacer(modifier = Modifier.height(16.dp))
+        LaunchedEffect(state.edit) {
+            if (state.edit) focusRequesters[0].requestFocus()
+        }
 
-    ProfileAttributeField(
-        state.user.firstName.orEmpty(),
-        { value -> onAction(ProfileAction.SetFirstName(value)) },
-        focusRequesters[1],
-        focusRequesters[2],
-        state.edit,
-        stringResource(Res.string.first_name),
-        Icons.Default.Person,
-        validator["firstName"],
-        { value -> validations[1] = value },
-    )
+        val validations = remember(state.user.attributes.size) {
+            mutableStateListOf(*Array(7 + state.user.attributes.size) { true })
+        }
 
-    Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            if (state.edit) {
+                val isValidAll by remember(validations) { derivedStateOf(validations::all) }
+                IconButton(
+                    onClick = {
+                        if (isValidAll) onAction(ProfileAction.StartUpdate())
+                    },
+                    modifier = Modifier.focusRequester(focusRequesters[6]),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Save,
+                        contentDescription = stringResource(Res.string.save),
+                        tint = LocalContentColor.current.orErrorColor(!isValidAll),
+                    )
+                }
+            }
+            IconButton(
+                onClick = {
+                    onAction(ProfileAction.Edit(!state.edit))
+                },
+            ) {
+                if (state.edit)
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(Res.string.close),
+                        tint = MaterialTheme.colorScheme.error,
+                    )
+                else Icon(Icons.Default.Edit, stringResource(Res.string.edit))
+            }
+        }
 
-    ProfileAttributeField(
-        state.user.lastName.orEmpty(),
-        { value -> onAction(ProfileAction.SetLastName(value)) },
-        focusRequesters[2],
-        focusRequesters[3],
-        state.edit,
-        stringResource(Res.string.last_name),
-        Icons.Default.Person,
-        validator["lastName"],
-        { value -> validations[2] = value },
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    ProfileAttributeField(
-        state.user.phone.orEmpty(),
-        { value -> onAction(ProfileAction.SetPhone(value)) },
-        focusRequesters[3],
-        focusRequesters[4],
-        state.edit,
-        stringResource(Res.string.phone),
-        Icons.Default.Phone,
-        validator["phone"],
-        { value -> validations[3] = value },
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    ProfileAttributeField(
-        state.user.email.orEmpty(),
-        { value -> onAction(ProfileAction.SetEmail(value)) },
-        focusRequesters[4],
-        focusRequesters[5],
-        state.edit,
-        stringResource(Res.string.email),
-        Icons.Default.Email,
-        validator["email"],
-        { value -> validations[4] = value },
-    )
-
-    state.user.attributes.entries.forEachIndexed { index, (key, value) ->
         Spacer(modifier = Modifier.height(16.dp))
 
         ProfileAttributeField(
-            value.first(),
-            { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
-            focusRequesters[5 + index],
-            focusRequesters[6 + index],
+            state.user.username.orEmpty(),
+            { value -> onAction(ProfileAction.SetUsername(value)) },
+            focusRequesters[0],
+            focusRequesters[1],
             state.edit,
-            key.asStringResource(),
-            Icons.Default.Attribution,
-            validator[key],
-            { value -> validations[5 + index] = value },
+            stringResource(Res.string.username),
+            Icons.Default.Person,
+            validator["username"],
+            { value -> validations[0] = value },
         )
-    }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ProfileAttributeField(
+            state.user.firstName.orEmpty(),
+            { value -> onAction(ProfileAction.SetFirstName(value)) },
+            focusRequesters[1],
+            focusRequesters[2],
+            state.edit,
+            stringResource(Res.string.first_name),
+            Icons.Default.Person,
+            validator["firstName"],
+            { value -> validations[1] = value },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ProfileAttributeField(
+            state.user.lastName.orEmpty(),
+            { value -> onAction(ProfileAction.SetLastName(value)) },
+            focusRequesters[2],
+            focusRequesters[3],
+            state.edit,
+            stringResource(Res.string.last_name),
+            Icons.Default.Person,
+            validator["lastName"],
+            { value -> validations[2] = value },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ProfileAttributeField(
+            state.user.phone.orEmpty(),
+            { value -> onAction(ProfileAction.SetPhone(value)) },
+            focusRequesters[3],
+            focusRequesters[4],
+            state.edit,
+            stringResource(Res.string.phone),
+            Icons.Default.Phone,
+            validator["phone"],
+            { value -> validations[3] = value },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ProfileAttributeField(
+            state.user.email.orEmpty(),
+            { value -> onAction(ProfileAction.SetEmail(value)) },
+            focusRequesters[4],
+            focusRequesters[5],
+            state.edit,
+            stringResource(Res.string.email),
+            Icons.Default.Email,
+            validator["email"],
+            { value -> validations[4] = value },
+        )
+
+        state.user.attributes.entries.forEachIndexed { index, (key, value) ->
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ProfileAttributeField(
+                value.first(),
+                { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
+                focusRequesters[5 + index],
+                focusRequesters[6 + index],
+                state.edit,
+                key.asStringResource(),
+                Icons.Default.Attribution,
+                validator[key],
+                { value -> validations[5 + index] = value },
+            )
+        }
 
 //        CountryCodePickerTextField(
 //            value = user.phone.orEmpty().removePrefix(country?.dial.orEmpty().ifNotEmpty { "+$it" }),
@@ -326,38 +332,39 @@ private fun ProfileScreenContent(
 //            ),
 //        )
 
-    if (!state.user.isVerified)
+        if (!state.user.isVerified)
+            Button(
+                onClick = {
+                    onNavigationActions(
+                        arrayOf(
+                            NavigationAction.Push(Verification),
+                        ),
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(text = stringResource(Res.string.verify))
+            }
+
+        var singOutConfirmDialog by remember { mutableStateOf(false) }
+        if (singOutConfirmDialog)
+            SignOutConfirmDialog(
+                {
+                    singOutConfirmDialog = false
+                },
+                {
+                    onAction(ProfileAction.SignOut)
+                },
+            )
+
         Button(
             onClick = {
-                onNavigationActions(
-                    arrayOf(
-                        NavigationAction.Push(Verification),
-                    ),
-                )
+                singOutConfirmDialog = true
             },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(text = stringResource(Res.string.verify))
+            Text(text = stringResource(Res.string.sign_out))
         }
-
-    var singOutConfirmDialog by remember { mutableStateOf(false) }
-    if (singOutConfirmDialog)
-        SignOutConfirmDialog(
-            {
-                singOutConfirmDialog = false
-            },
-            {
-                onAction(ProfileAction.SignOut)
-            },
-        )
-
-    Button(
-        onClick = {
-            singOutConfirmDialog = true
-        },
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Text(text = stringResource(Res.string.sign_out))
     }
 }
 

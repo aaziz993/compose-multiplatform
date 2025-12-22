@@ -4,7 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import clib.data.type.primitives.string.stringResource
 import clib.presentation.icons.Otp
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
@@ -30,7 +31,6 @@ import compose_app.generated.resources.hotp
 import compose_app.generated.resources.send_code
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
-import clib.data.type.primitives.string.stringResource
 import presentation.components.textfield.otp.OtpInputField
 import ui.auth.hotp.viewmodel.HotpAction
 import ui.auth.hotp.viewmodel.HotpState
@@ -52,8 +52,7 @@ public fun HotpScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .fillMaxHeight(),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
