@@ -1,5 +1,7 @@
 package ui.auth.login.presentation.viewmodel
 
+import com.sunildhiman90.kmauth.supabase.model.SupabaseAuthConfig
+import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 
 public sealed interface LoginAction {
@@ -11,5 +13,13 @@ public sealed interface LoginAction {
     public data object Login : LoginAction
     public data object LoginGoogle : LoginAction
     public data object LoginApple : LoginAction
-    public data class LoginSupabase(val value: SupabaseOAuthProvider) : LoginAction
+    public data class LoginSupabaseDefaultAuth(
+        val provider: SupabaseDefaultAuthProvider,
+        val config: SupabaseAuthConfig,
+    ) : LoginAction
+
+    public data class LoginSupabaseOAuth(
+        val provider: SupabaseOAuthProvider,
+        val config: SupabaseAuthConfig,
+    ) : LoginAction
 }

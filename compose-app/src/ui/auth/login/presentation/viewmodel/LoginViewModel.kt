@@ -10,6 +10,8 @@ import com.sunildhiman90.kmauth.google.GoogleAuthManager
 import com.sunildhiman90.kmauth.google.KMAuthGoogle
 import com.sunildhiman90.kmauth.supabase.KMAuthSupabase
 import com.sunildhiman90.kmauth.supabase.SupabaseAuthManager
+import com.sunildhiman90.kmauth.supabase.model.SupabaseAuthConfig
+import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.toKMAuthUser
 import klib.data.auth.model.Auth
@@ -53,7 +55,8 @@ public class LoginViewModel(
         is LoginAction.Login -> login()
         is LoginAction.LoginGoogle -> loginGoogle()
         is LoginAction.LoginApple -> loginApple()
-        is LoginAction.LoginSupabase -> loginSupabase(action.value)
+        is LoginAction.LoginSupabaseDefaultAuth -> loginSupabaseDefaultAuth(action.provider, action.config)
+        is LoginAction.LoginSupabaseOAuth -> loginSupabaseOAuth(action.provider, action.config)
     }
 
     private fun setUsername(value: String) = state.update { it.copy(username = value, error = null) }
@@ -105,11 +108,23 @@ public class LoginViewModel(
         }
     }
 
-    private fun loginSupabase(value: SupabaseOAuthProvider) {
+    private fun loginSupabaseDefaultAuth(provider: SupabaseDefaultAuthProvider, config: SupabaseAuthConfig) {
         viewModelScope.launch {
-            supabaseAuthManager.signInWith(value)
+            supabaseAuthManager.signInWith(provider, config)
                 .onSuccess { user ->
-                    user?.let { authState.value = Auth(value.name, it.toKMAuthUser().toUser()) }
+                    user?.let { authState.value = Auth(provider.name, it.toKMAuthUser().toUser()) }
+                }
+                .onFailure { error ->
+                    state.update { it.copy(error = error) }
+                }
+        }
+    }
+
+    private fun loginSupabaseOAuth(provider: SupabaseOAuthProvider, config: SupabaseAuthConfig) {
+        viewModelScope.launch {
+            supabaseAuthManager.signInWith(provider, config)
+                .onSuccess { user ->
+                    user?.let { authState.value = Auth(provider.name, it.toKMAuthUser().toUser()) }
                 }
                 .onFailure { error ->
                     state.update { it.copy(error = error) }

@@ -21,8 +21,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Token
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
@@ -49,10 +52,14 @@ import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.generated.resources.apple
 import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.icons.Facebook
 import clib.presentation.icons.Github
+import clib.presentation.icons.Gitlab
 import clib.presentation.icons.Google
+import clib.presentation.icons.Twitter
 import clib.presentation.navigation.NavigationAction
 import com.sunildhiman90.kmauth.google.compose.GoogleSignInButton
+import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
@@ -60,6 +67,7 @@ import compose_app.generated.resources.password
 import compose_app.generated.resources.remember
 import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
+import data.type.primitives.string.asStringResource
 import klib.data.auth.model.Auth
 import klib.data.auth.model.toUser
 import klib.data.config.auth.AuthConfig
@@ -215,27 +223,65 @@ private fun LoginProviders(
         }
     }
 
-    IconButton(
-        onClick = {
-            onAction(LoginAction.LoginApple)
-        },
-        modifier = Modifier
-            .clip(CircleShape),
-    ) {
-        Image(
-            painter = painterResource(clib.generated.resources.Res.drawable.apple),
-            contentDescription = "Apple",
-            contentScale = ContentScale.Fit,
-        )
-    }
+    config.supabase?.let {
+        IconButton(
+            onClick = {
+                onAction(LoginAction.LoginApple)
+            },
+            modifier = Modifier
+                .clip(CircleShape),
+        ) {
+            Image(
+                painter = painterResource(clib.generated.resources.Res.drawable.apple),
+                contentDescription = "Apple",
+                contentScale = ContentScale.Fit,
+            )
+        }
 
-    IconButton(
-        onClick = {
-            onAction(LoginAction.LoginSupabase(SupabaseOAuthProvider.GITHUB))
-        },
-    ) {
-        Icon(Icons.Default.Github, "Github")
+        config.supabaseDefaultAuths.forEach { supabase ->
+            IconButton(
+                onClick = {
+                    onAction(LoginAction.LoginSupabaseDefaultAuth(supabase.provider, supabase.config))
+                },
+            ) {
+                Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
+            }
+        }
+
+        config.supabaseOAuths.forEach { supabase ->
+            IconButton(
+                onClick = {
+                    onAction(LoginAction.LoginSupabaseOAuth(supabase.provider, supabase.config))
+                },
+            ) {
+                Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
+            }
+        }
     }
+}
+
+private fun SupabaseDefaultAuthProvider.imageVector() = when (this) {
+    SupabaseDefaultAuthProvider.EMAIL -> Icons.Default.Email
+    SupabaseDefaultAuthProvider.ID_TOKEN -> Icons.Default.Token
+    SupabaseDefaultAuthProvider.PHONE -> Icons.Default.Phone
+}
+
+private fun SupabaseOAuthProvider.imageVector() = when (this) {
+    SupabaseOAuthProvider.GITHUB -> Icons.Default.Github
+    SupabaseOAuthProvider.GITLAB -> Icons.Default.Gitlab
+//    SupabaseOAuthProvider.BITBUCKET -> Icons.Default.Bitbucket
+    SupabaseOAuthProvider.TWITTER -> Icons.Default.Twitter
+//    SupabaseOAuthProvider.DISCORD -> Icons.Default.Discord
+//    SupabaseOAuthProvider.SLACK -> Icons.Default.Slack
+//    SupabaseOAuthProvider.SPOTIFY -> Icons.Default.Spotify
+//    SupabaseOAuthProvider.TWITCH -> Icons.Default.Twitch
+//    SupabaseOAuthProvider.LINKEDIN -> Icons.Default.Linkedin
+//    SupabaseOAuthProvider.KEYCLOAK -> Icons.Default.Keycloak
+    SupabaseOAuthProvider.GOOGLE -> Icons.Default.Google
+    SupabaseOAuthProvider.FACEBOOK -> Icons.Default.Facebook
+//    SupabaseOAuthProvider.AZURE -> Icons.Default.Azure
+//    SupabaseOAuthProvider.APPLE -> Icons.Default.Apple
+    else -> error("")
 }
 
 @Preview

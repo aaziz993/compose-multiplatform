@@ -1,4 +1,4 @@
-package klib.data.auth.oauth
+package klib.data.config.auth
 
 import com.sunildhiman90.kmauth.supabase.model.PhoneConfirmationChannel
 import com.sunildhiman90.kmauth.supabase.model.SupabaseAuthConfig as KMAuthSupabaseAuthConfig

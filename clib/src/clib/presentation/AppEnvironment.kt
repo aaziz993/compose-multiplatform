@@ -136,7 +136,7 @@ public fun AppEnvironment(
     config.auth.google?.let { google ->
         KMAuthInitializer.initialize(KMAuthConfig.forGoogle(webClientId = google.webClientId, clientSecret = google.clientSecret))
     }
-    config.auth.supabases.forEach { supabase ->
+    config.auth.supabase?.let { supabase ->
         KMAuthSupabase.initialize(
             KMAuthConfig.forSupabase(
                 supabaseUrl = supabase.supabaseUrl,
