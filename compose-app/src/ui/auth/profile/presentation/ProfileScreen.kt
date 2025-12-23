@@ -114,12 +114,12 @@ public fun ProfileScreen(
                 text = { Text(result.throwable.message.orEmpty()) },
                 isError = true,
                 dismissRequestAction = {
-                    onAction(ProfileAction.Restore)
                     GlobalAlertEventController.sendEvent(null)
+                    onAction(ProfileAction.Restore)
                 },
                 dismissAction = {
-                    onAction(ProfileAction.Restore)
                     GlobalAlertEventController.sendEvent(null)
+                    onAction(ProfileAction.Restore)
                 },
             ),
         )

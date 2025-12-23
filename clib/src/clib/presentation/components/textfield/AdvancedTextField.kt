@@ -89,9 +89,10 @@ public fun AdvancedTextField(
     showValue: Boolean = true,
     onShowValueChange: ((Boolean) -> Unit)? = null
 ) {
-    val isTime =
-        type is TextField.LocalTime || type is TextField.LocalDate || type == TextField.LocalDateTime
-
+    val isTime = when (type) {
+        TextField.LocalTime, TextField.LocalDate, TextField.LocalDateTime -> true
+        else -> false
+    }
     val isEnum = type is TextField.Enum
 
     val requireValidation = !(readOnly || isTime || isEnum || validator == null)
