@@ -84,7 +84,6 @@ public fun LoginScreen(
     config: AuthConfig = AuthConfig(),
     state: LoginState = LoginState(),
     onAction: (LoginAction) -> Unit = {},
-    onAuthChange: (Auth) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Box(
     modifier = modifier,
@@ -196,7 +195,7 @@ public fun LoginScreen(
             Text(text = stringResource(Res.string.login))
         }
 
-        LoginProviders(config, onAction, onAuthChange)
+        LoginProviders(config, onAction)
     }
 }
 
@@ -204,16 +203,10 @@ public fun LoginScreen(
 private fun LoginProviders(
     config: AuthConfig,
     onAction: (LoginAction) -> Unit,
-    onAuthChange: (Auth) -> Unit,
 ) = FlowRow(
     verticalArrangement = Arrangement.Center,
 ) {
     config.google?.let {
-        GoogleSignInButton(modifier = Modifier) { user, error ->
-            user?.let { onAuthChange(Auth("google", it.toUser())) }
-            error?.let { onAction(LoginAction.SetError(it)) }
-        }
-
         IconButton(
             onClick = {
                 onAction(LoginAction.LoginGoogle)

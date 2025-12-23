@@ -6,6 +6,7 @@ auth:
       hmacAlgorithm: sha512
   google:
     webClientId: YOUR_WEB_CLIENT_ID
+    clientSecret: YOUR_CLIENT_SECRET
   supabase:
     config:
       supabaseUrl: YOUR_SUPABASE_URL
@@ -14,5 +15,5 @@ auth:
       deepLinkScheme: YOUR_DEEP_LINK_SCHEME
     redirectUrl: YOUR_REDIRECT_URL
   supabaseOAuths:
-    provider: GITHUB
-    config: { }
+    - provider: GITHUB
+      config: { }

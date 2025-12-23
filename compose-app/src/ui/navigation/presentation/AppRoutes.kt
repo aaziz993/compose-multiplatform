@@ -326,7 +326,6 @@ public data object Login : KoinRoute<Login>(), NavRoute {
         sharedTransitionScope: SharedTransitionScope,
     ) {
         val config = LocalConfig.current
-        val authState = LocalAuthState.current
         val router = currentRouter()
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
@@ -337,7 +336,6 @@ public data object Login : KoinRoute<Login>(), NavRoute {
             config.auth,
             state,
             viewModel::action,
-            { auth -> authState.value = auth },
             router::actions,
         )
     }

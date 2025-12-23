@@ -220,7 +220,7 @@ private fun VerificationImagePicker(
                     showGallery = true
                 },
             ) {
-                AppPlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
+                AppPlainTooltipBox(tooltip = stringResource(Res.string.gallery)) {
                     Icon(Icons.Default.BrowseGallery, stringResource(Res.string.gallery))
                 }
             }

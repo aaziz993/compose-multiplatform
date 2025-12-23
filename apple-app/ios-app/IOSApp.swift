@@ -39,6 +39,9 @@ struct IOSApp: App {
                 // Handle custom URL schemes.
                 .onOpenURL { url in
                     deepLinkController.onDeepLinkReceived(url: url.absoluteString)
+                    // Handle supabase deep link url.
+                    // If using kmauth-supabase.
+                    KMAuthSupabase.deepLinkHandler().handleDeepLinks(url: url)
                 }
         }
     }

@@ -1,5 +1,8 @@
 package klib.data.config.auth
 
+import com.sunildhiman90.kmauth.core.KMAuthConfig
+import com.sunildhiman90.kmauth.core.KMAuthInitializer
+import com.sunildhiman90.kmauth.supabase.KMAuthSupabase
 import klib.data.auth.model.AuthResource
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
@@ -14,4 +17,16 @@ public data class AuthConfig(
     val supabase: SupabaseAuthProviderConfig? = null,
     val supabaseDefaultAuths: List<SupabaseDefaultAuthConfig> = emptyList(),
     val supabaseOAuths: List<SupabaseOAuthConfig> = emptyList(),
-)
+) {
+
+    public fun configure() {
+        google?.let {
+            KMAuthInitializer.initialize(
+                KMAuthConfig.forGoogle(webClientId = it.webClientId, clientSecret = it.clientSecret),
+            )
+        }
+        supabase?.let {
+            KMAuthSupabase.initialize(it.config, it.redirectUrl)
+        }
+    }
+}

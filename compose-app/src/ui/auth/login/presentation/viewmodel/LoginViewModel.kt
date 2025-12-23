@@ -25,23 +25,14 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 public class LoginViewModel(
     private val authState: AuthState,
-) : ViewModel<LoginAction>() {
-
     // For Sign In With Google.
-    private val googleAuthManager: GoogleAuthManager by lazy {
-        KMAuthGoogle.googleAuthManager
-    }
-
-    // For Sign In With Apple.
-    private val appleAuthManager: AppleAuthManager by lazy {
-        KMAuthApple.appleAuthManager
-    }
-
-    // For Sign In With other providers such as Facebook, Github, Twitter etc.
-    // For these providers using supabase, for setting up the supabase for specific provider, refer to the supabase docs.
-    private val supabaseAuthManager: SupabaseAuthManager by lazy {
-        KMAuthSupabase.getAuthManager()
-    }
+    private val googleAuthManager: GoogleAuthManager = KMAuthGoogle.googleAuthManager,
+// For Sign In With Apple.
+    private val appleAuthManager: AppleAuthManager = KMAuthApple.appleAuthManager,
+// For Sign In With other providers such as Facebook, Github, Twitter etc.
+// For these providers using supabase, for setting up the supabase for specific provider, refer to the supabase docs.
+    private val supabaseAuthManager: SupabaseAuthManager = KMAuthSupabase.getAuthManager(),
+) : ViewModel<LoginAction>() {
 
     public val state: RestartableStateFlow<LoginState>
         field = MutableStateFlow(LoginState()).onStartStateIn { it }

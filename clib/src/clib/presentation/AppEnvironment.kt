@@ -74,9 +74,6 @@ import com.materialkolor.LocalDynamicMaterialThemeSeed
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
-import com.sunildhiman90.kmauth.core.KMAuthConfig
-import com.sunildhiman90.kmauth.core.KMAuthInitializer
-import com.sunildhiman90.kmauth.supabase.KMAuthSupabase
 import dev.jordond.connectivity.Connectivity.Status
 import io.ktor.http.Url
 import klib.data.cache.Cache
@@ -86,7 +83,6 @@ import klib.data.cache.emptyCoroutineCache
 import klib.data.location.locale.LocaleService
 import klib.data.net.createConnectivity
 import klib.data.share.Share
-import kotlin.String
 import kotlinx.coroutines.MainScope
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -133,17 +129,7 @@ public fun AppEnvironment(
 ) {
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configure()
-    config.auth.google?.let { google ->
-        KMAuthInitializer.initialize(
-            KMAuthConfig.forGoogle(webClientId = google.webClientId, clientSecret = google.clientSecret),
-        )
-    }
-    config.auth.supabase?.let { supabase ->
-        KMAuthSupabase.initialize(
-            supabase.config,
-            supabase.redirectUrl,
-        )
-    }
+    config.auth.configure()
 
     val localization by rememberLocalization(localeState, localeService)
 
