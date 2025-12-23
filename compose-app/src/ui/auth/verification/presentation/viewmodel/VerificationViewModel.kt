@@ -4,15 +4,20 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
+import clib.presentation.navigation.Router
 import clib.presentation.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
+import ui.navigation.presentation.Services
 
 @KoinViewModel
 public class VerificationViewModel(
     private val authState: AuthState,
+    @Provided
+    private val router: Router,
     override val savedStateHandle: SavedStateHandle = SavedStateHandle(),
 ) : ViewModel<VerificationAction>() {
 
@@ -32,6 +37,7 @@ public class VerificationViewModel(
         viewModelScope.launch {
             authState.value.user?.let { user ->
                 authState.setUser(user.copy(isVerified = true))
+                router.push(Services)
             }
         }
     }

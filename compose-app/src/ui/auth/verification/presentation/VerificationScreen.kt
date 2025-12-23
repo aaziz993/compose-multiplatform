@@ -54,7 +54,6 @@ import klib.data.auth.model.Auth
 import presentation.components.tooltipbox.AppPlainTooltipBox
 import ui.auth.verification.presentation.viewmodel.VerificationAction
 import ui.auth.verification.presentation.viewmodel.VerificationState
-import ui.navigation.presentation.Services
 import ui.navigation.presentation.Verification
 
 @Composable
@@ -131,11 +130,7 @@ public fun VerificationScreen(
         if (state.idUri != null && state.userUri != null)
             Button(
                 onClick = {
-                    onNavigationActions(
-                        arrayOf(
-                            NavigationAction.Push(Services),
-                        ),
-                    )
+                    onAction(VerificationAction.Confirm)
                 },
             ) {
                 Text(text = stringResource(Res.string.confirm))

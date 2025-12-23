@@ -753,7 +753,7 @@ public data object Verification : KoinRoute<Verification>(), NavRoute {
     ) {
         val authState = LocalAuthState.current
         val router = currentRouter()
-        val viewModel: VerificationViewModel = koinViewModel()
+        val viewModel: VerificationViewModel = koinViewModel { parametersOf(router) }
         val state by viewModel.state.collectAsStateWithLifecycle()
 
         VerificationScreen(
