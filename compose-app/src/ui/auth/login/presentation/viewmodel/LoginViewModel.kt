@@ -83,26 +83,37 @@ public class LoginViewModel(
 
     private fun loginGoogle() {
         viewModelScope.launch {
-            googleAuthManager.signIn { user, error ->
-                user?.let { authState.value = Auth("google", it.toUser()) }
-                error?.let { state.update { it.copy(error = it) } }
-            }
+            googleAuthManager.signIn()
+                .onSuccess { user ->
+                    user?.let { authState.value = Auth("google", it.toUser()) }
+                }
+                .onFailure { error ->
+                    state.update { it.copy(error = error) }
+                }
         }
     }
 
     private fun loginApple() {
         viewModelScope.launch {
-            val result = appleAuthManager.signIn()
-            result.getOrNull()?.let { authState.value = Auth("apple", it.toUser()) }
-            result.exceptionOrNull()?.let { error -> state.update { it.copy(error = error) } }
+            appleAuthManager.signIn()
+                .onSuccess { user ->
+                    user?.let { authState.value = Auth("apple", it.toUser()) }
+                }
+                .onFailure { error ->
+                    state.update { it.copy(error = error) }
+                }
         }
     }
 
     private fun loginSupabase(value: SupabaseOAuthProvider) {
         viewModelScope.launch {
-            val result = supabaseAuthManager.signInWith(value)
-            result.getOrNull()?.let { authState.value = Auth(value.name, it.toKMAuthUser().toUser()) }
-            result.exceptionOrNull()?.let { error -> state.update { it.copy(error = error) } }
+            supabaseAuthManager.signInWith(value)
+                .onSuccess { user ->
+                    user?.let { authState.value = Auth(value.name, it.toKMAuthUser().toUser()) }
+                }
+                .onFailure { error ->
+                    state.update { it.copy(error = error) }
+                }
         }
     }
 }

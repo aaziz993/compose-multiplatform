@@ -86,7 +86,6 @@ public fun VerificationScreen(
                     VerificationImagePicker(
                         modifier = Modifier
                             .weight(1f)
-                            .aspectRatio(1f)
                             .padding(5.dp),
                         stringResource(Res.string.id),
                         state.idUri,
@@ -97,9 +96,8 @@ public fun VerificationScreen(
                     VerificationImagePicker(
                         Modifier
                             .weight(1f)
-                            .aspectRatio(1f)
                             .padding(5.dp),
-                        stringResource(Res.string.id),
+                        stringResource(Res.string.user),
                         state.userUri,
                     ) { value ->
                         onAction(VerificationAction.SetUserUri(value))
@@ -109,9 +107,8 @@ public fun VerificationScreen(
                 VerificationImagePicker(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1f)
                         .padding(5.dp),
-                    stringResource(Res.string.user),
+                    stringResource(Res.string.id),
                     state.idUri,
                 ) { value ->
                     onAction(VerificationAction.SetIdUri(value))
@@ -120,7 +117,6 @@ public fun VerificationScreen(
                 VerificationImagePicker(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1f)
                         .padding(5.dp),
                     stringResource(Res.string.user),
                     state.userUri,
@@ -195,13 +191,15 @@ private fun VerificationImagePicker(
 
         Box(
             modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(1f)
                 .background(Color.Gray.copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
             contentAlignment = Alignment.Center,
         ) {
             value?.let {
                 Image(
                     painter = rememberAsyncImagePainter(it),
-                    contentDescription = null,
+                    contentDescription = title,
                     modifier = Modifier.fillMaxSize(),
                 )
             } ?: Text(stringResource(Res.string.not_selected), color = Color.Gray)

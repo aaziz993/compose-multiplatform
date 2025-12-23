@@ -184,12 +184,12 @@ public fun LoginScreen(
             Text(text = stringResource(Res.string.login))
         }
 
-        LoginSocial(onAction, onAuthChange)
+        LoginProviders(onAction, onAuthChange)
     }
 }
 
 @Composable
-private fun LoginSocial(
+private fun LoginProviders(
     onAction: (LoginAction) -> Unit,
     onAuthChange: (Auth) -> Unit,
 ) = FlowRow(
