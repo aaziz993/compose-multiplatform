@@ -4,6 +4,14 @@ import androidx.lifecycle.viewModelScope
 import klib.data.type.collections.restartableflow.RestartableStateFlow
 import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.ViewModel
+import com.sunildhiman90.kmauth.apple.AppleAuthManager
+import com.sunildhiman90.kmauth.apple.KMAuthApple
+import com.sunildhiman90.kmauth.google.GoogleAuthManager
+import com.sunildhiman90.kmauth.google.KMAuthGoogle
+import com.sunildhiman90.kmauth.supabase.KMAuthSupabase
+import com.sunildhiman90.kmauth.supabase.SupabaseAuthManager
+import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
+import klib.data.auth.model.Auth
 import klib.data.auth.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,8 +20,24 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 public class LoginViewModel(
-    private val authState: AuthState
+    private val authState: AuthState,
 ) : ViewModel<LoginAction>() {
+
+    // For Sign In With Google.
+    private val googleAuthManager: GoogleAuthManager by lazy {
+        KMAuthGoogle.googleAuthManager
+    }
+
+    // For Sign In With Apple.
+    private val appleAuthManager: AppleAuthManager by lazy {
+        KMAuthApple.appleAuthManager
+    }
+
+    // For Sign In With other providers such as Facebook, Github, Twitter etc.
+    // For these providers using supabase, for setting up the supabase for specific provider, refer to the supabase docs.
+    private val supabaseAuthManager: SupabaseAuthManager by lazy {
+        KMAuthSupabase.getAuthManager()
+    }
 
     public val state: RestartableStateFlow<LoginState>
         field = MutableStateFlow(LoginState()).onStartStateIn { it }
@@ -24,6 +48,9 @@ public class LoginViewModel(
         is LoginAction.SetShowPassword -> setShowPassword(action.value)
         is LoginAction.SetRemember -> setRemember(action.value)
         is LoginAction.Login -> login()
+        is LoginAction.LoginGoogle -> loginGoogle()
+        is LoginAction.LoginApple -> loginApple()
+        is LoginAction.LoginSupabase -> loginSupabase(action.value)
     }
 
     private fun setUsername(value: String) = state.update { it.copy(username = value, error = null) }
@@ -45,7 +72,67 @@ public class LoginViewModel(
                         roles = setOf("User"),
                     ),
                 )
-            else state.update { it.copy(error = Exception("Invalid PIN code")) }
+            else state.update { it.copy(error = Exception("Invalid username or password")) }
+        }
+    }
+
+    private fun loginGoogle() {
+        viewModelScope.launch {
+            val result = googleAuthManager.signIn()
+
+            if (result.isSuccess)
+                result.getOrNull()?.let { value ->
+                    authState.value = Auth(
+                        "google",
+                        User(
+                            username = value.name,
+                            email = value.email,
+                            phone = value.phoneNumber,
+                            image = value.profilePicUrl,
+                        ),
+                    )
+                }
+            else state.update { it.copy(error = result.exceptionOrNull()) }
+        }
+    }
+
+    private fun loginApple() {
+        viewModelScope.launch {
+            val result = appleAuthManager.signIn()
+
+            if (result.isSuccess)
+                result.getOrNull()?.let { value ->
+                    authState.value = Auth(
+                        "apple",
+                        User(
+                            username = value.name,
+                            email = value.email,
+                            phone = value.phoneNumber,
+                            image = value.profilePicUrl,
+                        ),
+                    )
+                }
+            else state.update { it.copy(error = result.exceptionOrNull()) }
+        }
+    }
+
+    private fun loginSupabase(value: SupabaseOAuthProvider) {
+        viewModelScope.launch {
+            val result = supabaseAuthManager.signInWith(value)
+
+            if (result.isSuccess)
+                result.getOrNull()?.let { value ->
+                    authState.value = Auth(
+                        "google",
+                        User(
+                            username = value.name,
+                            email = value.email,
+                            phone = value.phone,
+                            image = value.avatarUrl,
+                        ),
+                    )
+                }
+            else state.update { it.copy(error = result.exceptionOrNull()) }
         }
     }
 }

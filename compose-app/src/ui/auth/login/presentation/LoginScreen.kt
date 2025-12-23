@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,7 +43,11 @@ import androidx.compose.ui.unit.sp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.icons.Apple
+import clib.presentation.icons.Github
+import clib.presentation.icons.Google
 import clib.presentation.navigation.NavigationAction
+import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
 import compose_app.generated.resources.password
@@ -170,6 +175,40 @@ public fun LoginScreen(
         ) {
             Text(text = stringResource(Res.string.login))
         }
+
+        LoginSocial(onAction)
+    }
+}
+
+@Composable
+private fun LoginSocial(
+    onAction: (LoginAction) -> Unit = {},
+) = Column(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalAlignment = Alignment.CenterHorizontally,
+) {
+    IconButton(
+        onClick = {
+            onAction(LoginAction.LoginGoogle)
+        },
+    ) {
+        Icon(Icons.Default.Google, "Google")
+    }
+
+    IconButton(
+        onClick = {
+            onAction(LoginAction.LoginApple)
+        },
+    ) {
+        Icon(Icons.Default.Apple, "Apple")
+    }
+
+    IconButton(
+        onClick = {
+            onAction(LoginAction.LoginSupabase(SupabaseOAuthProvider.GITHUB))
+        },
+    ) {
+        Icon(Icons.Default.Github, "Github")
     }
 }
 
