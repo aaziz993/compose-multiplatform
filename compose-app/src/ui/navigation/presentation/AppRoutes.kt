@@ -325,6 +325,7 @@ public data object Login : KoinRoute<Login>(), NavRoute {
         route: Login,
         sharedTransitionScope: SharedTransitionScope,
     ) {
+        val config = LocalConfig.current
         val authState = LocalAuthState.current
         val router = currentRouter()
         val viewModel: LoginViewModel = koinViewModel()
@@ -333,6 +334,7 @@ public data object Login : KoinRoute<Login>(), NavRoute {
         LoginScreen(
             Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             route,
+            config.auth,
             state,
             viewModel::action,
             { auth -> authState.value = auth },

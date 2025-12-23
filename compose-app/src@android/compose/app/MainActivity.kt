@@ -17,14 +17,30 @@
 package compose.app
 
 import App
+import android.app.ComponentCaller
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.sunildhiman90.kmauth.core.KMAuthInitializer
+import com.sunildhiman90.kmauth.core.KMAuthPlatformContext
+import com.sunildhiman90.kmauth.supabase.KMAuthSupabase
 
 public class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { App() }
+        setContent {
+            KMAuthInitializer.initContext(
+                kmAuthPlatformContext = KMAuthPlatformContext(this),
+            )
+
+            App()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent, caller: ComponentCaller) {
+        super.onNewIntent(intent, caller)
+        KMAuthSupabase.deepLinkHandler().handleDeepLinks(intent)
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -34,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.ContentScale
@@ -60,6 +62,7 @@ import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
 import klib.data.auth.model.Auth
 import klib.data.auth.model.toUser
+import klib.data.config.auth.AuthConfig
 import org.jetbrains.compose.resources.painterResource
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
@@ -70,6 +73,7 @@ import ui.navigation.presentation.Phone
 public fun LoginScreen(
     modifier: Modifier = Modifier,
     route: Login = Login,
+    config: AuthConfig = AuthConfig(),
     state: LoginState = LoginState(),
     onAction: (LoginAction) -> Unit = {},
     onAuthChange: (Auth) -> Unit = {},
@@ -184,34 +188,39 @@ public fun LoginScreen(
             Text(text = stringResource(Res.string.login))
         }
 
-        LoginProviders(onAction, onAuthChange)
+        LoginProviders(config, onAction, onAuthChange)
     }
 }
 
 @Composable
 private fun LoginProviders(
+    config: AuthConfig,
     onAction: (LoginAction) -> Unit,
     onAuthChange: (Auth) -> Unit,
 ) = FlowRow(
     verticalArrangement = Arrangement.Center,
 ) {
-//    GoogleSignInButton(modifier = Modifier) { user, error ->
-//        user?.let { onAuthChange(Auth("google", it.toUser())) }
-//        error?.let { onAction(LoginAction.SetError(it)) }
-//    }
+    config.google?.let {
+        GoogleSignInButton(modifier = Modifier) { user, error ->
+            user?.let { onAuthChange(Auth("google", it.toUser())) }
+            error?.let { onAction(LoginAction.SetError(it)) }
+        }
 
-    IconButton(
-        onClick = {
-            onAction(LoginAction.LoginGoogle)
-        },
-    ) {
-        Icon(Icons.Default.Google, "Google")
+        IconButton(
+            onClick = {
+                onAction(LoginAction.LoginGoogle)
+            },
+        ) {
+            Icon(Icons.Default.Google, "Google")
+        }
     }
 
     IconButton(
         onClick = {
             onAction(LoginAction.LoginApple)
         },
+        modifier = Modifier
+            .clip(CircleShape),
     ) {
         Image(
             painter = painterResource(clib.generated.resources.Res.drawable.apple),

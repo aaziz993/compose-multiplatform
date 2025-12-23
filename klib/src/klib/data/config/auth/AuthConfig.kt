@@ -9,4 +9,6 @@ import kotlinx.serialization.Serializable
 public data class AuthConfig(
     val components: Map<String?, AuthResource> = mapOf(null to AuthResource()),
     val otp: OtpConfig = TotpConfig.DEFAULT,
+    val google: GoogleAuthProviderConfig? = null,
+    val supabases: List<SupabaseAuthProviderConfig> = emptyList(),
 )
