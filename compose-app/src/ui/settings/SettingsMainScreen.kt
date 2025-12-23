@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
 import androidx.compose.material.icons.filled.Animation
 import androidx.compose.material.icons.filled.AppSettingsAlt
 import androidx.compose.material.icons.filled.AspectRatio
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.BluetoothConnected
@@ -29,7 +30,7 @@ import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.DensityLarge
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
-import androidx.compose.material.icons.filled.DynamicForm
+import androidx.compose.material.icons.filled.FormatPaint
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Functions
 import androidx.compose.material.icons.filled.Height
@@ -39,7 +40,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.PermMedia
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.Restore
@@ -54,6 +55,7 @@ import androidx.compose.material.icons.filled.Timelapse
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.material.icons.outlined.Animation
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.BluetoothConnected
@@ -61,11 +63,11 @@ import androidx.compose.material.icons.outlined.BrowseGallery
 import androidx.compose.material.icons.outlined.CameraEnhance
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Contrast
-import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOff
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material.icons.outlined.PermMedia
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.Restore
@@ -444,7 +446,7 @@ public fun SettingsMainScreen(
             SettingsMenuLink(
                 title = stringResource(Res.string.color_scheme),
                 enabled = true,
-                icon = Icons.Default.Palette,
+                icon = Icons.Default.FormatPaint,
             ) {
                 onNavigationActions(
                     arrayOf(
@@ -457,7 +459,7 @@ public fun SettingsMainScreen(
             SettingsMenuLink(
                 title = stringResource(Res.string.dynamic_color_scheme),
                 enabled = true,
-                icon = Icons.Default.DynamicForm,
+                icon = Icons.Default.FormatPaint,
             ) {
                 onNavigationActions(
                     arrayOf(
@@ -469,8 +471,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.dynamic_color_scheme),
             value = theme.isDynamic,
-            trueIcon = Icons.Filled.DynamicForm,
-            falseIcon = Icons.Outlined.DynamicForm,
+            trueIcon = Icons.Filled.AutoAwesome,
+            falseIcon = Icons.Outlined.AutoAwesome,
         ) { value ->
             onThemeChange(theme.copy(isDynamic = value))
         }
@@ -770,8 +772,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.gallery),
             value = Permission.GALLERY,
-            trueIcon = Icons.Filled.BrowseGallery,
-            falseIcon = Icons.Outlined.BrowseGallery,
+            trueIcon = Icons.Filled.PermMedia,
+            falseIcon = Icons.Outlined.PermMedia,
             permissions = permissions,
             onCheckedChange = onPermissionChange,
         )

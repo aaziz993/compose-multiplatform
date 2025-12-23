@@ -296,11 +296,14 @@ public fun AdvancedTextField(
             content = textField,
         )
 
-    (underlineMessage.orEmpty() + onValidation(validationMessages).emptyIf { showValidationMessage })
-        .takeUnlessEmpty()?.let {
-            Column(Modifier.wrapContentSize()) {
-                textField()
-                Text(it, color = if (isErrorWithValidation) MaterialTheme.colorScheme.error else Color.Unspecified)
+    Column(Modifier.wrapContentSize()) {
+        textField()
+        (underlineMessage.orEmpty() + onValidation(validationMessages).emptyIf { !showValidationMessage })
+            .takeUnlessEmpty()?.let { message ->
+                Text(
+                    text = message,
+                    color = if (isErrorWithValidation) MaterialTheme.colorScheme.error else Color.Unspecified,
+                )
             }
-        } ?: textField()
+    }
 }

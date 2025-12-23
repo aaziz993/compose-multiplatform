@@ -1,6 +1,6 @@
 package clib.presentation.components.dialog.password
 
-import clib.presentation.components.dialog.password.model.PasswordDialogLocalization
+import clib.presentation.components.dialog.password.model.PasswordDialog
 import clib.presentation.components.dialog.password.model.PasswordDialogState
 import clib.presentation.components.dialog.password.model.rememberPasswordDialogState
 import clib.presentation.components.textfield.AdvancedTextField
@@ -38,7 +38,6 @@ import compose.icons.evaicons.outline.Lock
 public fun PasswordDialog(
     onSubmit: (password: String) -> Unit,
     onDismissRequest: () -> Unit,
-    localization: PasswordDialogLocalization,
     modifier: Modifier = Modifier,
     state: PasswordDialogState = rememberPasswordDialogState(),
     icon: (@Composable (isError: Boolean) -> Unit)? = {
@@ -52,7 +51,9 @@ public fun PasswordDialog(
             },
         )
     },
-    errorMessage: String? = null): Unit = Dialog(onDismissRequest = onDismissRequest) {
+    errorMessage: String? = null,
+    dialog: PasswordDialog = PasswordDialog(),
+): Unit = Dialog(onDismissRequest = onDismissRequest) {
     val focusRequesters = remember { List(4) { FocusRequester() } }
 
     Card(
@@ -64,7 +65,7 @@ public fun PasswordDialog(
     ) {
         Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = localization.title,
+                text = dialog.title,
                 style = MaterialTheme.typography.titleMedium,
             )
 
@@ -78,9 +79,9 @@ public fun PasswordDialog(
                 Modifier.focusRequester(focusRequesters[0]).fillMaxWidth(),
                 value = state.password,
                 onValueChange = { state.password = it },
-                label = { Text(localization.password) },
+                label = { Text(dialog.password) },
                 leadingIcon = icon?.let { { it(errorMessage != null) } },
-                placeholder = { Text(localization.password) },
+                placeholder = { Text(dialog.password) },
                 isError = errorMessage != null,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -100,7 +101,7 @@ public fun PasswordDialog(
                 Modifier.focusRequester(focusRequesters[1]),
                 state.password.isNotBlank(),
             ) {
-                Text(localization.submit)
+                Text(dialog.submit)
             }
 
             LaunchedEffect(Unit) {

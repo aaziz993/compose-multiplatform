@@ -11,11 +11,18 @@ import kotlinx.serialization.Serializable
 @KeepGeneratedSerializer
 @Serializable(PhoneSerializer::class)
 public data class Phone(
-    val countryCode: Alpha2Letter,
+    val dial: String,
     val number: String,
 ) {
 
-    override fun toString(): String = "+${countryCode.toCountry().dial}$number"
+    override fun toString(): String = "+$dial$number"
+}
+
+private object PhoneSerializer : TransformingSerializer<Phone>(
+    Phone.generatedSerializer(),
+) {
+
+    override fun transformDeserialize(value: Any?): Any? = (value as? String)?.toPhone() ?: value
 }
 
 public fun String.toPhoneOrNull(): Phone? {
@@ -27,15 +34,8 @@ public fun String.toPhoneOrNull(): Phone? {
         .sortedByDescending { country -> country.dial!!.length }
         .find { country -> number.startsWith(country.dial!!) }
         ?.let { country ->
-            Phone(country.alpha2, number.removePrefix(country.dial!!))
+            Phone(country.dial!!, number.removePrefix(country.dial))
         }
 }
 
-public fun String.toPhone(): Phone = toPhoneOrNull() ?: error("Invalid ISO 3166-1 alpha-2 country code: $this")
-
-private object PhoneSerializer : TransformingSerializer<Phone>(
-    Phone.generatedSerializer(),
-) {
-
-    override fun transformDeserialize(value: Any?): Any? = (value as? String)?.toPhone() ?: value
-}
+public fun String.toPhone(): Phone = toPhoneOrNull() ?: error("Invalid phone number: $this")

@@ -80,11 +80,9 @@ public class ProfileViewModel(
     }
 
     private fun completeUpdate() {
-        state.update { it.toLoading() }
+        state.update(LoadingResult<ProfileState>::toLoading)
         viewModelScope.launch {
-            state.update {
-                it.map { copy(edit = false, passwordDialogState = null) }
-            }
+            authState.setUser(state.value.value!!.user)
         }
     }
 
@@ -93,7 +91,7 @@ public class ProfileViewModel(
     }
 
     private fun completeResetPassword() {
-        state.update { it.toLoading() }
+        state.update(LoadingResult<ProfileState>::toLoading)
         viewModelScope.launch {
             state.update {
                 it.map { copy(passwordResetDialogState = null) }
@@ -105,6 +103,5 @@ public class ProfileViewModel(
         authState.value = Auth()
     }
 
-    private fun restore() =
-        state.update { it.toSuccess(false) }
+    private fun restore() = state.update { it.toSuccess(false) }
 }

@@ -30,7 +30,7 @@ import compose.icons.EvaIcons
 import compose.icons.evaicons.Outline
 import compose.icons.evaicons.outline.Lock
 import klib.data.validator.Validator
-import clib.presentation.components.dialog.password.model.PasswordResetDialogLocalization
+import clib.presentation.components.dialog.password.model.PasswordResetDialog
 import clib.presentation.components.dialog.password.model.PasswordResetDialogState
 import clib.presentation.components.dialog.password.model.rememberPasswordResetDialogState
 import clib.presentation.components.textfield.AdvancedTextField
@@ -39,7 +39,6 @@ import clib.presentation.components.textfield.AdvancedTextField
 public fun PasswordResetDialog(
     onSubmit: (password: String, newPassword: String, repeatPassword: String) -> Unit,
     onDismissRequest: () -> Unit,
-    localization: PasswordResetDialogLocalization,
     modifier: Modifier = Modifier,
     state: PasswordResetDialogState = rememberPasswordResetDialogState(),
     icon: (@Composable (isError: Boolean) -> Unit)? = {
@@ -53,7 +52,11 @@ public fun PasswordResetDialog(
             },
         )
     },
-    errorMessage: String? = null, validator: Validator? = null, onValidate: (List<String>?) -> String? = { it?.joinToString(", ") }): Unit =
+    errorMessage: String? = null,
+    validator: Validator? = null,
+    onValidate: (List<String>?) -> String? = { it?.joinToString(", ") },
+    dialog: PasswordResetDialog = PasswordResetDialog(),
+): Unit =
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -66,7 +69,7 @@ public fun PasswordResetDialog(
         ) {
             Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = localization.title,
+                    text = dialog.title,
                     style = MaterialTheme.typography.titleMedium,
                 )
 
@@ -110,7 +113,7 @@ public fun PasswordResetDialog(
                     }
 
                 passwordField(
-                    localization.password,
+                    dialog.password,
                     0,
                     isErrorWithValidation,
                     state.password,
@@ -123,7 +126,7 @@ public fun PasswordResetDialog(
                 val passwordMismatchError = state.newPassword != state.repeatPassword
 
                 passwordField(
-                    localization.newPassword,
+                    dialog.newPassword,
                     1,
                     isErrorWithValidation || passwordMismatchError,
                     state.newPassword,
@@ -138,7 +141,7 @@ public fun PasswordResetDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 passwordField(
-                    localization.repeatPassword,
+                    dialog.repeatPassword,
                     2,
                     isErrorWithValidation || passwordMismatchError,
                     state.repeatPassword,
@@ -147,7 +150,7 @@ public fun PasswordResetDialog(
                 }
 
                 if (passwordMismatchError) {
-                    Text(localization.passwordMismatch, color = MaterialTheme.colorScheme.error)
+                    Text(dialog.passwordMismatch, color = MaterialTheme.colorScheme.error)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -157,7 +160,7 @@ public fun PasswordResetDialog(
                     Modifier.focusRequester(focusRequesters[3]),
                     state.newPassword.isNotBlank() && state.repeatPassword.isNotBlank() && state.newPassword == state.repeatPassword,
                 ) {
-                    Text(localization.submit)
+                    Text(dialog.submit)
                 }
 
                 LaunchedEffect(Unit) {
