@@ -16,8 +16,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BrowseGallery
-import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.CameraEnhance
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -207,7 +207,7 @@ private fun VerificationImagePicker(
                 },
             ) {
                 AppPlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
-                    Icon(Icons.Default.CameraAlt, stringResource(Res.string.camera))
+                    Icon(Icons.Default.CameraEnhance, stringResource(Res.string.camera))
                 }
             }
             IconButton(
@@ -216,7 +216,7 @@ private fun VerificationImagePicker(
                 },
             ) {
                 AppPlainTooltipBox(tooltip = stringResource(Res.string.gallery)) {
-                    Icon(Icons.Default.BrowseGallery, stringResource(Res.string.gallery))
+                    Icon(Icons.Default.Image, stringResource(Res.string.gallery))
                 }
             }
         }

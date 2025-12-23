@@ -2,6 +2,7 @@ package clib.presentation.components.textfield
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -9,11 +10,15 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -39,10 +44,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
+import clib.data.type.primitives.string.stringResource
 import clib.data.type.state.timePickerStateToTime
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
-import clib.presentation.components.dropdown.list.ListDropdown
 import clib.presentation.components.textfield.model.TextField
+import clib.presentation.navigation.NavigationAction
+import klib.data.type.primitives.string.emptyIf
+import klib.data.type.primitives.string.takeUnlessEmpty
 import klib.data.type.primitives.time.now
 import klib.data.type.primitives.time.parseOrNull
 import klib.data.type.primitives.time.toEpochMilliseconds
@@ -55,9 +63,11 @@ import kotlinx.datetime.TimeZone
 @Composable
 public fun AdvancedTextField(
     modifier: Modifier = Modifier,
-    iconModifier: Modifier = Modifier.padding(horizontal = 4.dp),
     value: String = "",
     onValueChange: (String) -> Unit = {},
+    isError: Boolean = false,
+    showValue: Boolean = true,
+    onShowValueChange: ((Boolean) -> Unit)? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -65,10 +75,39 @@ public fun AdvancedTextField(
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
+    showIcon: (@Composable (action: () -> Unit) -> Unit)? = { action ->
+        Icon(
+            if (showValue) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+            null,
+            Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
+            LocalContentColor.current.orErrorColor(isError),
+        )
+    },
+    timeIcon: @Composable (action: () -> Unit) -> Unit = { action ->
+        Icon(
+            Icons.Default.DateRange,
+            null,
+            Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
+        )
+    },
+    enumIcon: @Composable (action: () -> Unit) -> Unit = { action ->
+        Icon(
+            Icons.Filled.ArrowDropDown,
+            null,
+            Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
+        )
+    },
+    clearIcon: @Composable (action: () -> Unit) -> Unit = { action ->
+        Icon(
+            Icons.Default.Close,
+            null,
+            Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
+            MaterialTheme.colorScheme.error,
+        )
+    },
     prefix: @Composable ((isError: Boolean) -> Unit)? = null,
     suffix: @Composable ((isError: Boolean) -> Unit)? = null,
     supportingText: @Composable ((isError: Boolean) -> Unit)? = null,
-    isError: Boolean = false,
     visualTransformation: VisualTransformation? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -86,8 +125,6 @@ public fun AdvancedTextField(
     validator: Validator? = null,
     onValidation: @Composable (List<String>) -> String = { value -> value.joinToString(", ") },
     showValidationMessage: Boolean = true,
-    showValue: Boolean = true,
-    onShowValueChange: ((Boolean) -> Unit)? = null
 ) {
     val isTime = when (type) {
         TextField.LocalTime, TextField.LocalDate, TextField.LocalDateTime -> true
@@ -95,9 +132,9 @@ public fun AdvancedTextField(
     }
     val isEnum = type is TextField.Enum
 
-    val requireValidation = !(readOnly || isTime || isEnum || validator == null)
+    val skipValidation = validator == null || readOnly || isTime || isEnum
 
-    val validationMessages = if (requireValidation) validator.validate(value) else emptyList()
+    val validationMessages = if (skipValidation) emptyList() else validator.validate(value)
 
     val isErrorWithValidation = isError || validationMessages.isNotEmpty()
 
@@ -111,28 +148,16 @@ public fun AdvancedTextField(
     val advancedLeadingIcon: (@Composable () -> Unit)? = leadingIcon?.let { { it.invoke(isErrorWithValidation) } }
 
     val clearIconButton: (@Composable () -> Unit)? = if (clearable && enabled && value.isNotBlank()) {
-        {
-            Icon(
-                Icons.Default.Close, null, iconModifier.clickable { onValueChange("") }, MaterialTheme.colorScheme.error,
-            )
-        }
+        { clearIcon { onValueChange("") } }
     }
     else null
 
-    val showIconButton: (@Composable (isError: Boolean) -> Unit)? = onShowValueChange?.let { osc ->
-        {
-            Icon(
-                if (showValue) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                null,
-                iconModifier.clickable { osc(!showValue) },
-                LocalContentColor.current.orErrorColor(it),
-            )
-        }
+    val showIconButton: (@Composable (isError: Boolean) -> Unit)? = onShowValueChange?.let {
+        { showIcon?.invoke { it(!showValue) } }
     }
 
     val timeIconButton: (@Composable () -> Unit)? = if (isTime && !readOnly) {
         var showTimePicker by remember { mutableStateOf(false) }
-
         if (showTimePicker) {
 
             var localDate: LocalDate? = null
@@ -176,27 +201,13 @@ public fun AdvancedTextField(
                 onCancel = { showTimePicker = false },
             )
         }
-        {
-            Icon(
-                Icons.Default.DateRange,
-                "Select date",
-                iconModifier.clickable(onClick = { showTimePicker = !showTimePicker }),
-            )
-
-        }
+        { timeIcon { showTimePicker = !showTimePicker } }
     }
     else null
 
-    var showEnumDropdown by remember { mutableStateOf(false) }
-
+    var showEnumPicker by remember { mutableStateOf(false) }
     val enumIconButton: (@Composable () -> Unit)? = if (isEnum && !readOnly) {
-        {
-            Icon(
-                Icons.Filled.ArrowDropDown,
-                null,
-                iconModifier.clickable(onClick = { showEnumDropdown = !showEnumDropdown }),
-            )
-        }
+        { enumIcon { showEnumPicker = !showEnumPicker } }
     }
     else null
 
@@ -223,7 +234,7 @@ public fun AdvancedTextField(
     val advancedVisualTransformation = visualTransformation ?: if (showValue) VisualTransformation.None
     else PasswordVisualTransformation()
 
-    val textField: @Composable () -> Unit = if (outlined) {
+    var textField: @Composable () -> Unit = if (outlined) {
         {
             OutlinedTextField(
                 value,
@@ -282,26 +293,38 @@ public fun AdvancedTextField(
         }
     }
 
-
     if (isEnum)
-        return ListDropdown(
-            type.values,
-            textField,
-            onValueChange,
-            showEnumDropdown,
-            { showEnumDropdown = false },
-        )
-
-    var message: String? = underlineMessage
-
-    val vm = onValidation(validationMessages)
-    if (vm.isNotEmpty() && showValidationMessage)
-        message += message.orEmpty() + vm
-
-    message?.let {
-        Column(Modifier.wrapContentSize()) {
-            textField()
-            Text(it, color = if (isErrorWithValidation) MaterialTheme.colorScheme.error else Color.Unspecified)
+        textField = {
+            Box {
+                textField()
+                DropdownMenu(expanded = showEnumPicker, onDismissRequest = { showEnumPicker = false }) {
+                    type.values.forEach {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = it,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                            },
+                            onClick = {
+                                onValueChange(it)
+                                showEnumPicker = false
+                            },
+                        )
+                    }
+                }
+            }
         }
-    } ?: textField()
+
+    (underlineMessage.orEmpty() + onValidation(validationMessages).emptyIf { showValidationMessage })
+        .takeUnlessEmpty()?.let {
+            textField = {
+                Column(Modifier.wrapContentSize()) {
+                    textField()
+                    Text(it, color = if (isErrorWithValidation) MaterialTheme.colorScheme.error else Color.Unspecified)
+                }
+            }
+        }
+
+    textField()
 }

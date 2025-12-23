@@ -23,7 +23,7 @@ import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.BluetoothConnected
 import androidx.compose.material.icons.filled.BrowseGallery
-import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.CameraEnhance
 import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.DensityLarge
@@ -58,7 +58,7 @@ import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.BluetoothConnected
 import androidx.compose.material.icons.outlined.BrowseGallery
-import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.CameraEnhance
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.DynamicForm
@@ -761,8 +761,8 @@ public fun SettingsMainScreen(
         SettingsSwitch(
             title = stringResource(Res.string.camera),
             value = Permission.CAMERA,
-            trueIcon = Icons.Filled.CameraAlt,
-            falseIcon = Icons.Outlined.CameraAlt,
+            trueIcon = Icons.Filled.CameraEnhance,
+            falseIcon = Icons.Outlined.CameraEnhance,
             permissions = permissions,
             onCheckedChange = onPermissionChange,
         )
