@@ -48,6 +48,7 @@ import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.textfield.AdvancedTextField
 import clib.presentation.icons.Keycloak
+import clib.presentation.icons.X
 import clib.presentation.navigation.NavigationAction
 import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
@@ -64,7 +65,6 @@ import compose.icons.simpleicons.Microsoftazure
 import compose.icons.simpleicons.Slack
 import compose.icons.simpleicons.Spotify
 import compose.icons.simpleicons.Twitch
-import compose.icons.simpleicons.Twitter
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.google
 import compose_app.generated.resources.apple
@@ -270,7 +270,7 @@ private fun SupabaseOAuthProvider.imageVector() = when (this) {
     SupabaseOAuthProvider.GITHUB -> SimpleIcons.Github
     SupabaseOAuthProvider.GITLAB -> SimpleIcons.Gitlab
     SupabaseOAuthProvider.BITBUCKET -> SimpleIcons.Bitbucket
-    SupabaseOAuthProvider.TWITTER -> SimpleIcons.Twitter
+    SupabaseOAuthProvider.TWITTER -> Icons.Default.X
     SupabaseOAuthProvider.DISCORD -> SimpleIcons.Discord
     SupabaseOAuthProvider.SLACK -> SimpleIcons.Slack
     SupabaseOAuthProvider.SPOTIFY -> SimpleIcons.Spotify
