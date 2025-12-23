@@ -40,7 +40,8 @@ script:
                 implementation(libs.bundles("store"))
                 implementation(libs.bundles("connectivity.kotlin.multiplatform"))
                 // implementation(libs.bundles("oidc"))
-                implementation(libs.bundles("kmpauth"))
+                implementation(libs.bundles("kmauth.kotlin.multiplatform")) // uses open-source supabase instead of firebase
+                // implementation(libs.bundles("kmpauth")) // firebase doesn't support web
                 implementation(libs("ktor")["client.core"])
                 implementation(libs("ktor")["client.contentNegotiation"])
                 implementation(libs("ktor")["client.auth"])

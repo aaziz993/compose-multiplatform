@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.filled.Lock
@@ -63,10 +65,13 @@ public fun LoginScreen(
     modifier = modifier,
     contentAlignment = Alignment.Center,
 ) {
+    val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .fillMaxHeight(),
+            .fillMaxHeight()
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.CenterHorizontally,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(

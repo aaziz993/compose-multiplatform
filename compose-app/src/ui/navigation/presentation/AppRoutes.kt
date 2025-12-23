@@ -325,13 +325,12 @@ public data object Login : KoinRoute<Login>(), NavRoute {
         route: Login,
         sharedTransitionScope: SharedTransitionScope,
     ) {
-        val scrollState = rememberScrollState()
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val router = currentRouter()
 
         LoginScreen(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp).verticalScroll(scrollState),
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
