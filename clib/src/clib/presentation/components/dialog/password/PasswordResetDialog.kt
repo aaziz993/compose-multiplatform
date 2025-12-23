@@ -33,7 +33,7 @@ import klib.data.validator.Validator
 import clib.presentation.components.dialog.password.model.PasswordResetDialog
 import clib.presentation.components.dialog.password.model.PasswordResetDialogState
 import clib.presentation.components.dialog.password.model.rememberPasswordResetDialogState
-import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.components.textfield.TextField
 
 @Composable
 public fun PasswordResetDialog(
@@ -93,7 +93,7 @@ public fun PasswordResetDialog(
                     onValueChange: (String) -> Unit
                 ) -> Unit =
                     { label, focusRequesterIndex, isError, value, onValueChange ->
-                        AdvancedTextField(
+                        TextField(
                             Modifier.focusRequester(focusRequesters[focusRequesterIndex]).fillMaxWidth(),
                             value = value,
                             onValueChange = onValueChange,

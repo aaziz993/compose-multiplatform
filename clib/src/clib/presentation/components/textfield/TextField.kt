@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
 import clib.data.type.state.timePickerStateToTime
 import clib.presentation.components.dropdown.list.ListDropdown
-import clib.presentation.components.picker.DateTimePickerDialog
+import clib.presentation.components.picker.TimePickerDialog
 import clib.presentation.components.textfield.model.TextField
 import klib.data.type.primitives.string.emptyIf
 import klib.data.type.primitives.string.takeUnlessEmpty
@@ -57,7 +57,7 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 
 @Composable
-public fun AdvancedTextField(
+public fun TextField(
     modifier: Modifier = Modifier,
     value: String = "",
     onValueChange: (String) -> Unit = {},
@@ -186,7 +186,7 @@ public fun AdvancedTextField(
 
             val timePickerState = localTime?.let { rememberTimePickerState(it.hour, it.minute, true) }
 
-            DateTimePickerDialog(
+            TimePickerDialog(
                 timePickerState = timePickerState,
                 datePickerState = datePickerState,
                 onDismissRequest = { showTimePicker = false },

@@ -31,7 +31,7 @@ import androidx.compose.ui.window.DialogProperties
 
 @Suppress("ComposeParameterOrder")
 @Composable
-public fun DateTimePickerDialog(
+public fun TimePickerDialog(
     datePickerState: DatePickerState? = null,
     timePickerState: TimePickerState? = null,
     onDismissRequest: () -> Unit,

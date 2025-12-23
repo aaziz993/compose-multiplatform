@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
-import clib.presentation.components.picker.DateTimePickerDialog
+import clib.presentation.components.picker.TimePickerDialog
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
@@ -33,7 +33,7 @@ import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 
 @Suppress("ComposeParameterOrder")
 @Composable
-public fun SettingsDateTimePickerDialog(
+public fun SettingsTimePickerDialog(
     title: @Composable () -> Unit,
     datePickerState: DatePickerState? = null,
     timePickerState: TimePickerState? = null,
@@ -67,7 +67,7 @@ public fun SettingsDateTimePickerDialog(
 ) {
     var dialog by remember { mutableStateOf(false) }
     if (dialog)
-        DateTimePickerDialog(
+        TimePickerDialog(
             datePickerState,
             timePickerState,
             {

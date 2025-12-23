@@ -57,7 +57,7 @@ import clib.presentation.components.country.CountryCodePickerTextField
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.loading.CenterLoadingIndicator
-import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.components.textfield.TextField
 import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.events.alert.GlobalAlertEventController
 import clib.presentation.events.alert.model.AlertEvent
@@ -419,7 +419,7 @@ private fun ProfileAttributeField(
     imageVector: ImageVector,
     validator: Validator?,
     onValidation: (Boolean) -> Unit,
-): Unit = AdvancedTextField(
+): Unit = TextField(
     modifier = Modifier.fillMaxWidth().padding(8.dp).focusRequester(focusRequester),
     value = value,
     onValueChange = onValueChange,

@@ -7,11 +7,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
@@ -36,8 +39,8 @@ import clib.generated.resources.Res
 import clib.generated.resources.case_sensitive
 import clib.generated.resources.regex
 import clib.generated.resources.whole_word
-import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
-import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.components.picker.TimePickerDialog
+import clib.presentation.components.textfield.TextField
 import clib.presentation.components.textfield.model.TextField
 import clib.presentation.components.textfield.search.model.SearchFieldCompare
 import clib.presentation.components.textfield.search.model.SearchFieldState
@@ -59,7 +62,7 @@ import kotlinx.datetime.TimeZone
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-public fun AdvancedSearchField(
+public fun SearchField(
     state: SearchFieldState,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
@@ -169,7 +172,7 @@ public fun AdvancedSearchField(
         SearchFieldCompare.GREATER_THAN_EQUAL,
         SearchFieldCompare.BETWEEN,
     )
-): Unit = AdvancedTextField(
+): Unit = TextField(
     modifier,
     state.query,
     { state.query = it },
@@ -188,9 +191,9 @@ public fun AdvancedSearchField(
         val isEnum = type is TextField.Enum
 
         if (state.compareMatch == SearchFieldCompare.BETWEEN && isTime) {
-            var showTemporalPicker by remember { mutableStateOf(false) }
+            var showTimePicker by remember { mutableStateOf(false) }
 
-            if (showTemporalPicker) {
+            if (showTimePicker) {
 
                 var localDate: LocalDate? = null
                 var localTime: LocalTime? = null
@@ -222,20 +225,43 @@ public fun AdvancedSearchField(
 
                 val timePickerState = localTime?.let { rememberTimePickerState(it.hour, it.minute, true) }
 
-                AdvancedTimePickerDialog(
-                    onConfirm = { _, _ ->
-                        if (state.query.isNotEmpty()) {
-                            timePickerStateToTime(
-                                datePickerState, timePickerState,
-                            )?.let { state.query = "${state.query.substringBefore("..")}..$it" }
-                        }
-                    },
+                TimePickerDialog(
                     timePickerState = timePickerState,
                     datePickerState = datePickerState,
-                    onCancel = { showTemporalPicker = false },
+                    onDismissRequest = { showTimePicker = false },
+                    confirmButton = {
+                        IconButton(
+                            onClick = {
+                                if (state.query.isNotEmpty()) {
+                                    timePickerStateToTime(
+                                        datePickerState, timePickerState,
+                                    )?.let { state.query = "${state.query.substringBefore("..")}..$it" }
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = null,
+                                tint = Color.Green,
+                            )
+                        }
+                    },
+                    dismissButton = {
+                        IconButton(
+                            onClick = {
+                                showTimePicker = false
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error,
+                            )
+                        }
+                    },
                 )
             }
-            timeIcon { showTemporalPicker = !showTemporalPicker }
+            timeIcon { showTimePicker = !showTimePicker }
         }
 
         if (!(isTime || isEnum)) {

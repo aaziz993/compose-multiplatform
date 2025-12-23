@@ -19,7 +19,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.components.textfield.TextField
 import clib.presentation.components.textfield.model.TextField
 import compose.icons.EvaIcons
 import compose.icons.evaicons.Outline
@@ -57,7 +57,7 @@ internal fun <T : Any> DataRow(
         val property = properties[index]
 
         when (val textField = TextField(property.descriptor)) {
-            TextField.Text -> AdvancedTextField(
+            TextField.Text -> TextField(
                 Modifier.weight(1f).padding(4.dp),
                 value = value,
                 onValueChange = { onValueChange(item.id, index, it) },
@@ -72,7 +72,7 @@ internal fun <T : Any> DataRow(
                 showValidationMessage = false,
             )
 
-            else -> AdvancedTextField(
+            else -> TextField(
                 Modifier.weight(1f).padding(4.dp),
                 value = value,
                 onValueChange = { onValueChange(item.id, index, it) },

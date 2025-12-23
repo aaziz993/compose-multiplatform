@@ -3,7 +3,7 @@ package clib.presentation.components.dialog.password
 import clib.presentation.components.dialog.password.model.PasswordDialog
 import clib.presentation.components.dialog.password.model.PasswordDialogState
 import clib.presentation.components.dialog.password.model.rememberPasswordDialogState
-import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.components.textfield.TextField
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -75,7 +75,7 @@ public fun PasswordDialog(
                 Text(it, color = MaterialTheme.colorScheme.error)
             }
 
-            AdvancedTextField(
+            TextField(
                 Modifier.focusRequester(focusRequesters[0]).fillMaxWidth(),
                 value = state.password,
                 onValueChange = { state.password = it },

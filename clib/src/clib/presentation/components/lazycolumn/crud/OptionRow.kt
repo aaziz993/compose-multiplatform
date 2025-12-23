@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import clib.presentation.components.column.expandable.ExpandableSection
-import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.components.textfield.TextField
 import klib.data.validator.Validator
 
 @Composable
@@ -35,7 +35,7 @@ internal fun OptionRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(localization.liveSearch)
             if (state.isLiveSearch) {
-                AdvancedTextField(
+                TextField(
                     value = state.liveSearchDebounce,
                     onValueChange = { state.liveSearchDebounce = it },
                     validator = Validator.kotlinDuration(),

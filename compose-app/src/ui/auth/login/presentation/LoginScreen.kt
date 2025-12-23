@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
-import clib.presentation.components.textfield.AdvancedTextField
+import clib.presentation.components.textfield.TextField
 import clib.presentation.icons.Keycloak
 import clib.presentation.icons.X
 import clib.presentation.navigation.NavigationAction
@@ -124,7 +124,7 @@ public fun LoginScreen(
 
         val leadingIconColor = LocalContentColor.current.orErrorColor(state.error != null)
 
-        AdvancedTextField(
+        TextField(
             modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
             value = state.username,
             onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
@@ -140,7 +140,7 @@ public fun LoginScreen(
             outlined = true,
         )
 
-        AdvancedTextField(
+        TextField(
             modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
             value = state.password,
             onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },

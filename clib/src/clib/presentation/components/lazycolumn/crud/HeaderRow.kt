@@ -24,7 +24,7 @@ import clib.data.crud.model.unselected
 import clib.presentation.components.lazycolumn.crud.model.CRUDLazyColumnLocalization
 import clib.presentation.components.lazycolumn.crud.model.CRUDLazyColumnState
 import clib.presentation.components.textfield.model.TextField
-import clib.presentation.components.textfield.search.AdvancedSearchField
+import clib.presentation.components.textfield.search.SearchField
 import clib.presentation.components.textfield.search.model.SearchFieldCompare
 import compose.icons.EvaIcons
 import compose.icons.LineAwesomeIcons
@@ -112,7 +112,7 @@ internal fun <T : Any> HeaderRow(
 
                     if (state.showSearch) {
                         when (val textField = TextField(property.descriptor)) {
-                            TextField.Text -> AdvancedSearchField(
+                            TextField.Text -> SearchField(
                                 searchFieldState,
                                 Modifier.padding(start = searchLeftPadding, end = searchRightPadding).fillMaxWidth(),
                                 placeholder = {
@@ -130,7 +130,7 @@ internal fun <T : Any> HeaderRow(
                                 compareMatchers = listOf(SearchFieldCompare.EQUALS, SearchFieldCompare.NOT_EQUALS),
                             )
 
-                            else -> AdvancedSearchField(
+                            else -> SearchField(
                                 searchFieldState,
                                 Modifier.padding(start = searchLeftPadding, end = searchRightPadding).fillMaxWidth(),
                                 placeholder = {

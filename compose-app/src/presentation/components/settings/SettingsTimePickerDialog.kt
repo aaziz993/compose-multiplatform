@@ -30,7 +30,7 @@ import androidx.compose.ui.window.DialogProperties
 import clib.data.type.primitives.string.stringResource
 import clib.data.type.state.localDate
 import clib.data.type.state.localTime
-import clib.presentation.components.settings.SettingsDateTimePickerDialog
+import clib.presentation.components.settings.SettingsTimePickerDialog
 import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
@@ -43,7 +43,7 @@ import kotlinx.datetime.LocalTime
 
 @Suppress("ComposeParameterOrder")
 @Composable
-public fun SettingsDateTimePickerDialog(
+public fun SettingsTimePickerDialog(
     title: String,
     date: LocalDate? = null,
     time: LocalTime? = null,
@@ -72,7 +72,7 @@ public fun SettingsDateTimePickerDialog(
 ) {
     val dateState = date?.let { rememberDatePickerState(initialSelectedDateMillis = it.toEpochMilliseconds()) }
     val timeState = time?.let { rememberTimePickerState(it.hour, it.minute, true) }
-    SettingsDateTimePickerDialog(
+    SettingsTimePickerDialog(
         {
             Text(
                 text = title,

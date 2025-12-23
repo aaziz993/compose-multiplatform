@@ -177,7 +177,7 @@ import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSlider
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
-import presentation.components.settings.SettingsDateTimePickerDialog
+import presentation.components.settings.SettingsTimePickerDialog
 import presentation.connectivity.filledImageVector
 import presentation.connectivity.outlinedImageVector
 import presentation.theme.model.isDarkIcon
@@ -485,7 +485,7 @@ public fun SettingsMainScreen(
         }
 
         if (theme.mode == ThemeMode.ADAPTIVE) {
-            SettingsDateTimePickerDialog(
+            SettingsTimePickerDialog(
                 title = stringResource(Res.string.light),
                 time = theme.lightTime,
                 enabled = true,
@@ -508,7 +508,7 @@ public fun SettingsMainScreen(
                 }
             }
 
-            SettingsDateTimePickerDialog(
+            SettingsTimePickerDialog(
                 title = stringResource(Res.string.dark),
                 time = theme.darkTime,
                 enabled = true,
