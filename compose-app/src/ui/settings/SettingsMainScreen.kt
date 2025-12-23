@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.BluetoothConnected
-import androidx.compose.material.icons.filled.BrowseGallery
 import androidx.compose.material.icons.filled.CameraEnhance
 import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.Contrast
@@ -59,7 +58,6 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.AutoAwesomeMotion
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.BluetoothConnected
-import androidx.compose.material.icons.outlined.BrowseGallery
 import androidx.compose.material.icons.outlined.CameraEnhance
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Contrast
@@ -179,7 +177,7 @@ import presentation.components.settings.SettingsMenuLink
 import presentation.components.settings.SettingsSlider
 import presentation.components.settings.SettingsSliderFinished
 import presentation.components.settings.SettingsSwitch
-import presentation.components.settings.SettingsTimePickerDialog
+import presentation.components.settings.SettingsDateTimePickerDialog
 import presentation.connectivity.filledImageVector
 import presentation.connectivity.outlinedImageVector
 import presentation.theme.model.isDarkIcon
@@ -487,13 +485,13 @@ public fun SettingsMainScreen(
         }
 
         if (theme.mode == ThemeMode.ADAPTIVE) {
-            SettingsTimePickerDialog(
+            SettingsDateTimePickerDialog(
                 title = stringResource(Res.string.light),
-                value = theme.lightTime,
+                time = theme.lightTime,
                 enabled = true,
                 subtitle = { Text(theme.lightTime.toString()) },
-            ) { value ->
-                if (value < theme.darkTime) {
+            ) { _, value ->
+                if (value!! < theme.darkTime) {
                     onThemeChange(theme.copy(lightTime = value))
                     false
                 }
@@ -510,14 +508,14 @@ public fun SettingsMainScreen(
                 }
             }
 
-            SettingsTimePickerDialog(
+            SettingsDateTimePickerDialog(
                 title = stringResource(Res.string.dark),
-                value = theme.darkTime,
+                time = theme.darkTime,
                 enabled = true,
                 subtitle = { Text(theme.darkTime.toString()) },
-            ) { value ->
+            ) { _, value ->
                 // Dark time should be greater than light time.
-                if (value > theme.lightTime) {
+                if (value!! > theme.lightTime) {
                     onThemeChange(theme.copy(darkTime = value))
                     false
                 }

@@ -84,7 +84,6 @@ import klib.data.load.success
 import klib.data.location.Phone
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
-import klib.data.location.toPhone
 import klib.data.location.toPhoneOrNull
 import klib.data.type.collections.all
 import klib.data.validator.Validator
@@ -324,7 +323,7 @@ private fun ProfileScreenContent(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 selectedCountry = selectedCountry,
-                enabled = state.edit,
+                readOnly = state.edit,
                 label = { Text(stringResource(Res.string.phone)) },
                 picker = CountryPicker(
                     headerTitle = stringResource(Res.string.country),

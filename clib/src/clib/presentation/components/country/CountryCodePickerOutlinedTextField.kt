@@ -5,8 +5,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,13 +28,14 @@ import klib.data.location.country.getCountries
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-public fun CountryCodePickerTextField(
+public fun CountryCodePickerOutlinedTextField(
     value: String,
     onValueChange: (countryCode: String, value: String, isValid: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     selectedCountry: Country = Country.getCountries().first(),
     countries: List<Country> = Country.getCountries().toList(),
     enabled: Boolean = true,
+    readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
@@ -69,7 +70,7 @@ public fun CountryCodePickerTextField(
         )
     }
 
-    TextField(
+    OutlinedTextField(
         value = value,
         onValueChange = {
             isNumberValid = validatePhoneNumber(
@@ -78,6 +79,7 @@ public fun CountryCodePickerTextField(
             onValueChange(country.dial.orEmpty(), it, isNumberValid)
         },
         modifier = modifier,
+        readOnly = readOnly,
         textStyle = textStyle,
         singleLine = true,
         shape = shape,
@@ -115,10 +117,10 @@ public fun CountryCodePickerTextField(
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewCountryCodePickerTextField() {
+private fun PreviewCountryCodePickerOutlinedTextField() {
     var value by remember { mutableStateOf("") }
 
-    CountryCodePickerTextField(
+    CountryCodePickerOutlinedTextField(
         value = value,
         onValueChange = { _, number, _ -> value = number },
     )
