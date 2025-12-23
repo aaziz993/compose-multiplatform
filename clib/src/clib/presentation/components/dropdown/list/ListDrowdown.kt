@@ -20,7 +20,6 @@ import androidx.compose.ui.window.PopupProperties
 @Composable
 public fun ListDropdown(
     values: List<String>,
-    text: @Composable () -> Unit,
     onValueChange: (String) -> Unit,
     expanded: Boolean,
     onDismissRequest: () -> Unit,
@@ -33,10 +32,10 @@ public fun ListDropdown(
     tonalElevation: Dp = MenuDefaults.TonalElevation,
     shadowElevation: Dp = MenuDefaults.ShadowElevation,
     border: BorderStroke? = null,
+    content: @Composable () -> Unit,
 ) {
     Box {
-        text()
-
+        content()
         DropdownMenu(
             expanded,
             onDismissRequest,

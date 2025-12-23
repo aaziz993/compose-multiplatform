@@ -17,7 +17,6 @@ import androidx.compose.ui.window.PopupProperties
 @Composable
 public fun <T : Enum<T>> EnumDropdown(
     values: () -> Array<T>,
-    text: @Composable () -> Unit,
     onValueChange: (String) -> Unit,
     expanded: Boolean,
     onDismissRequest: () -> Unit,
@@ -30,9 +29,9 @@ public fun <T : Enum<T>> EnumDropdown(
     tonalElevation: Dp = MenuDefaults.TonalElevation,
     shadowElevation: Dp = MenuDefaults.ShadowElevation,
     border: BorderStroke? = null,
+    content: @Composable () -> Unit,
 ): Unit = ListDropdown(
     values().map(Any::toString),
-    text,
     onValueChange,
     expanded,
     onDismissRequest,
@@ -45,11 +44,11 @@ public fun <T : Enum<T>> EnumDropdown(
     tonalElevation,
     shadowElevation,
     border,
+    content,
 )
 
 @Composable
 public inline fun <reified T : Enum<T>> EnumDropdown(
-    noinline text: @Composable () -> Unit,
     noinline onValueChange: (String) -> Unit,
     expanded: Boolean,
     noinline onDismissRequest: () -> Unit,
@@ -62,9 +61,9 @@ public inline fun <reified T : Enum<T>> EnumDropdown(
     tonalElevation: Dp = MenuDefaults.TonalElevation,
     shadowElevation: Dp = MenuDefaults.ShadowElevation,
     border: BorderStroke? = null,
+    noinline content: @Composable () -> Unit,
 ): Unit = EnumDropdown(
     { enumValues<T>() },
-    text,
     onValueChange,
     expanded,
     onDismissRequest,
@@ -77,4 +76,5 @@ public inline fun <reified T : Enum<T>> EnumDropdown(
     tonalElevation,
     shadowElevation,
     border,
+    content,
 )

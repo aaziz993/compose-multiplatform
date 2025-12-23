@@ -2,7 +2,6 @@ package clib.presentation.components.textfield
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -10,15 +9,11 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -44,11 +39,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
-import clib.data.type.primitives.string.stringResource
 import clib.data.type.state.timePickerStateToTime
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
+import clib.presentation.components.dropdown.list.ListDropdown
 import clib.presentation.components.textfield.model.TextField
-import clib.presentation.navigation.NavigationAction
 import klib.data.type.primitives.string.emptyIf
 import klib.data.type.primitives.string.takeUnlessEmpty
 import klib.data.type.primitives.time.now
@@ -205,9 +199,9 @@ public fun AdvancedTextField(
     }
     else null
 
-    var showEnumPicker by remember { mutableStateOf(false) }
+    var showEnumDropdown by remember { mutableStateOf(false) }
     val enumIconButton: (@Composable () -> Unit)? = if (isEnum && !readOnly) {
-        { enumIcon { showEnumPicker = !showEnumPicker } }
+        { enumIcon { showEnumDropdown = !showEnumDropdown } }
     }
     else null
 
@@ -234,7 +228,7 @@ public fun AdvancedTextField(
     val advancedVisualTransformation = visualTransformation ?: if (showValue) VisualTransformation.None
     else PasswordVisualTransformation()
 
-    var textField: @Composable () -> Unit = if (outlined) {
+    val textField: @Composable () -> Unit = if (outlined) {
         {
             OutlinedTextField(
                 value,
@@ -294,37 +288,19 @@ public fun AdvancedTextField(
     }
 
     if (isEnum)
-        textField = {
-            Box {
-                textField()
-                DropdownMenu(expanded = showEnumPicker, onDismissRequest = { showEnumPicker = false }) {
-                    type.values.forEach {
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = it,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                )
-                            },
-                            onClick = {
-                                onValueChange(it)
-                                showEnumPicker = false
-                            },
-                        )
-                    }
-                }
-            }
-        }
+        return ListDropdown(
+            values = type.values,
+            onValueChange = onValueChange,
+            expanded = showEnumDropdown,
+            onDismissRequest = { showEnumDropdown = false },
+            content = textField,
+        )
 
     (underlineMessage.orEmpty() + onValidation(validationMessages).emptyIf { showValidationMessage })
         .takeUnlessEmpty()?.let {
-            textField = {
-                Column(Modifier.wrapContentSize()) {
-                    textField()
-                    Text(it, color = if (isErrorWithValidation) MaterialTheme.colorScheme.error else Color.Unspecified)
-                }
+            Column(Modifier.wrapContentSize()) {
+                textField()
+                Text(it, color = if (isErrorWithValidation) MaterialTheme.colorScheme.error else Color.Unspecified)
             }
-        }
-
-    textField()
+        } ?: textField()
 }
