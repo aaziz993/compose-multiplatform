@@ -10,11 +10,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +42,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
 import clib.data.type.state.timePickerStateToTime
-import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 import clib.presentation.components.dropdown.list.ListDropdown
 import clib.presentation.components.picker.DateTimePickerDialog
 import clib.presentation.components.textfield.model.TextField
@@ -190,12 +191,34 @@ public fun AdvancedTextField(
                 datePickerState = datePickerState,
                 onDismissRequest = { showTimePicker = false },
                 confirmButton = {
-
-                    onValueChange(
-                        timePickerStateToTime(datePickerState, timePickerState)?.toString().orEmpty(),
-                    )
+                    IconButton(
+                        onClick = {
+                            onValueChange(
+                                timePickerStateToTime(datePickerState, timePickerState)?.toString().orEmpty(),
+                            )
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            tint = Color.Green,
+                        )
+                    }
                 },
                 title = {},
+                dismissButton = {
+                    IconButton(
+                        onClick = {
+                            showTimePicker = false
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                },
             )
         }
         { timeIcon { showTimePicker = !showTimePicker } }

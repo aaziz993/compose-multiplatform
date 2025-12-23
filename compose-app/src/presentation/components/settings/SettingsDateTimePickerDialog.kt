@@ -56,13 +56,9 @@ public fun SettingsDateTimePickerDialog(
     tonalElevation: Dp = SettingsTileDefaults.Elevation,
     shadowElevation: Dp = SettingsTileDefaults.Elevation,
     semanticProperties: (SemanticsPropertyReceiver.() -> Unit) = {},
-    confirmButton: @Composable () -> Unit = {
-        Text("Confirm")
-    },
     dialogModifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(),
     showModeToggle: Boolean = true,
-    dismissButton: (@Composable () -> Unit)? = null,
     shape: Shape = TimePickerDialogDefaults.shape,
     containerColor: Color = TimePickerDialogDefaults.containerColor,
     dateFormatter: DatePickerFormatter = DatePickerDefaults.dateFormatter(),
