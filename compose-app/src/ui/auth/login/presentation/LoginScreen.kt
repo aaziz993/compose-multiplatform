@@ -208,6 +208,7 @@ private fun LoginProviders(
     config: AuthConfig,
     onAction: (LoginAction) -> Unit,
 ) = FlowRow(
+    horizontalArrangement = Arrangement.Center,
     verticalArrangement = Arrangement.Center,
 ) {
     config.google?.let {
@@ -280,7 +281,6 @@ private fun SupabaseOAuthProvider.imageVector() = when (this) {
     SupabaseOAuthProvider.FACEBOOK -> SimpleIcons.Facebook
     SupabaseOAuthProvider.AZURE -> SimpleIcons.Microsoftazure
     SupabaseOAuthProvider.APPLE -> SimpleIcons.Apple
-    else -> error("")
 }
 
 @Preview
