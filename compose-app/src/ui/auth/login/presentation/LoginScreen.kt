@@ -65,7 +65,7 @@ public fun LoginScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
+            .fillMaxWidth(0.9f)
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

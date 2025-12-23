@@ -40,7 +40,7 @@ script:
                 implementation(libs.bundles("store"))
                 implementation(libs.bundles("connectivity.kotlin.multiplatform"))
                 // implementation(libs.bundles("oidc"))
-                // implementation(libs.bundles("kmpauth"))
+                implementation(libs.bundles("kmpauth"))
                 implementation(libs("ktor")["client.core"])
                 implementation(libs("ktor")["client.contentNegotiation"])
                 implementation(libs("ktor")["client.auth"])
