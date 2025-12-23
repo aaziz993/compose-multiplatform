@@ -221,6 +221,10 @@ private fun ProfileScreenContent(
             List(7 + state.user.attributes.size) { FocusRequester() }
         }
 
+        LaunchedEffect(Unit) {
+            focusRequesters[0].requestFocus()
+        }
+
         LaunchedEffect(state.edit) {
             if (state.edit) focusRequesters[0].requestFocus()
         }
