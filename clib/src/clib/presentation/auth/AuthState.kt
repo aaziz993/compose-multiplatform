@@ -19,7 +19,7 @@ public class AuthState(initialValue: Auth = Auth()) {
 
     public var value: Auth by mutableStateOf(initialValue)
 
-    public fun setUser(user: User?) {
+    public fun setUser(user: User) {
         value = value.copy(user = user)
     }
 

@@ -17,3 +17,5 @@ auth:
   supabaseOAuths:
     - provider: GITHUB
       config: { }
+    - provider: AZURE
+      config: { }

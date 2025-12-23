@@ -1,6 +1,5 @@
 package ui.auth.login.presentation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -38,10 +36,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -50,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
-import clib.generated.resources.apple
 import clib.presentation.components.textfield.AdvancedTextField
 import clib.presentation.icons.Facebook
 import clib.presentation.icons.Github
@@ -58,9 +53,22 @@ import clib.presentation.icons.Gitlab
 import clib.presentation.icons.Google
 import clib.presentation.icons.Twitter
 import clib.presentation.navigation.NavigationAction
-import com.sunildhiman90.kmauth.google.compose.GoogleSignInButton
 import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
+import compose.icons.SimpleIcons
+import compose.icons.simpleicons.Apple
+import compose.icons.simpleicons.Bitbucket
+import compose.icons.simpleicons.Discord
+import compose.icons.simpleicons.Facebook
+import compose.icons.simpleicons.Github
+import compose.icons.simpleicons.Gitlab
+import compose.icons.simpleicons.Google
+import compose.icons.simpleicons.Linkedin
+import compose.icons.simpleicons.Microsoftazure
+import compose.icons.simpleicons.Slack
+import compose.icons.simpleicons.Spotify
+import compose.icons.simpleicons.Twitch
+import compose.icons.simpleicons.Twitter
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
 import compose_app.generated.resources.password
@@ -68,10 +76,7 @@ import compose_app.generated.resources.remember
 import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
 import data.type.primitives.string.asStringResource
-import klib.data.auth.model.Auth
-import klib.data.auth.model.toUser
 import klib.data.config.auth.AuthConfig
-import org.jetbrains.compose.resources.painterResource
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Login
@@ -221,14 +226,8 @@ private fun LoginProviders(
             onClick = {
                 onAction(LoginAction.LoginApple)
             },
-            modifier = Modifier
-                .clip(CircleShape),
         ) {
-            Image(
-                painter = painterResource(clib.generated.resources.Res.drawable.apple),
-                contentDescription = "Apple",
-                contentScale = ContentScale.Fit,
-            )
+            Icon(SimpleIcons.Apple, "Apple")
         }
 
         config.supabaseDefaultAuths.forEach { supabase ->
@@ -260,20 +259,20 @@ private fun SupabaseDefaultAuthProvider.imageVector() = when (this) {
 }
 
 private fun SupabaseOAuthProvider.imageVector() = when (this) {
-    SupabaseOAuthProvider.GITHUB -> Icons.Default.Github
-    SupabaseOAuthProvider.GITLAB -> Icons.Default.Gitlab
-//    SupabaseOAuthProvider.BITBUCKET -> Icons.Default.Bitbucket
-    SupabaseOAuthProvider.TWITTER -> Icons.Default.Twitter
-//    SupabaseOAuthProvider.DISCORD -> Icons.Default.Discord
-//    SupabaseOAuthProvider.SLACK -> Icons.Default.Slack
-//    SupabaseOAuthProvider.SPOTIFY -> Icons.Default.Spotify
-//    SupabaseOAuthProvider.TWITCH -> Icons.Default.Twitch
-//    SupabaseOAuthProvider.LINKEDIN -> Icons.Default.Linkedin
-//    SupabaseOAuthProvider.KEYCLOAK -> Icons.Default.Keycloak
-    SupabaseOAuthProvider.GOOGLE -> Icons.Default.Google
-    SupabaseOAuthProvider.FACEBOOK -> Icons.Default.Facebook
-//    SupabaseOAuthProvider.AZURE -> Icons.Default.Azure
-//    SupabaseOAuthProvider.APPLE -> Icons.Default.Apple
+    SupabaseOAuthProvider.GITHUB -> SimpleIcons.Github
+    SupabaseOAuthProvider.GITLAB -> SimpleIcons.Gitlab
+    SupabaseOAuthProvider.BITBUCKET -> SimpleIcons.Bitbucket
+    SupabaseOAuthProvider.TWITTER -> SimpleIcons.Twitter
+    SupabaseOAuthProvider.DISCORD -> SimpleIcons.Discord
+    SupabaseOAuthProvider.SLACK -> SimpleIcons.Slack
+    SupabaseOAuthProvider.SPOTIFY -> SimpleIcons.Spotify
+    SupabaseOAuthProvider.TWITCH -> SimpleIcons.Twitch
+    SupabaseOAuthProvider.LINKEDIN -> SimpleIcons.Linkedin
+//    SupabaseOAuthProvider.KEYCLOAK -> SimpleIcons.Keycloak
+    SupabaseOAuthProvider.GOOGLE -> SimpleIcons.Google
+    SupabaseOAuthProvider.FACEBOOK -> SimpleIcons.Facebook
+    SupabaseOAuthProvider.AZURE -> SimpleIcons.Microsoftazure
+    SupabaseOAuthProvider.APPLE -> SimpleIcons.Apple
     else -> error("")
 }
 
