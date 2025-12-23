@@ -19,6 +19,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -68,6 +69,7 @@ public fun SettingsDateTimePickerDialog(
     datePickerColors: DatePickerColors = DatePickerDefaults.colors(),
     dateTitle: (@Composable () -> Unit)? = null,
     dateHeadline: (@Composable () -> Unit)? = null,
+    dateFocusRequester: FocusRequester? = null,
     timePickerColors: TimePickerColors = TimePickerDefaults.colors(),
     timePickerLayoutType: TimePickerLayoutType = TimePickerDefaults.layoutType(),
     onValueChanged: (LocalDate?, LocalTime?) -> Boolean,
@@ -124,6 +126,7 @@ public fun SettingsDateTimePickerDialog(
         datePickerColors,
         dateTitle,
         dateHeadline,
+        dateFocusRequester,
         timePickerColors,
         timePickerLayoutType,
     )

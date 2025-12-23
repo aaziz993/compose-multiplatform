@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 public fun CountryCodePicker(
     onCountrySelected: (Country) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     selectedCountry: Country = Country.getCountries().first(),
     countries: List<Country> = Country.getCountries().toList(),
     view: CountryView = CountryView(),
@@ -43,7 +44,7 @@ public fun CountryCodePicker(
     var isPickerOpen by remember { mutableStateOf(false) }
 
     Row(
-        modifier = modifier.clickable {
+        modifier = modifier.clickable(enabled = enabled) {
             isPickerOpen = true
         },
         horizontalArrangement = Arrangement.SpaceBetween,

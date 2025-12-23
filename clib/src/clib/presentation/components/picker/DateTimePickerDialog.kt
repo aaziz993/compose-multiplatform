@@ -1,5 +1,8 @@
 package clib.presentation.components.picker
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
@@ -19,7 +22,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.window.DialogProperties
@@ -42,6 +47,7 @@ public fun DateTimePickerDialog(
     datePickerColors: DatePickerColors = DatePickerDefaults.colors(),
     dateTitle: (@Composable () -> Unit)? = null,
     dateHeadline: (@Composable () -> Unit)? = null,
+    dateFocusRequester: FocusRequester? = null,
     timePickerColors: TimePickerColors = TimePickerDefaults.colors(),
     timePickerLayoutType: TimePickerLayoutType = TimePickerDefaults.layoutType(),
 ) {
@@ -52,7 +58,7 @@ public fun DateTimePickerDialog(
         title,
         modifier,
         properties,
-        if (showModeToggle) {
+        if (showModeToggle && timePickerState != null) {
             {
                 TimePickerDialogDefaults.DisplayModeToggle(
                     {
@@ -70,28 +76,38 @@ public fun DateTimePickerDialog(
         shape,
         containerColor,
     ) {
-        datePickerState?.let {
-            DatePicker(
-                state = it,
-                dateFormatter = dateFormatter,
-                colors = datePickerColors,
-                title = dateTitle,
-                headline = dateHeadline,
-                showModeToggle = showModeToggle,
-            )
-        }
-        timePickerState?.let {
-            when (displayMode) {
-                TimePickerDisplayMode.Picker -> TimePicker(
-                    state = it,
-                    colors = timePickerColors,
-                    layoutType = timePickerLayoutType,
+        Row(
+            Modifier.fillMaxWidth(),
+            Arrangement.SpaceAround,
+            Alignment.CenterVertically,
+        ) {
+            datePickerState?.let {
+                DatePicker(
+                    it,
+                    Modifier.weight(1f),
+                    dateFormatter,
+                    datePickerColors,
+                    dateTitle,
+                    dateHeadline,
+                    showModeToggle,
+                    dateFocusRequester,
                 )
+            }
+            timePickerState?.let {
+                when (displayMode) {
+                    TimePickerDisplayMode.Picker -> TimePicker(
+                        it,
+                        Modifier.weight(1f),
+                        timePickerColors,
+                        timePickerLayoutType,
+                    )
 
-                TimePickerDisplayMode.Input -> TimeInput(
-                    state = it,
-                    colors = timePickerColors,
-                )
+                    TimePickerDisplayMode.Input -> TimeInput(
+                        it,
+                        Modifier.weight(1f),
+                        timePickerColors,
+                    )
+                }
             }
         }
     }

@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
@@ -60,6 +61,7 @@ public fun SettingsDateTimePickerDialog(
     datePickerColors: DatePickerColors = DatePickerDefaults.colors(),
     dateTitle: (@Composable () -> Unit)? = null,
     dateHeadline: (@Composable () -> Unit)? = null,
+    dateFocusRequester: FocusRequester? = null,
     timePickerColors: TimePickerColors = TimePickerDefaults.colors(),
     timePickerLayoutType: TimePickerLayoutType = TimePickerDefaults.layoutType(),
 ) {
@@ -93,6 +95,7 @@ public fun SettingsDateTimePickerDialog(
             datePickerColors,
             dateTitle,
             dateHeadline,
+            dateFocusRequester,
             timePickerColors,
             timePickerLayoutType,
         )

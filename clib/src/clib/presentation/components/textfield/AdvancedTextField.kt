@@ -42,6 +42,7 @@ import clib.data.type.orErrorColor
 import clib.data.type.state.timePickerStateToTime
 import clib.presentation.components.dialog.time.AdvancedTimePickerDialog
 import clib.presentation.components.dropdown.list.ListDropdown
+import clib.presentation.components.picker.DateTimePickerDialog
 import clib.presentation.components.textfield.model.TextField
 import klib.data.type.primitives.string.emptyIf
 import klib.data.type.primitives.string.takeUnlessEmpty
@@ -184,15 +185,17 @@ public fun AdvancedTextField(
 
             val timePickerState = localTime?.let { rememberTimePickerState(it.hour, it.minute, true) }
 
-            AdvancedTimePickerDialog(
-                onConfirm = { _, _ ->
+            DateTimePickerDialog(
+                timePickerState = timePickerState,
+                datePickerState = datePickerState,
+                onDismissRequest = { showTimePicker = false },
+                confirmButton = {
+
                     onValueChange(
                         timePickerStateToTime(datePickerState, timePickerState)?.toString().orEmpty(),
                     )
                 },
-                timePickerState = timePickerState,
-                datePickerState = datePickerState,
-                onCancel = { showTimePicker = false },
+                title = {},
             )
         }
         { timeIcon { showTimePicker = !showTimePicker } }

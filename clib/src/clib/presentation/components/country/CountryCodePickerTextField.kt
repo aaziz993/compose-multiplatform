@@ -87,6 +87,7 @@ public fun CountryCodePickerTextField(
         placeholder = placeholder,
         leadingIcon = {
             CountryCodePicker(
+                enabled = !readOnly,
                 selectedCountry = country,
                 countries = countries,
                 onCountrySelected = {
