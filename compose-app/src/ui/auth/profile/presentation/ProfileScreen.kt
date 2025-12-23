@@ -313,10 +313,8 @@ private fun ProfileScreenContent(
         }
 
         phone?.let {
-            val selectedCountry by remember(it) {
-                derivedStateOf {
-                    Country.getCountries().single { country -> country.dial == it.dial }
-                }
+            val selectedCountry = remember {
+                Country.getCountries().first { country -> country.dial == it.dial }
             }
             CountryCodePickerTextField(
                 value = it.number,
