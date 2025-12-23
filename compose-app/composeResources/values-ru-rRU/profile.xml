@@ -15,4 +15,5 @@
     <string name="verification">Верификация</string>
     <string name="upload_id">Загрузить паспорт</string>
     <string name="verify">Верифицировать</string>
+    <string name="verified">Верифицирован</string>
 </resources>

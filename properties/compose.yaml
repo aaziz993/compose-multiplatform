@@ -45,7 +45,8 @@ script:
                 implementation(libs["androidx.paging.compose"])
                 implementation(libs["libphonenumber"])
                 implementation(libs["connectivity.compose"])
-                // implementation(libs["kmpauth.uihelper"])
+                implementation(libs["kmauth.google.compose"]) // uses open-source supabase instead of firebase
+                // implementation(libs["kmpauth.uihelper"]) // firebase doesn't support web
                 implementation(libs["material.kolor"])
                 implementation(libs["compose.colorpicker"])
                 implementation(libs.bundles("compose.icons"))

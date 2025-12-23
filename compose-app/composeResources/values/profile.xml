@@ -15,4 +15,5 @@
     <string name="verification">Verification</string>
     <string name="upload_id">Upload ID</string>
     <string name="verify">Verify</string>
+    <string name="verified">Verified</string>
 </resources>

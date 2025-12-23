@@ -27,7 +27,10 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Verified
+import androidx.compose.material.icons.outlined.VerifiedUser
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -62,6 +65,7 @@ import clib.presentation.events.alert.model.AlertEvent
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.close
+import compose_app.generated.resources.verified
 import compose_app.generated.resources.edit
 import compose_app.generated.resources.email
 import compose_app.generated.resources.first_name
@@ -159,6 +163,16 @@ private fun ProfileScreenContent(
                         .align(Alignment.TopEnd)
                         .size(14.dp),
                 )
+
+            if (state.user.isVerified)
+                Icon(
+                    imageVector = Icons.Default.VerifiedUser,
+                    contentDescription = stringResource(Res.string.verified),
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .size(14.dp),
+                )
+
             IconButton(
                 onClick = {},
                 modifier = Modifier
@@ -167,7 +181,7 @@ private fun ProfileScreenContent(
                     .size(24.dp),
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Edit,
+                    imageVector = Icons.Default.Edit,
                     contentDescription = stringResource(Res.string.edit),
                     modifier = Modifier.size(14.dp),
                 )

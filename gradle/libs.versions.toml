@@ -799,9 +799,9 @@ oidc-okhttp4 = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-okhttp4"
 oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", version.ref = "oidc" }
 # kotlin Multiplatform Authentication library targeting Android, iOS, Desktop and Web(Kotlin/Js and Kotlin/Wasm Both).
 kmauth-google = { module = "io.github.sunildhiman90:kmauth-google", version.ref = "kmauth" }
-kmauth-google-compose = { module = "io.github.sunildhiman90:kmauth-google-compose", version.ref = "kmauth" }
 kmauth-apple = { module = "io.github.sunildhiman90:kmauth-apple", version.ref = "kmauth" }
 kmauth-supabase = { module = "io.github.sunildhiman90:kmauth-supabase", version.ref = "kmauth" }
+kmauth-google-compose = { module = "io.github.sunildhiman90:kmauth-google-compose", version.ref = "kmauth" }
 # simple and easy to use Kotlin Multiplatform Authentication library targeting iOS, Android, Desktop and Web (kmpauth-firebase module doesn't have web support yet). Supporting Google, Apple, Github, Facebook authentication integrations using Firebase.
 kmpauth-google = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "kmpauth" }
 kmpauth-firebase = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "kmpauth" }

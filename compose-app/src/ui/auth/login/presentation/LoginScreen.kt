@@ -71,7 +71,7 @@ public fun LoginScreen(
             .fillMaxWidth(0.9f)
             .fillMaxHeight()
             .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
