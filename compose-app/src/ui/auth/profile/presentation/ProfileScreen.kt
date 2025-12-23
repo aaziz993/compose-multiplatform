@@ -324,6 +324,7 @@ private fun ProfileScreenContent(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 selectedCountry = selectedCountry,
+                enabled = state.edit,
                 label = { Text(stringResource(Res.string.phone)) },
                 picker = CountryPicker(
                     headerTitle = stringResource(Res.string.country),

@@ -57,7 +57,6 @@ import clib.presentation.easedVerticalGradient
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.avatar
 import compose_app.generated.resources.back
 import compose_app.generated.resources.clear

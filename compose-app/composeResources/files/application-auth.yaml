@@ -17,6 +17,8 @@ auth:
   supabaseOAuths:
     - provider: GITHUB
       config: { }
+    - provider: TWITTER
+      config: { }
     - provider: AZURE
       config: { }
     - provider: KEYCLOAK
