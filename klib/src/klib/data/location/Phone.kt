@@ -14,7 +14,7 @@ public data class Phone(
     val number: String,
 ) {
 
-    override fun toString(): String = "+$dial$number"
+    override fun toString(): String = "$dial$number"
 }
 
 private object PhoneSerializer : TransformingSerializer<Phone>(
@@ -29,15 +29,12 @@ private object PhoneSerializer : TransformingSerializer<Phone>(
     } ?: value
 }
 
-public fun String.phoneParts(): Pair<String, String>? {
-    val number = removePrefix("+")
-    return Country
-        .getCountries()
-        .map(Country::dial)
-        .filterNotNull()
-        .sortedByDescending(String::length)
-        .find(number::startsWith)?.to(number::removePrefix)
-}
+public fun String.phoneParts(): Pair<String, String>? = Country
+    .getCountries()
+    .map(Country::dial)
+    .filterNotNull()
+    .sortedByDescending(String::length).toList()
+    .find(::startsWith)?.to(::removePrefix)
 
 public fun String.toPhoneOrNull(): Phone? = phoneParts()?.let { (dial, number) -> Phone(dial, number) }
 

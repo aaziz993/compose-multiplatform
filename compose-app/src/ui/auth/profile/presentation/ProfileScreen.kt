@@ -53,6 +53,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
+import clib.presentation.components.country.CountryCodePickerTextField
+import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.components.image.avatar.Avatar
 import clib.presentation.components.loading.CenterLoadingIndicator
 import clib.presentation.components.textfield.AdvancedTextField
@@ -63,6 +65,7 @@ import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.avatar
 import compose_app.generated.resources.close
+import compose_app.generated.resources.country
 import compose_app.generated.resources.verified
 import compose_app.generated.resources.edit
 import compose_app.generated.resources.email
@@ -70,6 +73,7 @@ import compose_app.generated.resources.first_name
 import compose_app.generated.resources.last_name
 import compose_app.generated.resources.phone
 import compose_app.generated.resources.save
+import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.username
 import compose_app.generated.resources.verify
@@ -78,6 +82,8 @@ import dev.jordond.connectivity.Connectivity.Status
 import klib.data.load.LoadingResult
 import klib.data.load.success
 import klib.data.location.Phone
+import klib.data.location.country.Country
+import klib.data.location.country.getCountries
 import klib.data.location.toPhone
 import klib.data.location.toPhoneOrNull
 import klib.data.type.collections.all
@@ -143,7 +149,7 @@ private fun ProfileScreenContent(
     modifier = modifier,
     contentAlignment = Alignment.Center,
 ) {
-    klib.data.db.mdb.Column(
+    Column(
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(),
@@ -302,7 +308,31 @@ private fun ProfileScreenContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileAttributeField(
+        var phone by remember(state.user.phone) {
+            mutableStateOf(state.user.phone?.toPhoneOrNull())
+        }
+
+        phone?.let {
+            val selectedCountry by remember(it) {
+                derivedStateOf {
+                    Country.getCountries().single { country -> country.dial == it.dial }
+                }
+            }
+            CountryCodePickerTextField(
+                value = it.number,
+                onValueChange = { countryCode, value, _ ->
+                    phone = Phone(countryCode, value)
+                    onAction(ProfileAction.SetPhone(phone.toString()))
+                },
+                modifier = Modifier.fillMaxWidth(),
+                selectedCountry = selectedCountry,
+                label = { Text(stringResource(Res.string.phone)) },
+                picker = CountryPicker(
+                    headerTitle = stringResource(Res.string.country),
+                    searchHint = stringResource(Res.string.search),
+                ),
+            )
+        } ?: ProfileAttributeField(
             state.user.phone.orEmpty(),
             { value -> onAction(ProfileAction.SetPhone(value)) },
             focusRequesters[3],
@@ -343,22 +373,6 @@ private fun ProfileScreenContent(
                 { value -> validations[5 + index] = value },
             )
         }
-
-//        var phone: Phone? by remember(state.user.phone) {
-//            mutableStateOf(state.user.phone?.toPhoneOrNull())
-//        }
-
-//        CountryCodePickerTextField(
-//            value = user.phone.orEmpty().removePrefix(country?.dial.orEmpty().ifNotEmpty { "+$it" }),
-//            onValueChange = { _, _, _ -> },
-//            modifier = Modifier.fillMaxWidth(),
-//            selectedCountry = country ?: Country.getCountries().first(),
-//            label = { Text(stringResource(Res.string.phone)) },
-//            picker = CountryPicker(
-//                headerTitle = stringResource(Res.string.country),
-//                searchHint = stringResource(Res.string.search),
-//            ),
-//        )
 
         if (!state.user.isVerified)
             Button(

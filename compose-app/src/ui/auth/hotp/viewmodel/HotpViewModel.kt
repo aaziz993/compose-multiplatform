@@ -56,7 +56,7 @@ public class HotpViewModel(
                         firstName = "John",
                         lastName = "Doe",
                         phone = hotp.contact,
-                        imageUrl = "https://api.dicebear.com/9.x/bottts/svg",
+                        imageUrl = "https://api.dicebear.com/9.x/bottts/png?seed=JohnDoe",
                         roles = setOf("User"),
                     ),
                 )

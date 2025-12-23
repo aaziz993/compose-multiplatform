@@ -18,7 +18,7 @@ import kotlin.String
 
 @Composable
 public fun Image(
-    imageSource: Any,
+    source: Any,
     contentDescription: String?,
     modifier: Modifier = Modifier,
     alignment: Alignment = Alignment.Center,
@@ -26,9 +26,9 @@ public fun Image(
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
     filterQuality: FilterQuality = DefaultFilterQuality,
-): Unit = when (imageSource) {
+): Unit = when (source) {
     is String -> AsyncImage(
-        model = imageSource,
+        model = source,
         contentDescription = contentDescription,
         modifier = modifier,
         alignment = alignment,
@@ -39,7 +39,7 @@ public fun Image(
     )
 
     is ByteArray -> Image(
-        imageSource.decodeToImageBitmap(),
+        source.decodeToImageBitmap(),
         contentDescription,
         modifier,
         alignment,
@@ -49,7 +49,7 @@ public fun Image(
     )
 
     is Painter -> Image(
-        imageSource,
+        source,
         contentDescription,
         modifier,
         alignment,
@@ -59,7 +59,7 @@ public fun Image(
     )
 
     is ImageBitmap -> Image(
-        imageSource,
+        source,
         contentDescription,
         modifier,
         alignment,
@@ -69,7 +69,7 @@ public fun Image(
     )
 
     is ImageVector -> Image(
-        imageSource,
+        source,
         contentDescription,
         modifier,
         alignment,
@@ -78,6 +78,6 @@ public fun Image(
         colorFilter,
     )
 
-    else -> throw IllegalArgumentException("Unknown image source type: ${imageSource::class.simpleName}")
+    else -> throw IllegalArgumentException("Unknown image source '$source'")
 }
 
