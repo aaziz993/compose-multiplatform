@@ -32,7 +32,7 @@ public fun Image(
         contentDescription = contentDescription,
         modifier = modifier,
         alignment = alignment,
-        contentScale = ContentScale.Crop,
+        contentScale = contentScale,
         alpha = alpha,
         colorFilter = colorFilter,
         filterQuality = filterQuality,

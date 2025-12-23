@@ -27,12 +27,12 @@ public class ProfileViewModel(
     override fun action(action: ProfileAction) {
         when (action) {
             is ProfileAction.Edit -> editUser(action.value)
-            is ProfileAction.SetImage -> setUserImage(action.value)
             is ProfileAction.SetUsername -> setUsername(action.value)
             is ProfileAction.SetFirstName -> setFirstName(action.value)
             is ProfileAction.SetLastName -> setLastName(action.value)
             is ProfileAction.SetPhone -> setPhone(action.value)
             is ProfileAction.SetEmail -> setEmail(action.value)
+            is ProfileAction.SetImageUrl -> setUserImageUrl(action.value)
             is ProfileAction.SetAttribute -> setAttribute(action.key, action.value)
             is ProfileAction.StartUpdate -> startUpdate(action.value)
             ProfileAction.CompleteUpdate -> completeUpdate()
@@ -45,10 +45,6 @@ public class ProfileViewModel(
 
     private fun editUser(value: Boolean) = state.update {
         it.map { if (value) copy(edit = true) else copy(user = authState.value.user!!, edit = false) }
-    }
-
-    private fun setUserImage(value: String) = state.update {
-        it.map { copy(user = user.copy(image = value)) }
     }
 
     private fun setUsername(value: String) = state.update {
@@ -69,6 +65,10 @@ public class ProfileViewModel(
 
     private fun setEmail(value: String) = state.update {
         it.map { copy(user = user.copy(email = value)) }
+    }
+
+    private fun setUserImageUrl(value: String) = state.update {
+        it.map { copy(user = user.copy(imageUrl = value)) }
     }
 
     private fun setAttribute(key: String, value: List<String>) = state.update {

@@ -83,6 +83,7 @@ public class TotpViewModel(
                         firstName = "John",
                         lastName = "Doe",
                         phone = totp.contact,
+                        imageUrl = "https://api.dicebear.com/9.x/bottts/svg",
                         roles = setOf("User"),
                     ),
                 )

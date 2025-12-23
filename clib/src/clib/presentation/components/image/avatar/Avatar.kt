@@ -72,7 +72,7 @@ public fun Avatar(
     user.firstName.orEmpty(),
     user.lastName.orEmpty(),
     modifier,
-    user.image,
+    user.imageUrl,
     contentDescription,
     view,
 )

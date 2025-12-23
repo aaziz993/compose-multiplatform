@@ -6,5 +6,5 @@ public fun KMAuthUser.toUser(): User = User(
     username = name,
     email = email,
     phone = phoneNumber,
-    image = profilePicUrl,
+    imageUrl = profilePicUrl,
 )

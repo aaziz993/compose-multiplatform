@@ -5,12 +5,12 @@ import clib.presentation.components.dialog.password.model.PasswordResetDialogSta
 
 public sealed interface ProfileAction {
     public data class Edit(val value: Boolean) : ProfileAction
-    public data class SetImage(val value: String) : ProfileAction
     public data class SetUsername(val value: String) : ProfileAction
     public data class SetFirstName(val value: String) : ProfileAction
     public data class SetLastName(val value: String) : ProfileAction
     public data class SetPhone(val value: String) : ProfileAction
     public data class SetEmail(val value: String) : ProfileAction
+    public data class SetImageUrl(val value: String) : ProfileAction
     public data class SetAttribute(val key: String, val value: List<String>) : ProfileAction
     public data class StartUpdate(val value: PasswordDialogState? = PasswordDialogState()) : ProfileAction
     public data object CompleteUpdate : ProfileAction

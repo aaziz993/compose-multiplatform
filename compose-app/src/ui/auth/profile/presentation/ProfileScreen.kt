@@ -61,6 +61,7 @@ import clib.presentation.events.alert.GlobalAlertEventController
 import clib.presentation.events.alert.model.AlertEvent
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.avatar
 import compose_app.generated.resources.close
 import compose_app.generated.resources.verified
 import compose_app.generated.resources.edit
@@ -76,7 +77,9 @@ import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.load.LoadingResult
 import klib.data.load.success
+import klib.data.location.Phone
 import klib.data.location.toPhone
+import klib.data.location.toPhoneOrNull
 import klib.data.type.collections.all
 import klib.data.validator.Validator
 import presentation.components.dialog.SignOutConfirmDialog
@@ -140,7 +143,7 @@ private fun ProfileScreenContent(
     modifier = modifier,
     contentAlignment = Alignment.Center,
 ) {
-    Column(
+    klib.data.db.mdb.Column(
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .fillMaxHeight(),
@@ -151,6 +154,7 @@ private fun ProfileScreenContent(
                 user = state.user,
                 modifier = Modifier.size(80.dp)
                     .clip(CircleShape),
+                contentDescription = stringResource(Res.string.avatar),
             )
             if (connectivity.isAvatarConnectivityIndicator)
                 connectivityStatus.CircleIcon(
@@ -339,6 +343,10 @@ private fun ProfileScreenContent(
                 { value -> validations[5 + index] = value },
             )
         }
+
+//        var phone: Phone? by remember(state.user.phone) {
+//            mutableStateOf(state.user.phone?.toPhoneOrNull())
+//        }
 
 //        CountryCodePickerTextField(
 //            value = user.phone.orEmpty().removePrefix(country?.dial.orEmpty().ifNotEmpty { "+$it" }),

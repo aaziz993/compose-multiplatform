@@ -1,10 +1,9 @@
 package klib.data.location
 
-import klib.data.iso.Alpha2Letter
 import klib.data.location.country.Country
 import klib.data.location.country.getCountries
-import klib.data.location.country.toCountry
 import klib.data.type.serialization.serializers.transform.TransformingSerializer
+import klib.data.type.tuples.to
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
@@ -22,20 +21,24 @@ private object PhoneSerializer : TransformingSerializer<Phone>(
     Phone.generatedSerializer(),
 ) {
 
-    override fun transformDeserialize(value: Any?): Any? = (value as? String)?.toPhone() ?: value
+    override fun transformDeserialize(value: Any?): Any? = (value as? String)?.phoneParts()?.let { (dial, number) ->
+        mapOf(
+            Phone::dial.name to dial,
+            Phone::number.name to number,
+        )
+    } ?: value
 }
 
-public fun String.toPhoneOrNull(): Phone? {
+public fun String.phoneParts(): Pair<String, String>? {
     val number = removePrefix("+")
-
     return Country
         .getCountries()
-        .filterNot { country -> country.dial.isNullOrEmpty() }
-        .sortedByDescending { country -> country.dial!!.length }
-        .find { country -> number.startsWith(country.dial!!) }
-        ?.let { country ->
-            Phone(country.dial!!, number.removePrefix(country.dial))
-        }
+        .map(Country::dial)
+        .filterNotNull()
+        .sortedByDescending(String::length)
+        .find(number::startsWith)?.to(number::removePrefix)
 }
+
+public fun String.toPhoneOrNull(): Phone? = phoneParts()?.let { (dial, number) -> Phone(dial, number) }
 
 public fun String.toPhone(): Phone = toPhoneOrNull() ?: error("Invalid phone number: $this")
