@@ -11,12 +11,14 @@ import com.sunildhiman90.kmauth.google.KMAuthGoogle
 import com.sunildhiman90.kmauth.supabase.KMAuthSupabase
 import com.sunildhiman90.kmauth.supabase.SupabaseAuthManager
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
+import com.sunildhiman90.kmauth.supabase.model.toKMAuthUser
 import klib.data.auth.model.Auth
 import klib.data.auth.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import ui.auth.login.presentation.toUser
 
 @KoinViewModel
 public class LoginViewModel(
@@ -47,6 +49,7 @@ public class LoginViewModel(
         is LoginAction.SetPassword -> setPassword(action.value)
         is LoginAction.SetShowPassword -> setShowPassword(action.value)
         is LoginAction.SetRemember -> setRemember(action.value)
+        is LoginAction.SetError -> setError(action.value)
         is LoginAction.Login -> login()
         is LoginAction.LoginGoogle -> loginGoogle()
         is LoginAction.LoginApple -> loginApple()
@@ -60,6 +63,8 @@ public class LoginViewModel(
     private fun setShowPassword(value: Boolean) = state.update { it.copy(showPassword = value, error = null) }
 
     private fun setRemember(value: Boolean) = state.update { it.copy(remember = value, error = null) }
+
+    private fun setError(value: Throwable?) = state.update { it.copy(error = value) }
 
     private fun login() {
         viewModelScope.launch {
@@ -81,16 +86,8 @@ public class LoginViewModel(
             val result = googleAuthManager.signIn()
 
             if (result.isSuccess)
-                result.getOrNull()?.let { value ->
-                    authState.value = Auth(
-                        "google",
-                        User(
-                            username = value.name,
-                            email = value.email,
-                            phone = value.phoneNumber,
-                            image = value.profilePicUrl,
-                        ),
-                    )
+                result.getOrNull()?.let {
+                    authState.value = Auth("google", it.toUser())
                 }
             else state.update { it.copy(error = result.exceptionOrNull()) }
         }
@@ -101,16 +98,8 @@ public class LoginViewModel(
             val result = appleAuthManager.signIn()
 
             if (result.isSuccess)
-                result.getOrNull()?.let { value ->
-                    authState.value = Auth(
-                        "apple",
-                        User(
-                            username = value.name,
-                            email = value.email,
-                            phone = value.phoneNumber,
-                            image = value.profilePicUrl,
-                        ),
-                    )
+                result.getOrNull()?.let {
+                    authState.value = Auth("apple", it.toUser())
                 }
             else state.update { it.copy(error = result.exceptionOrNull()) }
         }
@@ -121,16 +110,8 @@ public class LoginViewModel(
             val result = supabaseAuthManager.signInWith(value)
 
             if (result.isSuccess)
-                result.getOrNull()?.let { value ->
-                    authState.value = Auth(
-                        "google",
-                        User(
-                            username = value.name,
-                            email = value.email,
-                            phone = value.phone,
-                            image = value.avatarUrl,
-                        ),
-                    )
+                result.getOrNull()?.let {
+                    authState.value = Auth(value.name, it.toKMAuthUser().toUser())
                 }
             else state.update { it.copy(error = result.exceptionOrNull()) }
         }

@@ -7,6 +7,7 @@ public sealed interface LoginAction {
     public data class SetPassword(val value: String) : LoginAction
     public data class SetShowPassword(val value: Boolean) : LoginAction
     public data class SetRemember(val value: Boolean) : LoginAction
+    public data class SetError(val value: Throwable?) : LoginAction
     public data object Login : LoginAction
     public data object LoginGoogle : LoginAction
     public data object LoginApple : LoginAction

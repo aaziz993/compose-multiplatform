@@ -1,9 +1,11 @@
 package ui.auth.login.presentation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -42,11 +45,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
+import clib.generated.resources.apple
 import clib.presentation.components.textfield.AdvancedTextField
-import clib.presentation.icons.Apple
 import clib.presentation.icons.Github
 import clib.presentation.icons.Google
 import clib.presentation.navigation.NavigationAction
+import com.sunildhiman90.kmauth.core.KMAuthUser
+import com.sunildhiman90.kmauth.google.compose.GoogleSignInButton
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.login
@@ -54,6 +59,9 @@ import compose_app.generated.resources.password
 import compose_app.generated.resources.remember
 import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
+import klib.data.auth.model.Auth
+import klib.data.auth.model.User
+import org.jetbrains.compose.resources.painterResource
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Login
@@ -65,6 +73,7 @@ public fun LoginScreen(
     route: Login = Login,
     state: LoginState = LoginState(),
     onAction: (LoginAction) -> Unit = {},
+    onAuthChange: (Auth) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Box(
     modifier = modifier,
@@ -176,17 +185,22 @@ public fun LoginScreen(
             Text(text = stringResource(Res.string.login))
         }
 
-        LoginSocial(onAction)
+        LoginSocial(onAction, onAuthChange)
     }
 }
 
 @Composable
 private fun LoginSocial(
-    onAction: (LoginAction) -> Unit = {},
-) = Column(
-    modifier = Modifier.fillMaxWidth(),
-    horizontalAlignment = Alignment.CenterHorizontally,
+    onAction: (LoginAction) -> Unit,
+    onAuthChange: (Auth) -> Unit,
+) = FlowRow(
+    verticalArrangement = Arrangement.Center,
 ) {
+    GoogleSignInButton(modifier = Modifier) { user, error ->
+        error?.let { onAction(LoginAction.SetError(it)) }
+        user?.let { onAuthChange(Auth("google", it.toUser())) }
+    }
+
     IconButton(
         onClick = {
             onAction(LoginAction.LoginGoogle)
@@ -200,7 +214,11 @@ private fun LoginSocial(
             onAction(LoginAction.LoginApple)
         },
     ) {
-        Icon(Icons.Default.Apple, "Apple")
+        Image(
+            painter = painterResource(clib.generated.resources.Res.drawable.apple),
+            contentDescription = "Apple",
+            contentScale = ContentScale.Fit,
+        )
     }
 
     IconButton(
@@ -215,3 +233,10 @@ private fun LoginSocial(
 @Preview
 @Composable
 private fun PreviewLoginScreen(): Unit = LoginScreen()
+
+public fun KMAuthUser.toUser(): User = User(
+    username = name,
+    email = email,
+    phone = phoneNumber,
+    image = profilePicUrl,
+)

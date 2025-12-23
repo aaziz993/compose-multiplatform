@@ -325,15 +325,17 @@ public data object Login : KoinRoute<Login>(), NavRoute {
         route: Login,
         sharedTransitionScope: SharedTransitionScope,
     ) {
+        val authState = LocalAuthState.current
+        val router = currentRouter()
         val viewModel: LoginViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val router = currentRouter()
 
         LoginScreen(
             Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             route,
             state,
             viewModel::action,
+            { auth -> authState.value = auth },
             router::actions,
         )
     }
