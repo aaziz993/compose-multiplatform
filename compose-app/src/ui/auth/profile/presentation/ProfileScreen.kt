@@ -170,7 +170,8 @@ private fun ProfileScreenContent(
                     contentDescription = stringResource(Res.string.verified),
                     modifier = Modifier
                         .align(Alignment.BottomStart)
-                        .size(14.dp),
+                        .offset(-20.dp, 5.dp)
+                        .size(24.dp),
                 )
 
             IconButton(

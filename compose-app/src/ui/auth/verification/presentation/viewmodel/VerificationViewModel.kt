@@ -20,13 +20,13 @@ public class VerificationViewModel(
         field = MutableStateFlow(VerificationState()).onStartStateIn { it }
 
     override fun action(action: VerificationAction): Unit = when (action) {
-        is VerificationAction.SetIdImage -> setIdImage(action.value)
-        is VerificationAction.SetUserImage -> setUserImage(action.value)
+        is VerificationAction.SetIdUri -> setIdUri(action.value)
+        is VerificationAction.SetUserUri -> setUserUri(action.value)
         is VerificationAction.Confirm -> confirm()
     }
 
-    private fun setIdImage(value: String) = state.update { it.copy(idImage = value) }
-    private fun setUserImage(value: String) = state.update { it.copy(userImage = value) }
+    private fun setIdUri(value: String) = state.update { it.copy(idUri = value) }
+    private fun setUserUri(value: String) = state.update { it.copy(userUri = value) }
 
     private fun confirm() {
         viewModelScope.launch {

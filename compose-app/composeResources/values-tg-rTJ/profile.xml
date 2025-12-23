@@ -12,8 +12,7 @@
     <string name="phone">Телефон</string>
     <string name="unverified">Тасдиқнашуда</string>
     <string name="unverified_description">Аккаунти шумо тасдиқ нашудааст.</string>
-    <string name="verification">Тасдиқкуни</string>
-    <string name="upload_id">Ирсоли шаҳодатнома</string>
+    <string name="verification">Тасдиқкунӣ</string>
     <string name="verify">Тасдиқ</string>
-    <string name="verified">Тасдиқшуд</string>
+    <string name="verified">Тасдиқшуда</string>
 </resources>
