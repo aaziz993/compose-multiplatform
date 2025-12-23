@@ -3,7 +3,6 @@ package klib.data.config.auth
 import klib.data.auth.model.AuthResource
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
-import klib.data.config.auth.oauth.SupabaseDefaultAuthConfig
 import klib.data.config.auth.oauth.SupabaseOAuthConfig
 import kotlinx.serialization.Serializable
 

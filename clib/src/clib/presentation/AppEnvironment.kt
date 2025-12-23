@@ -134,19 +134,14 @@ public fun AppEnvironment(
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.log.configure()
     config.auth.google?.let { google ->
-        KMAuthInitializer.initialize(KMAuthConfig.forGoogle(webClientId = google.webClientId, clientSecret = google.clientSecret))
+        KMAuthInitializer.initialize(
+            KMAuthConfig.forGoogle(webClientId = google.webClientId, clientSecret = google.clientSecret),
+        )
     }
     config.auth.supabase?.let { supabase ->
         KMAuthSupabase.initialize(
-            KMAuthConfig.forSupabase(
-                supabaseUrl = supabase.supabaseUrl,
-                supabaseKey = supabase.supabaseKey,
-                autoLoadFromStorage = supabase.autoLoadFromStorage,
-                autoRefreshToken = supabase.autoRefreshToken,
-                deepLinkHost = supabase.deepLinkHost,
-                deepLinkScheme = supabase.deepLinkScheme,
-                kmAuthSupabaseFlowType = supabase.kmAuthSupabaseFlowType,
-            ),
+            supabase.config,
+            supabase.redirectUrl,
         )
     }
 

@@ -4,4 +4,15 @@ auth:
       period: PT60S
       codeDigits: 4
       hmacAlgorithm: sha512
-
+  google:
+    webClientId: YOUR_WEB_CLIENT_ID
+  supabase:
+    config:
+      supabaseUrl: YOUR_SUPABASE_URL
+      supabaseKey: YOUR_SUPABASE_KEY
+      deepLinkHost: YOUR_DEEP_LINK_HOST
+      deepLinkScheme: YOUR_DEEP_LINK_SCHEME
+    redirectUrl: YOUR_REDIRECT_URL
+  supabaseOAuths:
+    provider: GITHUB
+    config: { }
