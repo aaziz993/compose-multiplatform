@@ -80,6 +80,7 @@ import klib.data.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.painterResource
+import presentation.components.dialog.SignOutConfirmDialog
 import presentation.components.tooltipbox.AppPlainTooltipBox
 import presentation.connectivity.CircleIcon
 import presentation.connectivity.DefaultIcon
@@ -260,6 +261,7 @@ public fun TopAppBar(
                     if (appBar.isAvatar) {
                         AuthComposable(auth = auth) { user ->
                             var expanded by remember { mutableStateOf(false) }
+                            var singOutDialog by remember { mutableStateOf(false) }
                             Box {
                                 AppPlainTooltipBox(tooltip = stringResource(Res.string.profile)) {
                                     Avatar(
@@ -314,8 +316,8 @@ public fun TopAppBar(
                                             Text(text = stringResource(Res.string.sign_out), color = MaterialTheme.colorScheme.onSurface)
                                         },
                                         onClick = {
-                                            onAuthChange(Auth())
                                             expanded = false
+                                            singOutDialog = true
                                         },
                                         leadingIcon = {
                                             Icon(
@@ -326,6 +328,16 @@ public fun TopAppBar(
                                         },
                                     )
                                 }
+
+                                if (singOutDialog)
+                                    SignOutConfirmDialog(
+                                        {
+                                            singOutDialog = false
+                                        },
+                                        {
+                                            onAuthChange(Auth())
+                                        },
+                                    )
                             }
                         }
                     }

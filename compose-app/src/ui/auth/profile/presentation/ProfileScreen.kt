@@ -348,15 +348,16 @@ private fun ProfileScreenContent(
                         ),
                     )
                 },
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = stringResource(Res.string.verify))
             }
 
-        var singOutConfirmDialog by remember { mutableStateOf(false) }
-        if (singOutConfirmDialog)
+        var singOutDialog by remember { mutableStateOf(false) }
+        if (singOutDialog)
             SignOutConfirmDialog(
                 {
-                    singOutConfirmDialog = false
+                    singOutDialog = false
                 },
                 {
                     onAction(ProfileAction.SignOut)
@@ -365,8 +366,9 @@ private fun ProfileScreenContent(
 
         Button(
             onClick = {
-                singOutConfirmDialog = true
+                singOutDialog = true
             },
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(Res.string.sign_out))
         }
