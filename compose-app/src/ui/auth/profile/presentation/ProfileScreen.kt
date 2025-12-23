@@ -28,9 +28,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.VerifiedUser
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Verified
-import androidx.compose.material.icons.outlined.VerifiedUser
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -170,7 +167,7 @@ private fun ProfileScreenContent(
                     contentDescription = stringResource(Res.string.verified),
                     modifier = Modifier
                         .align(Alignment.BottomStart)
-                        .offset(-20.dp, 5.dp)
+                        .offset((-20).dp, 5.dp)
                         .size(24.dp),
                 )
 
