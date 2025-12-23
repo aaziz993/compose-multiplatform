@@ -205,7 +205,6 @@ public fun AdvancedTextField(
                         )
                     }
                 },
-                title = {},
                 dismissButton = {
                     IconButton(
                         onClick = {

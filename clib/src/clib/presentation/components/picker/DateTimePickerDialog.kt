@@ -36,7 +36,7 @@ public fun DateTimePickerDialog(
     timePickerState: TimePickerState? = null,
     onDismissRequest: () -> Unit,
     confirmButton: @Composable () -> Unit = {},
-    title: @Composable () -> Unit,
+    title: @Composable () -> Unit = {},
     modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(),
     showModeToggle: Boolean = true,
