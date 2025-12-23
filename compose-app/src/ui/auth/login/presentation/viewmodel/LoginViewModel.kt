@@ -14,11 +14,11 @@ import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.toKMAuthUser
 import klib.data.auth.model.Auth
 import klib.data.auth.model.User
+import klib.data.auth.model.toUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
-import ui.auth.login.presentation.toUser
 
 @KoinViewModel
 public class LoginViewModel(
@@ -83,37 +83,26 @@ public class LoginViewModel(
 
     private fun loginGoogle() {
         viewModelScope.launch {
-            val result = googleAuthManager.signIn()
-
-            if (result.isSuccess)
-                result.getOrNull()?.let {
-                    authState.value = Auth("google", it.toUser())
-                }
-            else state.update { it.copy(error = result.exceptionOrNull()) }
+            googleAuthManager.signIn { user, error ->
+                user?.let { authState.value = Auth("google", it.toUser()) }
+                error?.let { state.update { it.copy(error = it) } }
+            }
         }
     }
 
     private fun loginApple() {
         viewModelScope.launch {
             val result = appleAuthManager.signIn()
-
-            if (result.isSuccess)
-                result.getOrNull()?.let {
-                    authState.value = Auth("apple", it.toUser())
-                }
-            else state.update { it.copy(error = result.exceptionOrNull()) }
+            result.getOrNull()?.let { authState.value = Auth("apple", it.toUser()) }
+            result.exceptionOrNull()?.let { error -> state.update { it.copy(error = error) } }
         }
     }
 
     private fun loginSupabase(value: SupabaseOAuthProvider) {
         viewModelScope.launch {
             val result = supabaseAuthManager.signInWith(value)
-
-            if (result.isSuccess)
-                result.getOrNull()?.let {
-                    authState.value = Auth(value.name, it.toKMAuthUser().toUser())
-                }
-            else state.update { it.copy(error = result.exceptionOrNull()) }
+            result.getOrNull()?.let { authState.value = Auth(value.name, it.toKMAuthUser().toUser()) }
+            result.exceptionOrNull()?.let { error -> state.update { it.copy(error = error) } }
         }
     }
 }

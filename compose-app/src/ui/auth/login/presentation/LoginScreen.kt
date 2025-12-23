@@ -50,7 +50,6 @@ import clib.presentation.components.textfield.AdvancedTextField
 import clib.presentation.icons.Github
 import clib.presentation.icons.Google
 import clib.presentation.navigation.NavigationAction
-import com.sunildhiman90.kmauth.core.KMAuthUser
 import com.sunildhiman90.kmauth.google.compose.GoogleSignInButton
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import compose_app.generated.resources.Res
@@ -60,7 +59,7 @@ import compose_app.generated.resources.remember
 import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
 import klib.data.auth.model.Auth
-import klib.data.auth.model.User
+import klib.data.auth.model.toUser
 import org.jetbrains.compose.resources.painterResource
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
@@ -196,10 +195,10 @@ private fun LoginSocial(
 ) = FlowRow(
     verticalArrangement = Arrangement.Center,
 ) {
-    GoogleSignInButton(modifier = Modifier) { user, error ->
-        error?.let { onAction(LoginAction.SetError(it)) }
-        user?.let { onAuthChange(Auth("google", it.toUser())) }
-    }
+//    GoogleSignInButton(modifier = Modifier) { user, error ->
+//        user?.let { onAuthChange(Auth("google", it.toUser())) }
+//        error?.let { onAction(LoginAction.SetError(it)) }
+//    }
 
     IconButton(
         onClick = {
@@ -233,10 +232,3 @@ private fun LoginSocial(
 @Preview
 @Composable
 private fun PreviewLoginScreen(): Unit = LoginScreen()
-
-public fun KMAuthUser.toUser(): User = User(
-    username = name,
-    email = email,
-    phone = phoneNumber,
-    image = profilePicUrl,
-)
