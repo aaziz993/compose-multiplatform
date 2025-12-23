@@ -19,3 +19,5 @@ auth:
       config: { }
     - provider: AZURE
       config: { }
+    - provider: KEYCLOAK
+      config: { }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="github">Гитҳаб</string>
+    <string name="gitlab">Гитлаб</string>
+    <string name="bitbucket">Битбакет</string>
+    <string name="twitter">Твиттер</string>
+    <string name="discord">Дискорд</string>
+    <string name="slack">Слак</string>
+    <string name="spotify">Спотифай</string>
+    <string name="twitch">Твич</string>
+    <string name="linkedin">Линкедин</string>
+    <string name="keycloak">Киклок</string>
+    <string name="google">Гугл</string>
+    <string name="facebook">Фейсбук</string>
+    <string name="azure">Ажур</string>
+    <string name="apple">Эпл</string>
+</resources>

@@ -47,11 +47,7 @@ import androidx.compose.ui.unit.sp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.textfield.AdvancedTextField
-import clib.presentation.icons.Facebook
-import clib.presentation.icons.Github
-import clib.presentation.icons.Gitlab
-import clib.presentation.icons.Google
-import clib.presentation.icons.Twitter
+import clib.presentation.icons.Keycloak
 import clib.presentation.navigation.NavigationAction
 import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
@@ -70,6 +66,8 @@ import compose.icons.simpleicons.Spotify
 import compose.icons.simpleicons.Twitch
 import compose.icons.simpleicons.Twitter
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.google
+import compose_app.generated.resources.apple
 import compose_app.generated.resources.login
 import compose_app.generated.resources.password
 import compose_app.generated.resources.remember
@@ -77,6 +75,7 @@ import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
 import data.type.primitives.string.asStringResource
 import klib.data.config.auth.AuthConfig
+import presentation.components.tooltipbox.AppPlainTooltipBox
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Login
@@ -217,7 +216,9 @@ private fun LoginProviders(
                 onAction(LoginAction.LoginGoogle)
             },
         ) {
-            Icon(Icons.Default.Google, "Google")
+            AppPlainTooltipBox(tooltip = stringResource(Res.string.google)) {
+                Icon(SimpleIcons.Google, stringResource(Res.string.google))
+            }
         }
     }
 
@@ -227,7 +228,9 @@ private fun LoginProviders(
                 onAction(LoginAction.LoginApple)
             },
         ) {
-            Icon(SimpleIcons.Apple, "Apple")
+            AppPlainTooltipBox(tooltip = stringResource(Res.string.apple)) {
+                Icon(SimpleIcons.Apple, stringResource(Res.string.apple))
+            }
         }
 
         config.supabaseDefaultAuths.forEach { supabase ->
@@ -236,7 +239,9 @@ private fun LoginProviders(
                     onAction(LoginAction.LoginSupabaseDefaultAuth(supabase.provider, supabase.config))
                 },
             ) {
-                Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
+                AppPlainTooltipBox(tooltip = supabase.provider.name.asStringResource()) {
+                    Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
+                }
             }
         }
 
@@ -246,7 +251,9 @@ private fun LoginProviders(
                     onAction(LoginAction.LoginSupabaseOAuth(supabase.provider, supabase.config))
                 },
             ) {
-                Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
+                AppPlainTooltipBox(tooltip = supabase.provider.name.asStringResource()) {
+                    Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
+                }
             }
         }
     }
@@ -268,7 +275,7 @@ private fun SupabaseOAuthProvider.imageVector() = when (this) {
     SupabaseOAuthProvider.SPOTIFY -> SimpleIcons.Spotify
     SupabaseOAuthProvider.TWITCH -> SimpleIcons.Twitch
     SupabaseOAuthProvider.LINKEDIN -> SimpleIcons.Linkedin
-//    SupabaseOAuthProvider.KEYCLOAK -> SimpleIcons.Keycloak
+    SupabaseOAuthProvider.KEYCLOAK -> Icons.Default.Keycloak
     SupabaseOAuthProvider.GOOGLE -> SimpleIcons.Google
     SupabaseOAuthProvider.FACEBOOK -> SimpleIcons.Facebook
     SupabaseOAuthProvider.AZURE -> SimpleIcons.Microsoftazure

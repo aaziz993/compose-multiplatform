@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="github">Github</string>
+    <string name="gitlab">Gitlab</string>
+    <string name="bitbucket">Bitbucket</string>
+    <string name="twitter">Twitter</string>
+    <string name="discord">Discord</string>
+    <string name="slack">Slack</string>
+    <string name="spotify">Spotify</string>
+    <string name="twitch">twitch</string>
+    <string name="linkedin">Linkedin</string>
+    <string name="keycloak">Keycloak</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="azure">Azure</string>
+    <string name="apple">Apple</string>
+</resources>
