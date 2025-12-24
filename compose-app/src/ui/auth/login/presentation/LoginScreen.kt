@@ -19,11 +19,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Token
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
@@ -45,30 +42,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import clib.data.auth.imageVector
+import clib.data.auth.oauth.imageVector
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.textfield.TextField
-import clib.presentation.icons.Keycloak
-import clib.presentation.icons.X
 import clib.presentation.navigation.NavigationAction
-import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
-import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import compose.icons.SimpleIcons
 import compose.icons.simpleicons.Apple
-import compose.icons.simpleicons.Bitbucket
-import compose.icons.simpleicons.Discord
-import compose.icons.simpleicons.Facebook
-import compose.icons.simpleicons.Github
-import compose.icons.simpleicons.Gitlab
 import compose.icons.simpleicons.Google
-import compose.icons.simpleicons.Linkedin
-import compose.icons.simpleicons.Microsoftazure
-import compose.icons.simpleicons.Slack
-import compose.icons.simpleicons.Spotify
-import compose.icons.simpleicons.Twitch
 import compose_app.generated.resources.Res
-import compose_app.generated.resources.google
 import compose_app.generated.resources.apple
+import compose_app.generated.resources.google
 import compose_app.generated.resources.login
 import compose_app.generated.resources.password
 import compose_app.generated.resources.remember
@@ -271,29 +256,6 @@ private fun LoginProviders(
             }
         }
     }
-}
-
-private fun SupabaseDefaultAuthProvider.imageVector() = when (this) {
-    SupabaseDefaultAuthProvider.EMAIL -> Icons.Default.Email
-    SupabaseDefaultAuthProvider.ID_TOKEN -> Icons.Default.Token
-    SupabaseDefaultAuthProvider.PHONE -> Icons.Default.Phone
-}
-
-private fun SupabaseOAuthProvider.imageVector() = when (this) {
-    SupabaseOAuthProvider.GITHUB -> SimpleIcons.Github
-    SupabaseOAuthProvider.GITLAB -> SimpleIcons.Gitlab
-    SupabaseOAuthProvider.BITBUCKET -> SimpleIcons.Bitbucket
-    SupabaseOAuthProvider.TWITTER -> Icons.Default.X
-    SupabaseOAuthProvider.DISCORD -> SimpleIcons.Discord
-    SupabaseOAuthProvider.SLACK -> SimpleIcons.Slack
-    SupabaseOAuthProvider.SPOTIFY -> SimpleIcons.Spotify
-    SupabaseOAuthProvider.TWITCH -> SimpleIcons.Twitch
-    SupabaseOAuthProvider.LINKEDIN -> SimpleIcons.Linkedin
-    SupabaseOAuthProvider.KEYCLOAK -> Icons.Default.Keycloak
-    SupabaseOAuthProvider.GOOGLE -> SimpleIcons.Google
-    SupabaseOAuthProvider.FACEBOOK -> SimpleIcons.Facebook
-    SupabaseOAuthProvider.AZURE -> SimpleIcons.Microsoftazure
-    SupabaseOAuthProvider.APPLE -> SimpleIcons.Apple
 }
 
 @Preview
