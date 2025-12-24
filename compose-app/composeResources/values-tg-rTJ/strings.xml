@@ -21,7 +21,9 @@
     <string name="cancel">Бекор</string>
     <string name="confirm">Тасдиқ</string>
     <string name="continue">Давом</string>
+    <string name="clear">Тоза</string>
     <string name="content">Таркиб</string>
+    <string name="cubic_bezier_easing">Оромшавии кубии Безе</string>
     <string name="default">Низомӣ</string>
     <string name="done">Анҷомдод</string>
     <string name="description">Тавсиф</string>
@@ -38,7 +40,6 @@
     <string name="exchange">Мубодилла</string>
     <string name="expressive">Ифодакунанда</string>
     <string name="easing">Оромшавӣ</string>
-    <string name="cubic_bezier_easing">Оромшавии кубии Безе</string>
     <string name="file">Файл</string>
     <string name="general">Умумӣ</string>
     <string name="generate">Сохт</string>

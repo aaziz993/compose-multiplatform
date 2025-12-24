@@ -21,7 +21,9 @@
     <string name="cancel">Отменить</string>
     <string name="confirm">Подтвердить</string>
     <string name="continue">Продолжить</string>
+    <string name="clear">Очистить</string>
     <string name="content">Содержание</string>
+    <string name="cubic_bezier_easing">Кубическое сглаживание Безье</string>
     <string name="default">По умолчанию</string>
     <string name="done">Выполнено</string>
     <string name="description">Описание</string>
@@ -37,7 +39,6 @@
     <string name="exchange">Обмен</string>
     <string name="expressive">Выразительный</string>
     <string name="easing">Сглаживание</string>
-    <string name="cubic_bezier_easing">Кубическое сглаживание Безье</string>
     <string name="false">Ложно</string>
     <string name="file">Файл</string>
     <string name="general">Общее</string>
