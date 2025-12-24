@@ -38,6 +38,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -316,24 +317,26 @@ private fun ProfileScreenContent(
         }
 
         phone?.let {
-            val selectedCountry = remember(state.edit) {
-                Country.getCountries().first { country -> country.dial == it.dial }
+            key(state.edit) {
+                val selectedCountry = remember {
+                    Country.getCountries().first { country -> country.dial == it.dial }
+                }
+                CountryCodePickerTextField(
+                    value = it.number,
+                    onValueChange = { dial, number, _ ->
+                        phone = Phone(dial, number)
+                        onAction(ProfileAction.SetPhone(phone.toString()))
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedCountry = selectedCountry,
+                    readOnly = !state.edit,
+                    label = { Text(stringResource(Res.string.phone)) },
+                    picker = CountryPicker(
+                        headerTitle = stringResource(Res.string.country),
+                        searchHint = stringResource(Res.string.search),
+                    ),
+                )
             }
-            CountryCodePickerTextField(
-                value = it.number,
-                onValueChange = { dial, number, _ ->
-                    phone = Phone(dial, number)
-                    onAction(ProfileAction.SetPhone(phone.toString()))
-                },
-                modifier = Modifier.fillMaxWidth(),
-                selectedCountry = selectedCountry,
-                readOnly = !state.edit,
-                label = { Text(stringResource(Res.string.phone)) },
-                picker = CountryPicker(
-                    headerTitle = stringResource(Res.string.country),
-                    searchHint = stringResource(Res.string.search),
-                ),
-            )
         } ?: ProfileAttributeField(
             state.user.phone.orEmpty(),
             { value -> onAction(ProfileAction.SetPhone(value)) },

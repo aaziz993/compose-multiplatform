@@ -51,7 +51,7 @@ public fun CountryCodePickerTextField(
     showSheet: Boolean = false,
     itemPadding: Int = 10
 ) {
-    var country by remember(selectedCountry) {
+    var country by remember {
         mutableStateOf(selectedCountry)
     }
 
