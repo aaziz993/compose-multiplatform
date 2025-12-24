@@ -482,7 +482,6 @@ private fun ProfileScreenContent(
                         onClick = {
                             onAction(ProfileAction.RemoveAttribute(key))
                         },
-                        modifier = Modifier.weight(1f),
                     ) {
                         Icon(Icons.Default.Remove, stringResource(Res.string.remove))
                     }
