@@ -363,45 +363,42 @@ private fun ProfileScreenContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileAttributeField(
-            state.user.username.orEmpty(),
-            { value -> onAction(ProfileAction.SetUsername(value)) },
-            focusRequesters[0],
-            focusRequesters[1],
-            state.edit,
-            stringResource(Res.string.username),
-            Icons.Default.Person,
-            validator["username"],
-            { value -> validations[0] = value },
-        )
+        ProfileTextField(
+            value = state.user.username.orEmpty(),
+            onValueChange = { value -> onAction(ProfileAction.SetUsername(value)) },
+            focusRequester = focusRequesters[0],
+            nextFocusRequester = focusRequesters[1],
+            edit = state.edit,
+            label = stringResource(Res.string.username),
+            imageVector = Icons.Default.Person,
+            validator = validator["username"],
+        ) { value -> validations[0] = value }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileAttributeField(
-            state.user.firstName.orEmpty(),
-            { value -> onAction(ProfileAction.SetFirstName(value)) },
-            focusRequesters[1],
-            focusRequesters[2],
-            state.edit,
-            stringResource(Res.string.first_name),
-            Icons.Default.Person,
-            validator["firstName"],
-            { value -> validations[1] = value },
-        )
+        ProfileTextField(
+            value = state.user.firstName.orEmpty(),
+            onValueChange = { value -> onAction(ProfileAction.SetFirstName(value)) },
+            focusRequester = focusRequesters[1],
+            nextFocusRequester = focusRequesters[2],
+            edit = state.edit,
+            label = stringResource(Res.string.first_name),
+            imageVector = Icons.Default.Person,
+            validator = validator["firstName"],
+        ) { value -> validations[1] = value }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileAttributeField(
-            state.user.lastName.orEmpty(),
-            { value -> onAction(ProfileAction.SetLastName(value)) },
-            focusRequesters[2],
-            focusRequesters[3],
-            state.edit,
-            stringResource(Res.string.last_name),
-            Icons.Default.Person,
-            validator["lastName"],
-            { value -> validations[2] = value },
-        )
+        ProfileTextField(
+            value = state.user.lastName.orEmpty(),
+            onValueChange = { value -> onAction(ProfileAction.SetLastName(value)) },
+            focusRequester = focusRequesters[2],
+            nextFocusRequester = focusRequesters[3],
+            edit = state.edit,
+            label = stringResource(Res.string.last_name),
+            imageVector = Icons.Default.Person,
+            validator = validator["lastName"],
+        ) { value -> validations[2] = value }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -430,55 +427,58 @@ private fun ProfileScreenContent(
                     ),
                 )
             }
-        } ?: ProfileAttributeField(
-            state.user.phone.orEmpty(),
-            { value -> onAction(ProfileAction.SetPhone(value)) },
-            focusRequesters[3],
-            focusRequesters[4],
-            state.edit,
-            stringResource(Res.string.phone),
-            Icons.Default.Phone,
-            validator["phone"],
-            { value -> validations[3] = value },
-        )
+        } ?: ProfileTextField(
+            value = state.user.phone.orEmpty(),
+            onValueChange = { value -> onAction(ProfileAction.SetPhone(value)) },
+            focusRequester = focusRequesters[3],
+            nextFocusRequester = focusRequesters[4],
+            edit = state.edit,
+            label = stringResource(Res.string.phone),
+            imageVector = Icons.Default.Phone,
+            validator = validator["phone"],
+        ) { value -> validations[3] = value }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileAttributeField(
-            state.user.email.orEmpty(),
-            { value -> onAction(ProfileAction.SetEmail(value)) },
-            focusRequesters[4],
-            focusRequesters[5],
-            state.edit,
-            stringResource(Res.string.email),
-            Icons.Default.Email,
-            validator["email"],
-            { value -> validations[4] = value },
-        )
+        ProfileTextField(
+            value = state.user.email.orEmpty(),
+            onValueChange = { value -> onAction(ProfileAction.SetEmail(value)) },
+            focusRequester = focusRequesters[4],
+            nextFocusRequester = focusRequesters[5],
+            edit = state.edit,
+            label = stringResource(Res.string.email),
+            imageVector = Icons.Default.Email,
+            validator = validator["email"],
+        ) { value -> validations[4] = value }
 
         state.user.attributes.entries.forEachIndexed { index, (key, value) ->
             Spacer(modifier = Modifier.height(16.dp))
 
-            ProfileAttributeField(
-                value.first(),
-                { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
-                focusRequesters[5 + index],
-                focusRequesters[6 + index],
-                state.edit,
-                key.asStringResource(),
-                Icons.Default.Attribution,
-                validator[key],
-                { value -> validations[5] = value },
-            )
-            if (state.edit) {
-                Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                ProfileTextField(
+                    modifier = Modifier.weight(1f).padding(8.dp),
+                    value = value.first(),
+                    onValueChange = { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
+                    focusRequester = focusRequesters[5 + index],
+                    nextFocusRequester = focusRequesters[6 + index],
+                    edit = state.edit,
+                    label = key.asStringResource(),
+                    imageVector = Icons.Default.Attribution,
+                    validator = validator[key],
+                ) { value -> validations[5] = value }
 
-                IconButton(
-                    onClick = {
-                        onAction(ProfileAction.RemoveAttribute(key))
-                    },
-                ) {
-                    Icon(Icons.Default.Remove, stringResource(Res.string.remove))
+                if (state.edit) {
+                    IconButton(
+                        onClick = {
+                            onAction(ProfileAction.RemoveAttribute(key))
+                        },
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Icon(Icons.Default.Remove, stringResource(Res.string.remove))
+                    }
                 }
             }
         }
@@ -586,8 +586,10 @@ private fun ProfileScreenContent(
     }
 }
 
+@Suppress("ComposeParameterOrder")
 @Composable
-private fun ProfileAttributeField(
+private fun ProfileTextField(
+    modifier: Modifier = Modifier.fillMaxWidth().padding(8.dp),
     value: String,
     onValueChange: (String) -> Unit,
     focusRequester: FocusRequester,
@@ -598,7 +600,7 @@ private fun ProfileAttributeField(
     validator: Validator?,
     onValidation: (Boolean) -> Unit,
 ): Unit = TextField(
-    modifier = Modifier.fillMaxWidth().padding(8.dp).focusRequester(focusRequester),
+    modifier = modifier.focusRequester(focusRequester),
     value = value,
     onValueChange = onValueChange,
     readOnly = !edit,
