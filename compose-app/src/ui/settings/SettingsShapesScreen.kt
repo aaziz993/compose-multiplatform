@@ -39,7 +39,7 @@ public fun SettingsShapesScreen(
     onThemeChange: (Theme) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
-    verticalArrangement = Arrangement.Center,
+    verticalArrangement = Arrangement.Top,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     SettingsCornerBasedShape(

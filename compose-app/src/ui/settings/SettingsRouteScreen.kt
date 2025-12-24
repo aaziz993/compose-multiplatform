@@ -41,7 +41,7 @@ public fun SettingsRouteScreen(
     onRouteChange: (String, RouteConfig) -> Unit = { _, _ -> },
 ): Unit = Column(
     modifier = modifier,
-    verticalArrangement = Arrangement.Center,
+    verticalArrangement = Arrangement.Top,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val metadataList = remember {

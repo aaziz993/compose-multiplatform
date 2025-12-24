@@ -68,7 +68,7 @@ public fun SettingsColorSchemeScreen(
     onThemeChange: (Theme) -> Unit = {},
 ): Unit = Column(
     modifier = modifier,
-    verticalArrangement = Arrangement.Center,
+    verticalArrangement = Arrangement.Top,
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val colorScheme = theme.currentColorScheme
