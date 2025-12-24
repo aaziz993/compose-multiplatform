@@ -59,6 +59,7 @@ import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.avatar
 import compose_app.generated.resources.back
+import compose_app.generated.resources.camera
 import compose_app.generated.resources.clear
 import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.help
@@ -282,14 +283,16 @@ public fun TopAppBar(
                                         contentDescription = stringResource(Res.string.avatar),
                                     )
                                     if (connectivity.isAvatarConnectivityIndicator)
-                                        connectivityStatus.CircleIcon(
-                                            Modifier
-                                                .align(Alignment.TopStart)
-                                                .size(14.dp),
-                                            Modifier
-                                                .align(Alignment.TopStart)
-                                                .size(14.dp),
-                                        )
+                                        AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
+                                            connectivityStatus.CircleIcon(
+                                                Modifier
+                                                    .align(Alignment.TopStart)
+                                                    .size(14.dp),
+                                                Modifier
+                                                    .align(Alignment.TopStart)
+                                                    .size(14.dp),
+                                            )
+                                        }
                                 }
 
                                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
