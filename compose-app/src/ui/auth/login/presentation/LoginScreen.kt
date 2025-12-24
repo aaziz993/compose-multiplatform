@@ -61,7 +61,7 @@ import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
 import data.type.primitives.string.asStringResource
 import klib.data.config.auth.AuthConfig
-import presentation.components.tooltipbox.AppPlainTooltipBox
+import presentation.components.tooltipbox.PlainTooltipBox
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Login
@@ -215,7 +215,7 @@ private fun LoginProviders(
                 onAction(LoginAction.LoginGoogle)
             },
         ) {
-            AppPlainTooltipBox(tooltip = stringResource(Res.string.google)) {
+            PlainTooltipBox(tooltip = stringResource(Res.string.google)) {
                 Icon(SimpleIcons.Google, stringResource(Res.string.google))
             }
         }
@@ -227,7 +227,7 @@ private fun LoginProviders(
                 onAction(LoginAction.LoginApple)
             },
         ) {
-            AppPlainTooltipBox(tooltip = stringResource(Res.string.apple)) {
+            PlainTooltipBox(tooltip = stringResource(Res.string.apple)) {
                 Icon(SimpleIcons.Apple, stringResource(Res.string.apple))
             }
         }
@@ -238,7 +238,7 @@ private fun LoginProviders(
                     onAction(LoginAction.LoginSupabaseDefaultAuth(supabase.provider, supabase.config))
                 },
             ) {
-                AppPlainTooltipBox(tooltip = supabase.provider.name.asStringResource()) {
+                PlainTooltipBox(tooltip = supabase.provider.name.asStringResource()) {
                     Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
                 }
             }
@@ -250,7 +250,7 @@ private fun LoginProviders(
                     onAction(LoginAction.LoginSupabaseOAuth(supabase.provider, supabase.config))
                 },
             ) {
-                AppPlainTooltipBox(tooltip = supabase.provider.name.asStringResource()) {
+                PlainTooltipBox(tooltip = supabase.provider.name.asStringResource()) {
                     Icon(supabase.provider.imageVector(), supabase.provider.name.asStringResource())
                 }
             }

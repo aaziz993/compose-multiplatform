@@ -12,7 +12,7 @@ import androidx.compose.ui.window.PopupPositionProvider
 
 @Suppress("ComposeModifierMissing", "ComposeParameterOrder")
 @Composable
-public fun AppPlainTooltipBox(
+public fun PlainTooltipBox(
     positionProvider: PopupPositionProvider = TooltipDefaults.rememberTooltipPositionProvider(
         TooltipAnchorPosition.Above,
     ),

@@ -105,7 +105,7 @@ import klib.data.location.toPhoneOrNull
 import klib.data.type.collections.all
 import klib.data.validator.Validator
 import presentation.components.dialog.SignOutConfirmDialog
-import presentation.components.tooltipbox.AppPlainTooltipBox
+import presentation.components.tooltipbox.PlainTooltipBox
 import presentation.connectivity.CircleIcon
 import presentation.connectivity.stringResource
 import ui.auth.profile.presentation.viewmodel.ProfileAction
@@ -208,7 +208,7 @@ private fun ProfileScreenContent(
                 contentDescription = stringResource(Res.string.avatar),
             )
             if (connectivity.isAvatarConnectivityIndicator)
-                AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
+                PlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
                     connectivityStatus.CircleIcon(
                         Modifier
                             .align(Alignment.TopStart)
@@ -229,7 +229,7 @@ private fun ProfileScreenContent(
                         .offset(20.dp, 5.dp)
                         .size(24.dp),
                 ) {
-                    AppPlainTooltipBox(tooltip = stringResource(Res.string.clear)) {
+                    PlainTooltipBox(tooltip = stringResource(Res.string.clear)) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(Res.string.clear),
@@ -248,7 +248,7 @@ private fun ProfileScreenContent(
                         .offset(20.dp, 5.dp)
                         .size(24.dp),
                 ) {
-                    AppPlainTooltipBox(tooltip = stringResource(Res.string.gallery)) {
+                    PlainTooltipBox(tooltip = stringResource(Res.string.gallery)) {
                         Icon(
                             imageVector = Icons.Default.Image,
                             contentDescription = stringResource(Res.string.gallery),
@@ -266,7 +266,7 @@ private fun ProfileScreenContent(
                         .offset((-20).dp, 5.dp)
                         .size(24.dp),
                 ) {
-                    AppPlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
+                    PlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
                         Icon(
                             imageVector = Icons.Default.CameraEnhance,
                             contentDescription = stringResource(Res.string.camera),
@@ -277,7 +277,7 @@ private fun ProfileScreenContent(
             }
 
             if (state.user.isVerified)
-                AppPlainTooltipBox(tooltip = stringResource(Res.string.verified)) {
+                PlainTooltipBox(tooltip = stringResource(Res.string.verified)) {
                     Icon(
                         imageVector = Icons.Default.VerifiedUser,
                         contentDescription = stringResource(Res.string.verified),
@@ -334,7 +334,7 @@ private fun ProfileScreenContent(
                     },
                     modifier = Modifier.focusRequester(focusRequesters[5 + state.user.attributes.size]),
                 ) {
-                    AppPlainTooltipBox(tooltip = stringResource(Res.string.save)) {
+                    PlainTooltipBox(tooltip = stringResource(Res.string.save)) {
                         Icon(
                             imageVector = Icons.Default.Save,
                             contentDescription = stringResource(Res.string.save),
@@ -349,14 +349,14 @@ private fun ProfileScreenContent(
                 },
             ) {
                 if (state.edit)
-                    AppPlainTooltipBox(tooltip = stringResource(Res.string.close)) {
+                    PlainTooltipBox(tooltip = stringResource(Res.string.close)) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(Res.string.close),
                             tint = MaterialTheme.colorScheme.error,
                         )
                     }
-                else AppPlainTooltipBox(tooltip = stringResource(Res.string.edit)) {
+                else PlainTooltipBox(tooltip = stringResource(Res.string.edit)) {
                     Icon(Icons.Default.Edit, stringResource(Res.string.edit))
                 }
             }
@@ -542,7 +542,7 @@ private fun ProfileScreenContent(
                     onAction(ProfileAction.SetAttribute(key, listOf(value)))
                 },
             ) {
-                AppPlainTooltipBox(tooltip = stringResource(Res.string.add)) {
+                PlainTooltipBox(tooltip = stringResource(Res.string.add)) {
                     Icon(Icons.Default.Add, stringResource(Res.string.add))
                 }
             }

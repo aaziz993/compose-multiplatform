@@ -53,7 +53,7 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.painterResource
-import presentation.components.tooltipbox.AppPlainTooltipBox
+import presentation.components.tooltipbox.PlainTooltipBox
 import ui.navigation.presentation.ArticleDetails
 import ui.news.articledetails.viewmodel.ArticleDetailsAction
 import ui.news.data.model.Article
@@ -131,7 +131,7 @@ private fun ArticleDetailsSuccessContent(
                 onClick = onBackClick,
                 modifier = Modifier.align(Alignment.TopStart),
             ) {
-                AppPlainTooltipBox(
+                PlainTooltipBox(
                     tooltip = stringResource(Res.string.back),
                 ) {
                     Icon(
@@ -147,7 +147,7 @@ private fun ArticleDetailsSuccessContent(
                     onClick = { onShareClick(url) },
                     modifier = Modifier.align(Alignment.TopEnd),
                 ) {
-                    AppPlainTooltipBox(
+                    PlainTooltipBox(
                         tooltip = stringResource(Res.string.share),
                     ) {
                         Icon(

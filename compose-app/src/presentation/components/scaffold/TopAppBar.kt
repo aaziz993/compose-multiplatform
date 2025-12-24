@@ -59,7 +59,6 @@ import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.avatar
 import compose_app.generated.resources.back
-import compose_app.generated.resources.camera
 import compose_app.generated.resources.clear
 import compose_app.generated.resources.country_flag
 import compose_app.generated.resources.help
@@ -83,7 +82,7 @@ import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.painterResource
 import presentation.components.dialog.SignOutConfirmDialog
-import presentation.components.tooltipbox.AppPlainTooltipBox
+import presentation.components.tooltipbox.PlainTooltipBox
 import presentation.connectivity.CircleIcon
 import presentation.connectivity.DefaultIcon
 import presentation.connectivity.Text
@@ -145,7 +144,7 @@ public fun TopAppBar(
                             IconButton(
                                 onClick = onDrawerToggle,
                             ) {
-                                AppPlainTooltipBox(tooltip = stringResource(Res.string.menu)) {
+                                PlainTooltipBox(tooltip = stringResource(Res.string.menu)) {
                                     Icon(
                                         imageVector = if (isDrawerOpen) Icons.AutoMirrored.Filled.ViewSidebar else Icons.AutoMirrored.Outlined.ViewSidebar,
                                         contentDescription = stringResource(Res.string.menu),
@@ -157,7 +156,7 @@ public fun TopAppBar(
                             IconButton(
                                 onClick = { onNavigationActions(arrayOf(NavigationAction.Pop)) },
                             ) {
-                                AppPlainTooltipBox(tooltip = stringResource(Res.string.back)) {
+                                PlainTooltipBox(tooltip = stringResource(Res.string.back)) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Default.NavigateBefore,
                                         contentDescription = stringResource(Res.string.back),
@@ -172,7 +171,7 @@ public fun TopAppBar(
                             connectivityStatus.Text(overflow = TextOverflow.Clip, maxLines = 1)
 
                         if (connectivity.isConnectivityIndicator) {
-                            AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
+                            PlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
                                 connectivityStatus.DefaultIcon()
                             }
                         }
@@ -188,7 +187,7 @@ public fun TopAppBar(
                                     )
                                 },
                             ) {
-                                AppPlainTooltipBox(tooltip = stringResource(Res.string.help)) {
+                                PlainTooltipBox(tooltip = stringResource(Res.string.help)) {
                                     Icon(
                                         imageVector = Icons.Default.SupportAgent,
                                         contentDescription = stringResource(Res.string.help),
@@ -203,7 +202,7 @@ public fun TopAppBar(
                                 onThemeChange(theme.copyIsDarkToggled())
                             },
                         ) {
-                            AppPlainTooltipBox(tooltip = stringResource(Res.string.theme)) {
+                            PlainTooltipBox(tooltip = stringResource(Res.string.theme)) {
                                 theme.IsDarkIcon()
                             }
                         }
@@ -247,7 +246,7 @@ public fun TopAppBar(
                             elevation = null,
                             contentPadding = PaddingValues(0.dp),
                         ) {
-                            AppPlainTooltipBox(tooltip = stringResource(Res.string.locale)) {
+                            PlainTooltipBox(tooltip = stringResource(Res.string.locale)) {
                                 Image(
                                     painter = painterResource(locale.country()!!.alpha2.flag),
                                     contentDescription = stringResource(Res.string.country_flag),
@@ -265,7 +264,7 @@ public fun TopAppBar(
                             var expanded by remember { mutableStateOf(false) }
                             var singOutDialog by remember { mutableStateOf(false) }
                             Box {
-                                AppPlainTooltipBox(tooltip = stringResource(Res.string.profile)) {
+                                PlainTooltipBox(tooltip = stringResource(Res.string.profile)) {
                                     Avatar(
                                         user = user,
                                         modifier = Modifier
@@ -283,7 +282,7 @@ public fun TopAppBar(
                                         contentDescription = stringResource(Res.string.avatar),
                                     )
                                     if (connectivity.isAvatarConnectivityIndicator)
-                                        AppPlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
+                                        PlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
                                             connectivityStatus.CircleIcon(
                                                 Modifier
                                                     .align(Alignment.TopStart)

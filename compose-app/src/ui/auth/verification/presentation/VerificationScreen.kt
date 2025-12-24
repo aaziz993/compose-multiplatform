@@ -52,7 +52,7 @@ import io.github.ismoy.imagepickerkmp.domain.config.ImagePickerConfig
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.GalleryPickerLauncher
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.ImagePickerLauncher
 import klib.data.auth.model.Auth
-import presentation.components.tooltipbox.AppPlainTooltipBox
+import presentation.components.tooltipbox.PlainTooltipBox
 import ui.auth.verification.presentation.viewmodel.VerificationAction
 import ui.auth.verification.presentation.viewmodel.VerificationState
 import ui.navigation.presentation.Verification
@@ -207,7 +207,7 @@ private fun VerificationImagePicker(
                     showCamera = true
                 },
             ) {
-                AppPlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
+                PlainTooltipBox(tooltip = stringResource(Res.string.camera)) {
                     Icon(Icons.Default.CameraEnhance, stringResource(Res.string.camera))
                 }
             }
@@ -216,7 +216,7 @@ private fun VerificationImagePicker(
                     showGallery = true
                 },
             ) {
-                AppPlainTooltipBox(tooltip = stringResource(Res.string.gallery)) {
+                PlainTooltipBox(tooltip = stringResource(Res.string.gallery)) {
                     Icon(Icons.Default.Image, stringResource(Res.string.gallery))
                 }
             }
