@@ -66,6 +66,7 @@ import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivityState
 import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.locale.LocalLocaleState
+import clib.presentation.locale.inspectionModeAware
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.LocalRoutesState
 import clib.presentation.navigation.NavRoute
@@ -188,19 +189,22 @@ public data object Phone : KoinRoute<Phone>(), NavRoute {
         route: Phone,
         sharedTransitionScope: SharedTransitionScope,
     ) {
+        val inspectionMode = LocalInspectionMode.current
         val config = LocalConfig.current
         val router = currentRouter()
         val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val country = Country.getCountries().find { country -> country.dial == state.countryCode }
-            ?: (if (!LocalInspectionMode.current) Country.current else null) ?: Country.forCode("US")
+        val country = remember(state.countryCode) {
+            Country.getCountries().find { country -> country.dial == state.countryCode }
+                ?: (if (!inspectionMode) Country.current else null) ?: Country.forCode("US")
+        }
 
         PhoneScreen(
             Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             route,
+            country,
             state,
             viewModel::action,
-            country,
             router::actions,
         )
     }
@@ -893,7 +897,7 @@ public data object SettingsMain : KoinRoute<SettingsMain>(), NavRoute {
             { value -> densityState.value = value },
             config.localization.locales,
             config.localization.locale,
-            localeState.localeInspectionAware(),
+            localeState.value.inspectionModeAware,
             { value -> localeState.value = value },
             config.ui.routes,
             routesState.value,

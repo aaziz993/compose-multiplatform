@@ -26,7 +26,7 @@ public class ProfileViewModel(
 
     override fun action(action: ProfileAction) {
         when (action) {
-            is ProfileAction.Edit -> editUser(action.value)
+            is ProfileAction.Edit -> edit(action.value)
             is ProfileAction.SetUsername -> setUsername(action.value)
             is ProfileAction.SetFirstName -> setFirstName(action.value)
             is ProfileAction.SetLastName -> setLastName(action.value)
@@ -43,7 +43,7 @@ public class ProfileViewModel(
         }
     }
 
-    private fun editUser(value: Boolean) = state.update {
+    private fun edit(value: Boolean) = state.update {
         it.map { if (value) copy(edit = true) else copy(user = authState.value.user!!, edit = false) }
     }
 

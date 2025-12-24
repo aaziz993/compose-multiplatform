@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 public fun CountryCodePickerOutlinedTextField(
     value: String,
-    onValueChange: (countryCode: String, value: String, isValid: Boolean) -> Unit,
+    onValueChange: (dial: String, value: String, isValid: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     selectedCountry: Country = Country.getCountries().first(),
     countries: List<Country> = Country.getCountries().toList(),
@@ -51,8 +51,7 @@ public fun CountryCodePickerOutlinedTextField(
     showSheet: Boolean = false,
     itemPadding: Int = 10
 ) {
-
-    var country by remember {
+    var country by remember(selectedCountry) {
         mutableStateOf(selectedCountry)
     }
 

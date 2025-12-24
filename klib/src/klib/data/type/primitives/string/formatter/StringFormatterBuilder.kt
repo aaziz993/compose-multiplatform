@@ -10,12 +10,12 @@ import klib.data.type.primitives.string.formatter.model.MutableFlagSet
 public annotation class FormatterDsl
 
 @FormatterDsl
-public class FormatterBuilder internal constructor() {
+public class StringFormatterBuilder internal constructor() {
 
     private val conversions: MutableConversionMap = hashMapOf()
     private val flags: MutableFlagSet = hashSetOf(FLAG_REUSE_ARGUMENT, FLAG_LEFT_JUSTIFIED)
 
-    public fun takeFrom(formatter: Formatter) {
+    public fun takeFrom(formatter: StringFormatter) {
         flags.takeFrom(formatter)
         conversions.takeFrom(formatter)
     }
@@ -30,13 +30,13 @@ public class FormatterBuilder internal constructor() {
         scope.init()
     }
 
-    public fun createFormatter(): Formatter = Formatter(conversions, flags)
+    public fun createFormatter(): StringFormatter = StringFormatter(conversions, flags)
 }
 
 @FormatterDsl
 public class ConversionsScope internal constructor(public val conversions: MutableConversionMap) {
 
-    public fun takeFrom(formatter: Formatter) {
+    public fun takeFrom(formatter: StringFormatter) {
         conversions.takeFrom(formatter)
     }
 
@@ -66,7 +66,7 @@ public class ConversionsScope internal constructor(public val conversions: Mutab
 @FormatterDsl
 public class FlagsScope internal constructor(public val flags: MutableFlagSet) {
 
-    public fun takeFrom(formatter: Formatter) {
+    public fun takeFrom(formatter: StringFormatter) {
         flags.takeFrom(formatter)
     }
 
@@ -75,11 +75,11 @@ public class FlagsScope internal constructor(public val flags: MutableFlagSet) {
     }
 }
 
-public fun buildFormatter(init: FormatterBuilder.() -> Unit): Formatter {
-    val bld = FormatterBuilder()
+public fun buildFormatter(init: StringFormatterBuilder.() -> Unit): StringFormatter {
+    val bld = StringFormatterBuilder()
     bld.init()
     return bld.createFormatter()
 }
 
-private fun MutableConversionMap.takeFrom(formatter: Formatter) = putAll(formatter.conversions)
-private fun MutableFlagSet.takeFrom(formatter: Formatter) = addAll(formatter.flags)
+private fun MutableConversionMap.takeFrom(formatter: StringFormatter) = putAll(formatter.conversions)
+private fun MutableFlagSet.takeFrom(formatter: StringFormatter) = addAll(formatter.flags)

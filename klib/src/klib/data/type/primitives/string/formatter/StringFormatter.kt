@@ -12,11 +12,11 @@ import klib.data.type.primitives.string.formatter.model.PartAction
 import klib.data.type.primitives.string.formatter.argument.ArgumentIndexHolder
 import klib.data.type.primitives.string.lengthSequence
 
-public class Formatter internal constructor(public val conversions: ConversionMap, public val flags: FlagSet) {
+public class StringFormatter internal constructor(public val conversions: ConversionMap, public val flags: FlagSet) {
 
-    public companion object {
+    public companion object Companion {
 
-        public val Default: Formatter = buildFormatter {
+        public val Default: StringFormatter = buildFormatter {
             conversions {
                 /* Some notes for me:
                  * Deny precision for character, integral, date/time, percent, line separator, 'g' conversions
@@ -145,10 +145,10 @@ public class Formatter internal constructor(public val conversions: ConversionMa
     }
 }
 
-public fun Formatter.format(str: String, vararg args: Any?): String =
+public fun StringFormatter.format(str: String, vararg args: Any?): String =
     formatTo(StringBuilder(), str, args).toString()
 
-public fun String.format(vararg args: Any?): String = Formatter.Default.format(this, *args)
+public fun String.format(vararg args: Any?): String = StringFormatter.Default.format(this, *args)
 
 private fun createFormatStringRegex(flags: FlagSet, conversions: ConversionMap): Regex =
     Regex(

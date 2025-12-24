@@ -20,6 +20,7 @@ import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivityState
 import clib.presentation.connectivity.LocalConnectivityStatus
 import clib.presentation.locale.LocalLocaleState
+import clib.presentation.locale.inspectionModeAware
 import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.currentRouter
@@ -73,7 +74,7 @@ public class TopAppBarNavSuiteSceneStrategy : WrapperSceneStrategy<NavRoute>() {
                 theme = themeState.value,
                 onThemeChange = { value -> themeState.value = value },
                 locales = config.localization.locales,
-                locale = localeState.localeInspectionAware(),
+                locale = localeState.value.inspectionModeAware,
                 onLocaleChange = { value -> localeState.value = value },
                 auth = authState.value,
                 onAuthChange = { value -> authState.value = value },

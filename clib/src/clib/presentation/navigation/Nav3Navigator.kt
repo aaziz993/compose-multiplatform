@@ -182,7 +182,7 @@ public open class Nav3Navigator(
      * Replaces routes based on authentication state.
      */
     protected open fun auth() {
-        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.let {
+        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
             if (it.route !in routes) return onUnknownRoute(it)
         }
         val snapshot =

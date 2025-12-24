@@ -38,5 +38,18 @@
         <string>$(EXECUTABLE_NAME)</string>
 
 
+        <!-- Google Sign-In -->
+        <key>GIDClientID</key>
+        <string>444505512670-rtg2r4ikm8squut505ep1gqnqae5nmbr.apps.googleusercontent.com</string>
+
+        <key>CFBundleURLTypes</key><array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.444505512670-rtg2r4ikm8squut505ep1gqnqae5nmbr</string>
+            </array>
+        </dict>
+    </array>
+
     </dict>
 </plist>

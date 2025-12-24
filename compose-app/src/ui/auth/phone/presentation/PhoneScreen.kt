@@ -46,9 +46,9 @@ import ui.navigation.presentation.Phone
 public fun PhoneScreen(
     modifier: Modifier = Modifier,
     route: Phone = Phone,
+    country: Country = Country.getCountries().first(),
     state: PhoneState = PhoneState(),
     onAction: (PhoneAction) -> Unit = {},
-    country: Country = Country.getCountries().first(),
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Box(
     modifier = modifier,
@@ -76,10 +76,10 @@ public fun PhoneScreen(
 
         CountryCodePickerOutlinedTextField(
             value = state.phone,
-            onValueChange = { countryCode, value, isValid ->
+            onValueChange = { dial, value, isValid ->
                 onAction(
                     PhoneAction.SetPhone(
-                        countryCode,
+                        dial,
                         if (value.isEmpty() || "${Regex.DIGIT_PATTERN}+".toRegex().matches(value)) value else state.phone,
                         isValid,
                     ),

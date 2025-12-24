@@ -2,6 +2,7 @@ package clib.presentation.locale
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
@@ -17,14 +18,15 @@ import klib.data.location.locale.current
 public val LocalLocaleState: ProvidableCompositionLocal<LocaleState> =
     staticCompositionLocalOf(::LocaleState)
 
+@Suppress("ComposeUnstableReceiver")
+public val Locale.inspectionModeAware: Locale
+    @Composable
+    get() = (if (LocalInspectionMode.current) null else this) ?: Locale.forLanguageTag("en-US")
+
+@Stable
 public class LocaleState(initialValue: Locale = Locale.current) {
 
     public var value: Locale by mutableStateOf(initialValue)
-
-    @Suppress("ComposeUnstableReceiver")
-    @Composable
-    public fun localeInspectionAware(): Locale =
-        (if (LocalInspectionMode.current) null else value) ?: Locale.forLanguageTag("en-US")
 
     public companion object Companion {
 

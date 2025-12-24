@@ -17,8 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Attribution
 import androidx.compose.material.icons.filled.Close
@@ -28,6 +26,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,7 +66,6 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.avatar
 import compose_app.generated.resources.close
 import compose_app.generated.resources.country
-import compose_app.generated.resources.verified
 import compose_app.generated.resources.edit
 import compose_app.generated.resources.email
 import compose_app.generated.resources.first_name
@@ -76,6 +75,7 @@ import compose_app.generated.resources.save
 import compose_app.generated.resources.search
 import compose_app.generated.resources.sign_out
 import compose_app.generated.resources.username
+import compose_app.generated.resources.verified
 import compose_app.generated.resources.verify
 import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
@@ -316,13 +316,13 @@ private fun ProfileScreenContent(
         }
 
         phone?.let {
-            val selectedCountry = remember {
+            val selectedCountry = remember(state.edit) {
                 Country.getCountries().first { country -> country.dial == it.dial }
             }
             CountryCodePickerTextField(
                 value = it.number,
-                onValueChange = { countryCode, value, _ ->
-                    phone = Phone(countryCode, value)
+                onValueChange = { dial, number, _ ->
+                    phone = Phone(dial, number)
                     onAction(ProfileAction.SetPhone(phone.toString()))
                 },
                 modifier = Modifier.fillMaxWidth(),

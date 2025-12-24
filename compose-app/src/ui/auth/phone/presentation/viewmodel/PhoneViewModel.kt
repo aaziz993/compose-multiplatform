@@ -28,12 +28,12 @@ public class PhoneViewModel(
         field = MutableStateFlow(PhoneState()).onStartStateIn { it }
 
     override fun action(action: PhoneAction): Unit = when (action) {
-        is PhoneAction.SetPhone -> setPhone(action.countryCode, action.phone, action.isValid)
+        is PhoneAction.SetPhone -> setPhone(action.dial, action.number, action.isValid)
         PhoneAction.Confirm -> confirm()
     }
 
-    private fun setPhone(countryCode: String, phone: String, isValid: Boolean) =
-        state.update { it.copy(countryCode = countryCode, phone = phone, isValid = isValid) }
+    private fun setPhone(dial: String, number: String, isValid: Boolean) =
+        state.update { it.copy(dial = dial, number = number, isValid = isValid) }
 
     private fun confirm() {
         viewModelScope.launch(Dispatchers.Main) {
