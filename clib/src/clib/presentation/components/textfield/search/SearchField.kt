@@ -76,7 +76,7 @@ public fun SearchField(
     trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     showIcon: (@Composable (action: () -> Unit) -> Unit)? = { action ->
         Icon(
-            if (showValue) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+            if (showValue) Icons.Default.Visibility else Icons.Default.VisibilityOff,
             null,
             Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
             LocalContentColor.current.orErrorColor(isError),
