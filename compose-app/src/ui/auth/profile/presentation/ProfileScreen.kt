@@ -423,7 +423,9 @@ private fun ProfileScreenContent(
                         country.copy(name = "country_$country".asStringResource { country.name })
                     },
                     readOnly = !state.edit,
-                    label = { Text(stringResource(Res.string.phone)) },
+                    label = {
+                        Text(text = stringResource(Res.string.phone), overflow = TextOverflow.Clip, maxLines = 1)
+                    },
                     picker = CountryPicker(
                         headerTitle = stringResource(Res.string.country),
                         searchHint = stringResource(Res.string.search),
