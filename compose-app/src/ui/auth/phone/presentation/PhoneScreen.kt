@@ -100,7 +100,10 @@ public fun PhoneScreen(
             textStyle = MaterialTheme.typography.bodyMedium,
             label = {
                 Text(
-                    text = stringResource(Res.string.phone), style = MaterialTheme.typography.bodyMedium,
+                    text = stringResource(Res.string.phone),
+                    overflow = TextOverflow.Clip,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             },
             trailingIcon = {

@@ -487,13 +487,13 @@ private fun ProfileScreenContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (state.edit)
+        if (state.edit) {
+            var key by remember { mutableStateOf("") }
+            var value by remember { mutableStateOf("") }
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                var key by remember { mutableStateOf("") }
-                var value by remember { mutableStateOf("") }
-
                 TextField(
                     modifier = Modifier.weight(1f),
                     value = key,
@@ -534,15 +534,17 @@ private fun ProfileScreenContent(
                         value.map { it.asStringResource() }.joinToString("\n")
                     },
                 )
-
-                IconButton(
-                    onClick = {
-                        onAction(ProfileAction.SetAttribute(key, listOf(value)))
-                    },
-                ) {
+            }
+            IconButton(
+                onClick = {
+                    onAction(ProfileAction.SetAttribute(key, listOf(value)))
+                },
+            ) {
+                AppPlainTooltipBox(tooltip = stringResource(Res.string.add)) {
                     Icon(Icons.Default.Add, stringResource(Res.string.add))
                 }
             }
+        }
 
         if (!state.user.isVerified)
             Button(

@@ -80,8 +80,6 @@ public fun HotpScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
-            overflow = TextOverflow.Clip,
-            maxLines = 1,
         )
 
         Text("Test code-${testOtpCode}")
