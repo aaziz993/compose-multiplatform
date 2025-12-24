@@ -524,7 +524,7 @@ private fun ProfileScreenContent(
                     Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
                 },
                 placeholder = {
-                    Text(text = stringResource(Res.string.value))
+                    Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
                 },
                 leadingIcon = {
                     Icon(
