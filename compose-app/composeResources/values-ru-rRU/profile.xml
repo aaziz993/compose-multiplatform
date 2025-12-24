@@ -7,7 +7,7 @@
     <string name="first_name">Имя</string>
     <string name="last_name">Фамилия</string>
     <string name="surname">Отчество</string>
-    <string name="email">Email</string>
+    <string name="email">Электронная почта</string>
     <string name="roles">/Роли</string>
     <string name="phone">Телефон</string>
     <string name="unverified">Неверифицированный</string>

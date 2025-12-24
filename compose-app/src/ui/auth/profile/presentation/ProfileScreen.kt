@@ -73,7 +73,6 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.add
 import compose_app.generated.resources.avatar
 import compose_app.generated.resources.camera
-import compose_app.generated.resources.clear
 import compose_app.generated.resources.close
 import compose_app.generated.resources.country
 import compose_app.generated.resources.edit
@@ -229,10 +228,10 @@ private fun ProfileScreenContent(
                         .offset(20.dp, 5.dp)
                         .size(24.dp),
                 ) {
-                    PlainTooltipBox(tooltip = stringResource(Res.string.clear)) {
+                    PlainTooltipBox(tooltip = stringResource(Res.string.remove)) {
                         Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(Res.string.clear),
+                            imageVector = Icons.Default.Remove,
+                            contentDescription = stringResource(Res.string.remove),
                             modifier = Modifier.size(14.dp),
                             tint = MaterialTheme.colorScheme.error,
                         )
@@ -460,28 +459,27 @@ private fun ProfileScreenContent(
         state.user.attributes.entries.forEachIndexed { index, (key, value) ->
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                ProfileAttributeField(
-                    value.first(),
-                    { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
-                    focusRequesters[5 + index],
-                    focusRequesters[6 + index],
-                    state.edit,
-                    key.asStringResource(),
-                    Icons.Default.Attribution,
-                    validator[key],
-                    { value -> validations[5] = value },
-                )
-                if (state.edit)
-                    IconButton(
-                        onClick = {
-                            onAction(ProfileAction.RemoveAttribute(key))
-                        },
-                    ) {
-                        Icon(Icons.Default.Remove, stringResource(Res.string.remove))
-                    }
+            ProfileAttributeField(
+                value.first(),
+                { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
+                focusRequesters[5 + index],
+                focusRequesters[6 + index],
+                state.edit,
+                key.asStringResource(),
+                Icons.Default.Attribution,
+                validator[key],
+                { value -> validations[5] = value },
+            )
+            if (state.edit) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                IconButton(
+                    onClick = {
+                        onAction(ProfileAction.RemoveAttribute(key))
+                    },
+                ) {
+                    Icon(Icons.Default.Remove, stringResource(Res.string.remove))
+                }
             }
         }
 

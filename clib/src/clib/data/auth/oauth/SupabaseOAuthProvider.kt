@@ -1,6 +1,7 @@
 package clib.data.auth.oauth
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.ui.graphics.vector.ImageVector
 import clib.presentation.icons.Keycloak
 import clib.presentation.icons.X
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
@@ -18,7 +19,7 @@ import compose.icons.simpleicons.Slack
 import compose.icons.simpleicons.Spotify
 import compose.icons.simpleicons.Twitch
 
-public fun SupabaseOAuthProvider.imageVector() = when (this) {
+public fun SupabaseOAuthProvider.imageVector(): ImageVector = when (this) {
     SupabaseOAuthProvider.GITHUB -> SimpleIcons.Github
     SupabaseOAuthProvider.GITLAB -> SimpleIcons.Gitlab
     SupabaseOAuthProvider.BITBUCKET -> SimpleIcons.Bitbucket
