@@ -13,7 +13,7 @@ auth:
       supabaseKey: sb_publishable_upFvLGSLpb_HQU7TKjKoSg_Tn5Funjc
       deepLinkHost: localhost
       deepLinkScheme: https
-    redirectUrl: https://localhost/services
+    redirectUrl: https://tjtexgktpxmahfoiiehr.supabase.co/auth/v1/callback
   supabaseOAuths:
     - provider: GITHUB
       config: { }
