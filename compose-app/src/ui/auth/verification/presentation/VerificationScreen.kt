@@ -134,7 +134,7 @@ public fun VerificationScreen(
                     onAction(VerificationAction.Confirm)
                 },
             ) {
-                Text(text = stringResource(Res.string.confirm))
+                Text(text = stringResource(Res.string.confirm), overflow = TextOverflow.Clip, maxLines = 1)
             }
     }
 }
@@ -183,8 +183,6 @@ private fun VerificationImagePicker(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
-            overflow = TextOverflow.Clip,
-            maxLines = 1,
         )
 
         Box(

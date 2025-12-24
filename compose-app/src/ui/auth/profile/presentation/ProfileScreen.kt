@@ -485,56 +485,58 @@ private fun ProfileScreenContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         if (state.edit) {
+            Spacer(modifier = Modifier.height(16.dp))
+
             var key by remember { mutableStateOf("") }
             var value by remember { mutableStateOf("") }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                TextField(
-                    modifier = Modifier.weight(1f),
-                    value = key,
-                    onValueChange = { value -> key = value },
-                    label = {
-                        Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
-                    },
-                    placeholder = {
-                        Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
-                    },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Default.Key,
-                            stringResource(Res.string.key),
-                        )
-                    },
-                )
+            TextField(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                value = key,
+                onValueChange = { value -> key = value },
+                label = {
+                    Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
+                },
+                placeholder = {
+                    Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
+                },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Key,
+                        stringResource(Res.string.key),
+                    )
+                },
+                singleLine = true,
+            )
 
-                TextField(
-                    modifier = Modifier.weight(1f),
-                    value = value,
-                    onValueChange = { value = it },
-                    label = {
-                        Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
-                    },
-                    placeholder = {
-                        Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
-                    },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Default.Attribution,
-                            stringResource(Res.string.value),
-                        )
-                    },
-                    validator = validator[key],
-                    onValidation = { value ->
-                        validations[5 + state.user.attributes.size] = value.isEmpty()
-                        value.map { it.asStringResource() }.joinToString("\n")
-                    },
-                )
-            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                value = value,
+                onValueChange = { value = it },
+                label = {
+                    Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
+                },
+                placeholder = {
+                    Text(text = stringResource(Res.string.value))
+                },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Attribution,
+                        stringResource(Res.string.value),
+                    )
+                },
+                validator = validator[key],
+                onValidation = { value ->
+                    validations[5 + state.user.attributes.size] = value.isEmpty()
+                    value.map { it.asStringResource() }.joinToString("\n")
+                },
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             IconButton(
                 onClick = {
                     onAction(ProfileAction.SetAttribute(key, listOf(value)))
@@ -545,6 +547,8 @@ private fun ProfileScreenContent(
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (!state.user.isVerified)
             Button(
@@ -557,8 +561,10 @@ private fun ProfileScreenContent(
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(text = stringResource(Res.string.verify))
+                Text(text = stringResource(Res.string.verify), overflow = TextOverflow.Clip, maxLines = 1)
             }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         var singOutDialog by remember { mutableStateOf(false) }
         if (singOutDialog)
@@ -577,7 +583,7 @@ private fun ProfileScreenContent(
             },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(text = stringResource(Res.string.sign_out))
+            Text(text = stringResource(Res.string.sign_out), overflow = TextOverflow.Clip, maxLines = 1)
         }
     }
 }
