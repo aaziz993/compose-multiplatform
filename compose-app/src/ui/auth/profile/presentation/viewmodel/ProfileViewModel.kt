@@ -105,3 +105,9 @@ public class ProfileViewModel(
 
     private fun restore() = state.update { it.toSuccess(false) }
 }
+
+private fun String.isLocalUri(): Boolean =
+    startsWith("file://") ||
+        startsWith("content://") ||
+        startsWith("blob:") ||
+        startsWith("data:")

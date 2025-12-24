@@ -19,9 +19,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Attribution
+import androidx.compose.material.icons.filled.CameraEnhance
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Save
@@ -65,11 +67,13 @@ import clib.presentation.events.alert.model.AlertEvent
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.avatar
+import compose_app.generated.resources.camera
 import compose_app.generated.resources.close
 import compose_app.generated.resources.country
 import compose_app.generated.resources.edit
 import compose_app.generated.resources.email
 import compose_app.generated.resources.first_name
+import compose_app.generated.resources.gallery
 import compose_app.generated.resources.last_name
 import compose_app.generated.resources.phone
 import compose_app.generated.resources.save
@@ -80,6 +84,9 @@ import compose_app.generated.resources.verified
 import compose_app.generated.resources.verify
 import data.type.primitives.string.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
+import io.github.ismoy.imagepickerkmp.domain.config.ImagePickerConfig
+import io.github.ismoy.imagepickerkmp.presentation.ui.components.GalleryPickerLauncher
+import io.github.ismoy.imagepickerkmp.presentation.ui.components.ImagePickerLauncher
 import klib.data.load.LoadingResult
 import klib.data.load.success
 import klib.data.location.Phone
@@ -155,6 +162,33 @@ private fun ProfileScreenContent(
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        var showCamera by remember { mutableStateOf(false) }
+        if (showCamera) {
+            ImagePickerLauncher(
+                config = ImagePickerConfig(
+                    onPhotoCaptured = { result ->
+                        onAction(ProfileAction.SetImageUrl(result.uri))
+                        showCamera = false
+                    },
+                    onError = { showCamera = false },
+                    onDismiss = { showCamera = false },
+                ),
+            )
+        }
+
+        var showGallery by remember { mutableStateOf(false) }
+        if (showGallery) {
+            GalleryPickerLauncher(
+                onPhotosSelected = { result ->
+                    onAction(ProfileAction.SetImageUrl(result.single().uri))
+                    showGallery = false
+                },
+                onError = { showGallery = false },
+                onDismiss = { showGallery = false },
+                allowMultiple = false,
+            )
+        }
+
         Box {
             Avatar(
                 user = state.user,
@@ -172,29 +206,49 @@ private fun ProfileScreenContent(
                         .size(14.dp),
                 )
 
+            if (state.edit) {
+                IconButton(
+                    onClick = {
+                        showCamera = true
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .offset((-20).dp, 5.dp)
+                        .size(24.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CameraEnhance,
+                        contentDescription = stringResource(Res.string.camera),
+                        modifier = Modifier.size(14.dp),
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        showGallery = true
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset(20.dp, 5.dp)
+                        .size(24.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Image,
+                        contentDescription = stringResource(Res.string.gallery),
+                        modifier = Modifier.size(14.dp),
+                    )
+                }
+            }
+
             if (state.user.isVerified)
                 Icon(
                     imageVector = Icons.Default.VerifiedUser,
                     contentDescription = stringResource(Res.string.verified),
                     modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .offset((-20).dp, 5.dp)
-                        .size(24.dp),
+                        .align(Alignment.BottomCenter)
+                        .offset(y = 5.dp)
+                        .size(14.dp),
                 )
-
-            IconButton(
-                onClick = {},
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .offset(20.dp, 5.dp)
-                    .size(24.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(Res.string.edit),
-                    modifier = Modifier.size(14.dp),
-                )
-            }
         }
 
         if (state.user.roles.isNotEmpty()) {
