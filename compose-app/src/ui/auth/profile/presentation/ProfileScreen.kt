@@ -419,6 +419,9 @@ private fun ProfileScreenContent(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     selectedCountry = selectedCountry,
+                    countries = Country.getCountries().toList().map { country ->
+                        country.copy(name = "country_$country".asStringResource { country.name })
+                    },
                     readOnly = !state.edit,
                     label = { Text(stringResource(Res.string.phone)) },
                     picker = CountryPicker(
