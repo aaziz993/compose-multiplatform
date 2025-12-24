@@ -5,15 +5,15 @@ auth:
       codeDigits: 4
       hmacAlgorithm: sha512
   google:
-    webClientId: YOUR_WEB_CLIENT_ID
-    clientSecret: YOUR_CLIENT_SECRET
+    webClientId: 444505512670-rtg2r4ikm8squut505ep1gqnqae5nmbr.apps.googleusercontent.com
+    clientSecret: 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
   supabase:
     config:
-      supabaseUrl: YOUR_SUPABASE_URL
-      supabaseKey: YOUR_SUPABASE_KEY
-      deepLinkHost: YOUR_DEEP_LINK_HOST
-      deepLinkScheme: YOUR_DEEP_LINK_SCHEME
-    redirectUrl: YOUR_REDIRECT_URL
+      supabaseUrl: https://tjtexgktpxmahfoiiehr.supabase.co
+      supabaseKey: sb_publishable_upFvLGSLpb_HQU7TKjKoSg_Tn5Funjc
+      deepLinkHost: localhost
+      deepLinkScheme: https
+    redirectUrl: https://localhost/services
   supabaseOAuths:
     - provider: GITHUB
       config: { }
