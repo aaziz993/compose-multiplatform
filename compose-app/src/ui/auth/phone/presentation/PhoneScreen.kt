@@ -75,12 +75,12 @@ public fun PhoneScreen(
         )
 
         CountryCodePickerOutlinedTextField(
-            value = state.phone,
+            value = state.phone.number,
             onValueChange = { dial, value, isValid ->
                 onAction(
                     PhoneAction.SetPhone(
                         dial,
-                        if (value.isEmpty() || "${Regex.DIGIT_PATTERN}+".toRegex().matches(value)) value else state.phone,
+                        if (value.isEmpty() || "${Regex.DIGIT_PATTERN}+".toRegex().matches(value)) value else state.phone.number,
                         isValid,
                     ),
                 )

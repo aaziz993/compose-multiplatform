@@ -6,6 +6,7 @@ import clib.presentation.viewmodel.ViewModel
 import klib.data.auth.otp.model.HotpConfig
 import klib.data.auth.otp.model.OtpConfig
 import klib.data.auth.otp.model.TotpConfig
+import klib.data.location.Phone
 import klib.data.type.collections.restartableflow.RestartableStateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,15 +34,15 @@ public class PhoneViewModel(
     }
 
     private fun setPhone(dial: String, number: String, isValid: Boolean) =
-        state.update { it.copy(dial = dial, number = number, isValid = isValid) }
+        state.update { it.copy(phone = Phone(dial, number), isValid = isValid) }
 
     private fun confirm() {
         viewModelScope.launch(Dispatchers.Main) {
             if (state.value.isValid)
                 router.push(
                     when (otpConfig) {
-                        is HotpConfig -> Hotp("${state.value.countryCode}${state.value.phone}")
-                        is TotpConfig -> Totp("${state.value.countryCode}${state.value.phone}")
+                        is HotpConfig -> Hotp(state.value.phone.toString())
+                        is TotpConfig -> Totp(state.value.phone.toString())
                     },
                 )
         }

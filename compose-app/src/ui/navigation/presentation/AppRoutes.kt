@@ -194,8 +194,8 @@ public data object Phone : KoinRoute<Phone>(), NavRoute {
         val router = currentRouter()
         val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val country = remember(state.countryCode) {
-            Country.getCountries().find { country -> country.dial == state.countryCode }
+        val country = remember(state.phone.dial) {
+            Country.getCountries().find { country -> country.dial == state.phone.dial }
                 ?: (if (!inspectionMode) Country.current else null) ?: Country.forCode("US")
         }
 
