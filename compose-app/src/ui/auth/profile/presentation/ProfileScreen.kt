@@ -55,6 +55,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import clib.data.type.orErrorColor
@@ -497,8 +498,12 @@ private fun ProfileScreenContent(
                     modifier = Modifier.weight(1f),
                     value = key,
                     onValueChange = { value -> key = value },
-                    label = { Text(stringResource(Res.string.key)) },
-                    placeholder = { Text(stringResource(Res.string.key)) },
+                    label = {
+                        Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
+                    },
+                    placeholder = {
+                        Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
+                    },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Key,
@@ -511,8 +516,12 @@ private fun ProfileScreenContent(
                     modifier = Modifier.weight(1f),
                     value = value,
                     onValueChange = { value = it },
-                    label = { Text(stringResource(Res.string.value)) },
-                    placeholder = { Text(stringResource(Res.string.value)) },
+                    label = {
+                        Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
+                    },
+                    placeholder = {
+                        Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
+                    },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Attribution,
@@ -587,7 +596,8 @@ private fun ProfileAttributeField(
     value = value,
     onValueChange = onValueChange,
     readOnly = !edit,
-    label = { Text(label) },
+    label = { Text(text = label, overflow = TextOverflow.Clip, maxLines = 1) },
+    placeholder = { Text(text = label, overflow = TextOverflow.Clip, maxLines = 1) },
     leadingIcon = { value ->
         Icon(
             imageVector = imageVector,

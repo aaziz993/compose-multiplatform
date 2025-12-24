@@ -41,6 +41,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -114,6 +115,8 @@ public fun LoginScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
         )
 
         val focusList = remember { List(3) { FocusRequester() } }
@@ -128,8 +131,12 @@ public fun LoginScreen(
             modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
             value = state.username,
             onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
-            label = { Text(stringResource(Res.string.username)) },
-            placeholder = { Text(stringResource(Res.string.username)) },
+            label = {
+                Text(text = stringResource(Res.string.username), overflow = TextOverflow.Clip, maxLines = 1)
+            },
+            placeholder = {
+                Text(text = stringResource(Res.string.username), overflow = TextOverflow.Clip, maxLines = 1)
+            },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = leadingIconColor)
             },
@@ -144,8 +151,12 @@ public fun LoginScreen(
             modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
             value = state.password,
             onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },
-            label = { Text(stringResource(Res.string.password)) },
-            placeholder = { Text(stringResource(Res.string.password)) },
+            label = {
+                Text(text = stringResource(Res.string.password), overflow = TextOverflow.Clip, maxLines = 1)
+            },
+            placeholder = {
+                Text(text = stringResource(Res.string.password), overflow = TextOverflow.Clip, maxLines = 1)
+            },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = leadingIconColor)
             },
@@ -164,7 +175,7 @@ public fun LoginScreen(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(Res.string.remember))
+            Text(text = stringResource(Res.string.remember), overflow = TextOverflow.Clip, maxLines = 1)
             Spacer(Modifier.width(2.dp))
             Checkbox(
                 checked = state.remember,
@@ -188,6 +199,8 @@ public fun LoginScreen(
                 .padding(vertical = 8.dp),
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -196,7 +209,7 @@ public fun LoginScreen(
             onClick = { onAction(LoginAction.Login) },
             modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[2]),
         ) {
-            Text(text = stringResource(Res.string.login))
+            Text(text = stringResource(Res.string.login), overflow = TextOverflow.Clip, maxLines = 1)
         }
 
         LoginProviders(config, onAction)

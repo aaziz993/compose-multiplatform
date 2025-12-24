@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.presentation.navigation.NavigationAction
@@ -37,6 +38,9 @@ public fun PinCodeScreen(
     state: PinCodeState = PinCodeState(),
     onAction: (PinCodeAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
+): Unit = Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
 ) {
     val pinCode = remember(state.pinCode) { mutableStateOf(state.pinCode) }
 
@@ -50,6 +54,7 @@ public fun PinCodeScreen(
         if (repeatPinCode.value != state.repeatPinCode) onAction(PinCodeAction.RepeatPinCode(repeatPinCode.value))
     }
 
+    val scrollState = rememberScrollState()
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -61,6 +66,8 @@ public fun PinCodeScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
         )
 
         OtpInputField(otp = pinCode)
@@ -73,6 +80,8 @@ public fun PinCodeScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
         )
 
         OtpInputField(otp = repeatPinCode)
