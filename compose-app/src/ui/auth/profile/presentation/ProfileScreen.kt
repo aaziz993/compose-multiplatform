@@ -95,6 +95,7 @@ import dev.jordond.connectivity.Connectivity.Status
 import io.github.ismoy.imagepickerkmp.domain.config.ImagePickerConfig
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.GalleryPickerLauncher
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.ImagePickerLauncher
+import klib.data.auth.model.User
 import klib.data.load.LoadingResult
 import klib.data.load.success
 import klib.data.location.Phone
@@ -371,7 +372,7 @@ private fun ProfileScreenContent(
             edit = state.edit,
             label = stringResource(Res.string.username),
             imageVector = Icons.Default.Person,
-            validator = validator["username"],
+            validator = validator[User::username.name],
         ) { value -> validations[0] = value }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -384,7 +385,7 @@ private fun ProfileScreenContent(
             edit = state.edit,
             label = stringResource(Res.string.first_name),
             imageVector = Icons.Default.Person,
-            validator = validator["firstName"],
+            validator = validator[User::firstName.name],
         ) { value -> validations[1] = value }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -397,7 +398,7 @@ private fun ProfileScreenContent(
             edit = state.edit,
             label = stringResource(Res.string.last_name),
             imageVector = Icons.Default.Person,
-            validator = validator["lastName"],
+            validator = validator[User::lastName.name],
         ) { value -> validations[2] = value }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -440,7 +441,7 @@ private fun ProfileScreenContent(
             edit = state.edit,
             label = stringResource(Res.string.phone),
             imageVector = Icons.Default.Phone,
-            validator = validator["phone"],
+            validator = validator[User::phone.name],
         ) { value -> validations[3] = value }
 
 
@@ -454,7 +455,7 @@ private fun ProfileScreenContent(
             edit = state.edit,
             label = stringResource(Res.string.email),
             imageVector = Icons.Default.Email,
-            validator = validator["email"],
+            validator = validator[User::email.name],
         ) { value -> validations[4] = value }
 
         state.user.attributes.entries.forEachIndexed { index, (key, value) ->
