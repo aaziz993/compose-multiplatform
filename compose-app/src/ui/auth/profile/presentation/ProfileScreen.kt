@@ -463,6 +463,7 @@ private fun ProfileScreenContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 ProfileTextField(
@@ -477,7 +478,7 @@ private fun ProfileScreenContent(
                     validator = validator[key],
                 ) { value -> validations[5] = value }
 
-                if (state.edit) {
+                if (state.edit)
                     IconButton(
                         onClick = {
                             onAction(ProfileAction.RemoveAttribute(key))
@@ -485,7 +486,6 @@ private fun ProfileScreenContent(
                     ) {
                         Icon(Icons.Default.Remove, stringResource(Res.string.remove))
                     }
-                }
             }
         }
 
