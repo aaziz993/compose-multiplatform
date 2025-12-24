@@ -14,11 +14,12 @@ import org.jetbrains.compose.resources.painterResource
 private val INIT_SIZE = DpSize(800.dp, 600.dp)
 
 public suspend fun main(args: Array<String>) {
-    GlobalDeeplinkEventController.handleEvents(args)
-
     // Prevent SwingPanel on top of compose components.
     System.setProperty("compose.interop.blending", "true")
     System.setProperty("compose.swing.render.on.graphics", "true")
+
+    // Handle deep link events.
+    GlobalDeeplinkEventController.handleEvents(args)
 
     val title = getString(Res.string.app_name)
     application {
