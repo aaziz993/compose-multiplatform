@@ -34,6 +34,7 @@ public class ProfileViewModel(
             is ProfileAction.SetEmail -> setEmail(action.value)
             is ProfileAction.SetImageUrl -> setUserImageUrl(action.value)
             is ProfileAction.SetAttribute -> setAttribute(action.key, action.value)
+            is ProfileAction.RemoveAttribute -> removeAttribute(action.key)
             is ProfileAction.StartUpdate -> startUpdate(action.value)
             ProfileAction.CompleteUpdate -> completeUpdate()
             is ProfileAction.StartResetPassword -> startResetPassword(action.value)
@@ -67,12 +68,16 @@ public class ProfileViewModel(
         it.map { copy(user = user.copy(email = value)) }
     }
 
-    private fun setUserImageUrl(value: String) = state.update {
+    private fun setUserImageUrl(value: String?) = state.update {
         it.map { copy(user = user.copy(imageUrl = value)) }
     }
 
     private fun setAttribute(key: String, value: List<String>) = state.update {
         it.map { copy(user = user.copy(attributes = user.attributes + (key to value))) }
+    }
+
+    private fun removeAttribute(key: String) = state.update {
+        it.map { copy(user = user.copy(attributes = user.attributes - key)) }
     }
 
     private fun startUpdate(value: PasswordDialogState?) = state.update {
@@ -105,9 +110,3 @@ public class ProfileViewModel(
 
     private fun restore() = state.update { it.toSuccess(false) }
 }
-
-private fun String.isLocalUri(): Boolean =
-    startsWith("file://") ||
-        startsWith("content://") ||
-        startsWith("blob:") ||
-        startsWith("data:")

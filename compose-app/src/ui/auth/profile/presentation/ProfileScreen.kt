@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Attribution
 import androidx.compose.material.icons.filled.CameraEnhance
 import androidx.compose.material.icons.filled.Close
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.AssistChip
@@ -68,6 +70,11 @@ import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.avatar
 import compose_app.generated.resources.camera
+import compose_app.generated.resources.add
+import compose_app.generated.resources.remove
+import compose_app.generated.resources.clear
+import compose_app.generated.resources.key
+import compose_app.generated.resources.value
 import compose_app.generated.resources.close
 import compose_app.generated.resources.country
 import compose_app.generated.resources.edit
@@ -95,6 +102,7 @@ import klib.data.location.country.getCountries
 import klib.data.location.toPhoneOrNull
 import klib.data.type.collections.all
 import klib.data.validator.Validator
+import kotlin.collections.map
 import presentation.components.dialog.SignOutConfirmDialog
 import presentation.connectivity.CircleIcon
 import ui.auth.profile.presentation.viewmodel.ProfileAction
@@ -199,26 +207,26 @@ private fun ProfileScreenContent(
             if (connectivity.isAvatarConnectivityIndicator)
                 connectivityStatus.CircleIcon(
                     Modifier
-                        .align(Alignment.TopEnd)
+                        .align(Alignment.TopStart)
                         .size(14.dp),
                     Modifier
-                        .align(Alignment.TopEnd)
+                        .align(Alignment.TopStart)
                         .size(14.dp),
                 )
 
             if (state.edit) {
                 IconButton(
                     onClick = {
-                        showCamera = true
+                        onAction(ProfileAction.SetImageUrl(null))
                     },
                     modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .offset((-20).dp, 5.dp)
+                        .align(Alignment.TopEnd)
+                        .offset(20.dp, 5.dp)
                         .size(24.dp),
                 ) {
                     Icon(
-                        imageVector = Icons.Default.CameraEnhance,
-                        contentDescription = stringResource(Res.string.camera),
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(Res.string.clear),
                         modifier = Modifier.size(14.dp),
                     )
                 }
@@ -235,6 +243,22 @@ private fun ProfileScreenContent(
                     Icon(
                         imageVector = Icons.Default.Image,
                         contentDescription = stringResource(Res.string.gallery),
+                        modifier = Modifier.size(14.dp),
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        showCamera = true
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .offset((-20).dp, 5.dp)
+                        .size(24.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CameraEnhance,
+                        contentDescription = stringResource(Res.string.camera),
                         modifier = Modifier.size(14.dp),
                     )
                 }
@@ -273,7 +297,7 @@ private fun ProfileScreenContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         val focusRequesters = remember(state.user.attributes.size) {
-            List(7 + state.user.attributes.size) { FocusRequester() }
+            List(6 + state.user.attributes.size) { FocusRequester() }
         }
 
         LaunchedEffect(Unit) {
@@ -285,7 +309,7 @@ private fun ProfileScreenContent(
         }
 
         val validations = remember(state.user.attributes.size) {
-            mutableStateListOf(*Array(7 + state.user.attributes.size) { true })
+            mutableStateListOf(*Array(6 + state.user.attributes.size) { true })
         }
 
         Row(
@@ -420,17 +444,80 @@ private fun ProfileScreenContent(
         state.user.attributes.entries.forEachIndexed { index, (key, value) ->
             Spacer(modifier = Modifier.height(16.dp))
 
-            ProfileAttributeField(
-                value.first(),
-                { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
-                focusRequesters[5 + index],
-                focusRequesters[6 + index],
-                state.edit,
-                key.asStringResource(),
-                Icons.Default.Attribution,
-                validator[key],
-                { value -> validations[5 + index] = value },
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                ProfileAttributeField(
+                    value.first(),
+                    { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
+                    focusRequesters[5 + index],
+                    focusRequesters[6 + index],
+                    state.edit,
+                    key.asStringResource(),
+                    Icons.Default.Attribution,
+                    validator[key],
+                    { value -> validations[5 + index] = value },
+                )
+                IconButton(
+                    onClick = {
+                        onAction(ProfileAction.RemoveAttribute(key))
+                    },
+                ) {
+                    Icon(Icons.Default.Remove, stringResource(Res.string.remove))
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            var key by remember { mutableStateOf("") }
+            var value by remember { mutableStateOf("") }
+
+            TextField(
+                modifier = Modifier.weight(1f),
+                value = key,
+                onValueChange = { value -> key = value },
+                readOnly = !state.edit,
+                label = { Text(stringResource(Res.string.key)) },
+                placeholder = { Text(stringResource(Res.string.key)) },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Attribution,
+                        stringResource(Res.string.key),
+                    )
+                },
             )
+
+            TextField(
+                modifier = Modifier.weight(1f),
+                value = value,
+                onValueChange = { value = it },
+                readOnly = !state.edit,
+                label = { Text(stringResource(Res.string.value)) },
+                placeholder = { Text(stringResource(Res.string.value)) },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Attribution,
+                        stringResource(Res.string.value),
+                    )
+                },
+                validator = validator[key],
+                onValidation = { value ->
+                    validations[5 + state.user.attributes.size] = value.isEmpty()
+                    value.map { it.asStringResource() }.joinToString("\n")
+                },
+            )
+
+            IconButton(
+                onClick = {
+                    onAction(ProfileAction.SetAttribute(key, listOf(value)))
+                },
+            ) {
+                Icon(Icons.Default.Add, stringResource(Res.string.add))
+            }
         }
 
         if (!state.user.isVerified)

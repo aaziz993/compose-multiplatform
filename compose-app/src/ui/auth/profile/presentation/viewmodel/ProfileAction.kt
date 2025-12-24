@@ -10,7 +10,8 @@ public sealed interface ProfileAction {
     public data class SetLastName(val value: String) : ProfileAction
     public data class SetPhone(val value: String) : ProfileAction
     public data class SetEmail(val value: String) : ProfileAction
-    public data class SetImageUrl(val value: String) : ProfileAction
+    public data class SetImageUrl(val value: String?) : ProfileAction
+    public data class RemoveAttribute(val key: String) : ProfileAction
     public data class SetAttribute(val key: String, val value: List<String>) : ProfileAction
     public data class StartUpdate(val value: PasswordDialogState? = PasswordDialogState()) : ProfileAction
     public data object CompleteUpdate : ProfileAction

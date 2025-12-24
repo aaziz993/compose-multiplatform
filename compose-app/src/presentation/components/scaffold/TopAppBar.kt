@@ -284,10 +284,10 @@ public fun TopAppBar(
                                     if (connectivity.isAvatarConnectivityIndicator)
                                         connectivityStatus.CircleIcon(
                                             Modifier
-                                                .align(Alignment.TopEnd)
+                                                .align(Alignment.TopStart)
                                                 .size(14.dp),
                                             Modifier
-                                                .align(Alignment.TopEnd)
+                                                .align(Alignment.TopStart)
                                                 .size(14.dp),
                                         )
                                 }

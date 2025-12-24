@@ -11,6 +11,7 @@
     <string name="animation_spec">Animation specification</string>
     <string name="adaptive">Adaptive</string>
     <string name="avatar">Avatar</string>
+    <string name="add">Add</string>
     <string name="back">Back</string>
     <string name="blend">Blend</string>
     <string name="balance">Balance</string>
@@ -52,6 +53,7 @@
     <string name="id">ID</string>
     <string name="icon">Icon</string>
     <string name="image">Image</string>
+    <string name="key">Key</string>
     <string name="label">Label</string>
     <string name="live_search">Live search</string>
     <string name="left">Left</string>
@@ -79,6 +81,7 @@
     <string name="right">Right</string>
     <string name="route">Route</string>
     <string name="remember">Remember</string>
+    <string name="remove">Remove</string>
     <string name="save">Save</string>
     <string name="support">Support</string>
     <string name="source">Source</string>
@@ -98,5 +101,6 @@
     <string name="tween_spec">Tween specification</string>
     <string name="transition_spec">Transition specification</string>
     <string name="visibility_threshold">Visibility threshold</string>
+    <string name="value">Value</string>
     <string name="wallet">Wallet</string>
 </resources>
