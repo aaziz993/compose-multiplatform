@@ -31,6 +31,7 @@ import clib.presentation.components.country.CountryCodePickerOutlinedTextField
 import clib.presentation.components.country.model.CountryPicker
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.clear
 import compose_app.generated.resources.country
 import compose_app.generated.resources.phone
 import compose_app.generated.resources.search
@@ -102,7 +103,8 @@ public fun PhoneScreen(
             trailingIcon = {
                 IconButton(onClick = { onAction(PhoneAction.SetPhone()) }) {
                     Icon(
-                        imageVector = Icons.Default.Clear, contentDescription = "Clear",
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = stringResource(Res.string.clear),
                     )
                 }
             },
