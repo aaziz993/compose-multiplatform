@@ -103,6 +103,7 @@ import klib.data.location.country.Country
 import klib.data.location.country.getCountries
 import klib.data.location.toPhoneOrNull
 import klib.data.type.collections.all
+import klib.data.type.primitives.string.LINE_SEPARATOR
 import klib.data.validator.Validator
 import presentation.components.dialog.SignOutConfirmDialog
 import presentation.components.tooltipbox.PlainTooltipBox
@@ -535,7 +536,7 @@ private fun ProfileScreenContent(
                 validator = validator[key],
                 onValidation = { value ->
                     validations[5 + state.user.attributes.size] = value.isEmpty()
-                    value.map { it.asStringResource() }.joinToString("\n")
+                    value.map { it.asStringResource() }.joinToString(String.LINE_SEPARATOR)
                 },
             )
 
@@ -625,7 +626,7 @@ private fun ProfileTextField(
     validator = validator,
     onValidation = {
         onValidation(it.isEmpty())
-        it.map { it.asStringResource() }.joinToString("\n")
+        it.map { it.asStringResource() }.joinToString(String.LINE_SEPARATOR)
     },
 )
 
