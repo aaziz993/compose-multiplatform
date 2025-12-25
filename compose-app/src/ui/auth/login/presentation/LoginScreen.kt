@@ -70,6 +70,7 @@ import compose_app.generated.resources.username
 import data.type.primitives.string.asStringResource
 import klib.data.config.auth.AuthConfig
 import presentation.components.tooltipbox.PlainTooltipBox
+import presentation.connectivity.stringResource
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
 import ui.navigation.presentation.Email
@@ -268,7 +269,9 @@ public fun LoginScreen(
                             )
                     },
                 ) {
-                    Icon(Icons.Default.Phone, stringResource(Res.string.phone))
+                    PlainTooltipBox(tooltip = stringResource(Res.string.phone)) {
+                        Icon(Icons.Default.Phone, stringResource(Res.string.phone))
+                    }
                 }
 
                 IconButton(
@@ -281,7 +284,9 @@ public fun LoginScreen(
                             )
                     },
                 ) {
-                    Icon(Icons.Default.Email, stringResource(Res.string.email))
+                    PlainTooltipBox(tooltip = stringResource(Res.string.email)) {
+                        Icon(Icons.Default.Email, stringResource(Res.string.email))
+                    }
                 }
             }
         }

@@ -23,6 +23,10 @@ public class AuthState(initialValue: Auth = Auth()) {
         value = value.copy(user = user)
     }
 
+    public fun reset() {
+        value = Auth()
+    }
+
     public companion object Companion {
 
         public val Saver: Saver<AuthState, *> = listSaver(

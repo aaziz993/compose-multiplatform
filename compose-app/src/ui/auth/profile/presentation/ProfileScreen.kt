@@ -221,6 +221,17 @@ private fun ProfileScreenContent(
                     )
                 }
 
+            if (state.user.isVerified)
+                PlainTooltipBox(tooltip = stringResource(Res.string.verified)) {
+                    Icon(
+                        imageVector = Icons.Default.VerifiedUser,
+                        contentDescription = stringResource(Res.string.verified),
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .size(14.dp),
+                    )
+                }
+
             if (state.edit) {
                 IconButton(
                     onClick = {
@@ -277,18 +288,6 @@ private fun ProfileScreenContent(
                     }
                 }
             }
-
-            if (state.user.isVerified)
-                PlainTooltipBox(tooltip = stringResource(Res.string.verified)) {
-                    Icon(
-                        imageVector = Icons.Default.VerifiedUser,
-                        contentDescription = stringResource(Res.string.verified),
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .offset(y = 5.dp)
-                            .size(14.dp),
-                    )
-                }
         }
 
         if (state.user.roles.isNotEmpty()) {
@@ -321,7 +320,7 @@ private fun ProfileScreenContent(
         }
 
         val validations = remember(state.user) {
-            mutableStateListOf(*Array(6 + state.user.attributes.size) { true })
+            mutableStateListOf(*Array(6 + state.user.attributes.size) { false })
         }
 
         Row(
@@ -535,8 +534,6 @@ private fun ProfileScreenContent(
                     Text(
                         text = stringResource(Res.string.value),
                         color = LocalContentColor.current.orErrorColor(isError),
-                        overflow = TextOverflow.Clip,
-                        maxLines = 1,
                     )
                 },
                 leadingIcon = { isError ->

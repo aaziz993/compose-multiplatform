@@ -104,9 +104,7 @@ public class ProfileViewModel(
         }
     }
 
-    private fun signOut() {
-        authState.value = Auth()
-    }
+    private fun signOut() = authState.reset()
 
     private fun restore() = state.update { it.toSuccess(false) }
 }
