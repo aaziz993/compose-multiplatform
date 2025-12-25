@@ -1,4 +1,11 @@
 auth:
+  pinCode:
+    length: 4
+    phoneReset: true
+    emailReset: true
+  password:
+    phoneReset: true
+    emailReset: true
   otp:
     totp:
       period: PT60S

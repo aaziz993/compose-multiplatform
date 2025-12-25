@@ -13,11 +13,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Provided
+import ui.navigation.presentation.Email
 import ui.navigation.presentation.Hotp
 import ui.navigation.presentation.Totp
 
 @KoinViewModel
 public class EmailViewModel(
+    @Provided
+    private val email: Email,
     @Provided
     private val router: Router,
     @Provided
@@ -37,13 +40,12 @@ public class EmailViewModel(
 
     private fun confirm() {
         viewModelScope.launch(Dispatchers.Main) {
-            if (state.value.isValid)
-                router.push(
-                    when (otpConfig) {
-                        is HotpConfig -> Hotp(state.value.email)
-                        is TotpConfig -> Totp(state.value.email)
-                    },
-                )
+            router.push(
+                when (otpConfig) {
+                    is HotpConfig -> Hotp(email.username, state.value.email)
+                    is TotpConfig -> Totp(email.username, state.value.email)
+                },
+            )
         }
     }
 }

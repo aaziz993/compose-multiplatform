@@ -2,7 +2,7 @@ imports:
   - application-koin.yaml
   - application-log.yaml
   - application-localization.yaml
-  - application-validator.yaml
+  - application-validators.yaml
   - application-auth.yaml
   - application-server.yaml
   - application-serialization.yaml

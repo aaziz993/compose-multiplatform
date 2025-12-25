@@ -76,9 +76,9 @@ public fun PasswordDialog(
             }
 
             TextField(
-                Modifier.focusRequester(focusRequesters[0]).fillMaxWidth(),
                 value = state.password,
                 onValueChange = { state.password = it },
+                modifier = Modifier.focusRequester(focusRequesters[0]).fillMaxWidth(),
                 label = { Text(dialog.password) },
                 leadingIcon = icon?.let { { it(errorMessage != null) } },
                 placeholder = { Text(dialog.password) },

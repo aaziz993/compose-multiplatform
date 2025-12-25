@@ -238,35 +238,47 @@ public fun LoginScreen(
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 8.dp)
+                    .clickable(enabled = config.password.phoneReset xor config.password.emailReset) {
+                        onNavigationActions(
+                            arrayOf(
+                                NavigationAction.Push(
+                                    if (config.password.phoneReset) Phone(state.username)
+                                    else Email(state.username),
+                                ),
+                            ),
+                        )
+                    },
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
                 overflow = TextOverflow.Clip,
                 maxLines = 1,
             )
 
-            IconButton(
-                onClick = {
-                    onNavigationActions(
-                        arrayOf(
-                            NavigationAction.Push(Phone(state.username)),
-                        ),
-                    )
-                },
-            ) {
-                Icon(Icons.Default.Email, stringResource(Res.string.phone))
-            }
+            if (config.password.phoneReset && config.password.emailReset) {
+                IconButton(
+                    onClick = {
+                        onNavigationActions(
+                            arrayOf(
+                                NavigationAction.Push(Phone(state.username)),
+                            ),
+                        )
+                    },
+                ) {
+                    Icon(Icons.Default.Email, stringResource(Res.string.phone))
+                }
 
-            IconButton(
-                onClick = {
-                    onNavigationActions(
-                        arrayOf(
-                            NavigationAction.Push(Email(state.username)),
-                        ),
-                    )
-                },
-            ) {
-                Icon(Icons.Default.Email, stringResource(Res.string.email))
+                IconButton(
+                    onClick = {
+                        onNavigationActions(
+                            arrayOf(
+                                NavigationAction.Push(Email(state.username)),
+                            ),
+                        )
+                    },
+                ) {
+                    Icon(Icons.Default.Email, stringResource(Res.string.email))
+                }
             }
         }
 

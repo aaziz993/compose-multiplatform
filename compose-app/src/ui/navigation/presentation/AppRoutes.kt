@@ -203,7 +203,7 @@ public data class Phone(val username: String? = null) : NavRoute {
             val inspectionMode = LocalInspectionMode.current
             val config = LocalConfig.current
             val router = currentRouter()
-            val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
+            val viewModel: PhoneViewModel = koinViewModel { parametersOf(config.auth.otp, route, router) }
             val state by viewModel.state.collectAsStateWithLifecycle()
             val country = remember(state.phone.dial) {
                 Country.getCountries().find { country -> country.dial == state.phone.dial }
@@ -241,7 +241,7 @@ public data class Email(val username: String? = null) : NavRoute {
         ) {
             val config = LocalConfig.current
             val router = currentRouter()
-            val viewModel: EmailViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
+            val viewModel: EmailViewModel = koinViewModel { parametersOf(config.auth.otp, route, router) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             EmailScreen(
@@ -258,7 +258,7 @@ public data class Email(val username: String? = null) : NavRoute {
 
 @Serializable
 @SerialName("hotp")
-public data class Hotp(val contact: String = "") : NavRoute {
+public data class Hotp(val username: String? = null, val contact: String = "") : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = Hotp
@@ -274,9 +274,9 @@ public data class Hotp(val contact: String = "") : NavRoute {
             sharedTransitionScope: SharedTransitionScope,
         ) {
             val config = LocalConfig.current
-            val router = currentRouter()
-            val viewModel: HotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
+            val viewModel: HotpViewModel = koinViewModel { parametersOf(config.auth.otp, route) }
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val router = currentRouter()
 
             HotpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -292,7 +292,7 @@ public data class Hotp(val contact: String = "") : NavRoute {
 
 @Serializable
 @SerialName("totp")
-public data class Totp(val contact: String = "") : NavRoute {
+public data class Totp(val username: String? = null, val contact: String = "") : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = Totp
@@ -308,9 +308,9 @@ public data class Totp(val contact: String = "") : NavRoute {
             sharedTransitionScope: SharedTransitionScope,
         ) {
             val config = LocalConfig.current
-            val router = currentRouter()
-            val viewModel: TotpViewModel = koinViewModel { parametersOf(route, config.auth.otp) }
+            val viewModel: TotpViewModel = koinViewModel { parametersOf(config.auth.otp, route) }
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val router = currentRouter()
 
             TotpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),

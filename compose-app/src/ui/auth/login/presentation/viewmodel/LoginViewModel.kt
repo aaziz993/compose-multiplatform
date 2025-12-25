@@ -68,6 +68,7 @@ public class LoginViewModel(
                         username = "jogn.doe@gmail.com",
                         firstName = "John",
                         lastName = "Doe",
+                        email = "john.doe@domain.com",
                         imageUrl = "https://api.dicebear.com/9.x/bottts/png?seed=JohnDoe",
                         roles = setOf("User"),
                     ),

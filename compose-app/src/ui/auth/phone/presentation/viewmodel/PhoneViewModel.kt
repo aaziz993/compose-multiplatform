@@ -20,9 +20,11 @@ import ui.navigation.presentation.Totp
 @KoinViewModel
 public class PhoneViewModel(
     @Provided
-    private val router: Router,
-    @Provided
     private val otpConfig: OtpConfig,
+    @Provided
+    private val phone: ui.navigation.presentation.Phone,
+    @Provided
+    private val router: Router,
 ) : ViewModel<PhoneAction>() {
 
     public val state: RestartableStateFlow<PhoneState>
@@ -41,8 +43,8 @@ public class PhoneViewModel(
             if (state.value.isValid)
                 router.push(
                     when (otpConfig) {
-                        is HotpConfig -> Hotp(state.value.phone.toString())
-                        is TotpConfig -> Totp(state.value.phone.toString())
+                        is HotpConfig -> Hotp(phone.username, state.value.phone.toString())
+                        is TotpConfig -> Totp(phone.username, state.value.phone.toString())
                     },
                 )
         }

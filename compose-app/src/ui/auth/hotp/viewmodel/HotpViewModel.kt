@@ -20,11 +20,11 @@ import ui.navigation.presentation.Hotp
 
 @KoinViewModel
 public class HotpViewModel(
-    private val authState: AuthState,
-    @Provided
-    private val hotp: Hotp,
     @Provided
     private val config: OtpConfig,
+    @Provided
+    private val hotp: Hotp,
+    private val authState: AuthState,
 ) : ViewModel<HotpAction>() {
 
     public val state: RestartableStateFlow<HotpState>
@@ -56,6 +56,7 @@ public class HotpViewModel(
                         firstName = "John",
                         lastName = "Doe",
                         phone = hotp.contact,
+                        email = "john.doe@domain.com",
                         imageUrl = "https://api.dicebear.com/9.x/bottts/png?seed=JohnDoe",
                         roles = setOf("User"),
                     ),

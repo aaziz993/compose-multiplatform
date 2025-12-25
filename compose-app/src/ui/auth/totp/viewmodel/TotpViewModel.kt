@@ -23,11 +23,11 @@ import ui.navigation.presentation.Totp
 
 @KoinViewModel
 public class TotpViewModel(
-    private val authState: AuthState,
-    @Provided
-    private val totp: Totp,
     @Provided
     private val config: TotpConfig,
+    @Provided
+    private val totp: Totp,
+    private val authState: AuthState,
 ) : ViewModel<TotpAction>() {
 
     public val state: RestartableStateFlow<TotpState>
@@ -83,6 +83,7 @@ public class TotpViewModel(
                         firstName = "John",
                         lastName = "Doe",
                         phone = totp.contact,
+                        email = "john.doe@domain.com",
                         imageUrl = "https://api.dicebear.com/9.x/bottts/png?seed=JohnDoe",
                         roles = setOf("User"),
                     ),
