@@ -241,14 +241,15 @@ public fun LoginScreen(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .clickable(enabled = config.password.phoneReset xor config.password.emailReset) {
-                        onNavigationActions(
-                            arrayOf(
-                                NavigationAction.Push(
-                                    if (config.password.phoneReset) Phone(state.username)
-                                    else Email(state.username),
+                        if (state.username.isNotEmpty())
+                            onNavigationActions(
+                                arrayOf(
+                                    NavigationAction.Push(
+                                        if (config.password.phoneReset) Phone(state.username)
+                                        else Email(state.username),
+                                    ),
                                 ),
-                            ),
-                        )
+                            )
                     },
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
@@ -259,11 +260,12 @@ public fun LoginScreen(
             if (config.password.phoneReset && config.password.emailReset) {
                 IconButton(
                     onClick = {
-                        onNavigationActions(
-                            arrayOf(
-                                NavigationAction.Push(Phone(state.username)),
-                            ),
-                        )
+                        if (state.username.isNotEmpty())
+                            onNavigationActions(
+                                arrayOf(
+                                    NavigationAction.Push(Phone(state.username)),
+                                ),
+                            )
                     },
                 ) {
                     Icon(Icons.Default.Phone, stringResource(Res.string.phone))
@@ -271,11 +273,12 @@ public fun LoginScreen(
 
                 IconButton(
                     onClick = {
-                        onNavigationActions(
-                            arrayOf(
-                                NavigationAction.Push(Email(state.username)),
-                            ),
-                        )
+                        if (state.username.isNotEmpty())
+                            onNavigationActions(
+                                arrayOf(
+                                    NavigationAction.Push(Email(state.username)),
+                                ),
+                            )
                     },
                 ) {
                     Icon(Icons.Default.Email, stringResource(Res.string.email))

@@ -469,7 +469,7 @@ private fun ProfileScreenContent(
                 ProfileTextField(
                     value = value.first(),
                     onValueChange = { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
-                    modifier = Modifier.weight(1f).padding(8.dp),
+                    modifier = Modifier.weight(1f),
                     focusRequester = focusRequesters[5 + index],
                     nextFocusRequester = focusRequesters[6 + index],
                     edit = state.edit,
@@ -498,7 +498,7 @@ private fun ProfileScreenContent(
             TextField(
                 value = key,
                 onValueChange = { value -> key = value },
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                modifier = Modifier.fillMaxWidth(),
                 label = {
                     Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
                 },
@@ -519,7 +519,7 @@ private fun ProfileScreenContent(
             TextField(
                 value = value,
                 onValueChange = { value = it },
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                modifier = Modifier.fillMaxWidth(),
                 label = {
                     Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
                 },
@@ -595,7 +595,7 @@ private fun ProfileScreenContent(
 @Suppress("ComposeParameterOrder")
 @Composable
 private fun ProfileTextField(
-    modifier: Modifier = Modifier.fillMaxWidth().padding(8.dp),
+    modifier: Modifier = Modifier.fillMaxWidth(),
     value: String,
     onValueChange: (String) -> Unit,
     focusRequester: FocusRequester,
@@ -610,7 +610,9 @@ private fun ProfileTextField(
     onValueChange = onValueChange,
     modifier = modifier.focusRequester(focusRequester),
     readOnly = !edit,
-    label = { Text(text = label, overflow = TextOverflow.Clip, maxLines = 1) },
+    label = {
+        Text(text = label,color=LocalContentColor.current.orErrorColor(value), overflow = TextOverflow.Clip, maxLines = 1)
+            },
     placeholder = { Text(text = label, overflow = TextOverflow.Clip, maxLines = 1) },
     leadingIcon = { value ->
         Icon(
