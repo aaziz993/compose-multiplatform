@@ -452,8 +452,8 @@ internal object Color50 {
 }
 
 @Composable
-public fun ComposeColor.orErrorColor(error: Boolean): ComposeColor =
-    if (error) MaterialTheme.colorScheme.error else this
+public fun ComposeColor.orErrorColor(isError: Boolean): ComposeColor =
+    if (isError) MaterialTheme.colorScheme.error else this
 
 /**
  * Convert this color to a ColorMath [Color] instance.

@@ -523,17 +523,28 @@ private fun ProfileScreenContent(
                 value = value,
                 onValueChange = { value = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = {
-                    Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
+                label = { isError ->
+                    Text(
+                        text = stringResource(Res.string.value),
+                        color = LocalContentColor.current.orErrorColor(isError),
+                        overflow = TextOverflow.Clip,
+                        maxLines = 1,
+                    )
                 },
-                placeholder = {
-                    Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
+                placeholder = { isError ->
+                    Text(
+                        text = stringResource(Res.string.value),
+                        color = LocalContentColor.current.orErrorColor(isError),
+                        overflow = TextOverflow.Clip,
+                        maxLines = 1,
+                    )
                 },
-                leadingIcon = {
+                leadingIcon = { isError ->
                     Icon(
                         Icons.Default.Attribution,
                         stringResource(Res.string.value),
                         Modifier.padding(4.dp),
+                        LocalContentColor.current.orErrorColor(isError),
                     )
                 },
                 validator = validator[key],
@@ -615,28 +626,28 @@ private fun ProfileTextField(
     onValueChange = onValueChange,
     modifier = modifier.focusRequester(focusRequester),
     readOnly = !edit,
-    label = { value ->
+    label = { isError ->
         Text(
             text = label,
-            color = LocalContentColor.current.orErrorColor(value),
+            color = LocalContentColor.current.orErrorColor(isError),
             overflow = TextOverflow.Clip,
             maxLines = 1,
         )
     },
-    placeholder = { value ->
+    placeholder = { isError ->
         Text(
             text = label,
-            color = LocalContentColor.current.orErrorColor(value),
+            color = LocalContentColor.current.orErrorColor(isError),
             overflow = TextOverflow.Clip,
             maxLines = 1,
         )
     },
-    leadingIcon = { value ->
+    leadingIcon = { isError ->
         Icon(
             imageVector = imageVector,
             contentDescription = label,
             modifier = Modifier.padding(4.dp),
-            tint = LocalContentColor.current.orErrorColor(value),
+            tint = LocalContentColor.current.orErrorColor(isError),
         )
     },
     trailingIcon = trailingIcon,

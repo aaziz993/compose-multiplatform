@@ -86,7 +86,6 @@ public fun EmailScreen(
 
         val focusRequester = FocusRequester()
         var isValid by remember { mutableStateOf(false) }
-        val color = LocalContentColor.current.orErrorColor(!isValid)
 
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
@@ -97,29 +96,29 @@ public fun EmailScreen(
             value = state.email,
             onValueChange = { value -> onAction(EmailAction.SetEmail(value)) },
             textStyle = MaterialTheme.typography.bodyMedium,
-            label = {
+            label = { isError ->
                 Text(
                     text = stringResource(Res.string.email),
-                    color = color,
+                    color = LocalContentColor.current.orErrorColor(isError),
                     overflow = TextOverflow.Clip,
                     maxLines = 1,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
-            placeholder = {
+            placeholder = { isError ->
                 Text(
                     text = stringResource(Res.string.username),
-                    color = color,
+                    color = LocalContentColor.current.orErrorColor(isError),
                     overflow = TextOverflow.Clip,
                     maxLines = 1,
                 )
             },
-            leadingIcon = {
+            leadingIcon = { isError ->
                 Icon(
                     Icons.Default.Email,
                     stringResource(Res.string.email),
                     Modifier.padding(horizontal = 4.dp),
-                    color,
+                    LocalContentColor.current.orErrorColor(isError),
                 )
             },
             clearIcon = { action ->
