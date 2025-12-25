@@ -138,6 +138,11 @@
     <string name="time_in">через %1$s</string>
     <string name="time_ago">%1$s назад</string>
 
+    <!-- Distance -->
+    <string name="m">м</string>
+    <string name="km">км</string>
+    <string name="ft">фт</string>
+    <string name="mi">ми</string>
 
     <!-- Size Strings -->
     <string-array name="size_suffixes">

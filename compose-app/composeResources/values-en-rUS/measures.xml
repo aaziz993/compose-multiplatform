@@ -118,6 +118,11 @@
     <string name="time_in">in %1$s</string>
     <string name="time_ago">%1$s ago</string>
 
+    <!-- Distance -->
+    <string name="m">m</string>
+    <string name="km">km</string>
+    <string name="ft">ft</string>
+    <string name="mi">mi</string>
 
     <!-- Size Strings -->
     <string-array name="size_suffixes">

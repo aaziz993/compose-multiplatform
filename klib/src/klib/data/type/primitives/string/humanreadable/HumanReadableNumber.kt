@@ -45,10 +45,6 @@ private fun BigDecimal.formatWithDecimals(decimals: Int): String {
     val decimalIndex = numberAsString.length - decimals - 1
     val mainRes = numberAsString.substring(0..decimalIndex)
     val fractionRes = numberAsString.substring(decimalIndex + 1)
-    return if (fractionRes.isEmpty()) {
-        mainRes
-    }
-    else {
-        "$mainRes.$fractionRes"
-    }
+    return if (fractionRes.isEmpty()) mainRes
+    else "$mainRes.$fractionRes"
 }
