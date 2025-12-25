@@ -1,5 +1,6 @@
 package ui.auth.profile.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -469,23 +470,24 @@ private fun ProfileScreenContent(
                 ProfileTextField(
                     value = value.first(),
                     onValueChange = { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
-                    modifier = Modifier.weight(1f),
                     focusRequester = focusRequesters[5 + index],
                     nextFocusRequester = focusRequesters[6 + index],
                     edit = state.edit,
                     label = key.asStringResource(),
                     imageVector = Icons.Default.Attribution,
+                    trailingIcon = { value ->
+                        if (state.edit)
+                            Icon(
+                                Icons.Default.Remove,
+                                stringResource(Res.string.remove),
+                                Modifier.padding(horizontal = 4.dp).clickable {
+                                    onAction(ProfileAction.RemoveAttribute(key))
+                                },
+                                MaterialTheme.colorScheme.error,
+                            )
+                    },
                     validator = validator[key],
                 ) { value -> validations[5] = value }
-
-                if (state.edit)
-                    IconButton(
-                        onClick = {
-                            onAction(ProfileAction.RemoveAttribute(key))
-                        },
-                    ) {
-                        Icon(Icons.Default.Remove, stringResource(Res.string.remove))
-                    }
             }
         }
 
@@ -508,6 +510,7 @@ private fun ProfileScreenContent(
                 leadingIcon = {
                     Icon(
                         Icons.Default.Key,
+                        Modifier.padding(4.dp),
                         stringResource(Res.string.key),
                     )
                 },
@@ -529,6 +532,7 @@ private fun ProfileScreenContent(
                 leadingIcon = {
                     Icon(
                         Icons.Default.Attribution,
+                        Modifier.padding(4.dp),
                         stringResource(Res.string.value),
                     )
                 },
@@ -603,6 +607,7 @@ private fun ProfileTextField(
     edit: Boolean,
     label: String,
     imageVector: ImageVector,
+    trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     validator: Validator?,
     onValidation: (Boolean) -> Unit,
 ): Unit = TextField(
@@ -634,6 +639,7 @@ private fun ProfileTextField(
             tint = LocalContentColor.current.orErrorColor(value),
         )
     },
+    trailingIcon = trailingIcon,
     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     keyboardActions = KeyboardActions(onDone = { nextFocusRequester.requestFocus() }),
     singleLine = true,

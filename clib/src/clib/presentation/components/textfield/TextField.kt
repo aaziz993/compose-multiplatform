@@ -65,7 +65,6 @@ public fun TextField(
     label: @Composable ((isError: Boolean) -> Unit)? = null,
     placeholder: @Composable ((isError: Boolean) -> Unit)? = null,
     leadingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
-    trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     showIcon: (@Composable (value: Boolean, action: () -> Unit) -> Unit)? = { value, action ->
         Icon(
             if (value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
@@ -95,6 +94,7 @@ public fun TextField(
             MaterialTheme.colorScheme.error,
         )
     },
+    trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     prefix: @Composable ((isError: Boolean) -> Unit)? = null,
     suffix: @Composable ((isError: Boolean) -> Unit)? = null,
     supportingText: @Composable ((isError: Boolean) -> Unit)? = null,
@@ -317,7 +317,7 @@ public fun TextField(
             content = textField,
         )
 
-    Column(Modifier.wrapContentSize()) {
+    Column {
         textField()
         (underlineMessage.orEmpty() + onValidation(validationMessages).emptyIf { !showValidationMessage })
             .takeUnlessEmpty()?.let { message ->

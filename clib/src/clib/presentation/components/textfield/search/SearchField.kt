@@ -67,7 +67,6 @@ public fun SearchField(
     label: @Composable ((isError: Boolean) -> Unit)? = null,
     placeholder: @Composable ((isError: Boolean) -> Unit)? = null,
     leadingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
-    trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     timeIcon: @Composable (action: () -> Unit) -> Unit = { action ->
         Icon(
             Icons.Default.DateRange,
@@ -129,6 +128,7 @@ public fun SearchField(
             MaterialTheme.colorScheme.error,
         )
     },
+    trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     prefix: @Composable ((isError: Boolean) -> Unit)? = null,
     suffix: @Composable ((isError: Boolean) -> Unit)? = null,
     supportingText: @Composable ((isError: Boolean) -> Unit)? = null,
@@ -166,6 +166,10 @@ public fun SearchField(
     label,
     placeholder,
     leadingIcon,
+    null,
+    timeIcon,
+    enumIcon,
+    clearIcon,
     {
         val isTime = type is TextField.LocalTime || type is TextField.LocalDate || type is TextField.LocalDateTime
 
@@ -271,10 +275,6 @@ public fun SearchField(
 
         trailingIcon?.invoke(it)
     },
-    null,
-    timeIcon,
-    enumIcon,
-    clearIcon,
     prefix,
     suffix,
     supportingText,
