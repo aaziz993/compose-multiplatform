@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -265,7 +266,7 @@ public fun LoginScreen(
                         )
                     },
                 ) {
-                    Icon(Icons.Default.Email, stringResource(Res.string.phone))
+                    Icon(Icons.Default.Phone, stringResource(Res.string.phone))
                 }
 
                 IconButton(

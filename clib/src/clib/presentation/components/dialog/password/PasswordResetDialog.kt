@@ -94,9 +94,9 @@ public fun PasswordResetDialog(
                 ) -> Unit =
                     { label, focusRequesterIndex, isError, value, onValueChange ->
                         TextField(
-                            Modifier.focusRequester(focusRequesters[focusRequesterIndex]).fillMaxWidth(),
                             value = value,
                             onValueChange = onValueChange,
+                            modifier = Modifier.focusRequester(focusRequesters[focusRequesterIndex]).fillMaxWidth(),
                             label = { Text(label) },
                             placeholder = { Text(label) },
                             leadingIcon = icon?.let { { it(isError) } },

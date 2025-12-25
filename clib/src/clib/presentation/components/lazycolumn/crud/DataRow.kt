@@ -58,9 +58,9 @@ internal fun <T : Any> DataRow(
 
         when (val textField = TextField(property.descriptor)) {
             TextField.Text -> TextField(
-                Modifier.weight(1f).padding(4.dp),
                 value = value,
                 onValueChange = { onValueChange(item.id, index, it) },
+                modifier = Modifier.weight(1f).padding(4.dp),
                 readOnly = readOnly || property.immutable || !item.isModify,
                 singleLine = true,
                 outlined = true,
@@ -73,9 +73,9 @@ internal fun <T : Any> DataRow(
             )
 
             else -> TextField(
-                Modifier.weight(1f).padding(4.dp),
                 value = value,
                 onValueChange = { onValueChange(item.id, index, it) },
+                modifier = Modifier.weight(1f).padding(4.dp),
                 readOnly = readOnly || property.immutable || !item.isModify,
                 singleLine = true,
                 type = textField,
