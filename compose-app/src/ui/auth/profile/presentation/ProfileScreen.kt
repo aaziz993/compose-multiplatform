@@ -610,14 +610,27 @@ private fun ProfileTextField(
     onValueChange = onValueChange,
     modifier = modifier.focusRequester(focusRequester),
     readOnly = !edit,
-    label = {
-        Text(text = label,color=LocalContentColor.current.orErrorColor(value), overflow = TextOverflow.Clip, maxLines = 1)
-            },
-    placeholder = { Text(text = label, overflow = TextOverflow.Clip, maxLines = 1) },
+    label = { value ->
+        Text(
+            text = label,
+            color = LocalContentColor.current.orErrorColor(value),
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
+        )
+    },
+    placeholder = { value ->
+        Text(
+            text = label,
+            color = LocalContentColor.current.orErrorColor(value),
+            overflow = TextOverflow.Clip,
+            maxLines = 1,
+        )
+    },
     leadingIcon = { value ->
         Icon(
             imageVector = imageVector,
             contentDescription = label,
+            modifier = Modifier.padding(4.dp),
             tint = LocalContentColor.current.orErrorColor(value),
         )
     },

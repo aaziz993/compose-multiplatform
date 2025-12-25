@@ -65,7 +65,7 @@ public fun SearchField(
     enabled: Boolean = true,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable ((isError: Boolean) -> Unit)? = null,
-    placeholder: @Composable (() -> Unit)? = null,
+    placeholder: @Composable ((isError: Boolean) -> Unit)? = null,
     leadingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     timeIcon: @Composable (action: () -> Unit) -> Unit = { action ->

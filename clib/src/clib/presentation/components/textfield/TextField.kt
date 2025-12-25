@@ -63,7 +63,7 @@ public fun TextField(
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable ((isError: Boolean) -> Unit)? = null,
-    placeholder: @Composable (() -> Unit)? = null,
+    placeholder: @Composable ((isError: Boolean) -> Unit)? = null,
     leadingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     showIcon: (@Composable (value: Boolean, action: () -> Unit) -> Unit)? = { value, action ->
@@ -137,6 +137,7 @@ public fun TextField(
     else onValueChange
 
     val advancedLabel: (@Composable () -> Unit)? = label?.let { { it.invoke(isErrorWithValidation) } }
+    val advancedPlaceholder: (@Composable () -> Unit)? = placeholder?.let { { it.invoke(isErrorWithValidation) } }
 
     val advancedLeadingIcon: (@Composable () -> Unit)? = leadingIcon?.let { { it.invoke(isErrorWithValidation) } }
 
@@ -258,7 +259,7 @@ public fun TextField(
                 readOnly && !cursor,
                 textStyle,
                 advancedLabel,
-                placeholder,
+                advancedPlaceholder,
                 advancedLeadingIcon,
                 advancedTrailingIcon,
                 advancedPrefix,
@@ -287,7 +288,7 @@ public fun TextField(
                 readOnly && !cursor,
                 textStyle,
                 advancedLabel,
-                placeholder,
+                advancedPlaceholder,
                 advancedLeadingIcon,
                 advancedTrailingIcon,
                 advancedPrefix,
