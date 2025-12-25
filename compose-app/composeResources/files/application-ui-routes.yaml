@@ -9,6 +9,10 @@ ui:
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
+    email:
+      isAuth: true
+      additionalMetadata:
+        topAppBarNavSuite: true
     totp:
       isAuth: true
       additionalMetadata:
