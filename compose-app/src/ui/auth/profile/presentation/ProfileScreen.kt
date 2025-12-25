@@ -510,8 +510,8 @@ private fun ProfileScreenContent(
                 leadingIcon = {
                     Icon(
                         Icons.Default.Key,
-                        Modifier.padding(4.dp),
                         stringResource(Res.string.key),
+                        Modifier.padding(4.dp),
                     )
                 },
                 singleLine = true,
@@ -532,8 +532,8 @@ private fun ProfileScreenContent(
                 leadingIcon = {
                     Icon(
                         Icons.Default.Attribution,
-                        Modifier.padding(4.dp),
                         stringResource(Res.string.value),
+                        Modifier.padding(4.dp),
                     )
                 },
                 validator = validator[key],
