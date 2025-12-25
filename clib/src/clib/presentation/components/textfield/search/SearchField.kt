@@ -10,8 +10,6 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -54,7 +52,6 @@ import compose.icons.lineawesomeicons.MinusSolid
 import compose.icons.lineawesomeicons.NotEqualSolid
 import klib.data.type.primitives.time.now
 import klib.data.type.primitives.time.toEpochMilliseconds
-import klib.data.validator.Validator
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -65,23 +62,12 @@ import org.jetbrains.compose.resources.painterResource
 public fun SearchField(
     state: SearchFieldState,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
-    showValue: Boolean = true,
-    onShowValueChange: ((Boolean) -> Unit)? = null,
     enabled: Boolean = true,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable ((isError: Boolean) -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
-    showIcon: (@Composable (action: () -> Unit) -> Unit)? = { action ->
-        Icon(
-            if (showValue) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-            null,
-            Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
-            LocalContentColor.current.orErrorColor(isError),
-        )
-    },
     timeIcon: @Composable (action: () -> Unit) -> Unit = { action ->
         Icon(
             Icons.Default.DateRange,
@@ -146,6 +132,7 @@ public fun SearchField(
     prefix: @Composable ((isError: Boolean) -> Unit)? = null,
     suffix: @Composable ((isError: Boolean) -> Unit)? = null,
     supportingText: @Composable ((isError: Boolean) -> Unit)? = null,
+    isError: Boolean = false,
     visualTransformation: VisualTransformation? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -157,9 +144,6 @@ public fun SearchField(
     type: TextField = TextField.Text,
     clearable: Boolean = true,
     outlined: Boolean = false,
-    validator: Validator? = null,
-    underlineMessage: String? = null,
-    onValidation: @Composable (List<String>) -> String = { value -> value.joinToString(", ") },
     matchAll: Boolean = true,
     regexMatch: Boolean = true,
     ignoreCase: Boolean = false,
@@ -173,12 +157,9 @@ public fun SearchField(
         SearchFieldCompare.BETWEEN,
     )
 ): Unit = TextField(
-    modifier,
     state.query,
     { state.query = it },
-    isError,
-    showValue,
-    onShowValueChange,
+    modifier,
     enabled,
     false,
     textStyle,
@@ -290,13 +271,14 @@ public fun SearchField(
 
         trailingIcon?.invoke(it)
     },
-    showIcon,
+    null,
     timeIcon,
     enumIcon,
     clearIcon,
     prefix,
     suffix,
     supportingText,
+    isError,
     visualTransformation,
     keyboardOptions,
     keyboardActions,
@@ -310,8 +292,10 @@ public fun SearchField(
     true,
     clearable,
     outlined,
-    underlineMessage,
-    validator,
-    onValidation,
+    null,
     false,
+    null,
+    { "" },
+    true,
+    null,
 )

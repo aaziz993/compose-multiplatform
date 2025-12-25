@@ -467,9 +467,9 @@ private fun ProfileScreenContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 ProfileTextField(
-                    modifier = Modifier.weight(1f).padding(8.dp),
                     value = value.first(),
                     onValueChange = { onAction(ProfileAction.SetAttribute(key, listOf(it))) },
+                    modifier = Modifier.weight(1f).padding(8.dp),
                     focusRequester = focusRequesters[5 + index],
                     nextFocusRequester = focusRequesters[6 + index],
                     edit = state.edit,
@@ -496,9 +496,9 @@ private fun ProfileScreenContent(
             var value by remember { mutableStateOf("") }
 
             TextField(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
                 value = key,
                 onValueChange = { value -> key = value },
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
                 label = {
                     Text(text = stringResource(Res.string.key), overflow = TextOverflow.Clip, maxLines = 1)
                 },
@@ -517,9 +517,9 @@ private fun ProfileScreenContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             TextField(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
                 value = value,
                 onValueChange = { value = it },
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
                 label = {
                     Text(text = stringResource(Res.string.value), overflow = TextOverflow.Clip, maxLines = 1)
                 },
@@ -606,9 +606,9 @@ private fun ProfileTextField(
     validator: Validator?,
     onValidation: (Boolean) -> Unit,
 ): Unit = TextField(
-    modifier = modifier.focusRequester(focusRequester),
     value = value,
     onValueChange = onValueChange,
+    modifier = modifier.focusRequester(focusRequester),
     readOnly = !edit,
     label = { Text(text = label, overflow = TextOverflow.Clip, maxLines = 1) },
     placeholder = { Text(text = label, overflow = TextOverflow.Clip, maxLines = 1) },

@@ -30,7 +30,7 @@ public val LocalConfig: ProvidableCompositionLocal<Config> = staticCompositionLo
 public data class Config(
     override val log: LogConfig = LogConfig(),
     override val localization: LocalizationConfig = LocalizationConfig(),
-    override val validator: Map<String, Map<String, Validator>> = emptyMap(),
+    override val validators: Map<String, Map<String, Validator>> = emptyMap(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),
     override val auth: AuthConfig = AuthConfig(),
     override val ui: UIConfig = UIConfig(),

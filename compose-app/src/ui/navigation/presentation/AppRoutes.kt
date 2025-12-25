@@ -79,12 +79,15 @@ import data.type.primitives.string.asStringResource
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
+import klib.data.validator.Validator
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import ui.about.AboutScreen
+import ui.auth.emal.presentation.EmailScreen
+import ui.auth.emal.presentation.viewmodel.EmailViewModel
 import ui.auth.hotp.HotpScreen
 import ui.auth.hotp.viewmodel.HotpViewModel
 import ui.auth.login.presentation.LoginScreen
@@ -154,7 +157,7 @@ public data object Application : KoinRoutes() {
 public data object Authentification : KoinRoutes() {
 
     override val routes: List<BaseRoute> by lazy {
-        listOf(Phone, Hotp, Totp, PinCode, ResetPinCode, Login)
+        listOf(Phone, Email, Hotp, Totp, PinCode, ResetPinCode, Login)
     }
 
     @Composable
@@ -182,31 +185,74 @@ public data object Authentification : KoinRoutes() {
 
 @Serializable
 @SerialName("phone")
-public data object Phone : KoinRoute<Phone>(), NavRoute {
+public data class Phone(val username: String? = null) : NavRoute {
 
-    @Composable
-    override fun Content(
-        route: Phone,
-        sharedTransitionScope: SharedTransitionScope,
-    ) {
-        val inspectionMode = LocalInspectionMode.current
-        val config = LocalConfig.current
-        val router = currentRouter()
-        val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
-        val state by viewModel.state.collectAsStateWithLifecycle()
-        val country = remember(state.phone.dial) {
-            Country.getCountries().find { country -> country.dial == state.phone.dial }
-                ?: (if (!inspectionMode) Country.current else null) ?: Country.forCode("US")
+    override val route: Route<out NavRoute>
+        get() = Phone
+
+    public companion object : KoinRoute<Phone>() {
+
+        override val navRoute: KClass<out NavRoute>
+            get() = Phone::class
+
+        @Composable
+        override fun Content(
+            route: Phone,
+            sharedTransitionScope: SharedTransitionScope,
+        ) {
+            val inspectionMode = LocalInspectionMode.current
+            val config = LocalConfig.current
+            val router = currentRouter()
+            val viewModel: PhoneViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            val country = remember(state.phone.dial) {
+                Country.getCountries().find { country -> country.dial == state.phone.dial }
+                    ?: (if (!inspectionMode) Country.current else null) ?: Country.forCode("US")
+            }
+
+            PhoneScreen(
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                route,
+                country,
+                state,
+                viewModel::action,
+                router::actions,
+            )
         }
+    }
+}
 
-        PhoneScreen(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            route,
-            country,
-            state,
-            viewModel::action,
-            router::actions,
-        )
+@Serializable
+@SerialName("email")
+public data class Email(val username: String? = null) : NavRoute {
+
+    override val route: Route<out NavRoute>
+        get() = Email
+
+    public companion object : KoinRoute<Email>() {
+
+        override val navRoute: KClass<out NavRoute>
+            get() = Email::class
+
+        @Composable
+        override fun Content(
+            route: Email,
+            sharedTransitionScope: SharedTransitionScope,
+        ) {
+            val config = LocalConfig.current
+            val router = currentRouter()
+            val viewModel: EmailViewModel = koinViewModel { parametersOf(router, config.auth.otp) }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            EmailScreen(
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                route,
+                config.validators[""]?.get("email") ?: Validator.email(),
+                state,
+                viewModel::action,
+                router::actions,
+            )
+        }
     }
 }
 
@@ -732,7 +778,7 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
             route,
             connectivityStatus,
             componentsState.value,
-            config.validator["user"].orEmpty(),
+            config.validators["user"].orEmpty(),
             state,
             viewModel::action,
             router::actions,

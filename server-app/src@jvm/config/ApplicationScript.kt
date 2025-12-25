@@ -57,7 +57,7 @@ public lateinit var applicationScript: ApplicationScript
 public class ApplicationScript(
     override val log: LogConfig = LogConfig(),
     override val localization: LocalizationConfig = LocalizationConfig(),
-    override val validator: Map<String, Map<String, Validator>> = emptyMap(),
+    override val validators: Map<String, Map<String, Validator>> = emptyMap(),
     override val httpClient: HttpClientConfig = HttpClientConfig(),
     override val auth: AuthConfig = AuthConfig(),
     override val ui: klib.data.config.UIConfig = UIConfig(),

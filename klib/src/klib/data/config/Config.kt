@@ -9,7 +9,7 @@ public interface Config {
 
     public val log: LogConfig
     public val localization: LocalizationConfig
-    public val validator: Map<String, Map<String, Validator>>
+    public val validators: Map<String, Map<String, Validator>>
     public val httpClient: HttpClientConfig
     public val auth: AuthConfig
     public val ui: UIConfig

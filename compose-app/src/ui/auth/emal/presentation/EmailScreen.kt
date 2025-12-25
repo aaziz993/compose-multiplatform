@@ -1,4 +1,4 @@
-package ui.auth.phone.presentation
+package ui.auth.emal.presentation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,13 +12,17 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -33,29 +37,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import clib.data.type.orErrorColor
 import clib.data.type.primitives.string.stringResource
-import clib.presentation.components.country.CountryCodePickerOutlinedTextField
-import clib.presentation.components.country.model.CountryPicker
+import clib.presentation.components.textfield.TextField
 import clib.presentation.navigation.NavigationAction
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.clear
-import compose_app.generated.resources.country
-import compose_app.generated.resources.phone
-import compose_app.generated.resources.search
+import compose_app.generated.resources.email
+import compose_app.generated.resources.username
 import data.type.primitives.string.asStringResource
-import klib.data.location.country.Country
-import klib.data.location.country.getCountries
-import klib.data.type.primitives.string.DIGIT_PATTERN
-import ui.auth.phone.presentation.viewmodel.PhoneAction
-import ui.auth.phone.presentation.viewmodel.PhoneState
-import ui.navigation.presentation.Phone
+import klib.data.type.primitives.string.LINE_SEPARATOR
+import klib.data.validator.Validator
+import ui.auth.emal.presentation.viewmodel.EmailAction
+import ui.auth.emal.presentation.viewmodel.EmailState
+import ui.navigation.presentation.Email
 
 @Composable
-public fun PhoneScreen(
+public fun EmailScreen(
     modifier: Modifier = Modifier,
-    route: Phone = Phone(),
-    country: Country = Country.getCountries().first(),
-    state: PhoneState = PhoneState(),
-    onAction: (PhoneAction) -> Unit = {},
+    route: Email = Email(),
+    validator: Validator = Validator.email(),
+    state: EmailState = EmailState(),
+    onAction: (EmailAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
 ): Unit = Box(
     modifier = modifier,
@@ -68,13 +69,13 @@ public fun PhoneScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
-            imageVector = Icons.Default.Phone,
-            contentDescription = stringResource(Res.string.phone),
+            imageVector = Icons.Default.Email,
+            contentDescription = stringResource(Res.string.email),
             modifier = Modifier.size(128.dp),
         )
 
         Text(
-            text = stringResource(Res.string.phone),
+            text = stringResource(Res.string.email),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -84,72 +85,72 @@ public fun PhoneScreen(
         )
 
         val focusRequester = FocusRequester()
-        val color = LocalContentColor.current.orErrorColor(!state.isValid)
+        var isValid by remember { mutableStateOf(false) }
+        val color = LocalContentColor.current.orErrorColor(!isValid)
 
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
 
-        CountryCodePickerOutlinedTextField(
-            value = state.phone.number,
-            onValueChange = { dial, value, isValid ->
-                onAction(
-                    PhoneAction.SetPhone(
-                        dial,
-                        if (value.isEmpty() || "${Regex.DIGIT_PATTERN}+".toRegex().matches(value)) value else state.phone.number,
-                        isValid,
-                    ),
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp).focusRequester(focusRequester),
-            selectedCountry = country,
-            countries = Country.getCountries().toList().map { country ->
-                country.copy(name = "country_$country".asStringResource { country.name })
-            },
-            enabled = true,
+        TextField(
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusRequester),
+            value = state.email,
+            onValueChange = { value -> onAction(EmailAction.SetEmail(value)) },
             textStyle = MaterialTheme.typography.bodyMedium,
             label = {
                 Text(
-                    text = stringResource(Res.string.phone),
+                    text = stringResource(Res.string.email),
                     color = color,
                     overflow = TextOverflow.Clip,
                     maxLines = 1,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
-            trailingIcon = {
+            placeholder = {
+                Text(
+                    text = stringResource(Res.string.username),
+                    color = color,
+                    overflow = TextOverflow.Clip,
+                    maxLines = 1,
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    Icons.Default.Email,
+                    stringResource(Res.string.email),
+                    Modifier.padding(horizontal = 4.dp),
+                    color,
+                )
+            },
+            clearIcon = { action ->
                 Icon(
                     Icons.Default.Close,
                     stringResource(Res.string.clear),
-                    Modifier.padding(horizontal = 4.dp).clickable(
-                        onClick = {
-                            onAction(PhoneAction.SetPhone())
-                        },
-                    ),
+                    Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
                     MaterialTheme.colorScheme.error,
                 )
             },
-            showError = true,
+            isError = !isValid,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
+                keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    onAction(PhoneAction.Confirm)
+                    if (isValid) onAction(EmailAction.Confirm)
                 },
             ),
-            picker = CountryPicker(
-                headerTitle = stringResource(Res.string.country),
-                searchHint = stringResource(Res.string.search),
-            ),
-            showSheet = true,
+            singleLine = true,
+            outlined = true,
+            validator = validator,
+            onValidation = { value ->
+                isValid = value.isEmpty()
+                value.map { it.asStringResource() }.joinToString(String.LINE_SEPARATOR)
+            },
         )
     }
 }
 
 @Preview
 @Composable
-private fun PreviewPhoneScreen(): Unit = PhoneScreen()
+private fun PreviewEmailScreen(): Unit = EmailScreen()

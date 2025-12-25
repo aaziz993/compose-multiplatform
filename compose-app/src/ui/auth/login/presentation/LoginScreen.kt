@@ -19,8 +19,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
@@ -53,9 +57,12 @@ import compose.icons.simpleicons.Apple
 import compose.icons.simpleicons.Google
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.apple
+import compose_app.generated.resources.clear
+import compose_app.generated.resources.email
 import compose_app.generated.resources.google
 import compose_app.generated.resources.login
 import compose_app.generated.resources.password
+import compose_app.generated.resources.phone
 import compose_app.generated.resources.remember
 import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
@@ -64,6 +71,7 @@ import klib.data.config.auth.AuthConfig
 import presentation.components.tooltipbox.PlainTooltipBox
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
+import ui.navigation.presentation.Email
 import ui.navigation.presentation.Login
 import ui.navigation.presentation.Phone
 
@@ -104,50 +112,104 @@ public fun LoginScreen(
             maxLines = 1,
         )
 
-        val focusList = remember { List(3) { FocusRequester() } }
+        val focusRequesters = remember { List(3) { FocusRequester() } }
 
         LaunchedEffect(Unit) {
-            focusList.first().requestFocus()
+            focusRequesters.first().requestFocus()
         }
 
-        val leadingIconColor = LocalContentColor.current.orErrorColor(state.error != null)
+        val color = LocalContentColor.current.orErrorColor(state.error != null)
 
         TextField(
-            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[0]),
             value = state.username,
             onValueChange = { value -> onAction(LoginAction.SetUsername(value)) },
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusRequesters[0]),
             label = {
-                Text(text = stringResource(Res.string.username), overflow = TextOverflow.Clip, maxLines = 1)
+                Text(
+                    text = stringResource(Res.string.username),
+                    color = color,
+                    overflow = TextOverflow.Clip,
+                    maxLines = 1,
+                )
             },
             placeholder = {
-                Text(text = stringResource(Res.string.username), overflow = TextOverflow.Clip, maxLines = 1)
+                Text(
+                    text = stringResource(Res.string.username),
+                    color = color,
+                    overflow = TextOverflow.Clip,
+                    maxLines = 1,
+                )
             },
             leadingIcon = {
-                Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = leadingIconColor)
+                Icon(
+                    Icons.Default.Person,
+                    stringResource(Res.string.username),
+                    Modifier.padding(horizontal = 4.dp),
+                    color,
+                )
+            },
+            clearIcon = { action ->
+                Icon(
+                    Icons.Default.Close,
+                    stringResource(Res.string.clear),
+                    Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
+                    MaterialTheme.colorScheme.error,
+                )
             },
             isError = state.error != null,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions { focusList[1].requestFocus() },
+            keyboardActions = KeyboardActions { focusRequesters[1].requestFocus() },
             singleLine = true,
             outlined = true,
         )
 
         TextField(
-            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[1]),
             value = state.password,
             onValueChange = { value -> onAction(LoginAction.SetPassword(value)) },
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusRequesters[1]),
             label = {
-                Text(text = stringResource(Res.string.password), overflow = TextOverflow.Clip, maxLines = 1)
+                Text(
+                    text = stringResource(Res.string.password),
+                    color = color,
+                    overflow = TextOverflow.Clip,
+                    maxLines = 1,
+                )
             },
             placeholder = {
-                Text(text = stringResource(Res.string.password), overflow = TextOverflow.Clip, maxLines = 1)
+                Text(
+                    text = stringResource(Res.string.password),
+                    color = color,
+                    overflow = TextOverflow.Clip,
+                    maxLines = 1,
+                )
             },
             leadingIcon = {
-                Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = leadingIconColor)
+                Icon(
+                    Icons.Default.Lock,
+                    stringResource(Res.string.password),
+                    Modifier.padding(horizontal = 4.dp),
+                    color,
+                )
+            },
+            showIcon = { value, action ->
+                Icon(
+                    if (value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                    null,
+                    Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
+                    color,
+                )
+            },
+            clearIcon = { action ->
+                Icon(
+                    Icons.Default.Close,
+                    stringResource(Res.string.clear),
+                    Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
+                    MaterialTheme.colorScheme.error,
+                )
             },
             isError = state.error != null,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions { focusList[2].requestFocus() },
+            keyboardActions = KeyboardActions { focusRequesters[2].requestFocus() },
             singleLine = true,
             outlined = true,
             showValue = state.showPassword,
@@ -168,31 +230,51 @@ public fun LoginScreen(
             )
         }
 
-        Text(
-            text = stringResource(Res.string.reset_password),
-            color = MaterialTheme.colorScheme.primary,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .clickable {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(Res.string.reset_password),
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(vertical = 8.dp),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                overflow = TextOverflow.Clip,
+                maxLines = 1,
+            )
+
+            IconButton(
+                onClick = {
                     onNavigationActions(
                         arrayOf(
-                            NavigationAction.Push(Phone),
+                            NavigationAction.Push(Phone(state.username)),
                         ),
                     )
-                }
-                .padding(vertical = 8.dp),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            overflow = TextOverflow.Clip,
-            maxLines = 1,
-        )
+                },
+            ) {
+                Icon(Icons.Default.Email, stringResource(Res.string.phone))
+            }
+
+            IconButton(
+                onClick = {
+                    onNavigationActions(
+                        arrayOf(
+                            NavigationAction.Push(Email(state.username)),
+                        ),
+                    )
+                },
+            ) {
+                Icon(Icons.Default.Email, stringResource(Res.string.email))
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = { onAction(LoginAction.Login) },
-            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusList[2]),
+            modifier = Modifier.fillMaxWidth(0.8f).focusRequester(focusRequesters[2]),
         ) {
             Text(text = stringResource(Res.string.login), overflow = TextOverflow.Clip, maxLines = 1)
         }

@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -40,7 +39,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import clib.data.type.orErrorColor
 import clib.data.type.state.timePickerStateToTime
 import clib.presentation.components.dropdown.list.ListDropdown
 import clib.presentation.components.picker.TimePickerDialog
@@ -58,12 +56,9 @@ import kotlinx.datetime.TimeZone
 
 @Composable
 public fun TextField(
+    value: String,
+    onValueChange: (value: String) -> Unit,
     modifier: Modifier = Modifier,
-    value: String = "",
-    onValueChange: (String) -> Unit = {},
-    isError: Boolean = false,
-    showValue: Boolean = true,
-    onShowValueChange: ((Boolean) -> Unit)? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -71,12 +66,11 @@ public fun TextField(
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
     trailingIcon: @Composable ((isError: Boolean) -> Unit)? = null,
-    showIcon: (@Composable (action: () -> Unit) -> Unit)? = { action ->
+    showIcon: (@Composable (value: Boolean, action: () -> Unit) -> Unit)? = { value, action ->
         Icon(
-            if (showValue) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+            if (value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
             null,
             Modifier.padding(horizontal = 4.dp).clickable(onClick = action),
-            LocalContentColor.current.orErrorColor(isError),
         )
     },
     timeIcon: @Composable (action: () -> Unit) -> Unit = { action ->
@@ -104,6 +98,7 @@ public fun TextField(
     prefix: @Composable ((isError: Boolean) -> Unit)? = null,
     suffix: @Composable ((isError: Boolean) -> Unit)? = null,
     supportingText: @Composable ((isError: Boolean) -> Unit)? = null,
+    isError: Boolean = false,
     visualTransformation: VisualTransformation? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -118,9 +113,11 @@ public fun TextField(
     clearable: Boolean = !readOnly,
     outlined: Boolean = false,
     underlineMessage: String? = null,
+    showValidationMessage: Boolean = true,
     validator: Validator? = null,
     onValidation: @Composable (List<String>) -> String = { value -> value.joinToString(", ") },
-    showValidationMessage: Boolean = true,
+    showValue: Boolean = true,
+    onShowValueChange: ((Boolean) -> Unit)? = null,
 ) {
     val isTime = when (type) {
         TextField.LocalTime, TextField.LocalDate, TextField.LocalDateTime -> true
@@ -135,7 +132,7 @@ public fun TextField(
     val isErrorWithValidation = isError || validationMessages.isNotEmpty()
 
     val advancedOnValueChange = if (readOnly || isTime || type is TextField.Enum) {
-        {}
+        { }
     }
     else onValueChange
 
@@ -149,7 +146,7 @@ public fun TextField(
     else null
 
     val showIconButton: (@Composable (isError: Boolean) -> Unit)? = onShowValueChange?.let {
-        { showIcon?.invoke { it(!showValue) } }
+        { showIcon?.invoke(showValue) { it(!showValue) } }
     }
 
     val timeIconButton: (@Composable () -> Unit)? = if (isTime && !readOnly) {
@@ -193,9 +190,7 @@ public fun TextField(
                 confirmButton = {
                     IconButton(
                         onClick = {
-                            onValueChange(
-                                timePickerStateToTime(datePickerState, timePickerState)?.toString().orEmpty(),
-                            )
+                            onValueChange(timePickerStateToTime(datePickerState, timePickerState)?.toString().orEmpty())
                         },
                     ) {
                         Icon(
