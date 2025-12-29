@@ -5,7 +5,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 
 public open class TreeEncoderConfiguration(
     public var encodeDefaults: Boolean = true,
-    override var serializableValueMark: (SerialDescriptor, Int) -> Boolean = { _, _ -> true },
+    override var serializableValueMark: (SerialDescriptor, index: Int, value: Any?) -> Boolean = { _, _, _ -> true },
     override var classDiscriminator: (SerialDescriptor) -> String = { descriptor -> descriptor.classDiscriminator },
     override var filterElement: (SerialDescriptor, Int, Any?) -> Boolean = { _, _, _ -> true },
     override var transformElement: (SerialDescriptor, Int, Any?) -> Any? = { _, index, element -> element },

@@ -30,7 +30,7 @@ public open class TreeEncoder(
         this.value = value
     }
 
-    protected open fun encodeSerializableValueMark(): Boolean = true
+    protected open fun encodeSerializableValueMark(value: Any?): Boolean = true
 
     final override fun encodeValue(value: Any): Unit = encodeNullableValue(value)
 
@@ -40,7 +40,7 @@ public open class TreeEncoder(
         encodeValue(enumDescriptor.getElementName(index))
 
     final override fun <T> encodeSerializableValue(serializer: SerializationStrategy<T>, value: T) {
-        if (encodeSerializableValueMark()) {
+        if (encodeSerializableValueMark(value)) {
             if (!encodePolymorphically(serializer, value, configuration.classDiscriminator))
                 super.encodeSerializableValue(serializer, value)
         }
@@ -66,7 +66,8 @@ public open class TreeEncoder(
 
         protected var index = 0
 
-        override fun encodeSerializableValueMark(): Boolean = configuration.serializableValueMark(descriptor, index)
+        override fun encodeSerializableValueMark(value: Any?): Boolean =
+            configuration.serializableValueMark(descriptor, index, value)
 
         final override fun endStructure(descriptor: SerialDescriptor) =
             this@TreeEncoder.encodeValue(value!!)

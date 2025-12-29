@@ -14,6 +14,7 @@ import klib.data.type.collections.iterator.coroutine.forEach
 import kotlin.jvm.JvmName
 import kotlinx.io.Buffer
 import kotlinx.io.IOException
+import kotlinx.io.buffered
 import kotlinx.io.bytestring.ByteString
 import kotlinx.io.files.FileNotFoundException
 import kotlinx.io.files.Path
@@ -111,12 +112,10 @@ public fun Path.write(
     data: Iterator<ByteArray>,
     append: Boolean = false
 ): Unit = SystemFileSystem.sink(this, append).use { sink ->
-    val buffer = Buffer()
+    val bufferedSink = sink.buffered()
     data.forEach { bytes ->
-        buffer.write(bytes)
-        sink.write(buffer, bytes.size.toLong())
+        bufferedSink.write(bytes)
         sink.flush()
-        buffer.clear()
     }
 }
 
@@ -124,12 +123,10 @@ public suspend fun Path.write(
     data: CoroutineIterator<ByteArray>,
     append: Boolean = false,
 ): Unit = SystemFileSystem.sink(this, append).use { sink ->
-    val buffer = Buffer()
+    val bufferedSink = sink.buffered()
     data.forEach { bytes ->
-        buffer.write(bytes)
-        sink.write(buffer, bytes.size.toLong())
+        bufferedSink.write(bytes)
         sink.flush()
-        buffer.clear()
     }
 }
 

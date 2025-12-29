@@ -44,7 +44,7 @@ public open class TreeDecoder(
 
     public open fun decodeNullableValue(): Any? = value
 
-    protected open fun decodeSerializableValueMark(): Boolean = true
+    protected open fun decodeSerializableValueMark(value: Any?): Boolean = true
 
     final override fun decodeValue(): Any = decodeNullableValue()!!
     override fun decodeNotNullMark(): Boolean = configuration.decodeNotNullMark(value)
@@ -78,8 +78,9 @@ public open class TreeDecoder(
     @Suppress("UNCHECKED_CAST")
     final override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
         serializer = deserializer as KSerializer<T>
-        return if (decodeSerializableValueMark()) super.decodeSerializableValue(deserializer)
-        else decodeNullableValue() as T
+        val value = decodeNullableValue()
+        return if (decodeSerializableValueMark(value)) super.decodeSerializableValue(deserializer)
+        else value as T
     }
 
     final override fun <T : Any> decodeNullableSerializableValue(deserializer: DeserializationStrategy<T?>): T? {
@@ -121,8 +122,8 @@ public open class TreeDecoder(
             else value
         }
 
-        override fun decodeSerializableValueMark(): Boolean = !decodeComputeValueMark() &&
-            configuration.serializableValueMark(descriptor, decodeElementIndex())
+        override fun decodeSerializableValueMark(value: Any?): Boolean = !decodeComputeValueMark() &&
+            configuration.serializableValueMark(descriptor, decodeElementIndex(), value)
 
         private fun decodeComputeValueMark(): Boolean =
             descriptor.hasElementAnnotation<SerialScript>(decodeElementIndex()) ||
@@ -235,7 +236,8 @@ public open class TreeDecoder(
             else -> throw IllegalArgumentException("Unknown descriptor: $descriptor")
         }
 
-        override fun decodeSerializableValueMark(): Boolean = !decodeTypeSerialMark()
+        override fun decodeSerializableValueMark(value: Any?): Boolean =
+            super.decodeSerializableValueMark(value) && !decodeTypeSerialMark()
 
         private fun decodeTypeSerialMark(): Boolean =
             descriptor.hasElementAnnotation<TypeSerial>(decodeElementIndex())
