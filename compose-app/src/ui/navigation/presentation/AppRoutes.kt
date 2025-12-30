@@ -96,8 +96,8 @@ import ui.auth.phone.presentation.PhoneScreen
 import ui.auth.phone.presentation.viewmodel.PhoneViewModel
 import ui.auth.pincode.PinCodeScreen
 import ui.auth.pincode.viewmodel.PinCodeViewModel
-import ui.auth.profile.presentation.ProfileScreen
-import ui.auth.profile.presentation.viewmodel.ProfileViewModel
+import ui.profile.presentation.ProfileScreen
+import ui.profile.presentation.viewmodel.ProfileViewModel
 import ui.auth.resetpincode.presentation.ResetPinCodeScreen
 import ui.auth.totp.TotpScreen
 import ui.auth.totp.viewmodel.TotpViewModel

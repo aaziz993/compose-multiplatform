@@ -1,4 +1,4 @@
-package ui.auth.profile.presentation
+package ui.profile.presentation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -110,8 +110,8 @@ import presentation.components.dialog.SignOutConfirmDialog
 import presentation.components.tooltipbox.PlainTooltipBox
 import presentation.connectivity.CircleIcon
 import presentation.connectivity.stringResource
-import ui.auth.profile.presentation.viewmodel.ProfileAction
-import ui.auth.profile.presentation.viewmodel.ProfileState
+import ui.profile.presentation.viewmodel.ProfileAction
+import ui.profile.presentation.viewmodel.ProfileState
 import ui.navigation.presentation.Profile
 import ui.navigation.presentation.Verification
 

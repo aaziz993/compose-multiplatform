@@ -1,4 +1,4 @@
-package ui.auth.profile.presentation.viewmodel
+package ui.profile.presentation.viewmodel
 
 import clib.presentation.components.dialog.password.model.PasswordDialogState
 import clib.presentation.components.dialog.password.model.PasswordResetDialogState

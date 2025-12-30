@@ -1,11 +1,10 @@
-package ui.auth.profile.presentation.viewmodel
+package ui.profile.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import clib.presentation.auth.AuthState
 import clib.presentation.components.dialog.password.model.PasswordDialogState
 import clib.presentation.components.dialog.password.model.PasswordResetDialogState
 import clib.presentation.viewmodel.ViewModel
-import klib.data.auth.model.Auth
 import klib.data.load.LoadingResult
 import klib.data.load.success
 import kotlinx.coroutines.flow.MutableStateFlow
