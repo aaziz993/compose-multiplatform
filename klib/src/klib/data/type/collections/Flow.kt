@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 
@@ -38,5 +39,6 @@ public fun MutableSharedFlow<*>.onHasSubscriptionChange(
 ): Job = subscriptionCount
     .map { count -> count > 0 }
     .distinctUntilChanged()
+    .drop(1) // Drop first false event
     .onEach(change)
     .launchIn(coroutineScope)

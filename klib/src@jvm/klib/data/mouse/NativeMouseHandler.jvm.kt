@@ -112,13 +112,13 @@ internal object JvmMouseHandler
         }
     }
 
-    override fun startReadingEvents() {
+    override fun start() {
         GlobalScreen.addNativeMouseMotionListener(this)
         GlobalScreen.addNativeMouseWheelListener(this)
         GlobalScreen.addNativeMouseListener(this)
     }
 
-    override fun stopReadingEvents() {
+    override fun stop() {
         GlobalScreen.removeNativeMouseMotionListener(this)
         GlobalScreen.removeNativeMouseWheelListener(this)
         GlobalScreen.removeNativeMouseListener(this)

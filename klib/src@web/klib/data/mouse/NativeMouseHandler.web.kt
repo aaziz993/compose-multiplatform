@@ -47,14 +47,14 @@ internal object WebMouseHandler : NativeMouseHandlerBase() {
     private var mouseDownUnsubscribe: (() -> Unit)? = null
     private var mouseUpUnsubscribe: (() -> Unit)? = null
 
-    override fun startReadingEvents() {
+    override fun start() {
         mouseMoveUnsubscribe = window.mouseMoveEvent.addHandler(::mouseHandler)
         wheelUnsubscribe = window.wheelEvent.addHandler(::wheelHandler)
         mouseDownUnsubscribe = window.mouseDownEvent.addHandler(::mouseHandler)
         mouseUpUnsubscribe = window.mouseUpEvent.addHandler(::mouseHandler)
     }
 
-    override fun stopReadingEvents() {
+    override fun stop() {
         mouseMoveUnsubscribe?.invoke()
         wheelUnsubscribe?.invoke()
         mouseDownUnsubscribe?.invoke()

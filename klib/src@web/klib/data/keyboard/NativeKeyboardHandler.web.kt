@@ -34,12 +34,12 @@ internal object WebKeyboardHandler : NativeKeyboardHandlerBase() {
     private var keyDownUnsubscribe: (() -> Unit)? = null
     private var keyUpUnsubscribe: (() -> Unit)? = null
 
-    override fun startReadingEvents() {
+    override fun start() {
         keyDownUnsubscribe = window.keyDownEvent.addHandler(::keyDown)
         keyUpUnsubscribe = window.keyUpEvent.addHandler(::keyUp)
     }
 
-    override fun stopReadingEvents() {
+    override fun stop() {
         keyDownUnsubscribe?.invoke()
         keyUpUnsubscribe?.invoke()
         keyDownUnsubscribe = null

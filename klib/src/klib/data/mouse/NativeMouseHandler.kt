@@ -1,18 +1,14 @@
 package klib.data.mouse
 
-import klib.data.mouse.model.MouseEvent
 import klib.data.keyboard.model.KeyState
 import klib.data.mouse.model.MouseButton
+import klib.data.mouse.model.MouseEvent
+import klib.data.type.collections.onHasSubscriptionChange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 
 /**
  * A low-level implementation for handling [MouseEvent]s (sending and receiving).
@@ -46,16 +42,16 @@ internal abstract class NativeMouseHandlerBase : NativeMouseHandler {
 
     init {
         // When subscriptionCount increments from 0 to 1, setup the native hook.
-        eventsInternal.subscriptionCount
-            .map { it > 0 }
-            .distinctUntilChanged()
-            .drop(1) // Drop first false event
-            .onEach { if (it) startReadingEvents() else stopReadingEvents() }
-            .launchIn(unconfinedScope)
+        eventsInternal.onHasSubscriptionChange(
+            { subscribed ->
+                if (subscribed) start() else stop()
+            },
+            unconfinedScope,
+        )
     }
 
-    protected abstract fun startReadingEvents()
-    protected abstract fun stopReadingEvents()
+    protected abstract fun start()
+    protected abstract fun stop()
 
     protected fun emit(
         button: MouseButton,
@@ -66,4 +62,11 @@ internal abstract class NativeMouseHandlerBase : NativeMouseHandler {
     ) {
         eventsInternal.tryEmit(MouseEvent(button, state, wheel, x, y))
     }
+}
+
+internal object DummyNativeMouseHandler : NativeMouseHandlerBase() {
+
+    override fun sendEvent(event: MouseEvent): Unit = Unit
+    override fun start(): Unit = Unit
+    override fun stop(): Unit = Unit
 }

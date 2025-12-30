@@ -75,9 +75,9 @@ internal object JvmKeyboardHandler : NativeKeyboardHandlerBase(), NativeKeyListe
         Toolkit.getDefaultToolkit()
             .getLockingKeyState(java.awt.event.KeyEvent.VK_SCROLL_LOCK)
 
-    override fun startReadingEvents(): Unit = GlobalScreen.addNativeKeyListener(this)
+    override fun start(): Unit = GlobalScreen.addNativeKeyListener(this)
 
-    override fun stopReadingEvents() {
+    override fun stop() {
         GlobalScreen.removeNativeKeyListener(this)
         pressedKeys.clear()
     }

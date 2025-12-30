@@ -3,16 +3,12 @@ package klib.data.keyboard
 import klib.data.keyboard.model.Key
 import klib.data.keyboard.model.KeyEvent
 import klib.data.keyboard.model.KeyState
+import klib.data.type.collections.onHasSubscriptionChange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 
 /**
  * A low-level implementation for handling [KeyEvent]s (sending and receiving).
@@ -69,17 +65,35 @@ internal abstract class NativeKeyboardHandlerBase : NativeKeyboardHandler {
     init {
         // When subscriptionCount increments from 0 to 1, setup the native hook.
         eventsInternal.subscriptionCount
-            .map { it > 0 }
-            .distinctUntilChanged()
-            .drop(1) // Drop first false event
-            .onEach { if (it) startReadingEvents() else stopReadingEvents() }
-            .launchIn(unconfinedScope)
+        eventsInternal.onHasSubscriptionChange(
+            { subscribed ->
+                if (subscribed) start() else stop()
+            },
+            unconfinedScope,
+        )
     }
 
-    protected abstract fun startReadingEvents()
-    protected abstract fun stopReadingEvents()
+    protected abstract fun start()
+    protected abstract fun stop()
 
     protected fun emit(key: Key, state: KeyState) {
         eventsInternal.tryEmit(KeyEvent(key, state))
     }
+}
+
+internal object DummyNativeKeyboardHandler : NativeKeyboardHandlerBase() {
+
+    override fun start(): Unit = Unit
+
+    override fun stop(): Unit = Unit
+
+    override fun sendEvent(event: KeyEvent): Unit = Unit
+
+    override fun getKeyState(key: Key): KeyState = KeyState.KeyUp
+
+    override fun isCapsLockOn(): Boolean = false
+
+    override fun isNumLockOn(): Boolean = false
+
+    override fun isScrollLockOn(): Boolean = false
 }

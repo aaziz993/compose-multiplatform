@@ -222,14 +222,17 @@ private fun ProfileScreenContent(
                 }
 
             if (state.user.isVerified)
-                PlainTooltipBox(tooltip = stringResource(Res.string.verified)) {
-                    Icon(
-                        imageVector = Icons.Default.VerifiedUser,
-                        contentDescription = stringResource(Res.string.verified),
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .size(14.dp),
-                    )
+                Box(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                ) {
+                    PlainTooltipBox(tooltip = stringResource(Res.string.verified)) {
+                        Icon(
+                            imageVector = Icons.Default.VerifiedUser,
+                            contentDescription = stringResource(Res.string.verified),
+                            modifier = Modifier
+                                .size(24.dp),
+                        )
+                    }
                 }
 
             if (state.edit) {
@@ -246,7 +249,7 @@ private fun ProfileScreenContent(
                         Icon(
                             imageVector = Icons.Default.Remove,
                             contentDescription = stringResource(Res.string.remove),
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(24.dp),
                             tint = MaterialTheme.colorScheme.error,
                         )
                     }
@@ -265,7 +268,7 @@ private fun ProfileScreenContent(
                         Icon(
                             imageVector = Icons.Default.Image,
                             contentDescription = stringResource(Res.string.gallery),
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 }
@@ -283,7 +286,7 @@ private fun ProfileScreenContent(
                         Icon(
                             imageVector = Icons.Default.CameraEnhance,
                             contentDescription = stringResource(Res.string.camera),
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 }
@@ -320,7 +323,7 @@ private fun ProfileScreenContent(
         }
 
         val validations = remember(state.user) {
-            mutableStateListOf(*Array(6 + state.user.attributes.size) { false })
+            mutableStateListOf(*Array(6 + state.user.attributes.size) { true })
         }
 
         Row(
