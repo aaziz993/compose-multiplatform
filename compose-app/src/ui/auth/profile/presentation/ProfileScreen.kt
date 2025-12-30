@@ -209,28 +209,34 @@ private fun ProfileScreenContent(
                     .clip(CircleShape),
                 contentDescription = stringResource(Res.string.avatar),
             )
+
             if (connectivity.isAvatarConnectivityIndicator)
-                PlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
-                    connectivityStatus.CircleIcon(
-                        Modifier
-                            .align(Alignment.TopStart)
-                            .size(14.dp),
-                        Modifier
-                            .align(Alignment.TopStart)
-                            .size(14.dp),
-                    )
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopStart),
+                ) {
+                    PlainTooltipBox(tooltip = connectivityStatus.stringResource()) {
+                        connectivityStatus.CircleIcon(
+                            Modifier
+                                .size(14.dp),
+                            Modifier
+                                .size(14.dp),
+                        )
+                    }
                 }
 
             if (state.user.isVerified)
                 Box(
-                    modifier = Modifier.align(Alignment.BottomCenter),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .offset(y = 5.dp),
                 ) {
                     PlainTooltipBox(tooltip = stringResource(Res.string.verified)) {
                         Icon(
                             imageVector = Icons.Default.VerifiedUser,
                             contentDescription = stringResource(Res.string.verified),
                             modifier = Modifier
-                                .size(24.dp),
+                                .size(14.dp),
                         )
                     }
                 }
