@@ -10,6 +10,9 @@ public actual fun GlobalDeepLink(
     vararg keys: Any,
     onEvent: (Url) -> Unit,
 ): Unit = DisposableEffect(*keys) {
-    val (popStateEvent, hashChangeEvent) = addHandleDeeplinkEvents { url -> onEvent(url.toUrl()) }
-    onDispose { removeHandleDeeplinkEvents(popStateEvent, hashChangeEvent) }
+    val (popStateEventUnsubscribe, hashChangeEventUnsubscribe) = addHandleDeeplinkEvents { url -> onEvent(url.toUrl()) }
+    onDispose {
+        popStateEventUnsubscribe()
+        hashChangeEventUnsubscribe()
+    }
 }

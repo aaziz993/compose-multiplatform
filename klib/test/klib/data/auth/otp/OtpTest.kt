@@ -1,7 +1,6 @@
 package klib.data.auth.otp
 
 import dev.whyoleg.cryptography.algorithms.SHA1
-import klib.data.auth.otp.TotpGenerator
 import klib.data.auth.otp.model.TotpConfig
 import kotlin.test.Test
 import kotlin.test.assertEquals

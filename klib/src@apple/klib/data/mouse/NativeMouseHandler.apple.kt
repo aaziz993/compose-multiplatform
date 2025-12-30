@@ -1,0 +1,3 @@
+package klib.data.mouse
+
+public actual fun nativeMouseHandlerForPlatform(): NativeMouseHandler = throw NotImplementedError()
