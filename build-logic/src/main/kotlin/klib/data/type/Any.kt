@@ -11,6 +11,4 @@ public fun hashCode(vararg values: Any?, fromIndex: Int = 0, length: Int = value
     return result
 }
 
-public inline fun <reified T> Any?.cast(): T {
-    return this as T
-}
+public inline fun <reified T> Any?.cast(): T = this as T

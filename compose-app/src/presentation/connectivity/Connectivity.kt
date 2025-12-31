@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
-import clib.data.type.LGreen
+import clib.data.type.primitives.color.LGreen
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.offline

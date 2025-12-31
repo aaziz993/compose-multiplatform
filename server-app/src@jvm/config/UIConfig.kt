@@ -1,6 +1,6 @@
 package config
 
-import klib.data.config.UIConfig
+import klib.config.UIConfig
 import kotlinx.serialization.Serializable
 
 @Serializable

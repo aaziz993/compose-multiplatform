@@ -1,7 +1,7 @@
 package clib.presentation.theme.model
 
 import androidx.compose.runtime.Immutable
-import clib.data.type.ColorSerial
+import clib.data.type.primitives.color.ColorSerial
 import com.materialkolor.Contrast
 import com.materialkolor.scheme.DynamicScheme
 import kotlinx.serialization.Serializable

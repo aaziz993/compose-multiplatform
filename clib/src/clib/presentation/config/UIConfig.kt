@@ -6,7 +6,7 @@ import clib.presentation.connectivity.model.Connectivity
 import clib.presentation.theme.density.model.DensitySerial
 import clib.presentation.theme.model.Theme
 import io.ktor.http.Url
-import klib.data.config.UIConfig
+import klib.config.UIConfig
 import kotlinx.serialization.Serializable
 
 @Serializable

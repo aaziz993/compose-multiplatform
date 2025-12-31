@@ -169,7 +169,7 @@ import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.data.permission.model.Permission
+import klib.permission.model.Permission
 import klib.data.type.cast
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog

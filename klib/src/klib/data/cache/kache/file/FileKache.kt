@@ -4,8 +4,8 @@ import klib.data.cache.kache.ContainerKache
 import klib.data.cache.kache.KacheKeys
 import klib.data.cache.kache.KacheStrategy
 import klib.data.cache.kache.file.FileKache.Configuration
-import klib.data.coroutines.StandardDispatchers
-import klib.data.fs.path.toPath
+import klib.coroutines.StandardDispatchers
+import klib.data.filesystem.path.toPath
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred

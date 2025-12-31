@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
-import clib.data.type.getColorMap
+import clib.data.type.primitives.color.getColorMap
 import clib.presentation.components.color.common.ColorColumn
 import clib.presentation.components.color.common.SelectedColorDetail
 

@@ -19,7 +19,7 @@ import clib.presentation.events.snackbar.GlobalSnackbar
 import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import dev.jordond.connectivity.Connectivity.Status
-import klib.data.auth.model.Auth
+import klib.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import presentation.components.scaffold.TopAppBar

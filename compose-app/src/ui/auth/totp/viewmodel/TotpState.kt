@@ -1,6 +1,6 @@
 package ui.auth.totp.viewmodel
 
-import klib.data.auth.otp.model.TotpConfig
+import klib.auth.otp.model.TotpConfig
 import kotlin.time.Duration
 
 public data class TotpState(

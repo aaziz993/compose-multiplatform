@@ -2,7 +2,7 @@ package klib.data.cache.source
 
 import arrow.atomic.AtomicBoolean
 import com.diamondedge.logging.logging
-import klib.data.coroutines.StandardDispatchers
+import klib.coroutines.StandardDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import clib.presentation.components.image.Image
 import clib.presentation.components.image.avatar.model.AvatarView
-import klib.data.auth.model.User
+import klib.auth.model.User
 import kotlin.math.absoluteValue
 
 @Composable

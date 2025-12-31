@@ -6,7 +6,7 @@ import arrow.core.fold
 import gradle.api.project.settings
 import java.net.URI
 import java.security.MessageDigest
-import klib.data.net.isValidHttpUrl
+import klib.data.network.isValidHttpUrl
 import klib.data.type.serialization.serializers.transform.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

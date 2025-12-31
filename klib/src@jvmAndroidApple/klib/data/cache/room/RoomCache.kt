@@ -2,7 +2,7 @@ package klib.data.cache.room
 
 import klib.data.cache.CoroutineCache
 import klib.data.cache.room.model.KeyValue
-import klib.data.db.room.KlibDatabase
+import klib.data.database.room.KlibDatabase
 
 @Suppress("UNCHECKED_CAST")
 public class RoomCache<K, V>(

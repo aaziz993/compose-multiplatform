@@ -10,9 +10,9 @@ import klib.data.location.locale.Locale
 import klib.data.location.locale.LocaleService
 import klib.data.location.locale.weblate.model.WeblateTranslationsResponse
 import klib.data.location.locale.weblate.model.WeblateUnitsResponse
-import klib.data.net.http.client.HTTP_CLIENT_JSON
-import klib.data.net.http.client.createHttpClient
-import klib.data.net.http.client.ktorfit
+import klib.data.network.http.client.HTTP_CLIENT_JSON
+import klib.data.network.http.client.createHttpClient
+import klib.data.network.http.client.ktorfit
 import kotlinx.coroutines.flow.toList
 
 public class WeblateApiService(

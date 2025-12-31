@@ -19,9 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import clib.data.permission.LocalPermissionsState
-import clib.data.permission.PermissionsState
-import clib.data.permission.rememberPermissionsState
+import clib.permission.LocalPermissionsState
+import clib.permission.PermissionsState
+import clib.permission.rememberPermissionsState
 import clib.data.share.LocalShare
 import clib.data.share.rememberShare
 import clib.presentation.appbar.AppBarState
@@ -81,7 +81,7 @@ import klib.data.cache.CoroutineCache
 import klib.data.cache.emptyCache
 import klib.data.cache.emptyCoroutineCache
 import klib.data.location.locale.LocaleService
-import klib.data.net.createConnectivity
+import klib.data.network.createConnectivity
 import klib.data.share.Share
 import kotlinx.coroutines.MainScope
 

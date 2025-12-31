@@ -52,7 +52,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
-import clib.data.permission.LocalPermissionsState
+import clib.permission.LocalPermissionsState
 import clib.data.share.LocalShare
 import clib.di.koinViewModel
 import clib.di.navigation.KoinRoute
@@ -76,6 +76,7 @@ import clib.presentation.navigation.scene.DelegatedScreenStrategy
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
 import data.type.primitives.string.asStringResource
+import klib.auth.model.Auth
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
@@ -786,7 +787,7 @@ public data object Profile : KoinRoute<Profile>(), NavRoute {
     }
 
     @Composable
-    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
+    override fun isNavigationItem(auth: Auth): Boolean {
         val isAvatar = LocalAppBarState.current.value.isAvatar
         return super.isNavigationItem(auth) && !isAvatar
     }
@@ -1107,7 +1108,7 @@ public data object Support : KoinRoute<Support>(), NavRoute {
     }
 
     @Composable
-    override fun isNavigationItem(auth: klib.data.auth.model.Auth): Boolean {
+    override fun isNavigationItem(auth: Auth): Boolean {
         val isSupport = LocalAppBarState.current.value.isSupport
         return super.isNavigationItem(auth) && !isSupport
     }

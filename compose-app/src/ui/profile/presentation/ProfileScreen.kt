@@ -59,7 +59,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import clib.data.type.orErrorColor
+import clib.data.type.primitives.color.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.country.CountryCodePickerTextField
 import clib.presentation.components.country.model.CountryPicker
@@ -96,7 +96,7 @@ import dev.jordond.connectivity.Connectivity.Status
 import io.github.ismoy.imagepickerkmp.domain.config.ImagePickerConfig
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.GalleryPickerLauncher
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.ImagePickerLauncher
-import klib.data.auth.model.User
+import klib.auth.model.User
 import klib.data.load.LoadingResult
 import klib.data.load.success
 import klib.data.location.Phone

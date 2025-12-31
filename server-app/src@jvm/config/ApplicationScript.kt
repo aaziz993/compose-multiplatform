@@ -3,11 +3,11 @@ package config
 import com.github.ajalt.colormath.model.Ansi16
 import io.ktor.server.config.yaml.YamlConfig
 import java.io.File
-import klib.data.config.Config
-import klib.data.config.LogConfig
-import klib.data.config.auth.AuthConfig
-import klib.data.config.http.client.HttpClientConfig
-import klib.data.config.locale.LocalizationConfig
+import klib.config.Config
+import klib.config.LogConfig
+import klib.config.auth.AuthConfig
+import klib.config.http.client.HttpClientConfig
+import klib.config.locale.LocalizationConfig
 import klib.data.type.primitives.string.ansi.Attribute
 import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.ifNotEmpty

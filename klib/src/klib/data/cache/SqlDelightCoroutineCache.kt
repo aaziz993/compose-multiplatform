@@ -1,8 +1,8 @@
 package klib.data.cache
 
 import app.cash.sqldelight.Query
-import klib.data.db.KeyValue
-import klib.data.db.KeyValueQueries
+import klib.data.database.KeyValue
+import klib.data.database.KeyValueQueries
 
 @Suppress("UNCHECKED_CAST")
 public class SqlDelightCoroutineCache<K, V>(

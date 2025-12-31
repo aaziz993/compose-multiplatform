@@ -9,7 +9,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import clib.data.type.ColorSerial
+import clib.data.type.primitives.color.ColorSerial
 import clib.presentation.theme.darkHighContrast
 import clib.presentation.theme.isAdaptiveDark
 import clib.presentation.theme.lightHighContrast

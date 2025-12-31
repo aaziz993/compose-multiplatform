@@ -2,7 +2,7 @@ package ui.profile.presentation.viewmodel
 
 import clib.presentation.components.dialog.password.model.PasswordDialogState
 import clib.presentation.components.dialog.password.model.PasswordResetDialogState
-import klib.data.auth.model.User
+import klib.auth.model.User
 
 public data class ProfileState(
     val user: User = User(),

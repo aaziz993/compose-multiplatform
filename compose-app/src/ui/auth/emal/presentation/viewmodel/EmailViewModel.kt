@@ -3,9 +3,9 @@ package ui.auth.emal.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import clib.presentation.navigation.Router
 import clib.presentation.viewmodel.ViewModel
-import klib.data.auth.otp.model.HotpConfig
-import klib.data.auth.otp.model.OtpConfig
-import klib.data.auth.otp.model.TotpConfig
+import klib.auth.otp.model.HotpConfig
+import klib.auth.otp.model.OtpConfig
+import klib.auth.otp.model.TotpConfig
 import klib.data.type.collections.restartableflow.RestartableStateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

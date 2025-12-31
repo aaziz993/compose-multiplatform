@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,8 +34,8 @@ import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.send_code
 import compose_app.generated.resources.totp
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
-import klib.data.auth.otp.model.OtpConfig
-import klib.data.auth.otp.model.TotpConfig
+import klib.auth.otp.model.OtpConfig
+import klib.auth.otp.model.TotpConfig
 import kotlin.time.Duration
 import presentation.components.textfield.otp.OtpInputField
 import ui.auth.hotp.testOtpCode

@@ -17,10 +17,10 @@ import androidx.navigation3.ui.NavDisplay
 import clib.presentation.auth.LocalAuthState
 import clib.presentation.components.model.item.SelectableItem
 import io.ktor.http.Url
-import klib.data.auth.model.Auth
-import klib.data.auth.model.AuthResource
-import klib.data.net.toRoute
-import klib.data.net.url
+import klib.auth.model.Auth
+import klib.auth.model.AuthResource
+import klib.data.network.toRoute
+import klib.data.network.url
 import kotlin.reflect.KClass
 import kotlinx.serialization.serializer
 

@@ -4,9 +4,9 @@ import clib.presentation.navigation.BaseRoute
 import clib.presentation.navigation.Route
 import clib.presentation.navigation.slideTransition
 import io.ktor.http.Url
-import klib.data.auth.model.AuthResource
+import klib.auth.model.AuthResource
 import kotlinx.serialization.Serializable
-import klib.data.config.RouteConfig
+import klib.config.RouteConfig
 import klib.data.type.reflection.trySet
 import klib.data.type.serialization.serializers.collections.SerializableAnyMap
 

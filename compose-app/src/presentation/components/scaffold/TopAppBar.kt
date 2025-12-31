@@ -77,7 +77,7 @@ import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
 import dev.jordond.connectivity.Connectivity.Status
-import klib.data.auth.model.Auth
+import klib.auth.model.Auth
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import org.jetbrains.compose.resources.painterResource

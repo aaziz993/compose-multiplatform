@@ -1,8 +1,8 @@
 package config
 
 import io.ktor.http.Url
-import klib.data.auth.model.AuthResource
-import klib.data.config.RouteConfig
+import klib.auth.model.AuthResource
+import klib.config.RouteConfig
 import kotlinx.serialization.Serializable
 
 @Serializable

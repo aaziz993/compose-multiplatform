@@ -30,7 +30,7 @@ script:
       databases:
         - create: |
             ("KlibDatabase") { database ->
-              database.packageName /= "klib.data.db.sqldelight"
+              database.packageName /= "klib.data.database.sqldelight"
               // Required by asynchronous web-worker-driver for js.
               database.generateAsync /= true
             }

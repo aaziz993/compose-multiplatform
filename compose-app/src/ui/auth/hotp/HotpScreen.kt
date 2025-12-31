@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,8 +29,8 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.hotp
 import compose_app.generated.resources.send_code
-import klib.data.auth.otp.model.OtpConfig
-import klib.data.auth.otp.model.TotpConfig
+import klib.auth.otp.model.OtpConfig
+import klib.auth.otp.model.TotpConfig
 import presentation.components.textfield.otp.OtpInputField
 import ui.auth.hotp.viewmodel.HotpAction
 import ui.auth.hotp.viewmodel.HotpState

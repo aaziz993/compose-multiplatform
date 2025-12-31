@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogProperties
 import clib.data.type.collections.LaunchedEffect
-import clib.data.type.orErrorColor
+import clib.data.type.primitives.color.orErrorColor
 import clib.presentation.events.alert.model.AlertEvent
 
 /**

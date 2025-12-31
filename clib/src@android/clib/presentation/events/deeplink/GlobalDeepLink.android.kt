@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.core.util.Consumer
 import io.ktor.http.Url
-import klib.data.net.toUrl
+import klib.data.network.toUrl
 
 @Composable
 public actual fun GlobalDeepLink(

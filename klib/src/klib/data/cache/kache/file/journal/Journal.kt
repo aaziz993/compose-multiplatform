@@ -1,8 +1,8 @@
 package klib.data.cache.kache.file.journal
 
 import klib.data.cache.kache.KacheStrategy
-import klib.data.fs.atomicMove
-import klib.data.fs.path.resolve
+import klib.data.filesystem.atomicMove
+import klib.data.filesystem.path.resolve
 import kotlinx.io.buffered
 import kotlinx.io.files.FileSystem
 import kotlinx.io.files.Path

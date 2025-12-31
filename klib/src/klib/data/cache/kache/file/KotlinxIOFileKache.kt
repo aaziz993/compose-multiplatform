@@ -10,10 +10,10 @@ import klib.data.cache.kache.file.journal.JournalException
 import klib.data.cache.kache.file.journal.JournalWriter
 import klib.data.cache.kache.file.journal.readJournalIfExists
 import klib.data.cache.kache.file.journal.writeJournalAtomically
-import klib.data.coroutines.StandardDispatchers
-import klib.data.fs.atomicMove
-import klib.data.fs.path.deleteRecursively
-import klib.data.fs.path.resolve
+import klib.coroutines.StandardDispatchers
+import klib.data.filesystem.atomicMove
+import klib.data.filesystem.path.deleteRecursively
+import klib.data.filesystem.path.resolve
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

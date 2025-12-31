@@ -7,7 +7,7 @@ import klib.data.cache.source.model.CachedSourceResult
 import io.github.reactivecircus.cache4k.Cache
 import klib.data.cache.Cache4K
 import klib.data.cache.asCoroutineCache
-import klib.data.coroutines.StandardDispatchers
+import klib.coroutines.StandardDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -6,7 +6,7 @@ import klib.data.keyboard.model.KeyState
 import io.kotest.matchers.comparables.shouldNotBeEqualComparingTo
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import klib.data.coroutines.runBlocking
+import klib.coroutines.runBlocking
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.take

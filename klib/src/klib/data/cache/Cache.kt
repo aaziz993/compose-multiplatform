@@ -1,6 +1,6 @@
 package klib.data.cache
 
-import klib.data.coroutines.StandardDispatchers
+import klib.coroutines.StandardDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

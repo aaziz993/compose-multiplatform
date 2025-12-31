@@ -1,0 +1,11 @@
+package klib.config.auth
+
+import com.sunildhiman90.kmauth.supabase.model.SupabaseAuthConfig
+import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
+import kotlinx.serialization.Serializable
+
+@Serializable
+public data class SupabaseDefaultAuthConfig(
+    val provider: SupabaseDefaultAuthProvider,
+    val config: SupabaseAuthConfigSerial = SupabaseAuthConfig(),
+)

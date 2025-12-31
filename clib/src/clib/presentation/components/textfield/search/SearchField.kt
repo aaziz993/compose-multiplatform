@@ -31,7 +31,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import clib.data.type.orErrorColor
+import clib.data.type.primitives.color.orErrorColor
 import clib.data.type.state.timePickerStateToTime
 import clib.generated.resources.Res
 import clib.generated.resources.case_sensitive

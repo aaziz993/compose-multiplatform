@@ -1,7 +1,7 @@
 package klib.data.type.primitives.time.hlc
 
-import klib.data.fs.path.div
-import klib.data.fs.path.toPath
+import klib.data.filesystem.path.div
+import klib.data.filesystem.path.toPath
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

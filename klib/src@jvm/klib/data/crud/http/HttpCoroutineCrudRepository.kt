@@ -10,9 +10,9 @@ import io.ktor.server.routing.route
 import io.ktor.util.reflect.typeInfo
 import klib.data.crud.CoroutineCrudRepository
 import klib.data.crud.http.model.HttpCrud
-import klib.data.net.http.server.respondAnyFlow
-import klib.data.net.http.server.respondFlow
-import klib.data.net.http.server.respondPolymorphic
+import klib.data.network.http.server.respondAnyFlow
+import klib.data.network.http.server.respondFlow
+import klib.data.network.http.server.respondPolymorphic
 import klib.data.query.BooleanOperand
 
 context(routing: Routing)

@@ -3,9 +3,9 @@ package ui.auth.totp.viewmodel
 import androidx.lifecycle.viewModelScope
 import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.ViewModel
-import klib.data.auth.model.User
-import klib.data.auth.otp.TotpGenerator
-import klib.data.auth.otp.model.TotpConfig
+import klib.auth.model.User
+import klib.auth.otp.TotpGenerator
+import klib.auth.otp.model.TotpConfig
 import klib.data.cryptography.secureRandomBytes
 import klib.data.type.collections.restartableflow.RestartableStateFlow
 import klib.data.type.primitives.string.encoding.encodeBase32ToString

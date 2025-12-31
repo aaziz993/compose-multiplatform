@@ -51,7 +51,7 @@ import compose_app.generated.resources.user
 import io.github.ismoy.imagepickerkmp.domain.config.ImagePickerConfig
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.GalleryPickerLauncher
 import io.github.ismoy.imagepickerkmp.presentation.ui.components.ImagePickerLauncher
-import klib.data.auth.model.Auth
+import klib.auth.model.Auth
 import presentation.components.tooltipbox.PlainTooltipBox
 import ui.auth.verification.presentation.viewmodel.VerificationAction
 import ui.auth.verification.presentation.viewmodel.VerificationState

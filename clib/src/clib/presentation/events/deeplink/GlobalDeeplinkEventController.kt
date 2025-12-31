@@ -2,7 +2,7 @@ package clib.presentation.events.deeplink
 
 import clib.presentation.events.EventController
 import io.ktor.http.Url
-import klib.data.net.toUrl
+import klib.data.network.toUrl
 
 public object GlobalDeeplinkEventController : EventController<Url>() {
 

@@ -1,9 +1,0 @@
-package klib.data.auth.keycloak.model
-
-import kotlinx.serialization.Serializable
-
-@Serializable
-public data class ExecuteActionsEmail(
-    val actions: List<EmailAction>,
-    val redirectUri: String? = null
-)

@@ -14,9 +14,9 @@ import com.sunildhiman90.kmauth.supabase.model.SupabaseAuthConfig
 import com.sunildhiman90.kmauth.supabase.model.SupabaseDefaultAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.SupabaseOAuthProvider
 import com.sunildhiman90.kmauth.supabase.model.toKMAuthUser
-import klib.data.auth.model.Auth
-import klib.data.auth.model.User
-import klib.data.auth.model.toUser
+import klib.auth.model.Auth
+import klib.auth.model.User
+import klib.auth.model.toUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

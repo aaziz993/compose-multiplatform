@@ -1,7 +1,7 @@
 package klib.data.type.primitives.time.hlc
 
 import arrow.core.flatMap
-import klib.data.fs.path.div
+import klib.data.filesystem.path.div
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.pow

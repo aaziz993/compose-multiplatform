@@ -18,9 +18,9 @@ import com.alorma.compose.settings.ui.base.internal.LocalSettingsGroupEnabled
 import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
 import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
 import data.type.primitives.asStringResource
-import klib.data.permission.exception.PermissionDeniedAlwaysException
-import klib.data.permission.exception.PermissionDeniedException
-import klib.data.permission.model.Permission
+import klib.permission.exception.PermissionDeniedAlwaysException
+import klib.permission.exception.PermissionDeniedException
+import klib.permission.model.Permission
 
 @Composable
 public fun SettingsSwitch(

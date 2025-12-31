@@ -1,6 +1,6 @@
 package clib.presentation.appbar
 
-import clib.data.type.ColorSerial
+import clib.data.type.primitives.color.ColorSerial
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.SerialDescriptor

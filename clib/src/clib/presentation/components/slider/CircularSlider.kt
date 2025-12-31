@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.data.type.LBlue
+import clib.data.type.primitives.color.LBlue
 import klib.data.type.primitives.number.toDegrees
 import klib.data.type.primitives.number.toRadians
 import kotlin.math.*

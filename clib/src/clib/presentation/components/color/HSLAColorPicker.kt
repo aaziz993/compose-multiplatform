@@ -22,8 +22,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
-import clib.data.type.toColor
-import clib.data.type.toHSL
+import clib.data.type.primitives.color.toColor
+import clib.data.type.primitives.color.toHSL
 import clib.presentation.components.color.common.ColorSlider
 import clib.presentation.components.color.common.SelectedColorDetail
 import clib.presentation.components.slider.CircularSlider

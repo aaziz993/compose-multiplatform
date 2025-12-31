@@ -3,10 +3,10 @@ package ui.auth.hotp.viewmodel
 import androidx.lifecycle.viewModelScope
 import clib.presentation.auth.AuthState
 import clib.presentation.viewmodel.ViewModel
-import klib.data.auth.model.User
-import klib.data.auth.otp.HotpGenerator
-import klib.data.auth.otp.model.HotpConfig
-import klib.data.auth.otp.model.OtpConfig
+import klib.auth.model.User
+import klib.auth.otp.HotpGenerator
+import klib.auth.otp.model.HotpConfig
+import klib.auth.otp.model.OtpConfig
 import klib.data.cryptography.secureRandomBytes
 import klib.data.type.collections.restartableflow.RestartableStateFlow
 import klib.data.type.primitives.string.encoding.encodeBase32ToString

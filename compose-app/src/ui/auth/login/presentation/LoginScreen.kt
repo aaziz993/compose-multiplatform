@@ -47,9 +47,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import clib.data.auth.imageVector
-import clib.data.auth.oauth.imageVector
-import clib.data.type.orErrorColor
+import clib.auth.imageVector
+import clib.auth.oauth.imageVector
+import clib.data.type.primitives.color.orErrorColor
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.components.textfield.TextField
 import clib.presentation.navigation.NavigationAction
@@ -68,7 +68,7 @@ import compose_app.generated.resources.remember
 import compose_app.generated.resources.reset_password
 import compose_app.generated.resources.username
 import data.type.primitives.string.asStringResource
-import klib.data.config.auth.AuthConfig
+import klib.config.auth.AuthConfig
 import presentation.components.tooltipbox.PlainTooltipBox
 import ui.auth.login.presentation.viewmodel.LoginAction
 import ui.auth.login.presentation.viewmodel.LoginState
