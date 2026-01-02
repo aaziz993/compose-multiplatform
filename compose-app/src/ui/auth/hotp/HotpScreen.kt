@@ -29,8 +29,7 @@ import compose_app.generated.resources.Res
 import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.hotp
 import compose_app.generated.resources.send_code
-import klib.auth.otp.model.OtpConfig
-import klib.auth.otp.model.TotpConfig
+import klib.auth.otp.model.HotpConfig
 import presentation.components.textfield.otp.OtpInputField
 import ui.auth.hotp.viewmodel.HotpAction
 import ui.auth.hotp.viewmodel.HotpState
@@ -42,7 +41,7 @@ public var testOtpCode: String = ""
 public fun HotpScreen(
     modifier: Modifier = Modifier,
     route: Hotp = Hotp(),
-    config: OtpConfig = TotpConfig.DEFAULT,
+    config: HotpConfig = HotpConfig(),
     state: HotpState = HotpState(),
     onAction: (HotpAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},

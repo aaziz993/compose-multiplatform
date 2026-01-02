@@ -77,6 +77,8 @@ import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
 import data.type.primitives.string.asStringResource
 import klib.auth.model.Auth
+import klib.auth.otp.model.HotpConfig
+import klib.auth.otp.model.TotpConfig
 import klib.data.location.country.Country
 import klib.data.location.country.current
 import klib.data.location.country.getCountries
@@ -282,7 +284,7 @@ public data class Hotp(val username: String? = null, val contact: String = "") :
             HotpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
                 route,
-                config.auth.otp,
+                config.auth.otp as HotpConfig,
                 state,
                 viewModel::action,
                 router::actions,
@@ -316,7 +318,7 @@ public data class Totp(val username: String? = null, val contact: String = "") :
             TotpScreen(
                 Modifier.fillMaxSize().padding(horizontal = 16.dp),
                 route,
-                config.auth.otp,
+                config.auth.otp as TotpConfig,
                 state,
                 viewModel::action,
                 router::actions,

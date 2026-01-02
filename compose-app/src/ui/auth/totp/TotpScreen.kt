@@ -34,7 +34,6 @@ import compose_app.generated.resources.code_sent_to
 import compose_app.generated.resources.send_code
 import compose_app.generated.resources.totp
 import data.type.primitives.string.humanreadable.toRelativeHumanReadable
-import klib.auth.otp.model.OtpConfig
 import klib.auth.otp.model.TotpConfig
 import kotlin.time.Duration
 import presentation.components.textfield.otp.OtpInputField
@@ -47,7 +46,7 @@ import ui.navigation.presentation.Totp
 public fun TotpScreen(
     modifier: Modifier = Modifier,
     route: Totp = Totp(),
-    config: OtpConfig = TotpConfig.DEFAULT,
+    config: TotpConfig = TotpConfig(),
     state: TotpState = TotpState(),
     onAction: (TotpAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},

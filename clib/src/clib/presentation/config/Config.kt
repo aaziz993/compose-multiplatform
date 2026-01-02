@@ -35,7 +35,7 @@ public data class Config(
     override val auth: AuthConfig = AuthConfig(),
     override val ui: UIConfig = UIConfig(),
     override val server: ServerConfig = ServerConfig()
-) : klib.data.config.Config {
+) : klib.config.Config {
 
     public companion object {
 
