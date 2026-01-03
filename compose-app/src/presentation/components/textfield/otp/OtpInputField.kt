@@ -2,16 +2,12 @@ package presentation.components.textfield.otp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,26 +24,17 @@ public fun OtpInputField(
     enabled: Boolean = true,
     otpTextType: KeyboardType = KeyboardType.Number,
     textColor: Color = MaterialTheme.colorScheme.primary,
-    maxWidth: Dp = 400.dp,          // maximum total width.
-    spacing: Dp = 8.dp,             // spacing between boxes.
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .widthIn(max = maxWidth),
-    ) {
-        OtpInputField(
-            otp = otp,
-            count = count,
-            enabled = enabled,
-            otpBoxModifier = Modifier
-                .padding(4.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)),
-            otpTextType = otpTextType,
-            textColor = textColor,
-        )
-    }
-}
+    maxWidth: Dp = 480.dp,
+): Unit = OtpInputField(
+    otp = otp,
+    modifier = Modifier.widthIn(max = maxWidth),
+    otpBoxModifier = Modifier
+        .padding(4.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
+        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)),
+    count = count,
+    enabled = enabled,
+    otpTextType = otpTextType,
+    textColor = textColor,
+)

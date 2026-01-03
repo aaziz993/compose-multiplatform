@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -83,6 +80,7 @@ import kotlinx.coroutines.launch
 @Composable
 public fun OtpInputField(
     otp: MutableState<String>,
+    modifier: Modifier = Modifier,
     otpBoxModifier: Modifier = Modifier
         .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
         .background(MaterialTheme.colorScheme.surface),
@@ -125,7 +123,7 @@ public fun OtpInputField(
 
     // Create a row of OTP boxes.
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
