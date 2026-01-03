@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,16 +37,11 @@ public fun OtpInputField(
             .wrapContentWidth(Alignment.CenterHorizontally)
             .widthIn(max = maxWidth),
     ) {
-        // Compute per-box size dynamically
-        val totalSpacing = spacing * (count - 1)
-        val boxSize = ((maxWidth - totalSpacing) / count).coerceAtLeast(40.dp)
-
         OtpInputField(
             otp = otp,
             count = count,
             enabled = enabled,
             otpBoxModifier = Modifier
-                .size(boxSize)
                 .padding(4.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f), RoundedCornerShape(8.dp))

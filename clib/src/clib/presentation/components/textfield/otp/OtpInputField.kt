@@ -5,8 +5,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -82,15 +84,13 @@ import kotlinx.coroutines.launch
 public fun OtpInputField(
     otp: MutableState<String>,
     otpBoxModifier: Modifier = Modifier
-        .size(48.dp)
-        .border(1.dp, Color.Gray)
-        .background(Color.White),
+        .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
+        .background(MaterialTheme.colorScheme.surface),
     count: Int = 6,
     enabled: Boolean = true,
     otpTextType: KeyboardType = KeyboardType.Number,
     textColor: Color = MaterialTheme.colorScheme.primary,
 ) {
-
     val scope = rememberCoroutineScope()
 
     // Initialize state for each OTP box with its character and optional focus requester.
@@ -127,11 +127,15 @@ public fun OtpInputField(
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         repeat(count) { index ->
             // For each OTP box, manage its value, focus, and what happens on value change.
             OtpBox(
-                modifier = Modifier.weight(1f) then otpBoxModifier,
+                modifier = Modifier
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .then(otpBoxModifier),
                 otpValue = otpFieldsValues[index].value,
                 enabled = enabled,
                 textType = otpTextType,
