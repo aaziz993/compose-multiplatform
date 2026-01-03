@@ -8,6 +8,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +54,7 @@ import io.ktor.http.Url
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.location.locale.LocaleService
+import klib.data.mouse.nativeMouseHandlerForPlatform
 import klib.data.share.Share
 import ui.navigation.presentation.Application
 
@@ -116,6 +118,9 @@ public fun AppComposable(
     navigatorFactory,
     onDeepLink,
 ) {
+    LaunchedEffect(Unit) {
+        nativeMouseHandlerForPlatform()
+    }
     GlobalAlertDialog(
         { action ->
             IconButton(action) {

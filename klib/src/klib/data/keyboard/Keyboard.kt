@@ -4,12 +4,13 @@ import klib.data.keyboard.model.Key
 import klib.data.keyboard.model.KeyEvent
 import klib.data.keyboard.model.KeySet
 import klib.data.keyboard.model.KeyState
+import kotlin.concurrent.atomics.AtomicBoolean
+import kotlin.concurrent.atomics.AtomicReference
+import kotlin.concurrent.atomics.update
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.time.Duration
 import kotlin.time.TimeSource
-import kotlinx.atomicfu.AtomicRef
-import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,15 +44,13 @@ public typealias KeyPressSequence = List<Pair<Duration, KeyEvent>>
  * @param context The [CoroutineContext] used for processing of data.
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-public class Keyboard(
-    context: CoroutineContext = Dispatchers.Default
-) {
+public class Keyboard(context: CoroutineContext = Dispatchers.Default) {
 
     private val scope = CoroutineScope(context + SupervisorJob())
-    private var job: AtomicRef<Job?> = atomic(null)
+    private var job = AtomicReference<Job?>(null)
 
-    private val keyDownHandlers = atomic(mapOf<KeySet, suspend () -> Unit>())
-    private val keyUpHandlers = atomic(mapOf<KeySet, suspend () -> Unit>())
+    private val keyDownHandlers = AtomicReference(mapOf<KeySet, suspend () -> Unit>())
+    private val keyUpHandlers = AtomicReference(mapOf<KeySet, suspend () -> Unit>())
 
     /**
      * The backing [NativeKeyboardHandler].
@@ -63,18 +62,14 @@ public class Keyboard(
      *
      * @return Returns a [Cancellable], which when invoked the handler is removed.
      */
-    public fun addShortcut(
-        keySet: KeySet,
-        trigger: KeyState = KeyState.KeyDown,
-        handler: suspend () -> Unit
-    ): Cancellable {
+    public fun addShortcut(keySet: KeySet, trigger: KeyState = KeyState.KeyDown, handler: suspend () -> Unit): Cancellable {
         val handlers = if (trigger == KeyState.KeyDown) keyDownHandlers else keyUpHandlers
 
-        handlers.value += keySet to handler
+        handlers.update { it + (keySet to handler) }
         startIfNeeded()
 
         return {
-            handlers.value -= keySet
+            handlers.update { it - keySet }
             stopIfNeeded()
         }
     }
@@ -85,13 +80,11 @@ public class Keyboard(
     public fun send(keySet: KeySet) {
         if (keySet.keys.isEmpty()) return
 
-        for (key in keySet.keys) {
+        for (key in keySet.keys)
             handler.sendEvent(KeyEvent(key, KeyState.KeyDown))
-        }
 
-        for (key in keySet.keys) {
+        for (key in keySet.keys)
             handler.sendEvent(KeyEvent(key, KeyState.KeyUp))
-        }
     }
 
     /**
@@ -121,22 +114,20 @@ public class Keyboard(
     /**
      * Suspends till the [keySet] are pressed.
      */
-    public suspend fun awaitTill(
-        keySet: KeySet,
-        trigger: KeyState = KeyState.KeyDown
-    ): Unit = suspendCancellableCoroutine { cont ->
+    public suspend fun awaitTill(keySet: KeySet, trigger: KeyState = KeyState.KeyDown): Unit = suspendCancellableCoroutine { cont ->
         val handlers = if (trigger == KeyState.KeyDown) keyDownHandlers else keyUpHandlers
 
-        handlers.value += keySet to {
-            handlers.value -= keySet
-            stopIfNeeded()
-            cont.resume(Unit)
+        handlers.update {
+            it + (keySet to {
+                handlers.update { it - keySet }
+                stopIfNeeded()
+                cont.resume(Unit)
+            })
         }
-
         startIfNeeded()
 
         cont.invokeOnCancellation {
-            handlers.value -= keySet
+            handlers.update { it - keySet }
             stopIfNeeded()
         }
     }
@@ -144,29 +135,28 @@ public class Keyboard(
     /**
      * Records and returns a [KeyPressSequence] of all the keypress till a [keySet] is/are pressed.
      */
-    public suspend fun recordKeyPressesTill(
-        keySet: KeySet,
-        trigger: KeyState = KeyState.KeyDown
-    ): KeyPressSequence = suspendCancellableCoroutine { cont ->
+    public suspend fun recordKeyPressesTill(keySet: KeySet, trigger: KeyState = KeyState.KeyDown): KeyPressSequence = suspendCancellableCoroutine { cont ->
         val mark = TimeSource.Monotonic.markNow()
-        val recording = atomic(true)
+        val recording = AtomicBoolean(true)
 
         val handlers = if (trigger == KeyState.KeyDown) keyDownHandlers else keyUpHandlers
 
-        handlers.value += keySet to {
-            recording.value = false
-            handlers.value -= keySet
-            stopIfNeeded()
+        handlers.update {
+            it + (keySet to {
+                recording.store(false)
+                handlers.update { it - keySet }
+                stopIfNeeded()
+            })
         }
         startIfNeeded()
 
         val recJob = scope.launch {
-            cont.resume(handler.events.map { mark.elapsedNow() to it }.takeWhile { recording.value }.toList())
+            cont.resume(handler.events.map { mark.elapsedNow() to it }.takeWhile { recording.load() }.toList())
         }
 
         cont.invokeOnCancellation {
             recJob.cancel()
-            handlers.value -= keySet
+            handlers.update { it - keySet }
             stopIfNeeded()
         }
     }
@@ -188,53 +178,53 @@ public class Keyboard(
      */
     public fun dispose() {
         scope.cancel(null)
-        job.value = null
+        job.store(null)
     }
 
     private fun startIfNeeded() {
-        val jobCopy = job.value
+        val jobCopy = job.load()
         if (jobCopy != null && jobCopy.isActive) return
 
-        job.value = scope.launch {
-            val pressedKeys = mutableSetOf<Key>()
+        job.store(
+            scope.launch {
+                val pressedKeys = mutableSetOf<Key>()
 
-            handler.events.collect {
-                if (it.state == KeyState.KeyDown) {
-                    pressedKeys.add(it.key)
-                    handleKeyDown(pressedKeys)
+                handler.events.collect {
+                    if (it.state == KeyState.KeyDown) {
+                        pressedKeys.add(it.key)
+                        handleKeyDown(pressedKeys)
+                    }
+                    else {
+                        handleKeyUp(pressedKeys)
+                        pressedKeys.remove(it.key)
+                    }
                 }
-                else {
-                    handleKeyUp(pressedKeys)
-                    pressedKeys.remove(it.key)
-                }
-            }
-        }
+            },
+        )
     }
 
     private fun stopIfNeeded() {
-        if (keyDownHandlers.value.count() != 0) return
-        if (keyUpHandlers.value.count() != 0) return
+        if (keyDownHandlers.load().isNotEmpty()) return
+        if (keyUpHandlers.load().isNotEmpty()) return
 
-        val activeJob = job.value ?: return
+        val activeJob = job.load() ?: return
         activeJob.cancel()
-        job.value = null
+        job.store(null)
     }
 
     private fun handleKeyDown(pressedKeys: Set<Key>) {
-        for ((keySet, handler) in keyDownHandlers.value) {
+        for ((keySet, handler) in keyDownHandlers.load())
             if (pressedKeys.containsAll(keySet.keys)) {
                 scope.launch { handler() }
                 break
             }
-        }
     }
 
     private fun handleKeyUp(pressedKeys: Set<Key>) {
-        for ((keySet, handler) in keyUpHandlers.value) {
+        for ((keySet, handler) in keyUpHandlers.load())
             if (pressedKeys.containsAll(keySet.keys)) {
                 scope.launch { handler() }
                 break
             }
-        }
     }
 }
