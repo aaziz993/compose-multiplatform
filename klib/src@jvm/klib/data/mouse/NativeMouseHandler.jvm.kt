@@ -11,9 +11,14 @@ import java.awt.AWTException
 import java.awt.Robot
 import java.util.logging.Level
 import java.util.logging.Logger
-import klib.data.keyboard.model.KeyState
 import klib.data.mouse.model.MOUSE_BUTTONS
+import klib.data.mouse.model.MouseDown
 import klib.data.mouse.model.MouseEvent
+import klib.data.mouse.model.MouseMove
+import klib.data.mouse.model.MouseUp
+import klib.data.mouse.model.MouseWheel
+import klib.data.mouse.model.WHEEL_EVENTS
+import kotlin.math.roundToInt
 
 internal object JvmMouseHandler
     : NativeMouseHandlerBase(),
@@ -43,72 +48,62 @@ internal object JvmMouseHandler
         }
     }
 
-    override fun nativeMouseMoved(nativeEvent: NativeMouseEvent): Unit =
-        emit(
-            requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
-                "Unknown button ${nativeEvent.button}"
-            },
-            KeyState.KeyUp,
-            0,
-            nativeEvent.x,
-            nativeEvent.y,
+    override fun nativeMouseMoved(nativeEvent: NativeMouseEvent) {
+        eventsInternal.tryEmit(
+            MouseMove(
+                nativeEvent.x,
+                nativeEvent.y,
+            ),
         )
-
-    override fun nativeMouseDragged(nativeEvent: NativeMouseEvent): Unit =
-        emit(
-            requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
-                "Unknown button ${nativeEvent.button}"
-            },
-            KeyState.KeyDown,
-            0,
-            nativeEvent.x,
-            nativeEvent.y,
-        )
+    }
 
     override fun nativeMouseWheelMoved(nativeEvent: NativeMouseWheelEvent?) {
         nativeEvent?.let {
-            emit(
-                requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
-                    "Unknown button ${nativeEvent.button}"
-                },
-                KeyState.KeyUp,
-                it.wheelDirection * it.wheelRotation,
-                it.x,
-                it.y,
+            eventsInternal.tryEmit(
+                MouseWheel(
+                    if (it.wheelDirection == NativeMouseWheelEvent.WHEEL_HORIZONTAL_DIRECTION) it.wheelRotation.toDouble() else 0.0,
+                    if (it.wheelDirection == NativeMouseWheelEvent.WHEEL_VERTICAL_DIRECTION) it.wheelRotation.toDouble() else 0.0,
+                    null,
+                    requireNotNull(WHEEL_EVENTS.inverse[nativeEvent.scrollType]) {
+                        "Unknown scroll type ${nativeEvent.scrollType}"
+                    },
+                    it.x,
+                    it.y,
+                ),
             )
         }
     }
 
-    override fun nativeMousePressed(nativeEvent: NativeMouseEvent): Unit =
-        emit(
-            requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
-                "Unknown button ${nativeEvent.button}"
-            },
-            KeyState.KeyDown,
-            0,
-            nativeEvent.x,
-            nativeEvent.y,
+    override fun nativeMousePressed(nativeEvent: NativeMouseEvent) {
+        eventsInternal.tryEmit(
+            MouseDown(
+                requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
+                    "Unknown mouse button ${nativeEvent.button}"
+                },
+                nativeEvent.x,
+                nativeEvent.y,
+            ),
         )
+    }
 
-    override fun nativeMouseReleased(nativeEvent: NativeMouseEvent): Unit =
-        emit(
-            requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
-                "Unknown button ${nativeEvent.button}"
-            },
-            KeyState.KeyUp,
-            0,
-            nativeEvent.x,
-            nativeEvent.y,
+    override fun nativeMouseReleased(nativeEvent: NativeMouseEvent) {
+        eventsInternal.tryEmit(
+            MouseUp(
+                requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
+                    "Unknown mouse button ${nativeEvent.button}"
+                },
+                nativeEvent.x,
+                nativeEvent.y,
+            ),
         )
+    }
 
     override fun sendEvent(event: MouseEvent) {
-        if (event.x > -1 && event.y > -1) robot.mouseMove(event.x, event.y)
-
-        if (event.wheel != 0) robot.mouseWheel(event.wheel)
-
-        MOUSE_BUTTONS[event.button]?.let { button ->
-            if (event.state == KeyState.KeyDown) robot.mousePress(button)
-            else robot.mouseRelease(button)
+        when (event) {
+            is MouseMove -> robot.mouseMove(event.x, event.y)
+            is MouseWheel -> event.deltaY?.let { deltaY -> robot.mouseWheel(deltaY.roundToInt()) }
+            is MouseDown -> robot.mousePress(MOUSE_BUTTONS[event.button]!!)
+            is MouseUp -> robot.mouseRelease(MOUSE_BUTTONS[event.button]!!)
         }
     }
 

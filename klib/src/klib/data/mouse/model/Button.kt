@@ -1,6 +1,6 @@
 package klib.data.mouse.model
 
-public enum class MouseButton {
+public enum class Button {
     None,
     Left,
     Right,

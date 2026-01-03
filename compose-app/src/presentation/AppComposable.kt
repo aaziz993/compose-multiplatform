@@ -14,11 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import clib.permission.PermissionsState
-import clib.permission.rememberPermissionsState
 import clib.data.share.rememberShare
 import clib.data.type.primitives.string.stringResource
 import clib.di.koinInject
+import clib.permission.PermissionsState
+import clib.permission.rememberPermissionsState
 import clib.presentation.AppEnvironment
 import clib.presentation.appbar.AppBarState
 import clib.presentation.appbar.rememberAppBarState
@@ -54,8 +54,14 @@ import io.ktor.http.Url
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.location.locale.LocaleService
-import klib.data.mouse.nativeMouseHandlerForPlatform
+import klib.data.mouse.Mouse
+import klib.data.mouse.model.Button
+import klib.data.mouse.model.MouseDown
+import klib.data.mouse.model.MouseMove
+import klib.data.mouse.model.MouseUp
 import klib.data.share.Share
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
 import ui.navigation.presentation.Application
 
 @Composable
@@ -119,7 +125,30 @@ public fun AppComposable(
     onDeepLink,
 ) {
     LaunchedEffect(Unit) {
-        nativeMouseHandlerForPlatform()
+        delay(10.seconds)
+        Mouse.send(
+            MouseMove(
+                x = 100,
+                y = 100,
+            ),
+        )
+        delay(10.seconds)
+        Mouse.send(
+            MouseDown(
+                button = Button.Left,
+                x = 200,
+                y = 200,
+            ),
+        )
+
+        delay(10.seconds)
+        Mouse.send(
+            MouseUp(
+                button = Button.Left,
+                x = 200,
+                y = 200,
+            ),
+        )
     }
     GlobalAlertDialog(
         { action ->

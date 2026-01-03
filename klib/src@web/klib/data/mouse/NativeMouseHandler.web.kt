@@ -1,12 +1,14 @@
 package klib.data.mouse
 
 import js.objects.unsafeJso
-import klib.data.keyboard.model.KeyState
 import klib.data.mouse.model.MOUSE_BUTTONS
-import klib.data.mouse.model.MouseButton
+import klib.data.mouse.model.MouseDown
 import klib.data.mouse.model.MouseEvent
+import klib.data.mouse.model.MouseMove
+import klib.data.mouse.model.MouseUp
+import klib.data.mouse.model.MouseWheel
+import klib.data.mouse.model.WHEEL_EVENTS
 import klib.data.type.reflection.trySet
-import kotlin.math.roundToInt
 import web.events.addHandler
 import web.mouse.MOUSE_DOWN
 import web.mouse.MOUSE_MOVE
@@ -22,52 +24,80 @@ import web.mouse.MouseEvent as WebMouseEvent
 
 internal object WebMouseHandler : NativeMouseHandlerBase() {
 
-    private fun mouseHandler(event: WebMouseEvent): Unit =
-        emit(
-            if (event.type == WebMouseEvent.MOUSE_DOWN || event.type == WebMouseEvent.MOUSE_UP)
-                MOUSE_BUTTONS.inverse[event.button] ?: MouseButton.None
-            else MouseButton.None,
-            if (event.type == WebMouseEvent.MOUSE_DOWN) KeyState.KeyDown else KeyState.KeyUp,
-            0,
-            event.screenX,
-            event.screenY,
+    private fun mouseMoveHandler(nativeEvent: WebMouseEvent) {
+        eventsInternal.tryEmit(
+            MouseMove(
+                nativeEvent.screenX,
+                nativeEvent.screenY,
+            ),
         )
+    }
 
-    private fun wheelHandler(e: WheelEvent): Unit =
-        emit(
-            MouseButton.None,
-            KeyState.KeyUp,
-            e.deltaY.roundToInt(),
-            e.screenX,
-            e.screenY,
+    private fun wheelHandler(nativeEvent: WheelEvent) {
+        eventsInternal.tryEmit(
+            MouseWheel(
+                nativeEvent.deltaX,
+                nativeEvent.deltaY,
+                nativeEvent.deltaZ,
+                requireNotNull(WHEEL_EVENTS.inverse[nativeEvent.deltaMode]) {
+                    "Unknown wheel delta mode ${nativeEvent.deltaMode}"
+                },
+                nativeEvent.screenX,
+                nativeEvent.screenY,
+            ),
         )
+    }
 
-    private var mouseMoveUnsubscribe: (() -> Unit)? = null
-    private var wheelUnsubscribe: (() -> Unit)? = null
-    private var mouseDownUnsubscribe: (() -> Unit)? = null
-    private var mouseUpUnsubscribe: (() -> Unit)? = null
+    private fun mouseDownHandler(nativeEvent: WebMouseEvent) {
+        eventsInternal.tryEmit(
+            MouseDown(
+                requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
+                    "Unknown mouse button ${nativeEvent.button}"
+                },
+                nativeEvent.screenX,
+                nativeEvent.screenY,
+            ),
+        )
+    }
+
+    private fun mouseUpHandler(nativeEvent: WebMouseEvent) {
+        eventsInternal.tryEmit(
+            MouseUp(
+                requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
+                    "Unknown mouse button ${nativeEvent.button}"
+                },
+                nativeEvent.screenX,
+                nativeEvent.screenY,
+            ),
+        )
+    }
+
+    private var mouseMoveHandlerUnsubscribe: (() -> Unit)? = null
+    private var wheelHandlerUnsubscribe: (() -> Unit)? = null
+    private var mouseDownHandlerUnsubscribe: (() -> Unit)? = null
+    private var mouseUpHandlerUnsubscribe: (() -> Unit)? = null
 
     override fun start() {
-        mouseMoveUnsubscribe = window.mouseMoveEvent.addHandler(::mouseHandler)
-        wheelUnsubscribe = window.wheelEvent.addHandler(::wheelHandler)
-        mouseDownUnsubscribe = window.mouseDownEvent.addHandler(::mouseHandler)
-        mouseUpUnsubscribe = window.mouseUpEvent.addHandler(::mouseHandler)
+        mouseMoveHandlerUnsubscribe = window.mouseMoveEvent.addHandler(::mouseMoveHandler)
+        wheelHandlerUnsubscribe = window.wheelEvent.addHandler(::wheelHandler)
+        mouseDownHandlerUnsubscribe = window.mouseDownEvent.addHandler(::mouseDownHandler)
+        mouseUpHandlerUnsubscribe = window.mouseUpEvent.addHandler(::mouseUpHandler)
     }
 
     override fun stop() {
-        mouseMoveUnsubscribe?.invoke()
-        wheelUnsubscribe?.invoke()
-        mouseDownUnsubscribe?.invoke()
-        mouseUpUnsubscribe?.invoke()
-        mouseMoveUnsubscribe = null
-        wheelUnsubscribe = null
-        mouseDownUnsubscribe = null
-        mouseUpUnsubscribe = null
+        mouseMoveHandlerUnsubscribe?.invoke()
+        wheelHandlerUnsubscribe?.invoke()
+        mouseDownHandlerUnsubscribe?.invoke()
+        mouseUpHandlerUnsubscribe?.invoke()
+        mouseMoveHandlerUnsubscribe = null
+        wheelHandlerUnsubscribe = null
+        mouseDownHandlerUnsubscribe = null
+        mouseUpHandlerUnsubscribe = null
     }
 
     override fun sendEvent(event: MouseEvent) {
-        if (event.x > -1 && event.y > -1)
-            window.dispatchEvent(
+        when (event) {
+            is MouseMove -> window.dispatchEvent(
                 WebMouseEvent(
                     WebMouseEvent.MOUSE_MOVE,
                     unsafeJso {
@@ -79,29 +109,42 @@ internal object WebMouseHandler : NativeMouseHandlerBase() {
                 ),
             )
 
-        if (event.wheel != 0)
-            window.dispatchEvent(
+            is MouseWheel -> window.dispatchEvent(
                 WheelEvent(
                     WheelEvent.WHEEL,
                     unsafeJso {
-                        ::screenX trySet event.x.takeIf { it > -1 }
-                        ::screenY trySet event.y.takeIf { it > -1 }
-                        deltaY = event.wheel.toDouble()
+                        ::screenX trySet event.x
+                        ::screenY trySet event.y
+                        ::deltaMode trySet WHEEL_EVENTS[event.mode]!!
+                        ::deltaX trySet event.deltaX
+                        ::deltaY trySet event.deltaY
+                        ::deltaZ trySet event.deltaZ
                         bubbles = true
                         cancelable = true
                     },
                 ),
             )
 
-
-        MOUSE_BUTTONS[event.button]?.let { button ->
-            window.dispatchEvent(
+            is MouseDown -> window.dispatchEvent(
                 WebMouseEvent(
-                    if (event.state == KeyState.KeyDown) WebMouseEvent.MOUSE_DOWN else WebMouseEvent.MOUSE_UP,
+                    WebMouseEvent.MOUSE_DOWN,
                     unsafeJso {
-                        ::screenX trySet event.x.takeIf { it > -1 }
-                        ::screenY trySet event.y.takeIf { it > -1 }
-                        this.button = button
+                        screenX = event.x
+                        screenY = event.y
+                        button = MOUSE_BUTTONS[event.button]!!
+                        bubbles = true
+                        cancelable = true
+                    },
+                ),
+            )
+
+            is MouseUp -> window.dispatchEvent(
+                WebMouseEvent(
+                    WebMouseEvent.MOUSE_UP,
+                    unsafeJso {
+                        screenX = event.x
+                        screenY = event.y
+                        button = MOUSE_BUTTONS[event.button]!!
                         bubbles = true
                         cancelable = true
                     },

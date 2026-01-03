@@ -9,10 +9,10 @@ import web.mouse.MAIN
 import web.mouse.SECONDARY
 import web.mouse.MouseButton as WebMouseButton
 
-internal val MOUSE_BUTTONS: BiMap<MouseButton, WebMouseButton> = biMapOf(
-    MouseButton.Left to WebMouseButton.MAIN,
-    MouseButton.Middle to WebMouseButton.AUXILIARY,
-    MouseButton.Right to WebMouseButton.SECONDARY,
-    MouseButton.Back to WebMouseButton.FOURTH,
-    MouseButton.Forward to WebMouseButton.FIFTH,
+internal val MOUSE_BUTTONS: BiMap<Button, WebMouseButton> = biMapOf(
+    Button.Left to WebMouseButton.MAIN,
+    Button.Middle to WebMouseButton.AUXILIARY,
+    Button.Right to WebMouseButton.SECONDARY,
+    Button.Back to WebMouseButton.FOURTH,
+    Button.Forward to WebMouseButton.FIFTH,
 )

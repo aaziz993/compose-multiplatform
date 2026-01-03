@@ -1,7 +1,5 @@
 package klib.data.mouse
 
-import klib.data.keyboard.model.KeyState
-import klib.data.mouse.model.MouseButton
 import klib.data.mouse.model.MouseEvent
 import klib.data.type.collections.onHasSubscriptionChange
 import kotlinx.coroutines.CoroutineScope
@@ -52,16 +50,6 @@ internal abstract class NativeMouseHandlerBase : NativeMouseHandler {
 
     protected abstract fun start()
     protected abstract fun stop()
-
-    protected fun emit(
-        button: MouseButton,
-        state: KeyState,
-        wheel: Int,
-        x: Int,
-        y: Int
-    ) {
-        eventsInternal.tryEmit(MouseEvent(button, state, wheel, x, y))
-    }
 }
 
 internal object DummyNativeMouseHandler : NativeMouseHandlerBase() {
