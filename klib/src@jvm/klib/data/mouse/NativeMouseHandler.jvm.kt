@@ -11,6 +11,7 @@ import java.awt.AWTException
 import java.awt.Robot
 import java.util.logging.Level
 import java.util.logging.Logger
+import klib.data.mouse.model.JNATIVE_MOUSE_BUTTONS
 import klib.data.mouse.model.MOUSE_BUTTONS
 import klib.data.mouse.model.MouseDown
 import klib.data.mouse.model.MouseEvent
@@ -77,7 +78,7 @@ internal object JvmMouseHandler
     override fun nativeMousePressed(nativeEvent: NativeMouseEvent) {
         eventsInternal.tryEmit(
             MouseDown(
-                requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
+                requireNotNull(JNATIVE_MOUSE_BUTTONS[nativeEvent.button]) {
                     "Unknown mouse button ${nativeEvent.button}"
                 },
                 nativeEvent.x,
@@ -89,7 +90,7 @@ internal object JvmMouseHandler
     override fun nativeMouseReleased(nativeEvent: NativeMouseEvent) {
         eventsInternal.tryEmit(
             MouseUp(
-                requireNotNull(MOUSE_BUTTONS.inverse[nativeEvent.button]) {
+                requireNotNull(JNATIVE_MOUSE_BUTTONS[nativeEvent.button]) {
                     "Unknown mouse button ${nativeEvent.button}"
                 },
                 nativeEvent.x,
