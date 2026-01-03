@@ -188,7 +188,7 @@ public open class Nav3Navigator(
         val snapshot =
             (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } + listOfNotNull(navRoute))
                 .ifEmpty {
-                    listOfNotNull(routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) })
+                    listOfNotNull(routes.routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) })
                 }
 
         if (snapshot.isNotEmpty() && snapshot != backStack.toList())
@@ -325,7 +325,7 @@ public fun rememberNav3Navigator(
 
     val backStack = rememberNavBackStack(
         routes,
-        requireNotNull(startRoute ?: routes.filterIsInstance<NavRoute>().firstOrNull()) {
+        requireNotNull(startRoute ?: routes.routes.filterIsInstance<NavRoute>().firstOrNull()) {
             "No start route in '$routes'"
         },
     )
