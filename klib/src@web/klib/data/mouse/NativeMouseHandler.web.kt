@@ -113,8 +113,6 @@ internal object WebMouseHandler : NativeMouseHandlerBase() {
                 WheelEvent(
                     WheelEvent.WHEEL,
                     unsafeJso {
-                        ::screenX trySet event.x
-                        ::screenY trySet event.y
                         ::deltaMode trySet WHEEL_EVENTS[event.mode]!!
                         ::deltaX trySet event.deltaX
                         ::deltaY trySet event.deltaY
@@ -129,8 +127,6 @@ internal object WebMouseHandler : NativeMouseHandlerBase() {
                 WebMouseEvent(
                     WebMouseEvent.MOUSE_DOWN,
                     unsafeJso {
-                        screenX = event.x
-                        screenY = event.y
                         button = MOUSE_BUTTONS[event.button]!!
                         bubbles = true
                         cancelable = true
@@ -142,8 +138,6 @@ internal object WebMouseHandler : NativeMouseHandlerBase() {
                 WebMouseEvent(
                     WebMouseEvent.MOUSE_UP,
                     unsafeJso {
-                        screenX = event.x
-                        screenY = event.y
                         button = MOUSE_BUTTONS[event.button]!!
                         bubbles = true
                         cancelable = true

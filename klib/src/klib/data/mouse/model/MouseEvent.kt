@@ -27,14 +27,14 @@ public sealed interface ButtonEvent : MouseEvent {
 
 public data class MouseDown(
     override val button: Button,
-    override val x: Int,
-    override val y: Int,
+    override val x: Int? = null,
+    override val y: Int? = null,
 ) : ButtonEvent
 
 public data class MouseUp(
     override val button: Button,
-    override val x: Int,
-    override val y: Int,
+    override val x: Int? = null,
+    override val y: Int? = null,
 ) : ButtonEvent
 
 
