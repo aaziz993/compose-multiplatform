@@ -15,4 +15,6 @@ internal val MOUSE_BUTTONS: Map<Button, Int> = mapOf(
     Button.Left to InputEvent.BUTTON1_DOWN_MASK,
     Button.Middle to InputEvent.BUTTON2_DOWN_MASK,
     Button.Right to InputEvent.BUTTON3_DOWN_MASK,
+    Button.Back to (1 shl 14),
+    Button.Forward to (1 shl 15),
 )
