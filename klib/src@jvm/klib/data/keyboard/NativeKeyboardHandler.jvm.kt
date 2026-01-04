@@ -10,9 +10,11 @@ import java.awt.Toolkit
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 import java.util.logging.Logger
+import klib.data.keyboard.model.KEYS
 import klib.data.keyboard.model.Key
 import klib.data.keyboard.model.KeyEvent
 import klib.data.keyboard.model.KeyState
+import klib.data.keyboard.model.toKey
 
 internal object JvmKeyboardHandler : NativeKeyboardHandlerBase(), NativeKeyListener {
 
@@ -41,20 +43,20 @@ internal object JvmKeyboardHandler : NativeKeyboardHandlerBase(), NativeKeyListe
     }
 
     override fun nativeKeyPressed(nativeEvent: NativeKeyEvent) {
-        val key = Key.fromKeyCode(nativeEvent.keyCode)
+        val key = nativeEvent.toKey()
         if (key != Key.Unknown && pressedKeys.add(key)) emit(key, KeyState.KeyDown)
     }
 
     override fun nativeKeyReleased(nativeEvent: NativeKeyEvent) {
-        val key = Key.fromKeyCode(nativeEvent.keyCode)
+        val key = nativeEvent.toKey()
         if (key != Key.Unknown && pressedKeys.remove(key)) emit(key, KeyState.KeyUp)
     }
 
     override fun sendEvent(event: KeyEvent) {
         if (event.key == Key.Unknown) return
 
-        if (event.state == KeyState.KeyDown) robot.keyPress(event.key.keyCode)
-        else robot.keyRelease(event.key.keyCode)
+        if (event.state == KeyState.KeyDown) robot.keyPress(KEYS[event.key]!!)
+        else robot.keyRelease(KEYS[event.key]!!)
     }
 
     override fun getKeyState(key: Key): KeyState {

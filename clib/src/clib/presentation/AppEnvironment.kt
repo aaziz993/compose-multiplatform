@@ -80,7 +80,9 @@ import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.cache.emptyCache
 import klib.data.cache.emptyCoroutineCache
+import klib.data.keyboard.Keyboard
 import klib.data.location.locale.LocaleService
+import klib.data.mouse.Mouse
 import klib.data.network.createConnectivity
 import klib.data.share.Share
 import kotlinx.coroutines.MainScope
@@ -107,6 +109,8 @@ public fun AppEnvironment(
     localeService: LocaleService = LocaleService(),
     authState: AuthState = rememberAuthState(),
     permissionsState: PermissionsState = rememberPermissionsState(),
+    mouse: Mouse = Mouse,
+    keyboard: Keyboard = Keyboard(),
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes

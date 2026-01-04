@@ -20,9 +20,11 @@ import klib.data.cache.SqlDelightCoroutineCache
 import klib.config.EnabledConfig
 import klib.coroutines.runBlocking
 import klib.data.database.sqldelight.createSQLDelightKlibDatabase
+import klib.data.keyboard.Keyboard
 import klib.data.location.locale.AggregateLocaleService
 import klib.data.location.locale.LocaleService
 import klib.data.location.locale.weblate.WeblateApiService
+import klib.data.mouse.Mouse
 import klib.data.network.createConnectivity
 import klib.data.network.http.client.HTTP_CLIENT_JSON
 import klib.data.network.http.client.createHttpClient
@@ -68,6 +70,12 @@ public class CommonModule {
 
     @Single
     public fun provideAuthState(): AuthState = AuthState()
+
+    @Single
+    public fun provideMouse(): Mouse = Mouse
+
+    @Single
+    public fun provideKeyboard(): Keyboard = Keyboard()
 
     @Single
     public fun provideJson(): Json = HTTP_CLIENT_JSON

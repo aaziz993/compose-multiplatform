@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import clib.data.share.rememberShare
+import clib.data.type.collections.LaunchedEffect
 import clib.data.type.primitives.string.stringResource
 import clib.di.koinInject
 import clib.permission.PermissionsState
@@ -53,12 +54,11 @@ import dev.jordond.connectivity.Connectivity
 import io.ktor.http.Url
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
+import klib.data.keyboard.Keyboard
+import klib.data.keyboard.model.Key
+import klib.data.keyboard.model.KeySet
 import klib.data.location.locale.LocaleService
 import klib.data.mouse.Mouse
-import klib.data.mouse.model.Button
-import klib.data.mouse.model.MouseDown
-import klib.data.mouse.model.MouseMove
-import klib.data.mouse.model.MouseUp
 import klib.data.share.Share
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
@@ -85,6 +85,8 @@ public fun AppComposable(
     localeService: LocaleService = koinInject(),
     authState: AuthState = koinInject(),
     permissionsState: PermissionsState = rememberPermissionsState(),
+    mouse: Mouse = koinInject(),
+    keyboard: Keyboard = koinInject(),
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
@@ -119,36 +121,21 @@ public fun AppComposable(
     localeService,
     authState,
     permissionsState,
+    mouse,
+    keyboard,
     routes,
     routerFactory,
     navigatorFactory,
     onDeepLink,
 ) {
+    keyboard.handler.events.LaunchedEffect(Unit) { event ->
+        println(event)
+    }
     LaunchedEffect(Unit) {
         delay(10.seconds)
-        Mouse.send(
-            MouseMove(
-                x = 100,
-                y = 100,
-            ),
-        )
+        keyboard.write("Aziz Atoev")
         delay(10.seconds)
-        Mouse.send(
-            MouseDown(
-                button = Button.Left,
-                x = 200,
-                y = 200,
-            ),
-        )
-
-        delay(10.seconds)
-        Mouse.send(
-            MouseUp(
-                button = Button.Left,
-                x = 200,
-                y = 200,
-            ),
-        )
+        keyboard.send(KeySet(Key.Compose))
     }
     GlobalAlertDialog(
         { action ->
