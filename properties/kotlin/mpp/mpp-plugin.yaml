@@ -14,6 +14,7 @@ script:
                 implementation(libs["javamath2kmp"])
                 implementation(libs["kasechange"])
                 implementation(libs["kotlinx.uuid.core"])
+                implementation(libs["kotlinx.collections.immutable"])
                 implementation(libs.bundles("fleeksoft.charset"))
                 // implementation(libs.bundles("diglol")) // uncomment when wasmJs target added.
                 implementation(libs["kotlin.codepoints"])
@@ -39,6 +40,7 @@ script:
                 implementation(libs.bundles("sqldelight"))
                 implementation(libs.bundles("store"))
                 implementation(libs.bundles("connectivity.kotlin.multiplatform"))
+                // implementation(libs["krawler"])
                 // implementation(libs.bundles("oidc"))
                 implementation(libs.bundles("kmauth.kotlin.multiplatform")) // uses open-source supabase instead of firebase
                 // implementation(libs.bundles("kmpauth")) // firebase doesn't support web

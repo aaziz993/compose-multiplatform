@@ -118,13 +118,13 @@ public open class Nav3Navigator(
             "Start route '$startRoute' not in '$routes'"
         }
 
-        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
+        val redirectNavRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
             if (it.route !in routes) return onUnknownRoute(it)
         }
 
         val snapshot =
             (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
-                listOfNotNull(navRoute))
+                listOfNotNull(redirectNavRoute))
                 .ifEmpty {
                     listOfNotNull(startRoute?.takeIf { navRoute -> navRoute.route.isAuth(auth) })
                 }

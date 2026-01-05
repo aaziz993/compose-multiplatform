@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import clib.data.keyboard.LocalKeyboard
+import clib.data.mouse.LocalMouse
 import clib.permission.LocalPermissionsState
 import clib.permission.PermissionsState
 import clib.permission.rememberPermissionsState
@@ -86,6 +88,7 @@ import klib.data.mouse.Mouse
 import klib.data.network.createConnectivity
 import klib.data.share.Share
 import kotlinx.coroutines.MainScope
+//import solutions.dreamforge.krawler.CrawlerSDK
 
 @OptIn(ExperimentalFoundationApi::class)
 @Suppress("ComposeParameterOrder", "ComposeModifierMissing")
@@ -109,8 +112,9 @@ public fun AppEnvironment(
     localeService: LocaleService = LocaleService(),
     authState: AuthState = rememberAuthState(),
     permissionsState: PermissionsState = rememberPermissionsState(),
-    mouse: Mouse = Mouse,
+    mouse: Mouse = Mouse(),
     keyboard: Keyboard = Keyboard(),
+//    crawler: CrawlerSDK = CrawlerSDK.create(),
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
@@ -161,6 +165,8 @@ public fun AppEnvironment(
         LocalLocalization provides localization,
         LocalAuthState provides authState,
         LocalPermissionsState provides permissionsState,
+        LocalMouse provides mouse,
+        LocalKeyboard provides keyboard,
     ) {
         val theme = themeState.value
 

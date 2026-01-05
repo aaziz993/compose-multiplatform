@@ -63,6 +63,7 @@ import klib.data.share.Share
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import ui.navigation.presentation.Application
+//import solutions.dreamforge.krawler.CrawlerSDK
 
 @Composable
 public fun AppComposable(
@@ -87,6 +88,7 @@ public fun AppComposable(
     permissionsState: PermissionsState = rememberPermissionsState(),
     mouse: Mouse = koinInject(),
     keyboard: Keyboard = koinInject(),
+//    crawler: CrawlerSDK = koinInject(),
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
@@ -123,6 +125,7 @@ public fun AppComposable(
     permissionsState,
     mouse,
     keyboard,
+//    crawler,
     routes,
     routerFactory,
     navigatorFactory,

@@ -72,7 +72,7 @@ public class CommonModule {
     public fun provideAuthState(): AuthState = AuthState()
 
     @Single
-    public fun provideMouse(): Mouse = Mouse
+    public fun provideMouse(): Mouse = Mouse()
 
     @Single
     public fun provideKeyboard(): Keyboard = Keyboard()

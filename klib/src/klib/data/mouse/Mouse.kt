@@ -7,7 +7,7 @@ import klib.data.mouse.model.MouseEvent
  * This is wrapper around [NativeMouseHandler] providing high-level access to the Mouse.
  *
  */
-public object Mouse {
+public class Mouse {
 
     /**
      * The backing [NativeMouseHandler].

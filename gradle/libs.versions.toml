@@ -184,6 +184,8 @@ kmath = "0.4.2"
 javamath2kmp = "1.1"
 # uuid.
 kotlinx-uuid-core = "0.1.6"
+# immutable collection interfaces and implementation prototypes for Kotlin.
+kotlinx-collections-immutable = "0.4.0"
 # charsets.
 fleeksoft = "0.0.5"
 # hex, base32, base45 and base64 encoding and id generator.
@@ -297,6 +299,8 @@ kotysa = "3.2.2"
 store = "5.1.0-alpha07"
 # network connectivity.
 connectivity = "2.3.0"
+# a powerful, modern web crawling and scraping library for Kotlin Multiplatform. Build efficient web crawlers that run on JVM, Android, iOS, JavaScript, and WebAssembly with a beautiful Kotlin DSL.
+krawler = "0.0.1"
 # kotlin Multiplatform Library for OpenId Connect / OAuth 2.0.
 oidc = "0.16.2"
 # kotlin Multiplatform Authentication library targeting Android, iOS, Desktop and Web(Kotlin/Js and Kotlin/Wasm Both).
@@ -598,6 +602,8 @@ kmath-functions = { module = "space.kscience:kmath-functions", version.ref = "km
 javamath2kmp = { module = "dev.erikchristensen.javamath2kmp:javamath2kmp", version.ref = "javamath2kmp" }
 # uuid.
 kotlinx-uuid-core = { module = "app.softwork:kotlinx-uuid-core", version.ref = "kotlinx-uuid-core" }
+# immutable collection interfaces and implementation prototypes for Kotlin.
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 # charset.
 fleeksoft-charset = { module = "com.fleeksoft.charset:charset", version.ref = "fleeksoft" }
 fleeksoft-charset-ext = { module = "com.fleeksoft.charset:charset-ext", version.ref = "fleeksoft" }
@@ -793,6 +799,8 @@ connectivity-http = { module = "dev.jordond.connectivity:connectivity-http", ver
 connectivity-compose = { module = "dev.jordond.connectivity:connectivity-compose", version.ref = "connectivity" }
 connectivity-compose-device = { module = "dev.jordond.connectivity:connectivity-compose-device", version.ref = "connectivity" }
 connectivity-compose-http = { module = "dev.jordond.connectivity:connectivity-compose-http", version.ref = "connectivity" }
+# a powerful, modern web crawling and scraping library for Kotlin Multiplatform. Build efficient web crawlers that run on JVM, Android, iOS, JavaScript, and WebAssembly with a beautiful Kotlin DSL.
+krawler = { module = "solutions.dreamforge.krawler:krawler", version.ref = "krawler" }
 # kotlin Multiplatform Library for OpenId Connect / OAuth 2.0.
 oidc-appsupport = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-appsupport", version.ref = "oidc" }
 oidc-okhttp4 = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-okhttp4", version.ref = "oidc" }
