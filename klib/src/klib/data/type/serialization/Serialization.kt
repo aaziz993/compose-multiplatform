@@ -69,7 +69,7 @@ internal inline fun <reified T : Any> defaultMerger(decodedFile: T, decodedImpor
     }
 }
 
-public inline fun <reified T : Any> create(): T? = T::class.serializer().create()
+public inline fun <reified T : Any> createOrNull(): T? = T::class.serializer().createOrNull()
 
 public inline fun <reified T : Any> T.plus(
     vararg values: T,

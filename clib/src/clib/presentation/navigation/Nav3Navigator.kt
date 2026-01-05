@@ -7,7 +7,7 @@ import androidx.navigation3.runtime.NavBackStack
 import clib.presentation.auth.LocalAuthState
 import klib.auth.model.Auth
 import klib.data.type.collections.replaceWith
-import klib.data.type.serialization.elementIndices
+import klib.data.type.serialization.createOrNull
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
@@ -200,12 +200,9 @@ public open class Nav3Navigator(
                 }
                 .ifEmpty {
                     listOfNotNull(
-                        routes.routes.find { route ->
+                        routes.routes.firstNotNullOfOrNull { route ->
                             val descriptor = route.navRoute.serializer().descriptor
-                            route.isAuth(auth) && (
-                                route is NavRoute ||
-                                descriptor.elementIndices.all {  }
-                                )
+                            if (route.isAuth(auth)) null else route.navRoute.serializer().createOrNull()
                         },
                     )
                 }

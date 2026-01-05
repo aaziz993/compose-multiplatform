@@ -68,7 +68,7 @@ private class ElementDecoder(private val index: Int) : AbstractDecoder() {
     private inline fun <reified T : Any> decodeSerializer(): T = decodeSerializer(T::class.serializer())
 }
 
-public fun <T : Any> KSerializer<T>.create(): T? {
+public fun <T : Any> KSerializer<T>.createOrNull(): T? {
     if (!descriptor.elementIndices.all { index ->
             descriptor.isElementOptional(index) || descriptor.getElementDescriptor(index).isNullable
         }) return null
