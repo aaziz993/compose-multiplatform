@@ -22,13 +22,19 @@ internal object WebKeyboardHandler : NativeKeyboardHandlerBase() {
     private val pressedKeys = mutableSetOf<Key>()
 
     private fun keyDown(e: KeyboardEvent) {
-        val key = KEYS.inverse[e.code] ?: return
-        if (key != Key.Unknown && pressedKeys.add(key)) emit(key, KeyState.KeyDown)
+        val key = KEYS.inverse[e.code] ?: Key.Unknown
+        if (key != Key.Unknown) {
+            pressedKeys += key
+            emit(key, KeyState.KeyDown)
+        }
     }
 
     private fun keyUp(e: KeyboardEvent) {
-        val key = KEYS.inverse[e.code] ?: return
-        if (key != Key.Unknown && pressedKeys.remove(key)) emit(key, KeyState.KeyUp)
+        val key = KEYS.inverse[e.code] ?: Key.Unknown
+        if (key != Key.Unknown) {
+            pressedKeys -= key
+            emit(key, KeyState.KeyUp)
+        }
     }
 
     private var keyDownUnsubscribe: (() -> Unit)? = null

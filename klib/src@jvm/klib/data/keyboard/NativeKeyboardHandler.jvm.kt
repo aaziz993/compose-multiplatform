@@ -44,12 +44,18 @@ internal object JvmKeyboardHandler : NativeKeyboardHandlerBase(), NativeKeyListe
 
     override fun nativeKeyPressed(nativeEvent: NativeKeyEvent) {
         val key = nativeEvent.toKey()
-        if (key != Key.Unknown && pressedKeys.add(key)) emit(key, KeyState.KeyDown)
+        if (key != Key.Unknown) {
+            pressedKeys += key
+            emit(key, KeyState.KeyDown)
+        }
     }
 
     override fun nativeKeyReleased(nativeEvent: NativeKeyEvent) {
         val key = nativeEvent.toKey()
-        if (key != Key.Unknown && pressedKeys.remove(key)) emit(key, KeyState.KeyUp)
+        if (key != Key.Unknown) {
+            pressedKeys -= key
+            emit(key, KeyState.KeyUp)
+        }
     }
 
     override fun sendEvent(event: KeyEvent) {
