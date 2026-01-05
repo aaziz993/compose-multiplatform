@@ -188,7 +188,7 @@ public open class Nav3Navigator(
      * Replaces routes based on authentication state.
      */
     protected open fun auth() {
-        val navRoute = authRedirectRoute?.takeIf { navRoute -> navRoute.route.isAuth(auth) }?.also {
+        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
             if (it.route !in routes) return onUnknownRoute(it)
         }
 
@@ -201,7 +201,7 @@ public open class Nav3Navigator(
                 .ifEmpty {
                     listOfNotNull(
                         routes.routes.firstNotNullOfOrNull { route ->
-                            if (route.isAuth(auth)) null else route.navRoute.serializer().createOrNull()
+                            if (!route.isAuth(auth)) null else route.navRoute.serializer().createOrNull()
                         },
                     )
                 }
@@ -314,6 +314,7 @@ public open class Nav3Navigator(
  * This ensures proper lifecycle management and prevents memory leaks.
  *
  * @param routes The top level route associated with navigator.
+ * @param backStack The Navigation 3 back stack to control.
  * @param startRoute Optional route representing an start route. If provided, back stack will start with that.
  * @param auth The current authentication state used to determine access control.
  * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
@@ -326,6 +327,7 @@ public open class Nav3Navigator(
 @Composable
 public fun rememberNav3Navigator(
     routes: Routes,
+    backStack: NavBackStack<NavRoute> = rememberNavBackStack(routes),
     startRoute: NavRoute? = LocalRouter.current?.navRoutePath?.firstOrNull(),
     auth: Auth = LocalAuthState.current.value,
     authRoute: NavRoute? = null,
@@ -335,20 +337,16 @@ public fun rememberNav3Navigator(
         { navRoute -> router.push(navRoute) }
     } ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
     onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
-): Navigator {
-    val backStack = rememberNavBackStack(routes)
-
-    return remember(auth) {
-        Nav3Navigator(
-            routes,
-            backStack,
-            startRoute,
-            auth,
-            authRoute,
-            authRedirectRoute,
-            onError,
-            onUnknownRoute,
-            onBack,
-        )
-    }
+): Navigator = remember(auth) {
+    Nav3Navigator(
+        routes,
+        backStack,
+        startRoute,
+        auth,
+        authRoute,
+        authRedirectRoute,
+        onError,
+        onUnknownRoute,
+        onBack,
+    )
 }
