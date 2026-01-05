@@ -43,9 +43,7 @@ public open class Nav3Navigator(
 ) : Navigator {
 
     init {
-        require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
-
-        auth()
+        init()
     }
 
     /**
@@ -110,6 +108,36 @@ public open class Nav3Navigator(
         }
 
         return true
+    }
+
+    /**
+     * Initializes routes based on authentication state.
+     */
+    protected open fun init() {
+        require(startRoute?.let { it.route in routes } != false) {
+            "Start route '$startRoute' not in '$routes'"
+        }
+
+        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
+            if (it.route !in routes) return onUnknownRoute(it)
+        }
+
+        val snapshot =
+            (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
+                listOfNotNull(navRoute))
+                .ifEmpty {
+                    listOfNotNull(startRoute?.takeIf { navRoute -> navRoute.route.isAuth(auth) })
+                }
+                .ifEmpty {
+                    listOfNotNull(
+                        routes.routes.firstNotNullOfOrNull { route ->
+                            if (!route.isAuth(auth)) null else route.navRoute.serializer().createOrNull()
+                        },
+                    )
+                }
+
+        if (snapshot.isNotEmpty() && snapshot != backStack.toList())
+            actions(NavigationAction.ReplaceStack(snapshot))
     }
 
     /**
@@ -182,32 +210,6 @@ public open class Nav3Navigator(
             }
         }
         snapshot.replaceWith(action.routes)
-    }
-
-    /**
-     * Replaces routes based on authentication state.
-     */
-    protected open fun auth() {
-        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
-            if (it.route !in routes) return onUnknownRoute(it)
-        }
-
-        val snapshot =
-            (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
-                listOfNotNull(navRoute))
-                .ifEmpty {
-                    listOfNotNull(startRoute?.takeIf { navRoute -> navRoute.route.isAuth(auth) })
-                }
-                .ifEmpty {
-                    listOfNotNull(
-                        routes.routes.firstNotNullOfOrNull { route ->
-                            if (!route.isAuth(auth)) null else route.navRoute.serializer().createOrNull()
-                        },
-                    )
-                }
-
-        if (snapshot.isNotEmpty() && snapshot != backStack.toList())
-            actions(NavigationAction.ReplaceStack(snapshot))
     }
 
     /**
