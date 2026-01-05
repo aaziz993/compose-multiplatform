@@ -24,28 +24,7 @@ public inline fun <reified T : Any> decodeFile(
         decodedFile.deepGetOrNull(IMPORTS_KEY).second?.cast()
     },
     crossinline decoder: (file: String) -> T,
-    crossinline merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
-        val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).deepSubstitute(unescapeDollars = false)
-
-        if (decodedImports.isEmpty()) substitutedFile
-        else {
-            val mergedImports = decodedImports.first().deepPlus(
-                *decodedImports.drop().toTypedArray(),
-                destinationGetter = { source ->
-                    last().first.getOrPut(last().second, source::toNewMutableCollection)
-                },
-            )
-
-            substitutedFile.deepSubstitute(
-                getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
-            ).deepMap(
-                mergedImports,
-                destinationGetter = { source ->
-                    last().first.getOrPut(last().second, source::toNewMutableCollection)
-                },
-            )
-        }
-    },
+    crossinline merger: (decodedFile: T, decodedImports: List<T>) -> T = ::defaultMerger,
 ): T = DeepRecursiveFunction<DecodeFileArgs<T>, T> { (file, mergedFiles) ->
     mergedFiles[file] = null
 
@@ -65,6 +44,32 @@ internal data class DecodeFileArgs<T>(
     val file: String,
     val mergedFiles: MutableMap<String, T?>,
 )
+
+@PublishedApi
+internal inline fun <reified T : Any> defaultMerger(decodedFile: T, decodedImports: List<T>): T {
+    val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).deepSubstitute(unescapeDollars = false)
+
+    return if (decodedImports.isEmpty()) substitutedFile
+    else {
+        val mergedImports = decodedImports.first().deepPlus(
+            *decodedImports.drop().toTypedArray(),
+            destinationGetter = { source ->
+                last().first.getOrPut(last().second, source::toNewMutableCollection)
+            },
+        )
+
+        substitutedFile.deepSubstitute(
+            getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
+        ).deepMap(
+            mergedImports,
+            destinationGetter = { source ->
+                last().first.getOrPut(last().second, source::toNewMutableCollection)
+            },
+        )
+    }
+}
+
+public inline fun <reified T : Any> create(): T? = T::class.serializer().create()
 
 public inline fun <reified T : Any> T.plus(
     vararg values: T,

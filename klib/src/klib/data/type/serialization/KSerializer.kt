@@ -68,6 +68,16 @@ private class ElementDecoder(private val index: Int) : AbstractDecoder() {
     private inline fun <reified T : Any> decodeSerializer(): T = decodeSerializer(T::class.serializer())
 }
 
+public fun <T : Any> KSerializer<T>.create(): T? {
+    if (!descriptor.elementIndices.all { index ->
+            descriptor.isElementOptional(index) || descriptor.getElementDescriptor(index).isNullable
+        }) return null
+
+    return deserialize(descriptor.elementIndices.filter { index ->
+        descriptor.getElementDescriptor(index).isNullable
+    }.associate { index -> descriptor.getElementName(index) to null })
+}
+
 public fun <T : Any> KSerializer<T>.plus(
     vararg values: T,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },

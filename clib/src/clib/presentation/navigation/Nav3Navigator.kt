@@ -7,9 +7,11 @@ import androidx.navigation3.runtime.NavBackStack
 import clib.presentation.auth.LocalAuthState
 import klib.auth.model.Auth
 import klib.data.type.collections.replaceWith
+import klib.data.type.serialization.elementIndices
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
+import kotlinx.serialization.serializer
 
 /**
  * Navigator implementation that integrates with Navigation 3.
@@ -20,8 +22,9 @@ import kotlinx.coroutines.yield
  *
  * @param routes The top level route associated with navigator.
  * @param backStack The Navigation 3 back stack to control.
+ * @param startRoute Optional route representing a start route.
  * @param auth The current authentication state used to determine access control.
- * @param authRoute Optional route representing an authentication screen. If provided, navigator may redirect unauthorized users here.
+ * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param onError Callback to trigger navigation exception.
  * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
@@ -30,6 +33,7 @@ import kotlinx.coroutines.yield
 public open class Nav3Navigator(
     public val routes: Routes,
     override val backStack: NavBackStack<NavRoute>,
+    private val startRoute: NavRoute?,
     private val auth: Auth,
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
@@ -39,6 +43,8 @@ public open class Nav3Navigator(
 ) : Navigator {
 
     init {
+        require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
+
         auth()
     }
 
@@ -182,13 +188,26 @@ public open class Nav3Navigator(
      * Replaces routes based on authentication state.
      */
     protected open fun auth() {
-        val navRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
+        val navRoute = authRedirectRoute?.takeIf { navRoute -> navRoute.route.isAuth(auth) }?.also {
             if (it.route !in routes) return onUnknownRoute(it)
         }
+
         val snapshot =
-            (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } + listOfNotNull(navRoute))
+            (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
+                listOfNotNull(navRoute))
                 .ifEmpty {
-                    listOfNotNull(routes.routes.filterIsInstance<NavRoute>().find { navRoute -> navRoute.route.isAuth(auth) })
+                    listOfNotNull(startRoute?.takeIf { navRoute -> navRoute.route.isAuth(auth) })
+                }
+                .ifEmpty {
+                    listOfNotNull(
+                        routes.routes.find { route ->
+                            val descriptor = route.navRoute.serializer().descriptor
+                            route.isAuth(auth) && (
+                                route is NavRoute ||
+                                descriptor.elementIndices.all {  }
+                                )
+                        },
+                    )
                 }
 
         if (snapshot.isNotEmpty() && snapshot != backStack.toList())
@@ -321,19 +340,13 @@ public fun rememberNav3Navigator(
     } ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
     onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
 ): Navigator {
-    require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
-
-    val backStack = rememberNavBackStack(
-        routes,
-        requireNotNull(startRoute ?: routes.routes.filterIsInstance<NavRoute>().firstOrNull()) {
-            "No start route in '$routes'"
-        },
-    )
+    val backStack = rememberNavBackStack(routes)
 
     return remember(auth) {
         Nav3Navigator(
             routes,
             backStack,
+            startRoute,
             auth,
             authRoute,
             authRedirectRoute,
