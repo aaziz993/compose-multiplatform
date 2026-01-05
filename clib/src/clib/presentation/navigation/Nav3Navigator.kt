@@ -201,7 +201,6 @@ public open class Nav3Navigator(
                 .ifEmpty {
                     listOfNotNull(
                         routes.routes.firstNotNullOfOrNull { route ->
-                            val descriptor = route.navRoute.serializer().descriptor
                             if (route.isAuth(auth)) null else route.navRoute.serializer().createOrNull()
                         },
                     )
