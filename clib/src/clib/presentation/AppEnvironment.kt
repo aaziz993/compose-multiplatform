@@ -114,7 +114,7 @@ public fun AppEnvironment(
     permissionsState: PermissionsState = rememberPermissionsState(),
     mouse: Mouse = Mouse(),
     keyboard: Keyboard = Keyboard(),
-    crawler: CrawlerSDK = CrawlerSDK.create(),
+//    crawler: CrawlerSDK = CrawlerSDK.create(),
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = {
         val isRoot = it == routes
