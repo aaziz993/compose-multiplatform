@@ -73,10 +73,15 @@ public fun <T : Any> KSerializer<T>.createOrNull(): T? {
             descriptor.isElementOptional(index) || descriptor.getElementDescriptor(index).isNullable
         }) return null
 
-    return deserialize(descriptor.elementIndices.filter { index ->
-        descriptor.getElementDescriptor(index).isNullable
-    }.associate { index -> descriptor.getElementName(index) to null })
+    return deserialize(
+        descriptor.elementIndices.filter { index ->
+            descriptor.getElementDescriptor(index).isNullable
+        }.associate { index -> descriptor.getElementName(index) to null },
+    )
 }
+
+public fun <T : Any> KSerializer<T>.create(): T =
+    checkNotNull(createOrNull()) { "No reliable primary constructor" }
 
 public fun <T : Any> KSerializer<T>.plus(
     vararg values: T,
