@@ -70,15 +70,12 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
         this.navRoutePath = navRoutePath.drop(2)
     }
 
-    protected fun handleRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit) {
+    protected fun reroute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit) {
         routes.resolve(navRoute)?.let { navRoute -> handleRoutePath(navRoute, handler) }
-            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.handleRoute(navRoute, handler)
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.reroute(navRoute, handler)
     }
 
-    protected fun handleRoute(url: Url, handler: Router.(NavRoute) -> Unit) {
-        routes.resolve(url)?.let { navRoute -> handleRoutePath(navRoute, handler) }
-            ?: checkNotNull(prev) { "Unknown route '$url'" }.handleRoute(url, handler)
-    }
+    public fun onUnknownRoute(navRoute: NavRoute): Unit = reroute(navRoute, Router::push)
 
     /**
      * Binds the parent router.

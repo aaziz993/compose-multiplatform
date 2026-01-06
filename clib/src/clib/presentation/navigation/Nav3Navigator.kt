@@ -335,9 +335,8 @@ public fun rememberNav3Navigator(
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
     onError: (Throwable) -> Unit = { e -> throw e },
-    onUnknownRoute: (NavRoute) -> Unit = LocalRouter.current?.let { router ->
-        { navRoute -> router.push(navRoute) }
-    } ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
+    onUnknownRoute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> router::onUnknownRoute }
+        ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
     onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
 ): Navigator = remember(auth) {
     Nav3Navigator(

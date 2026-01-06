@@ -166,10 +166,6 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 
-    final override fun resolve(
-        transform: (BaseRoute) -> NavRoute?,
-    ): List<NavRoute>? = transform(this)?.let(::listOf)
-
     override fun toString(): String = name
 }
 
