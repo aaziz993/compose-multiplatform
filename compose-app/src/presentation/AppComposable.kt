@@ -63,6 +63,7 @@ import klib.data.share.Share
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import ui.navigation.presentation.Application
+
 //import solutions.dreamforge.krawler.CrawlerSDK
 
 @Composable
@@ -90,15 +91,12 @@ public fun AppComposable(
     keyboard: Keyboard = koinInject(),
 //    crawler: CrawlerSDK = koinInject(),
     routes: Routes = Application,
-    routerFactory: @Composable (Routes) -> Router = {
-        val isRoot = it == routes
-        if (isRoot && config.ui.startRoute != null) remember { Router(it, config.ui.startRoute!!) }
-        else remember { Router(it) }
-    },
+    routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         val isRoot = it == routes
         rememberNav3Navigator(
             routes = it,
+            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)!!.last() else null,
             authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )

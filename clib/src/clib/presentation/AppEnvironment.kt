@@ -88,6 +88,7 @@ import klib.data.mouse.Mouse
 import klib.data.network.createConnectivity
 import klib.data.share.Share
 import kotlinx.coroutines.MainScope
+
 //import solutions.dreamforge.krawler.CrawlerSDK
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -116,15 +117,12 @@ public fun AppEnvironment(
     keyboard: Keyboard = Keyboard(),
 //    crawler: CrawlerSDK = CrawlerSDK.create(),
     routes: Routes,
-    routerFactory: @Composable (Routes) -> Router = {
-        val isRoot = it == routes
-        if (isRoot && config.ui.startRoute != null) remember { Router(it, config.ui.startRoute) }
-        else remember { Router(it) }
-    },
+    routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         val isRoot = it == routes
         rememberNav3Navigator(
             routes = it,
+            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)!!.last() else null,
             authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )

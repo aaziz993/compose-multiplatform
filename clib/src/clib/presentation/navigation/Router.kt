@@ -38,14 +38,6 @@ internal val LocalRouter: ProvidableCompositionLocal<Router?> = compositionLocal
  */
 public open class Router(public val routes: Routes) : BaseRouter(), Node<Router> {
 
-    public constructor(routes: Routes, startRoute: NavRoute) : this(routes) {
-        handleRoute(startRoute, Router::push)
-    }
-
-    public constructor(routes: Routes, startRoute: Url) : this(routes) {
-        handleRoute(startRoute, Router::push)
-    }
-
     /**
      * Parent router in nested navigation hierarchy.
      */

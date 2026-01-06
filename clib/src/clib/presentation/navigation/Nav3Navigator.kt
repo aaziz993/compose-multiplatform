@@ -114,19 +114,19 @@ public open class Nav3Navigator(
      * Initializes routes based on authentication state.
      */
     protected open fun init() {
-        require(startRoute?.let { it.route in routes } != false) {
-            "Start route '$startRoute' not in '$routes'"
-        }
-
-        val redirectNavRoute = authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
-            if (it.route !in routes) return onUnknownRoute(it)
-        }
-
         val snapshot =
             (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
-                listOfNotNull(redirectNavRoute))
+                listOfNotNull(
+                    authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
+                        if (it.route !in routes) return onUnknownRoute(it)
+                    },
+                ))
                 .ifEmpty {
-                    listOfNotNull(startRoute?.takeIf { navRoute -> navRoute.route.isAuth(auth) })
+                    listOfNotNull(
+                        startRoute?.takeIf { it.route.isAuth(auth) }?.also {
+                            if (it.route !in routes) return onUnknownRoute(it)
+                        },
+                    )
                 }
                 .ifEmpty {
                     listOfNotNull(
