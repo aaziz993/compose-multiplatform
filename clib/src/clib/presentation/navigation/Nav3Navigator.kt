@@ -27,7 +27,7 @@ import kotlinx.serialization.serializer
  * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param onError Callback to trigger navigation exception.
- * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
+ * @param onReroute Callback triggered when route isn't in the current top level route.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
  */
 public open class Nav3Navigator(
@@ -38,7 +38,7 @@ public open class Nav3Navigator(
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
     private val onError: (Throwable) -> Unit,
-    private val onUnknownRoute: (NavRoute) -> Unit,
+    private val onReroute: (NavRoute) -> Unit,
     private val onBack: () -> Unit,
 ) : Navigator {
 
@@ -118,13 +118,13 @@ public open class Nav3Navigator(
             (backStack.filter { navRoute -> navRoute.route.isAuth(auth) } +
                 listOfNotNull(
                     authRedirectRoute?.takeIf { it.route.isAuth(auth) }?.also {
-                        if (it.route !in routes) return onUnknownRoute(it)
+                        if (it.route !in routes) return onReroute(it)
                     },
                 ))
                 .ifEmpty {
                     listOfNotNull(
                         startRoute?.takeIf { it.route.isAuth(auth) }?.also {
-                            if (it.route !in routes) return onUnknownRoute(it)
+                            if (it.route !in routes) return onReroute(it)
                         },
                     )
                 }
@@ -162,7 +162,7 @@ public open class Nav3Navigator(
         }
 
         if (route.route !in routes) {
-            onUnknownRoute(route)
+            onReroute(route)
             return false
         }
 
@@ -322,7 +322,7 @@ public open class Nav3Navigator(
  * @param authRoute Optional route representing an authentication route. If provided, navigator may redirect unauthorized users here.
  * @param authRedirectRoute Optional route the navigator should redirect when authenticated.
  * @param onError Callback to trigger navigation exception.
- * @param onUnknownRoute Callback triggered when route isn't in the current top level route.
+ * @param onReroute Callback triggered when route isn't in the current top level route.
  * @param onBack Callback to trigger system back navigation when the stack is empty.
  * @return A remembered navigator instance.
  */
@@ -335,7 +335,7 @@ public fun rememberNav3Navigator(
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
     onError: (Throwable) -> Unit = { e -> throw e },
-    onUnknownRoute: (NavRoute) -> Unit =
+    onReroute: (NavRoute) -> Unit =
         LocalRouter.current?.let { router -> { navRoute -> router.deepRoute(navRoute) } }
             ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
     onBack: () -> Unit = LocalRouter.current?.let { router -> router::pop } ?: platformOnBack(),
@@ -348,7 +348,7 @@ public fun rememberNav3Navigator(
         authRoute,
         authRedirectRoute,
         onError,
-        onUnknownRoute,
+        onReroute,
         onBack,
     )
 }
