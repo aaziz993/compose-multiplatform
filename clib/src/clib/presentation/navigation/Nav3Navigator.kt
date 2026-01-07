@@ -338,7 +338,7 @@ public fun rememberNav3Navigator(
     onUnknownRoute: (NavRoute) -> Unit =
         LocalRouter.current?.let { router -> { navRoute -> router.deepRoute(navRoute) } }
             ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
-    onBack: () -> Unit = LocalRouter.current?.let { it::pop } ?: platformOnBack(),
+    onBack: () -> Unit = LocalRouter.current?.let { router -> router::pop } ?: platformOnBack(),
 ): Navigator = remember(auth) {
     Nav3Navigator(
         routes,

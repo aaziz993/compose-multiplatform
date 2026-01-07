@@ -33,6 +33,7 @@ import clib.presentation.events.alert.GlobalAlertDialog
 import clib.presentation.events.snackbar.GlobalSnackbar
 import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
+import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
@@ -51,7 +52,6 @@ import compose_app.generated.resources.confirm
 import compose_app.generated.resources.offline
 import compose_app.generated.resources.online
 import dev.jordond.connectivity.Connectivity
-import io.ktor.http.Url
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.keyboard.Keyboard
@@ -101,7 +101,7 @@ public fun AppComposable(
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )
     },
-    onDeepLink: Router.(Url) -> Unit = Router::push,
+    deepLinkHandler: Router.(NavRoute) -> Unit = Router::push,
 ): Unit = AppEnvironment(
     config,
     cache,
@@ -127,7 +127,7 @@ public fun AppComposable(
     routes,
     routerFactory,
     navigatorFactory,
-    onDeepLink,
+    deepLinkHandler,
 ) {
     keyboard.handler.events.LaunchedEffect(Unit) { event ->
         println(event)

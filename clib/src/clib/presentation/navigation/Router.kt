@@ -65,21 +65,6 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
     public var deepRoutePath: List<NavRoute> = emptyList()
         protected set
 
-    protected fun handleDeepRoute(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
-        handler(navRoutePath[1])
-        this.deepRoutePath = navRoutePath.drop(2)
-    }
-
-    public fun deepRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(navRoute)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
-            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.deepRoute(navRoute, handler)
-    }
-
-    public fun deepRoute(url: Url, handler: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(url)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
-            ?: checkNotNull(prev) { "Unknown route '$url'" }.deepRoute(url, handler)
-    }
-
     /**
      * Binds the parent router.
      */
@@ -174,7 +159,22 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      */
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
 
-    override fun actions(vararg actions: NavigationAction) {
+    protected fun handleDeepRoute(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
+        handler(navRoutePath[1])
+        this.deepRoutePath = navRoutePath.drop(2)
+    }
+
+    public fun deepRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(navRoute)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.deepRoute(navRoute, handler)
+    }
+
+    public fun deepRoute(url: Url, handler: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(url)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
+            ?: checkNotNull(prev) { "Unknown route '$url'" }.deepRoute(url, handler)
+    }
+
+    final override fun actions(vararg actions: NavigationAction) {
         deepRoutePath = emptyList()
         super.actions(*actions)
     }
