@@ -23,7 +23,7 @@ import clib.presentation.state.rememberStateStore
  *
  * @param router The router instance for issuing navigation actions.
  * @param navigator The navigator instance for executing actions (auto-created if not provided).
- * @param onDeepLinkAction Deep link route handler (push, replaceCurrent or replaceStack).
+ * @param onDeepLinkAction Deep link route action (push, replaceCurrent or replaceStack).
  * @param content The content composable that receives the navigation setup.
  */
 @Composable
@@ -43,10 +43,9 @@ internal fun Nav3Host(
     val resultEventBus = remember(::EventBus)
     val parentRouter = LocalRouter.current
 
-    DisposableEffect(router) {
-        val prev = parentRouter
-        prev?.let(router::bindParent)
-        onDispose { prev?.let(router::unbindParent) }
+    DisposableEffect(parentRouter, router) {
+        parentRouter?.let(router::bindParent)
+        onDispose { parentRouter?.let(router::unbindParent) }
     }
 
     DisposableEffect(router, navigator) {
