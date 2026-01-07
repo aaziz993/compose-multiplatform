@@ -21,11 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import clib.data.keyboard.LocalKeyboard
 import clib.data.mouse.LocalMouse
+import clib.data.share.LocalShare
+import clib.data.share.rememberShare
 import clib.permission.LocalPermissionsState
 import clib.permission.PermissionsState
 import clib.permission.rememberPermissionsState
-import clib.data.share.LocalShare
-import clib.data.share.rememberShare
 import clib.presentation.appbar.AppBarState
 import clib.presentation.appbar.LocalAppBarState
 import clib.presentation.appbar.rememberAppBarState
@@ -56,6 +56,7 @@ import clib.presentation.locale.LocaleState
 import clib.presentation.locale.rememberLocaleState
 import clib.presentation.locale.rememberLocalization
 import clib.presentation.navigation.LocalRoutesState
+import clib.presentation.navigation.NavRoute
 import clib.presentation.navigation.Navigator
 import clib.presentation.navigation.Router
 import clib.presentation.navigation.Routes
@@ -77,7 +78,6 @@ import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
-import io.ktor.http.Url
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.cache.emptyCache
@@ -122,12 +122,12 @@ public fun AppEnvironment(
         val isRoot = it == routes
         rememberNav3Navigator(
             routes = it,
-            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)!!.last() else null,
+            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)?.lastOrNull() else null,
             authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )
     },
-    onDeepLink: Router.(Url) -> Unit = Router::push,
+    deepLinkHandler: Router.(NavRoute) -> Unit = Router::push,
     content: @Composable BoxScope.() -> Unit = {
         GlobalAlertDialog(modifier = Modifier.align(Alignment.Center))
         GlobalSnackbar(Modifier.align(Alignment.Center))
@@ -244,7 +244,7 @@ public fun AppEnvironment(
                 theme.typography,
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    routes.Nav3Host(routerFactory, navigatorFactory)
+                    routes.Nav3Host(routerFactory, navigatorFactory, deepLinkHandler)
                     content()
                 }
             }

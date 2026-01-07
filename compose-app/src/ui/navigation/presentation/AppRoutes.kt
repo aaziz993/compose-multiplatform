@@ -261,7 +261,7 @@ public data class Email(val username: String? = null) : NavRoute {
 
 @Serializable
 @SerialName("hotp")
-public data class Hotp(val username: String? = null, val contact: String = "") : NavRoute {
+public data class Hotp(val username: String? = null, val contact: String) : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = Hotp
@@ -295,7 +295,7 @@ public data class Hotp(val username: String? = null, val contact: String = "") :
 
 @Serializable
 @SerialName("totp")
-public data class Totp(val username: String? = null, val contact: String = "") : NavRoute {
+public data class Totp(val username: String? = null, val contact: String) : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = Totp
@@ -501,7 +501,7 @@ public data object Articles : KoinRoute<Articles>(), NavRoute {
 
 @Serializable
 @SerialName("article_details")
-public data class ArticleDetails(val articleId: Long = 0L) : NavRoute {
+public data class ArticleDetails(val articleId: Long) : NavRoute {
 
     override val route: Route<out NavRoute>
         get() = ArticleDetails

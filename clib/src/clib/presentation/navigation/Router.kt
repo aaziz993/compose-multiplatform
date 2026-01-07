@@ -62,20 +62,23 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      * This path is best-effort and will be cancelled if any new navigation
      * action is triggered before it is fully consumed.
      */
-    public var navRoutePath: List<NavRoute> = emptyList()
+    public var deepRoutePath: List<NavRoute> = emptyList()
         protected set
 
-    protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
+    protected fun handleDeepRoute(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
         handler(navRoutePath[1])
-        this.navRoutePath = navRoutePath.drop(2)
+        this.deepRoutePath = navRoutePath.drop(2)
     }
 
-    protected fun reroute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit) {
-        routes.resolve(navRoute)?.let { navRoute -> handleRoutePath(navRoute, handler) }
-            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.reroute(navRoute, handler)
+    public fun deepRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(navRoute)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.deepRoute(navRoute, handler)
     }
 
-    public fun onUnknownRoute(navRoute: NavRoute): Unit = reroute(navRoute, Router::push)
+    public fun deepRoute(url: Url, handler: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(url)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
+            ?: checkNotNull(prev) { "Unknown route '$url'" }.deepRoute(url, handler)
+    }
 
     /**
      * Binds the parent router.
@@ -85,7 +88,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
 
         prev.next = this
         this.prev = prev
-        navRoutePath = prev.navRoutePath.drop()
+        deepRoutePath = prev.deepRoutePath.drop()
     }
 
     /**
@@ -94,7 +97,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
     internal fun unbindParent(prev: Router) {
         prev.next = null
         this.prev = null
-        navRoutePath = emptyList()
+        deepRoutePath = emptyList()
     }
 
     /**
@@ -114,15 +117,6 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
     }
 
     /**
-     * Pushes route with url onto the navigation stack.
-     *
-     * @param url The url of the route to push onto the stack.
-     */
-    public fun push(url: Url) {
-        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, Router::push) }
-    }
-
-    /**
      * Replaces the current top route with a new route.
      *
      * If the stack is empty, the new route will be added as the first route.
@@ -134,18 +128,6 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
         actions(NavigationAction.ReplaceCurrent(route))
 
     /**
-     * Replaces the current top route with a new route.
-     *
-     * If the stack is empty, the new route will be added as the first route.
-     * This is useful for scenarios like login flow completion or error recovery.
-     *
-     * @param url The url of the route to replace the current top route with.
-     */
-    public fun replaceCurrent(url: Url) {
-        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, Router::replaceCurrent) }
-    }
-
-    /**
      * Replaces the entire navigation stack with new routes.
      *
      * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
@@ -155,17 +137,6 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      */
     public fun replaceStack(vararg routes: NavRoute): Unit =
         actions(NavigationAction.ReplaceStack(routes.toList()))
-
-    /**
-     * Replaces the entire navigation stack with new route.
-     *
-     * Useful for major navigation flow changes like switching between authenticated/unauthenticated states.
-     *
-     * @param url The url of the route to replace the stack with.
-     */
-    public fun replaceStack(url: Url) {
-        routes.resolve(url)?.let { navRoutePath -> handleRoutePath(navRoutePath, Router::replaceStack) }
-    }
 
     /**
      * Removes the top route from the navigation stack.
@@ -204,7 +175,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
 
     override fun actions(vararg actions: NavigationAction) {
-        navRoutePath = emptyList()
+        deepRoutePath = emptyList()
         super.actions(*actions)
     }
 }

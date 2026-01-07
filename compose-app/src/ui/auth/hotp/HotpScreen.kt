@@ -40,7 +40,7 @@ public var testOtpCode: String = ""
 @Composable
 public fun HotpScreen(
     modifier: Modifier = Modifier,
-    route: Hotp = Hotp(),
+    route: Hotp = Hotp(contact = ""),
     config: HotpConfig = HotpConfig(),
     state: HotpState = HotpState(),
     onAction: (HotpAction) -> Unit = {},

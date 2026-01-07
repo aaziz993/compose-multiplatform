@@ -9,7 +9,6 @@ import clib.presentation.events.EventBus
 import clib.presentation.navigation.result.LocalResultEventBus
 import clib.presentation.navigation.result.LocalResultStore
 import clib.presentation.state.rememberStateStore
-import io.ktor.http.Url
 
 /**
  * Main composable for setting up Navigation 3 integration.
@@ -22,15 +21,16 @@ import io.ktor.http.Url
  * The connection between router and navigator is automatically managed through
  * DisposableEffect, ensuring proper cleanup when the composable leaves the composition.
  *
- * @param router The router instance for issuing navigation actions
- * @param navigator The navigator instance for executing actions (auto-created if not provided)
- * @param content The content composable that receives the navigation setup
+ * @param router The router instance for issuing navigation actions.
+ * @param navigator The navigator instance for executing actions (auto-created if not provided).
+ * @param deepLinkHandler Deep link route handler (push, replaceCurrent or replaceStack).
+ * @param content The content composable that receives the navigation setup.
  */
 @Composable
 internal fun Nav3Host(
     router: Router,
     navigator: Navigator,
-    onDeepLink: Router.(Url) -> Unit,
+    deepLinkHandler: Router.(NavRoute) -> Unit,
     content: @Composable (
         router: Router,
         backStack: List<NavRoute>,
@@ -56,7 +56,7 @@ internal fun Nav3Host(
 
     // Handle global deep link events.
     if (parentRouter == null)
-        GlobalDeepLink(router) { url -> router.onDeepLink(url) }
+        GlobalDeepLink(router) { url -> router.deepRoute(url, deepLinkHandler) }
 
     val onBack: () -> Unit = remember(router) {
         { router.pop() }

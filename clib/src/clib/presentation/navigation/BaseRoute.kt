@@ -166,6 +166,10 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
 
     final override fun iterator(): Iterator<BaseRoute> = emptyList<BaseRoute>().iterator()
 
+    final override fun resolve(
+        transform: (BaseRoute) -> NavRoute?,
+    ): List<NavRoute>? = transform(this)?.let(::listOf)
+
     override fun toString(): String = name
 }
 
@@ -207,11 +211,11 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public fun Nav3Host(
         routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
         navigatorFactory: @Composable (Routes) -> Navigator = { rememberNav3Navigator(it) },
-        onDeepLink: Router.(Url) -> Unit = Router::push,
+        deepLinkHandler: Router.(NavRoute) -> Unit = Router::push,
     ): Unit = Nav3Host(
         routerFactory(this),
         navigatorFactory(this),
-        onDeepLink,
+        deepLinkHandler,
     ) { _, backStack, onBack ->
         SharedTransitionLayout {
             NavDisplay(

@@ -96,7 +96,7 @@ public fun AppComposable(
         val isRoot = it == routes
         rememberNav3Navigator(
             routes = it,
-            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)!!.last() else null,
+            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)?.lastOrNull() else null,
             authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )

@@ -45,7 +45,7 @@ import ui.navigation.presentation.Totp
 @Composable
 public fun TotpScreen(
     modifier: Modifier = Modifier,
-    route: Totp = Totp(),
+    route: Totp = Totp(contact = ""),
     config: TotpConfig = TotpConfig(),
     state: TotpState = TotpState(),
     onAction: (TotpAction) -> Unit = {},

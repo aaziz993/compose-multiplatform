@@ -61,7 +61,7 @@ import ui.news.data.model.Article
 @Composable
 public fun ArticleDetailsScreen(
     modifier: Modifier = Modifier,
-    route: ArticleDetails = ArticleDetails(),
+    route: ArticleDetails = ArticleDetails(0L),
     state: LoadingResult<Article> = success(Article()),
     onAction: (ArticleDetailsAction) -> Unit = {},
     onNavigationActions: (Array<NavigationAction>) -> Unit = {},
