@@ -23,14 +23,14 @@ import clib.presentation.state.rememberStateStore
  *
  * @param router The router instance for issuing navigation actions.
  * @param navigator The navigator instance for executing actions (auto-created if not provided).
- * @param deepLinkHandler Deep link route handler (push, replaceCurrent or replaceStack).
+ * @param onDeepLinkAction Deep link route handler (push, replaceCurrent or replaceStack).
  * @param content The content composable that receives the navigation setup.
  */
 @Composable
 internal fun Nav3Host(
     router: Router,
     navigator: Navigator,
-    deepLinkHandler: Router.(NavRoute) -> Unit,
+    onDeepLinkAction: Router.(NavRoute) -> Unit,
     content: @Composable (
         router: Router,
         backStack: List<NavRoute>,
@@ -56,7 +56,7 @@ internal fun Nav3Host(
 
     // Handle global deep link events.
     if (parentRouter == null)
-        GlobalDeepLink(router) { url -> router.deepRoute(url, deepLinkHandler) }
+        GlobalDeepLink(router) { url -> router.deepRoute(url, onDeepLinkAction) }
 
     val onBack: () -> Unit = remember(router) {
         { router.pop() }

@@ -211,11 +211,11 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     public fun Nav3Host(
         routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
         navigatorFactory: @Composable (Routes) -> Navigator = { rememberNav3Navigator(it) },
-        deepLinkHandler: Router.(NavRoute) -> Unit = Router::push,
+        onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,
     ): Unit = Nav3Host(
         routerFactory(this),
         navigatorFactory(this),
-        deepLinkHandler,
+        onDeepLinkAction,
     ) { _, backStack, onBack ->
         SharedTransitionLayout {
             NavDisplay(

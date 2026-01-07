@@ -101,7 +101,7 @@ public fun AppComposable(
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )
     },
-    deepLinkHandler: Router.(NavRoute) -> Unit = Router::push,
+    onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,
 ): Unit = AppEnvironment(
     config,
     cache,
@@ -127,7 +127,7 @@ public fun AppComposable(
     routes,
     routerFactory,
     navigatorFactory,
-    deepLinkHandler,
+    onDeepLinkAction,
 ) {
     keyboard.handler.events.LaunchedEffect(Unit) { event ->
         println(event)

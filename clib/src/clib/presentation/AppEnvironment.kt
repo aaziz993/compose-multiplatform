@@ -127,7 +127,7 @@ public fun AppEnvironment(
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
         )
     },
-    deepLinkHandler: Router.(NavRoute) -> Unit = Router::push,
+    onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,
     content: @Composable BoxScope.() -> Unit = {
         GlobalAlertDialog(modifier = Modifier.align(Alignment.Center))
         GlobalSnackbar(Modifier.align(Alignment.Center))
@@ -244,7 +244,7 @@ public fun AppEnvironment(
                 theme.typography,
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    routes.Nav3Host(routerFactory, navigatorFactory, deepLinkHandler)
+                    routes.Nav3Host(routerFactory, navigatorFactory, onDeepLinkAction)
                     content()
                 }
             }

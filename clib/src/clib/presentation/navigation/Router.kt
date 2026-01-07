@@ -164,14 +164,14 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
         this.deepRoutePath = navRoutePath.drop(2)
     }
 
-    public fun deepRoute(navRoute: NavRoute, handler: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(navRoute)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
-            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.deepRoute(navRoute, handler)
+    public fun deepRoute(navRoute: NavRoute, action: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(navRoute)?.let { navRoute -> handleDeepRoute(navRoute, action) }
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.deepRoute(navRoute, action)
     }
 
-    public fun deepRoute(url: Url, handler: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(url)?.let { navRoute -> handleDeepRoute(navRoute, handler) }
-            ?: checkNotNull(prev) { "Unknown route '$url'" }.deepRoute(url, handler)
+    public fun deepRoute(url: Url, action: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(url)?.let { navRoute -> handleDeepRoute(navRoute, action) }
+            ?: checkNotNull(prev) { "Unknown route '$url'" }.deepRoute(url, action)
     }
 
     final override fun actions(vararg actions: NavigationAction) {
