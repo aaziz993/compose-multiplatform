@@ -1,6 +1,6 @@
 ui:
-  startRoute: login
-  authRoute: login
+  startRoute: authentification
+  authRoute: authentification
   authRedirectRoute: services
   routes:
     authentification:

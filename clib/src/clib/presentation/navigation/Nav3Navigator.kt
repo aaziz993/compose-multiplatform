@@ -37,7 +37,7 @@ public open class Nav3Navigator(
     private val auth: Auth,
     private val authRoute: NavRoute?,
     private var authRedirectRoute: NavRoute?,
-    private val onError: (Throwable) -> Unit,
+    private val onError: (NavigationException) -> Unit,
     private val onReroute: (NavRoute) -> Unit,
     private val onBack: () -> Unit,
 ) : Navigator {
@@ -71,7 +71,7 @@ public open class Nav3Navigator(
                 if (!action(snapshot, action) { callOnBack = true }) return
             }
             catch (e: RuntimeException) {
-                return onError(e)
+                return onError(NavigationException(action, e))
             }
 
         swap(snapshot)
@@ -122,11 +122,7 @@ public open class Nav3Navigator(
                     },
                 ))
                 .ifEmpty {
-                    listOfNotNull(
-                        startRoute?.takeIf { it.route.isAuth(auth) }?.also {
-                            if (it.route !in routes) return onReroute(it)
-                        },
-                    )
+                    listOfNotNull(startRoute?.takeIf { it.route.isAuth(auth) })
                 }
                 .ifEmpty {
                     listOfNotNull(
@@ -205,9 +201,7 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceStack,
     ) {
         action.routes.forEach { navRoute ->
-            require(navRoute.route in routes) {
-                "Replace stack routes '${navRoute.route}' isn't in '$routes'"
-            }
+            require(navRoute.route in routes) { "Replace stack routes '${navRoute.route}' isn't in '$routes'" }
         }
         snapshot.replaceWith(action.routes)
     }
@@ -330,25 +324,35 @@ public open class Nav3Navigator(
 public fun rememberNav3Navigator(
     routes: Routes,
     backStack: NavBackStack<NavRoute> = rememberNavBackStack(routes),
-    startRoute: NavRoute? = LocalRouter.current?.deepRoutePath?.firstOrNull(),
+    startRoute: NavRoute? = LocalRouter.current?.navigateRoutePath?.firstOrNull(),
     auth: Auth = LocalAuthState.current.value,
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
-    onError: (Throwable) -> Unit = { e -> throw e },
-    onReroute: (NavRoute) -> Unit =
-        LocalRouter.current?.let { router -> { navRoute -> router.deepRoute(navRoute) } }
-            ?: { navRoute -> onError(IllegalStateException("Unknown route '$navRoute'")) },
+    onError: (NavigationException) -> Unit = { e -> throw e },
+    onReroute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { navRoute -> router.route(navRoute) } }
+        ?: { navRoute ->
+            onError(
+                NavigationException(
+                    NavigationAction.Push(navRoute),
+                    Throwable("Route '${navRoute.route}' not in '$routes'"),
+                ),
+            )
+        },
     onBack: () -> Unit = LocalRouter.current?.let { router -> router::pop } ?: platformOnBack(),
-): Navigator = remember(auth) {
-    Nav3Navigator(
-        routes,
-        backStack,
-        startRoute,
-        auth,
-        authRoute,
-        authRedirectRoute,
-        onError,
-        onReroute,
-        onBack,
-    )
+): Navigator {
+    require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
+
+    return remember(auth) {
+        Nav3Navigator(
+            routes,
+            backStack,
+            startRoute,
+            auth,
+            authRoute,
+            authRedirectRoute,
+            onError,
+            onReroute,
+            onBack,
+        )
+    }
 }

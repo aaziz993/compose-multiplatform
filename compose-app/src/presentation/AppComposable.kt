@@ -92,13 +92,14 @@ public fun AppComposable(
 //    crawler: CrawlerSDK = koinInject(),
     routes: Routes = Application,
     routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
-    navigatorFactory: @Composable (Routes) -> Navigator = {
-        val isRoot = it == routes
+    navigatorFactory: @Composable (Router) -> Navigator = { router ->
+        val isRoot = router.routes == routes
         rememberNav3Navigator(
-            routes = it,
+            routes = router.routes,
             startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)?.lastOrNull() else null,
             authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
             authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
+            onReroute = router::route,
         )
     },
     onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,

@@ -62,7 +62,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      * This path is best-effort and will be cancelled if any new navigation
      * action is triggered before it is fully consumed.
      */
-    public var deepRoutePath: List<NavRoute> = emptyList()
+    public var navigateRoutePath: List<NavRoute> = emptyList()
         protected set
 
     /**
@@ -73,7 +73,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
 
         prev.next = this
         this.prev = prev
-        deepRoutePath = prev.deepRoutePath.drop()
+        navigateRoutePath = prev.navigateRoutePath.drop()
     }
 
     /**
@@ -81,8 +81,9 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      */
     internal fun unbindParent(prev: Router) {
         if (prev.next === this) prev.next = null
+
         this.prev = null
-        deepRoutePath = emptyList()
+        navigateRoutePath = emptyList()
     }
 
     /**
@@ -159,23 +160,23 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      */
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
 
-    protected fun handleDeepRoute(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
+    protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
         handler(navRoutePath[1])
-        this.deepRoutePath = navRoutePath.drop(2)
+        this.navigateRoutePath = navRoutePath.drop(2)
     }
 
-    public fun deepRoute(navRoute: NavRoute, action: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(navRoute)?.let { navRoute -> handleDeepRoute(navRoute, action) }
-            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.deepRoute(navRoute, action)
+    public fun route(navRoute: NavRoute, action: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(navRoute)?.let { navRoute -> handleRoutePath(navRoute, action) }
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.route(navRoute, action)
     }
 
-    public fun deepRoute(url: Url, action: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(url)?.let { navRoute -> handleDeepRoute(navRoute, action) }
-            ?: checkNotNull(prev) { "Unknown route '$url'" }.deepRoute(url, action)
+    public fun route(url: Url, action: Router.(NavRoute) -> Unit = Router::push) {
+        routes.resolve(url)?.let { navRoute -> handleRoutePath(navRoute, action) }
+            ?: checkNotNull(prev) { "Unknown route '$url'" }.route(url, action)
     }
 
     final override fun actions(vararg actions: NavigationAction) {
-        deepRoutePath = emptyList()
+        navigateRoutePath = emptyList()
         super.actions(*actions)
     }
 }
