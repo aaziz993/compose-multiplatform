@@ -80,7 +80,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      * Unbinds the parent router.
      */
     internal fun unbindParent(prev: Router) {
-        prev.next = null
+        if (prev.next === this) prev.next = null
         this.prev = null
         deepRoutePath = emptyList()
     }
