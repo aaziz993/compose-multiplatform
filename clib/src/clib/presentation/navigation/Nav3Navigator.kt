@@ -146,12 +146,9 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.Push,
     ): Boolean {
-        // If the user explicitly requested the auth route, don't redirect them after login.
-        if (action.route == authRoute) authRedirectRoute = null
-
         val route = if (action.route.route.isAuth(auth)) action.route
         else {
-            check(auth.user == null) { "Insufficient user privileges '${auth.user}'" }
+            check(auth.user == null) { "Unauthorized user '${auth.user}'" }
             // Store the intended destination and redirect to auth.
             authRedirectRoute = action.route
             checkNotNull(authRoute) { "No auth route" }

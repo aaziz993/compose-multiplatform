@@ -127,9 +127,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     public abstract fun resolve(url: Url): NavRoute?
 
-    public abstract fun resolvePathTo(
-        transform: (BaseRoute) -> NavRoute?,
-    ): List<NavRoute>?
+    public abstract fun resolvePathTo(transform: (BaseRoute) -> NavRoute?): List<NavRoute>?
 
     public fun resolvePathTo(navRoute: NavRoute): List<NavRoute>? = resolvePathTo { route ->
         if (route == navRoute.route) route as NavRoute else null

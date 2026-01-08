@@ -59,7 +59,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
     /**
      * Queue of deep route segments that are pending to be navigated.
      *
-     * This path is processed one by one when using `routeDeep`.
+     * This path is processed one by one when using [routeTo].
      * It is automatically cleared if any new navigation action is executed.
      */
     public var pendingRoutePath: List<NavRoute> = emptyList()
