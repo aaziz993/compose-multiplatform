@@ -174,8 +174,6 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     ): List<NavRoute>? = transform(this)?.let(::listOf)
 
     final override fun iterator(): Iterator<BaseRoute> = listOf(this).iterator()
-
-    override fun toString(): String = name
 }
 
 public abstract class Routes() : BaseRoute(), NavRoute {
@@ -280,8 +278,6 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         )
     }
 
-    public operator fun contains(route: BaseRoute): Boolean = route in routes
-
     final override fun resolve(url: Url): NavRoute? {
         matchNavRoute(url)?.let { navRoute -> return navRoute }
 
@@ -306,6 +302,4 @@ public abstract class Routes() : BaseRoute(), NavRoute {
         yield(this@Routes)
         routes.forEach { route -> yieldAll(route) }
     }.iterator()
-
-    override fun toString(): String = "$name${routes.map(BaseRoute::name)}"
 }

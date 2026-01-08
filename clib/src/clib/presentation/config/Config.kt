@@ -37,6 +37,11 @@ public data class Config(
     override val server: ServerConfig = ServerConfig()
 ) : klib.config.Config {
 
+    public fun configure() {
+        log.configure()
+        auth.configure()
+    }
+
     public companion object {
 
         public operator fun invoke(readText: suspend (file: String) -> String): Config {

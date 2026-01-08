@@ -134,14 +134,11 @@ public fun AppEnvironment(
     }
 ) {
     ComposeFoundationFlags.isNewContextMenuEnabled = true
-    config.log.configure()
-    config.auth.configure()
+    config.configure()
 
     val localization by rememberLocalization(localeState, localeService)
 
-    remember(routesState) {
-        routes.forEach(routesState::configure)
-    }
+    remember(routesState) { routes.forEach(routesState::configure) }
 
     CompositionLocalProvider(
         LocalConfig provides config,

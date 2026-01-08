@@ -182,8 +182,8 @@ public open class Nav3Navigator(
         snapshot: MutableList<NavRoute>,
         action: NavigationAction.ReplaceCurrent,
     ) {
-        require(action.route.route in routes) {
-            "Replace current route '${action.route.route}' isn't in '$routes'"
+        require(action.route.route in routes.routes) {
+            "Replace current route '${action.route.route}' isn't in '${routes.routes}'"
         }
         if (snapshot.isEmpty()) snapshot += action.route else snapshot[snapshot.lastIndex] = action.route
     }
@@ -201,7 +201,9 @@ public open class Nav3Navigator(
         action: NavigationAction.ReplaceStack,
     ) {
         action.routes.forEach { navRoute ->
-            require(navRoute.route in routes) { "Replace stack routes '${navRoute.route}' isn't in '$routes'" }
+            require(navRoute.route in routes.routes) {
+                "Replace stack routes '${navRoute.route}' isn't in '${routes.routes}'"
+            }
         }
         snapshot.replaceWith(action.routes)
     }
@@ -340,7 +342,9 @@ public fun rememberNav3Navigator(
         },
     onBack: () -> Unit = LocalRouter.current?.let { router -> router::pop } ?: platformOnBack(),
 ): Navigator {
-    require(startRoute?.let { it.route in routes } != false) { "Start route '$startRoute' not in '$routes'" }
+    require(startRoute?.let { it.route in routes.routes } != false) {
+        "Start route '$startRoute' not in '${routes.routes}'"
+    }
 
     return remember(auth) {
         Nav3Navigator(
