@@ -55,7 +55,7 @@ internal fun Nav3Host(
 
     // Handle global deep link events.
     if (parentRouter == null)
-        GlobalDeepLink(router) { url -> router.deepRouteTo(url, onDeepLinkAction) }
+        GlobalDeepLink(router) { url -> router.routeTo(url, onDeepLinkAction) }
 
     val onBack: () -> Unit = remember(router) {
         { router.pop() }

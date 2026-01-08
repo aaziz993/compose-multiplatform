@@ -28,8 +28,9 @@ import kotlinx.serialization.serializer
 public sealed class BaseRoute : Iterable<BaseRoute> {
 
     @Suppress("UNCHECKED_CAST")
-    public open val navRoute: KClass<out NavRoute>
-        get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No route" }
+    public open val navRoute: KClass<out NavRoute> by lazy {
+        checkNotNull(this::class as? KClass<out NavRoute>) { "No route" }
+    }
 
     public var basePaths: List<String> = emptyList()
 
@@ -38,17 +39,19 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
 
     public var metadata: Map<String, Any> = emptyMap()
 
-    public val name: String
-        get() = navRoute.serializer().descriptor.serialName
+    public val name: String by lazy { navRoute.serializer().descriptor.serialName }
     public var enabled: Boolean = true
     public var alwaysShowLabel: Boolean = true
     public open val selectableItem: (@Composable (name: String) -> SelectableItem)? = null
 
     /**
-     * Indicates the route is part of authentication/authorizations flow.
+     * Indicates the route is part of authentication/authorization flow.
      */
     public var isAuth: Boolean = false
 
+    /**
+     * Indicates the route is passed an authentication/authorization.
+     */
     public open fun isAuth(auth: Auth): Boolean = if (auth.user == null) true else !isAuth
 
     context(scope: EntryProviderScope<NavRoute>)
@@ -118,19 +121,21 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         )
     }
 
-    public fun toNavRoute(url: Url): NavRoute? = urls.firstNotNullOfOrNull {
+    public fun matchNavRoute(url: Url): NavRoute? = urls.firstNotNullOfOrNull {
         url.toRoute(navRoute.serializer(), it)
     }
 
-    public abstract fun pathTo(
+    public abstract fun resolve(url: Url): NavRoute?
+
+    public abstract fun resolvePathTo(
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>?
 
-    public fun pathTo(navRoute: NavRoute): List<NavRoute>? = pathTo { route ->
+    public fun resolvePathTo(navRoute: NavRoute): List<NavRoute>? = resolvePathTo { route ->
         if (route == navRoute.route) route as NavRoute else null
     }
 
-    public fun pathTo(url: Url): List<NavRoute>? = pathTo { route -> route.toNavRoute(url) }
+    public fun resolvePathTo(url: Url): List<NavRoute>? = resolvePathTo { route -> route.matchNavRoute(url) }
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -162,7 +167,9 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
         Content(navRoute as T, sharedTransitionScope)
     }
 
-    final override fun pathTo(
+    final override fun resolve(url: Url): NavRoute? = matchNavRoute(url)
+
+    final override fun resolvePathTo(
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? = transform(this)?.let(::listOf)
 
@@ -275,15 +282,22 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     public operator fun contains(route: BaseRoute): Boolean = route in routes
 
-    final override fun pathTo(
+    final override fun resolve(url: Url): NavRoute? {
+        matchNavRoute(url)?.let { navRoute -> return navRoute }
+
+        for (route in routes)
+            route.resolve(url)?.let { navRoute -> return navRoute }
+
+        return null
+    }
+
+    final override fun resolvePathTo(
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? {
         transform(this)?.let { navRoute -> return listOf(navRoute) }
 
-        for (route in routes) {
-            val childPath = route.pathTo(transform)
-            if (childPath != null) return listOf(this) + childPath
-        }
+        for (route in routes)
+            route.resolvePathTo(transform)?.let { path -> return listOf(this) + path }
 
         return null
     }

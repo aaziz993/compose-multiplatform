@@ -324,12 +324,12 @@ public open class Nav3Navigator(
 public fun rememberNav3Navigator(
     routes: Routes,
     backStack: NavBackStack<NavRoute> = rememberNavBackStack(routes),
-    startRoute: NavRoute? = LocalRouter.current?.pendingDeepRoutePath?.firstOrNull(),
+    startRoute: NavRoute? = LocalRouter.current?.pendingRoutePath?.firstOrNull(),
     auth: Auth = LocalAuthState.current.value,
     authRoute: NavRoute? = null,
     authRedirectRoute: NavRoute? = null,
     onError: (NavigationException) -> Unit = { e -> throw e },
-    onReroute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { navRoute -> router.deepRouteTo(navRoute) } }
+    onReroute: (NavRoute) -> Unit = LocalRouter.current?.let { router -> { navRoute -> router.routeTo(navRoute) } }
         ?: { navRoute ->
             onError(
                 NavigationException(

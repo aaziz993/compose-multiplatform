@@ -96,9 +96,9 @@ public fun AppComposable(
         val isRoot = it == routes
         rememberNav3Navigator(
             routes = it,
-            startRoute = if (isRoot) config.ui.startRoute?.let(routes::pathTo)?.lastOrNull() else null,
-            authRoute = config.ui.authRoute?.let(routes::pathTo)?.lastOrNull(),
-            authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::pathTo)?.lastOrNull() else null,
+            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve) else null,
+            authRoute = config.ui.authRoute?.let(routes::resolve),
+            authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve) else null,
         )
     },
     onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,
