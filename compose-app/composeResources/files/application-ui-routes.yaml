@@ -4,106 +4,160 @@ ui:
   authRedirectRoute: services
   routes:
     authentification:
+      additionalBasePaths:
+        - https://web.app/authentification
       isAuth: true
     phone:
+      additionalBasePaths:
+        - https://web.app/phone
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     email:
+      additionalBasePaths:
+        - https://web.app/email
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     totp:
+      additionalBasePaths:
+        - https://web.app/totp
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     hotp:
+      additionalBasePaths:
+        - https://web.app/hotp
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     pin_code:
+      additionalBasePaths:
+        - https://web.app/pin_code
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     reset_pin_code:
+      additionalBasePaths:
+        - https://web.app/reset_pin_code
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     login:
+      additionalBasePaths:
+        - https://web.app/login
       isAuth: true
       additionalMetadata:
         topAppBarNavSuite: true
     home:
+      additionalBasePaths:
+        - https://web.app/home
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     articles:
+      additionalBasePaths:
+        - https://web.app/articles
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     article_details:
+      additionalBasePaths:
+        - https://web.app/article_details
       additionalMetadata:
         navSuite: true
       authResource: { }
     map:
+      additionalBasePaths:
+        - https://web.app/map
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     services:
+      additionalBasePaths:
+        - https://web.app/services
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     wallet:
+      additionalBasePaths:
+        - https://web.app/wallet
       authResource: { }
     balance:
+      additionalBasePaths:
+        - https://web.app/balance
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     crypto:
+      additionalBasePaths:
+        - https://web.app/crypto
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     exchange:
+      additionalBasePaths:
+        - https://web.app/exchange
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     profile:
+      additionalBasePaths:
+        - https://web.app/profile
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     verification:
+      additionalBasePaths:
+        - https://web.app/verification
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     about:
+      additionalBasePaths:
+        - https://web.app/about
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_main:
+      additionalBasePaths:
+        - https://web.app/settings_main
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_color_scheme:
+      additionalBasePaths:
+        - https://web.app/settings_color_scheme
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_dynamic_color_scheme:
+      additionalBasePaths:
+        - https://web.app/settings_dynamic_color_scheme
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_shapes:
+      additionalBasePaths:
+        - https://web.app/settings_shapes
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_typography:
+      additionalBasePaths:
+        - https://web.app/settings_typography
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     settings_route:
+      additionalBasePaths:
+        - https://web.app/settings_route
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }
     support:
+      additionalBasePaths:
+        - https://web.app/support
       additionalMetadata:
         topAppBarNavSuite: true
       authResource: { }

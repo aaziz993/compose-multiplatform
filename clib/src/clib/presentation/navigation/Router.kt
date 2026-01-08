@@ -57,12 +57,12 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
         get() = backStack.size > 1 || prev?.canPopBack == true
 
     /**
-     * Pending deep routes owned by the current router.
+     * Queue of deep route segments that are pending to be navigated.
      *
-     * This path is best-effort and will be cancelled if any new navigation
-     * action is triggered before it is fully consumed.
+     * This path is processed one by one when using `routeDeep`.
+     * It is automatically cleared if any new navigation action is executed.
      */
-    public var navigateRoutePath: List<NavRoute> = emptyList()
+    public var pendingDeepRoutePath: List<NavRoute> = emptyList()
         protected set
 
     /**
@@ -73,7 +73,7 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
 
         prev.next = this
         this.prev = prev
-        navigateRoutePath = prev.navigateRoutePath.drop()
+        pendingDeepRoutePath = prev.pendingDeepRoutePath.drop()
     }
 
     /**
@@ -83,7 +83,28 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
         if (prev.next === this) prev.next = null
 
         this.prev = null
-        navigateRoutePath = emptyList()
+        pendingDeepRoutePath = emptyList()
+    }
+
+    /**
+     * Handles the initial phase of deep routing for a resolved route path.
+     *
+     * Executes the first actionable route in the path (skipping the root route),
+     * and stores the remaining segments in [pendingDeepRoutePath] for subsequent navigation.
+     */
+    protected fun handleDeepRoutePath(navRoutePath: List<NavRoute>, action: Router.(NavRoute) -> Unit) {
+        action(navRoutePath[1])
+        this.pendingDeepRoutePath = navRoutePath.drop(2)
+    }
+
+    public fun deepRouteTo(navRoute: NavRoute, action: Router.(NavRoute) -> Unit = Router::push) {
+        routes.pathTo(navRoute)?.let { navRoute -> handleDeepRoutePath(navRoute, action) }
+            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.deepRouteTo(navRoute, action)
+    }
+
+    public fun deepRouteTo(url: Url, action: Router.(NavRoute) -> Unit = Router::push) {
+        routes.pathTo(url)?.let { navRoute -> handleDeepRoutePath(navRoute, action) }
+            ?: checkNotNull(prev) { "Unknown route '$url'" }.deepRouteTo(url, action)
     }
 
     /**
@@ -160,23 +181,8 @@ public open class Router(public val routes: Routes) : BaseRouter(), Node<Router>
      */
     public fun dropStack(): Unit = actions(NavigationAction.DropStack)
 
-    protected fun handleRoutePath(navRoutePath: List<NavRoute>, handler: Router.(NavRoute) -> Unit) {
-        handler(navRoutePath[1])
-        this.navigateRoutePath = navRoutePath.drop(2)
-    }
-
-    public fun route(navRoute: NavRoute, action: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(navRoute)?.let { navRoute -> handleRoutePath(navRoute, action) }
-            ?: checkNotNull(prev) { "Unknown route '$navRoute'" }.route(navRoute, action)
-    }
-
-    public fun route(url: Url, action: Router.(NavRoute) -> Unit = Router::push) {
-        routes.resolve(url)?.let { navRoute -> handleRoutePath(navRoute, action) }
-            ?: checkNotNull(prev) { "Unknown route '$url'" }.route(url, action)
-    }
-
     final override fun actions(vararg actions: NavigationAction) {
-        navigateRoutePath = emptyList()
+        pendingDeepRoutePath = emptyList()
         super.actions(*actions)
     }
 }

@@ -31,12 +31,10 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     public open val navRoute: KClass<out NavRoute>
         get() = checkNotNull(this::class as? KClass<out NavRoute>) { "No route" }
 
-    private var _urls: List<Url>? = null
-    public var urls: List<Url>
-        get() = _urls ?: listOf(navRoute.serializer().url()).also { _urls = it }
-        set(value) {
-            _urls = value
-        }
+    public var basePaths: List<String> = emptyList()
+
+    public val urls: List<Url>
+        get() = basePaths.map(navRoute.serializer()::url)
 
     public var metadata: Map<String, Any> = emptyMap()
 
@@ -56,7 +54,7 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
     context(scope: EntryProviderScope<NavRoute>)
     internal abstract fun entry(
         routerFactory: @Composable (Routes) -> Router,
-        navigatorFactory: @Composable (Router) -> Navigator,
+        navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
     )
 
@@ -124,15 +122,15 @@ public sealed class BaseRoute : Iterable<BaseRoute> {
         url.toRoute(navRoute.serializer(), it)
     }
 
-    public abstract fun resolve(
+    public abstract fun pathTo(
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>?
 
-    public fun resolve(navRoute: NavRoute): List<NavRoute>? = resolve { route ->
+    public fun pathTo(navRoute: NavRoute): List<NavRoute>? = pathTo { route ->
         if (route == navRoute.route) route as NavRoute else null
     }
 
-    public fun resolve(url: Url): List<NavRoute>? = resolve { route -> route.toNavRoute(url) }
+    public fun pathTo(url: Url): List<NavRoute>? = pathTo { route -> route.toNavRoute(url) }
 }
 
 public abstract class Route<T : NavRoute> : BaseRoute() {
@@ -155,7 +153,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
         routerFactory: @Composable (Routes) -> Router,
-        navigatorFactory: @Composable (Router) -> Navigator,
+        navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
     ): Unit = scope.addEntryProvider(
         clazz = navRoute,
@@ -164,7 +162,7 @@ public abstract class Route<T : NavRoute> : BaseRoute() {
         Content(navRoute as T, sharedTransitionScope)
     }
 
-    final override fun resolve(
+    final override fun pathTo(
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? = transform(this)?.let(::listOf)
 
@@ -198,7 +196,7 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     context(scope: EntryProviderScope<NavRoute>)
     final override fun entry(
         routerFactory: @Composable (Routes) -> Router,
-        navigatorFactory: @Composable (Router) -> Navigator,
+        navigatorFactory: @Composable (Routes) -> Navigator,
         sharedTransitionScope: SharedTransitionScope,
     ) = scope.addEntryProvider(
         clazz = navRoute,
@@ -210,35 +208,27 @@ public abstract class Routes() : BaseRoute(), NavRoute {
     @Composable
     public fun Nav3Host(
         routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
-        navigatorFactory: @Composable (Router) -> Navigator = { router ->
-            rememberNav3Navigator(
-                router.routes,
-                onReroute = router::route,
-            )
-        },
+        navigatorFactory: @Composable (Routes) -> Navigator = { rememberNav3Navigator(it) },
         onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,
-    ) {
-        val router = routerFactory(this)
-        Nav3Host(
-            router,
-            navigatorFactory(router),
-            onDeepLinkAction,
-        ) { _, backStack, onBack ->
-            SharedTransitionLayout {
-                NavDisplay(
-                    backStack,
-                    onBack,
-                    entryProvider {
-                        routes.forEach { route ->
-                            route.entry(
-                                routerFactory,
-                                navigatorFactory,
-                                this@SharedTransitionLayout,
-                            )
-                        }
-                    },
-                )
-            }
+    ): Unit = Nav3Host(
+        routerFactory(this),
+        navigatorFactory(this),
+        onDeepLinkAction,
+    ) { _, backStack, onBack ->
+        SharedTransitionLayout {
+            NavDisplay(
+                backStack,
+                onBack,
+                entryProvider {
+                    routes.forEach { route ->
+                        route.entry(
+                            routerFactory,
+                            navigatorFactory,
+                            this@SharedTransitionLayout,
+                        )
+                    }
+                },
+            )
         }
     }
 
@@ -285,18 +275,16 @@ public abstract class Routes() : BaseRoute(), NavRoute {
 
     public operator fun contains(route: BaseRoute): Boolean = route in routes
 
-    final override fun resolve(
+    final override fun pathTo(
         transform: (BaseRoute) -> NavRoute?,
     ): List<NavRoute>? {
-        transform(this)?.let { navRoute ->
-            return listOf(navRoute)
-        }
+        transform(this)?.let { navRoute -> return listOf(navRoute) }
 
         for (route in routes) {
-            if (route !is NavRoute) continue
-            val childPath = route.resolve(transform)
+            val childPath = route.pathTo(transform)
             if (childPath != null) return listOf(this) + childPath
         }
+
         return null
     }
 

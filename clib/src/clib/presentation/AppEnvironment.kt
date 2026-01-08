@@ -118,14 +118,13 @@ public fun AppEnvironment(
 //    crawler: CrawlerSDK = CrawlerSDK.create(),
     routes: Routes,
     routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
-    navigatorFactory: @Composable (Router) -> Navigator = { router ->
-        val isRoot = router.routes == routes
+    navigatorFactory: @Composable (Routes) -> Navigator = {
+        val isRoot = it == routes
         rememberNav3Navigator(
-            routes = router.routes,
-            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve)?.lastOrNull() else null,
-            authRoute = config.ui.authRoute?.let(routes::resolve)?.lastOrNull(),
-            authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve)?.lastOrNull() else null,
-            onReroute = router::route,
+            routes = it,
+            startRoute = if (isRoot) config.ui.startRoute?.let(routes::pathTo)?.lastOrNull() else null,
+            authRoute = config.ui.authRoute?.let(routes::pathTo)?.lastOrNull(),
+            authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::pathTo)?.lastOrNull() else null,
         )
     },
     onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,
