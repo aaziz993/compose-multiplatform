@@ -125,6 +125,7 @@ import ui.support.SupportScreen
 import ui.wallet.balance.BalanceScreen
 import ui.wallet.crypto.CryptoScreen
 import ui.wallet.exchange.ExchangeScreen
+import clib.presentation.icons.Icon
 
 @Serializable
 @SerialName("application")
@@ -549,12 +550,7 @@ public data object Map : KoinRoute<Map>(), NavRoute {
             ),
             selectedItem = Item(
                 text = { Text(text) },
-                icon = {
-                    clib.presentation.icons.Icon(
-                        filledJsonComposition("theme", Res::readBytes),
-                    )
-//                    Icon(Icons.Filled.Map, text)
-                },
+                icon = { Icon(Icons.Filled.Map, text) },
             ),
         )
     }

@@ -33,7 +33,8 @@ import kotlin.coroutines.CoroutineContext
 @Suppress("ComposeUnstableReceiver")
 @Composable
 public fun jsonComposition(
-    prefix: String,
+    dir: String,
+    name: String,
     readBytes: suspend (path: String) -> ByteArray,
     vararg keys: Any?,
     cache: LottieCompositionCache? = LocalLottieCache.current,
@@ -45,7 +46,7 @@ public fun jsonComposition(
         coroutineContext = coroutineContext,
     ) {
         LottieCompositionSpec.JsonString(
-            readBytes("files/anim/$prefix/anim.json").decodeToString(),
+            readBytes("files/anim/$dir/$name.json").decodeToString(),
         )
     }
     return animFromJsonRes
@@ -61,7 +62,8 @@ public fun filledJsonComposition(
     cache: LottieCompositionCache? = LocalLottieCache.current,
     coroutineContext: CoroutineContext = remember { Compottie.ioDispatcher() },
 ): LottieComposition? = jsonComposition(
-    "filled-$name",
+    "filled",
+    name,
     readBytes,
     *keys,
     cache = cache,
@@ -78,7 +80,8 @@ public fun outlinedJsonComposition(
     cache: LottieCompositionCache? = LocalLottieCache.current,
     coroutineContext: CoroutineContext = remember { Compottie.ioDispatcher() },
 ): LottieComposition? = jsonComposition(
-    "outlined-$name",
+    "outlined",
+    name,
     readBytes,
     *keys,
     cache = cache,
@@ -89,7 +92,8 @@ public fun outlinedJsonComposition(
 @Suppress("ComposeUnstableReceiver")
 @Composable
 public fun lottieComposition(
-    prefix: String,
+    dir: String,
+    name: String,
     readBytes: suspend (path: String) -> ByteArray,
     vararg keys: Any?,
     cache: LottieCompositionCache? = LocalLottieCache.current,
@@ -101,7 +105,7 @@ public fun lottieComposition(
         coroutineContext = coroutineContext,
     ) {
         LottieCompositionSpec.DotLottie(
-            readBytes("files/anim/$prefix/anim.lottie"),
+            readBytes("files/anim/$dir/$name.lottie"),
         )
     }
     return animFromArchiveRes
@@ -117,7 +121,8 @@ public fun filledLottieComposition(
     cache: LottieCompositionCache? = LocalLottieCache.current,
     coroutineContext: CoroutineContext = remember { Compottie.ioDispatcher() },
 ): LottieComposition? = lottieComposition(
-    "filled-$name",
+    "filled",
+    name,
     readBytes,
     *keys,
     cache = cache,
@@ -134,7 +139,8 @@ public fun outlinedLottieComposition(
     cache: LottieCompositionCache? = LocalLottieCache.current,
     coroutineContext: CoroutineContext = remember { Compottie.ioDispatcher() },
 ): LottieComposition? = lottieComposition(
-    "outlined-$name",
+    "outlined",
+    name,
     readBytes,
     *keys,
     cache = cache,
@@ -165,7 +171,7 @@ public fun urlComposition(
 public fun Icon(
     composition: LottieComposition?,
     contentDescription: String? = null,
-    modifier: Modifier = Modifier.size(48.dp),
+    modifier: Modifier = Modifier.size(24.dp),
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,
