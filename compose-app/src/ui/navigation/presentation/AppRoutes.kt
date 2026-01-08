@@ -65,6 +65,7 @@ import clib.presentation.components.model.item.SelectableItem
 import clib.presentation.config.LocalConfig
 import clib.presentation.connectivity.LocalConnectivityState
 import clib.presentation.connectivity.LocalConnectivityStatus
+import clib.presentation.icons.filledJsonComposition
 import clib.presentation.locale.LocalLocaleState
 import clib.presentation.locale.inspectionModeAware
 import clib.presentation.navigation.BaseRoute
@@ -75,6 +76,7 @@ import clib.presentation.navigation.currentRouter
 import clib.presentation.navigation.scene.DelegatedScreenStrategy
 import clib.presentation.theme.LocalThemeState
 import clib.presentation.theme.density.LocalDensityState
+import compose_app.generated.resources.Res
 import data.type.primitives.string.asStringResource
 import klib.auth.model.Auth
 import klib.auth.otp.model.HotpConfig
@@ -547,7 +549,12 @@ public data object Map : KoinRoute<Map>(), NavRoute {
             ),
             selectedItem = Item(
                 text = { Text(text) },
-                icon = { Icon(Icons.Filled.Map, text) },
+                icon = {
+                    clib.presentation.icons.Icon(
+                        filledJsonComposition("theme", Res::readBytes),
+                    )
+//                    Icon(Icons.Filled.Map, text)
+                },
             ),
         )
     }

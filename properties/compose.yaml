@@ -48,8 +48,10 @@ script:
                 implementation(libs["kmauth.google.compose"]) // uses open-source supabase instead of firebase
                 // implementation(libs["kmpauth.uihelper"]) // firebase doesn't support web
                 implementation(libs["material.kolor"])
+                // implementation(libs["themeanimator"])
                 implementation(libs["compose.colorpicker"])
                 implementation(libs.bundles("compose.icons"))
+                implementation(libs.bundles("compottie"))
                 implementation(libs.bundles("coil.compose"))
                 // implementation(libs["squircle.shape"]) js unsupported.
                 implementation(libs["filekit.compose"])

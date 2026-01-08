@@ -120,11 +120,20 @@ public fun AppEnvironment(
     routerFactory: @Composable (Routes) -> Router = { remember { Router(it) } },
     navigatorFactory: @Composable (Routes) -> Navigator = {
         val isRoot = it == routes
-        rememberNav3Navigator(
+        val startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve) else null
+        val authRoute = config.ui.authRoute?.let(routes::resolve)
+        val authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve) else null
+        if (startRoute == null)
+            rememberNav3Navigator(
+                routes = it,
+                authRoute = authRoute,
+                authRedirectRoute = authRedirectRoute,
+            )
+        else rememberNav3Navigator(
             routes = it,
-            startRoute = if (isRoot) config.ui.startRoute?.let(routes::resolve) else null,
-            authRoute = config.ui.authRoute?.let(routes::resolve),
-            authRedirectRoute = if (isRoot) config.ui.authRedirectRoute?.let(routes::resolve) else null,
+            startRoute = startRoute,
+            authRoute = authRoute,
+            authRedirectRoute = authRedirectRoute,
         )
     },
     onDeepLinkAction: Router.(NavRoute) -> Unit = Router::push,
