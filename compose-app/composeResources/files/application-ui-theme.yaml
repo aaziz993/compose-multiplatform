@@ -1,20 +1,19 @@
 ui:
   theme:
     isDynamic: false
-    isHighContrast: false
-    isExpressive: true
     dynamicColorScheme:
       seedColor: 0xFF00FFFF
       animate: true
       animationSpec:
         spring: { }
-    dynamicColorSchemeHighContrast:
-      seedColor: 0xFF0000FF
-      amoled: true
+    amoled: true
+    contrast: 0
+    platform: PHONE
     animate: true
     animationSpec:
       tween:
         durationMillis: 3000
+    isExpressive: true
     shapes:
       small:
         squircle:

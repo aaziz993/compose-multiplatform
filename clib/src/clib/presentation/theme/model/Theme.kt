@@ -10,11 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import clib.data.type.primitives.color.ColorSerial
-import clib.presentation.theme.darkHighContrast
 import clib.presentation.theme.isAdaptiveDark
-import clib.presentation.theme.lightHighContrast
 import clib.presentation.theme.shapes.ShapesSerial
 import clib.presentation.theme.typography.TypographySerial
+import com.materialkolor.Contrast
+import com.materialkolor.scheme.DynamicScheme
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Serializable
 
@@ -22,16 +22,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class Theme(
     val lightColorScheme: ColorSchemeSerial = lightColorScheme(),
-    val lightColorSchemeHighContrast: ColorSchemeSerial = lightColorScheme.lightHighContrast(),
     val darkColorScheme: ColorSchemeSerial = darkColorScheme(),
-    val darkColorSchemeHighContrast: ColorSchemeSerial = darkColorScheme.darkHighContrast(),
     val dynamicColorScheme: DynamicColorScheme = DynamicColorScheme(Color.Cyan),
-    val dynamicColorSchemeHighContrast: DynamicColorScheme = DynamicColorScheme(Color.Blue),
     val isDynamic: Boolean = false,
     val mode: ThemeMode = ThemeMode.SYSTEM,
     val lightTime: LocalTime = LocalTime(6, 0),
-    val darkTime: LocalTime = LocalTime(19, 0),
-    val isHighContrast: Boolean = false,
+    val darkTime: LocalTime = LocalTime(18, 0),
+    val isAmoled: Boolean = false,
+    val contrast: Double = Contrast.Default.value,
+    val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
     val animate: Boolean = false,
     val animationSpec: AnimationSpecSerial<ColorSerial>? = null,
     val isExpressive: Boolean = true,
@@ -39,17 +38,14 @@ public data class Theme(
     val typography: TypographySerial = Typography(),
 ) {
 
-    public val currentColorScheme: ColorScheme
+    public val colorScheme: ColorScheme
         @Composable
-        get() {
-            val (lightColorScheme, darkColorScheme) =
-                if (isHighContrast) lightColorSchemeHighContrast to darkColorSchemeHighContrast
-                else lightColorScheme to darkColorScheme
-            return if (isDark()) darkColorScheme else lightColorScheme
-        }
+        get() = if (isDark()) darkColorScheme else lightColorScheme
 
-    public val currentDynamicColorScheme: DynamicColorScheme
-        get() = if (isHighContrast) dynamicColorSchemeHighContrast else dynamicColorScheme
+    @Composable
+    public fun copyColorSchemeFunc(): (ColorScheme) -> Theme =
+        if (isDark()) { colorScheme -> copy(darkColorScheme = colorScheme) }
+        else { colorScheme -> copy(lightColorScheme = colorScheme) }
 
     @Composable
     public fun isDark(): Boolean =
@@ -60,24 +56,16 @@ public data class Theme(
             ThemeMode.ADAPTIVE -> isAdaptiveDark(lightTime, darkTime)
         }
 
-    public fun copyIsDarkToggled(): Theme = when (mode) {
-        ThemeMode.SYSTEM -> copy(mode = ThemeMode.LIGHT)
-        ThemeMode.LIGHT -> copy(mode = ThemeMode.DARK)
-        ThemeMode.DARK -> copy(mode = ThemeMode.ADAPTIVE)
-        ThemeMode.ADAPTIVE -> copy(mode = ThemeMode.SYSTEM)
-    }
-
     @Composable
-    public fun copyColorSchemeFunc(): (ColorScheme) -> Theme =
-        if (isHighContrast) {
-            if (isDark()) { colorScheme -> copy(darkColorSchemeHighContrast = colorScheme) }
-            else { colorScheme -> copy(lightColorSchemeHighContrast = colorScheme) }
+    public fun copyToggledFunc(): () -> Theme {
+        val isSystemInDarkTheme: Boolean? = if (mode == ThemeMode.SYSTEM) isSystemInDarkTheme() else null
+        return {
+            when (mode) {
+                ThemeMode.SYSTEM -> copy(mode = if (isSystemInDarkTheme!!) ThemeMode.LIGHT else ThemeMode.DARK)
+                ThemeMode.LIGHT -> copy(mode = ThemeMode.DARK)
+                ThemeMode.DARK -> copy(mode = ThemeMode.ADAPTIVE)
+                ThemeMode.ADAPTIVE -> copy(mode = ThemeMode.SYSTEM)
+            }
         }
-        else {
-            if (isDark()) { colorScheme -> copy(darkColorScheme = colorScheme) }
-            else { colorScheme -> copy(lightColorScheme = colorScheme) }
-        }
-
-    public fun copyDynamicColorScheme(colorScheme: DynamicColorScheme): Theme =
-        if (isHighContrast) copy(dynamicColorSchemeHighContrast = colorScheme) else copy(dynamicColorScheme = colorScheme)
+    }
 }

@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.DensityLarge
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
+import androidx.compose.material.icons.filled.Devices
 import androidx.compose.material.icons.filled.FormatPaint
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Functions
@@ -37,6 +38,7 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LinearScale
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mode
+import androidx.compose.material.icons.filled.Monitor
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.PermMedia
@@ -60,9 +62,9 @@ import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.BluetoothConnected
 import androidx.compose.material.icons.outlined.CameraEnhance
 import androidx.compose.material.icons.outlined.Contacts
-import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOff
+import androidx.compose.material.icons.outlined.Monitor
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material.icons.outlined.PermMedia
@@ -100,8 +102,10 @@ import clib.presentation.navigation.NavigationAction
 import clib.presentation.theme.model.Theme
 import clib.presentation.theme.model.ThemeMode
 import com.alorma.compose.settings.ui.SettingsGroup
+import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.action_icon_content_color
+import compose_app.generated.resources.amoled
 import compose_app.generated.resources.animate
 import compose_app.generated.resources.animation_spec
 import compose_app.generated.resources.app_bar
@@ -126,6 +130,7 @@ import compose_app.generated.resources.connectivity_indicator_text
 import compose_app.generated.resources.connectivity_snackbar
 import compose_app.generated.resources.contact
 import compose_app.generated.resources.container_color
+import compose_app.generated.resources.contrast
 import compose_app.generated.resources.damping_ratio
 import compose_app.generated.resources.dark
 import compose_app.generated.resources.delay
@@ -138,7 +143,6 @@ import compose_app.generated.resources.expressive
 import compose_app.generated.resources.font_scale
 import compose_app.generated.resources.gallery
 import compose_app.generated.resources.height
-import compose_app.generated.resources.high_contrast
 import compose_app.generated.resources.light
 import compose_app.generated.resources.light_later_dark
 import compose_app.generated.resources.locale
@@ -147,6 +151,7 @@ import compose_app.generated.resources.mode
 import compose_app.generated.resources.navigation_icon_content_color
 import compose_app.generated.resources.open
 import compose_app.generated.resources.permission
+import compose_app.generated.resources.platform
 import compose_app.generated.resources.record_audio
 import compose_app.generated.resources.recovery
 import compose_app.generated.resources.remote_notification
@@ -169,8 +174,8 @@ import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
-import klib.permission.model.Permission
 import klib.data.type.cast
+import klib.permission.model.Permission
 import presentation.components.settings.SettingsColorPickerBottomSheet
 import presentation.components.settings.SettingsListPickerDialog
 import presentation.components.settings.SettingsMenuLink
@@ -440,19 +445,6 @@ public fun SettingsMainScreen(
         title = { Text(text = stringResource(Res.string.theme)) },
         contentPadding = PaddingValues(16.dp),
     ) {
-        if (!theme.isDynamic)
-            SettingsMenuLink(
-                title = stringResource(Res.string.color_scheme),
-                enabled = true,
-                icon = Icons.Default.FormatPaint,
-            ) {
-                onNavigationActions(
-                    arrayOf(
-                        NavigationAction.Push(SettingsColorScheme),
-                    ),
-                )
-            }
-
         if (theme.isDynamic)
             SettingsMenuLink(
                 title = stringResource(Res.string.dynamic_color_scheme),
@@ -465,6 +457,17 @@ public fun SettingsMainScreen(
                     ),
                 )
             }
+        else SettingsMenuLink(
+            title = stringResource(Res.string.color_scheme),
+            enabled = true,
+            icon = Icons.Default.FormatPaint,
+        ) {
+            onNavigationActions(
+                arrayOf(
+                    NavigationAction.Push(SettingsColorScheme),
+                ),
+            )
+        }
 
         SettingsSwitch(
             title = stringResource(Res.string.dynamic_color_scheme),
@@ -475,13 +478,15 @@ public fun SettingsMainScreen(
             onThemeChange(theme.copy(isDynamic = value))
         }
 
+        val themeCopyToggled = theme.copyToggledFunc()
+
         SettingsMenuLink(
             title = stringResource(Res.string.theme),
             enabled = true,
-            icon = theme.isDarkIcon(),
-            subtitle = theme.isDarkStringResource(),
+            icon = theme.mode.isDarkIcon(),
+            subtitle = theme.mode.isDarkStringResource(),
         ) {
-            onThemeChange(theme.copyIsDarkToggled())
+            onThemeChange(themeCopyToggled())
         }
 
         if (theme.mode == ThemeMode.ADAPTIVE) {
@@ -534,12 +539,38 @@ public fun SettingsMainScreen(
         }
 
         SettingsSwitch(
-            title = stringResource(Res.string.high_contrast),
-            value = theme.isHighContrast,
-            trueIcon = Icons.Filled.Contrast,
-            falseIcon = Icons.Outlined.Contrast,
+            title = stringResource(Res.string.amoled),
+            value = theme.isAmoled,
+            trueIcon = Icons.Filled.Monitor,
+            falseIcon = Icons.Outlined.Monitor,
+            onCheckedChange = { value ->
+                onThemeChange(theme.copy(isAmoled = value))
+                false
+            },
+        )
+
+        SettingsSlider(
+            title = stringResource(Res.string.contrast),
+            value = theme.contrast.toFloat(),
+            icon = Icons.Default.Contrast,
+            enabled = true,
+            valueRange = -1f..1f,
+        ) { value, _ ->
+            onThemeChange(theme.copy(contrast = value.toDouble()))
+        }
+
+        val platforms = remember { DynamicScheme.Platform.entries.toList() }
+
+        SettingsListPickerDialog(
+            theme.platform,
+            values = platforms,
+            title = stringResource(Res.string.platform),
+            icon = Icons.Default.Devices,
+            modifier = Modifier,
+            enabled = true,
         ) { value ->
-            onThemeChange(theme.copy(isHighContrast = value))
+            onThemeChange(theme.copy(platform = value))
+            false
         }
 
         SettingsSwitch(

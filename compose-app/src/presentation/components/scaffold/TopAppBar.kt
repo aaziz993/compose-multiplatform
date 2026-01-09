@@ -196,16 +196,18 @@ public fun TopAppBar(
                             }
                         }
 
-                    if (appBar.isTheme)
+                    if (appBar.isTheme) {
+                        val themeCopyToggled = theme.copyToggledFunc()
                         IconButton(
                             onClick = {
-                                onThemeChange(theme.copyIsDarkToggled())
+                                onThemeChange(themeCopyToggled())
                             },
                         ) {
                             PlainTooltipBox(tooltip = stringResource(Res.string.theme)) {
-                                theme.IsDarkIcon()
+                                theme.mode.IsDarkIcon()
                             }
                         }
+                    }
 
                     if (appBar.isLocale) {
                         var localePickerDialog by remember { mutableStateOf(false) }

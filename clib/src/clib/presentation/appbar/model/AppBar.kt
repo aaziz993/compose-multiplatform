@@ -21,13 +21,8 @@ public data class AppBar(
     public val isLocale: Boolean = true,
     public val isAvatar: Boolean = true,
     val lightColors: TopAppBarColorsSerial? = null,
-    val lightColorsHighContrast: TopAppBarColorsSerial? = null,
     val darkColors: TopAppBarColorsSerial? = null,
-    val darkColorsHighContrast: TopAppBarColorsSerial? = null,
-    val lightDynamicColors: TopAppBarColorsSerial? = null,
-    val lightDynamicColorsHighContrast: TopAppBarColorsSerial? = null,
-    val darkDynamicColors: TopAppBarColorsSerial? = null,
-    val darkDynamicColorsHighContrast: TopAppBarColorsSerial? = null,
+    val dynamicColors: TopAppBarColorsSerial? = null,
 ) {
 
     public val colors: TopAppBarColors
@@ -35,16 +30,8 @@ public data class AppBar(
         get() {
             val theme = LocalThemeState.current.value
 
-            return if (theme.isDynamic) {
-                val (lightDynamicColors, darkDynamicColors) =
-                    if (theme.isHighContrast) lightDynamicColorsHighContrast to darkDynamicColorsHighContrast
-                    else lightDynamicColors to darkDynamicColors
-                if (theme.isDark()) darkDynamicColors else lightDynamicColors
-            }
+            return if (theme.isDynamic) dynamicColors
             else {
-                val (lightColors, darkColors) =
-                    if (theme.isHighContrast) lightColorsHighContrast to darkColorsHighContrast
-                    else lightColors to darkColors
                 if (theme.isDark()) darkColors else lightColors
             } ?: TopAppBarDefaults.topAppBarColors()
         }
@@ -53,25 +40,9 @@ public data class AppBar(
     public fun copyColors(): (TopAppBarColors) -> AppBar {
         val theme = LocalThemeState.current.value
 
-        return if (theme.isDynamic) {
-            if (theme.isHighContrast) {
-                if (theme.isDark()) { colors -> copy(darkDynamicColorsHighContrast = colors) }
-                else { colors -> copy(lightDynamicColorsHighContrast = colors) }
-            }
-            else {
-                if (theme.isDark()) { colors -> copy(darkDynamicColors = colors) }
-                else { colors -> copy(lightDynamicColors = colors) }
-            }
-        }
+        return if (theme.isDynamic) { colors -> copy(dynamicColors = colors) }
         else {
-            if (theme.isHighContrast) {
-                if (theme.isDark()) { colors -> copy(darkColorsHighContrast = colors) }
-                else { colors -> copy(lightColorsHighContrast = colors) }
-            }
-            else {
-                if (theme.isDark()) { colors -> copy(darkColors = colors) }
-                else { colors -> copy(lightColors = colors) }
-            }
+            if (theme.isDark()) { colors -> copy(darkColors = colors) } else { colors -> copy(lightColors = colors) }
         }
     }
 }

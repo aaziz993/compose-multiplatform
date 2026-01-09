@@ -68,16 +68,20 @@ import clib.presentation.state.StateStore
 import clib.presentation.state.rememberStateStore
 import clib.presentation.theme.LocalAppTheme
 import clib.presentation.theme.LocalThemeState
+import clib.presentation.theme.ThemeAnimationScope
 import clib.presentation.theme.ThemeState
 import clib.presentation.theme.density.DensityState
 import clib.presentation.theme.density.LocalDensityState
 import clib.presentation.theme.density.rememberDensityState
+import clib.presentation.theme.model.adjustContrast
 import clib.presentation.theme.rememberThemeState
 import com.materialkolor.LocalDynamicMaterialThemeSeed
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
+import io.github.themeanimator.ThemeAnimationFormat
+import io.github.themeanimator.rememberThemeAnimationState
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.cache.emptyCache
@@ -145,9 +149,13 @@ public fun AppEnvironment(
     ComposeFoundationFlags.isNewContextMenuEnabled = true
     config.configure()
 
-    val localization by rememberLocalization(localeState, localeService)
-
     remember(routesState) { routes.forEach(routesState::configure) }
+
+    val theme = themeState.value
+    val localization by rememberLocalization(localeState, localeService)
+    val animationState = rememberThemeAnimationState(
+        format = ThemeAnimationFormat.CircularAroundPress,
+    )
 
     CompositionLocalProvider(
         LocalConfig provides config,
@@ -161,7 +169,7 @@ public fun AppEnvironment(
         LocalAppBarState provides appBarState,
         LocalConnectivityState provides connectivityState,
         LocalThemeState provides themeState,
-        LocalAppTheme provides themeState.value.isDark(),
+        LocalAppTheme provides true,
         LocalDensityState provides densityState,
         LocalDensity provides densityState.value,
         LocalLocaleState provides localeState,
@@ -172,8 +180,6 @@ public fun AppEnvironment(
         LocalMouse provides mouse,
         LocalKeyboard provides keyboard,
     ) {
-        val theme = themeState.value
-
         LaunchedEffect(connectivityStatus) {
             with(connectivityState.value) {
                 if (isConnectivityAlert)
@@ -201,21 +207,19 @@ public fun AppEnvironment(
         }
 
         val (colorScheme, seedColor) = if (theme.isDynamic) {
-            val dynamicColorScheme = theme.currentDynamicColorScheme
-
             val state = rememberDynamicMaterialThemeState(
-                seedColor = dynamicColorScheme.seedColor,
+                seedColor = theme.dynamicColorScheme.seedColor,
                 isDark = theme.isDark(),
-                isAmoled = dynamicColorScheme.isAmoled,
-                primary = dynamicColorScheme.primary,
-                secondary = dynamicColorScheme.secondary,
-                tertiary = dynamicColorScheme.tertiary,
-                neutral = dynamicColorScheme.neutral,
-                neutralVariant = dynamicColorScheme.neutralVariant,
-                error = dynamicColorScheme.error,
-                contrastLevel = dynamicColorScheme.contrastLevel,
+                isAmoled = theme.isAmoled,
+                primary = theme.dynamicColorScheme.primary,
+                secondary = theme.dynamicColorScheme.secondary,
+                tertiary = theme.dynamicColorScheme.tertiary,
+                neutral = theme.dynamicColorScheme.neutral,
+                neutralVariant = theme.dynamicColorScheme.neutralVariant,
+                error = theme.dynamicColorScheme.error,
+                contrastLevel = theme.contrast,
                 specVersion = ColorSpec.SpecVersion.SPEC_2025,
-                platform = dynamicColorScheme.platform,
+                platform = theme.platform,
             )
 
             Surface { }
@@ -231,7 +235,7 @@ public fun AppEnvironment(
             else colorScheme) to state.seedColor
         }
         else {
-            val colorScheme = theme.currentColorScheme
+            val colorScheme = theme.colorScheme.adjustContrast(theme.contrast, theme.platform)
             (if (theme.animate)
                 animateColorScheme(
                     colorScheme = colorScheme,
@@ -243,15 +247,20 @@ public fun AppEnvironment(
         }
 
         CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
-            MaterialExpressiveTheme(
-                colorScheme,
-                if (theme.isExpressive) MotionScheme.expressive() else MotionScheme.standard(),
-                theme.shapes,
-                theme.typography,
+            ThemeAnimationScope(
+                animationState,
+                theme.isDark(),
             ) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    routes.Nav3Host(routerFactory, navigatorFactory, onDeepLinkAction)
-                    content()
+                MaterialExpressiveTheme(
+                    colorScheme,
+                    if (theme.isExpressive) MotionScheme.expressive() else MotionScheme.standard(),
+                    theme.shapes,
+                    theme.typography,
+                ) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        routes.Nav3Host(routerFactory, navigatorFactory, onDeepLinkAction)
+                        content()
+                    }
                 }
             }
         }

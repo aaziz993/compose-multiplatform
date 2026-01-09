@@ -425,7 +425,7 @@ kmpalette = "3.1.0"
 # colorr picker.
 colorpicker = "1.1.3"
 # this is a Compose Multiplatform library providing a theme transitioning animation.
-themeanimator = "0.0.11"
+themeanimator = "0.0.12"
 # icons.
 compose-icons = "1.1.1"
 # compose Multiplatform library for rendering Lottie animations.

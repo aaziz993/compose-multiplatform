@@ -622,3 +622,11 @@ public fun ComposeColor.invert(invertAlpha: Boolean = false): ComposeColor = Com
     1f - blue,
     if (invertAlpha) 1f - alpha else alpha,
 )
+
+public fun ComposeColor.adjustContrast(factor: Double): ComposeColor {
+    val lab = toColor().toLAB()
+
+    val newL = ((lab.l - 50.0) * factor + 50.0).coerceIn(0.0, 100.0)
+
+    return lab.copy(l = newL.toFloat()).toColor()
+}

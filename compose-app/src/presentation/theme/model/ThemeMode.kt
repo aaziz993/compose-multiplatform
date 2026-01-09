@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.SettingsBrightness
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import clib.presentation.theme.model.Theme
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.dark
 import compose_app.generated.resources.light
@@ -18,14 +17,14 @@ import clib.data.type.primitives.string.stringResource
 import clib.presentation.theme.model.ThemeMode
 
 @Composable
-public fun Theme.isDarkStringResource(): String = when (mode) {
+public fun ThemeMode.isDarkStringResource(): String = when (this) {
     ThemeMode.SYSTEM -> stringResource(Res.string.system)
     ThemeMode.LIGHT -> stringResource(Res.string.light)
     ThemeMode.DARK -> stringResource(Res.string.dark)
     ThemeMode.ADAPTIVE -> stringResource(Res.string.adaptive)
 }
 
-public fun Theme.isDarkIcon(): ImageVector = when (mode) {
+public fun ThemeMode.isDarkIcon(): ImageVector = when (this) {
     ThemeMode.SYSTEM -> Icons.Default.SettingsBrightness
     ThemeMode.LIGHT -> Icons.Default.LightMode
     ThemeMode.DARK -> Icons.Default.DarkMode
@@ -34,6 +33,6 @@ public fun Theme.isDarkIcon(): ImageVector = when (mode) {
 
 @Suppress("ComposeModifierMissing")
 @Composable
-public fun Theme.IsDarkIcon(): Unit = Icon(isDarkIcon(), isDarkStringResource())
+public fun ThemeMode.IsDarkIcon(): Unit = Icon(isDarkIcon(), isDarkStringResource())
 
 
