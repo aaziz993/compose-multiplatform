@@ -1,119 +1,106 @@
 package clib.presentation.theme.model
 
 import androidx.compose.material3.ColorScheme
-import clib.data.type.primitives.color.adjustContrast
-import clib.presentation.theme.Error
-import clib.presentation.theme.ErrorContainer
-import clib.presentation.theme.InversePrimary
-import clib.presentation.theme.OnError
-import clib.presentation.theme.OnErrorContainer
-import clib.presentation.theme.OnPrimaryContainer
-import clib.presentation.theme.OnPrimaryFixed
-import clib.presentation.theme.OnPrimaryFixedVariant
-import clib.presentation.theme.OnSecondary
-import clib.presentation.theme.OnSecondaryContainer
-import clib.presentation.theme.OnSecondaryFixed
-import clib.presentation.theme.OnSecondaryFixedVariant
-import clib.presentation.theme.OnTertiary
-import clib.presentation.theme.OnTertiaryContainer
-import clib.presentation.theme.OnTertiaryFixed
-import clib.presentation.theme.OnTertiaryFixedVariant
-import clib.presentation.theme.PrimaryContainer
-import clib.presentation.theme.PrimaryFixed
-import clib.presentation.theme.PrimaryFixedDim
-import clib.presentation.theme.Secondary
-import clib.presentation.theme.SecondaryContainer
-import clib.presentation.theme.SecondaryFixed
-import clib.presentation.theme.SecondaryFixedDim
-import clib.presentation.theme.Tertiary
-import clib.presentation.theme.TertiaryContainer
-import clib.presentation.theme.TertiaryFixed
-import clib.presentation.theme.TertiaryFixedDim
-import com.materialkolor.scheme.DynamicScheme.Platform
+import androidx.compose.ui.graphics.Color
+import clib.data.type.primitives.color.invert
 
-public fun ColorScheme.adjustContrast(
-    contrastLevel: Double,
-    platform: Platform
-): ColorScheme = copy(
-    primaryContainer = PrimaryContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        primaryContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: primaryContainer,
-    onPrimaryContainer = OnPrimaryContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        onPrimaryContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: onPrimaryContainer,
-    inversePrimary = InversePrimary.getCurve(contrastLevel, platform)?.let { curve ->
-        inversePrimary.adjustContrast(curve.get(contrastLevel))
-    } ?: inversePrimary,
-    secondary = Secondary.getCurve(contrastLevel, platform)?.let { curve ->
-        secondary.adjustContrast(curve.get(contrastLevel))
-    } ?: secondary,
-    onSecondary = OnSecondary.getCurve(contrastLevel, platform)?.let { curve ->
-        onSecondary.adjustContrast(curve.get(contrastLevel))
-    } ?: onSecondary,
-    secondaryContainer = SecondaryContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        secondaryContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: secondaryContainer,
-    onSecondaryContainer = OnSecondaryContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        onSecondaryContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: onSecondaryContainer,
-    tertiary = Tertiary.getCurve(contrastLevel, platform)?.let { curve ->
-        tertiary.adjustContrast(curve.get(contrastLevel))
-    } ?: tertiary,
-    onTertiary = OnTertiary.getCurve(contrastLevel, platform)?.let { curve ->
-        onTertiary.adjustContrast(curve.get(contrastLevel))
-    } ?: onTertiary,
-    tertiaryContainer = TertiaryContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        tertiaryContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: tertiaryContainer,
-    onTertiaryContainer = OnTertiaryContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        onTertiaryContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: onTertiaryContainer,
-    error = Error.getCurve(contrastLevel, platform)?.let { curve ->
-        error.adjustContrast(curve.get(contrastLevel))
-    } ?: error,
-    onError = OnError.getCurve(contrastLevel, platform)?.let { curve ->
-        onError.adjustContrast(curve.get(contrastLevel))
-    } ?: onError,
-    errorContainer = ErrorContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        errorContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: errorContainer,
-    onErrorContainer = OnErrorContainer.getCurve(contrastLevel, platform)?.let { curve ->
-        onErrorContainer.adjustContrast(curve.get(contrastLevel))
-    } ?: onErrorContainer,
-    primaryFixed = PrimaryFixed.getCurve(contrastLevel, platform)?.let { curve ->
-        primaryFixed.adjustContrast(curve.get(contrastLevel))
-    } ?: primaryFixed,
-    primaryFixedDim = PrimaryFixedDim.getCurve(contrastLevel, platform)?.let { curve ->
-        primaryFixedDim.adjustContrast(curve.get(contrastLevel))
-    } ?: primaryFixedDim,
-    onPrimaryFixed = OnPrimaryFixed.getCurve(contrastLevel, platform)?.let { curve ->
-        onPrimaryFixed.adjustContrast(curve.get(contrastLevel))
-    } ?: onPrimaryFixed,
-    onPrimaryFixedVariant = OnPrimaryFixedVariant.getCurve(contrastLevel, platform)?.let { curve ->
-        onPrimaryFixedVariant.adjustContrast(curve.get(contrastLevel))
-    } ?: onPrimaryFixedVariant,
-    secondaryFixed = SecondaryFixed.getCurve(contrastLevel, platform)?.let { curve ->
-        secondaryFixed.adjustContrast(curve.get(contrastLevel))
-    } ?: secondaryFixed,
-    secondaryFixedDim = SecondaryFixedDim.getCurve(contrastLevel, platform)?.let { curve ->
-        secondaryFixedDim.adjustContrast(curve.get(contrastLevel))
-    } ?: secondaryFixedDim,
-    onSecondaryFixed = OnSecondaryFixed.getCurve(contrastLevel, platform)?.let { curve ->
-        onSecondaryFixed.adjustContrast(curve.get(contrastLevel))
-    } ?: onSecondaryFixed,
-    onSecondaryFixedVariant = OnSecondaryFixedVariant.getCurve(contrastLevel, platform)?.let { curve ->
-        onSecondaryFixedVariant.adjustContrast(curve.get(contrastLevel))
-    } ?: onSecondaryFixedVariant,
-    tertiaryFixed = TertiaryFixed.getCurve(contrastLevel, platform)?.let { curve ->
-        tertiaryFixed.adjustContrast(curve.get(contrastLevel))
-    } ?: tertiaryFixed,
-    tertiaryFixedDim = TertiaryFixedDim.getCurve(contrastLevel, platform)?.let { curve ->
-        tertiaryFixedDim.adjustContrast(curve.get(contrastLevel))
-    } ?: tertiaryFixedDim,
-    onTertiaryFixed = OnTertiaryFixed.getCurve(contrastLevel, platform)?.let { curve ->
-        onTertiaryFixed.adjustContrast(curve.get(contrastLevel))
-    } ?: onTertiaryFixed,
-    onTertiaryFixedVariant = OnTertiaryFixedVariant.getCurve(contrastLevel, platform)?.let { curve ->
-        onTertiaryFixedVariant.adjustContrast(curve.get(contrastLevel))
-    } ?: onTertiaryFixedVariant,
+/** Converts color scheme to amoled.
+ *
+ * @receiver Color scheme to convert to amoled.
+ * @param isDark Current theme is dark.
+ * @return Amoled color scheme.
+ */
+public fun ColorScheme.toAmoled(isDark: Boolean): ColorScheme =
+    copy(
+        background = if (isDark) Color.Black else background,
+        onBackground = if (isDark) Color.White else onBackground,
+        surface = if (isDark) Color.Black else surface,
+        onSurface = if (isDark) Color.White else onSurface,
+    )
+
+/** Converts color scheme to high constrast.
+ *
+ * @receiver Color scheme to convert to high contrast.
+ * @param isDark Current theme is dark.
+ * @return High contrast color scheme.
+ */
+public fun ColorScheme.toHighContrast(isDark: Boolean): ColorScheme =
+    if (isDark) copy(
+        primary = Color.White,
+        onPrimary = Color.Black,
+        primaryContainer = Color.White,
+        onPrimaryContainer = Color.Black,
+        surface = Color.Black,
+        onSurface = Color.White,
+        background = Color.Black,
+        onBackground = Color.White,
+        outline = Color.White,
+        outlineVariant = Color.White,
+    )
+    else copy(
+        primary = Color.Black,
+        onPrimary = Color.White,
+        primaryContainer = Color.Black,
+        onPrimaryContainer = Color.White,
+        surface = Color.White,
+        onSurface = Color.Black,
+        background = Color.White,
+        onBackground = Color.Black,
+        outline = Color.Black,
+        outlineVariant = Color.Black,
+    )
+
+/** Inverts colors of color scheme.
+ *
+ * @receiver Color scheme to invert colors.
+ */
+public fun ColorScheme.invert(): ColorScheme = ColorScheme(
+    primary.invert(),
+    onPrimary.invert(),
+    primaryContainer.invert(),
+    onPrimaryContainer.invert(),
+    inversePrimary.invert(),
+    secondary.invert(),
+    onSecondary.invert(),
+    secondaryContainer.invert(),
+    onSecondaryContainer.invert(),
+    tertiary.invert(),
+    onTertiary.invert(),
+    tertiaryContainer.invert(),
+    onTertiaryContainer.invert(),
+    background.invert(),
+    onBackground.invert(),
+    surface.invert(),
+    onSurface.invert(),
+    surfaceVariant.invert(),
+    onSurfaceVariant.invert(),
+    surfaceTint.invert(),
+    inverseSurface.invert(),
+    inverseOnSurface.invert(),
+    error.invert(),
+    onError.invert(),
+    errorContainer.invert(),
+    onErrorContainer.invert(),
+    outline.invert(),
+    outlineVariant.invert(),
+    scrim.invert(),
+    surfaceBright.invert(),
+    surfaceDim.invert(),
+    surfaceContainer.invert(),
+    surfaceContainerHigh.invert(),
+    surfaceContainerHighest.invert(),
+    surfaceContainerLow.invert(),
+    surfaceContainerLowest.invert(),
+    primaryFixed.invert(),
+    primaryFixedDim.invert(),
+    onPrimaryFixed.invert(),
+    onPrimaryFixedVariant.invert(),
+    secondaryFixed.invert(),
+    secondaryFixedDim.invert(),
+    onSecondaryFixed.invert(),
+    onSecondaryFixedVariant.invert(),
+    tertiaryFixed.invert(),
+    tertiaryFixedDim.invert(),
+    onTertiaryFixed.invert(),
+    onTertiaryFixedVariant.invert(),
 )

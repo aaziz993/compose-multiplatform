@@ -5,6 +5,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.graphics.toArgb
+import com.github.ajalt.colormath.Color
+import com.github.ajalt.colormath.model.HSL
 import com.github.ajalt.colormath.model.LABColorSpaces.LAB50
 import com.github.ajalt.colormath.model.Oklab
 import com.github.ajalt.colormath.model.RGB
@@ -23,8 +25,6 @@ import com.github.ajalt.colormath.model.XYZColorSpaces.XYZ50
 import klib.data.type.serialization.serializers.primitive.PrimitiveULongSerializer
 import kotlinx.serialization.Serializable
 import androidx.compose.ui.graphics.Color as ComposeColor
-import com.github.ajalt.colormath.Color
-import com.github.ajalt.colormath.model.HSL
 
 public object ColorSerializer : PrimitiveULongSerializer<ComposeColor>(
     ComposeColor::class.simpleName!!,
@@ -622,11 +622,3 @@ public fun ComposeColor.invert(invertAlpha: Boolean = false): ComposeColor = Com
     1f - blue,
     if (invertAlpha) 1f - alpha else alpha,
 )
-
-public fun ComposeColor.adjustContrast(factor: Double): ComposeColor {
-    val lab = toColor().toLAB()
-
-    val newL = ((lab.l - 50.0) * factor + 50.0).coerceIn(0.0, 100.0)
-
-    return lab.copy(l = newL.toFloat()).toColor()
-}

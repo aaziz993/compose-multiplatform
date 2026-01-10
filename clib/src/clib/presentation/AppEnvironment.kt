@@ -73,7 +73,9 @@ import clib.presentation.theme.ThemeState
 import clib.presentation.theme.density.DensityState
 import clib.presentation.theme.density.LocalDensityState
 import clib.presentation.theme.density.rememberDensityState
-import clib.presentation.theme.model.adjustContrast
+import clib.presentation.theme.model.invert
+import clib.presentation.theme.model.toAmoled
+import clib.presentation.theme.model.toHighContrast
 import clib.presentation.theme.rememberThemeState
 import com.materialkolor.LocalDynamicMaterialThemeSeed
 import com.materialkolor.dynamiccolor.ColorSpec
@@ -152,6 +154,7 @@ public fun AppEnvironment(
     remember(routesState) { routes.forEach(routesState::configure) }
 
     val theme = themeState.value
+    val isDark = theme.isDark()
     val localization by rememberLocalization(localeState, localeService)
     val animationState = rememberThemeAnimationState(
         format = ThemeAnimationFormat.CircularAroundPress,
@@ -169,7 +172,7 @@ public fun AppEnvironment(
         LocalAppBarState provides appBarState,
         LocalConnectivityState provides connectivityState,
         LocalThemeState provides themeState,
-        LocalAppTheme provides true,
+        LocalAppTheme provides isDark,
         LocalDensityState provides densityState,
         LocalDensity provides densityState.value,
         LocalLocaleState provides localeState,
@@ -209,7 +212,7 @@ public fun AppEnvironment(
         val (colorScheme, seedColor) = if (theme.isDynamic) {
             val state = rememberDynamicMaterialThemeState(
                 seedColor = theme.dynamicColorScheme.seedColor,
-                isDark = theme.isDark(),
+                isDark = isDark,
                 isAmoled = theme.isAmoled,
                 primary = theme.dynamicColorScheme.primary,
                 secondary = theme.dynamicColorScheme.secondary,
@@ -217,39 +220,38 @@ public fun AppEnvironment(
                 neutral = theme.dynamicColorScheme.neutral,
                 neutralVariant = theme.dynamicColorScheme.neutralVariant,
                 error = theme.dynamicColorScheme.error,
-                contrastLevel = theme.contrast,
+                contrastLevel = theme.dynamicColorScheme.contrastLevel,
                 specVersion = ColorSpec.SpecVersion.SPEC_2025,
-                platform = theme.platform,
+                platform = theme.dynamicColorScheme.platform,
             )
 
             Surface { }
 
-            val colorScheme = state.colorScheme
-            (if (theme.animate)
-                animateColorScheme(
-                    colorScheme = colorScheme,
-                    animationSpec = {
-                        theme.animationSpec as FiniteAnimationSpec<Color>
-                    },
-                )
-            else colorScheme) to state.seedColor
+            state.colorScheme to state.seedColor
         }
         else {
-            val colorScheme = theme.colorScheme.adjustContrast(theme.contrast, theme.platform)
-            (if (theme.animate)
-                animateColorScheme(
-                    colorScheme = colorScheme,
-                    animationSpec = {
-                        theme.animationSpec as FiniteAnimationSpec<Color>
-                    },
-                )
-            else colorScheme) to Color.Transparent
+            (if (theme.isAmoled) theme.colorScheme.toAmoled(isDark) else theme.colorScheme) to Color.Transparent
         }
+            .let { if (theme.isHighContrast) it.copy(first = it.first.toHighContrast(isDark)) else it }
+            .let { if (theme.isInvert) it.copy(first = it.first.invert()) else it }
+            .let {
+                if (theme.animate)
+                    it.copy(
+                        first =
+                            animateColorScheme(
+                                colorScheme = it.first,
+                                animationSpec = {
+                                    theme.animationSpec as FiniteAnimationSpec<Color>
+                                },
+                            ),
+                    )
+                else it
+            }
 
         CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
             ThemeAnimationScope(
                 animationState,
-                theme.isDark(),
+                isDark,
             ) {
                 MaterialExpressiveTheme(
                     colorScheme,

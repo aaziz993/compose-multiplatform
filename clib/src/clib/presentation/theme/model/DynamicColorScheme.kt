@@ -2,6 +2,8 @@ package clib.presentation.theme.model
 
 import androidx.compose.runtime.Immutable
 import clib.data.type.primitives.color.ColorSerial
+import com.materialkolor.Contrast
+import com.materialkolor.scheme.DynamicScheme
 import kotlinx.serialization.Serializable
 
 @Immutable
@@ -14,4 +16,6 @@ public data class DynamicColorScheme(
     val neutral: ColorSerial? = null,
     val neutralVariant: ColorSerial? = null,
     val error: ColorSerial? = null,
+    val contrastLevel: Double = Contrast.Default.value,
+    val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
 )

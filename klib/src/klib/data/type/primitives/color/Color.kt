@@ -12,16 +12,6 @@ import klib.data.type.primitives.number.normalize
 import klib.data.type.primitives.number.toByteArray
 import klib.data.type.primitives.number.toInt
 import klib.data.type.primitives.number.unsigned
-import kotlin.collections.copyOfRange
-import kotlin.collections.dropLast
-import kotlin.collections.fold
-import kotlin.collections.indices
-import kotlin.collections.map
-import kotlin.collections.mutableListOf
-import kotlin.collections.plus
-import kotlin.collections.toByteArray
-import kotlin.collections.toFloatArray
-import kotlin.collections.toMutableList
 
 public fun Color.toByteArray(alpha: Boolean = true): ByteArray =
     toArray().dropLast(1).let { components ->

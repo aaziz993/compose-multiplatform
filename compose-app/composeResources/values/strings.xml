@@ -51,6 +51,7 @@
     <string name="height">Height</string>
     <string name="identifier">Identifier</string>
     <string name="id">ID</string>
+    <string name="invert">Invert</string>
     <string name="icon">Icon</string>
     <string name="image">Image</string>
     <string name="key">Key</string>

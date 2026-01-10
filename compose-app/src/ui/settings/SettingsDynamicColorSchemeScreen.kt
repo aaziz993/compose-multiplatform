@@ -2,21 +2,30 @@ package ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Contrast
+import androidx.compose.material.icons.filled.Devices
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import clib.data.type.primitives.string.stringResource
 import clib.presentation.theme.model.Theme
+import com.materialkolor.scheme.DynamicScheme
 import compose_app.generated.resources.Res
+import compose_app.generated.resources.contrast
 import compose_app.generated.resources.error
 import compose_app.generated.resources.neutral
 import compose_app.generated.resources.neutral_variant
+import compose_app.generated.resources.platform
 import compose_app.generated.resources.primary
 import compose_app.generated.resources.secondary
 import compose_app.generated.resources.seed_color
 import compose_app.generated.resources.tertiary
 import presentation.components.settings.SettingsColorPickerBottomSheet
+import presentation.components.settings.SettingsListPickerDialog
+import presentation.components.settings.SettingsSlider
 import ui.navigation.presentation.SettingsDynamicColorScheme
 
 @Composable
@@ -97,6 +106,30 @@ public fun SettingsDynamicColorSchemeScreen(
             onThemeChange(theme.copy(dynamicColorScheme = theme.dynamicColorScheme.copy(error = value)))
             false
         }
+    }
+
+    SettingsSlider(
+        title = stringResource(Res.string.contrast),
+        value = theme.dynamicColorScheme.contrastLevel.toFloat(),
+        icon = Icons.Default.Contrast,
+        enabled = true,
+        valueRange = -1f..1f,
+    ) { value, _ ->
+        onThemeChange(theme.copy(dynamicColorScheme = theme.dynamicColorScheme.copy(contrastLevel = value.toDouble())))
+    }
+
+    val platforms = remember { DynamicScheme.Platform.entries.toList() }
+
+    SettingsListPickerDialog(
+        theme.dynamicColorScheme.platform,
+        values = platforms,
+        title = stringResource(Res.string.platform),
+        icon = Icons.Default.Devices,
+        modifier = Modifier,
+        enabled = true,
+    ) { value ->
+        onThemeChange(theme.copy(dynamicColorScheme = theme.dynamicColorScheme.copy(platform = value)))
+        false
     }
 }
 

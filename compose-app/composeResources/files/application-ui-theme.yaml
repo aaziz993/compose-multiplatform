@@ -6,9 +6,11 @@ ui:
       animate: true
       animationSpec:
         spring: { }
-    amoled: true
-    contrast: 0
-    platform: PHONE
+      contrastLevel: 0
+      platform: PHONE
+    isAmoled: false
+    isHighContrast: false
+    isInvert: false
     animate: true
     animationSpec:
       tween:

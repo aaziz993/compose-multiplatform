@@ -13,8 +13,6 @@ import clib.data.type.primitives.color.ColorSerial
 import clib.presentation.theme.isAdaptiveDark
 import clib.presentation.theme.shapes.ShapesSerial
 import clib.presentation.theme.typography.TypographySerial
-import com.materialkolor.Contrast
-import com.materialkolor.scheme.DynamicScheme
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Serializable
 
@@ -29,8 +27,8 @@ public data class Theme(
     val lightTime: LocalTime = LocalTime(6, 0),
     val darkTime: LocalTime = LocalTime(18, 0),
     val isAmoled: Boolean = false,
-    val contrast: Double = Contrast.Default.value,
-    val platform: DynamicScheme.Platform = DynamicScheme.Platform.Default,
+    val isHighContrast: Boolean = false,
+    val isInvert: Boolean = false,
     val animate: Boolean = false,
     val animationSpec: AnimationSpecSerial<ColorSerial>? = null,
     val isExpressive: Boolean = true,
@@ -56,12 +54,12 @@ public data class Theme(
             ThemeMode.ADAPTIVE -> isAdaptiveDark(lightTime, darkTime)
         }
 
-    @Composable
+
     public fun copyToggledFunc(): () -> Theme {
-        val isSystemInDarkTheme: Boolean? = if (mode == ThemeMode.SYSTEM) isSystemInDarkTheme() else null
+//        val isSystemInDarkTheme: Boolean? = if (mode == ThemeMode.SYSTEM) isSystemInDarkTheme() else null
         return {
             when (mode) {
-                ThemeMode.SYSTEM -> copy(mode = if (isSystemInDarkTheme!!) ThemeMode.LIGHT else ThemeMode.DARK)
+                ThemeMode.SYSTEM -> copy(mode = if (true) ThemeMode.LIGHT else ThemeMode.DARK)
                 ThemeMode.LIGHT -> copy(mode = ThemeMode.DARK)
                 ThemeMode.DARK -> copy(mode = ThemeMode.ADAPTIVE)
                 ThemeMode.ADAPTIVE -> copy(mode = ThemeMode.SYSTEM)

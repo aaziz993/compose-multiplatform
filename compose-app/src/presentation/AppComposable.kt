@@ -8,14 +8,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import clib.data.share.rememberShare
-import clib.data.type.collections.LaunchedEffect
 import clib.data.type.primitives.string.stringResource
 import clib.di.koinInject
 import clib.permission.PermissionsState
@@ -55,13 +53,9 @@ import dev.jordond.connectivity.Connectivity
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.keyboard.Keyboard
-import klib.data.keyboard.model.Key
-import klib.data.keyboard.model.KeySet
 import klib.data.location.locale.LocaleService
 import klib.data.mouse.Mouse
 import klib.data.share.Share
-import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.delay
 import ui.navigation.presentation.Application
 
 //import solutions.dreamforge.krawler.CrawlerSDK
@@ -138,15 +132,6 @@ public fun AppComposable(
     navigatorFactory,
     onDeepLinkAction,
 ) {
-    keyboard.handler.events.LaunchedEffect(Unit) { event ->
-        println(event)
-    }
-    LaunchedEffect(Unit) {
-        delay(10.seconds)
-        keyboard.write("Aziz Atoev")
-        delay(10.seconds)
-        keyboard.send(KeySet(Key.Compose))
-    }
     GlobalAlertDialog(
         { action ->
             IconButton(action) {

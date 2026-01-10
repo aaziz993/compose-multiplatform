@@ -51,6 +51,7 @@
     <string name="height">Высота</string>
     <string name="identifier">Идентификатор</string>
     <string name="id">ID</string>
+    <string name="invert">Инверт</string>
     <string name="icon">Иконка</string>
     <string name="image">Изображение</string>
     <string name="key">Ключь</string>
