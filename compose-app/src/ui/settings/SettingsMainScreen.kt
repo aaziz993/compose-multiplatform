@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.DensityLarge
 import androidx.compose.material.icons.filled.DensityMedium
 import androidx.compose.material.icons.filled.DensitySmall
+import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.FormatPaint
 import androidx.compose.material.icons.filled.FormatShapes
 import androidx.compose.material.icons.filled.Functions
@@ -62,6 +63,7 @@ import androidx.compose.material.icons.outlined.BluetoothConnected
 import androidx.compose.material.icons.outlined.CameraEnhance
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Contrast
+import androidx.compose.material.icons.outlined.DynamicForm
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOff
 import androidx.compose.material.icons.outlined.Monitor
@@ -105,8 +107,12 @@ import com.alorma.compose.settings.ui.SettingsGroup
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.action_icon_content_color
 import compose_app.generated.resources.amoled
+import compose_app.generated.resources.animate_color
+import compose_app.generated.resources.color_animation_spec
 import compose_app.generated.resources.animate
 import compose_app.generated.resources.animation_spec
+import compose_app.generated.resources.animation_format
+import compose_app.generated.resources.dynamic_content
 import compose_app.generated.resources.app_bar
 import compose_app.generated.resources.app_bar_avatar
 import compose_app.generated.resources.app_bar_locales
@@ -171,6 +177,7 @@ import compose_app.generated.resources.visibility_threshold
 import compose_app.generated.resources.write_storage
 import data.location.locale.asStringResource
 import dev.jordond.connectivity.Connectivity.Status
+import io.github.themeanimator.ThemeAnimationFormat
 import klib.data.location.locale.Locale
 import klib.data.location.locale.current
 import klib.data.type.cast
@@ -579,8 +586,73 @@ public fun SettingsMainScreen(
             },
         )
 
-        theme.animationSpec?.let { animationSpec ->
-            val animationSpecs = remember {
+        val animationSpecs = remember {
+            listOf<AnimationSpec<Float>>(
+                spring(),
+                tween(),
+            )
+        }
+
+        SettingsListPickerDialog(
+            theme.animationSpec,
+            values = animationSpecs,
+            title = stringResource(Res.string.animation_spec),
+            icon = Icons.Default.Animation,
+            modifier = Modifier,
+            enabled = true,
+        ) { value ->
+            onThemeChange(theme.copy(animationSpec = value))
+            false
+        }
+
+        SettingsGroupAnimationSpec(theme.animationSpec) { value ->
+            onThemeChange(theme.copy(animationSpec = value))
+            false
+        }
+
+        val animationFormats = remember {
+            listOf(
+                ThemeAnimationFormat.Crossfade,
+                ThemeAnimationFormat.Circular,
+                ThemeAnimationFormat.Sliding,
+                ThemeAnimationFormat.CircularAroundPress,
+            )
+        }
+
+        SettingsListPickerDialog(
+            theme.animationFormat,
+            values = animationFormats,
+            title = stringResource(Res.string.animation_format),
+            icon = Icons.Default.Animation,
+            modifier = Modifier,
+            enabled = true,
+        ) { value ->
+            onThemeChange(theme.copy(animationFormat = value))
+            false
+        }
+
+        SettingsSwitch(
+            stringResource(Res.string.dynamic_content),
+            value = theme.useDynamicContent,
+            trueIcon = Icons.Filled.DynamicForm,
+            falseIcon = Icons.Outlined.DynamicForm,
+        ) { state ->
+            onThemeChange(theme.copy(useDynamicContent = !theme.useDynamicContent))
+        }
+
+        SettingsSwitch(
+            title = stringResource(Res.string.animate_color),
+            value = theme.animateColor,
+            trueIcon = Icons.Filled.Animation,
+            falseIcon = Icons.Outlined.Animation,
+            onCheckedChange = { value ->
+                onThemeChange(theme.copy(animateColor = value))
+                false
+            },
+        )
+
+        theme.colorAnimationSpec?.let { colorAnimationSpec ->
+            val colorAnimationSpecs = remember {
                 listOf<AnimationSpec<Color>>(
                     spring(),
                     tween(),
@@ -588,31 +660,20 @@ public fun SettingsMainScreen(
             }
 
             SettingsListPickerDialog(
-                animationSpec,
-                values = animationSpecs,
-                title = stringResource(Res.string.animation_spec),
+                colorAnimationSpec,
+                values = colorAnimationSpecs,
+                title = stringResource(Res.string.color_animation_spec),
                 icon = Icons.Default.Animation,
                 modifier = Modifier,
                 enabled = true,
             ) { value ->
-                onThemeChange(theme.copy(animationSpec = value))
+                onThemeChange(theme.copy(colorAnimationSpec = value))
                 false
             }
 
-            when (val animationSpec = theme.animationSpec) {
-                is SpringSpec<*> -> SettingsGroupSpringSpec(
-                    animationSpec.cast(),
-                ) { value ->
-                    onThemeChange(theme.copy(animationSpec = value))
-                    false
-                }
-
-                is TweenSpec<*> -> SettingsGroupTweenSpec(
-                    animationSpec.cast(),
-                ) { value ->
-                    onThemeChange(theme.copy(animationSpec = value))
-                    false
-                }
+            SettingsGroupAnimationSpec(colorAnimationSpec) { value ->
+                onThemeChange(theme.copy(colorAnimationSpec = value))
+                false
             }
         }
 
@@ -961,9 +1022,30 @@ public fun SettingsMainScreen(
 }
 
 @Composable
-private fun SettingsGroupSpringSpec(
-    value: SpringSpec<Color>,
-    onValueChange: (SpringSpec<Color>) -> Unit,
+private fun <T : Any> SettingsGroupAnimationSpec(
+    value: AnimationSpec<T>,
+    onValueChange: (AnimationSpec<T>) -> Boolean,
+): Unit = when (value) {
+    is SpringSpec<*> -> SettingsGroupSpringSpec(
+        value.cast(),
+    ) {
+        onValueChange(it)
+    }
+
+    is TweenSpec<*> -> SettingsGroupTweenSpec(
+        value.cast(),
+    ) {
+        onValueChange(it)
+    }
+
+    else -> Unit
+}
+
+@Suppress("UNCHECKED_CAST")
+@Composable
+private fun <T : Any> SettingsGroupSpringSpec(
+    value: SpringSpec<T>,
+    onValueChange: (SpringSpec<T>) -> Unit,
 ) {
     SettingsSlider(
         title = stringResource(Res.string.damping_ratio),
@@ -999,26 +1081,28 @@ private fun SettingsGroupSpringSpec(
     }
 
     value.visibilityThreshold?.let { visibilityThreshold ->
-        SettingsColorPickerBottomSheet(
-            stringResource(Res.string.visibility_threshold),
-            visibilityThreshold,
-        ) {
-            onValueChange(
-                spring(
-                    value.dampingRatio,
-                    value.stiffness,
-                    it,
-                ),
-            )
-            false
+        when (visibilityThreshold) {
+            is Color -> SettingsColorPickerBottomSheet(
+                stringResource(Res.string.visibility_threshold),
+                visibilityThreshold,
+            ) {
+                onValueChange(
+                    spring(
+                        value.dampingRatio,
+                        value.stiffness,
+                        it as T,
+                    ),
+                )
+                false
+            }
         }
     }
 }
 
 @Composable
-private fun SettingsGroupTweenSpec(
-    value: TweenSpec<Color>,
-    onValueChange: (TweenSpec<Color>) -> Unit,
+private fun <T : Any> SettingsGroupTweenSpec(
+    value: TweenSpec<T>,
+    onValueChange: (TweenSpec<T>) -> Unit,
 ) {
     SettingsSlider(
         title = stringResource(Res.string.duration),

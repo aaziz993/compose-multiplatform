@@ -84,7 +84,6 @@ import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
 import io.github.themeanimator.ThemeAnimationFormat
 import io.github.themeanimator.rememberThemeAnimationState
-import io.github.themeanimator.theme.Theme
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.cache.emptyCache
@@ -158,9 +157,11 @@ public fun AppEnvironment(
     val isDark = theme.isDark()
     val localization by rememberLocalization(localeState, localeService)
     val animationState = rememberThemeAnimationState(
+        animationSpec = theme.animationSpec,
         format = ThemeAnimationFormat.CircularAroundPress,
+        useDynamicContent = theme.useDynamicContent,
     )
-    Theme
+
     CompositionLocalProvider(
         LocalConfig provides config,
         LocalCache provides cache,
@@ -236,13 +237,13 @@ public fun AppEnvironment(
             .let { if (theme.isHighContrast) it.copy(first = it.first.toHighContrast(isDark)) else it }
             .let { if (theme.isInvert) it.copy(first = it.first.invert()) else it }
             .let {
-                if (theme.animate)
+                if (theme.animateColor)
                     it.copy(
                         first =
                             animateColorScheme(
                                 colorScheme = it.first,
                                 animationSpec = {
-                                    theme.animationSpec as FiniteAnimationSpec<Color>
+                                    theme.colorAnimationSpec as FiniteAnimationSpec<Color>
                                 },
                             ),
                     )
@@ -252,6 +253,7 @@ public fun AppEnvironment(
         CompositionLocalProvider(LocalDynamicMaterialThemeSeed provides seedColor) {
             ThemeAnimationScope(
                 animationState,
+                theme.animate,
                 isDark,
             ) {
                 MaterialExpressiveTheme(

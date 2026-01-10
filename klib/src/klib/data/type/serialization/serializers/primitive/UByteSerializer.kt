@@ -2,7 +2,7 @@ package klib.data.type.serialization.serializers.primitive
 
 import kotlinx.serialization.descriptors.PrimitiveKind
 
-public abstract class PrimitiveUByteSerializer<T : Any>(
+public abstract class UByteSerializer<T : Any>(
     serialName: String,
     serializer: (T) -> UByte,
     deserializer: (UByte) -> T,

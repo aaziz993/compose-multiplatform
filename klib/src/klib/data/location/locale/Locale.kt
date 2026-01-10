@@ -1,7 +1,7 @@
 package klib.data.location.locale
 
 import klib.data.location.country.Country
-import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import klib.data.type.serialization.serializers.primitive.StringSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(LocaleSerializer::class)
@@ -85,7 +85,7 @@ public data class Locale(
     }
 }
 
-private object LocaleSerializer : PrimitiveStringSerializer<Locale>(
+private object LocaleSerializer : StringSerializer<Locale>(
     "klib.data.location.locale.Locale",
     Locale::toString,
     String::toLocale,

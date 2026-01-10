@@ -1,11 +1,11 @@
 package klib.data.type.serialization.serializers.http
 
 import io.ktor.http.HttpMethod
-import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import klib.data.type.serialization.serializers.primitive.StringSerializer
 import kotlinx.serialization.Serializable
 
 public object HttpMethodSerializer :
-    PrimitiveStringSerializer<HttpMethod>(
+    StringSerializer<HttpMethod>(
         "io.ktor.http.HttpMethod",
         HttpMethod::value,
         HttpMethod::parse,

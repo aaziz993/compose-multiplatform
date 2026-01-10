@@ -9,6 +9,9 @@
     <string name="amoled">Амолед</string>
     <string name="animate">Анимировать</string>
     <string name="animation_spec">Спецификация анимации</string>
+    <string name="animation_format">Формат анимации</string>
+    <string name="animate_color">Анимировать цвет</string>
+    <string name="color_animation_spec">Спецификация анимации цвета</string>
     <string name="adaptive">Адаптивный</string>
     <string name="avatar">Аватар</string>
     <string name="add">Добавить</string>
@@ -33,6 +36,7 @@
     <string name="duration">Длительность</string>
     <string name="delay">Задержка</string>
     <string name="dark">Темный</string>
+    <string name="dynamic_content">Динамическое содержимое</string>
     <string name="enabled">Включено</string>
     <string name="edit">Редактировать</string>
     <string name="error">Ошибка</string>

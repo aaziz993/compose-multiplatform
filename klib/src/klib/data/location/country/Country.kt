@@ -3,7 +3,7 @@ package klib.data.location.country
 import klib.data.iso.Alpha2Letter
 import klib.data.iso.Alpha3Letter
 import klib.data.location.locale.Locale
-import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import klib.data.type.serialization.serializers.primitive.StringSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(CountrySerializer::class)
@@ -45,7 +45,7 @@ public data class Country(
     }
 }
 
-private object CountrySerializer : PrimitiveStringSerializer<Country>(
+private object CountrySerializer : StringSerializer<Country>(
     "klib.data.location.country.Country",
     Country::toString,
     String::toCountry,

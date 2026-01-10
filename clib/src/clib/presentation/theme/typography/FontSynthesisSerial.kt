@@ -1,10 +1,10 @@
 package clib.presentation.theme.typography
 
 import androidx.compose.ui.text.font.FontSynthesis
-import klib.data.type.serialization.serializers.primitive.PrimitiveIntSerializer
+import klib.data.type.serialization.serializers.primitive.IntSerializer
 import kotlinx.serialization.Serializable
 
-public object FontSynthesisSerializer : PrimitiveIntSerializer<FontSynthesis>(
+public object FontSynthesisSerializer : IntSerializer<FontSynthesis>(
     FontSynthesis::class.simpleName!!,
     FontSynthesis::value,
     FontSynthesis::valueOf,

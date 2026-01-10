@@ -2,17 +2,17 @@ package klib.data.type.serialization.serializers.primitive
 
 import kotlinx.serialization.descriptors.PrimitiveKind
 
-public abstract class PrimitiveLongSerializer<T : Any>(
+public abstract class CharSerializer<T : Any>(
     serialName: String,
-    serializer: (T) -> Long,
-    deserializer: (Long) -> T,
+    serializer: (T) -> Char,
+    deserializer: (Char) -> T,
 ) : PrimitiveSerializer<T>(
     serialName,
-    PrimitiveKind.LONG,
+    PrimitiveKind.CHAR,
     { encoder, value ->
-        encoder.encodeLong(serializer(value))
+        encoder.encodeChar(serializer(value))
     },
     {
-        deserializer(it.decodeLong())
+        deserializer(it.decodeChar())
     },
 )

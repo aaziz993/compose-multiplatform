@@ -2,17 +2,17 @@ package klib.data.type.serialization.serializers.primitive
 
 import kotlinx.serialization.descriptors.PrimitiveKind
 
-public abstract class PrimitiveCharSerializer<T : Any>(
+public abstract class FloatSerializer<T : Any>(
     serialName: String,
-    serializer: (T) -> Char,
-    deserializer: (Char) -> T,
+    serializer: (T) -> Float,
+    deserializer: (Float) -> T,
 ) : PrimitiveSerializer<T>(
     serialName,
-    PrimitiveKind.CHAR,
+    PrimitiveKind.FLOAT,
     { encoder, value ->
-        encoder.encodeChar(serializer(value))
+        encoder.encodeFloat(serializer(value))
     },
     {
-        deserializer(it.decodeChar())
+        deserializer(it.decodeFloat())
     },
 )

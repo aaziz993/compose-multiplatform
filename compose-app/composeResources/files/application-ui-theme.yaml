@@ -3,9 +3,6 @@ ui:
     isDynamic: false
     dynamicColorScheme:
       seedColor: 0xFF00FFFF
-      animate: true
-      animationSpec:
-        spring: { }
       contrastLevel: 0
       platform: PHONE
     isAmoled: false
@@ -13,6 +10,12 @@ ui:
     isInvert: false
     animate: true
     animationSpec:
+      tween:
+        durationMillis: 3000
+    animationFormat: sliding
+    useDynamicContent: false
+    animateColor: true
+    colorAnimationSpec:
       tween:
         durationMillis: 3000
     isExpressive: true

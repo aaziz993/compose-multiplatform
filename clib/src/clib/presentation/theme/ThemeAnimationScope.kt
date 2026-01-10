@@ -13,9 +13,12 @@ import io.github.themeanimator.themeAnimation
 @Composable
 public fun ThemeAnimationScope(
     state: ThemeAnimationState,
+    animate: Boolean,
     isDark: Boolean,
     content: @Composable () -> Unit,
 ) {
+    if (!animate) return content()
+
     val graphicsLayer = rememberGraphicsLayer()
 
     Box(

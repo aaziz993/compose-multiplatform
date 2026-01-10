@@ -1,7 +1,7 @@
 package klib.data.location.currency
 
 import klib.data.iso.Alpha3Letter
-import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import klib.data.type.serialization.serializers.primitive.StringSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(CurrencySerializer::class)
@@ -39,7 +39,7 @@ public data class Currency(
     }
 }
 
-private object CurrencySerializer : PrimitiveStringSerializer<Currency>(
+private object CurrencySerializer : StringSerializer<Currency>(
     "klib.data.location.currency.Currency",
     Currency::toString,
     String::toCurrency,

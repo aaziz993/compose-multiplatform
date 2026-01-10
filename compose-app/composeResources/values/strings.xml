@@ -9,6 +9,9 @@
     <string name="amoled">Amoled</string>
     <string name="animate">Animate</string>
     <string name="animation_spec">Animation specification</string>
+    <string name="animation_format">Animation format</string>
+    <string name="animate_color">Animate color</string>
+    <string name="color_animation_spec">Color animation specification</string>
     <string name="adaptive">Adaptive</string>
     <string name="avatar">Avatar</string>
     <string name="add">Add</string>
@@ -33,6 +36,7 @@
     <string name="duration">Duration</string>
     <string name="delay">Delay</string>
     <string name="dark">Dark</string>
+    <string name="dynamic_content">Dynamic content</string>
     <string name="enabled">Enabled</string>
     <string name="edit">Edit</string>
     <string name="error">Error</string>

@@ -2,7 +2,7 @@ package klib.data.type.serialization.serializers.primitive
 
 import kotlinx.serialization.descriptors.PrimitiveKind
 
-public abstract class PrimitiveULongSerializer<T : Any>(
+public abstract class ULongSerializer<T : Any>(
     serialName: String,
     serializer: (T) -> ULong,
     deserializer: (ULong) -> T,

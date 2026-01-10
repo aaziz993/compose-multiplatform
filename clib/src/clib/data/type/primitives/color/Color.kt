@@ -22,11 +22,11 @@ import com.github.ajalt.colormath.model.RGBColorSpaces.ROMM_RGB
 import com.github.ajalt.colormath.model.RGBInt
 import com.github.ajalt.colormath.model.SRGB
 import com.github.ajalt.colormath.model.XYZColorSpaces.XYZ50
-import klib.data.type.serialization.serializers.primitive.PrimitiveULongSerializer
+import klib.data.type.serialization.serializers.primitive.ULongSerializer
 import kotlinx.serialization.Serializable
 import androidx.compose.ui.graphics.Color as ComposeColor
 
-public object ColorSerializer : PrimitiveULongSerializer<ComposeColor>(
+public object ColorSerializer : ULongSerializer<ComposeColor>(
     ComposeColor::class.simpleName!!,
     { color -> color.toArgb().toULong() },
     { value -> ComposeColor(value.toInt()) },

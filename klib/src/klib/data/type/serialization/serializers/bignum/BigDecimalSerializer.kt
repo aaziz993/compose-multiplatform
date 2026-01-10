@@ -1,11 +1,11 @@
 package klib.data.type.serialization.serializers.bignum
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
-import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import klib.data.type.serialization.serializers.primitive.StringSerializer
 import kotlinx.serialization.Serializable
 
 public object BigDecimalSerializer :
-    PrimitiveStringSerializer<BigDecimal>(
+    StringSerializer<BigDecimal>(
         "com.ionspin.kotlin.bignum.decimal.BigDecimal",
         BigDecimal::toString,
         BigDecimal::parseString,

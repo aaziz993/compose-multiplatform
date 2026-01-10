@@ -3,10 +3,10 @@ package clib.presentation.theme.typography
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.GenericFontFamily
 import androidx.compose.ui.text.font.SystemFontFamily
-import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
+import klib.data.type.serialization.serializers.primitive.StringSerializer
 import kotlinx.serialization.Serializable
 
-public object FontFamilySerializer : PrimitiveStringSerializer<FontFamily>(
+public object FontFamilySerializer : StringSerializer<FontFamily>(
     FontFamily::class.simpleName!!,
     { fontFamily ->
         when (fontFamily) {

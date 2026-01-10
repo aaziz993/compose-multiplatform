@@ -2,17 +2,17 @@ package klib.data.type.serialization.serializers.primitive
 
 import kotlinx.serialization.descriptors.PrimitiveKind
 
-public abstract class PrimitiveByteSerializer<T : Any>(
+public abstract class ShortSerializer<T : Any>(
     serialName: String,
-    serializer: (T) -> Byte,
-    deserializer: (Byte) -> T,
+    serializer: (T) -> Short,
+    deserializer: (Short) -> T,
 ) : PrimitiveSerializer<T>(
     serialName,
-    PrimitiveKind.BYTE,
+    PrimitiveKind.SHORT,
     { encoder, value ->
-        encoder.encodeByte(serializer(value))
+        encoder.encodeShort(serializer(value))
     },
     {
-        deserializer(it.decodeByte())
+        deserializer(it.decodeShort())
     },
 )

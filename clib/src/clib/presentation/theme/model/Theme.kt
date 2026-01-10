@@ -1,5 +1,6 @@
 package clib.presentation.theme.model
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Shapes
@@ -13,6 +14,7 @@ import clib.data.type.primitives.color.ColorSerial
 import clib.presentation.theme.isAdaptiveDark
 import clib.presentation.theme.shapes.ShapesSerial
 import clib.presentation.theme.typography.TypographySerial
+import io.github.themeanimator.ThemeAnimationFormat
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Serializable
 
@@ -29,8 +31,12 @@ public data class Theme(
     val isAmoled: Boolean = false,
     val isHighContrast: Boolean = false,
     val isInvert: Boolean = false,
-    val animate: Boolean = false,
-    val animationSpec: AnimationSpecSerial<ColorSerial>? = null,
+    val animate: Boolean = true,
+    val animationSpec: AnimationSpecSerial<Float> = tween(300),
+    val animationFormat: ThemeAnimationFormatSerial = ThemeAnimationFormat.Sliding,
+    val useDynamicContent: Boolean = false,
+    val animateColor: Boolean = false,
+    val colorAnimationSpec: AnimationSpecSerial<ColorSerial>? = null,
     val isExpressive: Boolean = true,
     val shapes: ShapesSerial = Shapes(),
     val typography: TypographySerial = Typography(),

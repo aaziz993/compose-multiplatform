@@ -2,7 +2,7 @@ package klib.data.type.serialization.serializers.primitive
 
 import kotlinx.serialization.descriptors.PrimitiveKind
 
-public abstract class PrimitiveDoubleSerializer<T : Any>(
+public abstract class DoubleSerializer<T : Any>(
     serialName: String,
     serializer: (T) -> Double,
     deserializer: (Double) -> T,
