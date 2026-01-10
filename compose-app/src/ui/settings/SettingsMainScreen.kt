@@ -477,15 +477,13 @@ public fun SettingsMainScreen(
             onThemeChange(theme.copy(isDynamic = value))
         }
 
-        val themeCopyToggled = theme.copyToggledFunc()
-
         SettingsMenuLink(
             title = stringResource(Res.string.theme),
             enabled = true,
             icon = theme.mode.isDarkIcon(),
             subtitle = theme.mode.isDarkStringResource(),
         ) {
-            onThemeChange(themeCopyToggled())
+            onThemeChange(theme.copyModeToggled())
         }
 
         if (theme.mode == ThemeMode.ADAPTIVE) {

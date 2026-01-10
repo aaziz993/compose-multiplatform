@@ -54,16 +54,10 @@ public data class Theme(
             ThemeMode.ADAPTIVE -> isAdaptiveDark(lightTime, darkTime)
         }
 
-
-    public fun copyToggledFunc(): () -> Theme {
-//        val isSystemInDarkTheme: Boolean? = if (mode == ThemeMode.SYSTEM) isSystemInDarkTheme() else null
-        return {
-            when (mode) {
-                ThemeMode.SYSTEM -> copy(mode = if (true) ThemeMode.LIGHT else ThemeMode.DARK)
-                ThemeMode.LIGHT -> copy(mode = ThemeMode.DARK)
-                ThemeMode.DARK -> copy(mode = ThemeMode.ADAPTIVE)
-                ThemeMode.ADAPTIVE -> copy(mode = ThemeMode.SYSTEM)
-            }
-        }
+    public fun copyModeToggled(): Theme = when (mode) {
+        ThemeMode.SYSTEM -> copy(mode = ThemeMode.LIGHT)
+        ThemeMode.LIGHT -> copy(mode = ThemeMode.DARK)
+        ThemeMode.DARK -> copy(mode = ThemeMode.ADAPTIVE)
+        ThemeMode.ADAPTIVE -> copy(mode = ThemeMode.SYSTEM)
     }
 }

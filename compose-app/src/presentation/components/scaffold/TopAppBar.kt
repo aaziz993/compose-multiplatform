@@ -197,10 +197,9 @@ public fun TopAppBar(
                         }
 
                     if (appBar.isTheme) {
-                        val themeCopyToggled = theme.copyToggledFunc()
                         IconButton(
                             onClick = {
-                                onThemeChange(themeCopyToggled())
+                                onThemeChange(theme.copyModeToggled())
                             },
                         ) {
                             PlainTooltipBox(tooltip = stringResource(Res.string.theme)) {

@@ -84,6 +84,7 @@ import com.materialkolor.rememberDynamicMaterialThemeState
 import dev.jordond.connectivity.Connectivity.Status
 import io.github.themeanimator.ThemeAnimationFormat
 import io.github.themeanimator.rememberThemeAnimationState
+import io.github.themeanimator.theme.Theme
 import klib.data.cache.Cache
 import klib.data.cache.CoroutineCache
 import klib.data.cache.emptyCache
@@ -159,7 +160,7 @@ public fun AppEnvironment(
     val animationState = rememberThemeAnimationState(
         format = ThemeAnimationFormat.CircularAroundPress,
     )
-
+    Theme
     CompositionLocalProvider(
         LocalConfig provides config,
         LocalCache provides cache,
