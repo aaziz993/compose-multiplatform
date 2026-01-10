@@ -37,7 +37,7 @@ public fun annotatedStringArrayResource(
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
 ): List<AnnotatedString> = stringArrayResource(resource).map { value ->
-    value.toHtmlString(
+    value.toAnnotatedString(
         compactMode,
         style,
         linkInteractionListener,
@@ -52,7 +52,7 @@ public suspend fun getAnnotatedStringArray(
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
 ): List<AnnotatedString> = getStringArray(environment, resource, localization).map { value ->
-    value.toHtmlString(
+    value.toAnnotatedString(
         compactMode,
         style,
         linkInteractionListener,

@@ -1,6 +1,3 @@
-@file:OptIn(ExperimentalResourceApi::class)
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package clib.data.type.primitives.string
 
 import androidx.compose.runtime.Composable
@@ -12,10 +9,9 @@ import clib.presentation.locale.LocalLocalization
 import klib.data.location.locale.Localization
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import net.pearx.kasechange.toSnakeCase
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.StringResource
 
-public fun String.toHtmlString(
+public fun String.toAnnotatedString(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
@@ -38,10 +34,11 @@ public fun <T> T.asStringResource(
 ): String = toString().let { string ->
     val base = string
         .substringBefore('(')
-        .substringAfterLast('.')
-        .substringBefore('$')
-        .substringBefore('@')
-        .removeSuffix("Kt")
+        .substringAfterLast('.').let {
+            if (it.contains($$$"$$Lambda")) it.substringBefore("$").removeSuffix("Kt")
+            else it.substringAfter('$').substringBefore('@')
+        }
+
     "${base.asStringResource(resources, localization) { base }}${
         string.substringAfter('(', "").addPrefixIfNotEmpty("(")
     }"

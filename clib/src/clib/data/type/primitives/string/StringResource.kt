@@ -54,7 +54,7 @@ public fun annotatedStringResource(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = stringResource(resource).toHtmlString(
+): AnnotatedString = stringResource(resource).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,
@@ -67,7 +67,7 @@ public fun annotatedStringResource(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = stringResource(resource, *formatArgs).toHtmlString(
+): AnnotatedString = stringResource(resource, *formatArgs).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,
@@ -79,7 +79,7 @@ public suspend fun getAnnotatedString(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = getString(resource, localization).toHtmlString(
+): AnnotatedString = getString(resource, localization).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,
@@ -96,7 +96,7 @@ public suspend fun getAnnotatedString(
     resource = resource,
     formatArgs = formatArgs,
     localization = localization,
-).toHtmlString(
+).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,

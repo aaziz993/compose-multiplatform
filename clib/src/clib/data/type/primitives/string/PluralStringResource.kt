@@ -78,7 +78,7 @@ public fun annotatedPluralStringResource(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = pluralStringResource(resource, quantity).toHtmlString(
+): AnnotatedString = pluralStringResource(resource, quantity).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,
@@ -93,7 +93,7 @@ public fun annotatedPluralStringResource(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = pluralStringResource(resource, quantity, * formatArgs).toHtmlString(
+): AnnotatedString = pluralStringResource(resource, quantity, * formatArgs).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,
@@ -107,7 +107,7 @@ public suspend fun getAnnotatedPluralString(
     compactMode: Boolean = false,
     style: HtmlStyle = HtmlStyle.DEFAULT,
     linkInteractionListener: LinkInteractionListener? = null
-): AnnotatedString = getPluralString(resource, quantity, environment, localization).toHtmlString(
+): AnnotatedString = getPluralString(resource, quantity, environment, localization).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,
@@ -128,7 +128,7 @@ public suspend fun getAnnotatedPluralString(
     formatArgs = formatArgs,
     environment = environment,
     localization = localization,
-).toHtmlString(
+).toAnnotatedString(
     compactMode,
     style,
     linkInteractionListener,

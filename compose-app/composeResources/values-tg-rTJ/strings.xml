@@ -9,9 +9,9 @@
     <string name="amoled">Амолед</string>
     <string name="animate">Аниматсиякард</string>
     <string name="animation_spec">Хосияти аниматсия</string>
-    <string name="animation_format">Формати анимация</string>
-    <string name="animate_color">Ранги аниматсия</string>
-    <string name="color_animation_spec">Мушаххаси анимации ранг</string>
+    <string name="animation_format">Шакли анимация</string>
+    <string name="animate_color">Аниматсиякард ранг</string>
+    <string name="color_animation_spec">Хосияти аниматсияи ранг</string>
     <string name="adaptive">Мутобиқшаванда</string>
     <string name="avatar">Аватар</string>
     <string name="add">Илова</string>
@@ -36,7 +36,7 @@
     <string name="duration">Муддат</string>
     <string name="delay">Таъхир</string>
     <string name="dark">Торик</string>
-    <string name="dynamic_content">Мундариҷаи динамикӣ</string>
+    <string name="dynamic_content">Таркиби таҳаррук</string>
     <string name="enabled">Фаъол</string>
     <string name="edit">Таҳрир</string>
     <string name="error">Хато</string>
